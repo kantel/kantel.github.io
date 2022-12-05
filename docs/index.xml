@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Der Schockwellenreiter</title>
+<link>https://kantel.github.io/index.html</link>
+<atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
+<description>Schockwellenreiter</description>
+<generator>quarto-1.2.269</generator>
+<lastBuildDate>Sat, 03 Dec 2022 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Der Schockwellenreiter und Quarto: Es geht voran!</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120401_quartotest2/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52542448559/"><img src="https://kantel.github.io/posts/2022120401_quartotest2/images/blogquarto-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nachdem ich mich mehrere Tage und mehrmals hintereinander durch die manchmal doch etwas konfuse Dokumentation gewühlt hatte (das »konfus« gilt sowohl für die Quarto- wie auch die GitHub-Pages-Dokumentation), habe ich den ersten Schritt geschafft: Eine <a href="https://kantel.github.io/">Testversion des »neuen« Schockwellenreiter</a> (mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> erstellt und auf <a href="http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html">GitHub Pages</a> gehostet) ist online!</p>
+<p>Ob die URL <code>kantel.github.io</code> auf »ewig« Bestand hat, weiß ich noch nicht, eventuell ziehe ich mit dem <del>Blog</del> Kritzelheft noch einmal um. Erst einmal ist das nur ein <em>proof of concept</em>, der mir zeigen soll, wieweit ich schon auf dem richtigen Weg bin und was ich noch ändern und/oder verbessern sollte.</p>
+<p>Das Teil hat zum Beispiel noch keinen RSS-Feed, den reiche ich nach, sobald ich mir über die endgültige URL im Klaren bin. Und auch sonst fehlen noch einige Unterseiten, aber erst einmal bin ich mit dem bisher Erreichten zufrieden.</p>
+<p>Denn was habe ich geschafft? Erst einmal habe ich dem Teil deutsch beigebracht, um den deutsch-anglo-amerikanischen Sprachmischmasch zu beenden. Dafür mußte ich sowohl Im YAML-Header in der <code>index.qmd</code> im Wurzelverzeichnis meines Quarto-Projekt als auch in der <code>_metadata.yml</code> im Post-Verzeichnis jeweils die Zeile <code>lang: de</code> einfügen. Jetzt spricht der <em>Schockwellenreiter</em> wieder deutsch mit mir (das Gendersternchen bei »Autor*in« werde ich ihm auch noch abgewöhnen, aber das hat erst einmal nur eine geringe Priorität).</p>
+<p>Dann habe ich die Stelle gefunden, an der ich Quarto mitteile, daß ich im Header jeder Seite noch ein Stück JavaScript eingebunden haben möchte. Da ist in der <code>_quarto.yml</code> und zwar im <code>format</code>-Abschnitt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">format</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">html</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-3"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">theme</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> litera</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">css</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> styles.css</span></span>
+<span id="cb1-5"><span class="at" style="color: #657422;">    </span><span class="fu" style="color: #4758AB;">include-in-header</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"js/matomo.js"</span></span></code></pre></div>
+<p>Ob das im Einzelfall separat auch im YAML-Header eines einzelnen Posts möglich ist, muß ich noch herausfinden. Das wäre jedenfalls interessant, wenn ich zum Beispiel ein <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Skript einbinden will und das dazugehörige JavaScript auch noch für die betroffenen Seiten laden möchte. Aber eigentlich ist es egal, es sind statische Seiten, die halten sowieso alles vorrätig.</p>
+<p>Dann habe ich die Sortierreihenfolge festgelegt. Dafür mußte ich ebenfalls die <code>index.md</code> im Wurzelverzeichnis bemühen und im YAML-Header folgende Zeilen einfügen:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">listing</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">contents</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> posts</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">sort</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> </span></span>
+<span id="cb2-4"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"date desc"</span></span>
+<span id="cb2-5"><span class="at" style="color: #657422;">    </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="st" style="color: #20794D;">"title desc"</span></span></code></pre></div>
+<p>Da ich die Dateinamen jeweils nach dem Schema <code>yyyymmddlfn_beschreibung</code> erstelle, dürften diese Zeilen die gewünschte Reihenfolge produzieren. Bisher hatte ich jedenfalls noch keine Überraschungen erlebt.</p>
+<p><strong>Was ist noch zu tun?</strong> Erst einmal habe ich zwar mein <a href="http://cognitiones.kantel-chaos-team.de/webworking/tools/piwik.html">Neugiertool</a>-Skript eingebunden, aber momentan zählt es nur die Aufrufe von <code>localhost</code>. Hier muß ich noch ein wenig recherchieren. Im schlimmsten Fall blockiert GitHub Pages den Tracker, dann gibt es eben keine monatlichen Zahlen mehr. Wäre zwar nicht schön, aber zu verschmerzen.</p>
+<p>Dann möchte ich noch ganz gewaltig an den Templates feilen. Eine eigene <code>style.css</code> wird zwar von der <code>_quarto.yml</code> schon eingebunden (siehe das erste Listing oben), ist aber noch leer. Hier ist also noch gewaltig Raum für Experimente. <em>Still digging!</em></p>
+<p>Aber erst einmal bin ich in den wenigen Tagen, seitdem ich mich ziemlich spontan für Quarto entschieden habe, schon ganz schön weit gekommen. Und ich hatte bisher mindestens ebensoviel Spaß dabei, wie vor zehn Jahren, als ich – ähnlich spontan – an meinem Wechsel von WordPress zu <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/rubyfrontier.html">RubyFrontier</a> bastelte.</p>
+
+
+
+ ]]></description>
+  <category>Interna</category>
+  <guid>https://kantel.github.io/posts/2022120401_quartotest2/index.html</guid>
+  <pubDate>Sat, 03 Dec 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120401_quartotest2/images/blogquarto-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>The Secret of Monkey Island: Code the Classics mit Pygame Zero</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120302_monkey_islands/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.raspberrypi.com/app/uploads/2022/11/Screen1.png"><img src="https://kantel.github.io/posts/2022120302_monkey_islands/images/monkeyisland-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Wenn hier im <em>Schockwellenreiter</em> in der Überschrift »Code the Classics« auftaucht, dann trägt fast immer die neueste Wireframe die Schuld daran. So auch heute: Die <a href="https://wireframe.raspberrypi.com/issues/69">Wireframe 69</a> ist frisch erschienen und in dieser Ausgabe gibt es als Beispielprogramm eine Hommage an den 1990 erschienen Klassiker »<a href="https://de.wikipedia.org/wiki/The_Secret_of_Monkey_Island">The Secret of Monkey Island</a>« von <em>LucasArts</em>, der heute als Meilenstein in der Geschichte der Computerspiele, speziell im Segment <a href="https://de.wikipedia.org/wiki/Adventure">Abenteuerspiele</a> <em>(Adventures)</em> gilt.</p>
+<p>Der »Held« des Spieles, <a href="https://de.wikipedia.org/wiki/Guybrush_Threepwood">Guybrush (Ulysses) Threepwood</a>, möchte – obwohl er eher ein Tollpatsch ist – nicht nur ein mächtiger Pirat werden, sondern auch das Herz der Gouverneurin von <em>Mêlée Island</em> gewinnen. Dazu muß er mithilfe des Spielers diverse Abenteuer bestehen und seine Gegenspieler besiegen.</p>
+<p>Die Hommage konzentriert sich auf die Eröffnungsszene und die Basics des Scripting-Systems des Spiels. Wer das Spiel weiterprogrammieren will, muß ihm natürlich mehr Kommandos und mehr Reaktionen des Spielers und der NPC spendieren. Aber mit dem kurzen <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html">Pygame Zero</a>-Skript sind die Grundlagen dafür gelegt.</p>
+<p>Wegen der besseren Lesbarkeit ist das Beispiel auch wieder in den <em>Raspberry Pi News</em> <a href="https://www.raspberrypi.com/news/code-an-homage-to-monkey-island-wireframe-69/">veröffentlicht</a>. Und wer will, kann sich die aktuelle Wireframe <a href="https://wireframe.raspberrypi.com/issues">hier kostenlos als PDF</a> herunterladen.</p>
+
+
+
+ ]]></description>
+  <category>Spieleprogrammierung</category>
+  <category>Retrogaming</category>
+  <category>Pygame Zero</category>
+  <guid>https://kantel.github.io/posts/2022120302_monkey_islands/index.html</guid>
+  <pubDate>Fri, 02 Dec 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120302_monkey_islands/images/monkeyisland-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Google korrigiert in der neuen Version 108 seines Browsers Chrome auch wieder Sicherheitslücken</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120301_chrome_update/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="http://www.iwalkalone.co.uk/wp-content/uploads/2014/11/image342.jpg"><img src="https://kantel.github.io/posts/2022120301_chrome_update/images/alicecaterpillar-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Google veröffentlicht ein neues Update der Version 108 (108.0.5359.94/95) seines Browsers Chrome und schließt erneut kritische <a href="https://chromereleases.googleblog.com/2022/12/stable-channel-update-for-desktop.html">Sicherheitslücken</a>.</p>
+<p>Chrome aktualisiert sich (außer bei Linux) über die integrierte Update-Funktion, kann aber – wenn es pressiert – auch <a href="https://www.google.com/intl/de/chrome/browser/">hier geladen</a> werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2022120301_chrome_update/index.html</guid>
+  <pubDate>Fri, 02 Dec 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120301_chrome_update/images/alicecaterpillar-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Der Schockwellenreiter und Quarto: Erste Ergebnisse</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120202_quartoumstellung/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52537205617/"><img src="https://kantel.github.io/posts/2022120202_quartoumstellung/quartoblog01-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Wie <a href="http://blog.schockwellenreiter.de/2022/11/2022113004.html">angekündigt</a> habe ich gestern abend und heute vormittag erste Gehversuche unternommen, um dieses <del>Blog</del> Kritzelheft zukünftig mit <a href="http://cognitiones.kantel-chaos-team.de/mathematik/rstudio.html">RStudio</a> und <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> herauszuschreiben (und eventuell auf <a href="http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html">GitHub Pages</a> zu hosten).</p>
+<p>Die ersten Schritte waren recht einfach: Zwar gab es zu Beginn ein paar seltsame und verstörende Fehlermeldungen, aber nachdem sich das System (nach einem kompletten Neustart) eingependelt hatte, waren diese verschwunden (und tauchen hoffentlich auch nie wieder auf – ich habe sie nämlich nicht verstanden). Mit den (Quarto-Blog-) Default-Einstellungen und einigen sehr vorsichtigen Anpassungen ließ sich eine Testversion des <em>Schockwellenreiters</em> auch herausschreiben (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/52537205617/">Screenshot</a> im Banner oben). Und die sieht gar nicht mal so schlecht aus, damit könnte ich leben.</p>
+<p>Aber wie immer im Leben sind natürlich noch etliche Fragen offen. Die ersten möchte ich hier stellen und hoffe auf die Weisheit der Cloud:</p>
+<ol type="1">
+<li>Wie (und wo) stellt man die (Ausgabe-) Sprache ein? So, daß zum Beispiel statt <em>December 1, 2022</em> der <em>1.&nbsp;Dezember 2022</em>, statt <em>Author</em> eben <em>Autor</em> oder statt <em>Figure</em> das deutsche <em>Abbildung</em> herausgeschrieben wird? Der derzeitige deutsch-amerikanische Sprachmischmasch wirkt in meinen Augen sehr unprofessionell.</li>
+<li>Wie (und wo) kann ich mein (selbstgehostetes) Neugiertool <a href="http://cognitiones.kantel-chaos-team.de/webworking/tools/piwik.html">Matomo</a> einbinden? Dafür muß ich einen Schnipsel JavaScript in jede Seite einfügen.</li>
+<li>(Hängt mit der zweiten Frage zusammen): Wie erstelle ich eine Fußzeile oder besser einen Fußblock, die/der am Ende jeder Seite eingebunden wird und so nützliche Informationen wie <em>»Letztes Update</em>«, <em>»Erstellt mit Quarto«</em> oder einen Link zum Impressum enthält?</li>
+</ol>
+<p>Es werden im Laufe der nächsten Tage und Wochen sicher noch einige weitere Fragen auftauchen. Ich bin für jeden Tip und/oder Hinweis dankbar.</p>
+<p>Mein Plan ist es, die nächsten Wochen den <em>Schockwellenreiter</em> doppelt herauszuschreiben. Einmal wie gewohnt in der jetzigen Form mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/rubyfrontier.html">RubyFrontier</a> und zweitens neu mit Quarto. Irgendwann werde ich die Quarto-Version auch nach GitHub hochladen. Und sollte dann alles zu meiner Zufriedenheit laufen, werde ich den Umstieg vornehmen – so ist der Übergang mehr oder weniger fließend. Mein Ziel ist, daß dieses <em>Procedere</em> spätestens zum Jahreswechsel abgeschlossen ist. Also drückt mir bitte die Daumen.</p>
+<p>Und jetzt entschuldigt mich bitte. Ich habe zu tun … <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Interna</category>
+  <guid>https://kantel.github.io/posts/2022120202_quartoumstellung/index.html</guid>
+  <pubDate>Thu, 01 Dec 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120202_quartoumstellung/quartoblog01-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Security Alert: Apple veröffentlicht iOS 16.1.2</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120101_iosupdate/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p><img src="https://kantel.github.io/posts/2022120101_iosupdate/madhattersteaparty-b.jpg" class="img-fluid"></p>
+<p>Apple hat das Update auf iOS 16.1.2 bereitgestellt. Die Neuerungen können im wesentlichen <a href="https://support.apple.com/en-us/HT213407">hier verfolgt</a> werden. Wie immer wurden auch hier wieder <a href="https://support.apple.com/en-us/HT201222">Sicherheitslücken</a> behoben.</p>
+<p>Das Update auf auf iOS 16.1.2 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code>, an ausreichender Akku-Kapazität und freien Speicherplatz sollte gedacht werden) oder über iTunes erfolgen.</p>
+<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2022120101_iosupdate/index.html</guid>
+  <pubDate>Wed, 30 Nov 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120101_iosupdate/madhattersteaparty-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Mozilla Thunderbird Version 102.5.1 freigegeben</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120102_thunderbirdupdate/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p><img src="https://kantel.github.io/posts/2022120102_thunderbirdupdate/billthelizard-b.jpg" class="img-fluid"></p>
+<p>Was denn? Ein <a href="http://www.mozillamessaging.com/">Thunderbird</a>-Update ohne das es vorher ein Update des Firefox gab? Es sieht danach aus, denn die Entwickler des Mozilla Thunderbird haben das <a href="https://www.thunderbird.net/en-US/thunderbird/102.5.1/releasenotes/">Update auf die Version 102.5.1</a> freigegeben und damit auch Sicherheitslücken behoben.</p>
+<p>Thunderbird weist selbst auf dieses Update hin. Diese Prozedur kann aber auch wie immer über das Menü <code>Hilfe &gt; Über Thunderbird</code> angestoßen werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2022120102_thunderbirdupdate/index.html</guid>
+  <pubDate>Wed, 30 Nov 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120102_thunderbirdupdate/billthelizard-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Die Zahlen für den Monat November 2022</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2022120101_zahlen/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p><img src="https://kantel.github.io/posts/2022120101_zahlen/mediadaten202211-b.jpg" class="img-fluid"></p>
+<p>Wieder ist ein Monat vergangen und daher sind mal wieder ein paar Zahlen fällig, die hochtrabend manches Mal auch <em>Mediadaten</em> genannt werden. Im November 2022 hatte der <em>Schockwellenreiter</em> laut seinem nicht immer ganz zuverlässigen, aber dafür (hoffentlich!) datenschutzkonformen <a href="http://cognitiones.kantel-chaos-team.de/webworking/tools/piwik.html">Neugiertool</a> exakt <strong>5.499 Aufrufe</strong> mit <strong>12.078 Seitenansichten</strong>. Auch wenn die Exaktheit der Ziffern eine Genauigkeit der Zahlen nur vortäuscht, freue ich mich über jede Besucherin und jeden Besucher und bedanke mich bei allen meinen Leserinnen und Lesern.</p>
+<p>🤓 &nbsp; <em>Bleibt mir gewogen!</em></p>
+<p>Natürlich gibt es auch wieder die <em>Top Five</em> des Vormonats (meistaufgerufene Seiten zuerst):</p>
+<ol type="1">
+<li><p><a href="http://blog.schockwellenreiter.de/2022/11/2022112101.html">Logseq, mein digitales, zweites Gehirn auf deutsch erklärt</a></p></li>
+<li><p><a href="http://blog.schockwellenreiter.de/2022/11/2022110102.html">Ein neues HyperCard (für macOS, Windows, Linux und das Web)</a></p></li>
+<li><p><a href="http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/06shapes/">Shapes – Processing.py in Beispielen</a></p></li>
+<li><p><a href="http://blog.schockwellenreiter.de/2022/11/2022112502.html">Logseq: Pimp mein zweites Gehirn</a></p></li>
+<li><p>Tutorials: <a href="http://blog.schockwellenreiter.de/2022/11/2022111701.html">Publizieren mit Quarto, Markdown und Python</a></p></li>
+</ol>
+<p>Auf einen neuen Monat mit vielen spannenden Beiträgen und Themen.</p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2022120101_zahlen/index.html</guid>
+  <pubDate>Wed, 30 Nov 2022 23:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2022120101_zahlen/mediadaten202211-s.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>
