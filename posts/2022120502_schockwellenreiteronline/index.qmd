@@ -1,0 +1,23 @@
+---
+title: "Der »neue« Schockwellenreiter ist online!"
+author: "Jörg Kantel"
+date: "2022-12-06"
+categories: [Interna]
+image: "images/bannerundrss-s.jpg"
+---
+
+[![](images/bannerundrss-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52545235344/)
+
+Es ging schneller, als ich dachte: Nach knapp einer Woche Bastelei bin ich soweit, daß ich die neue, mit [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html) erstellte, Version des *Schockwellenreiters* online stellen kann. Sie erstrahlt also unter [**kantel.github.io**](https://kantel.github.io/) in vollem Glanz und wartet darauf, von Euch getestet und für gut befunden zu werden. Die URL der Seiten wird endgültig bleiben, denn den Nutzernamen »Schockwellenreiter«, auf den ich spekuliert hatte, hatte sich bei GitHub schon jemand anderes gekrallt.
+
+**Was ist neu?** Nach meinem [letzten Fortschrittsbericht](http://blog.schockwellenreiter.de/2022/12/2022120401.html) habe ich dem Teil eigentlich nur noch ein Impressum und einen [RSS-Feed](https://kantel.github.io/index.xml) verpaßt. Außerdem wurde die Startseite wieder mit dem gewohnten Bannerbild verziert, damit es auch nach den Umstieg ein wenig so wie früher aussieht.
+
+Für das alles waren eigentlich nur noch zwei Änderungen in der `index.qmd` der Startseite nötig. Zum einen wurde im YAML-Header unter `listing:` noch die Zeile `feed: true` hinzugefügt und dann wurde als erstes (und bisher einziges statisches) Element der Seite das Bannerbild eingebunden.
+
+Der RSS-Feed ist nun ein Vollfeed (Quarto liefert das von Hause aus mit). Damit wurde mir ein langgehegter Wunsch erfüllt, denn ich war bisher einfach zu faul, ein Skript zu programmieren, das aus meinen Markdown-Texten eine RSS-Datei erzeugt.
+
+Und noch etwas gibt es von Hause aus, denn das »teure Sicherheitstheater« *(Dave Winer)* ist bei [GitHub Pages](http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html) fest eingebaut: Der *Schockwellenreiter* wird nun per `HTTPS` ausgeliefert.
+
+**Was geht nicht?** Ich habe es immer noch nicht geschafft, mein [Neugiertool](http://cognitiones.kantel-chaos-team.de/webworking/tools/piwik.html) einzubinden. Im Prinzip funktioniert es, denn die Aufrufe von `localhost` werden gezählt, aber GitHub Pages dringt irgendwie nicht zu Matomo durch. Hierzu fällt mir nichts mehr ein. Falls also weder [diese Seiten](https://shiny.rstudio.com/articles/usage-metrics.html) oder jemand von Euch da draußen mir eine Lösung präsentieren, werde ich wohl in Zukunft auf die monatliche Zahlenangeberei verzichten müssen. Dann kann ich aber auch meinen Matomo-Server abschalten und muß mich nicht mehr mit der Wartung (eigentlich hasse ich Serverwartung und Matomo will schon wieder ein <del>Kind</del> PHP-Update von mir) und den Updates herumschlagen.
+
+Ansonsten könnt Ihr das Teil nun testen und falls nicht jemand einen *Showstopper* findet, wird es wohl bald einen endgültigen Umstieg geben. Ich bin jedenfalls verhalten optimistisch. *Still digging!*
