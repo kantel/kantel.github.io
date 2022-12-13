@@ -12,7 +12,7 @@ Getreu meiner [gestrigen Ankündigung](https://kantel.github.io/posts/2022121101
 
 Boids sind in erster Linie autonome Agenten und so habe ich mir das [Kapitel zu den autonomen Agenten](https://natureofcode.com/book/chapter-6-autonomous-agents/) (Seite 260ff) vorgeknöpft. Mir ging es aber nicht um eine 1:1-Umsetzung des Java-Codes, sondern ich wollte in meiner Py5-Version die `Py5Vector`-Klasse verstehen und implementieren, die sich doch in einigen Punkten von Processings `PVector`-Klasse unterscheidet. Das war aber dank der [Dokumentation](https://py5coding.org/how_tos/py5vector_class.html) nicht allzuschwer und so hatte ich schon nach wenigen Minuten einen Sketch fertiggestellt, in dem ein `Vehicle` dem Mauszeiger folgt:
 
-~~~python
+``` python
 ## Autonome Agenten 1
 ## Nach Daniel Shiffman: »The Nature of Code«, S. 260 ff
 
@@ -71,7 +71,7 @@ def draw():
     vehicle.seek(target)
     vehicle.update()
     vehicle.display()
-~~~
+```
 
 Genial ist immer noch das `with`-Statement, daß Kommandos wie `push_matrix()` oder `begin_(closed_)shape()` wie »echte« Python-Befehle aussehen läßt.
 
