@@ -1,0 +1,121 @@
+---
+title: "Alice im Ren'Py-Land"
+author: "Jörg Kantel"
+date: "2022-12-20 16:30:00"
+categories: [RenPy, Interactive Fiction, Spieleprogrammierung]
+image: "images/aliceimrenpyland-small.jpg"
+---
+
+[![](images/aliceimrenpyland.jpg)](https://www.flickr.com/photos/schockwellenreiter/52575271591/)
+
+I did it! Ich habe mein [gestern](https://kantel.github.io/posts/2022121902_alice_incle/) veröffentlichtes, mit [Ink und Inky](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html) erstelltes und im [Web veröffentlichtes](http://blog.schockwellenreiter.de/gems/Home_Sweet_Home/) Mini-Spiel nach [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html) portiert. Und es hat gar nicht wehgetan!&nbsp;😎
+
+Nun gut, mangels einer entsprechenden Schnittstelle, wie sie Ink zum Beispiel für [Unity](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html) besitzt, mußte ich die einzelnen Szenen manuall per *cut and paste* in Ren'Py einkopieren, aber trotz API ist bei diesem Vorgang auch in Unity noch einiges händisch zu erledigigen.
+
+Nein, der Vorteil ist: Steht erst einmal das Grundgerüst mit den einzelnen Szenen in Ren'Py, dann kann man in Ink/Inky an den Texten feilen, sie durchspielen und auf logische Lücken kontrollieren und Korrektur lesen (für diese Aufgaben ist das Teil konzipiert). Ist man dann mit dem Ergebnis zufrieden, kopiert man alles auf einen Rutsch nach Ren'Py.
+
+Zudem bekommt man mit Ink/Inky eine Web-Version »geschenkt«, die man entweder als eigenständige Version oder als Pre-Release unters Volk bringen kann (zum Beispiel über [itch.io](https://de.wikipedia.org/wiki/Itch.io)).
+
+Der eigentliche Quellcode ( `script.rpy`) ist noch sehr übersichtlich (weniger als 100 Zeilen). Es ist aber auch nur ein sehr kleines Spielchen, das schon nach wenigen Sekunden durchgespielt ist:
+
+~~~python
+# Bilder
+image startszene  = "alice1.jpg"
+image kitchen     = "alice2.jpg"
+image schweinchen = "alice3.jpg"
+image teeparty    = "alice4.jpg"
+image raupe       = "alice5.jpg"
+image endszene    = "alice6.jpg"
+
+# Charaktere
+define a = Character("Alice", color="#c8ffc8")
+define g = Character("Grinsekatze", color="#f39c12")
+define r = Character("Raupe", color="#6495ed")
+
+# Hier beginnt das Spiel.
+label start:
+    scene startszene
+
+    "Es war ein sonniger Tag. Alice schlenderte gedankenverloren 
+    durch das Wunderland. Sie hatte sich ein wenig verirrt. 
+    Plötzlich materialisierte sich im Gestrüpp über ihrem Weg die 
+    Grinsekatze."
+
+    a "Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll?"
+
+    g "Das hängt zum großen Teil davon ab, wohin Du möchtest."
+
+    menu:
+        "Aber ich will Dir weiterhelfen:"
+
+        "Geradeaus geht es zum Haus der Herzogin":
+            jump herzogin
+        "Links zur Teeparty des verrückten Hutmachers":
+            jump teaparty
+        "Rechts triffst Du die kiffende Raupe auf ihrem Pilz":
+            jump caterpillar
+
+label herzogin:
+    scene kitchen
+
+    "Im Haus der Herzogin herrschte Chaos. Die Herzogin warf 
+    erst mit einem Topf nach Alice, doch dann drückte sie ihr 
+    ein plärrendes Baby in den Arm."
+
+    jump ferkel
+
+label ferkel:
+
+    scene schweinchen
+
+    "Alice verließ das Haus. Das Plärren des Babys veränderte 
+    sich langsam zu einem Grunzen und Quieken. Als Alice nachsah, 
+    merkte sie, daß sie ein kleines Ferkelchen im Arm hielt."
+
+    "Erschreckt setzte Alice das Ferkelchen ab. Es lief davon."
+
+    "Und Alice ging verwirrt zurück an den Start."
+    jump start
+
+label teaparty:
+    scene teeparty
+
+    "Alice erreichte die Teeparty vor dem Haus des verrückten Hutmachers. 
+    Dieser deklamierte gerade ein langes, dafür um so langweiligeres 
+    Gedicht."
+
+    menu:
+        "Alice hatte sehr schnell genug davon. Also überlegte sie …"
+
+        "ob sie nicht doch die Raupe aufsuchen":
+            jump caterpillar
+        "oder gleich nach Hause gehen sollte.":
+            jump ende
+
+label caterpillar:
+    scene raupe
+
+    "Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. 
+    Sie murmelte nur immerzu etwas vom »Reich der Ringe« und daß Alice 
+    dieses dringend besuchen müßte. Sie sagte noch:"
+
+    r "Komm morgen wieder, dann erzähle ich Dir mehr."
+
+    "Alice beschloß, daß sie für heute genug habe und ging nach Hause."
+
+label ende:
+    scene endszene
+
+    menu:
+       "Damit ist die Geschichte zu Ende."
+
+        "Zurück an den Start?":
+            jump start
+        "Oder die Geschichte verlassen?":
+            return
+~~~
+
+Ich habe die Texte wegen der besseren Lesbarkeit ein wenig umgebrochen. Im Original stehen alle Textabschnitte (Absätze) natürlich in einer Zeile. Hier hilft in [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) das Menü `Anzeigen -> Zeilenumbruch`, das die Lesbarkeit nicht verloren geht. Und [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html) besitzt (noch?) kein Syntax-Coloring für `.rpy`-Dateien, daher ist die Farbgebung etwas seltsam.
+
+Das [komplette Ren'Py-Projekt](https://github.com/kantel/renpy/tree/master/renpyprojects/Alice%20im%20Wunderland) mit allen Quellen und Bildern findet Ihr wie gewohnt auf meinen GitHub-Seiten. Und ich werde jetzt noch ein wenig weiter mit Ren'Py spielen. Ich glaube nämlich, daß ich noch einiges herausfinden kann. *Still digging!*
+
