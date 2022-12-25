@@ -10,7 +10,180 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Fri, 23 Dec 2022 18:45:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 25 Dec 2022 13:30:00 GMT</lastBuildDate>
+<item>
+  <title>Auf ein neues: Pizzaplane in Pygame (Stage 1)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52584883766/"><img src="https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/images/pizzaplane1pygame-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nachdem ich mir ein paar der <a href="https://kantel.github.io/posts/20221222301_pygame_tuts/">am Freitag vorgestellten Video-Tutorien</a> reingezogen hatte, bekam ich unbändige Lust, meine eingerosteten <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Kenntnisse frisch zu ölen und selber etwas mit diesem Spiele-Framework anzustellen. Was lag näher, als das nach meiner <a href="http://blog.schockwellenreiter.de/2022/10/2022103001.html">Abkehr von TigerJython</a> verwaiste Projekt <a href="http://blog.schockwellenreiter.de/2022/10/2022101502.html">Pizzaplane</a> wiederzubeleben und es in Pygame zu implementieren?</p>
+<p>Ich halte ja Pygames <code>Sprite()</code>-Klasse für <strong>das</strong> große Alleinstellungsmerkmal, das Pygame von allen anderen Python-Frameworks abhebt. Um so verwunderter war ich, daß die Autoren der Freitag vorgestellten Pygame-Tutorien die Sprite-Klasse entweder ignorierten oder sich in der Implementierung verhedderten (zumindest in den Videos, die ich mir bis heute angeschaut hatte). Daher habe ich in meinem Programm darauf geachtet, die Sprites sauber zu implementieren.</p>
+<p>Das beginnt mit dem endlos scrollenden Hintergrund, den ich ebenfalls als Unterklasse von <code>pygame.sprite.Sprite</code> implementiert habe. Das ist zwar ungewöhnlich – in Pygame-Prgrammen wird der Hintergrund normalerweise einfach als <code>surface</code> in das Fenster »geblittet«, aber meine (Pygame-) Philosophie ist: Alles, was sich bewegt, sind Sprites.</p>
+<p>Ebenso ungewöhnlich – und vermutlich nicht notwendig – ist, daß ich den Hintergründen eine eigene Sprite-Group spendiert habe. Ich meine mich jedoch zu erinnern, daß man in Sprite-Groups nur sehr schwer die Reihenfolge bestimmen kann, in der die daran enthaltenen Sprites auf den Bildschirm gezeichnet werden, Deshalb sind die beiden Hintergrundbilder in einer eigenen Gruppe zusammengefaßt, die <strong>vor</strong> den eigentlichen Sprites gezeichnet wird<sup>1</sup>.</p>
+<p>Ein übler Hack hingegen ist die Zeile,</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">os.environ[<span class="st" style="color: #20794D;">'SDL_VIDEO_WINDOW_POS'</span>] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">,</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">"</span> <span class="op" style="color: #5E5E5E;">%</span> (<span class="dv" style="color: #AD0000;">1320</span>, <span class="dv" style="color: #AD0000;">60</span>)</span></code></pre></div>
+<p>mit der ich das Spielefenster auf den zweiten Monitor meine Home-Konfiguration beame. Dieser Hack scheint bis heute der einzige Weg zu sein, einem Pygame-Fenster eine Startposition zu verpassen. Wer keinen zweiten Monitor hat, sollte diese Zeile auskommentieren – ich wollte nur, daß Ihr mal seht, wie man so etwas bewerkstelligt<sup>2</sup>.</p>
+<p>Ein wenig übervorsichtig ist auch die <code>try: ... finally:</code>-Klausel bei der Behandlung des Spieleabbruchs, aber <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> ist in diesem Fall manchmal (aber nicht reproduzierbar) ein wenig zickig, wenn man die Hauptschleife nur mit <code>keep_going = False</code> beendet. So aber wird das Programm in jeder Situation sauber abgeschlossen.</p>
+<p>Ansonsten setzt die Event-Behandlung in der Hauptschleife auf entsrechenden Tastendruck nur den Status <code>plane.dir</code> auf <code>"Up"</code> oder <code>"DOWN"</code> respektive – wenn eine Taste losgelassen wird – auf <code>"NONE"</code>. Wie mit diesen Stati umzugehen ist, ist Aufgabe der Klasse <code>Plane()</code>.</p>
+<p>Überhaupt habe ich versucht, daß Programm so klar wie möglich zu gestalten. Alle Updates finden in den Klassen statt, in der Hauptschleife werden eigentlich nur die Events abgefragt (und gegenenenfalls an die dafür zuständigen Klassen durchgereicht (im Moment ist das nur die Klasse <code>Plane()</code>)) und die Ergebnisse auf den Monitor gezeichnet. Hier ist das komplette Programm, damit Ihr einen Überblick bekommt:</p>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>pizzaplane1.py</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python code-overflow-wrap number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">import</span> pygame</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;">from</span> pygame.<span class="bu" style="color: null;">locals</span> <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
+<span id="cb2-3"><span class="im" style="color: #00769E;">import</span> os</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;">import</span> sys</span>
+<span id="cb2-5"></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;"># Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
+<span id="cb2-7">DATAPATH <span class="op" style="color: #5E5E5E;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;">"data"</span>)</span>
+<span id="cb2-8"></span>
+<span id="cb2-9"><span class="co" style="color: #5E5E5E;"># Konstanten deklarieren</span></span>
+<span id="cb2-10">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">720</span>, <span class="dv" style="color: #AD0000;">520</span></span>
+<span id="cb2-11">BG_WIDTH <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1664</span></span>
+<span id="cb2-12">TITLE <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Pizza Plane Stage 1"</span></span>
+<span id="cb2-13">FPS <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">60</span></span>
+<span id="cb2-14">ANIM <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">4</span> <span class="co" style="color: #5E5E5E;"># Animation cycle</span></span>
+<span id="cb2-15">UPDOWN <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">3</span></span>
+<span id="cb2-16"></span>
+<span id="cb2-17"><span class="co" style="color: #5E5E5E;"># Farben</span></span>
+<span id="cb2-18">BG_COLOR <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">231</span>, <span class="dv" style="color: #AD0000;">229</span>, <span class="dv" style="color: #AD0000;">226</span>) <span class="co" style="color: #5E5E5E;"># Wüstenhimmel</span></span>
+<span id="cb2-19"></span>
+<span id="cb2-20"><span class="co" style="color: #5E5E5E;"># Objekte</span></span>
+<span id="cb2-21"><span class="kw" style="color: #003B4F;">class</span> Background(pygame.sprite.Sprite):</span>
+<span id="cb2-22">    </span>
+<span id="cb2-23">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb2-24">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb2-25">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb2-26">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb2-27">        <span class="va" style="color: #111111;">self</span>.start_x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb2-28">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
+<span id="cb2-29">                            <span class="st" style="color: #20794D;">"desert.png"</span>))</span>
+<span id="cb2-30">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
+<span id="cb2-31">        </span>
+<span id="cb2-32">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-33">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb2-34">        <span class="co" style="color: #5E5E5E;"># print(self.x)</span></span>
+<span id="cb2-35">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.x</span>
+<span id="cb2-36">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="op" style="color: #5E5E5E;">-</span>BG_WIDTH:</span>
+<span id="cb2-37">            <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> BG_WIDTH</span>
+<span id="cb2-38"></span>
+<span id="cb2-39"><span class="kw" style="color: #003B4F;">class</span>  Plane(pygame.sprite.Sprite):</span>
+<span id="cb2-40">    </span>
+<span id="cb2-41">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-42">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb2-43">        <span class="co" style="color: #5E5E5E;"># Load Images</span></span>
+<span id="cb2-44">        <span class="va" style="color: #111111;">self</span>.images <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb2-45">        <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span> (<span class="dv" style="color: #AD0000;">3</span>):</span>
+<span id="cb2-46">            img <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
+<span id="cb2-47">                         <span class="st" style="color: #20794D;">"planered_"</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="bu" style="color: null;">str</span>(i) <span class="op" style="color: #5E5E5E;">+</span> <span class="st" style="color: #20794D;">".png"</span>))</span>
+<span id="cb2-48">            <span class="va" style="color: #111111;">self</span>.images.append(img)</span>
+<span id="cb2-49">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.images[<span class="dv" style="color: #AD0000;">0</span>]</span>
+<span id="cb2-50">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
+<span id="cb2-51">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">75</span></span>
+<span id="cb2-52">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">250</span></span>
+<span id="cb2-53">        <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-54">        <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">20</span></span>
+<span id="cb2-55">        <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
+<span id="cb2-56">    </span>
+<span id="cb2-57">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-58">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"NONE"</span>:</span>
+<span id="cb2-59">            <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-60">        <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"UP"</span>:</span>
+<span id="cb2-61">            <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
+<span id="cb2-62">                <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">-=</span> UPDOWN</span>
+<span id="cb2-63">        <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"DOWN"</span>:</span>
+<span id="cb2-64">            <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&lt;</span> HEIGHT <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
+<span id="cb2-65">                <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> UPDOWN</span>
+<span id="cb2-66">        <span class="va" style="color: #111111;">self</span>.rect.center <span class="op" style="color: #5E5E5E;">=</span> (<span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
+<span id="cb2-67">        <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb2-68">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">&gt;=</span> ANIM:</span>
+<span id="cb2-69">            <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-70">            <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb2-71">            <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">2</span>:</span>
+<span id="cb2-72">                <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-73">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.images[<span class="va" style="color: #111111;">self</span>.frame]</span>
+<span id="cb2-74">        </span>
+<span id="cb2-75"><span class="co" style="color: #5E5E5E;"># Pygame initialisieren</span></span>
+<span id="cb2-76">clock <span class="op" style="color: #5E5E5E;">=</span> pygame.time.Clock()</span>
+<span id="cb2-77">pygame.init()</span>
+<span id="cb2-78"><span class="co" style="color: #5E5E5E;"># Ein übler Hack, um die Position des Fensters auf meinen</span></span>
+<span id="cb2-79"><span class="co" style="color: #5E5E5E;"># zweiten Bildschirm zu setzen, aber er funktioniert …</span></span>
+<span id="cb2-80">os.environ[<span class="st" style="color: #20794D;">'SDL_VIDEO_WINDOW_POS'</span>] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">,</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">"</span> <span class="op" style="color: #5E5E5E;">%</span> (<span class="dv" style="color: #AD0000;">1320</span>, <span class="dv" style="color: #AD0000;">60</span>)</span>
+<span id="cb2-81">screen <span class="op" style="color: #5E5E5E;">=</span> pygame.display.set_mode((WIDTH, HEIGHT))</span>
+<span id="cb2-82">pygame.display.set_caption(TITLE)</span>
+<span id="cb2-83"></span>
+<span id="cb2-84"><span class="co" style="color: #5E5E5E;"># Sprite-Gruppe(n)</span></span>
+<span id="cb2-85">backs       <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
+<span id="cb2-86">all_sprites <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
+<span id="cb2-87"></span>
+<span id="cb2-88"><span class="co" style="color: #5E5E5E;"># Hintergrund</span></span>
+<span id="cb2-89">back1 <span class="op" style="color: #5E5E5E;">=</span> Background(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb2-90">back2 <span class="op" style="color: #5E5E5E;">=</span> Background(BG_WIDTH, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb2-91">backs.add(back1)</span>
+<span id="cb2-92">backs.add(back2)</span>
+<span id="cb2-93"></span>
+<span id="cb2-94"><span class="co" style="color: #5E5E5E;"># Der rote Flieger</span></span>
+<span id="cb2-95">plane <span class="op" style="color: #5E5E5E;">=</span> Plane()</span>
+<span id="cb2-96">all_sprites.add(plane)</span>
+<span id="cb2-97"></span>
+<span id="cb2-98">keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">True</span></span>
+<span id="cb2-99"><span class="cf" style="color: #003B4F;">while</span> keep_going:</span>
+<span id="cb2-100">    </span>
+<span id="cb2-101">    clock.tick(FPS)</span>
+<span id="cb2-102">    <span class="cf" style="color: #003B4F;">for</span> event <span class="kw" style="color: #003B4F;">in</span> pygame.event.get():</span>
+<span id="cb2-103">        <span class="cf" style="color: #003B4F;">if</span> ((event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.QUIT)</span>
+<span id="cb2-104">            <span class="kw" style="color: #003B4F;">or</span> (event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYDOWN</span>
+<span id="cb2-105">                <span class="kw" style="color: #003B4F;">and</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_ESCAPE)):</span>
+<span id="cb2-106">            <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Bye, Bye, Baby!"</span>)</span>
+<span id="cb2-107">            pygame.quit()</span>
+<span id="cb2-108">            <span class="cf" style="color: #003B4F;">try</span>:</span>
+<span id="cb2-109">                sys.exit()</span>
+<span id="cb2-110">            <span class="cf" style="color: #003B4F;">finally</span>:</span>
+<span id="cb2-111">                keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span>
+<span id="cb2-112">                </span>
+<span id="cb2-113">        <span class="cf" style="color: #003B4F;">if</span> event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYDOWN:</span>
+<span id="cb2-114">            <span class="cf" style="color: #003B4F;">if</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_UP:</span>
+<span id="cb2-115">                plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"UP"</span></span>
+<span id="cb2-116">            <span class="cf" style="color: #003B4F;">elif</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_DOWN:</span>
+<span id="cb2-117">                plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"DOWN"</span></span>
+<span id="cb2-118">                </span>
+<span id="cb2-119">        <span class="cf" style="color: #003B4F;">if</span> event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYUP:</span>
+<span id="cb2-120">            plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
+<span id="cb2-121"></span>
+<span id="cb2-122">    backs.update()</span>
+<span id="cb2-123">    backs.draw(screen)</span>
+<span id="cb2-124">    all_sprites.update()</span>
+<span id="cb2-125">    all_sprites.draw(screen)</span>
+<span id="cb2-126">    pygame.display.update()</span>
+<span id="cb2-127">    pygame.display.flip()</span></code></pre></div>
+</div>
+<p>Wie immer findet Ihr das <a href="https://github.com/kantel/pygameprojects/tree/master/pizzaplane">Programm und alle Assets</a> auch in meinem GitHub-Repositorium. Fortsetzung folgt …</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Sollte mich meine Erinnerung trügen oder diese Eigenschaft mittlerweile verschwunden sein – diese wenigen zusätzlichen Zeilen schaden ja nicht.↩︎</p></li>
+<li id="fn2"><p>Ich muß allerdings zugeben, daß ich diesen Hack auch »nur« auf <em>Stack Overflow</em> gefunden habe.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Pygame</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/index.html</guid>
+  <pubDate>Sun, 25 Dec 2022 13:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/images/pizzaplane1pygame-small.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Pygame Tutorials am Freitag</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -815,42 +988,6 @@
   <guid>https://kantel.github.io/posts/2022121101_boids_python_processing/index.html</guid>
   <pubDate>Sat, 10 Dec 2022 23:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2022121101_boids_python_processing/images/boidsprocessing-s.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Interactive Fiction: Video-Tutorials zu Ren’Py und Twine</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2022121001_interactive_fiction_tuts/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.youtube.com/watch?v=zlDrcxUc8v8"><img src="https://kantel.github.io/posts/2022121001_interactive_fiction_tuts/images/basicsofrenpy.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Es ist an der Zeit, zum normalen Tagesgeschäft zurückzukehren. Nachdem gestern vor lauter Begeisterung über meinen geglückten Umzug mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> zu <a href="http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html">GitHub Pages</a> die versprochenen Video-Tutorials zum Freitag ausgefallen waren, möchte ich sie heute nachliefern. Es sind an diesem Wochenende Tutorials zur Programmierung von <em>Interactive Fiction</em>, in der Hauptsache zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, aber auch zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/zlDrcxUc8v8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
-<p>Den Anfang macht die Kanadierin <em>Timutu</em>, die auf ihrem Kanal eine zehnteilige Playlist »<a href="https://www.youtube.com/playlist?list=PL8Y8sYrRR6yA9u0npsOGsaPFdtGENH-A2">Basic’s of Ren’Py</a>« (Laufzeit etwa dreieinhalb Stunden) hochgeladen hat. Sie benutzt dafür Material aus ihrem eigenen Spiel »<a href="https://timitu.itch.io/levars-life">Levar’s Live</a>«, das Ihr von <em>itch.io</em> kostenlos herunterladen und spielen könnt. Die von Disneys »König der Löwen« inspirierten, für meinen Geschmack etwas süßlich geratenen Bilder muß man nicht unbedingt mögen, aber den Tutorials von <em>Timutu</em> merkt man die Praxis mit Ren’Py an.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/237jY-KtbVA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
-<p>Ebenfalls über reichlich Praxis-Erfahrungen mit Ren’Py besitzt der Macher des Kanals <em>Coding with B and E</em>. Sein dreiteiliges, etwa eineinviertelstündiges Tutorial »<a href="https://www.youtube.com/watch?v=237jY-KtbVA">Code an Inventory System in Ren’Py</a>«, (<a href="https://www.youtube.com/watch?v=CBECdsoCxho">Teil 2</a> und <a href="https://www.youtube.com/watch?v=DX0cXj2P3Mw">Teil 3</a>) gehört zu seiner bisher neunteiligen Playlist »<a href="https://www.youtube.com/playlist?list=PL8gnyyQEz5CEmWEpXKt0dSDWvwz85oosL">Intermediate Ren’Py</a>«. Das letzte Update dieser Playlist ist er wenige Tage alt, weitere Updates sind daher noch zu erwarten. Ich werde die Liste daher im Auge behalten.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/E6rVYHq_yAQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
-<p>Und <em>last but not least</em> besitzt auch der Macher des Kanals <em>Hil-Motion Video</em> über reichlich Praxis-Erfahrung, diesmal allerdings in Twine. Diese zeigt er unter anderem in seinem zweieinhalbstündigen Stream »<a href="https://www.youtube.com/watch?v=E6rVYHq_yAQ&amp;t=297s">Programming my Twine Detective</a>«. Von diesem Stream gibt es auch noch einen je ebenfalls zweieinhalbstündigen <a href="https://www.youtube.com/watch?v=LFI5SB-sQ8I&amp;t=88s">Teil 3</a> und <a href="https://www.youtube.com/watch?v=mgowK0HZW_c&amp;t=117s">Teil 4</a>. Was aus Teil&nbsp;2 geworden ist, entzieht sich meiner Kenntnis.</p>
-<p>Auf jeden Fall sind diese Videos zusammen Material für mehrere Stunden. Die letztgenannten zu Twine habe ich mir ebenfalls noch nicht angeschaut, aber da mir der Stream »<a href="https://www.youtube.com/watch?v=I8gbtTO2lPg">Interactive Fiction with Twine and SugarCube for Beginners</a>« des gleichen Autoren sehr gut gefallen hatte, gehe ich davon aus, daß sich das Anschauen dieser Streams ebenfalls lohnt.</p>
-
-
-
- ]]></description>
-  <category>RenPy</category>
-  <category>Twine</category>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2022121001_interactive_fiction_tuts/index.html</guid>
-  <pubDate>Fri, 09 Dec 2022 23:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2022121001_interactive_fiction_tuts/images/basicsofrenpy-s.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

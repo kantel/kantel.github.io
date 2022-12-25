@@ -1,0 +1,167 @@
+---
+title: "Auf ein neues: Pizzaplane in Pygame (Stage 1)"
+author: "Jörg Kantel"
+date: "2022-12-25 14:30:00"
+categories: [Pygame, Spieleprogrammierung]
+image: "images/pizzaplane1pygame-small.jpg"
+---
+
+[![](images/pizzaplane1pygame-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52584883766/)
+
+Nachdem ich mir ein paar der [am Freitag vorgestellten Video-Tutorien](https://kantel.github.io/posts/20221222301_pygame_tuts/) reingezogen hatte, bekam ich unbändige Lust, meine eingerosteten [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Kenntnisse frisch zu ölen und selber etwas mit diesem Spiele-Framework anzustellen. Was lag näher, als das nach meiner [Abkehr von TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) verwaiste Projekt [Pizzaplane](http://blog.schockwellenreiter.de/2022/10/2022101502.html) wiederzubeleben und es in Pygame zu implementieren?
+
+Ich halte ja Pygames `Sprite()`-Klasse für **das** große Alleinstellungsmerkmal, das Pygame von allen anderen Python-Frameworks abhebt. Um so verwunderter war ich, daß die Autoren der Freitag vorgestellten Pygame-Tutorien die Sprite-Klasse entweder ignorierten oder sich in der Implementierung verhedderten (zumindest in den Videos, die ich mir bis heute angeschaut hatte). Daher habe ich in meinem Programm darauf geachtet, die Sprites sauber zu implementieren.
+
+Das beginnt mit dem endlos scrollenden Hintergrund, den ich ebenfalls als Unterklasse von `pygame.sprite.Sprite` implementiert habe. Das ist zwar ungewöhnlich -- in Pygame-Prgrammen wird der Hintergrund normalerweise einfach als `surface` in das Fenster »geblittet«, aber meine (Pygame-) Philosophie ist: Alles, was sich bewegt, sind Sprites.
+
+Ebenso ungewöhnlich -- und vermutlich nicht notwendig -- ist, daß ich den Hintergründen eine eigene Sprite-Group spendiert habe. Ich meine mich jedoch zu erinnern, daß man in Sprite-Groups nur sehr schwer die Reihenfolge bestimmen kann, in der die daran enthaltenen Sprites auf den Bildschirm gezeichnet werden, Deshalb sind die beiden Hintergrundbilder in einer eigenen Gruppe zusammengefaßt, die **vor** den eigentlichen Sprites gezeichnet wird[^1].
+
+[^1]: Sollte mich meine Erinnerung trügen oder diese Eigenschaft mittlerweile verschwunden sein -- diese wenigen zusätzlichen Zeilen schaden ja nicht.
+
+Ein übler Hack hingegen ist die Zeile,
+
+~~~python
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (1320, 60)
+~~~
+
+mit der ich das Spielefenster auf den zweiten Monitor meine Home-Konfiguration beame. Dieser Hack scheint bis heute der einzige Weg zu sein, einem Pygame-Fenster eine Startposition zu verpassen. Wer keinen zweiten Monitor hat, sollte diese Zeile auskommentieren -- ich wollte nur, daß Ihr mal seht, wie man so etwas bewerkstelligt[^2].
+
+[^2]: Ich muß allerdings zugeben, daß ich diesen Hack auch »nur« auf *Stack Overflow* gefunden habe.
+
+Ein wenig übervorsichtig ist auch die `try: ... finally:`-Klausel bei der Behandlung des Spieleabbruchs, aber [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) ist in diesem Fall manchmal (aber nicht reproduzierbar) ein wenig zickig, wenn man die Hauptschleife nur mit `keep_going = False` beendet. So aber wird das Programm in jeder Situation sauber abgeschlossen.
+
+Ansonsten setzt die Event-Behandlung in der Hauptschleife auf entsrechenden Tastendruck nur den Status `plane.dir` auf `"Up"` oder `"DOWN"` respektive -- wenn eine Taste losgelassen wird -- auf `"NONE"`. Wie mit diesen Stati umzugehen ist, ist Aufgabe der Klasse `Plane()`.
+
+Überhaupt habe ich versucht, daß Programm so klar wie möglich zu gestalten. Alle Updates finden in den Klassen statt, in der Hauptschleife werden eigentlich nur die Events abgefragt (und gegenenenfalls an die dafür zuständigen Klassen durchgereicht (im Moment ist das nur die Klasse `Plane()`)) und die Ergebnisse auf den Monitor gezeichnet. Hier ist das komplette Programm, damit Ihr einen Überblick bekommt:
+
+~~~{.python filename="pizzaplane1.py"  .code-overflow-wrap}
+import pygame
+from pygame.locals import *
+import os
+import sys
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.getcwd(), "data")
+
+# Konstanten deklarieren
+WIDTH, HEIGHT = 720, 520
+BG_WIDTH = 1664
+TITLE = "Pizza Plane Stage 1"
+FPS = 60
+ANIM = 4 # Animation cycle
+UPDOWN = 3
+
+# Farben
+BG_COLOR = (231, 229, 226) # Wüstenhimmel
+
+# Objekte
+class Background(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.x = _x
+        self.y = _y
+        self.start_x = _x
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+                            "desert.png"))
+        self.rect = self.image.get_rect()
+        
+    def update(self):
+        self.x -= 1
+        # print(self.x)
+        self.rect.x = self.x
+        if self.x <= -BG_WIDTH:
+            self.x = BG_WIDTH
+
+class  Plane(pygame.sprite.Sprite):
+    
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        # Load Images
+        self.images = []
+        for i in range (3):
+            img = pygame.image.load(os.path.join(DATAPATH,
+                         "planered_" + str(i) + ".png"))
+            self.images.append(img)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.x = 75
+        self.y = 250
+        self.frame = 0
+        self.ani = 20
+        self.dir = "NONE"
+    
+    def update(self):
+        if self.dir == "NONE":
+            self.y += 0
+        elif self.dir == "UP":
+            if self.y > 20:
+                self.y -= UPDOWN
+        elif self.dir == "DOWN":
+            if self.y < HEIGHT - 20:
+                self.y += UPDOWN
+        self.rect.center = (self.x, self.y)
+        self.ani += 1
+        if self.ani >= ANIM:
+            self.ani = 0
+            self.frame += 1
+            if self.frame > 2:
+                self.frame = 0
+        self.image = self.images[self.frame]
+        
+# Pygame initialisieren
+clock = pygame.time.Clock()
+pygame.init()
+# Ein übler Hack, um die Position des Fensters auf meinen
+# zweiten Bildschirm zu setzen, aber er funktioniert …
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (1320, 60)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption(TITLE)
+
+# Sprite-Gruppe(n)
+backs       = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+
+# Hintergrund
+back1 = Background(0, 0)
+back2 = Background(BG_WIDTH, 0)
+backs.add(back1)
+backs.add(back2)
+
+# Der rote Flieger
+plane = Plane()
+all_sprites.add(plane)
+
+keep_going = True
+while keep_going:
+    
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if ((event.type == pygame.QUIT)
+            or (event.type == pygame.KEYDOWN
+                and event.key == pygame.K_ESCAPE)):
+            print("Bye, Bye, Baby!")
+            pygame.quit()
+            try:
+                sys.exit()
+            finally:
+                keep_going = False
+                
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                plane.dir = "UP"
+            elif event.key == pygame.K_DOWN:
+                plane.dir = "DOWN"
+                
+        if event.type == pygame.KEYUP:
+            plane.dir = "NONE"
+
+    backs.update()
+    backs.draw(screen)
+    all_sprites.update()
+    all_sprites.draw(screen)
+    pygame.display.update()
+    pygame.display.flip()
+~~~
+
+Wie immer findet Ihr das [Programm und alle Assets](https://github.com/kantel/pygameprojects/tree/master/pizzaplane) auch in meinem GitHub-Repositorium. Fortsetzung folgt …
