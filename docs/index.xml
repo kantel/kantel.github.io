@@ -35,7 +35,7 @@
 <span id="cb1-10">                all_sprites.add(hit)</span>
 <span id="cb1-11">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">&gt;=</span> WIDTH <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
 <span id="cb1-12">            <span class="va" style="color: #111111;">self</span>.kill()</span></code></pre></div>
-<p>habe ich da (noch auskommentiert) durchaus vorgesehen, daß mit <code>enemy.kill()</code> der Gegener auch aus dem Spiel entfernt wird (dann müßte allerdings <code>enemy.reset()</code> auskommentiert werden).</p>
+<p>habe ich da (noch auskommentiert) durchaus vorgesehen, daß mit <code>enemy.kill()</code> der Gegner auch aus dem Spiel entfernt wird (dann müßte allerdings <code>enemy.reset()</code> auskommentiert werden).</p>
 <p>Wenn die Pizzen getroffen werden, blitzt an ihrer Position kurz eine Explosion auf. Auch diese ist natürlich als Klasse implementiert</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;">class</span> Explosion(pygame.sprite.Sprite):</span>
 <span id="cb2-2">    </span>
@@ -51,7 +51,7 @@
 <span id="cb2-12">        <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
 <span id="cb2-13">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
 <span id="cb2-14">            <span class="va" style="color: #111111;">self</span>.kill()        </span></code></pre></div>
-<p>und besitzt einen Timer, der sie nach dem Ende der Explosion wieder aus dem Spiel entfernt.</p>
+<p>und besitzt einen Timer, der sie nach dem Ende der Explosion wieder aus dem Spiel nimmt.</p>
 <p>Um die Kollisionserkennung zu vereinfachen, habe ich die Pizzen bei der Initialisierung</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="cf" style="color: #003B4F;">for</span> _ <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(NO_ENEMIES):</span>
 <span id="cb3-2">    pizza <span class="op" style="color: #5E5E5E;">=</span> Enemy(WIDTH <span class="op" style="color: #5E5E5E;">+</span> randint(<span class="dv" style="color: #AD0000;">30</span>, <span class="dv" style="color: #AD0000;">100</span>), randint(<span class="dv" style="color: #AD0000;">30</span>, HEIGHT <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">30</span>))</span>
