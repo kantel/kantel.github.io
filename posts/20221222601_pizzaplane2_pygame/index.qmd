@@ -1,0 +1,307 @@
+---
+title: "Jetzt mit Killer-Pizzas: Pizzaplane in Pygame"
+author: "Jörg Kantel"
+date: "2022-12-25 14:30:00"
+categories: [Pygame, Spieleprogrammierung]
+image: "images/pizzaplanestage2.jpg"
+---
+
+![](images/pizzaplanestage2-b.jpg)
+
+Ich muß gestehen, ich habe richtig Spaß mit [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html). Daher mußte ich gestern auch an dem nach meiner [Abkehr von TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) in Pygame wieder aufgenommenes Projekt »[Pizzaplane](http://blog.schockwellenreiter.de/2022/10/2022101502.html)« weiter programmieren. Der kleine rote Flieger muß sich jetzt gegen die pöhsen Pizzas zur Wehr setzen.
+
+Dazu habe ich ihm eine Klasse `Missile()` spendiert. Die Geschosse werden mit der rechten Pfeiltaste abgefeuert[^1]. Damit der Spieler nicht auf Dauerfeuer schalten kann, habe ich mit `firecount = 15` eine Verzögerung eingebaut, Erst wenn diese Variable wieder bis auf Null zurückgezählt hat, ist der Abschuß eines neuen Geschosses möglich.
+
+[^1]: Ich weiß, traditionell ist hierfür eigentlich die Leertaste zuständig. Aber da in meinem Spiel die rechte Pfeiltaste sonst unbeschäftigt bleibt, habe ich diese dafür ausgewählt. So kann man das komplette Spiel mit der rechten Hand bedienen und hat die linke frei für den Kaffeebecher.
+
+Damit die Geschosse auch ein Ziel haben, kommt die Klasse `Enemy()` ins Spiel. Sie ist erst einmal für die Darstellung der pöhsen Pizzas zuständig[^2]. Sie tauchen an einer zufälligen Position hinter dem rechten Fensterrand auf und fliegen nach links auf den Spieler zu. In dieser Fassung des Spiels werden sie nach dem Abschuß wieder rechts neu positioniert, das muß aber nicht so bleiben. Denn wenn Ihr Euch die `update()`-Methode der `Missile()`-Klasse anschaut,
+
+~~~python
+    def update(self):
+        self.rect.x += self.speed
+        for enemy in enemies:
+            if pygame.sprite.collide_rect(enemy, self):
+                self.kill()
+                # enemy.kill()
+                e_x, e_y = enemy.rect.x, enemy.rect.y - 5
+                enemy.reset()
+                hit = Explosion(e_x, e_y)
+                all_sprites.add(hit)
+        if self.rect.x >= WIDTH + 20:
+            self.kill()
+~~~
+
+habe ich da (noch auskommentiert) durchaus vorgesehen, daß mit `enemy.kill()` der Gegener auch aus dem Spiel entfernt wird (dann müßte allerdings `enemy.reset()` auskommentiert werden).
+
+Wenn die Pizzen getroffen werden, blitzt an ihrer Position kurz eine Explosion auf. Auch diese ist natürlich als Klasse implementiert
+
+~~~python
+class Explosion(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(DATAPATH, "explosion.png"))
+        self.rect = self.image.get_rect()
+        self.rect.x = _x
+        self.rect.y = _y
+        self.timer = 5
+        
+    def update(self):
+        self.timer -= 1
+        if self.timer <= 0:
+            self.kill()        
+~~~
+
+und besitzt einen Timer, der sie nach dem Ende der Explosion wieder aus dem Spiel entfernt.
+
+Um die Kollisionserkennung zu vereinfachen, habe ich die Pizzen bei der Initialisierung
+
+~~~python
+for _ in range(NO_ENEMIES):
+    pizza = Enemy(WIDTH + randint(30, 100), randint(30, HEIGHT - 30))
+    all_sprites.add(pizza)
+    enemies.add(pizza)
+~~~
+
+nicht nur zur `sprite.Group()` `all_sprites`, sondern auch zur Gruppe `enemies` hinzugefügt. Denn Sprite-Groups funktionieren unter anderem auch wie Listen und daher kann ich in der `update()`-Methode der Klasse `Missile()` mit
+
+~~~python
+        for enemy in enemies:
+            if pygame.sprite.collide_rect(enemy, self):
+~~~
+
+alle Pizzas in einem Rutsch auf Kollision testen. Damit das funktioniert, müssen natürlich **alle** Sprites als Unterklassen von `pygame.sprite.Sprite` implementiert werden. Aber ich glaube, langsam wird klar, warum ich `pygame.sprite.Sprite` für so ein mächtiges Werkzeug von Pygame halte.
+
+Jetzt wie gewohnt den kompletten Quellcode dieser Fassung, den es wie immer mit allen Assets auch in meinem [GitHub-Repositorium](https://github.com/kantel/pygameprojects/tree/master/pizzaplane) gibt:
+
+~~~{.python filename="pizzaplane2.py"  .code-overflow-wrap}
+import pygame
+from pygame.locals import *
+from random import randint
+import os
+import sys
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.getcwd(), "data")
+
+# Konstanten deklarieren
+WIDTH, HEIGHT = 720, 520
+BG_WIDTH = 1664
+TITLE = "Pizza Plane Stage 2: Pizza, Pizza!"
+FPS = 60
+ANIM = 4 # Animation cycle
+UPDOWN = 3
+NO_ENEMIES = 10
+
+# Farben
+BG_COLOR = (231, 229, 226) # Wüstenhimmel
+
+# Objekte
+class Background(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.x = _x
+        self.y = _y
+        self.start_x = _x
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+        "desert.png"))
+        self.rect = self.image.get_rect()
+        
+    def update(self):
+        self.x -= 1
+        # print(self.x)
+        self.rect.x = self.x
+        if self.x <= -BG_WIDTH:
+            self.x = BG_WIDTH
+
+class Missile(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+        "missile.png"))
+        self.rect = self.image.get_rect()
+        self.rect.x = _x
+        self.rect.y = _y
+        self.speed = 10
+        
+    def update(self):
+        self.rect.x += self.speed
+        for enemy in enemies:
+            if pygame.sprite.collide_rect(enemy, self):
+                self.kill()
+                # enemy.kill()
+                e_x, e_y = enemy.rect.x, enemy.rect.y - 5
+                enemy.reset()
+                hit = Explosion(e_x, e_y)
+                all_sprites.add(hit)
+        if self.rect.x >= WIDTH + 20:
+            self.kill()
+
+class Explosion(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+        "explosion.png"))
+        self.rect = self.image.get_rect()
+        self.rect.x = _x
+        self.rect.y = _y
+        self.timer = 5
+        
+    def update(self):
+        self.timer -= 1
+        if self.timer <= 0:
+            self.kill()        
+
+class  Plane(pygame.sprite.Sprite):
+    
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        # Load Images
+        self.images = []
+        for i in range (3):
+            img = pygame.image.load(os.path.join(DATAPATH,
+            "planered_" + str(i) + ".png"))
+            self.images.append(img)
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.x = 75
+        self.y = 250
+        self.frame = 0
+        self.ani = 20
+        self.dir = "NONE"
+        self.firecount = 0
+    
+    def update(self):
+        if self.dir == "NONE":
+            self.y += 0
+        elif self.dir == "UP":
+            if self.y > 20:
+                self.y -= UPDOWN
+        elif self.dir == "DOWN":
+            if self.y < HEIGHT - 20:
+                self.y += UPDOWN
+        self.rect.center = (self.x, self.y)
+        self.ani += 1
+        if self.ani >= ANIM:
+            self.ani = 0
+            self.frame += 1
+            if self.frame > 2:
+                self.frame = 0
+        self.firecount -= 1
+        self.image = self.images[self.frame]
+        
+    def fire(self):
+        if self.firecount < 0:
+            missile = Missile(self.x + 15, self.y)
+            all_sprites.add(missile)
+            self.firecount = 15
+
+class Enemy(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+        "pizza.png"))
+        self.rect = self.image.get_rect()
+        self.rect.x = _x
+        self.rect.y = _y
+        self.speed = randint(3, 6)
+        
+    def reset(self):
+        self.rect.x = WIDTH + randint(30, 100)
+        self.rect.y = randint(30, HEIGHT - 30)
+        self.speed = randint(3, 6)
+    
+    def update(self):
+        self.rect.x -= self.speed
+        if self.rect.x < -30:
+            self.reset()
+            
+# Pygame initialisieren und das Fenster und die
+# Hintergrundfarbe festlegen
+clock = pygame.time.Clock()
+pygame.init()
+# Ein übler Hack, um die Position des Fensters auf
+# meinen zweiten Bildschirm zu setzen.
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (1320, 60)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption(TITLE)
+
+# Sprite-Gruppe(n)
+backs       = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group()
+enemies     = pygame.sprite.Group()
+
+# Hintergrund
+back1 = Background(0, 0)
+back2 = Background(BG_WIDTH, 0)
+backs.add(back1)
+backs.add(back2)
+
+# Die Gegner
+for _ in range(NO_ENEMIES):
+    pizza = Enemy(WIDTH + randint(30, 100),
+    randint(30, HEIGHT - 30))
+    all_sprites.add(pizza)
+    enemies.add(pizza)
+
+# Der rote Flieger
+plane = Plane()
+all_sprites.add(plane)
+
+keep_going = True
+while keep_going:
+    
+    clock.tick(FPS)
+    for event in pygame.event.get():
+        if ((event.type == pygame.QUIT)
+            or (event.type == pygame.KEYDOWN
+            and event.key == pygame.K_ESCAPE)):
+            print("Bye, Bye, Baby!")
+            pygame.quit()
+            try:
+                sys.exit()
+            finally:
+                keep_going = False
+                
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                plane.dir = "UP"
+            elif event.key == pygame.K_DOWN:
+                plane.dir = "DOWN"
+            if event.key == pygame.K_RIGHT:
+                plane.fire()
+                
+        if event.type == pygame.KEYUP:
+            plane.dir = "NONE"
+
+    backs.update()
+    backs.draw(screen)
+    all_sprites.update()
+    all_sprites.draw(screen)
+    pygame.display.update()
+    pygame.display.flip()
+~~~
+
+Damit habe ich den Stand erreicht, bis zu dem ich auch in meiner [TigerJython-Fassung](http://blog.schockwellenreiter.de/2022/10/2022101502.html) im Oktober gekommen bin. Das war also die Pflicht, jetzt kommt die Kür und damit geht der Spaß erst richtig los. Vorgesehen habe ich:
+
+1. Mehr Gegner (denn immer nur auf Pizzen zu schießen, wird auf die Dauer langweilig).
+2. Wenn die Gegener mit dem roten Doppeldecker kollidieren, verliert der Spieler entweder ein Leben oder er bekommt Punke abgezogen (darüber muß ich noch nachdenken).
+3. Im Gegenzug bekommt der Spieler bei dem Abschuß von Gegnern Punkte gutgeschrieben.
+4. Die Implementierung eines HUD *(Head Up Display)* mit der Anzeige des Spielestandes (Punkte) und der Anzahl der Leben oder einer *Health Bar*.
+5. Die Implementierung von Start- und Ende-Bildschirmen.
+
+Das ist doch ein nettes Programm, das mich die nächste Zeit beschäftigen wird.
+
+Bisher erschienen sind:
+
+1. [Auf ein neues: Pizzaplane in Pygame (Stage 1)](https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/)
+2. Jetzt mit Killer-Pizzas: Pizzaplane in Pygame
+
+Fortsetzung folgt …
+
+
+[^2]: Später sollen noch weitere Lebensmittel als Gegener hinzukommen, als Boßgegner sind die schrecklichen »Melonis« 🍉 vorgesehen.
