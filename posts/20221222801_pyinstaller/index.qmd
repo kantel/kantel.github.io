@@ -1,0 +1,19 @@
+---
+title: "Neu in meinem Wiki: PyInstaller"
+author: "Jörg Kantel"
+date: "2022-12-28 11:30:00"
+categories: [Python]
+image: "images/psgcompiler_screenshot.jpg"
+---
+
+[![](images/psgcompiler_screenshot-b.jpg)](https://raw.githubusercontent.com/PySimpleGUI/psgcompiler/main/screenshot_for_readme/psgcompiler_screenshot.jpg)
+
+[PyInstaller](http://www.pyinstaller.org/) hatte ich im April 2019 [schon einmal auf dem Schirm](http://blog.schockwellenreiter.de/2019/04/2019041002.html). Doch da ich damals noch keine rechte Verwendung dafür hatte ([Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html)-Binaries konnte ich einfacher mit Bordmitteln aus der [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-IDE erzeugen), war das Teil bei mir ein wenig in Vergessenheit geraten. Nun aber, im Rahmen meiner Hinwendung zu [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) und [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) rückte die Frage wieder in mein Bewußtsein: Wie erzeuge ich Binaries aus meinen Python-Experimenten?
+
+Und hier scheint PyInstaller die einzige, real-existierende Lösung zu sein. PyInstaller ist ein freier (GPL) Bundler für Python-Anwendungen. Alle notwendigen Abhängigkeiten werden zusammen in einem Paket gebündelt, das ausgeführt werden kann. PyInstaller muß unter dem Betriebssystem installiert und ausgeführt werden, für das das erstellte Paket gedacht ist, also Windows-Apps können nur unter Windows, macOS-Apps nur unter macOS und Linux-Apps mir mit einer Linux-Kiste erstellt werden. Dadurch können allerdings auch Module mit »fremden« Quellsprachen (zum Beispiel C (Pygame/SDL) und FORTRAN (Numpy)) mitübersetzt und eingebunden werden.
+
+Das Teil wird aktuell weiter gepflegt, die [Homepage](https://pyinstaller.org/en/stable/) ist gleichzeitig die Dokumentation, der [Quellcode](https://github.com/pyinstaller/pyinstaller) ist auf GitHub zu finden (die letzte Aktualisierung fand vor einem Monat statt) und das Teil [existiert auch auf PyPI](https://pypi.org/project/pyinstaller/) (was eine einfache Installation verspricht).
+
+Daher habe ich dem Programm jetzt endlich auch **[eine Seite](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyinstaller.html)** in [meinem Wiki](http://cognitiones.kantel-chaos-team.de/) spendiert. Wenn ich mein kleines [Pizza-Plane-Spiel](https://kantel.github.io/posts/20221222601_pizzaplane2_pygame/) fertig habe, werde ich daraus auch einmal testweise für Mac und mein Chromebook Binaries erzeugen (eine Windows-Kiste besitze ich nicht). Ich werde über das Ergebnis dann berichten. *Still digging!*
+
+Der Schöpfer von [PySimpleGUI](http://cognitiones.kantel-chaos-team.de/programmierung/python/pysimplegui.html) hat übrigens damit eine Art [GUI für den PyInstaller](https://github.com/PySimpleGUI/psgcompiler) gebastelt. Warum? Vermutlich, weil es geht …
