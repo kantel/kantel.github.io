@@ -18,7 +18,7 @@ Zudem bekommt man mit Ink/Inky eine Web-Version »geschenkt«, die man entweder 
 
 Der eigentliche Quellcode ( `script.rpy`) ist noch sehr übersichtlich (weniger als 100 Zeilen). Es ist aber auch nur ein sehr kleines Spielchen, das schon nach wenigen Sekunden durchgespielt ist:
 
-~~~python
+~~~default
 # Bilder
 image startszene  = "alice1.jpg"
 image kitchen     = "alice2.jpg"
@@ -41,7 +41,8 @@ label start:
     Plötzlich materialisierte sich im Gestrüpp über ihrem Weg die 
     Grinsekatze."
 
-    a "Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll?"
+    a "Würdest Du mir bitte sagen, wie ich von hier aus weitergehen
+       soll?"
 
     g "Das hängt zum großen Teil davon ab, wohin Du möchtest."
 
@@ -80,12 +81,13 @@ label ferkel:
 label teaparty:
     scene teeparty
 
-    "Alice erreichte die Teeparty vor dem Haus des verrückten Hutmachers. 
-    Dieser deklamierte gerade ein langes, dafür um so langweiligeres 
-    Gedicht."
+    "Alice erreichte die Teeparty vor dem Haus des verrückten
+     Hutmachers. Dieser deklamierte gerade ein langes, dafür
+     um so langweiligeres Gedicht."
 
     menu:
-        "Alice hatte sehr schnell genug davon. Also überlegte sie …"
+        "Alice hatte sehr schnell genug davon. Also
+         überlegte sie …"
 
         "ob sie nicht doch die Raupe aufsuchen":
             jump caterpillar
@@ -95,13 +97,15 @@ label teaparty:
 label caterpillar:
     scene raupe
 
-    "Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. 
-    Sie murmelte nur immerzu etwas vom »Reich der Ringe« und daß Alice 
-    dieses dringend besuchen müßte. Sie sagte noch:"
+    "Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu
+     führen. Sie murmelte nur immerzu etwas vom »Reich der Ringe«
+     und daß Alice dieses dringend besuchen müßte. Sie
+     sagte noch:"
 
     r "Komm morgen wieder, dann erzähle ich Dir mehr."
 
-    "Alice beschloß, daß sie für heute genug habe und ging nach Hause."
+    "Alice beschloß, daß sie für heute genug habe und ging
+     nach Hause."
 
 label ende:
     scene endszene

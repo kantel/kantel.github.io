@@ -767,100 +767,104 @@
 <p>Nein, der Vorteil ist: Steht erst einmal das Grundgerüst mit den einzelnen Szenen in Ren’Py, dann kann man in Ink/Inky an den Texten feilen, sie durchspielen und auf logische Lücken kontrollieren und Korrektur lesen (für diese Aufgaben ist das Teil konzipiert). Ist man dann mit dem Ergebnis zufrieden, kopiert man alles auf einen Rutsch nach Ren’Py.</p>
 <p>Zudem bekommt man mit Ink/Inky eine Web-Version »geschenkt«, die man entweder als eigenständige Version oder als Pre-Release unters Volk bringen kann (zum Beispiel über <a href="https://de.wikipedia.org/wiki/Itch.io">itch.io</a>).</p>
 <p>Der eigentliche Quellcode ( <code>script.rpy</code>) ist noch sehr übersichtlich (weniger als 100 Zeilen). Es ist aber auch nur ein sehr kleines Spielchen, das schon nach wenigen Sekunden durchgespielt ist:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Bilder</span></span>
-<span id="cb1-2">image startszene  <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"alice1.jpg"</span></span>
-<span id="cb1-3">image kitchen     <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"alice2.jpg"</span></span>
-<span id="cb1-4">image schweinchen <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"alice3.jpg"</span></span>
-<span id="cb1-5">image teeparty    <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"alice4.jpg"</span></span>
-<span id="cb1-6">image raupe       <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"alice5.jpg"</span></span>
-<span id="cb1-7">image endszene    <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"alice6.jpg"</span></span>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource default number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"># Bilder</span>
+<span id="cb1-2">image startszene  = "alice1.jpg"</span>
+<span id="cb1-3">image kitchen     = "alice2.jpg"</span>
+<span id="cb1-4">image schweinchen = "alice3.jpg"</span>
+<span id="cb1-5">image teeparty    = "alice4.jpg"</span>
+<span id="cb1-6">image raupe       = "alice5.jpg"</span>
+<span id="cb1-7">image endszene    = "alice6.jpg"</span>
 <span id="cb1-8"></span>
-<span id="cb1-9"><span class="co" style="color: #5E5E5E;"># Charaktere</span></span>
-<span id="cb1-10">define a <span class="op" style="color: #5E5E5E;">=</span> Character(<span class="st" style="color: #20794D;">"Alice"</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"#c8ffc8"</span>)</span>
-<span id="cb1-11">define g <span class="op" style="color: #5E5E5E;">=</span> Character(<span class="st" style="color: #20794D;">"Grinsekatze"</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"#f39c12"</span>)</span>
-<span id="cb1-12">define r <span class="op" style="color: #5E5E5E;">=</span> Character(<span class="st" style="color: #20794D;">"Raupe"</span>, color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">"#6495ed"</span>)</span>
+<span id="cb1-9"># Charaktere</span>
+<span id="cb1-10">define a = Character("Alice", color="#c8ffc8")</span>
+<span id="cb1-11">define g = Character("Grinsekatze", color="#f39c12")</span>
+<span id="cb1-12">define r = Character("Raupe", color="#6495ed")</span>
 <span id="cb1-13"></span>
-<span id="cb1-14"><span class="co" style="color: #5E5E5E;"># Hier beginnt das Spiel.</span></span>
+<span id="cb1-14"># Hier beginnt das Spiel.</span>
 <span id="cb1-15">label start:</span>
 <span id="cb1-16">    scene startszene</span>
 <span id="cb1-17"></span>
-<span id="cb1-18">    <span class="co" style="color: #5E5E5E;">"Es war ein sonniger Tag. Alice schlenderte gedankenverloren </span></span>
-<span id="cb1-19"><span class="er" style="color: #AD0000;">    durch das Wunderland. Sie hatte sich ein wenig verirrt. </span></span>
-<span id="cb1-20"><span class="er" style="color: #AD0000;">    Plötzlich materialisierte sich im Gestrüpp über ihrem Weg die </span></span>
-<span id="cb1-21"><span class="er" style="color: #AD0000;">    Grinsekatze."</span></span>
+<span id="cb1-18">    "Es war ein sonniger Tag. Alice schlenderte gedankenverloren </span>
+<span id="cb1-19">    durch das Wunderland. Sie hatte sich ein wenig verirrt. </span>
+<span id="cb1-20">    Plötzlich materialisierte sich im Gestrüpp über ihrem Weg die </span>
+<span id="cb1-21">    Grinsekatze."</span>
 <span id="cb1-22"></span>
-<span id="cb1-23"><span class="er" style="color: #AD0000;">    a "Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll?"</span></span>
-<span id="cb1-24"></span>
-<span id="cb1-25"><span class="er" style="color: #AD0000;">    g "Das hängt zum großen Teil davon ab, wohin Du möchtest."</span></span>
-<span id="cb1-26"></span>
-<span id="cb1-27"><span class="er" style="color: #AD0000;">    menu:</span></span>
-<span id="cb1-28"><span class="er" style="color: #AD0000;">        "Aber ich will Dir weiterhelfen:"</span></span>
-<span id="cb1-29"></span>
-<span id="cb1-30"><span class="er" style="color: #AD0000;">        "Geradeaus geht es zum Haus der Herzogin":</span></span>
-<span id="cb1-31"><span class="er" style="color: #AD0000;">            jump herzogin</span></span>
-<span id="cb1-32"><span class="er" style="color: #AD0000;">        "Links zur Teeparty des verrückten Hutmachers":</span></span>
-<span id="cb1-33"><span class="er" style="color: #AD0000;">            jump teaparty</span></span>
-<span id="cb1-34"><span class="er" style="color: #AD0000;">        "Rechts triffst Du die kiffende Raupe auf ihrem Pilz":</span></span>
-<span id="cb1-35"><span class="er" style="color: #AD0000;">            jump caterpillar</span></span>
-<span id="cb1-36"></span>
-<span id="cb1-37"><span class="er" style="color: #AD0000;">label herzogin:</span></span>
-<span id="cb1-38"><span class="er" style="color: #AD0000;">    scene kitchen</span></span>
-<span id="cb1-39"></span>
-<span id="cb1-40"><span class="er" style="color: #AD0000;">    "Im Haus der Herzogin herrschte Chaos. Die Herzogin warf </span></span>
-<span id="cb1-41"><span class="er" style="color: #AD0000;">    erst mit einem Topf nach Alice, doch dann drückte sie ihr </span></span>
-<span id="cb1-42"><span class="er" style="color: #AD0000;">    ein plärrendes Baby in den Arm."</span></span>
-<span id="cb1-43"></span>
-<span id="cb1-44"><span class="er" style="color: #AD0000;">    jump ferkel</span></span>
-<span id="cb1-45"></span>
-<span id="cb1-46"><span class="er" style="color: #AD0000;">label ferkel:</span></span>
-<span id="cb1-47"></span>
-<span id="cb1-48"><span class="er" style="color: #AD0000;">    scene schweinchen</span></span>
-<span id="cb1-49"></span>
-<span id="cb1-50"><span class="er" style="color: #AD0000;">    "Alice verließ das Haus. Das Plärren des Babys veränderte </span></span>
-<span id="cb1-51"><span class="er" style="color: #AD0000;">    sich langsam zu einem Grunzen und Quieken. Als Alice nachsah, </span></span>
-<span id="cb1-52"><span class="er" style="color: #AD0000;">    merkte sie, daß sie ein kleines Ferkelchen im Arm hielt."</span></span>
-<span id="cb1-53"></span>
-<span id="cb1-54"><span class="er" style="color: #AD0000;">    "Erschreckt setzte Alice das Ferkelchen ab. Es lief davon."</span></span>
-<span id="cb1-55"></span>
-<span id="cb1-56"><span class="er" style="color: #AD0000;">    "Und Alice ging verwirrt zurück an den Start."</span></span>
-<span id="cb1-57"><span class="er" style="color: #AD0000;">    jump start</span></span>
-<span id="cb1-58"></span>
-<span id="cb1-59"><span class="er" style="color: #AD0000;">label teaparty:</span></span>
-<span id="cb1-60"><span class="er" style="color: #AD0000;">    scene teeparty</span></span>
-<span id="cb1-61"></span>
-<span id="cb1-62"><span class="er" style="color: #AD0000;">    "Alice erreichte die Teeparty vor dem Haus des verrückten Hutmachers. </span></span>
-<span id="cb1-63"><span class="er" style="color: #AD0000;">    Dieser deklamierte gerade ein langes, dafür um so langweiligeres </span></span>
-<span id="cb1-64"><span class="er" style="color: #AD0000;">    Gedicht."</span></span>
-<span id="cb1-65"></span>
-<span id="cb1-66"><span class="er" style="color: #AD0000;">    menu:</span></span>
-<span id="cb1-67"><span class="er" style="color: #AD0000;">        "Alice hatte sehr schnell genug davon. Also überlegte sie …"</span></span>
-<span id="cb1-68"></span>
-<span id="cb1-69"><span class="er" style="color: #AD0000;">        "ob sie nicht doch die Raupe aufsuchen":</span></span>
-<span id="cb1-70"><span class="er" style="color: #AD0000;">            jump caterpillar</span></span>
-<span id="cb1-71"><span class="er" style="color: #AD0000;">        "oder gleich nach Hause gehen sollte.":</span></span>
-<span id="cb1-72"><span class="er" style="color: #AD0000;">            jump ende</span></span>
-<span id="cb1-73"></span>
-<span id="cb1-74"><span class="er" style="color: #AD0000;">label caterpillar:</span></span>
-<span id="cb1-75"><span class="er" style="color: #AD0000;">    scene raupe</span></span>
-<span id="cb1-76"></span>
-<span id="cb1-77"><span class="er" style="color: #AD0000;">    "Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. </span></span>
-<span id="cb1-78"><span class="er" style="color: #AD0000;">    Sie murmelte nur immerzu etwas vom »Reich der Ringe« und daß Alice </span></span>
-<span id="cb1-79"><span class="er" style="color: #AD0000;">    dieses dringend besuchen müßte. Sie sagte noch:"</span></span>
-<span id="cb1-80"></span>
-<span id="cb1-81"><span class="er" style="color: #AD0000;">    r "Komm morgen wieder, dann erzähle ich Dir mehr."</span></span>
-<span id="cb1-82"></span>
-<span id="cb1-83"><span class="er" style="color: #AD0000;">    "Alice beschloß, daß sie für heute genug habe und ging nach Hause."</span></span>
-<span id="cb1-84"></span>
-<span id="cb1-85"><span class="er" style="color: #AD0000;">label ende:</span></span>
-<span id="cb1-86"><span class="er" style="color: #AD0000;">    scene endszene</span></span>
-<span id="cb1-87"></span>
-<span id="cb1-88"><span class="er" style="color: #AD0000;">    menu:</span></span>
-<span id="cb1-89"><span class="er" style="color: #AD0000;">       "Damit ist die Geschichte zu Ende."</span></span>
-<span id="cb1-90"></span>
-<span id="cb1-91"><span class="er" style="color: #AD0000;">        "Zurück an den Start?":</span></span>
-<span id="cb1-92"><span class="er" style="color: #AD0000;">            jump start</span></span>
-<span id="cb1-93"><span class="er" style="color: #AD0000;">        "Oder die Geschichte verlassen?":</span></span>
-<span id="cb1-94"><span class="er" style="color: #AD0000;">            return</span></span></code></pre></div>
+<span id="cb1-23">    a "Würdest Du mir bitte sagen, wie ich von hier aus weitergehen</span>
+<span id="cb1-24">       soll?"</span>
+<span id="cb1-25"></span>
+<span id="cb1-26">    g "Das hängt zum großen Teil davon ab, wohin Du möchtest."</span>
+<span id="cb1-27"></span>
+<span id="cb1-28">    menu:</span>
+<span id="cb1-29">        "Aber ich will Dir weiterhelfen:"</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">        "Geradeaus geht es zum Haus der Herzogin":</span>
+<span id="cb1-32">            jump herzogin</span>
+<span id="cb1-33">        "Links zur Teeparty des verrückten Hutmachers":</span>
+<span id="cb1-34">            jump teaparty</span>
+<span id="cb1-35">        "Rechts triffst Du die kiffende Raupe auf ihrem Pilz":</span>
+<span id="cb1-36">            jump caterpillar</span>
+<span id="cb1-37"></span>
+<span id="cb1-38">label herzogin:</span>
+<span id="cb1-39">    scene kitchen</span>
+<span id="cb1-40"></span>
+<span id="cb1-41">    "Im Haus der Herzogin herrschte Chaos. Die Herzogin warf </span>
+<span id="cb1-42">    erst mit einem Topf nach Alice, doch dann drückte sie ihr </span>
+<span id="cb1-43">    ein plärrendes Baby in den Arm."</span>
+<span id="cb1-44"></span>
+<span id="cb1-45">    jump ferkel</span>
+<span id="cb1-46"></span>
+<span id="cb1-47">label ferkel:</span>
+<span id="cb1-48"></span>
+<span id="cb1-49">    scene schweinchen</span>
+<span id="cb1-50"></span>
+<span id="cb1-51">    "Alice verließ das Haus. Das Plärren des Babys veränderte </span>
+<span id="cb1-52">    sich langsam zu einem Grunzen und Quieken. Als Alice nachsah, </span>
+<span id="cb1-53">    merkte sie, daß sie ein kleines Ferkelchen im Arm hielt."</span>
+<span id="cb1-54"></span>
+<span id="cb1-55">    "Erschreckt setzte Alice das Ferkelchen ab. Es lief davon."</span>
+<span id="cb1-56"></span>
+<span id="cb1-57">    "Und Alice ging verwirrt zurück an den Start."</span>
+<span id="cb1-58">    jump start</span>
+<span id="cb1-59"></span>
+<span id="cb1-60">label teaparty:</span>
+<span id="cb1-61">    scene teeparty</span>
+<span id="cb1-62"></span>
+<span id="cb1-63">    "Alice erreichte die Teeparty vor dem Haus des verrückten</span>
+<span id="cb1-64">     Hutmachers. Dieser deklamierte gerade ein langes, dafür</span>
+<span id="cb1-65">     um so langweiligeres Gedicht."</span>
+<span id="cb1-66"></span>
+<span id="cb1-67">    menu:</span>
+<span id="cb1-68">        "Alice hatte sehr schnell genug davon. Also</span>
+<span id="cb1-69">         überlegte sie …"</span>
+<span id="cb1-70"></span>
+<span id="cb1-71">        "ob sie nicht doch die Raupe aufsuchen":</span>
+<span id="cb1-72">            jump caterpillar</span>
+<span id="cb1-73">        "oder gleich nach Hause gehen sollte.":</span>
+<span id="cb1-74">            jump ende</span>
+<span id="cb1-75"></span>
+<span id="cb1-76">label caterpillar:</span>
+<span id="cb1-77">    scene raupe</span>
+<span id="cb1-78"></span>
+<span id="cb1-79">    "Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu</span>
+<span id="cb1-80">     führen. Sie murmelte nur immerzu etwas vom »Reich der Ringe«</span>
+<span id="cb1-81">     und daß Alice dieses dringend besuchen müßte. Sie</span>
+<span id="cb1-82">     sagte noch:"</span>
+<span id="cb1-83"></span>
+<span id="cb1-84">    r "Komm morgen wieder, dann erzähle ich Dir mehr."</span>
+<span id="cb1-85"></span>
+<span id="cb1-86">    "Alice beschloß, daß sie für heute genug habe und ging</span>
+<span id="cb1-87">     nach Hause."</span>
+<span id="cb1-88"></span>
+<span id="cb1-89">label ende:</span>
+<span id="cb1-90">    scene endszene</span>
+<span id="cb1-91"></span>
+<span id="cb1-92">    menu:</span>
+<span id="cb1-93">       "Damit ist die Geschichte zu Ende."</span>
+<span id="cb1-94"></span>
+<span id="cb1-95">        "Zurück an den Start?":</span>
+<span id="cb1-96">            jump start</span>
+<span id="cb1-97">        "Oder die Geschichte verlassen?":</span>
+<span id="cb1-98">            return</span></code></pre></div>
 <p>Ich habe die Texte wegen der besseren Lesbarkeit ein wenig umgebrochen. Im Original stehen alle Textabschnitte (Absätze) natürlich in einer Zeile. Hier hilft in <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> das Menü <code>Anzeigen -&gt; Zeilenumbruch</code>, das die Lesbarkeit nicht verloren geht. Und <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> besitzt (noch?) kein Syntax-Coloring für <code>.rpy</code>-Dateien, daher ist die Farbgebung etwas seltsam.</p>
 <p>Das <a href="https://github.com/kantel/renpy/tree/master/renpyprojects/Alice%20im%20Wunderland">komplette Ren’Py-Projekt</a> mit allen Quellen und Bildern findet Ihr wie gewohnt auf meinen GitHub-Seiten. Und ich werde jetzt noch ein wenig weiter mit Ren’Py spielen. Ich glaube nämlich, daß ich noch einiges herausfinden kann. <em>Still digging!</em></p>
 
