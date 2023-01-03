@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Der Schockwellenreiter - Genuary 2023: Earth-Moon Orbit Sim</title>
+<title>Der Schockwellenreiter - Gravity-Simulator in Pygame</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,9 +121,8 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Genuary 2023: Earth-Moon Orbit Sim</h1>
+<h1 class="title">Gravity-Simulator in Pygame</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">P5.js</div>
     <div class="quarto-category">Simulation</div>
     <div class="quarto-category">Pygame</div>
   </div>
@@ -143,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">2. Januar 2023</p>
+      <p class="date">3. Januar 2023</p>
     </div>
   </div>
   
@@ -155,37 +154,19 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://opengameart.org/content/space-game-art-pack-extended"><img src="images/SpaceArtPublish-b.jpg" class="img-fluid figure-img"></a></p>
+<p><a href="https://camo.githubusercontent.com/b21465f9d3c943ceb143be4b29eea89280ff011883b9694dbb78e24dcfdcb563/68747470733a2f2f692e696d6775722e636f6d2f78794a4e5877532e706e67"><img src="images/orbitsimulator-b.jpg" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
-<p>Auf den »Advent of Code« im Dezember (den ich wie jedes Jahr aus Zeitgründen links liegen gelassen habe) folgt gnadenlos der »Genuary«, der Wettbewerb, der dem Programmieren Generativer Art gewidmet ist. Den konnte ich dieses Jahr nicht ignorieren, weil der »glückliche Programmierer« <em>Kevin Workman</em> sich daran beteiligt hat. Und wie so oft finde ich die Arbeit des <em>Happy Coders</em> einfach insprierend:</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZfFtXzzTwP8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+<p>Jetzt mit mehr Physik: <a href="https://kantel.github.io/posts/2023010202_earth_moon_orbit_sim/">Gestern</a> hatte ich doch diese simple Simulation eines Erde-Mond-Systems hier im <em>Schockwellenreiter</em>, die <em>Kevin Workman</em> im Rahmen des <em>Genuary 2023</em> in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> programmiert hatte. Daraufhin spülte mit heute der mitlesende und daher allwissende Bot von Google <a href="https://www.youtube.com/watch?v=GwhXc78a0QY">diesen Gravity-Simulator</a> – programmiert in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> – in meine Zeitleiste.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GwhXc78a0QY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
 </iframe>
-<p>In diesem Jahr, das unter dem Motto »Perfect loop/Infinite loop/endless GIFs« steht, hat er sich die <a href="https://www.youtube.com/watch?v=ZfFtXzzTwP8">Simulation eines Erde-Mond-Orbits</a> in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> vorgenommen. Da es bei diesem Wettbewerb eher auf die Krativität denn auf die physikalische Genauigkeit ankommt, nutzt er Sinus und Cosinus für die Bewegung der beiden Himmelskörper und Emojis für eine animierte Darstellung. Den <a href="https://happycoding.io/tutorials/p5js/arrays/earth-moon-emoji-orbit">Quellcode</a> findet Ihr wie immer auf <em>Kevin Workmans</em> Seiten.</p>
-<p>Und als braver Lehrer hat er auch schon Remix-Ideen (nicht nur) für seine Studenten:</p>
-<ul>
-<li>So könnte man die Erde um die Sonne rotieren lassen,</li>
-<li>Sterne hinzufügen, oder</li>
-<li>das ganze mit Satelitten, Raketen und Aliens zu einem Spiel aufbohren.</li>
-</ul>
-<p>Das alles hat mich natürlich inspiriert, so etwas – natürlich mit Raketen und Aliens – in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> zu programmieren. Eine kleine <a href="https://opengameart.org/art-search?keys=planet+sprites">Suche auf OpenGameArt.org</a> brachte erst mal eine Menge Sprites hervor, die man nutzen könnte (siehe Bannerbild). Und dann ist da natürlich wie immer Kenney.nl, die mit ihrem</p>
-<ul>
-<li><a href="https://www.kenney.nl/assets/alien-ufo-pack">Alien Pack</a> (weitere Aliens gibt es zum Beispiel auch in diesem <a href="https://www.kenney.nl/assets/platformer-art-pixel-redux">Platformer Pack</a>),</li>
-<li>dem <a href="https://www.kenney.nl/assets/space-shooter-extension">Space Shooter Pack</a> samt <a href="https://www.kenney.nl/assets/space-shooter-extensions">Extension</a>, sowie</li>
-<li>dem <a href="https://www.kenney.nl/assets/planets">Planets Pack</a></li>
-</ul>
-<p>mehr freie Bilder (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC 1.0</a>) liefern, als Ihr und ich je verarbeiten könnt.</p>
-<p>Und wer auf mehr realistische Physik Wert legt, kann ja zu Beispiel mal hier reinschauen: <a href="https://towardsdatascience.com/modelling-the-three-body-problem-in-classical-mechanics-using-python-9dc270ad7767">Modelling the Three Body Problem in Classical Mechanics using Python</a> <em>(Medium.com-Link, möglicherweise hinter einer Bezahlschranke eingesperrt</em> ☹️<em>)</em>.</p>
-<p>Und wo ich gerade <em>Kevin Workman</em> in der Mangel habe: An seiner Universtät scheinen die Semesterferien vorbei zu sein, und so hat er vor zwei Tagen die Wochen 12 und 13 seiner Vorlesungsreihe »<a href="https://www.youtube.com/playlist?list=PLty5Qt07EFvC2NmPbyV0D8B0phtQpnrJa">Intro fo Creative Web Dev</a>« online gestellt. Wie immer mit sehr interessanten Inhalten, dieses Mal mit</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=qa1QWuHNGPE">JavaScript If Statements - Intro to Creative Web Dev Week 12</a></li>
-<li><a href="https://www.youtube.com/watch?v=HcJ2Y17KLUg">JavaScript If Statements Project - Intro to Creative Web Dev Week 12</a></li>
-<li><a href="https://www.youtube.com/watch?v=ZJMF8qtWAPk">Developer Tools - Intro to Creative Web Dev</a></li>
-<li><a href="https://www.youtube.com/watch?v=I43YG2H10iQ">JavaScript Libraries - Intro to Creative Web Dev Week 13</a></li>
-<li><a href="https://www.youtube.com/watch?v=iUnfLZg-NvY">Bootstrap - Intro to Creative Web Dev Week 13</a></li>
-<li><a href="https://www.youtube.com/watch?v=bHabiG3_TQk">Bootstrap Project - Intro to Creative Web Dev Week 13</a></li>
-</ul>
-<p>Da mir seine Vorlesungen immer sehr gefallen, konnte und wollte ich sie Euch nicht vorenthalten. Habt Spaß damit …</p>
+<p>Und dieser Simulator nimmt – im Gegensatz zu <em>Kevin Workman</em> – auch mehr Rücksicht auf die dahinterstehende Physik. Also ein guter Startpunkt für eigene Experimente.</p>
+<p>Der Screenshot im Banner oben ist von einem in C++ geschriebenen <a href="https://github.com/jasonxia17/orbit-simulator">Orbit-Simulator</a>, den <em><a href="https://github.com/jasonxia17">Jason Xia</a></em> im Quellcode auf GitHub hochgeladen hat. Dieser soll explizit die <a href="https://de.wikipedia.org/wiki/Keplersche_Gesetze">Keplerschen Gesetze</a> berücksichtigen. Auch wenn ich es mit C++ so nicht habe, den Quellcode werde ich wohl noch lesen können. Also ein weiterer Ausgangspunkt für eigene Erkundungen.</p>
+<p>Das <a href="https://github.com/jasonxia17?tab=repositories">GitHub-Repositorium</a> von <em>Jason Xia</em> enthält übrigens noch weit mehr Physik-Spielereien, teilweise auch in Python geschrieben. Sollte ich mir daher unbedingt noch genauer anschauen.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/yBVeCXnxQYs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+<p><strong>War sonst noch was?</strong> Ach ja, der <em>Genuary 2023</em> hat ja gerade erst begonnen. Und als zweiten Beitrag hat <em>Kevin Workman</em> im Schnellverfahren einen <a href="https://www.youtube.com/watch?v=yBVeCXnxQYs">Random Walker</a> ebenfalls in P5.js implementiert und auf YouTube hochgeladen. <em>Cool!</em></p>
+<p>Dazu schlug mir natürlich der allwissende Google-Bot ebenfalls eine Ergänzung vor: <a href="https://www.youtube.com/watch?v=Q7vY__nghc4">White Noise and Random Walk</a> aus der Reihe »Time Series from Scratch«. Manchmal ist mir der Bot schon etwas unheimlich.&nbsp;🤓</p>
 
 
 
