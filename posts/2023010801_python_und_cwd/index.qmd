@@ -1,0 +1,30 @@
+---
+title: "Python, Code-Editoren und das Current Working Directory"
+author: "Jörg Kantel"
+date: "2023-01-08 20:15:00"
+categories: [Python]
+image: "images/pygamevscode.jpg"
+---
+
+[![](images/pygamevscode-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52614766847/)
+
+Manchmal stellen einen die Code-Editoren (und IDEs) an Stellen Beine, wo man gar nicht damit gerechnet hat. So hatte ich zum Beispiel geglaubt, daß ich mit 
+
+~~~python
+DATAPATH = os.path.join(os.getcwd(), "data")
+~~~
+
+eine saubere Lösung gefunden hätte, auch den störrischsten Editor und die störriste IDE darauf hinzuweisen, wo in Dreiteufelsnamen der Ordner mit den Assets zu suchen sei. Bei dem -- bis heute -- einzigen, von mir genutzten Python-Editor [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) funktionierte das auch hervorragend, doch dann kam ich auf die Idee, in den sauren Apfel zu beißen und es mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) zu probieren.
+
+Und was soll ich sagen: Nichts ging mehr! Die Wurzel des Problems lag darin, daß Thonny das `cwd`, das *current working directory*, in dem Verzeichnis verortet, wo die ausführbare Python-Datei liegt, Visual Studio Code aber im Projektverzeichnis. Und das ist bei mir zum Beispiel bei meinem Pizzaflieger das Verzeichnis `pygameprojects`. Und so liegt für VS Code das `data`-Ordner in `pygameprojects -> pizzaplane -> data`, dagegen für Thonny schlicht und ergreifend in `pizzaplane -> data`.
+
+Okay, das Problem lies sich relativ leicht beheben, denn Pythons `os`-Modul liefert mit `os.path.dirname(os.path.abspath(__file__))` einen zwar geschwätzigen, aber funktionierenden Befehl, mit dem man das Verzeichnis der aufrufenden Datei ermitteln kann. Also flugs den Datenpfad in
+
+~~~python
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "data")
+~~~
+
+geändert, und schon ist alles wieder schick.
+
+Die Frage ist nur, wo der nächste Knüppel lauert, den mir die Entwicklungsumgebungen zwischen die Beine stecken wollen?
