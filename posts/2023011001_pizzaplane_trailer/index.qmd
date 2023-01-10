@@ -1,0 +1,165 @@
+---
+title: "Pizza Plane Trailer"
+author: "Jörg Kantel"
+date: "2023-01-10 18:50:00"
+categories: [Pygame, Spieleprogrammierung]
+image: "images/pizzaplanetrailer.jpg"
+---
+
+[![](images/pizzaplanetrailer-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52619367586/)
+
+Die Erprobung [meines OOP-Konzepts](https://kantel.github.io/posts/2023010701_pygame_oop/) für ein [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Framework geht in die erste Runde. Als ersten Praxistest habe ich meinem [tapferen Pizza-Flieger](https://kantel.github.io/posts/2023010102_pizzaplane4/) einen Startscreen/Trailer verpaßt, der nach diesem OOP-Framework zusammengeschraubt wurde.
+
+Den dafür verwendeten Flieger habe ich aus dem [Open Pixel Projekt](https://www.openpixelproject.com/) (OPP) übernommen und dabei das »O« aus OPP durch eine Pizza ersetzt. Und schon sieht es nach dem Pizza-Flieger aus, der gegen die pösen Pizzas und Pepperonis der noch pöseren [Meloni](https://de.wikipedia.org/wiki/Giorgia_Meloni) (wer weiß, vielleicht tausche ich die Pizza in dem Banner noch gegen eine Melone aus) in den Kampf zieht.
+
+Der Wechsel von einem prozeduralen nach einem objektorientierten Programmierstil verlief eigentlich ohne Probleme. Damit Ihr das alles nachvollziehen könnt, hier der vollständige Quellcode:
+
+~~~python
+import pygame
+from pygame.locals import *
+import os, sys
+from random import randint
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+# DATAPATH = os.path.join(os.getcwd(), "data")
+# file_path = os.path.dirname(os.path.abspath(__file__))
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                        "data")
+
+# Konstanten deklarieren
+WIDTH, HEIGHT = 640, 480
+TITLE = "Pizzaplane Startscreen / Trailer"
+BG_WIDTH = 1664
+FPS = 60
+
+# Farben
+BG_COLOR = (231, 229, 226)    # Wüstenhimmel
+
+class Background(pygame.sprite.Sprite):
+    
+    def __init__(self, _x, _y):
+        pygame.sprite.Sprite.__init__(self)
+        self.x = _x
+        self.y = _y
+        self.start_x = _x
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+                            "desert.png")).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.bg_width = 1664
+        
+    def update(self):
+        self.x -= 1
+        # print(self.x)
+        self.rect.x = self.x
+        if self.x <= -self.bg_width:
+            self.x = self.bg_width
+
+
+class Player(pygame.sprite.Sprite):
+    
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        # Load Images
+        self.image = pygame.image.load(os.path.join(DATAPATH,
+                            "pizzaplane_banner.png")).convert_alpha()
+        self.rect = self.image.get_rect()
+        self.x = 60
+        self.y = HEIGHT/2
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+    def update(self):
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+class GameWorld:
+    
+    def __init__ (self):
+        # Initialisiert die Spielewelt
+        pygame.init()
+        # Ein übler Hack, um die Position des Fensters auf meinen
+        # zweiten Bildschirm zu setzen
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (1320, 60)
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption(TITLE)
+        self.clock = pygame.time.Clock()
+        self.keep_going = True
+        
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.backs       = pygame.sprite.Group()
+        back1 = Background(0, 0)
+        back2 = Background(BG_WIDTH, 0)
+        self.backs.add(back1)
+        self.backs.add(back2)
+        self.all_sprites = pygame.sprite.Group()
+        self.player = Player()
+        self.all_sprites.add(self.player)
+        self.run()
+
+    def run(self):
+        # Hauptschleife des Spiels
+        while self.keep_going:
+            self.clock.tick(FPS)
+            self.events()
+            self.update()
+            self.draw()
+
+    def events(self):
+        for event in pygame.event.get():
+            if ((event.type == pygame.QUIT)
+                or (event.type == pygame.KEYDOWN
+                and event.key == pygame.K_ESCAPE)):
+                keep_going = False
+                self.game_over()
+
+    def update(self):
+        self.backs.update()
+        self.all_sprites.update()
+    
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        self.backs.draw(self.screen)
+        self.all_sprites.draw(self.screen)
+        pygame.display.flip()
+
+    def start_screen(self):
+        pass
+    
+    def win_screen(self):
+        pass
+    
+    def loose_screen(self):
+        pass
+    
+    def game_over(self):
+        print("Bye, Bye, Baby!")
+        pygame.quit()
+        sys.exit()
+
+# Hauptprogramm
+w = GameWorld()
+w.start_screen()
+w.reset()
+w.run()
+~~~
+
+**Zwei Anmerkungen**: Erstens: Gemäß den Empfehlungen der [Pygame-Dokumentation](https://www.pygame.org/docs/ref/surface.html?highlight=convert_alpha#pygame.Surface.convert_alpha) habe ich dem Ladevorgang der Bilder noch ein `convert_alpha()` spendiert. Dies ist zwar nicht unbedingt (mehr?) erforderlich, soll jedoch die Bearbeitung der Bilder immer noch erheblich beschleunigen. Und zweitens weiß ich nicht, ob der separate Import von `pygame.locals` (immer noch?) erforderlich ist. Eigentlich müßte -- folgt man auch hier der [Dokumentation](https://www.pygame.org/docs/ref/locals.html) -- der »normale« Pygame-Import die `locals` mitimportieren. Ich kann mich jedoch erinnern, daß ich mal Schwierigkeiten hatte, weil ich den separaten Import
+
+~~~python
+from pygame.locals import *
+~~~
+
+weggelassen hatte. Also habe ich ihn beibehalten. Er kostet ja nichts.
+
+Den [Quellcode](https://github.com/kantel/pygameprojects/blob/master/pizzaplane/pizzaplanestartscreen.py) und das [Bildchen](https://github.com/kantel/pygameprojects/tree/master/pizzaplane/data) gibt es wie immer in meinem GitHub-Repositorium. Und für die Buchhaltung hier alle bisher erschienenen Beiträge zu Pizzaplane und Pygame:
+
+1. Auf ein neues: [Pizzaplane in Pygame](https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/) (Stage 1)
+2. [Jetzt mit Killer-Pizzas: Pizzaplane in Pygame](https://kantel.github.io/posts/20221222601_pizzaplane2_pygame/) (Stage 2)
+3. [Pizzaplane Stage 3: Jetzt mit Punktestand!](https://kantel.github.io/posts/2022123101_pizzaplane3/)
+4. [Pizzaplane Stage 4 – jetzt mit grünem Spieler](https://kantel.github.io/posts/2023010102_pizzaplane4/)
+5. Exkurs 1: [Pygame objektorientiert](https://kantel.github.io/posts/2023010701_pygame_oop/)
+5. Exkurs 2: Pizza Plane Trailer -- ebenfalls objektorientiert
+
+Ich habe schon ein wenig vorgearbeitet. Die nächsten Folgen werden also nicht mehr lange auf sich warten lassen. *Still digging!*
