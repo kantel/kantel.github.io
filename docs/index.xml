@@ -10,7 +10,32 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Wed, 11 Jan 2023 16:50:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 11 Jan 2023 17:10:00 GMT</lastBuildDate>
+<item>
+  <title>Sicherheitsupdate für Adobe Reader und Acrobat</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023011102_neues_jahr_neues_update_2/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Happy_Hooligan_1906_New_Year_postcard.jpg/1024px-Happy_Hooligan_1906_New_Year_postcard.jpg"><img src="https://kantel.github.io/posts/2023011102_neues_jahr_neues_update_2/images/happyhooligan1906-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Adobe liefert wieder Korrekturen für Sicherheitslücken im Reader und in Acrobat (unter Windows und Mac). <a href="https://helpx.adobe.com/security/products/acrobat/apsb23-01.html">Näheres dazu</a> findet sich auch hier.</p>
+<p>Das Update gelingt am einfachsten über den internen Update-Mechanismus. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
+<p><em>(Bildquelle: <a href="https://commons.wikimedia.org/wiki/File:Happy_Hooligan_1906_New_Year_postcard.jpg">Wikimedia Commons</a>)</em></p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2023011102_neues_jahr_neues_update_2/index.html</guid>
+  <pubDate>Wed, 11 Jan 2023 17:10:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023011102_neues_jahr_neues_update_2/images/happyhooligan1906.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google korrigiert wieder Sicherheitslücken in Chrome</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -907,362 +932,6 @@
   <guid>https://kantel.github.io/posts/2023010201_gehwegschaden/index.html</guid>
   <pubDate>Mon, 02 Jan 2023 15:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023010201_gehwegschaden/images/gehwegschaden.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Pizzaplane 4 – jetzt mit grünem Spieler</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023010102_pizzaplane4/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52598688169/"><img src="https://kantel.github.io/posts/2023010102_pizzaplane4/images/pizzaplane4-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Was gibt es schöneres, als das neue Jahr mit der Programmierung eines Spiels zu begrüßen? Und so habe ich mein kleines Spiel, in dem ein kleiner, <del>roter</del> … Halt! Hier gibt es die erste Änderung im Spiel: Ich habe nämlich den roten Doppeldecker durch einen grünen<sup>1</sup> Flieger ersetzt. Denn in Anbetracht der politischen Untertöne des Spiels erschien mir die Anspielung auf den »<a href="https://de.wikipedia.org/wiki/Manfred_von_Richthofen">Roten Baron</a>« nicht angemessen – auch wenn ich selber den Doppeldecker eher mit <em>Snoopy</em> denn mit der Deutschen Luftwaffe assoziiere.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/1lneuIhrfh4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
-</iframe>
-<p>Den grünen Flieger gibt es auf <a href="https://opengameart.org/content/free-plane-sprite">OpenGameArt.org</a> als Public Domain (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) und ich habe ihn in dem Video »<a href="https://www.youtube.com/watch?v=1lneuIhrfh4">Side Scroller Game in Python und Pygame</a> entdeckt<sup>2</sup>, einer wüsten Mischung aus <em>Side Scroller</em> und <em>Flappy Bird</em> (ich mag solche wilden <em>Cross Over</em>), das sehr stark meinem <em>Pizza Plane</em> ähnelt. Und der Macher hat auch ähnliche Lösungen wie ich gefunden. Daher kann ich so falsch nicht liegen. (Und nein, ich habe nicht abgeschrieben, das Spiel wurde am 10. Dezember 2022 erst hochgeladen, da hatte mein Pizza-Plane-Projekt (in seiner <a href="http://blog.schockwellenreiter.de/2022/10/2022101502.html">ursprünglichen Fassung</a>) schon etliche Monate auf dem Buckel).</p>
-<p>Doch zurück zu »meinem« Spiel: Neben dem Austausch des Fliegers habe ich die Punkteanzeige um die Anzeige der »Leben«<sup>3</sup> des Spielers erweitert (Code wegen der besseren Lesbarkeit mit <code>\</code> umgebrochen):</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">    screen.blit(hud.score_lives, (hud.score_lives_rect.x,</span>
-<span id="cb1-2">                hud.score_lives_rect.y))</span>
-<span id="cb1-3">    <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(plane.lives):</span>
-<span id="cb1-4">        hud.heart_rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">\</span></span>
-<span id="cb1-5">                hud.score_lives_rect.right <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">10</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="op" style="color: #5E5E5E;">\</span></span>
-<span id="cb1-6">                i<span class="op" style="color: #5E5E5E;">*</span>(hud.heart_img.get_width() <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">10</span>)</span>
-<span id="cb1-7">        screen.blit(hud.heart_img, (hud.heart_rect.x, hud.heart_y))</span></code></pre></div>
-<p>Und das Spiel kann jetzt verloren werden: Jede Pizza, die nicht abgeschossen wird und den linken Rand erreicht, kostet den Spieler 2 Punkte. Und sinkt die Anzahl der Punkte unter Null, hat er das Spiel verloren:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">30</span>:</span>
-<span id="cb2-2">            <span class="va" style="color: #111111;">self</span>.reset()</span>
-<span id="cb2-3">            plane.score <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">2</span></span>
-<span id="cb2-4">            <span class="cf" style="color: #003B4F;">if</span> plane.score <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
-<span id="cb2-5">                <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Zu viele Pizzas entkommen lassen!"</span>)</span>
-<span id="cb2-6">                pygame.quit()</span>
-<span id="cb2-7">                <span class="cf" style="color: #003B4F;">try</span>:</span>
-<span id="cb2-8">                    sys.exit()</span>
-<span id="cb2-9">                <span class="cf" style="color: #003B4F;">finally</span>:</span>
-<span id="cb2-10">                    keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span></code></pre></div>
-<p>Für jede abgeschossene Pizza bekommt der Spieler allerdings immer noch 10 Punkte gutgeschrieben. Das heißt, zu Beginn des Spiels sollte der Spieler erst einmal möglichst viele Pizzas abschießen, um sich ein ausreichendes Punktepolster zuzulegen.</p>
-<p>Zum anderen verliert der Spieler ein Leben (ein Herzchen), wenn er von einer Pizza touchiert wird. Sinkt die Anzahl der Herzchen unter Null, hat er das Spiel ebenfalls verloren:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">        <span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
-<span id="cb3-2">            <span class="cf" style="color: #003B4F;">if</span> pygame.sprite.collide_rect(<span class="va" style="color: #111111;">self</span>, enemy):</span>
-<span id="cb3-3">                enemy.reset()</span>
-<span id="cb3-4">                <span class="va" style="color: #111111;">self</span>.lives <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb3-5">                <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.lives <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
-<span id="cb3-6">                    <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Verloren!"</span>)</span>
-<span id="cb3-7">                    pygame.quit()</span>
-<span id="cb3-8">                    <span class="cf" style="color: #003B4F;">try</span>:</span>
-<span id="cb3-9">                        sys.exit()</span>
-<span id="cb3-10">                    <span class="cf" style="color: #003B4F;">finally</span>:</span>
-<span id="cb3-11">                        keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span></code></pre></div>
-<p>Gewinnen kann der Spieler das Spiel noch nicht. Dafür muß er als Boss-Gegner erst einmal die bösen <a href="https://de.wikipedia.org/wiki/Giorgia_Meloni">Melonis</a> besiegen, die ich noch implementieren muß. Das habe ich für Stage 5 oder Stage 6 vorgesehen.</p>
-<p>Jetzt aber wie gewohnt erst einmal den kompletten Quellcode der aktuellen Fassung<sup>4</sup> zur Ansicht:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;">import</span> pygame</span>
-<span id="cb4-2"><span class="im" style="color: #00769E;">from</span> pygame.<span class="bu" style="color: null;">locals</span> <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
-<span id="cb4-3"><span class="im" style="color: #00769E;">from</span> random <span class="im" style="color: #00769E;">import</span> randint</span>
-<span id="cb4-4"><span class="im" style="color: #00769E;">import</span> os</span>
-<span id="cb4-5"><span class="im" style="color: #00769E;">import</span> sys</span>
-<span id="cb4-6"></span>
-<span id="cb4-7"><span class="co" style="color: #5E5E5E;"># Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
-<span id="cb4-8">DATAPATH <span class="op" style="color: #5E5E5E;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;">"data"</span>)</span>
-<span id="cb4-9">FONTPATH <span class="op" style="color: #5E5E5E;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;">"fonts"</span>)</span>
-<span id="cb4-10"></span>
-<span id="cb4-11"><span class="co" style="color: #5E5E5E;"># Konstanten deklarieren</span></span>
-<span id="cb4-12">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">720</span>, <span class="dv" style="color: #AD0000;">520</span></span>
-<span id="cb4-13">BG_WIDTH <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1664</span></span>
-<span id="cb4-14">TITLE <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Pizza Plane Stage 4: Der grüne Flieger"</span></span>
-<span id="cb4-15">FPS <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">60</span></span>
-<span id="cb4-16">ANIM <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">4</span> <span class="co" style="color: #5E5E5E;"># Animation cycle</span></span>
-<span id="cb4-17">UPDOWN <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">3</span></span>
-<span id="cb4-18">NO_ENEMIES <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
-<span id="cb4-19"></span>
-<span id="cb4-20"><span class="co" style="color: #5E5E5E;"># Farben</span></span>
-<span id="cb4-21">BG_COLOR <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">231</span>, <span class="dv" style="color: #AD0000;">229</span>, <span class="dv" style="color: #AD0000;">226</span>) <span class="co" style="color: #5E5E5E;"># Wüstenhimmel</span></span>
-<span id="cb4-22"></span>
-<span id="cb4-23"><span class="co" style="color: #5E5E5E;"># Objekte</span></span>
-<span id="cb4-24"><span class="kw" style="color: #003B4F;">class</span> Background(pygame.sprite.Sprite):</span>
-<span id="cb4-25">    </span>
-<span id="cb4-26">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
-<span id="cb4-27">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb4-28">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb4-29">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
-<span id="cb4-30">        <span class="va" style="color: #111111;">self</span>.start_x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb4-31">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb4-32">                     <span class="st" style="color: #20794D;">"desert.png"</span>))</span>
-<span id="cb4-33">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb4-34">        </span>
-<span id="cb4-35">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-36">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb4-37">        <span class="co" style="color: #5E5E5E;"># print(self.x)</span></span>
-<span id="cb4-38">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.x</span>
-<span id="cb4-39">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="op" style="color: #5E5E5E;">-</span>BG_WIDTH:</span>
-<span id="cb4-40">            <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> BG_WIDTH</span>
-<span id="cb4-41"></span>
-<span id="cb4-42"><span class="kw" style="color: #003B4F;">class</span> Missile(pygame.sprite.Sprite):</span>
-<span id="cb4-43">    </span>
-<span id="cb4-44">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
-<span id="cb4-45">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb4-46">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb4-47">                     <span class="st" style="color: #20794D;">"missile.png"</span>))</span>
-<span id="cb4-48">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb4-49">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb4-50">        <span class="va" style="color: #111111;">self</span>.rect.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
-<span id="cb4-51">        <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
-<span id="cb4-52">        </span>
-<span id="cb4-53">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-54">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
-<span id="cb4-55">        <span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
-<span id="cb4-56">            <span class="cf" style="color: #003B4F;">if</span> pygame.sprite.collide_rect(enemy, <span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-57">                <span class="va" style="color: #111111;">self</span>.kill()</span>
-<span id="cb4-58">                <span class="co" style="color: #5E5E5E;"># enemy.kill()</span></span>
-<span id="cb4-59">                e_x, e_y <span class="op" style="color: #5E5E5E;">=</span> enemy.rect.x, enemy.rect.y <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">5</span></span>
-<span id="cb4-60">                enemy.reset()</span>
-<span id="cb4-61">                hit <span class="op" style="color: #5E5E5E;">=</span> Explosion(e_x, e_y)</span>
-<span id="cb4-62">                all_sprites.add(hit)</span>
-<span id="cb4-63">                plane.score <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">10</span></span>
-<span id="cb4-64">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">&gt;=</span> WIDTH <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
-<span id="cb4-65">            <span class="va" style="color: #111111;">self</span>.kill()</span>
-<span id="cb4-66"></span>
-<span id="cb4-67"><span class="kw" style="color: #003B4F;">class</span> Explosion(pygame.sprite.Sprite):</span>
-<span id="cb4-68">    </span>
-<span id="cb4-69">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
-<span id="cb4-70">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb4-71">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb4-72">                     <span class="st" style="color: #20794D;">"explosion.png"</span>))</span>
-<span id="cb4-73">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb4-74">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb4-75">        <span class="va" style="color: #111111;">self</span>.rect.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
-<span id="cb4-76">        <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">5</span></span>
-<span id="cb4-77">        </span>
-<span id="cb4-78">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-79">        <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb4-80">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
-<span id="cb4-81">            <span class="va" style="color: #111111;">self</span>.kill()        </span>
-<span id="cb4-82"></span>
-<span id="cb4-83"><span class="kw" style="color: #003B4F;">class</span>  Plane(pygame.sprite.Sprite):</span>
-<span id="cb4-84">    </span>
-<span id="cb4-85">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-86">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb4-87">        <span class="co" style="color: #5E5E5E;"># Load Images</span></span>
-<span id="cb4-88">        <span class="va" style="color: #111111;">self</span>.images <span class="op" style="color: #5E5E5E;">=</span> []</span>
-<span id="cb4-89">        <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span> (<span class="dv" style="color: #AD0000;">2</span>):</span>
-<span id="cb4-90">            img <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb4-91">                  <span class="ss" style="color: #20794D;">f"planegreen_</span><span class="sc" style="color: #5E5E5E;">{</span>i<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">.png"</span>))</span>
-<span id="cb4-92">            <span class="va" style="color: #111111;">self</span>.images.append(img)</span>
-<span id="cb4-93">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.images[<span class="dv" style="color: #AD0000;">0</span>]</span>
-<span id="cb4-94">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb4-95">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">75</span></span>
-<span id="cb4-96">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">250</span></span>
-<span id="cb4-97">        <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
-<span id="cb4-98">        <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">20</span></span>
-<span id="cb4-99">        <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
-<span id="cb4-100">        <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
-<span id="cb4-101">        <span class="va" style="color: #111111;">self</span>.score <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
-<span id="cb4-102">        <span class="va" style="color: #111111;">self</span>.lives <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">5</span></span>
-<span id="cb4-103">    </span>
-<span id="cb4-104">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-105">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"NONE"</span>:</span>
-<span id="cb4-106">            <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">0</span></span>
-<span id="cb4-107">        <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"UP"</span>:</span>
-<span id="cb4-108">            <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
-<span id="cb4-109">                <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">-=</span> UPDOWN</span>
-<span id="cb4-110">        <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"DOWN"</span>:</span>
-<span id="cb4-111">            <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&lt;</span> HEIGHT <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
-<span id="cb4-112">                <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> UPDOWN</span>
-<span id="cb4-113">        <span class="va" style="color: #111111;">self</span>.rect.center <span class="op" style="color: #5E5E5E;">=</span> (<span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
-<span id="cb4-114">        <span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
-<span id="cb4-115">            <span class="cf" style="color: #003B4F;">if</span> pygame.sprite.collide_rect(<span class="va" style="color: #111111;">self</span>, enemy):</span>
-<span id="cb4-116">                enemy.reset()</span>
-<span id="cb4-117">                <span class="va" style="color: #111111;">self</span>.lives <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb4-118">                <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.lives <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
-<span id="cb4-119">                    <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Verloren!"</span>)</span>
-<span id="cb4-120">                    pygame.quit()</span>
-<span id="cb4-121">                    <span class="cf" style="color: #003B4F;">try</span>:</span>
-<span id="cb4-122">                        sys.exit()</span>
-<span id="cb4-123">                    <span class="cf" style="color: #003B4F;">finally</span>:</span>
-<span id="cb4-124">                        keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span>
-<span id="cb4-125">        <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb4-126">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">&gt;=</span> ANIM:</span>
-<span id="cb4-127">            <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
-<span id="cb4-128">            <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb4-129">            <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">1</span>:</span>
-<span id="cb4-130">                <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
-<span id="cb4-131">        <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb4-132">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.images[<span class="va" style="color: #111111;">self</span>.frame]</span>
-<span id="cb4-133">        </span>
-<span id="cb4-134">    <span class="kw" style="color: #003B4F;">def</span> fire(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-135">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
-<span id="cb4-136">            missile <span class="op" style="color: #5E5E5E;">=</span> Missile(<span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">15</span>, <span class="va" style="color: #111111;">self</span>.y)</span>
-<span id="cb4-137">            all_sprites.add(missile)</span>
-<span id="cb4-138">            <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">15</span></span>
-<span id="cb4-139"></span>
-<span id="cb4-140"><span class="kw" style="color: #003B4F;">class</span> Enemy(pygame.sprite.Sprite):</span>
-<span id="cb4-141">    </span>
-<span id="cb4-142">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
-<span id="cb4-143">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb4-144">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb4-145">                     <span class="st" style="color: #20794D;">"pizza.png"</span>))</span>
-<span id="cb4-146">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb4-147">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb4-148">        <span class="va" style="color: #111111;">self</span>.rect.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
-<span id="cb4-149">        <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">6</span>)</span>
-<span id="cb4-150">        </span>
-<span id="cb4-151">    <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-152">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> WIDTH <span class="op" style="color: #5E5E5E;">+</span> randint(<span class="dv" style="color: #AD0000;">30</span>, <span class="dv" style="color: #AD0000;">100</span>)</span>
-<span id="cb4-153">        <span class="va" style="color: #111111;">self</span>.rect.y <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">30</span>, HEIGHT <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">30</span>)</span>
-<span id="cb4-154">        <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">6</span>)</span>
-<span id="cb4-155">    </span>
-<span id="cb4-156">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-157">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
-<span id="cb4-158">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">30</span>:</span>
-<span id="cb4-159">            <span class="va" style="color: #111111;">self</span>.reset()</span>
-<span id="cb4-160">            plane.score <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">2</span></span>
-<span id="cb4-161">            <span class="cf" style="color: #003B4F;">if</span> plane.score <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
-<span id="cb4-162">                <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Zu viele Pizzas entkommen lassen!"</span>)</span>
-<span id="cb4-163">                pygame.quit()</span>
-<span id="cb4-164">                <span class="cf" style="color: #003B4F;">try</span>:</span>
-<span id="cb4-165">                    sys.exit()</span>
-<span id="cb4-166">                <span class="cf" style="color: #003B4F;">finally</span>:</span>
-<span id="cb4-167">                    keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span>
-<span id="cb4-168"></span>
-<span id="cb4-169"><span class="kw" style="color: #003B4F;">class</span> HUD():</span>
-<span id="cb4-170">    </span>
-<span id="cb4-171">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb4-172">        <span class="va" style="color: #111111;">self</span>.score_x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">30</span></span>
-<span id="cb4-173">        <span class="va" style="color: #111111;">self</span>.score_y <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">15</span></span>
-<span id="cb4-174">        <span class="va" style="color: #111111;">self</span>.heart_x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">250</span></span>
-<span id="cb4-175">        <span class="va" style="color: #111111;">self</span>.heart_y <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">20</span></span>
-<span id="cb4-176">        <span class="co" style="color: #5E5E5E;"># Load Fonts</span></span>
-<span id="cb4-177">        <span class="va" style="color: #111111;">self</span>.score_font <span class="op" style="color: #5E5E5E;">=</span> pygame.font.Font(os.path.join(FONTPATH,</span>
-<span id="cb4-178">                          <span class="st" style="color: #20794D;">"RubikGemstones-Regular.ttf"</span>), <span class="dv" style="color: #AD0000;">25</span>)</span>
-<span id="cb4-179">        <span class="va" style="color: #111111;">self</span>.score <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">""</span></span>
-<span id="cb4-180">        <span class="co" style="color: #5E5E5E;"># Load Hearts</span></span>
-<span id="cb4-181">        <span class="va" style="color: #111111;">self</span>.score_live <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Lifes :"</span> </span>
-<span id="cb4-182">        <span class="va" style="color: #111111;">self</span>.heart_img <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb4-183">                         <span class="st" style="color: #20794D;">"heart.png"</span>))</span>
-<span id="cb4-184">        <span class="va" style="color: #111111;">self</span>.heart_rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.heart_img.get_rect()</span>
-<span id="cb4-185">        </span>
-<span id="cb4-186">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>, points):</span>
-<span id="cb4-187">        <span class="va" style="color: #111111;">self</span>.score <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score_font.render(<span class="ss" style="color: #20794D;">f"Score: </span><span class="sc" style="color: #5E5E5E;">{</span>points<span class="sc" style="color: #5E5E5E;">}</span><span class="ss" style="color: #20794D;">"</span>,</span>
-<span id="cb4-188">                     <span class="va" style="color: #111111;">True</span>, (<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>))</span>
-<span id="cb4-189">        <span class="va" style="color: #111111;">self</span>.score_rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score.get_rect()</span>
-<span id="cb4-190">        <span class="va" style="color: #111111;">self</span>.score_rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score_x</span>
-<span id="cb4-191">        <span class="va" style="color: #111111;">self</span>.score_rect.y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score_y</span>
-<span id="cb4-192">        <span class="va" style="color: #111111;">self</span>.score_lives <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score_font.render(<span class="st" style="color: #20794D;">"Lives: "</span>,</span>
-<span id="cb4-193">                           <span class="va" style="color: #111111;">True</span>, (<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>))</span>
-<span id="cb4-194">        <span class="va" style="color: #111111;">self</span>.score_lives_rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score_lives.get_rect()</span>
-<span id="cb4-195">        <span class="va" style="color: #111111;">self</span>.score_lives_rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.heart_x</span>
-<span id="cb4-196">        <span class="va" style="color: #111111;">self</span>.score_lives_rect.y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.score_y</span>
-<span id="cb4-197">        </span>
-<span id="cb4-198">           </span>
-<span id="cb4-199"><span class="co" style="color: #5E5E5E;"># Pygame initialisieren und das Fenster</span></span>
-<span id="cb4-200"><span class="co" style="color: #5E5E5E;"># und die Hintergrundfarbe festlegen</span></span>
-<span id="cb4-201">clock <span class="op" style="color: #5E5E5E;">=</span> pygame.time.Clock()</span>
-<span id="cb4-202">pygame.init()</span>
-<span id="cb4-203"><span class="co" style="color: #5E5E5E;"># Ein übler Hack, um die Position des Fensters</span></span>
-<span id="cb4-204"><span class="co" style="color: #5E5E5E;"># auf meinen zweiten Bildschirm zu setzen,</span></span>
-<span id="cb4-205"><span class="co" style="color: #5E5E5E;"># aber er funktioniert …</span></span>
-<span id="cb4-206">os.environ[<span class="st" style="color: #20794D;">'SDL_VIDEO_WINDOW_POS'</span>] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">,</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">"</span> <span class="op" style="color: #5E5E5E;">%</span> (<span class="dv" style="color: #AD0000;">1320</span>, <span class="dv" style="color: #AD0000;">60</span>)</span>
-<span id="cb4-207">screen <span class="op" style="color: #5E5E5E;">=</span> pygame.display.set_mode((WIDTH, HEIGHT))</span>
-<span id="cb4-208">pygame.display.set_caption(TITLE)</span>
-<span id="cb4-209"></span>
-<span id="cb4-210"><span class="co" style="color: #5E5E5E;"># Sprite-Gruppe(n)</span></span>
-<span id="cb4-211">backs       <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
-<span id="cb4-212">all_sprites <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
-<span id="cb4-213">enemies     <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
-<span id="cb4-214"></span>
-<span id="cb4-215"><span class="co" style="color: #5E5E5E;"># Hintergrund</span></span>
-<span id="cb4-216">back1 <span class="op" style="color: #5E5E5E;">=</span> Background(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
-<span id="cb4-217">back2 <span class="op" style="color: #5E5E5E;">=</span> Background(BG_WIDTH, <span class="dv" style="color: #AD0000;">0</span>)</span>
-<span id="cb4-218">backs.add(back1)</span>
-<span id="cb4-219">backs.add(back2)</span>
-<span id="cb4-220"></span>
-<span id="cb4-221"><span class="co" style="color: #5E5E5E;"># Head Up Display</span></span>
-<span id="cb4-222">hud <span class="op" style="color: #5E5E5E;">=</span> HUD()</span>
-<span id="cb4-223"></span>
-<span id="cb4-224"><span class="co" style="color: #5E5E5E;"># Die Gegner</span></span>
-<span id="cb4-225"><span class="cf" style="color: #003B4F;">for</span> _ <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(NO_ENEMIES):</span>
-<span id="cb4-226">    pizza <span class="op" style="color: #5E5E5E;">=</span> Enemy(WIDTH <span class="op" style="color: #5E5E5E;">+</span> randint(<span class="dv" style="color: #AD0000;">30</span>, <span class="dv" style="color: #AD0000;">100</span>), randint(<span class="dv" style="color: #AD0000;">30</span>, HEIGHT <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">30</span>))</span>
-<span id="cb4-227">    all_sprites.add(pizza)</span>
-<span id="cb4-228">    enemies.add(pizza)</span>
-<span id="cb4-229"></span>
-<span id="cb4-230"><span class="co" style="color: #5E5E5E;"># Der Flieger</span></span>
-<span id="cb4-231">plane <span class="op" style="color: #5E5E5E;">=</span> Plane()</span>
-<span id="cb4-232">all_sprites.add(plane)</span>
-<span id="cb4-233"></span>
-<span id="cb4-234">keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">True</span></span>
-<span id="cb4-235"><span class="cf" style="color: #003B4F;">while</span> keep_going:</span>
-<span id="cb4-236">    </span>
-<span id="cb4-237">    clock.tick(FPS)</span>
-<span id="cb4-238">    <span class="cf" style="color: #003B4F;">for</span> event <span class="kw" style="color: #003B4F;">in</span> pygame.event.get():</span>
-<span id="cb4-239">        <span class="cf" style="color: #003B4F;">if</span> ((event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.QUIT)</span>
-<span id="cb4-240">            <span class="kw" style="color: #003B4F;">or</span> (event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYDOWN <span class="kw" style="color: #003B4F;">and</span></span>
-<span id="cb4-241">                event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_ESCAPE)):</span>
-<span id="cb4-242">            <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Bye, Bye, Baby!"</span>)</span>
-<span id="cb4-243">            pygame.quit()</span>
-<span id="cb4-244">            <span class="cf" style="color: #003B4F;">try</span>:</span>
-<span id="cb4-245">                sys.exit()</span>
-<span id="cb4-246">            <span class="cf" style="color: #003B4F;">finally</span>:</span>
-<span id="cb4-247">                keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span>
-<span id="cb4-248">                </span>
-<span id="cb4-249">        <span class="cf" style="color: #003B4F;">if</span> event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYDOWN:</span>
-<span id="cb4-250">            <span class="cf" style="color: #003B4F;">if</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_UP:</span>
-<span id="cb4-251">                plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"UP"</span></span>
-<span id="cb4-252">            <span class="cf" style="color: #003B4F;">elif</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_DOWN:</span>
-<span id="cb4-253">                plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"DOWN"</span></span>
-<span id="cb4-254">            <span class="cf" style="color: #003B4F;">if</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_RIGHT:</span>
-<span id="cb4-255">                plane.fire()</span>
-<span id="cb4-256">                </span>
-<span id="cb4-257">        <span class="cf" style="color: #003B4F;">if</span> event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYUP:</span>
-<span id="cb4-258">            plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
-<span id="cb4-259"></span>
-<span id="cb4-260">    backs.update()</span>
-<span id="cb4-261">    backs.draw(screen)</span>
-<span id="cb4-262">    all_sprites.update()</span>
-<span id="cb4-263">    all_sprites.draw(screen)</span>
-<span id="cb4-264">    hud.update(plane.score)</span>
-<span id="cb4-265">    screen.blit(hud.score, hud.score_rect)</span>
-<span id="cb4-266">    screen.blit(hud.score_lives,</span>
-<span id="cb4-267">            (hud.score_lives_rect.x, hud.score_lives_rect.y))</span>
-<span id="cb4-268">    <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(plane.lives):</span>
-<span id="cb4-269">        hud.heart_rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">\</span></span>
-<span id="cb4-270">            hud.score_lives_rect.right <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">10</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="op" style="color: #5E5E5E;">\</span></span>
-<span id="cb4-271">            i<span class="op" style="color: #5E5E5E;">*</span>(hud.heart_img.get_width() <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">10</span>)</span>
-<span id="cb4-272">        screen.blit(hud.heart_img, (hud.heart_rect.x,</span>
-<span id="cb4-273">                    hud.heart_y))</span>
-<span id="cb4-274">    pygame.display.update()</span>
-<span id="cb4-275">    pygame.display.flip()</span></code></pre></div>
-<p>Natürlich gibt es den <a href="https://github.com/kantel/pygameprojects/blob/master/pizzaplane/pizzaplane04.py">Quellcode</a> mit allen <a href="https://github.com/kantel/pygameprojects/tree/master/pizzaplane/data">Assets</a> auch wieder in meinem GitHub-Repositorium.</p>
-<p>Mit knapp 300 Zeilen hat das Programm mittlerweile schon einen beachtlichen Umfang erreicht. Ich glaube, so ein langes Python-Skript hatte ich schon seit Jahren nicht mehr im <em>Schockwellenreiter</em>. Und es werden sicher noch ein paar Zeilen hinzukommen.</p>
-<p>Zur Übersicht die bisher erschienenen Beiträge:</p>
-<ol type="1">
-<li><a href="https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/">Auf ein neues: Pizzaplane in Pygame (Stage 1)</a></li>
-<li><a href="https://kantel.github.io/posts/20221222601_pizzaplane2_pygame/">Jetzt mit Killer-Pizzas: Pizzaplane in Pygame</a> (Stage 2)</li>
-<li><a href="https://kantel.github.io/posts/2022123101_pizzaplane3/">Pizzaplane Stage 3: Jetzt mit Punktestand!</a></li>
-<li>Pizzaplane Stage 4 – jetzt mit grünem Spieler</li>
-</ol>
-<p>Fortsetzung folgt …</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Das »grün« ist übrigens <strong>keine</strong> politische Anspielung.↩︎</p></li>
-<li id="fn2"><p>Das Video ist Teil der Playlist <a href="https://www.youtube.com/playlist?list=PLUeL14cPSfS4_WXayc6MEvnIyoct4D5qI">Pygame</a> von <em>Click Clack Code</em>. Zwölf halb- bis einstündige Videos nur mit Code und den Ergebnissen, ohne Gequatsche dazwischen. Sehr zu empfehlen!↩︎</p></li>
-<li id="fn3"><p>Die Herzchen sind ebenfalls eine freie (CC0) Graphik von <a href="https://opengameart.org/content/shining-coin-shining-health-shining-power-up-sprite-sheets">OpenGameArt.org</a> und ich habe sie auch in dem oben genannten Video entdeckt. Sie können animiert werden. Diese Animation habe ich auf meine ToDo-Liste gesetzt.↩︎</p></li>
-<li id="fn4"><p>Ich habe übrigens für diese Fassung erstmalig Pythons neue <a href="https://realpython.com/python-f-strings/">f-String-Syntax</a> genutzt und frage mich, wie ich vorher ohne sie auskommen konnte. Sie macht alles so viel einfacher.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Python</category>
-  <category>Pygame</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2023010102_pizzaplane4/index.html</guid>
-  <pubDate>Sun, 01 Jan 2023 15:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023010102_pizzaplane4/images/pizzaplane4.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
