@@ -149,10 +149,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../../about.html">
  <span class="menu-text">Über den Schockwellenreiter</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../impressum.html">
- <span class="menu-text">Impressum</span></a>
-  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/kantel/kantel.github.io"><i class="bi bi-github" role="img">
 </i> 
@@ -223,64 +219,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Getreu meiner <a href="https://kantel.github.io/posts/2022121101_boids_python_processing/">gestrigen Ankündigung</a> habe ich damit angefangen, so etwas wie <em>Boids</em> in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem freundlichen Python3-Port von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a> zu implementieren. Da ich zum einen die Implementierung für alle nachvollziehbar machen wollte und zum anderen immer noch mein Vorhaben im Raum steht, eine (erweiterte) Fassung von <em>Daniel Shiffmans</em> »<a href="https://natureofcode.com/">The Nature of Code</a>« in Python zu schreiben, habe ich mich bei meinen ersten Versuchen an Shiffmans <em>Processing (Java)</em>-Version orientiert.</p>
 <p>Boids sind in erster Linie autonome Agenten und so habe ich mir das <a href="https://natureofcode.com/book/chapter-6-autonomous-agents/">Kapitel zu den autonomen Agenten</a> (Seite 260ff) vorgeknöpft. Mir ging es aber nicht um eine 1:1-Umsetzung des Java-Codes, sondern ich wollte in meiner Py5-Version die <code>Py5Vector</code>-Klasse verstehen und implementieren, die sich doch in einigen Punkten von Processings <code>PVector</code>-Klasse unterscheidet. Das war aber dank der <a href="https://py5coding.org/how_tos/py5vector_class.html">Dokumentation</a> nicht allzuschwer und so hatte ich schon nach wenigen Minuten einen Sketch fertiggestellt, in dem ein <code>Vehicle</code> dem Mauszeiger folgt:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Autonome Agenten 1</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">## Nach Daniel Shiffman: »The Nature of Code«, S. 260 ff</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Vehicle():</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,_x,_y):</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.acc <span class="op">=</span> Py5Vector(<span class="dv">0</span>, <span class="dv">0</span>)    <span class="co"># Acceleration</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vel <span class="op">=</span> Py5Vector(<span class="dv">0</span>, <span class="dv">0</span>)    <span class="co"># Velocity</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.loc <span class="op">=</span> Py5Vector(_x, _y)  <span class="co"># Location</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.r <span class="op">=</span> <span class="fl">3.0</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.maxspeed <span class="op">=</span> <span class="fl">4.0</span>           <span class="co"># Arbitrary value for maximum speed</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.maxforce <span class="op">=</span> <span class="fl">0.1</span>           <span class="co"># Arbitrary value for maximum force</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update(<span class="va">self</span>):                 <span class="co"># Eulersche Polygonzug-Methode</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vel <span class="op">+=</span> <span class="va">self</span>.acc</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vel.set_limit(<span class="va">self</span>.maxspeed)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.loc <span class="op">+=</span> <span class="va">self</span>.vel</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.acc <span class="op">*=</span> <span class="dv">0</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> apply_force(<span class="va">self</span>, force):</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.acc <span class="op">+=</span> force</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> seek(<span class="va">self</span>, target):</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        desired <span class="op">=</span> Py5Vector(target <span class="op">-</span> <span class="va">self</span>.loc)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>        desired.normalize()</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        desired <span class="op">*=</span> <span class="va">self</span>.maxspeed</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        steer <span class="op">=</span> (desired <span class="op">-</span> <span class="va">self</span>.vel)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        steer.set_limit(<span class="va">self</span>.maxforce)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.apply_force(steer)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> display(<span class="va">self</span>):</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        theta <span class="op">=</span> <span class="va">self</span>.vel.heading <span class="op">+</span> PI<span class="op">/</span><span class="dv">2</span>  <span class="co"># +PI/2 = Ausrichtung nach Osten</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        fill(<span class="dv">240</span>, <span class="dv">80</span>, <span class="dv">37</span>)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        stroke(<span class="dv">0</span>)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> push_matrix():</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>            translate(<span class="va">self</span>.loc.x, <span class="va">self</span>.loc.y)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            rotate(theta)</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> begin_closed_shape():</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>                vertex(<span class="dv">0</span>,      <span class="op">-</span><span class="va">self</span>.r<span class="op">*</span><span class="dv">2</span>)</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                vertex(<span class="op">-</span><span class="va">self</span>.r, <span class="va">self</span>.r<span class="op">*</span><span class="dv">2</span>)</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                vertex(<span class="va">self</span>.r,  <span class="va">self</span>.r<span class="op">*</span><span class="dv">2</span>)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> setup():</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">global</span> vehicle</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    size(WIDTH, HEIGHT)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    window_title(<span class="st">"🐁 Wo ist das Mäuschen? 🐁"</span>)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    window_move(<span class="dv">1300</span>, <span class="dv">40</span>)</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    vehicle <span class="op">=</span> Vehicle(width<span class="op">/</span><span class="dv">2</span>, height<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> draw():</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    background(<span class="dv">49</span>, <span class="dv">197</span>, <span class="dv">244</span>)</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    target <span class="op">=</span> Py5Vector(mouse_x, mouse_y)</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    vehicle.seek(target)</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    vehicle.update()</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    vehicle.display()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## Autonome Agenten 1</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co">## Nach Daniel Shiffman: »The Nature of Code«, S. 260 ff</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">class</span> Vehicle():</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    </span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,_x,_y):</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="va">self</span>.acc <span class="op">=</span> Py5Vector(<span class="dv">0</span>, <span class="dv">0</span>)    <span class="co"># Acceleration</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>        <span class="va">self</span>.vel <span class="op">=</span> Py5Vector(<span class="dv">0</span>, <span class="dv">0</span>)    <span class="co"># Velocity</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>        <span class="va">self</span>.loc <span class="op">=</span> Py5Vector(_x, _y)  <span class="co"># Location</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>        <span class="va">self</span>.r <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>        <span class="va">self</span>.maxspeed <span class="op">=</span> <span class="fl">4.0</span>           <span class="co"># Arbitrary value for maximum speed</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>        <span class="va">self</span>.maxforce <span class="op">=</span> <span class="fl">0.1</span>           <span class="co"># Arbitrary value for maximum force</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>    </span>
+<span id="cb1-14"><a href="#cb1-14"></a>    <span class="kw">def</span> update(<span class="va">self</span>):                 <span class="co"># Eulersche Polygonzug-Methode</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>        <span class="va">self</span>.vel <span class="op">+=</span> <span class="va">self</span>.acc</span>
+<span id="cb1-16"><a href="#cb1-16"></a>        <span class="va">self</span>.vel.set_limit(<span class="va">self</span>.maxspeed)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>        <span class="va">self</span>.loc <span class="op">+=</span> <span class="va">self</span>.vel</span>
+<span id="cb1-18"><a href="#cb1-18"></a>        <span class="va">self</span>.acc <span class="op">*=</span> <span class="dv">0</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>        </span>
+<span id="cb1-20"><a href="#cb1-20"></a>    <span class="kw">def</span> apply_force(<span class="va">self</span>, force):</span>
+<span id="cb1-21"><a href="#cb1-21"></a>        <span class="va">self</span>.acc <span class="op">+=</span> force</span>
+<span id="cb1-22"><a href="#cb1-22"></a>        </span>
+<span id="cb1-23"><a href="#cb1-23"></a>    <span class="kw">def</span> seek(<span class="va">self</span>, target):</span>
+<span id="cb1-24"><a href="#cb1-24"></a>        desired <span class="op">=</span> Py5Vector(target <span class="op">-</span> <span class="va">self</span>.loc)</span>
+<span id="cb1-25"><a href="#cb1-25"></a>        desired.normalize()</span>
+<span id="cb1-26"><a href="#cb1-26"></a>        desired <span class="op">*=</span> <span class="va">self</span>.maxspeed</span>
+<span id="cb1-27"><a href="#cb1-27"></a>        steer <span class="op">=</span> (desired <span class="op">-</span> <span class="va">self</span>.vel)</span>
+<span id="cb1-28"><a href="#cb1-28"></a>        steer.set_limit(<span class="va">self</span>.maxforce)</span>
+<span id="cb1-29"><a href="#cb1-29"></a>        <span class="va">self</span>.apply_force(steer)</span>
+<span id="cb1-30"><a href="#cb1-30"></a>        </span>
+<span id="cb1-31"><a href="#cb1-31"></a>    <span class="kw">def</span> display(<span class="va">self</span>):</span>
+<span id="cb1-32"><a href="#cb1-32"></a>        theta <span class="op">=</span> <span class="va">self</span>.vel.heading <span class="op">+</span> PI<span class="op">/</span><span class="dv">2</span>  <span class="co"># +PI/2 = Ausrichtung nach Osten</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>        fill(<span class="dv">240</span>, <span class="dv">80</span>, <span class="dv">37</span>)</span>
+<span id="cb1-34"><a href="#cb1-34"></a>        stroke(<span class="dv">0</span>)</span>
+<span id="cb1-35"><a href="#cb1-35"></a>        <span class="cf">with</span> push_matrix():</span>
+<span id="cb1-36"><a href="#cb1-36"></a>            translate(<span class="va">self</span>.loc.x, <span class="va">self</span>.loc.y)</span>
+<span id="cb1-37"><a href="#cb1-37"></a>            rotate(theta)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>            <span class="cf">with</span> begin_closed_shape():</span>
+<span id="cb1-39"><a href="#cb1-39"></a>                vertex(<span class="dv">0</span>,      <span class="op">-</span><span class="va">self</span>.r<span class="op">*</span><span class="dv">2</span>)</span>
+<span id="cb1-40"><a href="#cb1-40"></a>                vertex(<span class="op">-</span><span class="va">self</span>.r, <span class="va">self</span>.r<span class="op">*</span><span class="dv">2</span>)</span>
+<span id="cb1-41"><a href="#cb1-41"></a>                vertex(<span class="va">self</span>.r,  <span class="va">self</span>.r<span class="op">*</span><span class="dv">2</span>)</span>
+<span id="cb1-42"><a href="#cb1-42"></a>                </span>
+<span id="cb1-43"><a href="#cb1-43"></a>WIDTH <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a>HEIGHT <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a></span>
+<span id="cb1-46"><a href="#cb1-46"></a><span class="kw">def</span> setup():</span>
+<span id="cb1-47"><a href="#cb1-47"></a>    <span class="kw">global</span> vehicle</span>
+<span id="cb1-48"><a href="#cb1-48"></a>    size(WIDTH, HEIGHT)</span>
+<span id="cb1-49"><a href="#cb1-49"></a>    window_title(<span class="st">"🐁 Wo ist das Mäuschen? 🐁"</span>)</span>
+<span id="cb1-50"><a href="#cb1-50"></a>    window_move(<span class="dv">1300</span>, <span class="dv">40</span>)</span>
+<span id="cb1-51"><a href="#cb1-51"></a>    vehicle <span class="op">=</span> Vehicle(width<span class="op">/</span><span class="dv">2</span>, height<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb1-52"><a href="#cb1-52"></a>    </span>
+<span id="cb1-53"><a href="#cb1-53"></a><span class="kw">def</span> draw():</span>
+<span id="cb1-54"><a href="#cb1-54"></a>    background(<span class="dv">49</span>, <span class="dv">197</span>, <span class="dv">244</span>)</span>
+<span id="cb1-55"><a href="#cb1-55"></a>    target <span class="op">=</span> Py5Vector(mouse_x, mouse_y)</span>
+<span id="cb1-56"><a href="#cb1-56"></a>    vehicle.seek(target)</span>
+<span id="cb1-57"><a href="#cb1-57"></a>    vehicle.update()</span>
+<span id="cb1-58"><a href="#cb1-58"></a>    vehicle.display()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Genial ist immer noch das <code>with</code>-Statement, daß Kommandos wie <code>push_matrix()</code> oder <code>begin_(closed_)shape()</code> wie »echte« Python-Befehle aussehen läßt.</p>
 <p>Ansonsten findet Ihr natürlich den <a href="https://github.com/kantel/py5/blob/main/agenten/vehicle01.py">Quellcode</a> auf GitHub und ich werde das Skriptchen so <em>peu a peu</em> zu einem richtigen Boids-Beispiel ausarbeiten und das Ergebnis auf diesen Seiten präsentieren. <em>Still digging!</em></p>
 

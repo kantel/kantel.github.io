@@ -149,10 +149,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <a class="nav-link" href="../../about.html">
  <span class="menu-text">Über den Schockwellenreiter</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../impressum.html">
- <span class="menu-text">Impressum</span></a>
-  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/kantel/kantel.github.io"><i class="bi bi-github" role="img">
 </i> 
@@ -224,18 +220,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Das Teil hat zum Beispiel noch keinen RSS-Feed, den reiche ich nach, sobald ich mir über die endgültige URL im Klaren bin. Und auch sonst fehlen noch einige Unterseiten, aber erst einmal bin ich mit dem bisher Erreichten zufrieden.</p>
 <p>Denn was habe ich geschafft? Erst einmal habe ich dem Teil deutsch beigebracht, um den deutsch-anglo-amerikanischen Sprachmischmasch zu beenden. Dafür mußte ich sowohl Im YAML-Header in der <code>index.qmd</code> im Wurzelverzeichnis meines Quarto-Projekt als auch in der <code>_metadata.yml</code> im Post-Verzeichnis jeweils die Zeile <code>lang: de</code> einfügen. Jetzt spricht der <em>Schockwellenreiter</em> wieder deutsch mit mir (das Gendersternchen bei »Autor*in« werde ich ihm auch noch abgewöhnen, aber das hat erst einmal nur eine geringe Priorität).</p>
 <p>Dann habe ich die Stelle gefunden, an der ich Quarto mitteile, daß ich im Header jeder Seite noch ein Stück JavaScript eingebunden haben möchte. Da ist in der <code>_quarto.yml</code> und zwar im <code>format</code>-Abschnitt:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> litera</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span><span class="at"> </span><span class="st">"js/matomo.js"</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">format</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> litera</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="at">    </span><span class="fu">include-in-header</span><span class="kw">:</span><span class="at"> </span><span class="st">"js/matomo.js"</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Ob das im Einzelfall separat auch im YAML-Header eines einzelnen Posts möglich ist, muß ich noch herausfinden. Das wäre jedenfalls interessant, wenn ich zum Beispiel ein <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Skript einbinden will und das dazugehörige JavaScript auch noch für die betroffenen Seiten laden möchte. Aber eigentlich ist es egal, es sind statische Seiten, die halten sowieso alles vorrätig.</p>
 <p>Dann habe ich die Sortierreihenfolge festgelegt. Dafür mußte ich ebenfalls die <code>index.md</code> im Wurzelverzeichnis bemühen und im YAML-Header folgende Zeilen einfügen:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> posts</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">sort</span><span class="kw">:</span><span class="at"> </span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"date desc"</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"title desc"</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">listing</span><span class="kw">:</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="at">  </span><span class="fu">contents</span><span class="kw">:</span><span class="at"> posts</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="at">  </span><span class="fu">sort</span><span class="kw">:</span><span class="at"> </span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"date desc"</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="st">"title desc"</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Da ich die Dateinamen jeweils nach dem Schema <code>yyyymmddlfn_beschreibung</code> erstelle, dürften diese Zeilen die gewünschte Reihenfolge produzieren. Bisher hatte ich jedenfalls noch keine Überraschungen erlebt.</p>
 <p><strong>Was ist noch zu tun?</strong> Erst einmal habe ich zwar mein <a href="http://cognitiones.kantel-chaos-team.de/webworking/tools/piwik.html">Neugiertool</a>-Skript eingebunden, aber momentan zählt es nur die Aufrufe von <code>localhost</code>. Hier muß ich noch ein wenig recherchieren. Im schlimmsten Fall blockiert GitHub Pages den Tracker, dann gibt es eben keine monatlichen Zahlen mehr. Wäre zwar nicht schön, aber zu verschmerzen.</p>
 <p>Dann möchte ich noch ganz gewaltig an den Templates feilen. Eine eigene <code>style.css</code> wird zwar von der <code>_quarto.yml</code> schon eingebunden (siehe das erste Listing oben), ist aber noch leer. Hier ist also noch gewaltig Raum für Experimente. <em>Still digging!</em></p>
