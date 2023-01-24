@@ -10,7 +10,33 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Tue, 24 Jan 2023 16:45:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 24 Jan 2023 17:05:00 GMT</lastBuildDate>
+<item>
+  <title>Zwei Sicherheitslücken im Galaxy Store von Samsung-Handys</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023012402_security_alert_samsung_galaxy/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://upload.wikimedia.org/wikipedia/commons/c/c3/Happy_Hooligan_%28March_11%2C_1900%29.gif"><img src="https://kantel.github.io/posts/2023012402_security_alert_samsung_galaxy/images/aperfectlady-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Zwei Sicherheitslücken im Galaxy Store von Samsung-Handys erlauben unter anderem das Herunterladen von Apps aus dem Galaxy Store ohne Wissen oder Zutun des Nutzers. Dafür muß lediglich eine andere bösartige App, die bereits auf dem Smartphone der Betroffenen gelangt ist, die Aufforderung geben.</p>
+<p>Mit einem Update der Galaxy-Store-App hat Samsung die beiden Sicherheitslücken geschlossen. Besitzer eines Samsung-Smartphones, sollten also unbedingt sicherstellen, daß der Galaxy Store auf dem neuesten Stand ist und mindestens die Versionsnummer <strong>4.5.49.8</strong> trägt. Das läßt sich am einfachsten in der App selbst überprüfen.</p>
+<p>Dazu die Galaxy-Store-App öffnen, unten rechts auf Menü klicken und anschließend oben rechts auf das Zahnrad-Symbol gehen. Unter <code>Infos zu Galaxy Store</code> läßt sich dann die Versionsnummer einsehen und gegegenenenfalls ein Update installieren.</p>
+<p><em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email, Bildquelle: <a href="https://commons.wikimedia.org/wiki/File:Happy_Hooligan_(March_11,_1900).gif">Wikimedia Commons</a>)</em></p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2023012402_security_alert_samsung_galaxy/index.html</guid>
+  <pubDate>Tue, 24 Jan 2023 17:05:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023012402_security_alert_samsung_galaxy/images/aperfectlady.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Apfel-Flickentag Januar 2023</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -761,37 +787,6 @@
   <guid>https://kantel.github.io/posts/2023010901_code_art_with_turtle/index.html</guid>
   <pubDate>Mon, 09 Jan 2023 17:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023010901_code_art_with_turtle/images/kunstturtle.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Python, Code-Editoren und das Current Working Directory</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023010801_python_und_cwd/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52614766847/"><img src="https://kantel.github.io/posts/2023010801_python_und_cwd/images/pygamevscode-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Manchmal stellen einen die Code-Editoren (und IDEs) an Stellen Beine, wo man gar nicht damit gerechnet hat. So hatte ich zum Beispiel geglaubt, daß ich mit</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">DATAPATH <span class="op" style="color: #5E5E5E;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;">"data"</span>)</span></code></pre></div>
-<p>eine saubere Lösung gefunden hätte, auch den störrischsten Editor und die störriste IDE darauf hinzuweisen, wo in Dreiteufelsnamen der Ordner mit den Assets zu suchen sei. Bei dem – bis heute – einzigen, von mir genutzten Python-Editor <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> funktionierte das auch hervorragend, doch dann kam ich auf die Idee, in den sauren Apfel zu beißen und es mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> zu probieren.</p>
-<p>Und was soll ich sagen: Nichts ging mehr! Die Wurzel des Problems lag darin, daß Thonny das <code>cwd</code>, das <em>current working directory</em>, in dem Verzeichnis verortet, wo die ausführbare Python-Datei liegt, Visual Studio Code aber im Projektverzeichnis. Und das ist bei mir zum Beispiel bei meinem Pizzaflieger das Verzeichnis <code>pygameprojects</code>. Und so liegt für VS Code das <code>data</code>-Ordner in <code>pygameprojects -&gt; pizzaplane -&gt; data</code>, dagegen für Thonny schlicht und ergreifend in <code>pizzaplane -&gt; data</code>.</p>
-<p>Okay, das Problem lies sich relativ leicht beheben, denn Pythons <code>os</code>-Modul liefert mit <code>os.path.dirname(os.path.abspath(__file__))</code> einen zwar geschwätzigen, aber funktionierenden Befehl, mit dem man das Verzeichnis der aufrufenden Datei ermitteln kann. Also flugs den Datenpfad in</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">DATAPATH <span class="op" style="color: #5E5E5E;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;">__file__</span>)),</span>
-<span id="cb2-2">                       <span class="st" style="color: #20794D;">"data"</span>)</span></code></pre></div>
-<p>geändert, und schon ist alles wieder schick.</p>
-<p>Die Frage ist nur, wo der nächste Knüppel lauert, den mir die Entwicklungsumgebungen zwischen die Beine stecken wollen?</p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <guid>https://kantel.github.io/posts/2023010801_python_und_cwd/index.html</guid>
-  <pubDate>Sun, 08 Jan 2023 19:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023010801_python_und_cwd/images/pygamevscode.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
