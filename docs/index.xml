@@ -10,7 +10,31 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Tue, 24 Jan 2023 17:35:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 25 Jan 2023 17:30:00 GMT</lastBuildDate>
+<item>
+  <title>Google korrigiert in der neuen Version 109 seines Browsers Chrome Sicherheitslücken</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023012501_chrome_109_update/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://upload.wikimedia.org/wikipedia/commons/5/58/Happy_Hooligan_it_is_to_laugh_-_nothing_but_fun._LCCN2014635421.jpg"><img src="https://kantel.github.io/posts/2023012501_chrome_109_update/images/hh1902-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Auch Google hatte gestern seinen Flickentag und veröffentlichte ein neues Update der Version 109 (109.0.5414.119/.120) seines Browsers Chrome und schloß erneut kritische <a href="https://chromereleases.googleblog.com/2023/01/stable-channel-update-for-desktop_24.html">Sicherheitslücken</a>.</p>
+<p>Chrome aktualisiert sich (außer bei Linux) über die integrierte Update-Funktion, kann aber – wenn es pressiert – auch <a href="https://www.google.com/intl/de/chrome/browser/">hier geladen</a> werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email, Bildquelle: <a href="https://commons.wikimedia.org/wiki/File:Happy_Hooligan_it_is_to_laugh_-_nothing_but_fun._LCCN2014635421.jpg">Wikimedia Commons</a>)</em></p>
+
+
+
+ ]]></description>
+  <category>News</category>
+  <guid>https://kantel.github.io/posts/2023012501_chrome_109_update/index.html</guid>
+  <pubDate>Wed, 25 Jan 2023 17:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023012501_chrome_109_update/images/hh1902.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Twine und SugarCube Tutorials</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -613,171 +637,6 @@
   <guid>https://kantel.github.io/posts/2023011101_neues_jahr_neue_update/index.html</guid>
   <pubDate>Wed, 11 Jan 2023 16:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023011101_neues_jahr_neue_update/images/friendofcomics.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Pizza Plane Trailer</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023011001_pizzaplane_trailer/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52619367586/"><img src="https://kantel.github.io/posts/2023011001_pizzaplane_trailer/images/pizzaplanetrailer-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Die Erprobung <a href="https://kantel.github.io/posts/2023010701_pygame_oop/">meines OOP-Konzepts</a> für ein <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Framework geht in die erste Runde. Als Praxistest habe ich meinem <a href="https://kantel.github.io/posts/2023010102_pizzaplane4/">tapferen Pizza-Flieger</a> einen Startscreen/Trailer verpaßt, der nach diesem OOP-Framework zusammengeschraubt wurde.</p>
-<p>Den dafür verwendeten Flieger habe ich aus dem <a href="https://www.openpixelproject.com/">Open Pixel Projekt</a> (OPP) übernommen und dabei das »O« aus OPP durch eine Pizza ersetzt. Und schon sieht es nach dem Pizza-Flieger aus, der gegen die pösen Pizzas und Pepperonis der noch pöseren <a href="https://de.wikipedia.org/wiki/Giorgia_Meloni">Meloni</a> (wer weiß, vielleicht tausche ich die Pizza in dem Banner noch gegen eine Melone aus) in den Kampf zieht.</p>
-<p>Der Wechsel von einem prozeduralen nach einem objektorientierten Programmierstil verlief eigentlich ohne Probleme. Damit Ihr das alles nachvollziehen könnt, hier der vollständige Quellcode:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;">import</span> pygame</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;">from</span> pygame.<span class="bu" style="color: null;">locals</span> <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
-<span id="cb1-3"><span class="im" style="color: #00769E;">import</span> os, sys</span>
-<span id="cb1-4"><span class="im" style="color: #00769E;">from</span> random <span class="im" style="color: #00769E;">import</span> randint</span>
-<span id="cb1-5"></span>
-<span id="cb1-6"><span class="co" style="color: #5E5E5E;"># Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
-<span id="cb1-7">DATAPATH <span class="op" style="color: #5E5E5E;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;">__file__</span>)),</span>
-<span id="cb1-8">                                        <span class="st" style="color: #20794D;">"data"</span>)</span>
-<span id="cb1-9"></span>
-<span id="cb1-10"><span class="co" style="color: #5E5E5E;"># Konstanten deklarieren</span></span>
-<span id="cb1-11">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">640</span>, <span class="dv" style="color: #AD0000;">480</span></span>
-<span id="cb1-12">TITLE <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Pizzaplane Startscreen / Trailer"</span></span>
-<span id="cb1-13">BG_WIDTH <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1664</span></span>
-<span id="cb1-14">FPS <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">60</span></span>
-<span id="cb1-15"></span>
-<span id="cb1-16"><span class="co" style="color: #5E5E5E;"># Farben</span></span>
-<span id="cb1-17">BG_COLOR <span class="op" style="color: #5E5E5E;">=</span> (<span class="dv" style="color: #AD0000;">231</span>, <span class="dv" style="color: #AD0000;">229</span>, <span class="dv" style="color: #AD0000;">226</span>)    <span class="co" style="color: #5E5E5E;"># Wüstenhimmel</span></span>
-<span id="cb1-18"></span>
-<span id="cb1-19"><span class="kw" style="color: #003B4F;">class</span> Background(pygame.sprite.Sprite):</span>
-<span id="cb1-20">    </span>
-<span id="cb1-21">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
-<span id="cb1-22">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb1-23">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb1-24">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
-<span id="cb1-25">        <span class="va" style="color: #111111;">self</span>.start_x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
-<span id="cb1-26">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb1-27">                            <span class="st" style="color: #20794D;">"desert.png"</span>)).convert_alpha()</span>
-<span id="cb1-28">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb1-29">        <span class="va" style="color: #111111;">self</span>.bg_width <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1664</span></span>
-<span id="cb1-30">        </span>
-<span id="cb1-31">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-32">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
-<span id="cb1-33">        <span class="co" style="color: #5E5E5E;"># print(self.x)</span></span>
-<span id="cb1-34">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.x</span>
-<span id="cb1-35">        <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="op" style="color: #5E5E5E;">-</span><span class="va" style="color: #111111;">self</span>.bg_width:</span>
-<span id="cb1-36">            <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.bg_width</span>
-<span id="cb1-37"></span>
-<span id="cb1-38"></span>
-<span id="cb1-39"><span class="kw" style="color: #003B4F;">class</span> Player(pygame.sprite.Sprite):</span>
-<span id="cb1-40">    </span>
-<span id="cb1-41">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-42">        pygame.sprite.Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
-<span id="cb1-43">        <span class="co" style="color: #5E5E5E;"># Load Images</span></span>
-<span id="cb1-44">        <span class="va" style="color: #111111;">self</span>.image <span class="op" style="color: #5E5E5E;">=</span> pygame.image.load(os.path.join(DATAPATH,</span>
-<span id="cb1-45">                            <span class="st" style="color: #20794D;">"pizzaplane_banner.png"</span>)).convert_alpha()</span>
-<span id="cb1-46">        <span class="va" style="color: #111111;">self</span>.rect <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.image.get_rect()</span>
-<span id="cb1-47">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">60</span></span>
-<span id="cb1-48">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> HEIGHT<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span></span>
-<span id="cb1-49">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.x</span>
-<span id="cb1-50">        <span class="va" style="color: #111111;">self</span>.rect.y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.y</span>
-<span id="cb1-51"></span>
-<span id="cb1-52">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-53">        <span class="va" style="color: #111111;">self</span>.rect.x <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.x</span>
-<span id="cb1-54">        <span class="va" style="color: #111111;">self</span>.rect.y <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.y</span>
-<span id="cb1-55"></span>
-<span id="cb1-56"><span class="kw" style="color: #003B4F;">class</span> GameWorld:</span>
-<span id="cb1-57">    </span>
-<span id="cb1-58">    <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span> (<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-59">        <span class="co" style="color: #5E5E5E;"># Initialisiert die Spielewelt</span></span>
-<span id="cb1-60">        pygame.init()</span>
-<span id="cb1-61">        <span class="co" style="color: #5E5E5E;"># Ein übler Hack, um die Position des Fensters auf meinen</span></span>
-<span id="cb1-62">        <span class="co" style="color: #5E5E5E;"># zweiten Bildschirm zu setzen</span></span>
-<span id="cb1-63">        os.environ[<span class="st" style="color: #20794D;">'SDL_VIDEO_WINDOW_POS'</span>] <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">,</span><span class="sc" style="color: #5E5E5E;">%d</span><span class="st" style="color: #20794D;">"</span> <span class="op" style="color: #5E5E5E;">%</span> (<span class="dv" style="color: #AD0000;">1320</span>, <span class="dv" style="color: #AD0000;">60</span>)</span>
-<span id="cb1-64">        <span class="va" style="color: #111111;">self</span>.screen <span class="op" style="color: #5E5E5E;">=</span> pygame.display.set_mode((WIDTH, HEIGHT))</span>
-<span id="cb1-65">        pygame.display.set_caption(TITLE)</span>
-<span id="cb1-66">        <span class="va" style="color: #111111;">self</span>.clock <span class="op" style="color: #5E5E5E;">=</span> pygame.time.Clock()</span>
-<span id="cb1-67">        <span class="va" style="color: #111111;">self</span>.keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">True</span></span>
-<span id="cb1-68">        </span>
-<span id="cb1-69">    <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-70">        <span class="co" style="color: #5E5E5E;"># Neustart oder Status zurücksetzen</span></span>
-<span id="cb1-71">        <span class="co" style="color: #5E5E5E;"># Hier werden alle Elemente der GameWorld initialisiert</span></span>
-<span id="cb1-72">        <span class="va" style="color: #111111;">self</span>.backs       <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
-<span id="cb1-73">        back1 <span class="op" style="color: #5E5E5E;">=</span> Background(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
-<span id="cb1-74">        back2 <span class="op" style="color: #5E5E5E;">=</span> Background(BG_WIDTH, <span class="dv" style="color: #AD0000;">0</span>)</span>
-<span id="cb1-75">        <span class="va" style="color: #111111;">self</span>.backs.add(back1)</span>
-<span id="cb1-76">        <span class="va" style="color: #111111;">self</span>.backs.add(back2)</span>
-<span id="cb1-77">        <span class="va" style="color: #111111;">self</span>.all_sprites <span class="op" style="color: #5E5E5E;">=</span> pygame.sprite.Group()</span>
-<span id="cb1-78">        <span class="va" style="color: #111111;">self</span>.player <span class="op" style="color: #5E5E5E;">=</span> Player()</span>
-<span id="cb1-79">        <span class="va" style="color: #111111;">self</span>.all_sprites.add(<span class="va" style="color: #111111;">self</span>.player)</span>
-<span id="cb1-80">        <span class="va" style="color: #111111;">self</span>.run()</span>
-<span id="cb1-81"></span>
-<span id="cb1-82">    <span class="kw" style="color: #003B4F;">def</span> run(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-83">        <span class="co" style="color: #5E5E5E;"># Hauptschleife des Spiels</span></span>
-<span id="cb1-84">        <span class="cf" style="color: #003B4F;">while</span> <span class="va" style="color: #111111;">self</span>.keep_going:</span>
-<span id="cb1-85">            <span class="va" style="color: #111111;">self</span>.clock.tick(FPS)</span>
-<span id="cb1-86">            <span class="va" style="color: #111111;">self</span>.events()</span>
-<span id="cb1-87">            <span class="va" style="color: #111111;">self</span>.update()</span>
-<span id="cb1-88">            <span class="va" style="color: #111111;">self</span>.draw()</span>
-<span id="cb1-89"></span>
-<span id="cb1-90">    <span class="kw" style="color: #003B4F;">def</span> events(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-91">        <span class="cf" style="color: #003B4F;">for</span> event <span class="kw" style="color: #003B4F;">in</span> pygame.event.get():</span>
-<span id="cb1-92">            <span class="cf" style="color: #003B4F;">if</span> ((event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.QUIT)</span>
-<span id="cb1-93">                <span class="kw" style="color: #003B4F;">or</span> (event.<span class="bu" style="color: null;">type</span> <span class="op" style="color: #5E5E5E;">==</span> pygame.KEYDOWN</span>
-<span id="cb1-94">                <span class="kw" style="color: #003B4F;">and</span> event.key <span class="op" style="color: #5E5E5E;">==</span> pygame.K_ESCAPE)):</span>
-<span id="cb1-95">                keep_going <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">False</span></span>
-<span id="cb1-96">                <span class="va" style="color: #111111;">self</span>.game_over()</span>
-<span id="cb1-97"></span>
-<span id="cb1-98">    <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-99">        <span class="va" style="color: #111111;">self</span>.backs.update()</span>
-<span id="cb1-100">        <span class="va" style="color: #111111;">self</span>.all_sprites.update()</span>
-<span id="cb1-101">    </span>
-<span id="cb1-102">    <span class="kw" style="color: #003B4F;">def</span> draw(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-103">        <span class="va" style="color: #111111;">self</span>.screen.fill(BG_COLOR)</span>
-<span id="cb1-104">        <span class="va" style="color: #111111;">self</span>.backs.draw(<span class="va" style="color: #111111;">self</span>.screen)</span>
-<span id="cb1-105">        <span class="va" style="color: #111111;">self</span>.all_sprites.draw(<span class="va" style="color: #111111;">self</span>.screen)</span>
-<span id="cb1-106">        pygame.display.flip()</span>
-<span id="cb1-107"></span>
-<span id="cb1-108">    <span class="kw" style="color: #003B4F;">def</span> start_screen(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-109">        <span class="cf" style="color: #003B4F;">pass</span></span>
-<span id="cb1-110">    </span>
-<span id="cb1-111">    <span class="kw" style="color: #003B4F;">def</span> win_screen(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-112">        <span class="cf" style="color: #003B4F;">pass</span></span>
-<span id="cb1-113">    </span>
-<span id="cb1-114">    <span class="kw" style="color: #003B4F;">def</span> loose_screen(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-115">        <span class="cf" style="color: #003B4F;">pass</span></span>
-<span id="cb1-116">    </span>
-<span id="cb1-117">    <span class="kw" style="color: #003B4F;">def</span> game_over(<span class="va" style="color: #111111;">self</span>):</span>
-<span id="cb1-118">        <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Bye, Bye, Baby!"</span>)</span>
-<span id="cb1-119">        pygame.quit()</span>
-<span id="cb1-120">        sys.exit()</span>
-<span id="cb1-121"></span>
-<span id="cb1-122"><span class="co" style="color: #5E5E5E;"># Hauptprogramm</span></span>
-<span id="cb1-123">w <span class="op" style="color: #5E5E5E;">=</span> GameWorld()</span>
-<span id="cb1-124">w.start_screen()</span>
-<span id="cb1-125">w.reset()</span>
-<span id="cb1-126">w.run()</span></code></pre></div>
-<p><strong>Zwei Anmerkungen</strong>: Erstens: Gemäß den Empfehlungen der <a href="https://www.pygame.org/docs/ref/surface.html?highlight=convert_alpha#pygame.Surface.convert_alpha">Pygame-Dokumentation</a> habe ich dem Ladevorgang der Bilder noch ein <code>convert_alpha()</code> spendiert. Dies ist zwar nicht unbedingt (mehr?) erforderlich, soll jedoch die Bearbeitung der Bilder immer noch erheblich beschleunigen. Und zweitens weiß ich nicht, ob der separate Import von <code>pygame.locals</code> (immer noch?) erforderlich ist. Eigentlich müßte – folgt man auch hier der <a href="https://www.pygame.org/docs/ref/locals.html">Dokumentation</a> – der »normale« Pygame-Import die <code>locals</code> mitimportieren. Ich kann mich jedoch erinnern, daß ich mal Schwierigkeiten hatte, weil ich den separaten Import</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">from</span> pygame.<span class="bu" style="color: null;">locals</span> <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span></code></pre></div>
-<p>weggelassen hatte. Also habe ich ihn beibehalten. Er kostet ja nichts.</p>
-<p>Den <a href="https://github.com/kantel/pygameprojects/blob/master/pizzaplane/pizzaplanestartscreen.py">Quellcode</a> und das <a href="https://github.com/kantel/pygameprojects/tree/master/pizzaplane/data">Bildchen</a> gibt es wie immer in meinem GitHub-Repositorium. Und für die Buchhaltung hier alle bisher erschienenen Beiträge zu Pizzaplane und Pygame:</p>
-<ol type="1">
-<li>Auf ein neues: <a href="https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/">Pizzaplane in Pygame</a> (Stage 1)</li>
-<li><a href="https://kantel.github.io/posts/20221222601_pizzaplane2_pygame/">Jetzt mit Killer-Pizzas: Pizzaplane in Pygame</a> (Stage 2)</li>
-<li><a href="https://kantel.github.io/posts/2022123101_pizzaplane3/">Pizzaplane Stage 3: Jetzt mit Punktestand!</a></li>
-<li><a href="https://kantel.github.io/posts/2023010102_pizzaplane4/">Pizzaplane Stage 4 – jetzt mit grünem Spieler</a></li>
-<li>Exkurs 1: <a href="https://kantel.github.io/posts/2023010701_pygame_oop/">Pygame objektorientiert</a></li>
-<li>Exkurs 2: Pizza Plane Trailer – ebenfalls objektorientiert</li>
-</ol>
-<p>Ich habe schon ein wenig vorgearbeitet. Die nächsten Folgen werden also nicht mehr lange auf sich warten lassen. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Pygame</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2023011001_pizzaplane_trailer/index.html</guid>
-  <pubDate>Tue, 10 Jan 2023 17:50:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023011001_pizzaplane_trailer/images/pizzaplanetrailer.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
