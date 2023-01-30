@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Retrocomputing: 8-Bit Panda und andere TIC-80-Tutorials</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Retrocomputing: 8-Bit Panda und andere TIC-80-Tutorials</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Retrogaming</div>
+    <div class="quarto-category">TIC-80</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">30. Januar 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://miro.medium.com/max/720/1*zwK8FhuXXJOZ6DP-ghqZNA.gif"><img src="images/8bitpanda-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Auch auf die Gefahr hin, daß ich mich noch weiter verzettel: Der <a href="https://kantel.github.io/posts/2023012902_four_devs_one_art_pack/">gestrige Beitrag</a> über die Kreativität der vier <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/godot.html">Godot</a>-Entwickler hat mich an ein altes Vorhaben erinnert: In Anlehnung an das <a href="https://kantel.github.io/posts/20221222803_stolen_crown/">hier vorgestellte</a> Spiel »<a href="https://www.youtube.com/watch?v=MkZXaDQfTSo">The Stolen Crown</a>« wollte ich doch ebenfalls ein Mini-RPG zusammenbasteln – und zwar mit der Fantasy-Console <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a>.</p>
+<p>In Anbetracht der vielen Filmchen auf YouTube gibt es erstaunlich wenige geschriebene Tutorials zu der kleinen, freien Engine. Das mag der Tatsache geschuldet sein, daß man die Funktionen der kleinen Konsole besser zeigen als beschreiben kann. Daher möchte ich die, die ich aufgetrieben habe, hier vorstellen:</p>
+<p>Da ist vor allem <em>Bruno Olveira</em>. Ihn hatte ich im Dezember 2020 in einer meiner berüchtigten Riesenlinkschleuder schon einmal <a href="http://blog.schockwellenreiter.de/2020/12/2020120802.html">vorgestellt</a>. Sein 8-Bit-Panda ist in der TIC-80-Szene eine Legende und in »<a href="https://medium.com/@btco_code/writing-a-platformer-for-the-tic-80-virtual-console-6fa737abe476">Writing a platformer for the TIC-80 fantasy console</a>« hat er ausführlich vorgestellt, wie er das Teil programmiert hat.</p>
+<p>Aber ich möchte ja ein RPG programmieren. Auch dafür hat <em>Bruno Olveira</em> ein Tutorial parat: In »<a href="https://medium.com/@btco_code/why-i-spent-almost-a-year-building-an-rpg-game-for-a-fantasy-console-2bbe2e1d8cb8">Why I spent almost a year building an RPG game for a fantasy console</a>« zeigt er, wie er »<a href="https://btco.itch.io/shadow-over-the-twelve-lands">Shadow Over the Twelve Lands</a>« mit und auf dem TIC-80 entwickelt hat.</p>
+<p>Hat er in diesen zwei Spielen die Möglichkeiten der kleinen Konsole schon fast ausgereizt, geht er mit »<a href="https://medium.com/@btco_code/writing-a-retro-3d-fps-engine-from-scratch-b2a9723e6b06">Writing a retro 3D FPS engine from scratch</a>« ans Äußerste.</p>
+<p><strong>Caveat</strong>: Die Artikel von <em>Bruno Olveira</em> sind auf Medium.com erschienen. Ich hatte irgendwann einmal in den sauren Apfel gebissen und mir ein Medium-Abo zugelegt. Daher weiß ich nicht, ob die Beiträge hinter einer Bezahlschranke verstreckt sind. Aber er hat auch noch eine <a href="https://tic80.com/dev?id=6054">Seite auf TIC-80</a>. Dort findet Ihr weitere Tutorials von ihm.</p>
+<p>Auch <em>Bytes’n’Bits</em> hat <a href="https://bytesnbits.co.uk/learn-to-code/">Seiten für den TIC-80</a>. Dort findet Ihr unter anderem zwei <a href="https://bytesnbits.co.uk/getting-ready-to-learn-to-code/">einführende</a> Tutorials, ein <a href="https://bytesnbits.co.uk/space-invaders-coding-course-introduction/">Tutorial zu Space Invaders</a> in 25 Lektionen, ein <a href="https://bytesnbits.co.uk/asteroids/">Tutorial zu Asteroids</a> in neun Lektionen, das obligatorische <a href="https://bytesnbits.co.uk/snake/">Snake Game</a> in zwei Lektionen und <em>last but not least</em> dürft Ihr als Höhepunkt <a href="https://bytesnbits.co.uk/space-commander/">im Weltraum ballern</a> (drei Lektionen).</p>
+<p>»<strong>Hattu Möhrchen?</strong>« Jugend hackt<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> hat einen »<a href="https://jugendhackt.org/oer/projekte/spieleentwicklung-tic-80/">Einstieg in die Spieleentwicklung mit TIC-80</a> veröffentlicht, in dem ihr einen niedlichen Hasen auf der Jagd nach Möhren programmiert.</p>
+<p>Nicht unerwähnt bleiben soll, daß man mit TIC-80 erstellte Spiele als im Browser spielbar zum Beispiel auf Itch.io oder <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/glitch.html">Glitch</a> hochladen kann. Ein großer Vorteil gegenüber den mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> (<a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html">Zero</a>) zusammengeschraubten Spielen.</p>
+<p>Ansonsten – damit alles auf einer Seite zusammengefaßt zu finden ist – möchte ich noch auf meine gesammelten 8x8 und 16x16 großen <a href="https://kantel.github.io/posts/2023011401_freie_tiles_und_sprites/">freien Tiles- und Spritesets</a> hinweisen und noch einmal auf den Beitrag »<a href="https://kantel.github.io/posts/2022121402_anatomie_roguelike/">Die Anatomie eines Roguelikes</a>« verlinken. Das wäre dann erst einmal alles, was ich gefunden habe. <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Auf deren Seiten gibt es auch noch ein Tutorial »<a href="https://jugendhackt.org/oer/projekte/textadventures-mit-twine-erschaffen/">Textadventures mit Twine erschaffen</a>«, doch das ist eine meiner anderen Baustellen.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
