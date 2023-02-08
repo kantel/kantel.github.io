@@ -1,0 +1,25 @@
+---
+title: "Erste Schritte mit Chapbook und Twine"
+author: "Jörg Kantel"
+date: "2023-02-08 18:45:00"
+categories: [Twine]
+image: "images/chapbookreginald.jpg"
+---
+
+[![](images/chapbookreginald-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52676901426/)
+
+Gemäß meiner [Ankündigung vor wenigen Tagen](https://kantel.github.io/posts/2023020501_twine_chapbook/) habe ich erste Experimente mit [Chapbook](https://klembot.github.io/chapbook/guide/), dem neuen Storyformat von [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine.html) durchgeführt. Bevor ich mich komplett in neue Gefilde wage, wollte ich erst einmal die bisher vorhandene [Geschichte vom braven Reginald](https://kantel.github.io/posts/2023012201_alien_attack_v1_twine/) nach Chapbook portieren und schauen, wie sich das Storyformat dabei schlägt.
+
+Und ich muß sagen, Chapbook hat mich angenehm überrascht und überzeugt. Nachdem ich erst einmal den Default-Font (er war zumindest auf meinem Mac und für meine alten Augen nahezu unleserlich) durch meine gewohnte Monospace-Schrift `Menlo` ersetzt hatte, konnte ich wirklich gut damit arbeiten. Und Chapbook hat die gesetzten Erwartungen nicht nur erfüllt, sondern sogar übertroffen. Doch der Reihe nach:
+
+- Ein riesiger Fortschritt ist die Verlagerung der Variablen-Deklaration in den Header der Seite -- ähnlich wie beim [Jekyll Front Matter](https://jekyllrb.com/docs/front-matter/). Nur warum in Chapbook die Trennung vom Rest des Codes mit zwei, anstelle der drei Striche erfolgen muß, ist zwar verständlich (die drei Striche haben in Twine/Chapbbok eine andere Bedeutung), aber ungewohnt.
+
+- Die [Modifier](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/index.html) scheinen generell im Gegensatz zu den Makros der anderen Story-Formate keine unnötigen Leerzeilen mehr zu erzeugen. Das scheint -- folgt man den wenigen bisher vorhandenen YouTube-Tutorials zu Chapbook -- für viele Hardcore-Twine-Nutzer zwar arg ungewohnt, aber es macht nicht nur das Layout der Seiten einfacher, sondern folgt auch der in Chapbook implementierten Markdown-Logik.
+
+- Überhaupt ist der Wechsel kompett zu Markdown als Auszeichungssprache zumindest für Nutzer wie mich, die Markdown aus anderen Zusammenhängen gewohnt sind, ein weiterer, großer Vorteil.
+
+- Die [Kommentar-Modifier](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/notes.html) `note`, `fixme` und `todo` helfen mir bei der Entwicklung der Geschichte: Mit `note` kann ich so etwas wie Regie-Anweisungen für den Port nach [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html) (zum Beispiel: `Auftritt Reginald (konfus) von rechts`) in den Quelltext einfügen (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/52676901426/)), `fixme` kennzeichnet Passagen, an denen noch dringend etwas verbessert werden muß und `todo` … na, für was ist das wohl da?&nbsp;🤓
+
+- Großartig ist auch der [Debug-Mode](https://klembot.github.io/chapbook/guide/text-and-links/backstage.html) (im Chapbook-Jargon *Backstage* genannt). Neben einer Kontrolle der Variablen-Werte lassen sich hier auch schnell Layout-Änderungen ausprobieren und überprüfen. Das einzige, was hier noch der Verbesserung harrt, ist die Möglichkeit, auch einzelne Code-Zeilen (und nicht nur ganze Abschnitte) zu kopieren und im eigenen Quellcode einzufügen.
+
+Generell scheint mit Chapbook alles möglich zu sein, was in [Harlowe](http://twine2.neocities.org/) möglich ist und mit Hilfe des [JavaScript-Modifiers](https://klembot.github.io/chapbook/guide/advanced/using-javascript-in-passages.html) muß sich das Story-Format auch vor [SugarCube](https://www.motoslave.net/sugarcube/2/) nicht verstecken. Bei mir jedenfalls ist die Entscheidung gefallen: Ich werde komplett zu Chapbook wechseln und die anderen Story-Formate links liegen lassen. Die Vorteile von Chapbook (speziell auch, wenn man die Geschichte anschließend in Ren'Py implementieren will) scheinen mir den Aufwand wert. Außerdem macht das Spielen mit Chapbook einfach Spaß. Ich werde daher die nächsten Tage noch ein wenig weiterspielen (und berichten). *Still digging!*
