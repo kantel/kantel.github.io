@@ -1,0 +1,44 @@
+---
+title: "Trinket cont.: Amöben in der Petrischale (2)"
+author: "Jörg Kantel"
+date: "2023-02-24 20:30:00"
+categories: [Python, Processing, Trinket]
+image: "images/amoeba2.jpg"
+---
+
+[![](images/amoeba2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52709094890/)
+
+Meine Erkundungen von [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) und der darin eingebauten Python-Version von [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html) sind zu einem vorläufigen Abschluß gekommen: Ich habe weiter mit den virtuellen Amöben aus dem wunderbaren Buch »[Learn Python Visually](https://nostarch.com/Learn-Python-Visually)« (Seiten 207 ff.) von *Tristan Bunn* experimentiert.
+
+<iframe src="https://trinket.io/embed/python/a2752d8550?runOption=run&start=result" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Das entsprechende Trinket [findet Ihr hier](https://trinket.io/library/trinkets/a2752d8550).
+
+Als erstes Zwischenergebnis kann ich sagen, daß der Processing-Mode in Trinket tatsächlich sehr brauchbar ist. In der Performance kann er durchaus mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem freundlichen Python3-Port von Processing, mithalten. Und wenn ich aus dem obigen Code die erste und die letzte Zeile entferne und den *CamelCase* der Processing-internen Befehle und Variablen in den *SnakeCase* von Python 3 umwandle (also zum Beispiel `strokeWeight` zu `stroke_weight`), dann läuft der Sketch auch ohne Probleme mit Py5.
+
+Allerdings fehlt das von mir so geliebte `with` zum *pythonischen* Klammern von Transformationen und Zuständen. So ist zum Beispiel in obigem Code
+
+~~~python
+with beginShape():  # in Py5: with begin_shape():
+  befehle()
+~~~
+
+nicht möglich, sondern es muß stattdessen wie in obigem Beispiel in
+
+~~~python
+beginShape()
+befehle
+endShape()
+~~~
+
+ohne Einrückung (!) geklammert werden. Da dies jedoch sowohl in Py5 wie auch in [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) alternativ ebenfalls möglich ist, ist es nicht schön, aber ich kann damit leben.
+
+Testweise habe ich auch ein wenig mit der Trinket/Processing-Implementierung von `PVector()` gespielt. Hier scheint ähnliches zu gelten wie für `beginShape` … `endShape` oder `pushMatrix` … `popMatrix`. Zwar ist die Klasse `PVector()` vorhanden, aber sie scheint sehr stark an die Java-Implementierung angelehnt. Die meisten der schönen Python-typischen Shortcuts funktionieren nicht. Zur Orientierung sollte man sich daher an die [Processing-Referenz](https://processing.org/reference/PVector.html) halten.
+
+Da die Klasse aber `PVector()` und nicht [wie in P5.js](https://p5js.org/reference/#/p5.Vector) `p5.Vector()` heißt, läßt dies jedoch keine Rückschlüsse zu, welche JavaScript-Implementierung von Python und/oder Processing hinter Trinket werkelt. Hier tappe ich leider immer noch völlig im Dunkeln. Aber egal, solange es funktioniert …
+
+Und es funktioniert ziemlich gut. Daher werde ich erst einmal mit Trinket weiterbasteln. *Still digging!*
+
+### Literatur
+
+Tristan Bunn: *Learn Python Visually. Creative Coding with Processing.py*, San Francisco CA (no starch press) 2021
