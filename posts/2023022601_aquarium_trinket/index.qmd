@@ -1,0 +1,111 @@
+---
+title: "Mein kleines, bonbonbuntes Aquarium als Trinket"
+author: "Jörg Kantel"
+date: "2023-02-26 17:30:00"
+categories: [Python, Processing, Trinket, Turtle]
+image: "images/aquariumtrinket.jpg"
+---
+
+[![](images/aquariumtrinket-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52710952709/)
+
+Als vorläufigen Höhepunkt meiner Erkundung der Möglichkeiten des [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)/Python-Modes in [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) habe ich mein schon in vielen Versionen (zum Beispiel [hier](http://blog.schockwellenreiter.de/2022/01/2022010802.html) in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) und [hier](http://blog.schockwellenreiter.de/2022/11/2022112002.html) in [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html)) impementiertes, kleines, bonbonbuntes Aquarium auch nach Trinket portiert.
+
+Dabei habe ich weitestgehend die Py5-Version übernommen, denn außer dem Hinzufügen der trinketüblichen `import`-Anweisung und der letzten `run()`-Zeile konnte ich nach der Umwandlung der Processing-Befehle vom `snake_case` in den `camelCase` den Sketch nahezu Eins-zu-Eins übernehmen:
+
+~~~python
+from processing import *
+from random import randint
+
+WIDTH, HEIGHT = 640, 416
+N_FISHES = 15
+
+class Background():
+  
+  def __init__(self, _img):
+    self.img = loadImage(_img)
+    
+  def display(self):
+    image(self.img, 0, 0)
+
+class Fish():
+  
+  def __init__(self, _idx, _x, _y, _dir, _speed):
+    self.imgr0 = loadImage("fish" + str(_idx) + "r_0.png")
+    self.imgl0 = loadImage("fish" + str(_idx) + "l_0.png")
+    self.imgr1 = loadImage("fish" + str(_idx) + "r_1.png")
+    self.imgl1 = loadImage("fish" + str(_idx) + "l_1.png")
+    self.x = _x
+    self.y = _y
+    self.dir = _dir
+    if self.dir == "rt":
+      self.img = self.imgr0
+    elif self.dir == "lt":
+      self.img = self.imgl0
+    self.speed = _speed*randint(1, 3)
+    self.switch = 5
+    self.timer = self.switch
+    
+  def update(self):
+    self.x += self.speed
+    if self.timer <= 0:
+      self.timer = self.switch
+      if self.img == self.imgr0:
+        self.img = self.imgr1
+      elif self.img == self.imgr1:
+        self.img = self.imgr0
+      elif self.img == self.imgl0:
+        self.img = self.imgl1
+      elif self.img == self.imgl1:
+        self.img = self.imgl0
+    if self.x > width + randint(40, 200):
+      self.img = self.imgl0
+      self.y = randint(20, 300)
+      self.speed = randint(-3, -1)
+    if self.x < randint(-200, -40):
+      self.img = self.imgr0
+      self.y = randint(20, 300)
+      self.speed = randint(1, 3)
+    self.timer -= 1
+ 
+  def display(self):
+    image(self.img, self.x, self.y)
+
+fishes = []
+
+def setup():
+  global bg
+  size(WIDTH, HEIGHT)
+  print("🐠 Jörgs kleines, bonbonbuntes Aquarium 🐡")
+  bg = Background("background.png")
+  for _ in range(N_FISHES):
+    direction = randint(0, 1)
+    if direction == 0:
+      dr = "rt"
+      speed = 1
+    else:
+      dr = "lt"
+      speed = -1
+    x = randint(-100, width + 200)
+    y = randint(20, 300)
+    fish = Fish(randint(1, 7), x, y, dr, speed)
+    fishes.append(fish)
+
+def draw():
+  background(49, 197, 244) # Hellblau
+  bg.display()
+  for fish in fishes:
+    fish.update()
+    fish.display()
+
+run()
+~~~
+
+Lediglich die Pfadangaben für die Bildchen, die -- immer noch -- aus dem freien ([CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)) [FishPack](https://www.kenney.nl/assets/fish-pack) von *Kenney.nl* stammen, mußte ich, nachdem ich sie in mein Trinket hochgeladen hatte, anpassen (sie liegen dort per Default im gleichen Verzeicnis wie das Skript). Danach wuselten die Fische durch das Aquarium, als hätte es gar keinen Umzug gegeben:
+
+<iframe src="https://trinket.io/embed/python/182652f95f?outputOnly=true&runOption=run&start=result" width="670" height="570" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Geil ist natürlich auch, daß man das fertige Trinket relativ einfach in die eigene Website einbinden kann (man verliert aber dadurch eventuell das responsive Verhalten der Seite). Und daß Trinket Emojis beherrscht, hatte ich erwartet, aber hier noch einmal getestet.
+
+Hier findet Ihr das [fertige Trinket](https://trinket.io/python/182652f95f) zum Kopieren/Nachvollziehen und für eigene Experimente.
+
+Jetzt habe ich erst einmal genug mit dem Processing-Mode von Trinket experimentiert. Bis zu meinem [Abschied von TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) (wegen der seltsamen proprietären Lizenz) war ich jedoch auch von dem Turtle-Mode des Tigers fasziniert. Trinket soll ebenfalls eine leistungsfähige Schildkröten-Implementierung besitzen. Die werde ich mir als nächstes mal vorknöpfen. Dafür werde ich zum wiederholten Mal die [Videos von TokyoEdtech](https://www.youtube.com/@TokyoEdTech) (aka *[Christian Thompson](https://christianthompson.com/)*) plündern. (Ihr erinnert Euch? Das ist der Mann, der Unglaubliches mit [Pythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) anstellt. Die kann man sich daher gar nicht oft genug anschauen.) Ihr seht, ich habe zu tun. *Still digging!*
