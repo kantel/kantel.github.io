@@ -1,0 +1,290 @@
+---
+title: "Space War mit Trinkets Turtle"
+author: "Jörg Kantel"
+date: "2023-03-02 18:15:00"
+categories: [Python, Trinket, Turtle, Spieleprogrammierung]
+image: "images/spacewartrinket.jpg"
+---
+
+[![](images/spacewartrinket-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52721015097/)
+
+Es hat ein paar Tage gebraucht, aber ich habe es geschafft: Ich bin in *Christian Thompsons* (aka TokyoEdtech) Fußstapfen getreten und habe ebenfalls versucht, in Python mit der Turtle ernsthaft ein Spiel zu programmieren. Allerdings nicht mit der [Turtle aus Pythons Standardbibliothek](https://docs.python.org/3/library/turtle.html), sondern mit der Schildkröte, die in [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) eingebaut ist.
+
+Dafür habe ich mir ein Ballerspiel, [das ich schon im Januar 2018 mit Pythons Turtle gebaut hatte](http://blog.schockwellenreiter.de/2018/01/2018011301.html), geschnappt und die Portierung nach Trinket gewagt. Es ging einfacher, als ich dachte und das Ergebnis kann sich durchaus sehen lassen (ein Klick auf »Run«/»Stop« startet/beendet das Spiel):
+
+<iframe src="https://trinket.io/embed/python/25ebd4a9c6?outputOnly=true&runOption=run&start=result" width="620" height="800" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+In dem Spiel irrt eine kleine, blaue Rakete durch das Weltall (mit einem hämisch grinsendem Mond im Hintergrund), die von gefährlichen Kürbissen bedroht wird. Die Rakete wird mit dem Pfeiltasten gesteuert (»rechts« und »links« bewirken eine Drehung in die jeweilige Richtung, mit »up« und »down« wird die Geschindigkeit erhöht oder reduziert). und mit der Leertaste kann sie Geschosse auf die Kürbisse abfeuern. Trifft sei einen Kürbis, wird wie mit zehn Bonuspunkten belohnt, kollidiert jedoch ein Kürbis mit der Rakete, bekommt sie fünf Punkte abgezogen.
+
+Ich bin ein schlechter Spieler, daher habe ich das Spiel recht leicht gehalten. Jedoch ist es Euch überlassen, entweder die Punktezahl so zu ändern, daß die Rakete leichter verlieren kann oder die Anzahl der feindlichen Kürbisse im Spiel zu erhöhen. Aßerdem könnt Ihr den Spieler sterben lassen (das Spiel beenden), wenn die Punktezahl unter Null sinkt.
+
+Ich habe noch die Taste »q« mit dem Stop des Spiels belegt, das aber in der Hauptsache nur, um Screenshots anfertigen zu können. Doch hier erst einmal für Euren Überblick den vollständigen Quellcode:
+
+~~~python
+import turtle
+import math
+from random import randint, choice
+
+WIDTH, HEIGHT = 600, 600
+ROCKETSIZE = 52
+NUM_PUMPKINS = 6
+NUM_PARTICLES = 20
+
+screen = turtle.Screen()
+screen.setup(WIDTH, HEIGHT)
+screen.bgcolor("#2b3e50")
+
+# Bildschirm-Refresh ausschalten
+screen.tracer(0)
+
+screen.bgpic("moon.jpg")
+screen.addshape("rocket2.png")
+screen.addshape("alien.png")
+screen.addshape("pumpkin.png")
+screen.addshape("missileup.png")
+screen.addshape("particle.png")
+
+class Sprite(turtle.Turtle):
+  
+  def __init__(self, _tshape):
+    turtle.Turtle.__init__(self)
+    self.penup()
+    self.speed(0)
+    self.shape(_tshape)
+    self.speed = 1
+    self.max_speed = 15
+    
+  def move(self):
+    self.forward(self.speed)
+
+    # Ränder checken und ausweichen
+    if self.xcor() >= WIDTH/2 - ROCKETSIZE or self.xcor() <= -WIDTH/2 + ROCKETSIZE:
+      self.forward(-self.speed)
+      self.left(randint(95, 265))
+    if self.ycor() >= HEIGHT/2 - ROCKETSIZE or self.ycor() <= -HEIGHT/2 + ROCKETSIZE:
+      self.forward(-self.speed)
+      self.left(randint(95, 265))
+    
+  def collides(self, obj):
+    a = self.xcor() - obj.xcor()
+    b = self.ycor() - obj.ycor()
+    distance =  math.sqrt((a**2) + (b**2))
+    if distance < 20:
+      return True
+    else:
+      return False
+    
+  def jump(self):
+    self.goto(randint(-WIDTH/2 + 60, WIDTH/2 - 60),
+              randint(-HEIGHT/2 + 60, HEIGHT/2 - 60))
+    self.setheading(randint(0, 360))
+    self.speed = randint(2, 7)
+
+class GameWorld(turtle.Turtle):
+    
+  def __init__(self):
+    turtle.Turtle.__init__(self)
+    self.penup()
+    self.hideturtle()
+    self.speed(0)
+    self.color("white")
+    self.pensize(2)
+    
+  def draw_border(self):
+    self.penup()
+    self.goto(-WIDTH/2 + 40, -HEIGHT/2 + 40)
+    self.pendown()
+    self.goto(-WIDTH/2 + 40, HEIGHT/2 - 40)
+    self.goto(WIDTH/2 - 40, HEIGHT/2 - 40)
+    self.goto(WIDTH/2 - 40, -HEIGHT/2 + 40)
+    self.goto(-WIDTH/2 + 40, -HEIGHT/2 + 40)
+    
+class HeadUpDisplay(turtle.Turtle):
+    
+  def __init__(self):
+    turtle.Turtle.__init__(self)
+    self.penup()
+    self.hideturtle()
+    self.speed(0)
+    self.color("white")
+    self.goto(-WIDTH/2 + 40, HEIGHT/2 - 30)
+    self.score = 0
+    
+  def update_score(self):
+    self.clear()
+    self.write("Punkte: {}".format(self.score), False, align = "left",
+                font = ("Arial", 14, "normal"))
+    
+  def change_score(self, points):
+    self.score += points
+    self.update_score()
+
+class Player(Sprite):
+  
+  def __init__(self):
+    Sprite.__init__(self, "rocket2.png")
+    self.speed = 2
+    self.max_speed = 10
+    
+  def turnleft(self):
+    self.left(15)
+    
+  def turnright(self):
+    self.right(15)
+    
+  def move_faster(self):
+    self.speed += 1
+    # Geschwindigkeitsbegrenzug
+    if abs(self.speed) >= self.max_speed:
+      self.speed = self.max_speed
+    
+  def move_slower(self):
+    # Geschwindigkeitsbegrenzung
+    self.speed -= 1
+    if self.speed <= 0:
+      self.speed = 0
+
+class Missile(Sprite):
+    
+  def __init__(self):
+    Sprite.__init__(self, "missileup.png")
+    self.speed = 20    # So ein Geschoß sollte schon schnell sein :o)
+    self.status = "ready"
+    self.goto(-5000, -5000)
+    
+  def fire(self):
+    if self.status == "ready":
+        self.goto(player.xcor(), player.ycor())
+        self.setheading(player.heading())
+        self.status = "firing"
+        
+  def move(self):
+    if self.status == "ready":
+      self.goto(-5000, -5000)
+    if self.status == "firing":
+      self.forward(self.speed)
+      # Ränder checken und ausweichen
+      if (self.xcor() >= WIDTH/2 - 50 or self.xcor() <= -WIDTH/2 + 50
+          or self.ycor() >= HEIGHT/2 - 50 or self.ycor() <= -HEIGHT/2 + 50):
+        self.goto(-5000, -5000)
+        self.status = "ready"
+
+class Particle(Sprite):
+    
+  def __init__(self):
+    Sprite.__init__(self, "particle.png")
+    self.goto(-5000, -5000)
+    self.frame = 0
+    self.speed = randint(10, 20)
+    
+  def explode(self, x, y):
+    self.goto(x, y)
+    self.setheading(randint(0, 360))
+    
+  def move(self):
+    if self.frame < 20:
+      self.forward(self.speed)
+      # self.speed -= 1
+      self.frame += 1
+      # Ränder checken
+      if (self.xcor() >= WIDTH/2 - 50 or self.xcor() <= -WIDTH/2 + 50 or
+          self.ycor() >= HEIGHT/2 - 50 or self.ycor() <= -HEIGHT/2 + 50):
+        self.frame = 0
+        self.goto(-5000, -5000)
+    else:
+      self.frame = 0
+      self.goto(-5000, -5000)
+
+class Pumpkin(Sprite):
+    
+  def __init__(self):
+    Sprite.__init__(self, "pumpkin.png")
+    self.goto(randint(-WIDTH/2 + 60, WIDTH/2 - 60),
+              randint(-HEIGHT/2 + 60, HEIGHT/2 - 60))
+    self.setheading(randint(0, 360))
+
+world = GameWorld()
+world.draw_border()  
+hud = HeadUpDisplay()
+
+# Enmies
+pumpkins = []
+for _ in range(NUM_PUMPKINS):
+  pumpkin = Pumpkin()
+  pumpkin.speed = randint(1, 4)
+  pumpkins.append(pumpkin)
+
+player = Player()
+missile = Missile()
+
+# Die Partikel erzeugen
+particles = []
+for _ in range(NUM_PARTICLES):
+  particles.append(Particle())
+
+# Das Spiel beenden
+def exit_game():
+  global keep_going
+  keep_going = False
+
+# Auf Tastaturereignisse lauschen
+screen.onkey(player.turnleft, "Left")
+screen.onkey(player.turnright, "Right")
+screen.onkey(player.move_faster, "Up")
+screen.onkey(player.move_slower, "Down")
+screen.onkey(missile.fire, "space")
+
+screen.onkey(exit_game, "q")   # Das Spiel beenden
+screen.listen()
+
+print("🚀 Space War – 🎃 Halloween-Version")
+print("»Up«/»Down«: Schneller/Langesamer")
+print("»Left«/»Right«: Rechts/Links")
+print("»q« beendet das Spiel")
+keep_going = True
+while keep_going:
+  screen.update()   # den gesamten Bildschirm neu zeichnen
+  for pumpkin in pumpkins:
+    pumpkin.move()
+    if missile.collides(pumpkin):
+      pumpkin.jump()
+      missile.status = "ready"
+      hud.change_score(10)
+      for particle in particles:
+        particle.explode(missile.xcor(), missile.ycor())
+    if player.collides(pumpkin):
+      pumpkin.jump()
+      hud.change_score(-5)
+      for particle in particles:
+        particle.explode(player.xcor(), player.ycor())
+  
+  player.move()
+  missile.move()
+  for particle in particles:
+    particle.move()
+  
+print("Bye, bye, Baby")
+~~~
+
+Es ist schon erstaunlich, daß man mit weniger als 250 Zeilen Python-Code doch solch ein recht komplexes Spiel auf die Beine stellen kann.
+
+Getreu meinem [Vorsatz](https://kantel.github.io/posts/2023010701_pygame_oop/), weitestgehend objektorientiert zu programmieren, habe ich auch diese Implementierung aus Objekten zusammengebaut. Das Spiel findet in der Klasse `GameWorld()` statt, zu der auch die Klasse `HeadUpDisplay()` gehört[^1].
+
+[^1]: Dem Headup-Display eine eigene Klasse zu spendieren, war eine einsame Designentscheidung. Genausogut hätte es Teil von `GameWorld()`sein können.
+
+Für die Akteure wiederum habe ich eine Oberklasse `Sprite()` implementiert, von der alle beweglichen Elemente erben, also sowohl die Klassen `Player()` und `Pumpkin()` für den Spieler und seine Gegener, wie auch die Klasse `Missile()` für die Geschosse und die Klasse `Particles()` für die Explosionen bei Treffern. Dabei werden Instanzen der Klasse `Missile()` durch die Betätigung der Leertaste erzeugt, während die Explosionen der Klasse `Particle()` durch Kollisionen ausgelöst werden.
+
+Die Methode zur Kollisionserkennung `collide()` und zum Reset der Gegner nach einer Kollision `jump()` habe ich wie die `move()`-Methode ebenfalls in der Oberklasse `Sprite()` implementiert, so daß eine Erweiterung um andere Gegner als Kürbisse einfach möglich ist (testweise hatte ich auch noch eine weitere Klasse `Alien()` erstellt).
+
+Wie schon [vermutet](https://kantel.github.io/posts/2023022701_turtle_trinket/), unterscheidet sich die Trinket-Turtle nur in Nuancen von der Turtle aus Pythons Standardbibliothek. Der bisher auffallendste Unterschied war, daß sich eigene Shapes aus Bildchen ebenfalls auf `turtle.heading()` und `turtle.setheading()` reagieren. Überhapt scheint die Unterstützung eigener Sprites für die Schildkröten umfangreicher zu sein. Das habe ich soweit ausgenutzt, daß alle Akteure mit eigenen Bildern implementiert wurden, die ich aus den frei verwendbaren [Twemojis von Twitter](http://cognitiones.kantel-chaos-team.de/multimedia/twemoji.html) zusammengebastelt habe. Lediglich bei den Geschossen und den Explsionspartikeln habe ich auf das [hier erwähnten](https://kantel.github.io/posts/2023011401_freie_tiles_und_sprites/) für nichtkommerzielle Anwendungen frei verwendbare [Artpack von *BDragon1727*](https://bdragon1727.itch.io/fire-pixel-bullet-16x16) zurückgegriffen.
+
+Außerdem scheint es nicht möglich zu sein, ein Hintergrundbild mittig auf dem Screen zu zentrieren und den restlichen Hintergrund mit einer Hintergrundfarbe zu versehen. Daher habe ich dem Bild des Mondes einen breiten Rand spendiert.
+
+Es gibt sicher noch weitere Differenzen zwischen der Trinket- und der Standard-Python-Turtle, aber das waren die Unterschiede, die mir bisher untergekommen waren. Aber während die Implementierung mit Pythons Standard-Turtle mein betagtes MacBook Pro schon ziemlich ins Schwitzen brachte, läuft die Browser-Implementierung von Trinket dort recht flüssig.
+
+Das [fertige Trinket](https://trinket.io/python/25ebd4a9c6) findet Ihr hier. Habt Spaß damit.
+
+Ich bin recht stolz auf das bisher erreichte und werde sicher mit Trinket noch einiges anstellen. *Still digging!*
+
+
+
