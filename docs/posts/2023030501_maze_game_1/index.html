@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Abenteuer Trinket: Maze Game Stage 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Abenteuer Trinket: Maze Game Stage 1</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Trinket</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Turtle</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">5. März 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52727313297/"><img src="images/mazegame1-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Das Abenteuer <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> geht weiter, denn die Beschäftigung mit dieser extrem leistungsfähigen Online-IDE macht einfach Spaß. Daher habe ich ein weiteres Spiel hervorgekramt, das ich <a href="http://blog.schockwellenreiter.de/2022/04/2022041901.html">schon vor einem Jahr</a> in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html">Pygame Zero</a> implementiert hatte. Damals sollte es eigentlich als künftige Blaupause für mein Projekt »<a href="http://blog.schockwellenreiter.de/2022/04/2022041401.html">Retrogaming und Künstliche Intelligenz</a>« dienen. Dann war ich jedoch zu der Überzeugung gekommen, daß Pygame Zero doch nicht die richtige Umgebung dafür sei. Eigentlich tendierte ich dann zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>, ohne die Idee jedoch weiter zu verfolgen. Vielleicht bringt nun Trinket (das ja sowohl eine Art von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>(<a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">.py</a>) wie auch eine Turtle bewegen kann) wieder neuen Schwung in die Angelegenheit.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/inocKE13DEA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Auf jeden Fall habe ich mir dafür zum wiederholten Male die Playlist »<a href="https://www.youtube.com/playlist?list=PLlEgNdBJEO-lNDJgg90fmfAq9RzORkQWP">Python Maze Game Tutorial</a>« von <em>Christian Thompson</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> hereingezogen und begonnen, daraus eine Version in Trinket zu erstellen. Während mein <a href="https://kantel.github.io/posts/2023030201_space_war_trinket/">letzter Versuch mit Trinket und der Turtle</a> alles rausholte, was aus Trinket rauszuholen war, sollte es diesmal etwas anfängerfreundlicher und übersichtlicher werden. Daher sind auch mehrere Lieferungen geplant.</p>
+<iframe src="https://trinket.io/embed/python/46a2d36061?outputOnly=true&amp;runOption=run&amp;start=result" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Die heutige erste Lieferung zeigt ein kleines Labyrinth<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, durch das der mit den Pfeiltasten gesteuerte Spieler irren kann. Er kann auf seinem Irrweg drei Schatzkästlein leeren und schließlich auch unten rechts den Irrgarten verlassen. Damit endet dann auch das Spiel.</p>
+<p>Im Gegensatz zu der Version von <em>Christian Thompson</em>, der – bedingt durch die Einschränkungen von Pythons Standard-Turtle – nur 24x24 Pixel große Sprites vewenden konnte, konnte ich – da Trinket hier keine Einschränkungen besitzt – auf 16x16 große Tiles und Sprites zurückgreifen. In der momentanen Version habe ich für die Mauern ein Tile aus Kenneys – wie immer freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CCO 1.0 Universal</a>) – <a href="https://www.kenney.nl/assets/bit-pack">1-Bit-Pack</a> verwendet, da es zwischen den einzelnen Elementen jeweils einen Rand läßt, so daß man den Aufbau des Irrgarten nachvollziehen kann. Später möchte ich jedoch – wie hier schon <a href="https://kantel.github.io/posts/2023022701_turtle_trinket/">angekündigt</a> – auf Kenneys ebenfalls unter <em>CCO 1.0 Universal</em> stehende <a href="https://kenney.nl/assets/tiny-dungeon">Tiny Dungeon Tileset</a> nebst der dazugehörenden <a href="https://kenney.nl/assets/tiny-town">Tiny Town Erweiterung</a> zurückgreifen. Die Figur des Zauberers wie auch die Schatzkästlein habe ich jedenfalls schon aus diesem Tile- und Spriteset entnommen<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>Doch jetzt erst einmal den kompletten Quellcode, damit Ihr das Spiel nachvollziehen und auf Wunsch auch eweitern könnt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> turtle, math</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>WIDTH, HEIGHT <span class="op">=</span> <span class="dv">440</span>, <span class="dv">440</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>WALL   <span class="op">=</span> <span class="dv">63</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>DOOR   <span class="op">=</span> <span class="dv">62</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>CHEST  <span class="op">=</span> <span class="dv">22</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>PLAYER <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>TILESIZE <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a>maze_map_0 <span class="op">=</span> [[<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-11"><a href="#cb1-11"></a>            [<span class="dv">63</span>,<span class="dv">10</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-12"><a href="#cb1-12"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-13"><a href="#cb1-13"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-14"><a href="#cb1-14"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-15"><a href="#cb1-15"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-16"><a href="#cb1-16"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-17"><a href="#cb1-17"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-18"><a href="#cb1-18"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">22</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-19"><a href="#cb1-19"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-20"><a href="#cb1-20"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-21"><a href="#cb1-21"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-22"><a href="#cb1-22"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">22</span>,<span class="dv">63</span>],</span>
+<span id="cb1-23"><a href="#cb1-23"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>],</span>
+<span id="cb1-24"><a href="#cb1-24"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>],</span>
+<span id="cb1-25"><a href="#cb1-25"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>],</span>
+<span id="cb1-26"><a href="#cb1-26"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-27"><a href="#cb1-27"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-28"><a href="#cb1-28"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>],</span>
+<span id="cb1-29"><a href="#cb1-29"></a>            [<span class="dv">63</span>,<span class="dv">22</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>],</span>
+<span id="cb1-30"><a href="#cb1-30"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-31"><a href="#cb1-31"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>],</span>
+<span id="cb1-32"><a href="#cb1-32"></a>            [<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">63</span>],</span>
+<span id="cb1-33"><a href="#cb1-33"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">62</span>],</span>
+<span id="cb1-34"><a href="#cb1-34"></a>            [<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>,<span class="dv">63</span>]]</span>
+<span id="cb1-35"><a href="#cb1-35"></a></span>
+<span id="cb1-36"><a href="#cb1-36"></a>screen <span class="op">=</span> turtle.Screen()</span>
+<span id="cb1-37"><a href="#cb1-37"></a>screen.setup(WIDTH, HEIGHT)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>screen.bgcolor(<span class="st">"#2b3e50"</span>)</span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a><span class="co"># Bildschirm-Refresh ausschalten</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a>screen.tracer(<span class="dv">0</span>)</span>
+<span id="cb1-42"><a href="#cb1-42"></a></span>
+<span id="cb1-43"><a href="#cb1-43"></a><span class="co"># Die Turtle-Bilder registrieren</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a>images <span class="op">=</span> [<span class="st">"wall1.png"</span>, <span class="st">"wizard.png"</span>, <span class="st">"chest.png"</span>, <span class="st">"key.png"</span>]</span>
+<span id="cb1-45"><a href="#cb1-45"></a><span class="cf">for</span> image <span class="kw">in</span> images:</span>
+<span id="cb1-46"><a href="#cb1-46"></a>  screen.addshape(image)</span>
+<span id="cb1-47"><a href="#cb1-47"></a></span>
+<span id="cb1-48"><a href="#cb1-48"></a><span class="kw">class</span> Player(turtle.Turtle):</span>
+<span id="cb1-49"><a href="#cb1-49"></a>  </span>
+<span id="cb1-50"><a href="#cb1-50"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-51"><a href="#cb1-51"></a>    turtle.Turtle.<span class="fu">__init__</span>(<span class="va">self</span>)</span>
+<span id="cb1-52"><a href="#cb1-52"></a>    <span class="va">self</span>.penup()</span>
+<span id="cb1-53"><a href="#cb1-53"></a>    <span class="va">self</span>.right(<span class="dv">270</span>)</span>
+<span id="cb1-54"><a href="#cb1-54"></a>    <span class="va">self</span>.shape(<span class="st">"wizard.png"</span>)</span>
+<span id="cb1-55"><a href="#cb1-55"></a>    <span class="va">self</span>.speed(<span class="dv">0</span>)</span>
+<span id="cb1-56"><a href="#cb1-56"></a>    <span class="va">self</span>.gold <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-57"><a href="#cb1-57"></a>    </span>
+<span id="cb1-58"><a href="#cb1-58"></a>  <span class="co"># Player Movement</span></span>
+<span id="cb1-59"><a href="#cb1-59"></a>  <span class="kw">def</span> go_up(<span class="va">self</span>):</span>
+<span id="cb1-60"><a href="#cb1-60"></a>    next_x, next_y <span class="op">=</span> <span class="va">self</span>.xcor(), <span class="va">self</span>.ycor() <span class="op">+</span> TILESIZE</span>
+<span id="cb1-61"><a href="#cb1-61"></a>    <span class="cf">if</span> (next_x, next_y) <span class="kw">not</span> <span class="kw">in</span> walls:</span>
+<span id="cb1-62"><a href="#cb1-62"></a>      <span class="va">self</span>.goto(next_x, next_y)</span>
+<span id="cb1-63"><a href="#cb1-63"></a>    </span>
+<span id="cb1-64"><a href="#cb1-64"></a>  <span class="kw">def</span> go_down(<span class="va">self</span>):</span>
+<span id="cb1-65"><a href="#cb1-65"></a>    next_x, next_y <span class="op">=</span> <span class="va">self</span>.xcor(), <span class="va">self</span>.ycor() <span class="op">-</span> TILESIZE</span>
+<span id="cb1-66"><a href="#cb1-66"></a>    <span class="cf">if</span> (next_x, next_y) <span class="kw">not</span> <span class="kw">in</span> walls:</span>
+<span id="cb1-67"><a href="#cb1-67"></a>      <span class="va">self</span>.goto(next_x, next_y)</span>
+<span id="cb1-68"><a href="#cb1-68"></a>    </span>
+<span id="cb1-69"><a href="#cb1-69"></a>  <span class="kw">def</span> go_left(<span class="va">self</span>):</span>
+<span id="cb1-70"><a href="#cb1-70"></a>    next_x, next_y <span class="op">=</span> <span class="va">self</span>.xcor() <span class="op">-</span> TILESIZE, <span class="va">self</span>.ycor()</span>
+<span id="cb1-71"><a href="#cb1-71"></a>    <span class="cf">if</span> (next_x, next_y) <span class="kw">not</span> <span class="kw">in</span> walls:</span>
+<span id="cb1-72"><a href="#cb1-72"></a>      <span class="va">self</span>.goto(next_x, next_y)</span>
+<span id="cb1-73"><a href="#cb1-73"></a>    </span>
+<span id="cb1-74"><a href="#cb1-74"></a>  <span class="kw">def</span> go_right(<span class="va">self</span>):</span>
+<span id="cb1-75"><a href="#cb1-75"></a>    next_x, next_y <span class="op">=</span> <span class="va">self</span>.xcor() <span class="op">+</span> TILESIZE, <span class="va">self</span>.ycor()</span>
+<span id="cb1-76"><a href="#cb1-76"></a>    <span class="cf">if</span> (next_x, next_y) <span class="kw">not</span> <span class="kw">in</span> walls:</span>
+<span id="cb1-77"><a href="#cb1-77"></a>      <span class="va">self</span>.goto(next_x, next_y)</span>
+<span id="cb1-78"><a href="#cb1-78"></a>      </span>
+<span id="cb1-79"><a href="#cb1-79"></a>  <span class="co"># Kollisionserkennung (Pythagoras)</span></span>
+<span id="cb1-80"><a href="#cb1-80"></a>  <span class="kw">def</span> is_collision(<span class="va">self</span>, other):</span>
+<span id="cb1-81"><a href="#cb1-81"></a>    a <span class="op">=</span> <span class="va">self</span>.xcor() <span class="op">-</span> other.xcor()</span>
+<span id="cb1-82"><a href="#cb1-82"></a>    b <span class="op">=</span> <span class="va">self</span>.ycor() <span class="op">-</span> other.ycor()</span>
+<span id="cb1-83"><a href="#cb1-83"></a>    distance <span class="op">=</span> math.sqrt((a<span class="op">**</span><span class="dv">2</span>) <span class="op">+</span> (b<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb1-84"><a href="#cb1-84"></a>    <span class="cf">if</span> distance <span class="op">&lt;</span> <span class="dv">5</span>:</span>
+<span id="cb1-85"><a href="#cb1-85"></a>      <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-86"><a href="#cb1-86"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-87"><a href="#cb1-87"></a>      <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb1-88"><a href="#cb1-88"></a></span>
+<span id="cb1-89"><a href="#cb1-89"></a><span class="kw">class</span> Wall(turtle.Turtle):</span>
+<span id="cb1-90"><a href="#cb1-90"></a>  </span>
+<span id="cb1-91"><a href="#cb1-91"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-92"><a href="#cb1-92"></a>    turtle.Turtle.<span class="fu">__init__</span>(<span class="va">self</span>)</span>
+<span id="cb1-93"><a href="#cb1-93"></a>    <span class="va">self</span>.penup()</span>
+<span id="cb1-94"><a href="#cb1-94"></a>    <span class="va">self</span>.shape(<span class="st">"wall1.png"</span>)</span>
+<span id="cb1-95"><a href="#cb1-95"></a>    <span class="va">self</span>.speed(<span class="dv">0</span>)</span>
+<span id="cb1-96"><a href="#cb1-96"></a></span>
+<span id="cb1-97"><a href="#cb1-97"></a><span class="kw">class</span> Chest(turtle.Turtle):</span>
+<span id="cb1-98"><a href="#cb1-98"></a>  </span>
+<span id="cb1-99"><a href="#cb1-99"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb1-100"><a href="#cb1-100"></a>    turtle.Turtle.<span class="fu">__init__</span>(<span class="va">self</span>)</span>
+<span id="cb1-101"><a href="#cb1-101"></a>    <span class="va">self</span>.penup()</span>
+<span id="cb1-102"><a href="#cb1-102"></a>    <span class="va">self</span>.right(<span class="dv">270</span>)</span>
+<span id="cb1-103"><a href="#cb1-103"></a>    <span class="va">self</span>.shape(<span class="st">"chest.png"</span>)</span>
+<span id="cb1-104"><a href="#cb1-104"></a>    <span class="va">self</span>.speed(<span class="dv">0</span>)</span>
+<span id="cb1-105"><a href="#cb1-105"></a>    <span class="va">self</span>.gold <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb1-106"><a href="#cb1-106"></a>    <span class="va">self</span>.goto(_x, _y)</span>
+<span id="cb1-107"><a href="#cb1-107"></a>  </span>
+<span id="cb1-108"><a href="#cb1-108"></a>  <span class="kw">def</span> destroy(<span class="va">self</span>):</span>
+<span id="cb1-109"><a href="#cb1-109"></a>    <span class="va">self</span>.goto(<span class="dv">2000</span>, <span class="dv">2000</span>)</span>
+<span id="cb1-110"><a href="#cb1-110"></a>    <span class="va">self</span>.hideturtle()</span>
+<span id="cb1-111"><a href="#cb1-111"></a>  </span>
+<span id="cb1-112"><a href="#cb1-112"></a>levels <span class="op">=</span> []</span>
+<span id="cb1-113"><a href="#cb1-113"></a>levels.append(maze_map_0)</span>
+<span id="cb1-114"><a href="#cb1-114"></a></span>
+<span id="cb1-115"><a href="#cb1-115"></a><span class="kw">def</span> setup_maze(level):</span>
+<span id="cb1-116"><a href="#cb1-116"></a>  <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(level)):</span>
+<span id="cb1-117"><a href="#cb1-117"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(level[y])):</span>
+<span id="cb1-118"><a href="#cb1-118"></a>      <span class="co"># Get the mumber of every item in the mace</span></span>
+<span id="cb1-119"><a href="#cb1-119"></a>      item_number <span class="op">=</span> level[y][x]</span>
+<span id="cb1-120"><a href="#cb1-120"></a>      <span class="co"># Berechne die Bildschirmkoordinaten</span></span>
+<span id="cb1-121"><a href="#cb1-121"></a>      screen_x <span class="op">=</span> <span class="op">-</span><span class="dv">192</span> <span class="op">+</span> (x<span class="op">*</span>TILESIZE)</span>
+<span id="cb1-122"><a href="#cb1-122"></a>      screen_y <span class="op">=</span>  <span class="dv">192</span> <span class="op">-</span> (y<span class="op">*</span>TILESIZE)</span>
+<span id="cb1-123"><a href="#cb1-123"></a>      </span>
+<span id="cb1-124"><a href="#cb1-124"></a>      <span class="co"># Prüfe, ob Item ein Wall ist</span></span>
+<span id="cb1-125"><a href="#cb1-125"></a>      <span class="cf">if</span> item_number <span class="op">==</span> WALL:</span>
+<span id="cb1-126"><a href="#cb1-126"></a>        wall.goto(screen_x, screen_y)</span>
+<span id="cb1-127"><a href="#cb1-127"></a>        wall.stamp()</span>
+<span id="cb1-128"><a href="#cb1-128"></a>        walls.append((screen_x, screen_y))</span>
+<span id="cb1-129"><a href="#cb1-129"></a>        </span>
+<span id="cb1-130"><a href="#cb1-130"></a>      <span class="co"># Prüfe, ob Item der Spieler ist</span></span>
+<span id="cb1-131"><a href="#cb1-131"></a>      <span class="cf">if</span> item_number <span class="op">==</span> PLAYER:</span>
+<span id="cb1-132"><a href="#cb1-132"></a>        player.goto(screen_x, screen_y)</span>
+<span id="cb1-133"><a href="#cb1-133"></a>        </span>
+<span id="cb1-134"><a href="#cb1-134"></a>      <span class="co"># Prüfe, ob Item eine Schatztrue ist</span></span>
+<span id="cb1-135"><a href="#cb1-135"></a>      <span class="cf">if</span> item_number <span class="op">==</span> CHEST:</span>
+<span id="cb1-136"><a href="#cb1-136"></a>        chests.append(Chest(screen_x, screen_y))</span>
+<span id="cb1-137"><a href="#cb1-137"></a></span>
+<span id="cb1-138"><a href="#cb1-138"></a>wall <span class="op">=</span> Wall()</span>
+<span id="cb1-139"><a href="#cb1-139"></a>walls <span class="op">=</span> []</span>
+<span id="cb1-140"><a href="#cb1-140"></a>chests <span class="op">=</span> []</span>
+<span id="cb1-141"><a href="#cb1-141"></a>player <span class="op">=</span> Player()</span>
+<span id="cb1-142"><a href="#cb1-142"></a></span>
+<span id="cb1-143"><a href="#cb1-143"></a><span class="co"># Level Setup</span></span>
+<span id="cb1-144"><a href="#cb1-144"></a>setup_maze(levels[<span class="dv">0</span>])</span>
+<span id="cb1-145"><a href="#cb1-145"></a></span>
+<span id="cb1-146"><a href="#cb1-146"></a><span class="co"># Das Spiel beenden</span></span>
+<span id="cb1-147"><a href="#cb1-147"></a><span class="kw">def</span> exit_game():</span>
+<span id="cb1-148"><a href="#cb1-148"></a>  <span class="kw">global</span> keep_going</span>
+<span id="cb1-149"><a href="#cb1-149"></a>  <span class="bu">print</span>(<span class="st">"Bye, bye, Baby"</span>)</span>
+<span id="cb1-150"><a href="#cb1-150"></a>  keep_going <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-151"><a href="#cb1-151"></a></span>
+<span id="cb1-152"><a href="#cb1-152"></a><span class="co"># Auf Tastaturereignisse lauschen</span></span>
+<span id="cb1-153"><a href="#cb1-153"></a>screen.listen()</span>
+<span id="cb1-154"><a href="#cb1-154"></a>screen.onkey(player.go_up, <span class="st">"Up"</span>)</span>
+<span id="cb1-155"><a href="#cb1-155"></a>screen.onkey(player.go_down, <span class="st">"Down"</span>)</span>
+<span id="cb1-156"><a href="#cb1-156"></a>screen.onkey(player.go_left, <span class="st">"Left"</span>)</span>
+<span id="cb1-157"><a href="#cb1-157"></a>screen.onkey(player.go_right, <span class="st">"Right"</span>)</span>
+<span id="cb1-158"><a href="#cb1-158"></a></span>
+<span id="cb1-159"><a href="#cb1-159"></a>screen.onkey(exit_game, <span class="st">"q"</span>)   <span class="co"># Das Spiel beenden</span></span>
+<span id="cb1-160"><a href="#cb1-160"></a></span>
+<span id="cb1-161"><a href="#cb1-161"></a><span class="co"># Spiel starten</span></span>
+<span id="cb1-162"><a href="#cb1-162"></a><span class="bu">print</span>(<span class="st">"🧙 Simple Maze Game Stage 1 🧙"</span>)</span>
+<span id="cb1-163"><a href="#cb1-163"></a>keep_going <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-164"><a href="#cb1-164"></a><span class="cf">while</span> keep_going:</span>
+<span id="cb1-165"><a href="#cb1-165"></a>  <span class="co"># Hat der Spieler eine Schatzkiste gefunden?</span></span>
+<span id="cb1-166"><a href="#cb1-166"></a>  <span class="cf">for</span> chest <span class="kw">in</span> chests:</span>
+<span id="cb1-167"><a href="#cb1-167"></a>    <span class="cf">if</span> player.is_collision(chest):</span>
+<span id="cb1-168"><a href="#cb1-168"></a>      player.gold <span class="op">+=</span> chest.gold</span>
+<span id="cb1-169"><a href="#cb1-169"></a>      <span class="bu">print</span>(<span class="st">"Player Gold: </span><span class="sc">{}</span><span class="st">"</span>.<span class="bu">format</span>(player.gold))</span>
+<span id="cb1-170"><a href="#cb1-170"></a>      <span class="co"># Verberge die Schatzkiste</span></span>
+<span id="cb1-171"><a href="#cb1-171"></a>      chest.destroy()</span>
+<span id="cb1-172"><a href="#cb1-172"></a>      <span class="co"># Lösche die Schatzkiste aus der Liste</span></span>
+<span id="cb1-173"><a href="#cb1-173"></a>      chests.remove(chest)</span>
+<span id="cb1-174"><a href="#cb1-174"></a>  <span class="co"># Ist der Spieler dem Labyrint entkommen?</span></span>
+<span id="cb1-175"><a href="#cb1-175"></a>  <span class="cf">if</span> player.xcor() <span class="op">&gt;</span> <span class="dv">192</span>:</span>
+<span id="cb1-176"><a href="#cb1-176"></a>    <span class="bu">print</span>(<span class="st">"**Gewonen!**"</span>)</span>
+<span id="cb1-177"><a href="#cb1-177"></a>    exit_game()</span>
+<span id="cb1-178"><a href="#cb1-178"></a>    </span>
+<span id="cb1-179"><a href="#cb1-179"></a>  screen.update()   <span class="co"># den gesamten Bildschirm neu zeichnen</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Natürlich gibt es das <a href="https://trinket.io/library/trinkets/46a2d36061">Spiel als Trinket</a> und den <a href="https://github.com/kantel/trinket/tree/main/maze_game/stage1/mazegame1">Quellcode und alle bisher benutzten Bildchen</a> habe ich auch auf GitHub hochgeladen.</p>
+<p>Bisher habe ich nur eine vage Vorstellung davon, wie ich weitermachen soll. Ich bin daher mindestens genau so gespannt wie Ihr, wohin die Reise geht. <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich kann auch dies nicht oft genug wiederholen: <em><a href="https://christianthompson.com/">Christian Thompson</a></em> aka <em>Tokyo Edtech</em> ist der Mann, der Unglaubliches mit <a href="https://docs.python.org/3/library/turtle.html">Pythons (Standard-) Turtle</a> anstellt.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Ich weiß, es ist strenggenommen kein <a href="https://de.wikipedia.org/wiki/Labyrinth">Labyrint</a>, sondern ein <a href="https://de.wikipedia.org/wiki/Irrgarten">Irrgarten</a>. Aber da im Deutschen beide Begriffe oft synonym verwendet werden, habe auch ich mir diese kleine, sprachliche Ungenauigkeit erlaubt.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Falls mir dann dennoch die Bildchen ausgehen sollten: Auch Kenneys <a href="https://www.kenney.nl/assets/pixel-platformer">Pixel Plattformer</a> paßt von der Anmutung her noch gut in diese Sammlung.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
