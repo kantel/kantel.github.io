@@ -1,0 +1,33 @@
+---
+title: "Bug in Trinkets Turtle: Kein »ontimer()«"
+author: "Jörg Kantel"
+date: "2023-03-11 19:45:00"
+categories: [Python, Trinket, Turtle, Thonny, Spieleprogrammierung]
+image: "images/mazegameturtlethonny.jpg"
+---
+
+[![](images/mazegameturtlethonny-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52739945807/)
+
+Es hatte seinen Grund, warum es die letzten zwei Tage hier im ~~Blog~~ Kritzelheft so ruhig war. Ich hatte nämlich weiter mit [Trinkets](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) Turtle an meinem [Maze Game](https://kantel.github.io/posts/2023030601_maze_game_2/) gebastelt und bin über einen fetten Bug gestolpert, der sich leider auch nicht fixen ließ. Denn die Methode `turtle.ontimer()` ist zwar implementiert, funktioniert aber nicht, wie sie sollte.
+
+Setzt man zum Beispiel mit 
+
+~~~python
+for enemy in enemies:
+  screen.ontimer(enemy.move, random.randint(100, 300))
+~~~
+
+einen Timer, dann sollte dieser für **alle** Enemies in dieser Liste funktionieren. Aber in Trinket wirkt er nur auf das erste Element der Liste, das diesen Timer aufruft, während alle anderen Enemies bewegungslos verharren. Natürlich habe ich mit
+
+~~~python
+    # Reset timer  
+    screen.ontimer(self.move, random.randint(100, 300))
+~~~
+
+jeden Timer auch wieder zurückgesetzt, nachdem er konsumiert wurde, aber Trinkets Schildkröte ließ sich davon nicht beeindrucken. Sie dachte wohl: Einmal konsumiert, ist konsumiert, was kümmern mich die anderen Elemente der Liste.
+
+Ich habe Stunden gebraucht, weil ich verständlicherweise den Fehler bei mir vermutete. Erst nachdem ich das Programm Eins-zu-Eins nach Thonny übertragen hatte und es dort (nachdem ich vorher noch alle `.png` nach `.gif` konvertierte) mit Pythons [System-Turtle](https://docs.python.org/3/library/turtle.html) problemlos ohne weitere Änderungen lief (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/52739945807/)), glaubte ich daran, daß der Fehler doch bei Trinket liegt.
+
+Das ist natürlich ein absoluter Game-Stopper. Auf der anderen Seite hatte mir aber die Spielerei mit der Turtle riesigen Spaß gemacht und ich möchte sie fortführen. Daher werde ich mich erst einmal von Trinket abwenden und wieder mit [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) und der Schildkröte in meinem Systempython spielen. Schließlich habe ich auch diese Kombination auf [meinem Chromebook](http://blog.schockwellenreiter.de/2021/12/2021120701.html) zur [Mitarbeit bewegen](http://blog.schockwellenreiter.de/2022/07/2022071501.html) können. Dafür muß ich in meinen Trinket-Dateien eigentlich nur die Einrückungen korrigieren (Trinket rückt immer nur um zwei statt der Python-üblichen vier Stellen ein).
+
+Auf der anderen Seite sollte ich aber auch den [vorgestern vorgestellten](https://kantel.github.io/posts/2023030902_codeguppy_alternative/) Webeditor von [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) nicht aus den Augen verlieren. Schaun wir daher mal, was die Zukunft bringen wird. *Still digging!*
