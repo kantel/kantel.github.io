@@ -1,0 +1,366 @@
+---
+title: "Alles auf Anfang: Maze Game mit der Turtle in System-Python"
+author: "Jörg Kantel"
+date: "2023-03-12 18:00:00"
+categories: [Python, Turtle, Thonny, Spieleprogrammierung]
+image: "images/mazegamesyspython.jpg"
+---
+
+[![](images/mazegamesyspython-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52742619896/)
+
+Nachdem meine Experimente mit einem [Maze Game in Trinket](https://kantel.github.io/posts/2023030601_maze_game_2/) wegen eines [Bugs im dortigen Turtle-Modul](https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/) ein plötzliches Ende genommen hatten, mußte und wollte ich dennoch weitermachen. Wie gestern schon angekündigt, drängte sich die [Turtle aus Pythons Standard-Bibliothek](https://docs.python.org/3/library/turtle.html) geradezu auf, da außer dem Korrigieren der Einrückungen nur minimale Änderungen am Quellcode notwendig waren.
+
+Also habe ich erst einmal das, was ich bisher mit Trinket angestellt und noch nicht veröffentlicht hatte, via [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) -- meiner derzeit bevorzugten Python-IDE -- ins System-Python übertragen. Und das war schon eine ganze Menge. So hatte ich einmal das Labyrinth (genauer: den Irrgarten) überarbeitet, so daß es mehr Wege und Versteckmöglichkeiten gab. Darin hatte ich zum einen zehn Schatzkisten mit je 100 Goldstücken und einen Schlüssel versteckt.
+
+Der Schlüssel -- auch das ist neu -- öffnete eine Tür, die dem Spieler das Verlassen des Labyrinths ermöglicht. Ob damit das Spiel gewonnen ist oder die Tür zu einem neuen Level geöffnet wird, ist für spätere Versionen offen gehalten[^1].
+
+[^1]: In der derzeitigen Fassung beendet es erst einmal das Spiel, egal ob und wenn ja wie oft der Spieler vorher gestorben ist. Dabei muß -- das ist eine Eigenart von Thonny -- das Spiel noch explizit mit dem »Stop«-Button des Editors beendet werden, ein manuelles Schlißen des Fensters wird mit einer häßlichen Fehlermeldung bestraft. Wird das Programm hingegen aus einer anderen Umgebung aufgerufen (ich habe das mit [TextMate](http://cognitiones.kantel-chaos-team.de/produktivitaet/textmate.html) getestet), beendet das Programm ohne Meckererei.
+
+Um dem Programm die je nach Texteditor/IDE unterschiedliche Behandlung der Assets zu ermöglichen, habe ich den Pfad zu den Assets gesetzt:
+
+~~~python
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "data")
+
+wall = os.path.join(DATAPATH, "wall1.gif")
+wizard = os.path.join(DATAPATH, "wizard.gif")
+enemy = os.path.join(DATAPATH, "enemy.gif")
+chest = os.path.join(DATAPATH, "chest.gif")
+key = os.path.join(DATAPATH, "key.gif")
+door_open = os.path.join(DATAPATH, "door_open.gif")
+door_closed = os.path.join(DATAPATH, "door_closed.gif")
+
+# Die Turtle-Bilder registrieren
+images = [wall, wizard, enemy, chest, key, door_open, door_closed]
+for img in images:
+    screen.register_shape(img)
+~~~
+
+Daher darf nicht vergessen werden, zu Beginn des Skripts das Modul `os` zu importieren. 
+
+Und schließlich habe ich dem Spiel auch noch fünf Gegner spendiert. In der derzeitigen Fassung laufen sie einfach stur geradeaus, bis sie auf ein Hindernis stoßen. Dann wird einfach per Zufall eine neue Bewegungsrichtung ausgesucht und die Gegner setzen mit der gleichen stoischen Gelassenheit ihren Weg in die neue Richtung fort.
+
+Doch hier kommt ins Spiel, warum mir die Methode `Screen.ontimer()` so wichtig war. Im Gegensatz zum Beispiel zu [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html) ([.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html)/[Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html)) oder [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) ([Zero](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html)) besitzt das Turtle-Modul keine »Hauptschleife«, die mit einem eingebauten Timer und *frame per second* (FPS) getaktet wird[^2]. Ohne einen Timer würden die Gegner daher viel zu schnell über den Monitor huschen[^3]. Das war schon bei meinem [»Space War Game« mit Trinkets Turtle](https://kantel.github.io/posts/2023030201_space_war_trinket/) ein Problem -- die Geschwindigkeit mit der sich die Spielfiguren dort bewegten, hing von der Leistungsfähigkeit des Rechners ab[^4].
+
+[^2]: Zwar gibt es eine Methode `turtle.mainloop()`, die verhindert aber einfach nur, daß das Turtle-Fenster nach Ablauf des Programms sofort geschlossen wird. Sie besitzt daher keinen Timer.
+
+[^3]: Die Bewegungen des Spieler werden durch die *Keyboard Events* getaktet.
+
+[^4]: Das habe ich einfach dadurch ignoriert, daß bei jeder Implementierung eine eigene `sprite.speed` Geschwindigkeit implementiert werden konnte. Bei einem leistungsstarken Rechner mußte diese vom Programmierer herabgesetzt werden. Aber das ist natürlich keine echte Lösung.
+
+Die Methode `turtle.ontimer()` impementiert hingegen einen Timer, der unabhängig von der Leistungsfähigkeit des Rechners die Geschwindigkeit nach Zeitintervallen in Millisekunden bestimmt. Eine Besonderheit dieser Methode ist, daß sie nach Gebrauch »konsumiert« ist. Sie muß daher je Verbraucher mehrmals implementiert werden. Einmal zum Star des Programms:
+
+~~~python
+# Timer setzen
+for enemy in enemies:
+    screen.ontimer(enemy.move, random.randint(100, 300))
+~~~
+
+Und dann zum Ende jeder `enemy.move()`-Methode erneut aufgerufen werden:
+
+~~~python
+        # Reset timer  
+        screen.ontimer(self.move, random.randint(100, 300))
+~~~
+
+Und dabei hatte Trinkets Turtle versagt. (Zur Ehrenrettung von Trinket sollte ich allerdings nicht vergessen zu erwähnen, daß die `ontimer()`-Methode in Trinkets Turtle auch nicht dokumentiert ist).
+
+Hier jetzt erst einmal der vollständige Quellcode (mit (hoffentlich) korrekten Einrückungen) meiner Standard-Python Fassung:
+
+~~~python
+import turtle, math
+import random
+import os
+
+WIDTH, HEIGHT = 440, 440
+WALL   = 63
+DOOR   = 62
+CHEST  = 22
+KEY    = 23
+PLAYER = 10
+ENEMY  = 12
+TILESIZE = 16
+
+maze_map_0 = [[63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63],
+            [63,10,-1,63,22,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63,-1,-1,-1,63],
+            [63,-1,-1,63,63,63,63,63,63,63,-1,-1,63,63,63,63,63,63,-1,-1,63,-1,-1,-1,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,63,63,-1,-1,63,22,63,63,63,63,-1,-1,63,63,63,-1,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,63,63,-1,-1,63,-1,63,-1,-1,-1,-1,12,-1,-1,-1,-1,63],
+            [63,63,63,63,63,63,-1,-1,63,63,-1,-1,63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63,63],
+            [63,-1,-1,-1,-1,63,-1,-1,63,63,-1,-1,63,63,63,63,63,63,-1,-1,63,63,-1,63,63],
+            [63,63,63,63,-1,63,-1,-1,63,63,-1,-1,-1,-1,63,-1,22,63,-1,-1,63,-1,-1,63,63],
+            [63,23,-1,63,-1,63,-1,-1,-1,-1,-1,-1,-1,-1,63,-1,-1,63,22,-1,63,-1,-1,63,63],
+            [63,-1,-1,63,-1,63,-1,-1,63,63,63,63,63,63,63,-1,-1,63,63,63,63,-1,-1,-1,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,-1,-1,63,63,63,63,63,-1,63,63,-1,-1,-1,-1,-1,-1,63],
+            [63,12,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63,-1,12,-1,63,63,63,63],
+            [63,63,63,63,63,63,63,63,63,63,63,63,-1,-1,-1,-1,-1,63,-1,-1,-1,63,-1,22,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,-1,-1,22,63,63,63,63,-1,-1,63,-1,63,63,63,-1,-1,63],
+            [63,-1,63,63,63,63,63,63,63,63,63,63,63,63,63,-1,-1,-1,-1,-1,-1,-1,-1,-1,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63,63,63,63,63,63,63,63,63,63,63,63,63],
+            [63,63,63,63,63,-1,63,63,63,63,-1,-1,63,63,63,63,63,63,63,63,63,63,-1,22,63],
+            [63,63,63,63,63,-1,-1,-1,-1,63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,12,-1,63],
+            [63,22,-1,-1,63,-1,-1,-1,-1,63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63],
+            [63,-1,-1,-1,63,63,63,-1,22,63,63,63,63,63,63,63,63,63,-1,-1,63,63,63,63,63],
+            [63,-1,12,-1,-1,-1,63,63,63,63,63,63,63,22,-1,-1,-1,63,-1,-1,63,63,63,63,63],
+            [63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,63,63,63,63,-1,63,-1,-1,-1,-1,-1,-1,63],
+            [63,63,63,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,62],
+            [63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63,63]]
+
+screen = turtle.Screen()
+screen.setup(WIDTH, HEIGHT)
+screen.title("🧙 Simple Maze Game Stage 3 🧙")
+screen.bgcolor("#2b3e50")
+
+# Bildschirm-Refresh ausschalten
+screen.tracer(0)
+
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       "ata")
+
+wall = os.path.join(DATAPATH, "wall1.gif")
+wizard = os.path.join(DATAPATH, "wizard.gif")
+enemy = os.path.join(DATAPATH, "enemy.gif")
+chest = os.path.join(DATAPATH, "chest.gif")
+key = os.path.join(DATAPATH, "key.gif")
+door_open = os.path.join(DATAPATH, "door_open.gif")
+door_closed = os.path.join(DATAPATH, "door_closed.gif")
+
+# Die Turtle-Bilder registrieren
+images = [wall, wizard, enemy, chest, key, door_open, door_closed]
+for img in images:
+    screen.register_shape(img)
+
+class Sprite(turtle.Turtle):
+  
+    def __init__(self):
+        turtle.Turtle.__init__(self)
+        self.penup()
+        self.right(270)
+        self.speed(0)
+
+  # Kollisionserkennung (Pythagoras)
+    def is_collision(self, other):
+        a = self.xcor() - other.xcor()
+        b = self.ycor() - other.ycor()
+        distance = math.sqrt((a**2) + (b**2))
+        if distance < 5:
+            return True
+        else:
+            return False
+
+    def destroy(self):
+        self.goto(2000, 2000)
+        self.hideturtle()
+
+class Player(Sprite):
+  
+    def __init__(self):
+        Sprite.__init__(self)
+        # self.start_x, self.start_y = 0, 0
+        self.shape(wizard)
+        self.gold = 0
+        self.has_key = False
+    
+    # Player Movement
+    def go_up(self):
+        next_x, next_y = self.xcor(), self.ycor() + TILESIZE
+        if (next_x, next_y) not in walls:
+            self.goto(next_x, next_y)
+
+    def go_down(self):
+        next_x, next_y = self.xcor(), self.ycor() - TILESIZE
+        if (next_x, next_y) not in walls:
+            self.goto(next_x, next_y)
+
+    def go_left(self):
+        next_x, next_y = self.xcor() - TILESIZE, self.ycor()
+        if (next_x, next_y) not in walls:
+            self.goto(next_x, next_y)
+
+    def go_right(self):
+        next_x, next_y = self.xcor() + TILESIZE, self.ycor()
+        if (next_x, next_y) not in walls:
+            self.goto(next_x, next_y)
+
+class Enemy(Sprite):
+  
+    def __init__(self, _x, _y):
+        Sprite.__init__(self)
+        self.shape(enemy)
+        self.x = _x
+        self.y = _y
+        self.goto(self.x, self.y)
+        self.direction = random.choice(["up", "down", "left", "right"])
+
+    # Enemy Movement  
+    def move(self):
+        if self.direction == "up":
+            next_x, next_y = self.xcor(), self.ycor() + TILESIZE
+        elif self.direction == "down":
+            next_x, next_y = self.xcor(), self.ycor() - TILESIZE
+        elif self.direction == "left":
+            next_x, next_y = self.xcor() - TILESIZE, self.ycor()
+        elif self.direction == "right":
+            next_x, next_y = self.xcor() + TILESIZE, self.ycor()
+  
+        if (next_x, next_y) not in walls:
+            self.goto(next_x, next_y)
+        else:
+            self.direction = random.choice(["up", "down", "left", "right"])
+  
+        # Reset timer  
+        screen.ontimer(self.move, random.randint(100, 300))
+
+class Wall(Sprite):
+  
+    def __init__(self):
+        Sprite.__init__(self)
+        self.shape(wall)
+    
+class Door(Sprite):
+  
+    def __init__(self, _x, _y):
+        Sprite.__init__(self)
+        self.shape(door_closed)
+        self.x = _x
+        self.y = _y
+        self.goto(self.x, self.y)
+
+class Chest(Sprite):
+  
+    def __init__(self, _x, _y):
+        Sprite.__init__(self)
+        self.shape(chest)
+        self.goto(_x, _y)
+        self.gold = 100
+    
+  
+class Key(Sprite):
+  
+    def __init__(self, _x, _y):
+        Sprite.__init__(self)
+        self.shape(key)
+        self.goto(_x, _y)
+  
+levels = []
+levels.append(maze_map_0)
+
+def setup_maze(level):
+    for y in range(len(level)):
+        for x in range(len(level[y])):
+            # Get the mumber of every item in the mace
+            item_number = level[y][x]
+            # Berechne die Bildschirmkoordinaten
+            screen_x = -192 + (x*TILESIZE)
+            screen_y =  192 - (y*TILESIZE)
+      
+            # Prüfe, ob Item ein Wall ist
+            if item_number == WALL:
+                wall.goto(screen_x, screen_y)
+                wall.stamp()
+                walls.append((screen_x, screen_y))
+        
+            # Prüfe, ob Item eine Tür ist
+            if item_number == DOOR:
+                door = Door(screen_x, screen_y)
+                doors.append(door)
+                walls.append((door.x, door.y))
+
+            # Prüfe, ob Item der Spieler ist
+            if item_number == PLAYER:
+                player.start_x = screen_x
+                player.start_y = screen_y
+                player.goto(screen_x, screen_y)
+        
+            # Prüfe, ob Item ein Enemy ist
+            if item_number == ENEMY:
+                enemy = Enemy(screen_x, screen_y)
+                enemies.append(enemy)
+
+            # Prüfe, ob Item eine Schatztrue ist
+            if item_number == CHEST:
+                chests.append(Chest(screen_x, screen_y))
+        
+            # Prüfe, ob Item eine Schlüssel ist
+            if item_number == KEY:
+                keys.append(Key(screen_x, screen_y))
+
+wall = Wall()
+walls = []
+doors = []
+chests = []
+keys = []
+player = Player()
+enemies = []
+
+# Level Setup
+setup_maze(levels[0])
+# print(enemies)
+
+# Das Spiel beenden
+def exit_game():
+    global keep_going
+    print("Bye, bye, Baby")
+    keep_going = False
+
+# Auf Tastaturereignisse lauschen
+screen.listen()
+screen.onkey(player.go_up, "Up")
+screen.onkey(player.go_down, "Down")
+screen.onkey(player.go_left, "Left")
+screen.onkey(player.go_right, "Right")
+
+screen.onkey(exit_game, "q")   # Das Spiel beenden
+
+# Spiel starten
+print("🧙 Start Simple Maze Game Stage 3 🧙")
+
+# Timer setzen
+for enemy in enemies:
+    screen.ontimer(enemy.move, random.randint(100, 300))
+
+keep_going = True
+while keep_going:
+    # Hat der Spieler eine Schatzkiste gefunden?
+    for chest in chests:
+        if player.is_collision(chest):
+            player.gold += chest.gold
+            print("Player Gold: {}".format(player.gold))
+            # Verberge die Schatzkiste
+            chest.destroy()
+            # Lösche die Schatzkiste aus der Liste
+            chests.remove(chest)
+    # Hat der Spieler einen Schlüssel gefunden?
+    for key in keys:
+        if player.is_collision(key):
+            player.has_key = True
+            for door in doors:
+                door.shape(door_open)
+                walls.remove((door.x, door.y))
+            print("Spieler besitzt einen Schlüssel")
+            # Verberge den Schlüssel
+            key.destroy()
+            # Lösche den Schlüssel aus der Liste
+            keys.remove(key)
+  
+    # Kollidiert der Spieler mit einem Gegner?
+    for enemy in enemies:
+        if player.is_collision(enemy):
+            player.goto(player.start_x, player.start_y)
+            print("Player stirbt!")
+  
+    # Ist der Spieler dem Labyrint entkommen?
+    if player.xcor() >= 192:
+        player.goto(player.xcor() - TILESIZE, player.ycor())
+        print("**Gewonnen!**")
+        exit_game()
+    
+    screen.update()   # den gesamten Bildschirm neu zeichnen
+~~~
+
+Den Quellcode gibt es -- mit allen Assets -- wie immer [in meinem GitHub-Repositorium](https://github.com/kantel/turtlepy/tree/master/sources/mazegame). Und ebenfalls wie immer sollte ich auch die Herkunft der Assets nicht verschweigen. Sie stammen aus den freien ([CC0 Universal](https://github.com/kantel/turtlepy/tree/master/sources/mazegame)) [1-Bit-Pack](https://www.kenney.nl/assets/bit-pack) (Mauer-Tiles) und dem [Tiny Dungeon Tileset](https://kenney.nl/assets/tiny-dungeon) nebst der dazugehörenden [Tiny Town Erweiterung](https://kenney.nl/assets/tiny-town) von Kenney.nl.
+
+Und -- Ehre, wem Ehre gebührt -- die Idee zu diesem Maze Game habe ich von *[Christian Thompson](https://christianthompson.com/)* aka *Tokyo Edtech* [ausgeborgt](https://www.youtube.com/playlist?list=PLlEgNdBJEO-lNDJgg90fmfAq9RzORkQWP), dem Mann, der Unglaubliches aus Pythons Turtle herausholt.
+
+**What's next?** Ich werde auf jeden Fall noch einmal Anleihen bei *Christan Thompson* machen und den Gegnern ein wenig Intelligenz spendieren. Dann spiele ich mir dem Gedanken, das alles zu einem vollständigen RPG mit mereren Leveln aufzubohren. Schaun wir daher mal, was die Zukunft bringt. *Still digging!*
