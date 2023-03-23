@@ -1,0 +1,208 @@
+---
+title: "Pizza Plane OOP (Jetzt in Trinket)"
+author: "Jörg Kantel"
+date: "2023-03-23 19:45:00"
+categories: [Python, Processing, Trinket, Spieleprogrammierung]
+image: "images/pizzaplanetrinketstage2.jpg"
+---
+
+[![](images/pizzaplanetrinketstage2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52764154962/)
+
+Nein, ich habe [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) nicht aufgegeben. Denn meine Freude daran, Python (Spiele-) Skripte im Browser ausführen zu können, ist einfach zu groß, um das Teil wegen eines [kleinen Bugs](https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/) in einem nicht dokumentierten Feature einfach abzuschreiben. Daher habe ich gestern -- wie [angekündigt](https://kantel.github.io/posts/2023031703_gamedev_web_videotutorials/) -- damit begonnen, meinen kleinen Flieger im Kampf gegen die pösen Pizzas der pöseren Meloni von [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) nach Trinket ([in der Processing.py-Variante](https://kantel.github.io/posts/2023021601_my_first_trinket/)) zu portieren. Und der Port soll eine [komplett objektorientert](https://kantel.github.io/posts/2023010701_pygame_oop/) impementiert werden.
+
+In einer ersten Fassung habe ich den kleinen grünen Flieger vor einem endlos scrollenden Hintergrund schweben lassen. Während ich es in der Pygame Version schon genial fand, wie majestätisch der Flieger vor dem Hintergrund daherschwebt, könnt auch Ihr es als Trinket jetzt im Browser sehen:
+
+<iframe src="https://trinket.io/embed/python/59b16b155f?outputOnly=true&runOption=run&start=result" width="95%" height="700" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Da die Pfeiltasten im Browser problematisch sind (sie werden in der Regel zum Scrollen des Fensters mißbraucht), erfolgt die Interaktion des Spielers mir dem Flieger mit den Maustasten. Wenn die Maus über dem Spielefenster ist, bewegt sich der Flieger beim Klicken mit der linken Maustaste nach oben und mit der rechten nach unten[^1].
+
+[^1]: Später soll der Flieger noch beim Drücken der mittleren Maustaste auf die bösen Pizzen (und andere Gegner) Geschosse abfeuern können, doch dies -- wie auch die Gegner -- muß ich erst noch implementieren.
+
+Momentan besteht das Skript aus zwei Klassen: Einmal die Klasse `Background()`. Die ist für den gemächlich vorbeiziehenden, endlos scrollenden Hintergrund verantwortlich:
+
+~~~python
+class Background():
+  
+  def __init__(self, _x, _y):
+    self.x = _x
+    self.y = _y
+    self.start_x = _x
+    self.img = loadImage("desert.png")
+    
+  def update(self):
+    self.x -= 1
+    if self.x <= -BG_WIDTH:
+      self.x = BG_WIDTH
+  
+  def display(self):
+    image(self.img, self.x, self.y)
+~~~
+
+Die Klasse benötigt zwei Instanzen, die hintereinander am Spieler vorbeiziehen. Damit sie nicht überlappen, werden sie wie folgt initialisiert:
+
+~~~python
+  back1 = Background(0, 0)
+  back2 = Background(BG_WIDTH, 0)
+  backs.append(back1)
+  backs.append(back2)
+~~~
+
+Wenn eine Instanz rechts den Bildschirm verläßt, wird sie links an der anderen Instanz wieder »angeklebt«. Da das [Hintergrundbild](https://opengameart.org/content/seamless-desert-background-in-parts) von »PWL« ([CC0](http://creativecommons.org/publicdomain/zero/1.0/)) an beiden Enden nahtlos ineinander übergeht, entsteht so der Eindruck eines endlos vorbeigleitenden Hintergrunds.
+
+Die zweite Klasse ist die des Fliegers (`Plane()`), dessen Animation aus zwei Einzelbildern erzeugt wird:
+
+~~~python
+class Plane():
+  
+  def __init__(self):
+    self.images = []
+    for i in range(2):
+      img = loadImage("planegreen_" + str(i) + ".png")
+      self.images.append(img)
+    self.img = self.images[0]
+    self.x = 75
+    self.y = 240
+    self.dir = "NONE"
+    self.frame = 0
+    self.ani = 20
+  
+  def update(self):
+    if self.dir == "NONE":
+      self.y += 0
+    elif self.dir == "UP":
+      if self.y > 20:
+        self.y -= UPDOWN
+    elif self.dir == "DOWN":
+      if self.y < height - 40:
+        self.y += UPDOWN
+    self.ani += 1
+    if self.ani >= ANIM:
+      self.ani = 0
+      self.frame += 1
+      if self.frame > 1:
+        self.frame = 0
+    self.img = self.images[self.frame]
+      
+  def display(self):
+    image(self.img, self.x, self.y)
+~~~
+
+Das Bild des Fliegers, das ich [hier in das Projekt eingeführt hatte](https://kantel.github.io/posts/2023010102_pizzaplane4/), ist ebenfalls frei verwendbar (auch [CC0](http://creativecommons.org/publicdomain/zero/1.0/)) und ist aus der Sammlung »[Free Plane Sprite](https://opengameart.org/content/free-plane-sprite)« (ebenfalls von OpenGameArt.org). Der Pixelartist dieser Bildchen, *Zuhria Alfitra*, betreibt die Seite [Game Art 2D](https://www.gameart2d.com/), auf der er noch weitere Sprites und Tiles anbietet (allerdings sind einige der Angebote nicht frei, sondern nur kommerziell gegen einen Obolus zu nutzen -- beachtet daher bitte das Kleingedruckte).
+
+Zum Abschluß wie immer der vollständige Quellcode, damit Ihr das Programm nachvollziehen und remixen könnt (es steht unter der freien MIT-Lizenz, macht also damit, was Ihr wollt):
+
+~~~python
+from processing import *
+
+WIDTH, HEIGHT = 720, 520
+BG_WIDTH = 1664
+FPS = 60
+ANIM = 4   # Animation Cycle
+UPDOWN = 3
+
+class Background():
+  
+  def __init__(self, _x, _y):
+    self.x = _x
+    self.y = _y
+    self.start_x = _x
+    self.img = loadImage("desert.png")
+    
+  def update(self):
+    self.x -= 1
+    if self.x <= -BG_WIDTH:
+      self.x = BG_WIDTH
+  
+  def display(self):
+    image(self.img, self.x, self.y)
+
+class Plane():
+  
+  def __init__(self):
+    self.images = []
+    for i in range(2):
+      img = loadImage("planegreen_" + str(i) + ".png")
+      self.images.append(img)
+    self.img = self.images[0]
+    self.x = 75
+    self.y = 240
+    self.dir = "NONE"
+    self.frame = 0
+    self.ani = 20
+  
+  def update(self):
+    if self.dir == "NONE":
+      self.y += 0
+    elif self.dir == "UP":
+      if self.y > 20:
+        self.y -= UPDOWN
+    elif self.dir == "DOWN":
+      if self.y < height - 40:
+        self.y += UPDOWN
+    self.ani += 1
+    if self.ani >= ANIM:
+      self.ani = 0
+      self.frame += 1
+      if self.frame > 1:
+        self.frame = 0
+    self.img = self.images[self.frame]
+      
+  def display(self):
+    image(self.img, self.x, self.y)
+    
+# Arrays
+backs = []
+    
+def setup():
+  global plane
+  size(WIDTH, HEIGHT)
+  frameRate(FPS)
+  print("🍕 Pizza Plane Stage 2 🍕")
+  print("Linke Maustaste: Flieger fliegt nach oben.")
+  print("Rechte Maustaste: Flieger fliegt nach unten.")
+  plane = Plane()
+  back1 = Background(0, 0)
+  back2 = Background(BG_WIDTH, 0)
+  backs.append(back1)
+  backs.append(back2)
+  
+def draw():
+  background(231, 229, 226)   # Wüstenhimmel
+  for back in backs:
+    back.update()
+    back.display()
+  plane.update()
+  plane.display()
+  
+def mousePressed():
+  if mouseButton == LEFT:
+    plane.dir = "UP"
+  elif mouseButton == RIGHT:
+    plane.dir = "DOWN"
+
+def mouseReleased():
+  plane.dir = "NONE"
+
+run()
+~~~
+
+Den Quellcode und sämtliche Assets findet Ihr sowohl in [meinem GitHub-Repositorium](https://github.com/kantel/trinket/tree/main/pizzaplane/stage2) wie auch als [Trinket](https://trinket.io/python/59b16b155f) (das macht einen Remix noch einfacher). Und natürlich plane ich, dieses Projekt noch weiterzuführen und zu erweitern. Bisher gibt es dazu diese Beiträge im *Schockwellenreiter*:
+
+#### 1. Als Pygame-Projekt:
+
+1. Auf ein neues: [Pizzaplane in Pygame](https://kantel.github.io/posts/20221222501_pizzaplane1_pygame/) (Stage 1)
+2. [Jetzt mit Killer-Pizzas](https://kantel.github.io/posts/20221222601_pizzaplane2_pygame/): Pizzaplane in Pygame (Stage 2)
+3. Pizzaplane Stage 3: [Jetzt mit Punktestand](https://kantel.github.io/posts/2022123101_pizzaplane3/)!
+4. Pizzaplane Stage 4 – [jetzt mit grünem Spieler](https://kantel.github.io/posts/2023010102_pizzaplane4/)
+
+#### 2. Exkurse (immer noch Pygame)
+
+5. Exkurs 1: [Pygame objektorientiert](https://kantel.github.io/posts/2023010701_pygame_oop/)
+6. Exkurs 2: [Pizza Plane Trailer](https://kantel.github.io/posts/2023011001_pizzaplane_trailer/) – ebenfalls objektorientiert
+
+#### 3. Und nun als Trinket (mit einer Processing (Python) Variante)
+
+7. Pizza Plane OOP (Jetzt in Trinket)
+
+Wird fortgesetzt …
+
