@@ -10,7 +10,34 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Fri, 24 Mar 2023 16:45:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 26 Mar 2023 15:20:00 GMT</lastBuildDate>
+<item>
+  <title>Zeitumstellung: Summertime</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023032601_zeitumstellung/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52770341521/"><img src="https://kantel.github.io/posts/2023032601_zeitumstellung/images/juliusstrasseregen-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Guten Morgen! Habt Ihr auch alle brav Eure Uhren <del>vor</del> <del>zurück</del> umgestellt? Zweimal im Jahr das gleiche, gesundheitsschädliche Ritual: Die Umstellung auf die euphemistisch so genannte »Sommerzeit« im Frühjahr (in dem uns eine Stunde Schlaf geklaut wird – der Jetlag des kleinen Mannes) und dann im Hernst wieder zurück auf die »Normalzeit« (in weiten Teilen Europas ist das die Mitteleuropäische Sommerzeit – MEZ).</p>
+<p>Der Sinn dieser Maßnahme ist gelinde gesagt mehr als zweifelhaft. Denn die erhoffte Energieeinsparung tritt nicht ein – was abends an Licht gespart wird, wird morgens an Heizung wieder verpulvert. Daher hat die Europäische Union nach einer 2018 mit viel Tam-Tam durchgeführten Bürgerbefragung (die großen Volksparteien wollten bei der Europawahl 2019 wiedergewählt werden) versprochen, diese ungeliebte Umstellung spätestens 2021 abzuschaffen.</p>
+<p>Jetzt haben wir 2023 und passiert ist nichts. Und es wird auch in den nächsten Jahren nichts passieren. Denn die EU-Politikerinnen und -Politier üben sich in dem, was sie am Besten können: In Bedenkenträgerei und Uneinigkeit. So bricht angeblich die gesamte europäische Wirtschaft und Infrastruktur zusammen, wenn in Europa wieder unterschiedliche Zeitzonen existieren. Klar doch, die Bevölkerung der USA nagt am Hungertuch, weil das Land in vier Zeitzonen aufgeteilt ist (sechs, wenn man Alaska und Hawaii hinzunimmt). Und in diesen Zeitzonen gibt es Staaten mit Sommerzeit und Staaten ohne. Da muß ein Land ja im Chaos versinken.</p>
+<p>Im Ernst: Wenn die EU nicht einmal in der Lage ist, solch ein kleines Problem wie die Abschaffung der Zeitumstellung in den Griff zu bekommen, wie soll sie dann mit wirklichen Problemen wie zum Beispiel die Klimakrise fertig werden? Sie kann ja nicht einmal die Probleme lösen, die ohne die EU gar nicht erst existieren würden.</p>
+<p>Und noch etwas zum Abschluß: Die beste Eselsbrücke für die Frage, wann die Uhr vor- oder zurückgestellt wird, fand ich auf Fratzenbuch: Zweimal im Jahr stellt der Hipster seine Uhr um: Im Frühjahr vor die Stube in den Flur und im Herbst wieder zurück.</p>
+
+
+
+ ]]></description>
+  <category>Politik</category>
+  <guid>https://kantel.github.io/posts/2023032601_zeitumstellung/index.html</guid>
+  <pubDate>Sun, 26 Mar 2023 15:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023032601_zeitumstellung/images/juliusstrasseregen.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Frogger: Ein Spiel – vier Implementierungen</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1105,43 +1132,6 @@
   <guid>https://kantel.github.io/posts/2023031102_spaeter_wintereinbruch/index.html</guid>
   <pubDate>Sat, 11 Mar 2023 19:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023031102_spaeter_wintereinbruch/images/spaeterwintereinbruch.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Bug in Trinkets Turtle: Kein »ontimer()«</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52739945807/"><img src="https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/images/mazegameturtlethonny-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Es hatte seinen Grund, warum es die letzten zwei Tage hier im <del>Blog</del> Kritzelheft so ruhig war. Ich hatte nämlich weiter mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinkets</a> Turtle an meinem <a href="https://kantel.github.io/posts/2023030601_maze_game_2/">Maze Game</a> gebastelt und bin über einen fetten Bug gestolpert, der sich leider auch nicht fixen ließ. Denn die Methode <code>turtle.ontimer()</code> ist zwar implementiert, funktioniert aber nicht, wie sie sollte.</p>
-<p>Setzt man zum Beispiel mit</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
-<span id="cb1-2">  screen.ontimer(enemy.move, random.randint(<span class="dv" style="color: #AD0000;">100</span>, <span class="dv" style="color: #AD0000;">300</span>))</span></code></pre></div>
-<p>einen Timer, dann sollte dieser für <strong>alle</strong> Enemies in dieser Liste funktionieren. Aber in Trinket wirkt er nur auf das erste Element der Liste, das diesen Timer aufruft, während alle anderen Enemies bewegungslos verharren. Natürlich habe ich mit</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">    <span class="co" style="color: #5E5E5E;"># Reset timer  </span></span>
-<span id="cb2-2">    screen.ontimer(<span class="va" style="color: #111111;">self</span>.move, random.randint(<span class="dv" style="color: #AD0000;">100</span>, <span class="dv" style="color: #AD0000;">300</span>))</span></code></pre></div>
-<p>jeden Timer auch wieder zurückgesetzt, nachdem er konsumiert wurde, aber Trinkets Schildkröte ließ sich davon nicht beeindrucken. Sie dachte wohl: Einmal konsumiert, ist konsumiert, was kümmern mich die anderen Elemente der Liste.</p>
-<p>Ich habe Stunden gebraucht, weil ich verständlicherweise den Fehler bei mir vermutete. Erst nachdem ich das Programm Eins-zu-Eins nach Thonny übertragen hatte und es dort (nachdem ich vorher noch alle <code>.png</code> nach <code>.gif</code> konvertierte) mit Pythons <a href="https://docs.python.org/3/library/turtle.html">System-Turtle</a> problemlos ohne weitere Änderungen lief (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/52739945807/">Screenshot</a>), glaubte ich daran, daß der Fehler doch bei Trinket liegt.</p>
-<p>Das ist natürlich ein absoluter Game-Stopper. Auf der anderen Seite hatte mir aber die Spielerei mit der Turtle riesigen Spaß gemacht und ich möchte sie fortführen. Daher werde ich mich erst einmal von Trinket abwenden und wieder mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> und der Schildkröte in meinem Systempython spielen. Schließlich habe ich auch diese Kombination auf <a href="http://blog.schockwellenreiter.de/2021/12/2021120701.html">meinem Chromebook</a> zur <a href="http://blog.schockwellenreiter.de/2022/07/2022071501.html">Mitarbeit bewegen</a> können. Dafür muß ich in meinen Trinket-Dateien eigentlich nur die Einrückungen korrigieren (Trinket rückt immer nur um zwei statt der Python-üblichen vier Stellen ein).</p>
-<p>Auf der anderen Seite sollte ich aber auch den <a href="https://kantel.github.io/posts/2023030902_codeguppy_alternative/">vorgestern vorgestellten</a> Webeditor von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> nicht aus den Augen verlieren. Schaun wir daher mal, was die Zukunft bringen wird. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <category>Trinket</category>
-  <category>Turtle</category>
-  <category>Thonny</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/index.html</guid>
-  <pubDate>Sat, 11 Mar 2023 18:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/images/mazegameturtlethonny.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
