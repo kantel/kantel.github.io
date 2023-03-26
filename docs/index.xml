@@ -10,7 +10,339 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Sun, 26 Mar 2023 15:20:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 26 Mar 2023 17:30:00 GMT</lastBuildDate>
+<item>
+  <title>Weiter mit dem kleinen, grünen Flieger auf Trinket: Jetzt mit Pizzas</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52770799214/"><img src="https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/images/pizzaplanestage3-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Mit der Portierung meines <a href="https://kantel.github.io/posts/2023032301_pizza_plane_oop_trinket_stage_1/">kleinen, grünen Fliegers</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> nach <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> (in der <a href="https://kantel.github.io/posts/2023021601_my_first_trinket/">Processing.py-Variante</a>) bin ich ein gutes Stück vorangekommen. Ich habe dem Flieger Pizzas als Gegner spendiert (denn was ist ein Pizzaflieger ohne Pizzas? Nur ein simples Flugzeug) und Waffen, um diese Pizzen abzuschießen. Doch der Reihe nach:</p>
+<iframe src="https://trinket.io/embed/python/3ae6ef087c?outputOnly=true&amp;runOption=run&amp;start=result" width="95%" height="700" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Getreu dem Motto »Don’t repeat Yourself« habe ich eine Oberklasse <code>Sprite()</code> implementiert, denn jede (Unter-) Klasse hatte ihre eigene, identische <code>display()</code>-Methode:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;">## Oberklasse für alles, was sich bewegt</span></span>
+<span id="cb1-2"><span class="kw" style="color: #003B4F;">class</span> Sprite():</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb1-5">    <span class="cf" style="color: #003B4F;">pass</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb1-8">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span></code></pre></div>
+<p>Und weil ich gerade dabei war, bekam diese Klasse auch noch eine Methode (<code>collide_rect()</code>) zur Kollisionskerkennung verpaßt. Zwar wird diese momentan nur von der Klasse <code>Missile()</code> (siehe weiter unten) aufgerufen, aber in einer späteren Version soll auch der Flieger erkennen, ob er mit einer Pizza (oder anderen Gegnern) kollidiert, und dann benötigt er diese Methode ebenfalls:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">  <span class="kw" style="color: #003B4F;">def</span> collide_rect(<span class="va" style="color: #111111;">self</span>, other):</span>
+<span id="cb2-2">    distance_x <span class="op" style="color: #5E5E5E;">=</span> (<span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+</span> <span class="va" style="color: #111111;">self</span>.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>) <span class="op" style="color: #5E5E5E;">-</span> (other.x <span class="op" style="color: #5E5E5E;">+</span> other.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>)</span>
+<span id="cb2-3">    distance_y <span class="op" style="color: #5E5E5E;">=</span> (<span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+</span> <span class="va" style="color: #111111;">self</span>.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>) <span class="op" style="color: #5E5E5E;">-</span> (other.y <span class="op" style="color: #5E5E5E;">+</span> other.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>)</span>
+<span id="cb2-4">    half_w <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> other.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb2-5">    half_h <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> other.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb2-6">    <span class="cf" style="color: #003B4F;">if</span> (<span class="bu" style="color: null;">abs</span>(distance_x) <span class="op" style="color: #5E5E5E;">&lt;</span> half_w):</span>
+<span id="cb2-7">      <span class="cf" style="color: #003B4F;">if</span> (<span class="bu" style="color: null;">abs</span>(distance_y) <span class="op" style="color: #5E5E5E;">&lt;</span> half_h):</span>
+<span id="cb2-8">        <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">True</span></span>
+<span id="cb2-9">    <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">False</span></span></code></pre></div>
+<p>Diese Methode und ihre Implementierung hatte ich schon im November 2019 für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> ausführlich <a href="http://blog.schockwellenreiter.de/2019/11/2019112002.html">vorgestellt</a> (im Anschluß an einen Beitrag zur <a href="http://blog.schockwellenreiter.de/2019/11/2019111103.html">Kollisionserkennung zweier Kreise</a>).</p>
+<p>Ein Flieger, der Pizzas abschießen will, braucht natürlich Geschosse. Diese werden durch die Klasse <code>Missile()</code> repräsentiert:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;">class</span> Missile(Sprite):</span>
+<span id="cb3-2">  </span>
+<span id="cb3-3">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb3-4">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb3-5">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"missile.png"</span>)</span>
+<span id="cb3-6">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb3-7">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb3-8">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">19</span></span>
+<span id="cb3-9">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">7</span></span>
+<span id="cb3-10">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb3-11">  </span>
+<span id="cb3-12">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-13">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb3-14">    <span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
+<span id="cb3-15">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.collide_rect(enemy):</span>
+<span id="cb3-16">        missiles.remove(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb3-17">        <span class="co" style="color: #5E5E5E;"># Enemy Explosion</span></span>
+<span id="cb3-18">        e_x, e_y <span class="op" style="color: #5E5E5E;">=</span> enemy.x, enemy.y <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">5</span></span>
+<span id="cb3-19">        enemy.reset()</span>
+<span id="cb3-20">        hit <span class="op" style="color: #5E5E5E;">=</span> Explosion(e_x, e_y)</span>
+<span id="cb3-21">        hits.append(hit)</span>
+<span id="cb3-22">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&gt;=</span> width <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
+<span id="cb3-23">      missiles.remove(<span class="va" style="color: #111111;">self</span>)</span></code></pre></div>
+<p>Diese Geschosse leben entweder so lange, bis sie rechts den Bildschirm verlassen oder auf eine Pizza treffen. Wenn solch ein Geschoß auf eine Pizza trifft, löst es eine Explosion aus. Diese besitzt natürlich eine eigene Klasse:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;">class</span> Explosion(Sprite):</span>
+<span id="cb4-2">  </span>
+<span id="cb4-3">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb4-4">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb4-5">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"explosion.png"</span>)</span>
+<span id="cb4-6">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb4-7">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb4-8">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">38</span></span>
+<span id="cb4-9">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">38</span></span>
+<span id="cb4-10">    <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb4-11">    </span>
+<span id="cb4-12">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb4-13">    <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb4-14">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
+<span id="cb4-15">      hits.remove(<span class="va" style="color: #111111;">self</span>)</span></code></pre></div>
+<p>Auch eine Explosion hat natürlich nur eine begrenzte Lebensdauer. Diese wird durch die Variable <code>timer</code> gesteuert, die von einem Startwert aus zurückgezählt wird. Wird der <code>timer</code> kleiner oder gleich Null, ist das Leben der Explosion beendet.</p>
+<p>Die Instanzen der Klassen <code>Missile()</code> und <code>Explosion()</code> besitzen noch eine weitere Besonderheit. Sie werden nicht in der Hauptschleife des Programms initialisiert, sondern ein Geschoß wird von der Instanz der Klasse <code>Plane()</code> instanziert, wenn der Spieler die mittlere Maustaste drückt:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1">  <span class="kw" style="color: #003B4F;">def</span> fire(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb5-2">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
+<span id="cb5-3">      missile <span class="op" style="color: #5E5E5E;">=</span> Missile(<span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>, <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>)</span>
+<span id="cb5-4">      missiles.append(missile)</span>
+<span id="cb5-5">      <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">=</span> MAX_FIRECOUNT</span></code></pre></div>
+<p>Um den Spieler am Dauerfeuer zu hindern, kann ein neues Geschoß erst dann wieder abgefeuert werden, wenn die Variable <code>firecount</code>, die nach jedem Schuß auf <code>MAX_FIRECOUNT</code>gesetzt und in jeder Programmschleife um Eins zurückgezählt wird, wieder kleiner oder gleich Null ist.</p>
+<p>Und eine Explosion wird in dieser Version von der Klasse <code>Missile()</code> ausgelöst, wenn diese einen Gegner trifft<sup>1</sup>.</p>
+<p><em>Last but not least</em> braucht ein Spiel natürlich Gegner. Diese werden durch die Klasse <code>Enemy()</code> repräsentiert, die beim derzeitigen Stand des Spiels nur pöse Pizzen erzeugt:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;">class</span> Enemy(Sprite):</span>
+<span id="cb6-2">  </span>
+<span id="cb6-3">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb6-4">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb6-5">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"pizza.png"</span>)</span>
+<span id="cb6-6">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb6-7">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb6-8">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">36</span></span>
+<span id="cb6-9">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">36</span></span>
+<span id="cb6-10">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">6</span>)</span>
+<span id="cb6-11">    </span>
+<span id="cb6-12">  <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb6-13">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> width <span class="op" style="color: #5E5E5E;">+</span> randint(<span class="dv" style="color: #AD0000;">30</span>, <span class="dv" style="color: #AD0000;">100</span>)</span>
+<span id="cb6-14">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">30</span>, height <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">30</span>)</span>
+<span id="cb6-15">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">6</span>)</span>
+<span id="cb6-16">    </span>
+<span id="cb6-17">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb6-18">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb6-19">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">30</span>:</span>
+<span id="cb6-20">      <span class="va" style="color: #111111;">self</span>.reset()</span></code></pre></div>
+<p>Die Klasse ist relativ einfach gehalten. Neu ist eigentlich nur die Methode <code>reset()</code>, die die Pizzas nach einem Abschuß oder nachdem sie den linken Bildschirmrand erreicht haben, wieder rechts außen auf eine zufällige Anfangsposition setzt.</p>
+<p>Jetzt wie bei jeder neuen Lieferung der vollständige Programmcode, falls Ihr das Programm nachprogrammieren oder remixen wollt:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;">from</span> processing <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
+<span id="cb7-2"><span class="im" style="color: #00769E;">from</span> random <span class="im" style="color: #00769E;">import</span> randint</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">720</span>, <span class="dv" style="color: #AD0000;">520</span></span>
+<span id="cb7-5">BG_WIDTH <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">1664</span></span>
+<span id="cb7-6">FPS <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">60</span></span>
+<span id="cb7-7">ANIM <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">4</span>   <span class="co" style="color: #5E5E5E;"># Animation Cycle</span></span>
+<span id="cb7-8">UPDOWN <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">3</span></span>
+<span id="cb7-9">MAX_FIRECOUNT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">15</span></span>
+<span id="cb7-10">NO_ENEMIES <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb7-11"></span>
+<span id="cb7-12"><span class="co" style="color: #5E5E5E;">## Oberklasse für alles, was sich bewegt</span></span>
+<span id="cb7-13"><span class="kw" style="color: #003B4F;">class</span> Sprite():</span>
+<span id="cb7-14"></span>
+<span id="cb7-15">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-16">    <span class="cf" style="color: #003B4F;">pass</span></span>
+<span id="cb7-17"></span>
+<span id="cb7-18">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-19">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
+<span id="cb7-20">  </span>
+<span id="cb7-21">  <span class="kw" style="color: #003B4F;">def</span> collide_rect(<span class="va" style="color: #111111;">self</span>, other):</span>
+<span id="cb7-22">    distance_x <span class="op" style="color: #5E5E5E;">=</span> (<span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+</span> <span class="va" style="color: #111111;">self</span>.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>) <span class="op" style="color: #5E5E5E;">-</span> (other.x <span class="op" style="color: #5E5E5E;">+</span> other.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>)</span>
+<span id="cb7-23">    distance_y <span class="op" style="color: #5E5E5E;">=</span> (<span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+</span> <span class="va" style="color: #111111;">self</span>.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>) <span class="op" style="color: #5E5E5E;">-</span> (other.y <span class="op" style="color: #5E5E5E;">+</span> other.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span>)</span>
+<span id="cb7-24">    half_w <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> other.w<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb7-25">    half_h <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> other.h<span class="op" style="color: #5E5E5E;">/</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb7-26">    <span class="cf" style="color: #003B4F;">if</span> (<span class="bu" style="color: null;">abs</span>(distance_x) <span class="op" style="color: #5E5E5E;">&lt;</span> half_w):</span>
+<span id="cb7-27">      <span class="cf" style="color: #003B4F;">if</span> (<span class="bu" style="color: null;">abs</span>(distance_y) <span class="op" style="color: #5E5E5E;">&lt;</span> half_h):</span>
+<span id="cb7-28">        <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">True</span></span>
+<span id="cb7-29">    <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">False</span></span>
+<span id="cb7-30"></span>
+<span id="cb7-31"><span class="kw" style="color: #003B4F;">class</span> Background(Sprite):</span>
+<span id="cb7-32">  </span>
+<span id="cb7-33">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb7-34">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-35">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb7-36">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb7-37">    <span class="va" style="color: #111111;">self</span>.start_x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb7-38">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"desert.png"</span>)</span>
+<span id="cb7-39">    </span>
+<span id="cb7-40">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-41">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb7-42">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="op" style="color: #5E5E5E;">-</span>BG_WIDTH:</span>
+<span id="cb7-43">      <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> BG_WIDTH</span>
+<span id="cb7-44">  </span>
+<span id="cb7-45"></span>
+<span id="cb7-46"><span class="kw" style="color: #003B4F;">class</span> Missile(Sprite):</span>
+<span id="cb7-47">  </span>
+<span id="cb7-48">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb7-49">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-50">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"missile.png"</span>)</span>
+<span id="cb7-51">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb7-52">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb7-53">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">19</span></span>
+<span id="cb7-54">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">7</span></span>
+<span id="cb7-55">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb7-56">  </span>
+<span id="cb7-57">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-58">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb7-59">    <span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
+<span id="cb7-60">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.collide_rect(enemy):</span>
+<span id="cb7-61">        missiles.remove(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-62">        <span class="co" style="color: #5E5E5E;"># Enemy Explosion</span></span>
+<span id="cb7-63">        e_x, e_y <span class="op" style="color: #5E5E5E;">=</span> enemy.x, enemy.y <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">5</span></span>
+<span id="cb7-64">        enemy.reset()</span>
+<span id="cb7-65">        hit <span class="op" style="color: #5E5E5E;">=</span> Explosion(e_x, e_y)</span>
+<span id="cb7-66">        hits.append(hit)</span>
+<span id="cb7-67">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&gt;=</span> width <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
+<span id="cb7-68">      missiles.remove(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-69"></span>
+<span id="cb7-70"><span class="kw" style="color: #003B4F;">class</span> Explosion(Sprite):</span>
+<span id="cb7-71">  </span>
+<span id="cb7-72">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb7-73">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-74">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"explosion.png"</span>)</span>
+<span id="cb7-75">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb7-76">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb7-77">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">38</span></span>
+<span id="cb7-78">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">38</span></span>
+<span id="cb7-79">    <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb7-80">    </span>
+<span id="cb7-81">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-82">    <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb7-83">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.timer <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
+<span id="cb7-84">      hits.remove(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-85">  </span>
+<span id="cb7-86"><span class="kw" style="color: #003B4F;">class</span> Plane(Sprite):</span>
+<span id="cb7-87">  </span>
+<span id="cb7-88">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-89">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-90">    <span class="va" style="color: #111111;">self</span>.images <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb7-91">    <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(<span class="dv" style="color: #AD0000;">2</span>):</span>
+<span id="cb7-92">      img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"planegreen_"</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="bu" style="color: null;">str</span>(i) <span class="op" style="color: #5E5E5E;">+</span> <span class="st" style="color: #20794D;">".png"</span>)</span>
+<span id="cb7-93">      <span class="va" style="color: #111111;">self</span>.images.append(img)</span>
+<span id="cb7-94">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.images[<span class="dv" style="color: #AD0000;">0</span>]</span>
+<span id="cb7-95">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">75</span></span>
+<span id="cb7-96">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">240</span></span>
+<span id="cb7-97">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">44</span></span>
+<span id="cb7-98">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">30</span></span>
+<span id="cb7-99">    <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
+<span id="cb7-100">    <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb7-101">    <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">20</span></span>
+<span id="cb7-102">    <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb7-103">  </span>
+<span id="cb7-104">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-105">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"NONE"</span>:</span>
+<span id="cb7-106">      <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb7-107">    <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"UP"</span>:</span>
+<span id="cb7-108">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
+<span id="cb7-109">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">-=</span> UPDOWN</span>
+<span id="cb7-110">    <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"DOWN"</span>:</span>
+<span id="cb7-111">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&lt;</span> height <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">20</span>:</span>
+<span id="cb7-112">        <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> UPDOWN</span>
+<span id="cb7-113">    <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb7-114">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">&gt;=</span> ANIM:</span>
+<span id="cb7-115">      <span class="va" style="color: #111111;">self</span>.ani <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb7-116">      <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb7-117">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">1</span>:</span>
+<span id="cb7-118">        <span class="va" style="color: #111111;">self</span>.frame <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb7-119">    <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">-=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb7-120">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.images[<span class="va" style="color: #111111;">self</span>.frame]</span>
+<span id="cb7-121">      </span>
+<span id="cb7-122">  <span class="kw" style="color: #003B4F;">def</span> fire(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-123">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>:</span>
+<span id="cb7-124">      missile <span class="op" style="color: #5E5E5E;">=</span> Missile(<span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>, <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">20</span>)</span>
+<span id="cb7-125">      missiles.append(missile)</span>
+<span id="cb7-126">      <span class="va" style="color: #111111;">self</span>.firecount <span class="op" style="color: #5E5E5E;">=</span> MAX_FIRECOUNT</span>
+<span id="cb7-127"></span>
+<span id="cb7-128"><span class="kw" style="color: #003B4F;">class</span> Enemy(Sprite):</span>
+<span id="cb7-129">  </span>
+<span id="cb7-130">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _x, _y):</span>
+<span id="cb7-131">    Sprite.<span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>)</span>
+<span id="cb7-132">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"pizza.png"</span>)</span>
+<span id="cb7-133">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> _x</span>
+<span id="cb7-134">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> _y</span>
+<span id="cb7-135">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">36</span></span>
+<span id="cb7-136">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">36</span></span>
+<span id="cb7-137">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">6</span>)</span>
+<span id="cb7-138">    </span>
+<span id="cb7-139">  <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-140">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> width <span class="op" style="color: #5E5E5E;">+</span> randint(<span class="dv" style="color: #AD0000;">30</span>, <span class="dv" style="color: #AD0000;">100</span>)</span>
+<span id="cb7-141">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">30</span>, height <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">30</span>)</span>
+<span id="cb7-142">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">6</span>)</span>
+<span id="cb7-143">    </span>
+<span id="cb7-144">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb7-145">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb7-146">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">30</span>:</span>
+<span id="cb7-147">      <span class="va" style="color: #111111;">self</span>.reset()</span>
+<span id="cb7-148">    </span>
+<span id="cb7-149"><span class="co" style="color: #5E5E5E;"># Listen</span></span>
+<span id="cb7-150">backs <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb7-151">missiles <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb7-152">hits <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb7-153">enemies <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb7-154">    </span>
+<span id="cb7-155"><span class="kw" style="color: #003B4F;">def</span> setup():</span>
+<span id="cb7-156">  <span class="kw" style="color: #003B4F;">global</span> plane</span>
+<span id="cb7-157">  size(WIDTH, HEIGHT)</span>
+<span id="cb7-158">  frameRate(FPS)</span>
+<span id="cb7-159">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"🍕 Pizza Plane Stage 3 🍕"</span>)</span>
+<span id="cb7-160">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Linke Maustaste: Flieger fliegt nach oben."</span>)</span>
+<span id="cb7-161">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Rechte Maustaste: Flieger fliegt nach unten."</span>)</span>
+<span id="cb7-162">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Mittlere Maustaste: Feuern!"</span>)</span>
+<span id="cb7-163">  <span class="co" style="color: #5E5E5E;"># Hintergrund</span></span>
+<span id="cb7-164">  back1 <span class="op" style="color: #5E5E5E;">=</span> Background(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb7-165">  back2 <span class="op" style="color: #5E5E5E;">=</span> Background(BG_WIDTH, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb7-166">  backs.append(back1)</span>
+<span id="cb7-167">  backs.append(back2)</span>
+<span id="cb7-168">  <span class="co" style="color: #5E5E5E;"># Den Flieger initialisieren</span></span>
+<span id="cb7-169">  plane <span class="op" style="color: #5E5E5E;">=</span> Plane()</span>
+<span id="cb7-170">  <span class="co" style="color: #5E5E5E;"># Die Gegner (Pizzas)</span></span>
+<span id="cb7-171">  <span class="cf" style="color: #003B4F;">for</span> _ <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(NO_ENEMIES):</span>
+<span id="cb7-172">    pizza <span class="op" style="color: #5E5E5E;">=</span> Enemy(width <span class="op" style="color: #5E5E5E;">+</span> randint(<span class="dv" style="color: #AD0000;">30</span>, <span class="dv" style="color: #AD0000;">100</span>), randint(<span class="dv" style="color: #AD0000;">30</span>, height <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">30</span>))</span>
+<span id="cb7-173">    enemies.append(pizza)</span>
+<span id="cb7-174">  </span>
+<span id="cb7-175"><span class="kw" style="color: #003B4F;">def</span> draw():</span>
+<span id="cb7-176">  background(<span class="dv" style="color: #AD0000;">231</span>, <span class="dv" style="color: #AD0000;">229</span>, <span class="dv" style="color: #AD0000;">226</span>)   <span class="co" style="color: #5E5E5E;"># Wüstenhimmel</span></span>
+<span id="cb7-177">  <span class="cf" style="color: #003B4F;">for</span> back <span class="kw" style="color: #003B4F;">in</span> backs:</span>
+<span id="cb7-178">    back.update()</span>
+<span id="cb7-179">    back.display()</span>
+<span id="cb7-180">  plane.update()</span>
+<span id="cb7-181">  plane.display()</span>
+<span id="cb7-182">  <span class="cf" style="color: #003B4F;">for</span> missile <span class="kw" style="color: #003B4F;">in</span> missiles:</span>
+<span id="cb7-183">    missile.update()</span>
+<span id="cb7-184">    missile.display()</span>
+<span id="cb7-185">  <span class="cf" style="color: #003B4F;">for</span> enemy <span class="kw" style="color: #003B4F;">in</span> enemies:</span>
+<span id="cb7-186">    enemy.update()</span>
+<span id="cb7-187">    enemy.display()</span>
+<span id="cb7-188">  <span class="cf" style="color: #003B4F;">for</span> hit <span class="kw" style="color: #003B4F;">in</span> hits:</span>
+<span id="cb7-189">    hit.update()</span>
+<span id="cb7-190">    hit.display()</span>
+<span id="cb7-191">  </span>
+<span id="cb7-192"><span class="kw" style="color: #003B4F;">def</span> mousePressed():</span>
+<span id="cb7-193">  <span class="cf" style="color: #003B4F;">if</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> LEFT:</span>
+<span id="cb7-194">    plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"UP"</span></span>
+<span id="cb7-195">  <span class="cf" style="color: #003B4F;">elif</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> RIGHT:</span>
+<span id="cb7-196">    plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"DOWN"</span></span>
+<span id="cb7-197">  <span class="cf" style="color: #003B4F;">elif</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> CENTER:</span>
+<span id="cb7-198">    plane.fire()</span>
+<span id="cb7-199"></span>
+<span id="cb7-200"><span class="kw" style="color: #003B4F;">def</span> mouseReleased():</span>
+<span id="cb7-201">  plane.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
+<span id="cb7-202"></span>
+<span id="cb7-203">run()</span></code></pre></div>
+<p>Mit etwa zweihundert Zeilen ist das Programm, das nun in einer spielbaren Version vorliegt, immer noch recht kompakt. Den <a href="https://github.com/kantel/trinket/tree/main/pizzaplane/stage3">Quellcode und die Assets</a> gibt es einmal auch in meinem GitHub-Repositorium und dann natürlich auch <a href="https://trinket.io/python/3ae6ef087c">als Trinket</a> – das macht einen Remix noch einfacher.</p>
+<p>Und natürlich darf und will ich die <em>Credits</em> nicht vergessen: Das <a href="https://opengameart.org/content/seamless-desert-background-in-parts">Hintergrundbild</a> stammt vom User »<a href="https://opengameart.org/users/pwl">PWL</a>«, der es auf OpenGameArt.org zur freien Vewendung (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) hochgeladen hat. Den <a href="https://opengameart.org/content/free-plane-sprite">grünen Flieger</a> von »<a href="https://opengameart.org/users/pzuh">pzUH</a>« gibt es als <a href="http://creativecommons.org/publicdomain/zero/1.0/">Public Domain</a> ebenfalls auf OpenGameArt.org. Und das Bild der Pizzas, der Geschosse und der Explosion habe ich den freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) <a href="https://twemoji.twitter.com/">Twemojis von Twitter</a> entnommen und mit der <a href="https://de.wikipedia.org/wiki/GraphicConverter">Bildverarbeitung meines Vertrauens</a> ein wenig auf Vordermann gebracht.</p>
+<p>Das Programm ist noch nicht komplett. Auf jeden Fall will ich noch eine Kollision der Pizzas mit dem Spieler implementieren, bei der der Spieler Lebenspunkte verliert. Dann möchte ich noch eine Anzeige des Punktestands implementieren. Hierfür muß ich aber erst noch herausbekommen, wie man in Trinket Fonts als Assets installiert. <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>In einer späteren Variante können Explosionen zum Beispiel auch von den Gegnern (Pizzas) ausgelöst werden, wenn diese mit dem Spieler kollidieren.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>Processing</category>
+  <category>Spieleprogrammierung</category>
+  <category>Trinket</category>
+  <guid>https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/index.html</guid>
+  <pubDate>Sun, 26 Mar 2023 17:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/images/pizzaplanestage3.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Zeitumstellung: Summertime</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -28,7 +360,7 @@
 <p>Der Sinn dieser Maßnahme ist gelinde gesagt mehr als zweifelhaft. Denn die erhoffte Energieeinsparung tritt nicht ein – was abends an Licht gespart wird, wird morgens an Heizung wieder verpulvert. Daher hat die Europäische Union nach einer 2018 mit viel Tam-Tam durchgeführten Bürgerbefragung (die großen Volksparteien wollten bei der Europawahl 2019 wiedergewählt werden) versprochen, diese ungeliebte Umstellung spätestens 2021 abzuschaffen.</p>
 <p>Jetzt haben wir 2023 und passiert ist nichts. Und es wird auch in den nächsten Jahren nichts passieren. Denn die EU-Politikerinnen und -Politier üben sich in dem, was sie am Besten können: In Bedenkenträgerei und Uneinigkeit. So bricht angeblich die gesamte europäische Wirtschaft und Infrastruktur zusammen, wenn in Europa wieder unterschiedliche Zeitzonen existieren. Klar doch, die Bevölkerung der USA nagt am Hungertuch, weil das Land in vier Zeitzonen aufgeteilt ist (sechs, wenn man Alaska und Hawaii hinzunimmt). Und in diesen Zeitzonen gibt es Staaten mit Sommerzeit und Staaten ohne. Da muß ein Land ja im Chaos versinken.</p>
 <p>Im Ernst: Wenn die EU nicht einmal in der Lage ist, solch ein kleines Problem wie die Abschaffung der Zeitumstellung in den Griff zu bekommen, wie soll sie dann mit wirklichen Problemen wie zum Beispiel die Klimakrise fertig werden? Sie kann ja nicht einmal die Probleme lösen, die ohne die EU gar nicht erst existieren würden.</p>
-<p>Und noch etwas zum Abschluß: Die beste Eselsbrücke für die Frage, wann die Uhr vor- oder zurückgestellt wird, fand ich auf Fratzenbuch: Zweimal im Jahr stellt der Hipster seine Uhr um: Im Frühjahr vor die Stube in den Flur und im Herbst wieder zurück.</p>
+<p>Und noch etwas zum Abschluß: Die beste Eselsbrücke für die Frage, wann die Uhr vor- oder zurückgestellt wird, fand ich auf Fratzenbuch: Zweimal im Jahr stellt der Hipster seine Uhr um: Im Frühjahr vor die Stube in den Flur und im Herbst wieder zurück. <em>(Photo (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>): <a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a>)</em></p>
 
 
 
@@ -1109,29 +1441,6 @@
   <guid>https://kantel.github.io/posts/2023031201_maze_game_system_python/index.html</guid>
   <pubDate>Sun, 12 Mar 2023 17:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023031201_maze_game_system_python/images/mazegamesyspython.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Und dräut der Winter noch so sehr …</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023031102_spaeter_wintereinbruch/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52739924090/"><img src="https://kantel.github.io/posts/2023031102_spaeter_wintereinbruch/images/spaeterwintereinbruch-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Auch wenn der Winter mit einem verzweifelten Aufbäumen in den letzten Tagen noch einmal alles gegeben hat, wie dieses Photo aus unserem Gärtchen zeigt. Es nützt ihm jedoch alles nichts. In zehn Tagen ist Frühlingsanfang! <em>(Photo: <a href="http://www.gabi-kantel.de/">Gabriele Kantel</a>)</em></p>
-
-
-
- ]]></description>
-  <category>Bilder</category>
-  <guid>https://kantel.github.io/posts/2023031102_spaeter_wintereinbruch/index.html</guid>
-  <pubDate>Sat, 11 Mar 2023 19:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023031102_spaeter_wintereinbruch/images/spaeterwintereinbruch.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

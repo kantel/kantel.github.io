@@ -1,0 +1,349 @@
+---
+title: "Weiter mit dem kleinen, grünen Flieger auf Trinket: Jetzt mit Pizzas"
+author: "Jörg Kantel"
+date: "2023-03-26 19:30:00"
+categories: [Python, Processing, Spieleprogrammierung, Trinket]
+image: "images/pizzaplanestage3.jpg"
+---
+
+[![](images/pizzaplanestage3-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52770799214/)
+
+Mit der Portierung meines [kleinen, grünen Fliegers](https://kantel.github.io/posts/2023032301_pizza_plane_oop_trinket_stage_1/) von [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) nach [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) (in der [Processing.py-Variante](https://kantel.github.io/posts/2023021601_my_first_trinket/)) bin ich ein gutes Stück vorangekommen. Ich habe dem Flieger Pizzas als Gegner spendiert (denn was ist ein Pizzaflieger ohne Pizzas? Nur ein simples Flugzeug) und Waffen, um diese Pizzen abzuschießen. Doch der Reihe nach:
+
+<iframe src="https://trinket.io/embed/python/3ae6ef087c?outputOnly=true&runOption=run&start=result" width="95%" height="700" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Getreu dem Motto »Don't repeat Yourself« habe ich eine Oberklasse `Sprite()` implementiert, denn jede (Unter-) Klasse hatte ihre eigene, identische `display()`-Methode:
+
+~~~python
+## Oberklasse für alles, was sich bewegt
+class Sprite():
+
+  def __init__(self):
+    pass
+
+  def display(self):
+    image(self.img, self.x, self.y)
+~~~
+
+Und weil ich gerade dabei war, bekam diese Klasse auch noch eine Methode (`collide_rect()`) zur Kollisionskerkennung verpaßt. Zwar wird diese momentan nur von der Klasse `Missile()` (siehe weiter unten) aufgerufen, aber in einer späteren Version soll auch der Flieger erkennen, ob er mit einer Pizza (oder anderen Gegnern) kollidiert, und dann benötigt er diese Methode ebenfalls:
+
+~~~python
+  def collide_rect(self, other):
+    distance_x = (self.x + self.w/2) - (other.x + other.w/2)
+    distance_y = (self.y + self.h/2) - (other.y + other.h/2)
+    half_w = self.w/2 + other.w/2
+    half_h = self.h/2 + other.h/2
+    if (abs(distance_x) < half_w):
+      if (abs(distance_y) < half_h):
+        return True
+    return False
+~~~
+
+Diese Methode und ihre Implementierung hatte ich schon im November 2019 für [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) und [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) ausführlich [vorgestellt](http://blog.schockwellenreiter.de/2019/11/2019112002.html) (im Anschluß an einen Beitrag zur [Kollisionserkennung zweier Kreise](http://blog.schockwellenreiter.de/2019/11/2019111103.html)).
+
+Ein Flieger, der Pizzas abschießen will, braucht natürlich Geschosse. Diese werden durch die Klasse `Missile()` repräsentiert:
+
+~~~python
+class Missile(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.img = loadImage("missile.png")
+    self.x = _x
+    self.y = _y
+    self.w = 19
+    self.h = 7
+    self.speed = 10
+  
+  def update(self):
+    self.x += self.speed
+    for enemy in enemies:
+      if self.collide_rect(enemy):
+        missiles.remove(self)
+        # Enemy Explosion
+        e_x, e_y = enemy.x, enemy.y - 5
+        enemy.reset()
+        hit = Explosion(e_x, e_y)
+        hits.append(hit)
+    if self.x >= width + 20:
+      missiles.remove(self)
+~~~
+
+Diese Geschosse leben entweder so lange, bis sie rechts den Bildschirm verlassen oder auf eine Pizza treffen. Wenn solch ein Geschoß auf eine Pizza trifft, löst es eine Explosion aus. Diese besitzt natürlich eine eigene Klasse:
+
+~~~python
+class Explosion(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.img = loadImage("explosion.png")
+    self.x = _x
+    self.y = _y
+    self.w = 38
+    self.h = 38
+    self.timer = 10
+    
+  def update(self):
+    self.timer -= 1
+    if self.timer <= 0:
+      hits.remove(self)
+~~~
+
+Auch eine Explosion hat natürlich nur eine begrenzte Lebensdauer. Diese wird durch die Variable `timer` gesteuert, die von einem Startwert aus zurückgezählt wird. Wird der `timer` kleiner oder gleich Null, ist das Leben der Explosion beendet.
+
+Die Instanzen der Klassen `Missile()` und `Explosion()` besitzen noch eine weitere Besonderheit. Sie werden nicht in der Hauptschleife des Programms initialisiert, sondern ein Geschoß wird von der Instanz der Klasse `Plane()` instanziert, wenn der Spieler die mittlere Maustaste drückt:
+
+~~~python
+  def fire(self):
+    if self.firecount < 0:
+      missile = Missile(self.x + 20, self.y + 20)
+      missiles.append(missile)
+      self.firecount = MAX_FIRECOUNT
+~~~
+
+Um den Spieler am Dauerfeuer zu hindern, kann ein neues Geschoß erst dann wieder abgefeuert werden, wenn die Variable `firecount`, die nach jedem Schuß auf `MAX_FIRECOUNT`gesetzt und in jeder Programmschleife um Eins zurückgezählt wird, wieder kleiner oder gleich Null ist.
+
+Und eine Explosion wird in dieser Version von der Klasse `Missile()` ausgelöst, wenn diese einen Gegner trifft[^1].
+
+[^1]: In einer späteren Variante können Explosionen zum Beispiel auch von den Gegnern (Pizzas) ausgelöst werden, wenn diese mit dem Spieler kollidieren.
+
+*Last but not least* braucht ein Spiel natürlich Gegner. Diese werden durch die Klasse `Enemy()` repräsentiert, die beim derzeitigen Stand des Spiels nur pöse Pizzen erzeugt:
+
+~~~python
+class Enemy(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.img = loadImage("pizza.png")
+    self.x = _x
+    self.y = _y
+    self.w = 36
+    self.h = 36
+    self.speed = randint(3, 6)
+    
+  def reset(self):
+    self.x = width + randint(30, 100)
+    self.y = randint(30, height - 30)
+    self.speed = randint(3, 6)
+    
+  def update(self):
+    self.x -= self.speed
+    if self.x < -30:
+      self.reset()
+~~~
+
+Die Klasse ist relativ einfach gehalten. Neu ist eigentlich nur die Methode `reset()`, die die Pizzas nach einem Abschuß oder nachdem sie den linken Bildschirmrand erreicht haben, wieder rechts außen auf eine zufällige Anfangsposition setzt.
+
+Jetzt wie bei jeder neuen Lieferung der vollständige Programmcode, falls Ihr das Programm nachprogrammieren oder remixen wollt:
+
+~~~python
+from processing import *
+from random import randint
+
+WIDTH, HEIGHT = 720, 520
+BG_WIDTH = 1664
+FPS = 60
+ANIM = 4   # Animation Cycle
+UPDOWN = 3
+MAX_FIRECOUNT = 15
+NO_ENEMIES = 10
+
+## Oberklasse für alles, was sich bewegt
+class Sprite():
+
+  def __init__(self):
+    pass
+
+  def display(self):
+    image(self.img, self.x, self.y)
+  
+  def collide_rect(self, other):
+    distance_x = (self.x + self.w/2) - (other.x + other.w/2)
+    distance_y = (self.y + self.h/2) - (other.y + other.h/2)
+    half_w = self.w/2 + other.w/2
+    half_h = self.h/2 + other.h/2
+    if (abs(distance_x) < half_w):
+      if (abs(distance_y) < half_h):
+        return True
+    return False
+
+class Background(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.x = _x
+    self.y = _y
+    self.start_x = _x
+    self.img = loadImage("desert.png")
+    
+  def update(self):
+    self.x -= 1
+    if self.x <= -BG_WIDTH:
+      self.x = BG_WIDTH
+  
+
+class Missile(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.img = loadImage("missile.png")
+    self.x = _x
+    self.y = _y
+    self.w = 19
+    self.h = 7
+    self.speed = 10
+  
+  def update(self):
+    self.x += self.speed
+    for enemy in enemies:
+      if self.collide_rect(enemy):
+        missiles.remove(self)
+        # Enemy Explosion
+        e_x, e_y = enemy.x, enemy.y - 5
+        enemy.reset()
+        hit = Explosion(e_x, e_y)
+        hits.append(hit)
+    if self.x >= width + 20:
+      missiles.remove(self)
+
+class Explosion(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.img = loadImage("explosion.png")
+    self.x = _x
+    self.y = _y
+    self.w = 38
+    self.h = 38
+    self.timer = 10
+    
+  def update(self):
+    self.timer -= 1
+    if self.timer <= 0:
+      hits.remove(self)
+  
+class Plane(Sprite):
+  
+  def __init__(self):
+    Sprite.__init__(self)
+    self.images = []
+    for i in range(2):
+      img = loadImage("planegreen_" + str(i) + ".png")
+      self.images.append(img)
+    self.img = self.images[0]
+    self.x = 75
+    self.y = 240
+    self.w = 44
+    self.h = 30
+    self.dir = "NONE"
+    self.frame = 0
+    self.ani = 20
+    self.firecount = 0
+  
+  def update(self):
+    if self.dir == "NONE":
+      self.y += 0
+    elif self.dir == "UP":
+      if self.y > 20:
+        self.y -= UPDOWN
+    elif self.dir == "DOWN":
+      if self.y < height - 20:
+        self.y += UPDOWN
+    self.ani += 1
+    if self.ani >= ANIM:
+      self.ani = 0
+      self.frame += 1
+      if self.frame > 1:
+        self.frame = 0
+    self.firecount -= 1
+    self.img = self.images[self.frame]
+      
+  def fire(self):
+    if self.firecount < 0:
+      missile = Missile(self.x + 20, self.y + 20)
+      missiles.append(missile)
+      self.firecount = MAX_FIRECOUNT
+
+class Enemy(Sprite):
+  
+  def __init__(self, _x, _y):
+    Sprite.__init__(self)
+    self.img = loadImage("pizza.png")
+    self.x = _x
+    self.y = _y
+    self.w = 36
+    self.h = 36
+    self.speed = randint(3, 6)
+    
+  def reset(self):
+    self.x = width + randint(30, 100)
+    self.y = randint(30, height - 30)
+    self.speed = randint(3, 6)
+    
+  def update(self):
+    self.x -= self.speed
+    if self.x < -30:
+      self.reset()
+    
+# Listen
+backs = []
+missiles = []
+hits = []
+enemies = []
+    
+def setup():
+  global plane
+  size(WIDTH, HEIGHT)
+  frameRate(FPS)
+  print("🍕 Pizza Plane Stage 3 🍕")
+  print("Linke Maustaste: Flieger fliegt nach oben.")
+  print("Rechte Maustaste: Flieger fliegt nach unten.")
+  print("Mittlere Maustaste: Feuern!")
+  # Hintergrund
+  back1 = Background(0, 0)
+  back2 = Background(BG_WIDTH, 0)
+  backs.append(back1)
+  backs.append(back2)
+  # Den Flieger initialisieren
+  plane = Plane()
+  # Die Gegner (Pizzas)
+  for _ in range(NO_ENEMIES):
+    pizza = Enemy(width + randint(30, 100), randint(30, height - 30))
+    enemies.append(pizza)
+  
+def draw():
+  background(231, 229, 226)   # Wüstenhimmel
+  for back in backs:
+    back.update()
+    back.display()
+  plane.update()
+  plane.display()
+  for missile in missiles:
+    missile.update()
+    missile.display()
+  for enemy in enemies:
+    enemy.update()
+    enemy.display()
+  for hit in hits:
+    hit.update()
+    hit.display()
+  
+def mousePressed():
+  if mouseButton == LEFT:
+    plane.dir = "UP"
+  elif mouseButton == RIGHT:
+    plane.dir = "DOWN"
+  elif mouseButton == CENTER:
+    plane.fire()
+
+def mouseReleased():
+  plane.dir = "NONE"
+
+run()
+~~~
+
+Mit etwa zweihundert Zeilen ist das Programm, das nun in einer spielbaren Version vorliegt, immer noch recht kompakt. Den [Quellcode und die Assets](https://github.com/kantel/trinket/tree/main/pizzaplane/stage3) gibt es einmal auch in meinem GitHub-Repositorium und dann natürlich auch [als Trinket](https://trinket.io/python/3ae6ef087c) -- das macht einen Remix noch einfacher.
+
+Und natürlich darf und will ich die *Credits* nicht vergessen: Das [Hintergrundbild](https://opengameart.org/content/seamless-desert-background-in-parts) stammt vom User »[PWL](https://opengameart.org/users/pwl)«, der es auf OpenGameArt.org zur freien Vewendung ([CC0](http://creativecommons.org/publicdomain/zero/1.0/)) hochgeladen hat. Den [grünen Flieger](https://opengameart.org/content/free-plane-sprite) von »[pzUH](https://opengameart.org/users/pzuh)« gibt es als [Public Domain](http://creativecommons.org/publicdomain/zero/1.0/) ebenfalls auf OpenGameArt.org. Und das Bild der Pizzas, der Geschosse und der Explosion habe ich den freien ([CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)) [Twemojis von Twitter](https://twemoji.twitter.com/) entnommen und mit der [Bildverarbeitung meines Vertrauens](https://de.wikipedia.org/wiki/GraphicConverter) ein wenig auf Vordermann gebracht.
+
+Das Programm ist noch nicht komplett. Auf jeden Fall will ich noch eine Kollision der Pizzas mit dem Spieler implementieren, bei der der Spieler Lebenspunkte verliert. Dann möchte ich noch eine Anzeige des Punktestands implementieren. Hierfür muß ich aber erst noch herausbekommen, wie man in Trinket Fonts als Assets installiert. *Still digging!*
