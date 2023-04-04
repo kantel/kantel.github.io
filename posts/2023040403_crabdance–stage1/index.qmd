@@ -1,0 +1,113 @@
+---
+title: "Crab Dancing with Bubbles (Trinket)"
+author: "Jörg Kantel"
+date: "2023-04-04 21:00:00"
+categories: [Python, Processing, Trinket Spieleprogrammierung]
+image: "images/crabdance.jpg"
+---
+
+[![](images/crabdance-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52791136884/)
+
+Die [heute vorgestellte](https://kantel.github.io/posts/2023040401_spiele_und_programmierung/) schießwütige Krabbe hat mir keine Ruhe gelassen. Ich wollte nun unbedingt auch etwas mit Krabben, aber in [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html), anstellen. Also habe ich mich hingesetzt und als Prototyp erst einmal eine kleine Krabbe auf den Schirm gezaubert, die mit der rechten oder linken Maustaste nach rechts oder links bewegt werden kann, und die den Luftblasen zusieht, die -- entgegen den Gesetzen der Physik -- im Wasser nach unten schweben.
+
+<iframe src="https://trinket.io/embed/python/bdb2a4a880?outputOnly=true&runOption=run&start=result" width="85%" height="570" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Es ist wirklich erst einmal nur ein Fingerübung, die sich an einem Programm, das *Hauke Fehr* in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) implementiert hat[^1], orientiert. Daher hier erst einmal der Quellcode:
+
+[^1]: Hauke Fehr: *Let's code Python*, Bonn (Rheinwerk Computing) 2019, Seiten 247 ff.
+
+~~~python
+from processing import *
+from random import randint
+
+WIDTH, HEIGHT = 640, 416
+NUM_BUBBLES = 50
+
+class Background():
+  
+  def __init__(self, _img):
+    self.img = loadImage(_img)
+    
+  def display(self):
+    image(self.img, 0, 0)
+
+class Crab():
+  
+  def __init__(self):
+    self.img = loadImage("crab.png")
+    self.w = 68
+    self.h = 50
+    self.x = width//2 - self.w//2
+    self.y = height//2 + 100
+    self.dir = "None"
+    self.speed = 5
+    
+  def update(self):
+    if self.dir == "None":
+      self.x += 0
+    elif self.dir == "RIGHT":
+      if self.x <= width - self.w - 5:
+        self.x += self.speed
+    elif self.dir == "LEFT":
+      if self.x >= 2:
+        self.x -= self.speed
+
+  def display(self):
+    image(self.img, self.x, self.y)
+    
+class Bubble():
+  
+  def __init__(self):
+    self.reset()
+    self.speed = 2
+    
+  def reset(self):
+    dia = str(randint(0, 2))
+    self.img = loadImage("bubble" + dia + ".png")
+    self.x = randint(0, width)
+    self.y = randint(-2*height, -50)
+  
+  def update(self):
+    self.y += self.speed
+    if self.y > height + 50:
+      self.reset()
+    
+  def display(self):
+    image(self.img, self.x, self.y)
+
+bubbles = []
+    
+def setup():
+  global bg, crab
+  size(WIDTH, HEIGHT)
+  print("🐠 Crab Dancing with Bubbles 🐡")
+  bg = Background("background.png")
+  for _ in range(NUM_BUBBLES):
+    bubble = Bubble()
+    bubbles.append(bubble)
+  crab = Crab()
+  
+def draw():
+  background(49, 197, 244) # Hellblau
+  bg.display()
+  crab.update()
+  crab.display()
+  for bubble in bubbles:
+    bubble.update()
+    bubble.display()
+  
+def mousePressed():
+  if mouseButton == LEFT:
+    crab.dir = "LEFT"
+  elif mouseButton == RIGHT:
+    crab.dir = "RIGHT"
+
+def mouseReleased():
+  crab.dir = "NONE"
+
+run()
+~~~
+
+Das Programm ist in dem Python-Processing-Mode von Trinket programmiert und bisher *straigt forward*: Es gibt eine Klasse `Crab()`, die eine Krabbe erzeugt, die mit den Maustasten auf dem Bildschirm hin- und hergeschoben wird (siehe die Funktionen `mousePressed()` und `mouseReleased()`), und eine Klasse `Bubble()`, die zufallsgesteuert drei verschieden große Blasen erzeugt, die vom oberen Bildschirmrand nach unten schweben. Ist der untere Bildschirmrand erreicht, werden die Blasen (wieder zufallsgesteuert) an einer neuen Position und in einer neuen Größe weit oberhalb des Bildschirmfensters neu instanziert (siehe die Methode `reset()`).
+
+Das Bild der Krabbe wie auch die Bilder der Blasen habe ich dem [Fundus von TigerJython](https://www.tigerjython4kids.ch/index.php?inhalt_links=turtle/navigation.inc.php&inhalt_mitte=sprites.html) entnommen. Ich denke jedoch, daß dies -- wegen meines [Abschieds von TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) -- nicht wirklich fair ist. Daher habe ich ein wenig auf OpenGameArt.org gestöbert und dort eine freie ([CC0](http://creativecommons.org/publicdomain/zero/1.0/)) [Krabbe](https://opengameart.org/content/crab) von *malekith97* und eine ebenfalls freie ([CC-BY 3.0](http://creativecommons.org/licenses/by/3.0/)) [Sammlung bunter Blasen](https://opengameart.org/content/bubbles8-colors) des Users *HorrorPen* gefunden, die ich in Stage 2 (der hoffentlich bald fertig wird) verwenden möchte. Die Krabbe hat zudem noch den Vorteil, daß sie eine Zwei-Frame-Animation besitzt und so etwas mehr Bewegung ins Spiel kommt. *Still digging!*
