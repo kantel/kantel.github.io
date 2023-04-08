@@ -1,0 +1,140 @@
+---
+title: "Die tanzende Krabbe mit neuen (freien) Bildchen"
+author: "Jörg Kantel"
+date: "2023-04-08 20:00:00"
+categories: [Python, Trinket, Spieleprogrammierung]
+image: "images/crabdance2.jpg"
+---
+
+[![](images/crabdance2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52800703085/)
+
+Wie schon [hier angekündigt](https://kantel.github.io/posts/2023040403_crabdance%E2%80%93stage1/), habe ich der tanzenden Krabbe neue Bildchen verpaßt, um die Unabhängigkeit von [TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) zu bekräftigen und bei der freien Verwendung der Sprites auch wirklich auf Nummer Sicher zu gehen. Außerdem tanzt die Krabbe nun auch wirklich (oder zappelt wenigstens hin und her):
+
+<iframe src="https://trinket.io/embed/python/5058ad4fe5?outputOnly=true&runOption=run&start=result" width="85%" height="570" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Das Bild der Krabbe ist *Public Domain* (CC0) und von *Nitin Chowdary*, der es auf [OpenGameArt.org hochgeladen](https://opengameart.org/content/crab) hat, die (jetzt) transparenten Blasen sind ebenfalls von OpenGameArt.org und wurden dort von einem Nutzer, der sich *HorrorPen* nennt, unter der CC-BY 3.0 [zur Verfügung gestellt](https://opengameart.org/content/bubbles8-colors). Und den Hintergrund habe ich immer noch aus dem freien (CC0) [Fish Pack](https://www.kenney.nl/assets/fish-pack) von Kenney.nl zusammengebastelt.
+
+Den Code konnte ich relativ unverändert weiter verwenden, lediglich die Animation der Krabbe verlangte einen kleinen Zusatz in der `upadate()`-Methode:
+
+~~~python
+    self.animation_count += 1
+    if self.animation_count >= 10:
+      self.animation_count = 0
+    if self.animation_count <= 5:
+      self.img = self.img1
+    else:
+      self.img = self.img2
+~~~
+
+Natürlich mußten auch die beiden Bilder der Krabbe geladen werden und die Variable `animation_count` mit Null initialisiert werden. Aber das seht Ihr alles in dem kompletten Quellcode, den ich zu Eurer Erbauung und Information hier komplett abdrucke:
+
+~~~python
+# Dancing Crab
+# Jörg Kantel 2023
+# Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.
+# Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab
+# Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors
+# Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack
+
+from processing import *
+from random import randint
+
+WIDTH, HEIGHT = 640, 416
+NUM_BUBBLES = 50
+
+class Background():
+  
+  def __init__(self, _img):
+    self.img = loadImage(_img)
+    
+  def display(self):
+    image(self.img, 0, 0)
+
+class Crab():
+  
+  def __init__(self):
+    self.img1 = loadImage("crab1.png")
+    self.img2 = loadImage("crab2.png")
+    self.img = self.img1
+    self.w = 64
+    self.h = 64
+    self.x = width//2 - self.w//2
+    self.y = height//2 + 100
+    self.dir = "None"
+    self.speed = 5
+    self.animation_count = 0
+    
+  def update(self):
+    if self.dir == "None":
+      self.x += 0
+    elif self.dir == "RIGHT":
+      if self.x <= width - self.w - 5:
+        self.x += self.speed
+    elif self.dir == "LEFT":
+      if self.x >= 2:
+        self.x -= self.speed
+    self.animation_count += 1
+    if self.animation_count >= 10:
+      self.animation_count = 0
+    if self.animation_count <= 5:
+      self.img = self.img1
+    else:
+      self.img = self.img2
+
+  def display(self):
+    image(self.img, self.x, self.y)
+    
+class Bubble():
+  
+  def __init__(self):
+    self.reset()
+    self.speed = 2
+    
+  def reset(self):
+    dia = str(randint(0, 2))
+    self.img = loadImage("bubbleblue" + dia + ".png")
+    self.x = randint(0, width)
+    self.y = randint(-2*height, -50)
+  
+  def update(self):
+    self.y += self.speed
+    if self.y > height + 50:
+      self.reset()
+    
+  def display(self):
+    image(self.img, self.x, self.y)
+
+bubbles = []
+    
+def setup():
+  global bg, crab
+  size(WIDTH, HEIGHT)
+  print("🐠 Crab Dancing with Bubbles - Stage 2 🐡")
+  bg = Background("background.png")
+  for _ in range(NUM_BUBBLES):
+    bubble = Bubble()
+    bubbles.append(bubble)
+  crab = Crab()
+  
+def draw():
+  background(49, 197, 244) # Hellblau
+  bg.display()
+  crab.update()
+  crab.display()
+  for bubble in bubbles:
+    bubble.update()
+    bubble.display()
+  
+def mousePressed():
+  if mouseButton == LEFT:
+    crab.dir = "LEFT"
+  elif mouseButton == RIGHT:
+    crab.dir = "RIGHT"
+
+def mouseReleased():
+  crab.dir = "NONE"
+  
+run()
+~~~
+
+Ihr könnt aber auch das Programm [auf Trinket remixen](https://trinket.io/python/5058ad4fe5) oder Euch den [Quellcode mit allen Assets](https://github.com/kantel/trinket/tree/main/crabdance/stage2) von meinem GitHub-Repositorium herunterziehen. *Macht was draus.*

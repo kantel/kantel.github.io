@@ -10,7 +10,151 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Sat, 08 Apr 2023 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 08 Apr 2023 18:00:00 GMT</lastBuildDate>
+<item>
+  <title>Die tanzende Krabbe mit neuen (freien) Bildchen</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52800703085/"><img src="https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/images/crabdance2-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Wie schon <a href="https://kantel.github.io/posts/2023040403_crabdance%E2%80%93stage1/">hier angekündigt</a>, habe ich der tanzenden Krabbe neue Bildchen verpaßt, um die Unabhängigkeit von <a href="http://blog.schockwellenreiter.de/2022/10/2022103001.html">TigerJython</a> zu bekräftigen und bei der freien Verwendung der Sprites auch wirklich auf Nummer Sicher zu gehen. Außerdem tanzt die Krabbe nun auch wirklich (oder zappelt wenigstens hin und her):</p>
+<iframe src="https://trinket.io/embed/python/5058ad4fe5?outputOnly=true&amp;runOption=run&amp;start=result" width="85%" height="570" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Das Bild der Krabbe ist <em>Public Domain</em> (CC0) und von <em>Nitin Chowdary</em>, der es auf <a href="https://opengameart.org/content/crab">OpenGameArt.org hochgeladen</a> hat, die (jetzt) transparenten Blasen sind ebenfalls von OpenGameArt.org und wurden dort von einem Nutzer, der sich <em>HorrorPen</em> nennt, unter der CC-BY 3.0 <a href="https://opengameart.org/content/bubbles8-colors">zur Verfügung gestellt</a>. Und den Hintergrund habe ich immer noch aus dem freien (CC0) <a href="https://www.kenney.nl/assets/fish-pack">Fish Pack</a> von Kenney.nl zusammengebastelt.</p>
+<p>Den Code konnte ich relativ unverändert weiter verwenden, lediglich die Animation der Krabbe verlangte einen kleinen Zusatz in der <code>upadate()</code>-Methode:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">    <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb1-2">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">10</span>:</span>
+<span id="cb1-3">      <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb1-4">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">5</span>:</span>
+<span id="cb1-5">      <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img1</span>
+<span id="cb1-6">    <span class="cf" style="color: #003B4F;">else</span>:</span>
+<span id="cb1-7">      <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img2</span></code></pre></div>
+<p>Natürlich mußten auch die beiden Bilder der Krabbe geladen werden und die Variable <code>animation_count</code> mit Null initialisiert werden. Aber das seht Ihr alles in dem kompletten Quellcode, den ich zu Eurer Erbauung und Information hier komplett abdrucke:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;"># Dancing Crab</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;"># Jörg Kantel 2023</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;"># Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;"># Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab</span></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;"># Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors</span></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;"># Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8"><span class="im" style="color: #00769E;">from</span> processing <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
+<span id="cb2-9"><span class="im" style="color: #00769E;">from</span> random <span class="im" style="color: #00769E;">import</span> randint</span>
+<span id="cb2-10"></span>
+<span id="cb2-11">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">640</span>, <span class="dv" style="color: #AD0000;">416</span></span>
+<span id="cb2-12">NUM_BUBBLES <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">50</span></span>
+<span id="cb2-13"></span>
+<span id="cb2-14"><span class="kw" style="color: #003B4F;">class</span> Background():</span>
+<span id="cb2-15">  </span>
+<span id="cb2-16">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _img):</span>
+<span id="cb2-17">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(_img)</span>
+<span id="cb2-18">    </span>
+<span id="cb2-19">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-20">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb2-21"></span>
+<span id="cb2-22"><span class="kw" style="color: #003B4F;">class</span> Crab():</span>
+<span id="cb2-23">  </span>
+<span id="cb2-24">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-25">    <span class="va" style="color: #111111;">self</span>.img1 <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"crab1.png"</span>)</span>
+<span id="cb2-26">    <span class="va" style="color: #111111;">self</span>.img2 <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"crab2.png"</span>)</span>
+<span id="cb2-27">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img1</span>
+<span id="cb2-28">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">64</span></span>
+<span id="cb2-29">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">64</span></span>
+<span id="cb2-30">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> width<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">-</span> <span class="va" style="color: #111111;">self</span>.w<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb2-31">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> height<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">100</span></span>
+<span id="cb2-32">    <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"None"</span></span>
+<span id="cb2-33">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">5</span></span>
+<span id="cb2-34">    <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-35">    </span>
+<span id="cb2-36">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-37">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"None"</span>:</span>
+<span id="cb2-38">      <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-39">    <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"RIGHT"</span>:</span>
+<span id="cb2-40">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;=</span> width <span class="op" style="color: #5E5E5E;">-</span> <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">5</span>:</span>
+<span id="cb2-41">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb2-42">    <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"LEFT"</span>:</span>
+<span id="cb2-43">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">2</span>:</span>
+<span id="cb2-44">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb2-45">    <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb2-46">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">10</span>:</span>
+<span id="cb2-47">      <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-48">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">5</span>:</span>
+<span id="cb2-49">      <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img1</span>
+<span id="cb2-50">    <span class="cf" style="color: #003B4F;">else</span>:</span>
+<span id="cb2-51">      <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img2</span>
+<span id="cb2-52"></span>
+<span id="cb2-53">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-54">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
+<span id="cb2-55">    </span>
+<span id="cb2-56"><span class="kw" style="color: #003B4F;">class</span> Bubble():</span>
+<span id="cb2-57">  </span>
+<span id="cb2-58">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-59">    <span class="va" style="color: #111111;">self</span>.reset()</span>
+<span id="cb2-60">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb2-61">    </span>
+<span id="cb2-62">  <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-63">    dia <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">str</span>(randint(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">2</span>))</span>
+<span id="cb2-64">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"bubbleblue"</span> <span class="op" style="color: #5E5E5E;">+</span> dia <span class="op" style="color: #5E5E5E;">+</span> <span class="st" style="color: #20794D;">".png"</span>)</span>
+<span id="cb2-65">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">0</span>, width)</span>
+<span id="cb2-66">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">*</span>height, <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">50</span>)</span>
+<span id="cb2-67">  </span>
+<span id="cb2-68">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-69">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb2-70">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&gt;</span> height <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">50</span>:</span>
+<span id="cb2-71">      <span class="va" style="color: #111111;">self</span>.reset()</span>
+<span id="cb2-72">    </span>
+<span id="cb2-73">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb2-74">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
+<span id="cb2-75"></span>
+<span id="cb2-76">bubbles <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb2-77">    </span>
+<span id="cb2-78"><span class="kw" style="color: #003B4F;">def</span> setup():</span>
+<span id="cb2-79">  <span class="kw" style="color: #003B4F;">global</span> bg, crab</span>
+<span id="cb2-80">  size(WIDTH, HEIGHT)</span>
+<span id="cb2-81">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"🐠 Crab Dancing with Bubbles - Stage 2 🐡"</span>)</span>
+<span id="cb2-82">  bg <span class="op" style="color: #5E5E5E;">=</span> Background(<span class="st" style="color: #20794D;">"background.png"</span>)</span>
+<span id="cb2-83">  <span class="cf" style="color: #003B4F;">for</span> _ <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(NUM_BUBBLES):</span>
+<span id="cb2-84">    bubble <span class="op" style="color: #5E5E5E;">=</span> Bubble()</span>
+<span id="cb2-85">    bubbles.append(bubble)</span>
+<span id="cb2-86">  crab <span class="op" style="color: #5E5E5E;">=</span> Crab()</span>
+<span id="cb2-87">  </span>
+<span id="cb2-88"><span class="kw" style="color: #003B4F;">def</span> draw():</span>
+<span id="cb2-89">  background(<span class="dv" style="color: #AD0000;">49</span>, <span class="dv" style="color: #AD0000;">197</span>, <span class="dv" style="color: #AD0000;">244</span>) <span class="co" style="color: #5E5E5E;"># Hellblau</span></span>
+<span id="cb2-90">  bg.display()</span>
+<span id="cb2-91">  crab.update()</span>
+<span id="cb2-92">  crab.display()</span>
+<span id="cb2-93">  <span class="cf" style="color: #003B4F;">for</span> bubble <span class="kw" style="color: #003B4F;">in</span> bubbles:</span>
+<span id="cb2-94">    bubble.update()</span>
+<span id="cb2-95">    bubble.display()</span>
+<span id="cb2-96">  </span>
+<span id="cb2-97"><span class="kw" style="color: #003B4F;">def</span> mousePressed():</span>
+<span id="cb2-98">  <span class="cf" style="color: #003B4F;">if</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> LEFT:</span>
+<span id="cb2-99">    crab.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"LEFT"</span></span>
+<span id="cb2-100">  <span class="cf" style="color: #003B4F;">elif</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> RIGHT:</span>
+<span id="cb2-101">    crab.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"RIGHT"</span></span>
+<span id="cb2-102"></span>
+<span id="cb2-103"><span class="kw" style="color: #003B4F;">def</span> mouseReleased():</span>
+<span id="cb2-104">  crab.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
+<span id="cb2-105">  </span>
+<span id="cb2-106">run()</span></code></pre></div>
+<p>Ihr könnt aber auch das Programm <a href="https://trinket.io/python/5058ad4fe5">auf Trinket remixen</a> oder Euch den <a href="https://github.com/kantel/trinket/tree/main/crabdance/stage2">Quellcode mit allen Assets</a> von meinem GitHub-Repositorium herunterziehen. <em>Macht was draus.</em></p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Trinket</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/index.html</guid>
+  <pubDate>Sat, 08 Apr 2023 18:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/images/crabdance2.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neue (Python-) Online-Editoren braucht das Land</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -711,34 +855,6 @@
   <guid>https://kantel.github.io/posts/2023033001_itunes_update/index.html</guid>
   <pubDate>Thu, 30 Mar 2023 16:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023033001_itunes_update/images/opspectakles.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>PyScript.net: (Anaconda-) Python in der Cloud</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023032902_pyscript_saas/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://cdn.thenewstack.io/media/2023/03/92b35e06-image1.png"><img src="https://kantel.github.io/posts/2023032902_pyscript_saas/images/pyscriptpyxeldemo-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Im Nachtrag meinem <a href="https://kantel.github.io/posts/2023032701_jupyter_and_jupyterlab/">Beitrag vom Montag</a> spülte heute eine Meldung bei mir rein, daß nicht nur Google (via <a href="https://colab.research.google.com/">Colab</a>) mit Python in die Cloud drängt, sondern daß auch <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html">Anaconda</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> Ähnliches vorhat. Wie nämlich <a href="https://thenewstack.io/python-in-the-browser-free-pyscript-saas-launches/">The New Stack berichtete</a>, hat Anaconda mit <a href="https://pyscript.net/">PyScript.net</a> diese Woche einen Servive an den Start gebracht, in dem man eine PyScript-IDE online im Browser nutzen kann.</p>
-<p>Der Dienst ist noch beta, doch neugierig, wie ich bin, habe ich mir einen (kostenlosen) Account zugelegt, um ein wenig damit herumzuspielen. Denn zum einen wäre dies ein großartiges Betätgungsfeld für <a href="http://blog.schockwellenreiter.de/2021/12/2021120701.html">mein Chromebook</a> und zum anderen versprach der <a href="https://cdn.thenewstack.io/media/2023/03/92b35e06-image1.png">Screenshot</a>, daß ich damit auch die von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> inspirierte Python-Retrogame-Engine <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">Pyxel</a> – die aus irgendwelchen geheimnisvollen Gründen auf meinem betagten MacBook Pro nicht läuft – wenigstens auf meinem Chromebook zur Mitarbeit bewegen könnte.</p>
-<p>Allerdings mangelt es momentan noch an Dokumentation: Was kommt wann und warum in die <code>TOML</code>-Datei und wie binde ich Pakete wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">NumPy</a> oder die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> ein? Fragen über Fragen. Leider wird ein unerfahrener PyScript-Nutzer damit noch völlig alleine gelassen. Und gemächlich scheint der Dienst auch (noch) zu sein.</p>
-<p>Aber PyScript.net ist noch jung und beta. Ich warte erst einmal ab, wie sich der Dienst weiter entwickeln wird. Bis dahin habe ich mit Googles Colab und mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> ja schon zwei Spielzeuge, mit denen ich Python im Browser (und damit auch auf meinem Chromebook) nutzen kann.</p>
-<p>Und ich sollte nicht vergessen, daß ich ja auch <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> auf meinem Chromebook <a href="http://blog.schockwellenreiter.de/2022/07/2022071501.html">zum Laufen bekommen</a> habe. Ich bin also nicht notwendigerweise von einer Python-im-Browser-Implementierung abhängig. Und das ist auch gut so!</p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <category>PyScript</category>
-  <guid>https://kantel.github.io/posts/2023032902_pyscript_saas/index.html</guid>
-  <pubDate>Wed, 29 Mar 2023 18:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023032902_pyscript_saas/images/pyscriptpyxeldemo.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
