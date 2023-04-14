@@ -1,0 +1,196 @@
+---
+title: "Crab Dance Stage&nbsp;3: Auch tanzende Krabben haben Gegner"
+author: "Jörg Kantel"
+date: "2023-04-14 20:15:00"
+categories: [Python, Processing, Spieleprogrammierung, Trinket]
+image: "images/crabstage3.jpg"
+---
+
+[![](images/crabstage3-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52815218979/)
+
+Da ich dringend ein paar andere Dinge ausprobieren möchte, habe ich meiner [kleinen, tanzenden Krabbe](https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/) ein (vorläufiges) finales Update verpaßt. Die Krabbe kann nun die herunterschwebenden Luftblasen zum Platzen bringen. Und da ein Spiel ohne Gegner wenig Sinn macht, gibt es jetzt auch gefährliche, rote Blasen, die mit etwas größer Geschwindigkeit nach unten fallen. Kollidiert die Krabbe mit einer dieser Blasen, stirbt sie und das Spiel ist verloren:
+
+<iframe src="https://trinket.io/embed/python/2f0553e21c?outputOnly=true&runOption=run&start=result" width="85%" height="570" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Wie gewohnt wird die Krabbe mit der rechten und der linken Maustaste gesteuert. Es ist nicht wirklich schwer, damit den roten Blasen auszuweichen, aber das Spiel ist ja auch nur ein *proof of concept*.
+
+Für die Kollisionserkennung habe ich die Erkennung zweier Kreise implementiert, so wie ich sie [hier schon einmal vorgestellt](http://blog.schockwellenreiter.de/2019/11/2019111103.html) hatte. Die Blasen sind sowieso schon Kreise und auch die Krabbe sieht sehr kreisförmig aus. Also drängte sich diese einfach zu implementierende Kollionserkennung geradezu auf. In meinem Krabbenprogramm sieht der Code so aus:
+
+~~~python
+  def is_circle_collision(self, other):
+    distance = dist(self.x, self.y, other.x, other.y)
+    if distance < self.r + other.r:
+      return True
+    return False
+~~~
+
+Dafür mußten in den Klassen der Akteure `Crab()`, `Bubble()` und `EnemyBubble()` (neu) jeweils noch der Radius implementiert werden. Bei der Krabbe und den roten Blasen war das einfach, sie besitzen jeweils nur einen Radius. Bei den verschieden großen Luftblasen erledigte
+
+~~~python
+    self.r = self.img.width//2
+~~~
+
+in der `reset()`-Methode dies. (Da bei den Bildern der Blasen Höhe und Weite identisch sind, ist es völlig egal, ob der Durchmesser über `img.width` oder `img.height` bestimmt wird.)
+
+Die Klasse `EnemyBubble()` weist noch eine Besonderheit auf. Als Unterklasse von `Bubble()` erbt sie alle Eigenschaften und Methoden, die sie nicht selber überschreibt. In diesem Fall sind das insbesondere die Methoden `update()`, `display()` und `is_circle_collision()`.
+
+Ich habe in diesem Falle erstmals zur Initialisierung der Oberklasse Pythons `super().__init__()`-Methode verwendet. Sie kommt ohne explizite Erwähnung des Parameters `self` aus.
+
+Wie gewohnt nun der komplette Quellcode für alle, die gerne Quellcode lesen und das Programm nachvollziehen wollen:
+
+~~~python
+# Dancing Crab
+# Jörg Kantel 2023
+# Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.
+# Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab
+# Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors
+# Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack
+
+from processing import *
+from random import randint
+
+WIDTH, HEIGHT = 640, 416
+NUM_BUBBLES = 50
+NUM_ENEMIES = 5
+
+class Background():
+  
+  def __init__(self, _img):
+    self.img = loadImage(_img)
+    
+  def display(self):
+    image(self.img, 0, 0)
+
+class Crab():
+  
+  def __init__(self):
+    self.img1 = loadImage("crab1.png")
+    self.img2 = loadImage("crab2.png")
+    self.img = self.img1
+    self.w = 64
+    self.h = 64
+    self.r = 32
+    self.x = width//2 - self.w//2
+    self.y = height//2 + 100
+    self.dir = "None"
+    self.speed = 5
+    self.animation_count = 0
+    self.score = 0
+    
+  def update(self):
+    if self.dir == "None":
+      self.x += 0
+    elif self.dir == "RIGHT":
+      if self.x <= width - self.w - 5:
+        self.x += self.speed
+    elif self.dir == "LEFT":
+      if self.x >= 2:
+        self.x -= self.speed
+    self.animation_count += 1
+    if self.animation_count >= 10:
+      self.animation_count = 0
+    if self.animation_count <= 5:
+      self.img = self.img1
+    else:
+      self.img = self.img2
+
+  def display(self):
+    image(self.img, self.x, self.y)
+    
+class Bubble():
+  
+  def __init__(self):
+    self.reset()
+    self.speed = 2
+    
+  def reset(self):
+    dia = str(randint(0, 2))
+    self.img = loadImage("bubbleblue" + dia + ".png")
+    self.r = self.img.width//2
+    self.x = randint(0, width)
+    self.y = randint(-2*height, -50)
+    
+  def is_circle_collision(self, other):
+    distance = dist(self.x, self.y, other.x, other.y)
+    if distance < self.r + other.r:
+      return True
+    return False
+  
+  def update(self):
+    self.y += self.speed
+    if self.y > height + 50:
+      self.reset()
+    
+  def display(self):
+    image(self.img, self.x, self.y)
+
+class EnemyBubble(Bubble):
+  
+  def __init__(self):
+    super().__init__()
+    self.reset()
+    self.r = 15
+    self.speed = 3
+    
+  def reset(self):
+    self.img = loadImage("bubblere1.png")
+    self.x = randint(0, width)
+    self.y = randint(-2*height, -50)
+    
+
+bubbles = []
+enemybubbles = []
+    
+def setup():
+  global bg, crab
+  size(WIDTH, HEIGHT)
+  print("🐠 Crab Dancing with Bubbles - Stage 3 🐡")
+  bg = Background("background.png")
+  for _ in range(NUM_BUBBLES):
+    bubble = Bubble()
+    bubbles.append(bubble)
+  for _ in range(NUM_ENEMIES):
+    enemybubble = EnemyBubble()
+    enemybubbles.append(enemybubble)
+  crab = Crab()
+  
+def draw():
+  background(49, 197, 244) # Hellblau
+  bg.display()
+  crab.update()
+  crab.display()
+  for bubble in bubbles:
+    bubble.update()
+    if bubble.is_circle_collision(crab):
+      bubble.reset()
+      crab.score += 1
+    bubble.display()
+  for enemybubble in enemybubbles:
+    enemybubble.update()
+    if enemybubble.is_circle_collision(crab):
+      print("GAME OVER")
+      crab.x = 2000
+      crab.y = 2000
+    enemybubble.display()
+  
+def mousePressed():
+  if mouseButton == LEFT:
+    crab.dir = "LEFT"
+  elif mouseButton == RIGHT:
+    crab.dir = "RIGHT"
+
+def mouseReleased():
+  crab.dir = "NONE"
+
+run()
+~~~
+
+Den [Quellcode mit allen Assets](https://github.com/kantel/trinket/tree/main/crabdance/stage3) gibt es wieder in meinem GitHub Repositorium. Außerdem könnt Ihr hier das [Trinket remixen](https://trinket.io/python/2f0553e21c) und Eure eigenen Ideen einbauen.
+
+Dieses Krabben-Trinket-Tutorial besteht aus diesen drei Teilen:
+
+1. Stage 1: [Crab Dancing with Bubbles](https://kantel.github.io/posts/2023040403_crabdance%E2%80%93stage1/), die spontan aus einer Laune heraus erstellte erste Fassung.
+2. Stage 2: [Die tanzende Krabbe mit neuen (freien) Bildchen](https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/), eine von [TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html)-Bezügen gereinigte Version.
+3. Crab Dance Stage 3: Auch tanzende Krabben haben Gegner - diese, die vorläufig letzte Fassung.
+
+Natürlich ist das nur ein Prototyp und es sind Erweiterungen denkbar, zum Beispiel eine Anzeige des Punktestands, ein Start- und ein Endebildschirm und so weiter. Vielleicht fasse ich das Programm daher irgendwann noch einmal an, aber momentan möchte ich mich mit anderen Schmuckstücken befassen. *Still digging!*

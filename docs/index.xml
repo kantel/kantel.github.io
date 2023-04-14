@@ -10,7 +10,200 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Fri, 14 Apr 2023 14:45:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 14 Apr 2023 18:15:00 GMT</lastBuildDate>
+<item>
+  <title>Crab Dance Stage 3: Auch tanzende Krabben haben Gegner</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023041403_dancing_crab_3/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52815218979/"><img src="https://kantel.github.io/posts/2023041403_dancing_crab_3/images/crabstage3-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Da ich dringend ein paar andere Dinge ausprobieren möchte, habe ich meiner <a href="https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/">kleinen, tanzenden Krabbe</a> ein (vorläufiges) finales Update verpaßt. Die Krabbe kann nun die herunterschwebenden Luftblasen zum Platzen bringen. Und da ein Spiel ohne Gegner wenig Sinn macht, gibt es jetzt auch gefährliche, rote Blasen, die mit etwas größer Geschwindigkeit nach unten fallen. Kollidiert die Krabbe mit einer dieser Blasen, stirbt sie und das Spiel ist verloren:</p>
+<iframe src="https://trinket.io/embed/python/2f0553e21c?outputOnly=true&amp;runOption=run&amp;start=result" width="85%" height="570" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Wie gewohnt wird die Krabbe mit der rechten und der linken Maustaste gesteuert. Es ist nicht wirklich schwer, damit den roten Blasen auszuweichen, aber das Spiel ist ja auch nur ein <em>proof of concept</em>.</p>
+<p>Für die Kollisionserkennung habe ich die Erkennung zweier Kreise implementiert, so wie ich sie <a href="http://blog.schockwellenreiter.de/2019/11/2019111103.html">hier schon einmal vorgestellt</a> hatte. Die Blasen sind sowieso schon Kreise und auch die Krabbe sieht sehr kreisförmig aus. Also drängte sich diese einfach zu implementierende Kollionserkennung geradezu auf. In meinem Krabbenprogramm sieht der Code so aus:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">  <span class="kw" style="color: #003B4F;">def</span> is_circle_collision(<span class="va" style="color: #111111;">self</span>, other):</span>
+<span id="cb1-2">    distance <span class="op" style="color: #5E5E5E;">=</span> dist(<span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y, other.x, other.y)</span>
+<span id="cb1-3">    <span class="cf" style="color: #003B4F;">if</span> distance <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="va" style="color: #111111;">self</span>.r <span class="op" style="color: #5E5E5E;">+</span> other.r:</span>
+<span id="cb1-4">      <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">True</span></span>
+<span id="cb1-5">    <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">False</span></span></code></pre></div>
+<p>Dafür mußten in den Klassen der Akteure <code>Crab()</code>, <code>Bubble()</code> und <code>EnemyBubble()</code> (neu) jeweils noch der Radius implementiert werden. Bei der Krabbe und den roten Blasen war das einfach, sie besitzen jeweils nur einen Radius. Bei den verschieden großen Luftblasen erledigte</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">    <span class="va" style="color: #111111;">self</span>.r <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img.width<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span></span></code></pre></div>
+<p>in der <code>reset()</code>-Methode dies. (Da bei den Bildern der Blasen Höhe und Weite identisch sind, ist es völlig egal, ob der Durchmesser über <code>img.width</code> oder <code>img.height</code> bestimmt wird.)</p>
+<p>Die Klasse <code>EnemyBubble()</code> weist noch eine Besonderheit auf. Als Unterklasse von <code>Bubble()</code> erbt sie alle Eigenschaften und Methoden, die sie nicht selber überschreibt. In diesem Fall sind das insbesondere die Methoden <code>update()</code>, <code>display()</code> und <code>is_circle_collision()</code>.</p>
+<p>Ich habe in diesem Falle erstmals zur Initialisierung der Oberklasse Pythons <code>super().__init__()</code>-Methode verwendet. Sie kommt ohne explizite Erwähnung des Parameters <code>self</code> aus.</p>
+<p>Wie gewohnt nun der komplette Quellcode für alle, die gerne Quellcode lesen und das Programm nachvollziehen wollen:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;"># Dancing Crab</span></span>
+<span id="cb3-2"><span class="co" style="color: #5E5E5E;"># Jörg Kantel 2023</span></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;"># Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.</span></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;"># Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab</span></span>
+<span id="cb3-5"><span class="co" style="color: #5E5E5E;"># Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors</span></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;"># Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack</span></span>
+<span id="cb3-7"></span>
+<span id="cb3-8"><span class="im" style="color: #00769E;">from</span> processing <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
+<span id="cb3-9"><span class="im" style="color: #00769E;">from</span> random <span class="im" style="color: #00769E;">import</span> randint</span>
+<span id="cb3-10"></span>
+<span id="cb3-11">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">640</span>, <span class="dv" style="color: #AD0000;">416</span></span>
+<span id="cb3-12">NUM_BUBBLES <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">50</span></span>
+<span id="cb3-13">NUM_ENEMIES <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">5</span></span>
+<span id="cb3-14"></span>
+<span id="cb3-15"><span class="kw" style="color: #003B4F;">class</span> Background():</span>
+<span id="cb3-16">  </span>
+<span id="cb3-17">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>, _img):</span>
+<span id="cb3-18">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(_img)</span>
+<span id="cb3-19">    </span>
+<span id="cb3-20">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-21">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb3-22"></span>
+<span id="cb3-23"><span class="kw" style="color: #003B4F;">class</span> Crab():</span>
+<span id="cb3-24">  </span>
+<span id="cb3-25">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-26">    <span class="va" style="color: #111111;">self</span>.img1 <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"crab1.png"</span>)</span>
+<span id="cb3-27">    <span class="va" style="color: #111111;">self</span>.img2 <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"crab2.png"</span>)</span>
+<span id="cb3-28">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img1</span>
+<span id="cb3-29">    <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">64</span></span>
+<span id="cb3-30">    <span class="va" style="color: #111111;">self</span>.h <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">64</span></span>
+<span id="cb3-31">    <span class="va" style="color: #111111;">self</span>.r <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">32</span></span>
+<span id="cb3-32">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> width<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">-</span> <span class="va" style="color: #111111;">self</span>.w<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb3-33">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> height<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span> <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">100</span></span>
+<span id="cb3-34">    <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"None"</span></span>
+<span id="cb3-35">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">5</span></span>
+<span id="cb3-36">    <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb3-37">    <span class="va" style="color: #111111;">self</span>.score <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb3-38">    </span>
+<span id="cb3-39">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-40">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"None"</span>:</span>
+<span id="cb3-41">      <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb3-42">    <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"RIGHT"</span>:</span>
+<span id="cb3-43">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&lt;=</span> width <span class="op" style="color: #5E5E5E;">-</span> <span class="va" style="color: #111111;">self</span>.w <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">5</span>:</span>
+<span id="cb3-44">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb3-45">    <span class="cf" style="color: #003B4F;">elif</span> <span class="va" style="color: #111111;">self</span>.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">"LEFT"</span>:</span>
+<span id="cb3-46">      <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">2</span>:</span>
+<span id="cb3-47">        <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">-=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb3-48">    <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb3-49">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">10</span>:</span>
+<span id="cb3-50">      <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb3-51">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.animation_count <span class="op" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">5</span>:</span>
+<span id="cb3-52">      <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img1</span>
+<span id="cb3-53">    <span class="cf" style="color: #003B4F;">else</span>:</span>
+<span id="cb3-54">      <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img2</span>
+<span id="cb3-55"></span>
+<span id="cb3-56">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-57">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
+<span id="cb3-58">    </span>
+<span id="cb3-59"><span class="kw" style="color: #003B4F;">class</span> Bubble():</span>
+<span id="cb3-60">  </span>
+<span id="cb3-61">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-62">    <span class="va" style="color: #111111;">self</span>.reset()</span>
+<span id="cb3-63">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb3-64">    </span>
+<span id="cb3-65">  <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-66">    dia <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">str</span>(randint(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">2</span>))</span>
+<span id="cb3-67">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"bubbleblue"</span> <span class="op" style="color: #5E5E5E;">+</span> dia <span class="op" style="color: #5E5E5E;">+</span> <span class="st" style="color: #20794D;">".png"</span>)</span>
+<span id="cb3-68">    <span class="va" style="color: #111111;">self</span>.r <span class="op" style="color: #5E5E5E;">=</span> <span class="va" style="color: #111111;">self</span>.img.width<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb3-69">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">0</span>, width)</span>
+<span id="cb3-70">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">*</span>height, <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">50</span>)</span>
+<span id="cb3-71">    </span>
+<span id="cb3-72">  <span class="kw" style="color: #003B4F;">def</span> is_circle_collision(<span class="va" style="color: #111111;">self</span>, other):</span>
+<span id="cb3-73">    distance <span class="op" style="color: #5E5E5E;">=</span> dist(<span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y, other.x, other.y)</span>
+<span id="cb3-74">    <span class="cf" style="color: #003B4F;">if</span> distance <span class="op" style="color: #5E5E5E;">&lt;</span> <span class="va" style="color: #111111;">self</span>.r <span class="op" style="color: #5E5E5E;">+</span> other.r:</span>
+<span id="cb3-75">      <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">True</span></span>
+<span id="cb3-76">    <span class="cf" style="color: #003B4F;">return</span> <span class="va" style="color: #111111;">False</span></span>
+<span id="cb3-77">  </span>
+<span id="cb3-78">  <span class="kw" style="color: #003B4F;">def</span> update(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-79">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">+=</span> <span class="va" style="color: #111111;">self</span>.speed</span>
+<span id="cb3-80">    <span class="cf" style="color: #003B4F;">if</span> <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">&gt;</span> height <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">50</span>:</span>
+<span id="cb3-81">      <span class="va" style="color: #111111;">self</span>.reset()</span>
+<span id="cb3-82">    </span>
+<span id="cb3-83">  <span class="kw" style="color: #003B4F;">def</span> display(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-84">    image(<span class="va" style="color: #111111;">self</span>.img, <span class="va" style="color: #111111;">self</span>.x, <span class="va" style="color: #111111;">self</span>.y)</span>
+<span id="cb3-85"></span>
+<span id="cb3-86"><span class="kw" style="color: #003B4F;">class</span> EnemyBubble(Bubble):</span>
+<span id="cb3-87">  </span>
+<span id="cb3-88">  <span class="kw" style="color: #003B4F;">def</span> <span class="fu" style="color: #4758AB;">__init__</span>(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-89">    <span class="bu" style="color: null;">super</span>().<span class="fu" style="color: #4758AB;">__init__</span>()</span>
+<span id="cb3-90">    <span class="va" style="color: #111111;">self</span>.reset()</span>
+<span id="cb3-91">    <span class="va" style="color: #111111;">self</span>.r <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">15</span></span>
+<span id="cb3-92">    <span class="va" style="color: #111111;">self</span>.speed <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">3</span></span>
+<span id="cb3-93">    </span>
+<span id="cb3-94">  <span class="kw" style="color: #003B4F;">def</span> reset(<span class="va" style="color: #111111;">self</span>):</span>
+<span id="cb3-95">    <span class="va" style="color: #111111;">self</span>.img <span class="op" style="color: #5E5E5E;">=</span> loadImage(<span class="st" style="color: #20794D;">"bubblere1.png"</span>)</span>
+<span id="cb3-96">    <span class="va" style="color: #111111;">self</span>.x <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="dv" style="color: #AD0000;">0</span>, width)</span>
+<span id="cb3-97">    <span class="va" style="color: #111111;">self</span>.y <span class="op" style="color: #5E5E5E;">=</span> randint(<span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span><span class="op" style="color: #5E5E5E;">*</span>height, <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">50</span>)</span>
+<span id="cb3-98">    </span>
+<span id="cb3-99"></span>
+<span id="cb3-100">bubbles <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb3-101">enemybubbles <span class="op" style="color: #5E5E5E;">=</span> []</span>
+<span id="cb3-102">    </span>
+<span id="cb3-103"><span class="kw" style="color: #003B4F;">def</span> setup():</span>
+<span id="cb3-104">  <span class="kw" style="color: #003B4F;">global</span> bg, crab</span>
+<span id="cb3-105">  size(WIDTH, HEIGHT)</span>
+<span id="cb3-106">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"🐠 Crab Dancing with Bubbles - Stage 3 🐡"</span>)</span>
+<span id="cb3-107">  bg <span class="op" style="color: #5E5E5E;">=</span> Background(<span class="st" style="color: #20794D;">"background.png"</span>)</span>
+<span id="cb3-108">  <span class="cf" style="color: #003B4F;">for</span> _ <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(NUM_BUBBLES):</span>
+<span id="cb3-109">    bubble <span class="op" style="color: #5E5E5E;">=</span> Bubble()</span>
+<span id="cb3-110">    bubbles.append(bubble)</span>
+<span id="cb3-111">  <span class="cf" style="color: #003B4F;">for</span> _ <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(NUM_ENEMIES):</span>
+<span id="cb3-112">    enemybubble <span class="op" style="color: #5E5E5E;">=</span> EnemyBubble()</span>
+<span id="cb3-113">    enemybubbles.append(enemybubble)</span>
+<span id="cb3-114">  crab <span class="op" style="color: #5E5E5E;">=</span> Crab()</span>
+<span id="cb3-115">  </span>
+<span id="cb3-116"><span class="kw" style="color: #003B4F;">def</span> draw():</span>
+<span id="cb3-117">  background(<span class="dv" style="color: #AD0000;">49</span>, <span class="dv" style="color: #AD0000;">197</span>, <span class="dv" style="color: #AD0000;">244</span>) <span class="co" style="color: #5E5E5E;"># Hellblau</span></span>
+<span id="cb3-118">  bg.display()</span>
+<span id="cb3-119">  crab.update()</span>
+<span id="cb3-120">  crab.display()</span>
+<span id="cb3-121">  <span class="cf" style="color: #003B4F;">for</span> bubble <span class="kw" style="color: #003B4F;">in</span> bubbles:</span>
+<span id="cb3-122">    bubble.update()</span>
+<span id="cb3-123">    <span class="cf" style="color: #003B4F;">if</span> bubble.is_circle_collision(crab):</span>
+<span id="cb3-124">      bubble.reset()</span>
+<span id="cb3-125">      crab.score <span class="op" style="color: #5E5E5E;">+=</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb3-126">    bubble.display()</span>
+<span id="cb3-127">  <span class="cf" style="color: #003B4F;">for</span> enemybubble <span class="kw" style="color: #003B4F;">in</span> enemybubbles:</span>
+<span id="cb3-128">    enemybubble.update()</span>
+<span id="cb3-129">    <span class="cf" style="color: #003B4F;">if</span> enemybubble.is_circle_collision(crab):</span>
+<span id="cb3-130">      <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"GAME OVER"</span>)</span>
+<span id="cb3-131">      crab.x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">2000</span></span>
+<span id="cb3-132">      crab.y <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">2000</span></span>
+<span id="cb3-133">    enemybubble.display()</span>
+<span id="cb3-134">  </span>
+<span id="cb3-135"><span class="kw" style="color: #003B4F;">def</span> mousePressed():</span>
+<span id="cb3-136">  <span class="cf" style="color: #003B4F;">if</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> LEFT:</span>
+<span id="cb3-137">    crab.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"LEFT"</span></span>
+<span id="cb3-138">  <span class="cf" style="color: #003B4F;">elif</span> mouseButton <span class="op" style="color: #5E5E5E;">==</span> RIGHT:</span>
+<span id="cb3-139">    crab.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"RIGHT"</span></span>
+<span id="cb3-140"></span>
+<span id="cb3-141"><span class="kw" style="color: #003B4F;">def</span> mouseReleased():</span>
+<span id="cb3-142">  crab.<span class="bu" style="color: null;">dir</span> <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"NONE"</span></span>
+<span id="cb3-143"></span>
+<span id="cb3-144">run()</span></code></pre></div>
+<p>Den <a href="https://github.com/kantel/trinket/tree/main/crabdance/stage3">Quellcode mit allen Assets</a> gibt es wieder in meinem GitHub Repositorium. Außerdem könnt Ihr hier das <a href="https://trinket.io/python/2f0553e21c">Trinket remixen</a> und Eure eigenen Ideen einbauen.</p>
+<p>Dieses Krabben-Trinket-Tutorial besteht aus diesen drei Teilen:</p>
+<ol type="1">
+<li>Stage 1: <a href="https://kantel.github.io/posts/2023040403_crabdance%E2%80%93stage1/">Crab Dancing with Bubbles</a>, die spontan aus einer Laune heraus erstellte erste Fassung.</li>
+<li>Stage 2: <a href="https://kantel.github.io/posts/2023040803_dancing_crab_stage_2/">Die tanzende Krabbe mit neuen (freien) Bildchen</a>, eine von <a href="http://blog.schockwellenreiter.de/2022/10/2022103001.html">TigerJython</a>-Bezügen gereinigte Version.</li>
+<li>Crab Dance Stage 3: Auch tanzende Krabben haben Gegner - diese, die vorläufig letzte Fassung.</li>
+</ol>
+<p>Natürlich ist das nur ein Prototyp und es sind Erweiterungen denkbar, zum Beispiel eine Anzeige des Punktestands, ein Start- und ein Endebildschirm und so weiter. Vielleicht fasse ich das Programm daher irgendwann noch einmal an, aber momentan möchte ich mich mit anderen Schmuckstücken befassen. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Processing</category>
+  <category>Spieleprogrammierung</category>
+  <category>Trinket</category>
+  <guid>https://kantel.github.io/posts/2023041403_dancing_crab_3/index.html</guid>
+  <pubDate>Fri, 14 Apr 2023 18:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023041403_dancing_crab_3/images/crabstage3.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Creative Coding und Physik-Simulationen – Video-Tutorials am Freitag</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -684,34 +877,6 @@
   <guid>https://kantel.github.io/posts/2023040703_hubschrauber_britz/index.html</guid>
   <pubDate>Fri, 07 Apr 2023 16:10:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023040703_hubschrauber_britz/images/helikopterbritz.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Ninjas Abenteuer auf fliegenden Inseln: Noch mehr freie Tiles und Sprites</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023040702_ninjas_und_inseln/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://img.itch.zone/aW1hZ2UvOTMyNjc3LzU0NzM5MjMuZ2lm/347x500/dFxgtd.gif"><img src="https://kantel.github.io/posts/2023040702_ninjas_und_inseln/images/ninjaadventure1-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Da meine eigenen künstlerischen Fähigkeiten mehr als beschränkt sind, bin ich für die Realisierung meiner Spielideen und -Tutorials auf frei verwendbare Tiles und Spritesheets angewiesen. Und da einmal sowohl mein momentanes Interesse an <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> (zusammen mit meinem kleinen Laptop-Monitor) wie auch die noch geplante Einbeziehung von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> in meinen Spielewerkzeugkasten nach 16x16 großen Bildchen verlangen, freue ich mich natürlich, Euch weitere Seiten mit diesen winzigen Tiles und Sprites vorstellen zu können, die ich in meine Sammlung einbezogen habe:</p>
-<p>Da sind als erstes die Assets aus der Sammlung »<a href="https://pixel-boy.itch.io/ninja-adventure-asset-pack">Ninja Adventures</a>« zu nennen, die ich im <a href="https://kantel.github.io/posts/2023040701_karfreitag_tutorials/">letzten Beitrag</a> ja schon erwähnt hatte. Sie ist von ihren Schöpfern <em>Pixel Boy</em> und <em>AAA</em> in die <em>Public Domain</em> (CC0) entlassen worden und kann daher für jeden Zweck (auch kommerziell) verwendet werden. Eine Namensnennung der Schöpfer ist nicht erforderlich, aber erwünscht (und auch der Anstand verlangt dies).</p>
-<p>Ebenfalls eine schöne und unter der CC0 veröffentlichte Sammlung von Tiles ist das »<a href="https://opengameart.org/content/the-field-of-the-floating-islands">The Field of the Floating Islands</a>«-Pack <em>Michelle Buchelli</em> mit den <a href="https://opengameart.org/content/floating-islands-0">Erweiterungen</a> von <em>Keth Karnage</em>. Von Michelle gibt es noch <a href="https://opengameart.org/users/buch">acht weitere Seiten</a> (sic!) mit interessangen Assets auf <em>OpenGameArt.org</em>, <em>Keth</em> hat immerhin <a href="https://opengameart.org/users/keith-karnage">eine Seite</a> vorzuweisen. Also folgt den Links!</p>
-<p>Und <em>last but not least</em> möchte ich das »<a href="https://opengameart.org/content/simple-broad-purpose-tileset">Simple broad-purpose tileset</a>« (CC0) von <em>Carl Olsson</em> vorstellen, dessen Sprites und Tiles gut mit den schwimmmenden (oder schwebenden?) Inseln oben zusammen zu verwenden sind. Wer dafür noch mehr NPC benötigt, der schaue »<a href="https://opengameart.org/content/victims-and-villagers">Victims and Villagers</a>« von <em>Rich_Uncle_Bloodmoney</em> an. Diese Sprites sind explizit für das »Simple broad-purpose tileset« entwickelt worden.</p>
-<p>Auch <em>Carl Olsson</em> hat weitere (insgesamt sechs) <a href="https://opengameart.org/users/surt">Seiten auf OpenGameArt.org</a> vorzuweisen, deren Inhalte ebenfalls alle unter der CC0 freigegeben sind. Daher folgt auch hier den Links!</p>
-
-
-
- ]]></description>
-  <category>Spieleprogrammierung</category>
-  <category>Tiles und Sprites</category>
-  <guid>https://kantel.github.io/posts/2023040702_ninjas_und_inseln/index.html</guid>
-  <pubDate>Fri, 07 Apr 2023 14:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023040702_ninjas_und_inseln/images/ninjaadventure1.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
