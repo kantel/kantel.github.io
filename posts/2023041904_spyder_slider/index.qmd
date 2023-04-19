@@ -1,0 +1,68 @@
+---
+title: "Dynamische Graphen mit der Matplotlib, Slider und Spyder"
+author: "Jörg Kantel"
+date: "2023-04-19 20:25:00"
+categories: [Python, Matplotlib, Spyder, Dynamische Systeme]
+image: "images/spyderslider.jpg"
+---
+
+[![](images/spyderslider-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52830209399/)
+
+Heute nachmittag regnete es mal wieder. Das war nicht nur gut für die Natur draußen, sondern auch gut für mich, denn so konnte ich ungestört meine Expeditionen ins Reich der [Dynamischen Systeme](https://de.wikipedia.org/wiki/Dynamisches_System) mit Python und [Spyder](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html) fortsetzen. Mir schwebt vor, die geplanten Simulationen des [S-I-R-Modells](https://de.wikipedia.org/wiki/SIR-Modell) mit dynamischen Graphen zu implementieren, um Änderungen an den Parametern während des laufenden Programms vornehmen und die Auswirkungen begutachten zu können.
+
+Dazu mußte ich aber erst einmal austesten, wie gut sich Spyder mit den [Matplotlib-Widgets](https://matplotlib.org/stable/gallery/widgets/slider_demo.html) schlägt. Was lag da näher, als den guten alten *Veit Steinkamp*[^1] hervorzukramen. Den hatte ich ja schon einmal [im letzten Sommer als Referenz benutzt](http://blog.schockwellenreiter.de/2022/08/2022080401.html), als ich ähnliches mit [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) vorhatte. Statt der damals genutzten Parabel habe ich für das heutige Beispiel die Funktion $y = a\sin(b(x-c))$ ausgesucht und mich an die Darstellung in und mit Spyder gewagt.
+
+[^1]: Veit Steinkamp: *[Mathematische Algorithmen mit Python](https://www.rheinwerk-verlag.de/mathematische-algorithmen-mit-python/). Aufgaben vom Sieb des Eratosthenes bis zur RSA-Verschlüsselung*, Bonn (Rheinwerk) 2022, Seiten 243 ff.
+
+Mir war schon klar, daß ich mich in diesem Fall von den `inline`-Plots verabschieden muß, aber Spyder leistete mehr, als ich dachte: Der Plot wurde inklusiv der Schieberegler tatsächlich auch *inline* angezeigt, nur ließen sich die Schieberegler nicht mehr (ver-) schieben. Ihr Dasein war also *inline* völlig sinnbefreit. Aber wenn man in Spyder unter `Preferences … - IPython-Konsole - Grafik` das `Grafik-Backend` von `Eingebettet` auf `Automatisch` umschaltet, ist alles wieder schick: Der Nutzer bekommt den Plot dann in einem Standard-Matlab-Fenster mit funktionierenden Schiebereglern angezeigt (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/52830209399/)).
+
+Jetzt erst einmal das vollständige Programm, das bis auf wenige Anpassungen an die Eigenschaften von Spyder und macOS aus dem Buch von *Veit Steinkamp* (Seiten 247 f) stammt:
+
+~~~python
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.widgets import Slider
+
+def f(x, a, b, c):
+    return (a*np.sin(b*np.radians(x) - np.radians(c)))
+
+fig, ax = plt.subplots(figsize = (6, 6))
+plt.title(r"$y = a\/sin(b\/(x-c))$")
+plt.subplots_adjust(left = 0.12, bottom = 0.25)
+plt.xlim(0, 360)
+plt.ylim(-10, 10)
+plt.xlabel(r"$x$")
+plt.ylabel(r"$y$", rotation = 0)
+
+x = np.arange(0, 400, 0.001)
+y, = plt.plot(x, f(x, 5, 1, 0), lw = 2)
+
+# x- und y-Position, Länge, Höhe
+xyA = plt.axes([0.1, 0.12, 0.8, 0.03])
+xyB = plt.axes([0.1, 0.07, 0.8, 0.03])
+xyC = plt.axes([0.1, 0.02, 0.8, 0.03])
+
+# Slider-Objekte erzeugen
+sldA = Slider(xyA, "a",   2.0, 10.0, valinit = 5, valstep = 0.1)
+sldB = Slider(xyB, "b",   1.0,  4.0, valinit = 1, valstep = 0.1)
+sldC = Slider(xyC, "c", -90.0, 90.0, valinit = 0, valstep = 1.0)
+
+# Slider Update
+def update(val):
+    a = sldA.val
+    b = sldB.val
+    c = sldC.val
+    y.set_data(x, f(x, a, b, c))
+    
+# Änderungen abfragen
+sldA.on_changed(update)
+sldB.on_changed(update)
+sldC.on_changed(update)
+
+ax.grid(True)
+plt.show()
+~~~
+
+Da unter macOS der unterste Slider bei einer y-Position von 0.0 am unteren Fensterrand klebt, habe ich alle Slider um 0.02 Einheiten nach oben verschoben, um ihnen etwas mehr Luft zu gönnen.
+
+Ansonsten erinnere ich mich jetzt wieder, wie das mit der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) und den Slidern funktioniert und bin bereit für weitere Experimente. *Still digging!*
