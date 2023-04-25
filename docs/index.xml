@@ -10,7 +10,144 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Mon, 24 Apr 2023 13:05:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 25 Apr 2023 16:30:00 GMT</lastBuildDate>
+<item>
+  <title>Ein wenig Schnickschnack: »Matplotlib für Arme« in Trinket</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023042501_matplotlib_fuer_arme_trinket/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52843385069/"><img src="https://kantel.github.io/posts/2023042501_matplotlib_fuer_arme_trinket/images/fplottrinket-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Bevor ich mich – was schon seit einiger Zeit auf meiner Agenda steht – aufmache und herausfinde, wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/glowwscript.html">GlowScript</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> funktioniert, habe ich erst noch einmal eine Fingerübung erledigt, die ich auch schon lange ausprobieren wollte:</p>
+<p>Ich wollte nämlich wissen, ob meine »Matplotlib für Arme«, die ich <a href="http://blog.schockwellenreiter.de/2021/03/2021031901.html">hier (Teil 1)</a> und <a href="http://blog.schockwellenreiter.de/2021/03/2021033002.html">hier (Teil 2)</a> schon einmal in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> implementiert hatte, auch in Trinket läuft. Damals hatte ich meinen <a href="http://blog.schockwellenreiter.de/2022/10/2022103001.html">Abschied von TigerJython</a> noch nicht vollzogen, also war die Implementierung in Processing.py mehr eine Spielerei. Nun aber denke ich, daß es notwendig ist, solch einen in Python programmierten (einfachen) Funktionsplotter auch für das Web zu haben. Und da bot sich Trinket einfach an.</p>
+<p>Um es kurz zu machen: Der Port nach Trinket war recht einfach. Ich mußte nur berücksichtigen, daß die Processing-Bibliothek in Trinket aus irgendwelchen (nichtdokumentierten) Gründen ein <code>noLoop()</code> ablehnt und daß <code>color()</code> nur <strong>nach</strong> dem <code>setup()</code> aufgerufen werden kann. Das ist schade, weil dadurch eine <strong>globale</strong> Konstantenvereinbarung der verwendeten Farben (die ich gerne implementiert hätte) nur erschwert (eine unnütze Häufung von <code>global</code>-Vereinbarungen) möglich ist. Daher habe ich dies gelassen und die Farben hart codiert.</p>
+<p>Hier der komplette Quelltext:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># Processing(.py) Graphing Tool</span></span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;"># Inspired from »Visualizing Data« (Ben Fry) and</span></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;"># »Math Adventures with Python« (Peter Farrell)</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="im" style="color: #00769E;">from</span> processing <span class="im" style="color: #00769E;">import</span> <span class="op" style="color: #5E5E5E;">*</span></span>
+<span id="cb1-6"><span class="im" style="color: #00769E;">import</span> math</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">720</span>, <span class="dv" style="color: #AD0000;">450</span></span>
+<span id="cb1-9">dt <span class="op" style="color: #5E5E5E;">=</span> <span class="fl" style="color: #AD0000;">0.05</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;"># Zeichenbereich</span></span>
+<span id="cb1-12">plot_x1 <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">120</span></span>
+<span id="cb1-13">plot_x2 <span class="op" style="color: #5E5E5E;">=</span> WIDTH <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">80</span></span>
+<span id="cb1-14">label_x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">50</span></span>
+<span id="cb1-15">plot_y1 <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">60</span></span>
+<span id="cb1-16">plot_y2 <span class="op" style="color: #5E5E5E;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;">-</span> plot_y1</span>
+<span id="cb1-17">label_y <span class="op" style="color: #5E5E5E;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">25</span></span>
+<span id="cb1-18"></span>
+<span id="cb1-19"><span class="co" style="color: #5E5E5E;"># Funktionsabhängige Variablen</span></span>
+<span id="cb1-20">plot_title <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"Sinuskurve"</span>     <span class="co" style="color: #5E5E5E;"># Plot-Titel</span></span>
+<span id="cb1-21">y_label <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"y = sin(x)"</span></span>
+<span id="cb1-22">x_label <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">"x-Werte (-10 … 10)"</span></span>
+<span id="cb1-23">x_min <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb1-24">x_max <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">10</span></span>
+<span id="cb1-25">y_min <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb1-26">y_max <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb1-27">stepsize_x <span class="op" style="color: #5E5E5E;">=</span> <span class="dv" style="color: #AD0000;">2</span>                <span class="co" style="color: #5E5E5E;"># Ticks auf der x-Achse</span></span>
+<span id="cb1-28">stepsize_y <span class="op" style="color: #5E5E5E;">=</span> <span class="op" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>               <span class="co" style="color: #5E5E5E;"># Ticks auf der y-Achse</span></span>
+<span id="cb1-29"></span>
+<span id="cb1-30"><span class="co" style="color: #5E5E5E;"># Zu zeichnende Funktion</span></span>
+<span id="cb1-31"><span class="kw" style="color: #003B4F;">def</span> f(x):</span>
+<span id="cb1-32">  <span class="cf" style="color: #003B4F;">return</span>(math.sin(x))</span>
+<span id="cb1-33"></span>
+<span id="cb1-34"><span class="kw" style="color: #003B4F;">def</span> setup():</span>
+<span id="cb1-35">  size(WIDTH, HEIGHT)</span>
+<span id="cb1-36">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"Funktionsplotter: "</span> <span class="op" style="color: #5E5E5E;">+</span> plot_title)</span>
+<span id="cb1-37">  plot_font <span class="op" style="color: #5E5E5E;">=</span> createFont(<span class="st" style="color: #20794D;">"American Typewriter"</span>, <span class="dv" style="color: #AD0000;">20</span>)</span>
+<span id="cb1-38">  textFont(plot_font)</span>
+<span id="cb1-39">  background(<span class="dv" style="color: #AD0000;">234</span>, <span class="dv" style="color: #AD0000;">218</span>, <span class="dv" style="color: #AD0000;">184</span>)</span>
+<span id="cb1-40">  </span>
+<span id="cb1-41">  <span class="co" style="color: #5E5E5E;"># Den Plot in einem Kasten zeichnen</span></span>
+<span id="cb1-42">  fill(<span class="dv" style="color: #AD0000;">250</span>, <span class="dv" style="color: #AD0000;">250</span>, <span class="dv" style="color: #AD0000;">250</span>)</span>
+<span id="cb1-43">  rectMode(CORNERS)</span>
+<span id="cb1-44">  noStroke()</span>
+<span id="cb1-45">  rect(plot_x1, plot_y1, plot_x2, plot_y2)</span>
+<span id="cb1-46">  </span>
+<span id="cb1-47">  <span class="co" style="color: #5E5E5E;"># Titel des Plots zeichnen</span></span>
+<span id="cb1-48">  fill(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">150</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb1-49">  textSize(<span class="dv" style="color: #AD0000;">20</span>)</span>
+<span id="cb1-50">  textAlign(LEFT, BASELINE)</span>
+<span id="cb1-51">  text(plot_title, plot_x1, plot_y1 <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-52">  </span>
+<span id="cb1-53">  <span class="co" style="color: #5E5E5E;"># Plot zeichnen</span></span>
+<span id="cb1-54">  draw_grid()</span>
+<span id="cb1-55">  draw_axis_labels()</span>
+<span id="cb1-56">  draw_function()</span>
+<span id="cb1-57">  </span>
+<span id="cb1-58">  <span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"I did it, Babe!"</span>)</span>
+<span id="cb1-59">  </span>
+<span id="cb1-60"><span class="kw" style="color: #003B4F;">def</span> draw_grid():</span>
+<span id="cb1-61">  <span class="co" style="color: #5E5E5E;"># Zeichne Gitter und Label</span></span>
+<span id="cb1-62">  textSize(<span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-63">  textAlign(CENTER, TOP)</span>
+<span id="cb1-64">  <span class="co" style="color: #5E5E5E;"># x-Achse</span></span>
+<span id="cb1-65">  <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(x_min, x_max <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>, stepsize_x):</span>
+<span id="cb1-66">    x <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">map</span>(i, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb1-67">    fill(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">150</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb1-68">    text(<span class="bu" style="color: null;">str</span>(i), x, plot_y2 <span class="op" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-69">    strokeWeight(<span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb1-70">    stroke(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">250</span>, <span class="dv" style="color: #AD0000;">250</span>)</span>
+<span id="cb1-71">    line(x, plot_y1, x, plot_y2)</span>
+<span id="cb1-72">  <span class="co" style="color: #5E5E5E;"># y-Achse</span></span>
+<span id="cb1-73">  <span class="cf" style="color: #003B4F;">for</span> j <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(y_max, y_min <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">1</span>, stepsize_y):</span>
+<span id="cb1-74">    y <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">map</span>(j, y_max, y_min, plot_y1, plot_y2)</span>
+<span id="cb1-75">    <span class="cf" style="color: #003B4F;">if</span> j <span class="op" style="color: #5E5E5E;">==</span> y_min:         <span class="co" style="color: #5E5E5E;"># Korrektur unterste Zeile</span></span>
+<span id="cb1-76">      textAlign(RIGHT, BOTTOM)</span>
+<span id="cb1-77">    <span class="cf" style="color: #003B4F;">elif</span> j <span class="op" style="color: #5E5E5E;">==</span> y_max:       <span class="co" style="color: #5E5E5E;"># Korrektur oberste Zeile</span></span>
+<span id="cb1-78">      textAlign(RIGHT, TOP)</span>
+<span id="cb1-79">    <span class="cf" style="color: #003B4F;">else</span>:                  <span class="co" style="color: #5E5E5E;"># Vertikal zentrieren</span></span>
+<span id="cb1-80">      textAlign(RIGHT, CENTER)</span>
+<span id="cb1-81">    fill(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">150</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb1-82">    text(<span class="bu" style="color: null;">str</span>(j), plot_x1 <span class="op" style="color: #5E5E5E;">-</span> <span class="dv" style="color: #AD0000;">10</span>, y)</span>
+<span id="cb1-83">    strokeWeight(<span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb1-84">    stroke(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">250</span>, <span class="dv" style="color: #AD0000;">250</span>)</span>
+<span id="cb1-85">    line(plot_x1, y, plot_x2, y)</span>
+<span id="cb1-86">    </span>
+<span id="cb1-87"><span class="kw" style="color: #003B4F;">def</span> draw_axis_labels():</span>
+<span id="cb1-88">  fill(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">150</span>, <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb1-89">  textSize(<span class="dv" style="color: #AD0000;">13</span>)</span>
+<span id="cb1-90">  textLeading(<span class="dv" style="color: #AD0000;">15</span>)</span>
+<span id="cb1-91">  textAlign(CENTER, CENTER)</span>
+<span id="cb1-92">  text(y_label, label_x, (plot_y1 <span class="op" style="color: #5E5E5E;">+</span> plot_y2)<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span>)</span>
+<span id="cb1-93">  textAlign(CENTER,  BASELINE)</span>
+<span id="cb1-94">  text(x_label, (plot_x1 <span class="op" style="color: #5E5E5E;">+</span> plot_x2)<span class="op" style="color: #5E5E5E;">//</span><span class="dv" style="color: #AD0000;">2</span>, label_y)</span>
+<span id="cb1-95"></span>
+<span id="cb1-96"><span class="kw" style="color: #003B4F;">def</span> draw_function():</span>
+<span id="cb1-97">  stroke(<span class="dv" style="color: #AD0000;">250</span>, <span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-98">  x <span class="op" style="color: #5E5E5E;">=</span> x_min</span>
+<span id="cb1-99">  <span class="cf" style="color: #003B4F;">while</span> x <span class="op" style="color: #5E5E5E;">&lt;=</span> x_max <span class="op" style="color: #5E5E5E;">-</span> dt:</span>
+<span id="cb1-100">    x_0 <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">map</span>(x, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb1-101">    x_1 <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">map</span>(x <span class="op" style="color: #5E5E5E;">+</span> dt, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb1-102">    y_0 <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">map</span>(f(x), y_min, y_max, plot_y2, plot_y1)</span>
+<span id="cb1-103">    y_1 <span class="op" style="color: #5E5E5E;">=</span> <span class="bu" style="color: null;">map</span>(f(x <span class="op" style="color: #5E5E5E;">+</span> dt), y_min, y_max, plot_y2, plot_y1)</span>
+<span id="cb1-104">    line(x_0, y_0, x_1, y_1)</span>
+<span id="cb1-105">    x <span class="op" style="color: #5E5E5E;">+=</span> dt</span>
+<span id="cb1-106"></span>
+<span id="cb1-107">run()</span></code></pre></div>
+<p>Für andere, eigene Funtionen müssen »nur« die <em>funktionsabhängigen Variablen</em> und die zu zeichnende Funktion <code>f(x)</code> angepaßt werden. Ich habe dies in <strong>einem Codeblock</strong> (Zeilen 19 bis 32) zusammengefaßt. Alles andere kann so bleiben, wie es ist.</p>
+<p>Der <a href="https://github.com/kantel/trinket/blob/main/fplot/main.py">Quelltext</a> ist nicht nur wie gewohnt auf GitHub zu finden, sondern Ihr könnt das <a href="https://trinket.io/python/3b1e70c445">Trinket auch remixen</a> und an Eure Bedrürfnisse anpassen. Macht damit also, was Ihr wollt und habt Spaß.</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Processing</category>
+  <category>Trinket</category>
+  <guid>https://kantel.github.io/posts/2023042501_matplotlib_fuer_arme_trinket/index.html</guid>
+  <pubDate>Tue, 25 Apr 2023 16:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023042501_matplotlib_fuer_arme_trinket/images/fplottrinket.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Der Schockwellenreiter wird 23: Happy Birthday, liebes Kritzelheft</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -786,60 +923,6 @@
   <guid>https://kantel.github.io/posts/2023041403_dancing_crab_3/index.html</guid>
   <pubDate>Fri, 14 Apr 2023 18:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023041403_dancing_crab_3/images/crabstage3.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Creative Coding und Physik-Simulationen – Video-Tutorials am Freitag</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023041402_creative_coding_und_physik/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://en.wikipedia.org/wiki/File:Blender3D_HiddenTextSoftbody.ogv#/media/File:Blender3D_HiddenTextSoftbody.jpg"><img src="https://kantel.github.io/posts/2023041402_creative_coding_und_physik/images/softbody-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Auch für den heutigen Freitag habe ich wieder einen Bunch von Video-Tutorials für Euch (und für mich) herausgesucht, damit Ihr am dem zu erwartenden verregneten Wochenende nicht von Langeweile geplagt wird und Ihr aus lauter Verzweiflung in die Kirchen rennt. Das Thema an diesem Wochenende ist einmal »Creative Coding mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>« und zum zweiten – inspiriert von <em>Daniel Shiffman</em> – »Physiksimulationen und Physik-Engines«.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4fkRdKQ3DSM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Ich beginne mir Creative Coding und P5.js: Die Playlist »<a href="https://www.youtube.com/playlist?list=PLnJOmsprq3bErSNvxK0OV-Adh1uxRhVdo">P5.js Projects &amp; Programming</a>« von <em>Steve`s Makerspace</em> ist eine Monsterplaylist mit 52 im Schnitt etwa viertelstündigen Videos, die sich um Creative Coding mit P5.js drehen. Nachdem ich in die ersten Videos hineingeschaut habe, bekomme ich große Lust, den <a href="https://editor.p5js.org/">P5.js-Webeditor</a> anzuwerfen und mich selber endlich intensiver mit P5.js auseinanderzusetzen. <em>So viel zu spielen, so wenig Zeit</em>.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-YhzDuF_kLs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Der <a href="https://www.youtube.com/@jeffkthompson">YouTube-Kanal von <em>Jeff Thompson</em></a> zu <em>Creative Programming</em> will auch noch von mir erforscht werden.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/-CzNlgpOVgs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Das gleiche gilt für den Workshop »<a href="https://www.youtube.com/watch?v=-CzNlgpOVgs">Procedural pattern programming with p5.js</a>« und für die Playlist »<a href="https://www.youtube.com/playlist?list=PLyhIajiyZLlPhrFYJqOFRq9aoY-Q0AYjU">P5.js Spirals</a>« (fünf Videos á etwa 15 Minuten Spieldauer).</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IxdGyqhppis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Einen eleganten Übergang zur Physik schafft dann – wie angekündigt – <em>Daniel Shiffman</em> mit seiner 177. Coding Challenge »<a href="https://www.youtube.com/watch?v=IxdGyqhppis">Soft Body Physics</a>«, in der er zeigt, was er alles mit der Physik Engine »<a href="http://haptic-data.com/toxiclibsjs/">Toxiclibs.js</a>« anstellen kann. Ein weiterer Grund für mich, den P5.js-Webeditor wieder hervorzukramen. Dazu gibt es auch eine nette <a href="https://en.wikipedia.org/wiki/Soft-body_dynamics">Seite in der englischsprachigen Wikipedia</a>, in der auch eine Reihe von <em>Physik Engines</em> und -Spielen vorgestellt werden.</p>
-<p>In diesem Video erzählt <em>Shiffman</em> auch, daß seine <a href="https://nature-of-code-2nd-edition.netlify.app/">Neuauflage von »The Nature of Code«</a> kurz vor der Fertigstellung steht. Ich bin gespannt wie ein Flitzebogen.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/alhpH6ECFvQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>In seiner 132. Coding Challenge programmierte <em>Daniel Shiffman</em> eine »<a href="https://thecodingtrain.com/challenges/132-fluid-simulation">Fluid Simulation</a>« in knallbunt und mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>. Physik kann so schön (bunt) sein.&nbsp;🤓</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/tLsi2DeUsak" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Doch es gibt natürlich auch andere Physik (2D) Engines, die interessante Projekte erlauben. Eine sehr populäre Engine ist <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pymunk.html">Pymunk</a>, die auf der auf die sehr leistungsfähigen, in C geschriebenen 2D-Physikbibliothek <a href="https://chipmunk-physics.net/">Chipmunk</a> basiert. Pymunk arbeitet unter anderem auch sehr schön mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> zusammen, wie <em>Tech With Tim</em> in obigem, einstündigen Video »<a href="https://www.youtube.com/watch?v=tLsi2DeUsak">Physics Simulations With Python and PyMunk</a>« demonstriert.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cCiXqK9c18g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Da aber auch andere Mütter schöne Töchter haben, möchte ich Euch auch <a href="https://kantel.github.io/posts/2023012601_covid_is_over/">noch einmal</a> die Playlist »<a href="https://www.youtube.com/playlist?list=PL_N_kL9gRTm8lh7GxFHh3ym1RXi6I6c50">Pymunk Basics</a>« des YouTubers <em>Ear Of Corn</em> vorstellen, die aus sieben Videos zwischen fünf und dreissig Minuten Spieldauer besteht.</p>
-<p>Und dann habe ich kürzlich <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/vpython.html">VPython</a>, genauer <a href="https://glowscript.org/">WebVPython/GlowScript</a> (wieder-) entdeckt, eine Python-3D-Physics-Engine, die auch mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> zusammenspielt. Doch das ist eine ganz andere, neue Geschichte, über die ich in einem separaten Beitrag berichten möchte. Da will ich erst noch eine Weile selber experimentieren.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5ncQDRvkpP8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p><strong>War sonst noch was?</strong> Ach ja, <em>Wassily Kandinskys</em> brachte in »<a href="https://shop.bauhaus-movement.com/poster-wassily-kandinsky-circles-de">Circles in a Circle</a>« von 1923 erstmals seine Kreise in den Vordergrund. Es ist ein besonders ordentliches Werk, in dem die meisten Elemente sauber in einem großen dicken Kreis platziert sind. Das schreit nach einem Re-enactment. Aber ich wiederhole mich: <em>So viel zu spielen, so wenig Zeit!</em></p>
-
-
-
- ]]></description>
-  <category>Creative Coding</category>
-  <category>P5.js</category>
-  <category>Pymunk</category>
-  <category>Pygame</category>
-  <category>Physik</category>
-  <category>Simulation</category>
-  <guid>https://kantel.github.io/posts/2023041402_creative_coding_und_physik/index.html</guid>
-  <pubDate>Fri, 14 Apr 2023 14:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023041402_creative_coding_und_physik/images/softbody.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
