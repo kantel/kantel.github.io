@@ -1,0 +1,37 @@
+---
+title: "Neue Werkzeuge: P5, Jupyter und mehr online"
+author: "Jörg Kantel"
+date: "2023-05-04 17:15:00"
+categories: [P5, Plotly, JupyterLite, Docsify]
+image: "images/p5online.jpg"
+---
+
+[![](images/p5online-b.jpg)](https://global.discourse-cdn.com/standard10/uploads/processingfoundation1/original/3X/f/e/fe0ada24939070d78e32f883e8b3b4adfe31b1c1.gif)
+
+Nicht nur ich bewege mich wieder zurück und weg von den reinen statischen Seiten vom Desktop ins Web. Das Neue daran ist, daß die neuen Werkzeuge (meist) ohne dedizierten Server auskommen. Der dynamische Content wird per JavaScript im Client (das ist in der Regel der Browser) erstellt. Ein paar Beispiele, die mir in den letzten Tagen untergekommen sind:
+
+### Noch ein P5 Online Editor
+
+Anfang April hatte ich  ja schon den [Online Code Editor](https://editor.raspberrypi.org/de-DE/) der *Raspberry Pi Foundation* [vorgestellt](https://kantel.github.io/posts/2023040802_another_python_online_editor/), der auf [P5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5py.html), dem Python-Processing Port von *Anhik Pal* aufsetzt. Nun hat mit [Strive](https://code.strivemath.com/) ein weiterer Online-Editor die [Szene betreten](https://discourse.processing.org/t/a-free-p5-python-online-editor-with-live-edit-designed-for-teachers-and-students-learning-to-code-strive-editor-alpha/41840), der ebenfalls auf P5 basiert. Haupteinsatzbereich soll wohl ebenfalls -- wie beim Raspberry-Pi-Teil -- der Edu-Bereich sein, wozu es auch schon eine auf diesen [Einsatz spezialisierte Bibliothek](https://github.com/StriveMath/p5.teach.js) gibt. Mehr dazu findet Ihr in der [Ankündigung](https://discourse.processing.org/t/an-open-source-browser-based-implementation-of-p5-python-and-a-utility-library-for-helping-teachers-explain-concepts-in-p5/41839) auf den Seiten der *Processing Foundation*.
+
+Auf den ersten Blick scheint mir *Strive* momentan schon ausgereifter als die Software aus dem Hause *Raspberry Pi*, aber beide Teile sind ja noch jung. Schaun wir mal, was daraus wird. Auf jeden Fall sollte ich neben [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) auch P5 im Auge behalten.
+
+### Einführung in Plotly
+
+Wenn es um Datenvisualisierung mit Python geht, geht bisher an der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) (und eventuell mit der Erweiterung [Seaborn](https://seaborn.pydata.org/)) kaum ein Weg vorbei. Der Nachteil ist aber, daß diese Kombination kaum Interaktivität zuläßt. Und wenn, dann nur auf dem Desktop. Hier kommt [Plotly](https://plotly.com/) ins Spiel. Denn diese Software erlaubt es, mit Python interaktive Visualisierungen zu erstellen, die als App im Browser laufen.
+
+Der Beitrag »[Say Goodbye to Matplotlib and Seaborn for Your Python Plots](https://medium.com/codex/say-goodbye-to-matplotlib-and-seaborn-for-your-python-plots-5cade2f7fba2)« von *Anmol Tomar* gibt eine erste, kurze, aber hilfreiche Einführung. Ich sollte mir Plotly auch einmal genauer anschauen.
+
+### Mit JupyterLite ins Web
+
+[JuypterLite](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlite.html), die Jupyter-Distrbution, die als Webanwendung im Browser läuft, hatte ich auf diesen Seiten auch schon [mehrmals](http://blog.schockwellenreiter.de/2021/07/2021071603.html) [vorgestellt](http://blog.schockwellenreiter.de/2022/05/2022051601.html), aber nie getestet. Der Artikel »[Juypter Everywhere](https://blog.jupyter.org/jupyter-everywhere-f8151c2cc6e8)« von *Jeremy Tuloup* machte mich auf [dieses Versäumnis](https://blog.jupyter.org/jupyterlite-jupyter-%EF%B8%8F-webassembly-%EF%B8%8F-python-f6e2e41ab3fa) aufmerksam.
+
+In diesem Zusammenhang stolperte ich auch noch über den Beitrag »[Embed interactive itkwidgets 3D renderings into JupyterLite deployments](https://blog.jupyter.org/embed-interactive-itkwidgets-3d-renderings-into-jupyterlite-deployments-10eb9ea30980)« von *Matt McCromick*. Es führt also kein Weg daran vorbei, ich muß JupyterLite dringend testen.
+
+In diesem Zusammenhang ist sicher auch das freie Online-Buch »[Learn Python with Jupyter](http://learnpythonwithjupyter.com/)«, das [hier lobend besprochen wird](https://blog.jupyter.org/introducing-learn-python-with-jupyter-11214f152159), eine nützliche Hilfe.
+
+### Docsify: (keine) statischen Seiten aus Markdown
+
+**War sonst noch was?** Ach ja, auch auf der Markdown-Seite gibt es Bewegung: [Docsify](https://docsify.js.org/#/) ist ein freier, »magischer« Generator für Dokumentationsseiten und andere Webauftritte. Das Online Tool »[Docsify-This](https://docsify-this.net/#/)« lädt dafür die Markdown-Quelldateien hoch und generiert mithilfe vorgefertigter Templates die gewünschten Webseiten.
+
+Mit Unterstützung von GitHub oder ähnlicher Dienste kann man diesen Vorgang auch automatisieren. Der Beitrag »[Generate web pages from Markdown with Docsify-This](https://opensource.com/article/23/5/docsify-markdown-html)« erklärt, wie es geht. Sollte ich mir auch unbedingt einmal genauer anschauen. *So viel zu testen, so wenig Zeit!*

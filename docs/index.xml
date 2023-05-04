@@ -10,7 +10,54 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Thu, 04 May 2023 11:35:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 04 May 2023 15:15:00 GMT</lastBuildDate>
+<item>
+  <title>Neue Werkzeuge: P5, Jupyter und mehr online</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023050402_p5_jupyter_und_mehr_online/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://global.discourse-cdn.com/standard10/uploads/processingfoundation1/original/3X/f/e/fe0ada24939070d78e32f883e8b3b4adfe31b1c1.gif"><img src="https://kantel.github.io/posts/2023050402_p5_jupyter_und_mehr_online/images/p5online-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nicht nur ich bewege mich wieder zurück und weg von den reinen statischen Seiten vom Desktop ins Web. Das Neue daran ist, daß die neuen Werkzeuge (meist) ohne dedizierten Server auskommen. Der dynamische Content wird per JavaScript im Client (das ist in der Regel der Browser) erstellt. Ein paar Beispiele, die mir in den letzten Tagen untergekommen sind:</p>
+<section id="noch-ein-p5-online-editor" class="level3">
+<h3 class="anchored" data-anchor-id="noch-ein-p5-online-editor">Noch ein P5 Online Editor</h3>
+<p>Anfang April hatte ich ja schon den <a href="https://editor.raspberrypi.org/de-DE/">Online Code Editor</a> der <em>Raspberry Pi Foundation</em> <a href="https://kantel.github.io/posts/2023040802_another_python_online_editor/">vorgestellt</a>, der auf <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5py.html">P5</a>, dem Python-Processing Port von <em>Anhik Pal</em> aufsetzt. Nun hat mit <a href="https://code.strivemath.com/">Strive</a> ein weiterer Online-Editor die <a href="https://discourse.processing.org/t/a-free-p5-python-online-editor-with-live-edit-designed-for-teachers-and-students-learning-to-code-strive-editor-alpha/41840">Szene betreten</a>, der ebenfalls auf P5 basiert. Haupteinsatzbereich soll wohl ebenfalls – wie beim Raspberry-Pi-Teil – der Edu-Bereich sein, wozu es auch schon eine auf diesen <a href="https://github.com/StriveMath/p5.teach.js">Einsatz spezialisierte Bibliothek</a> gibt. Mehr dazu findet Ihr in der <a href="https://discourse.processing.org/t/an-open-source-browser-based-implementation-of-p5-python-and-a-utility-library-for-helping-teachers-explain-concepts-in-p5/41839">Ankündigung</a> auf den Seiten der <em>Processing Foundation</em>.</p>
+<p>Auf den ersten Blick scheint mir <em>Strive</em> momentan schon ausgereifter als die Software aus dem Hause <em>Raspberry Pi</em>, aber beide Teile sind ja noch jung. Schaun wir mal, was daraus wird. Auf jeden Fall sollte ich neben <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> auch P5 im Auge behalten.</p>
+</section>
+<section id="einführung-in-plotly" class="level3">
+<h3 class="anchored" data-anchor-id="einführung-in-plotly">Einführung in Plotly</h3>
+<p>Wenn es um Datenvisualisierung mit Python geht, geht bisher an der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> (und eventuell mit der Erweiterung <a href="https://seaborn.pydata.org/">Seaborn</a>) kaum ein Weg vorbei. Der Nachteil ist aber, daß diese Kombination kaum Interaktivität zuläßt. Und wenn, dann nur auf dem Desktop. Hier kommt <a href="https://plotly.com/">Plotly</a> ins Spiel. Denn diese Software erlaubt es, mit Python interaktive Visualisierungen zu erstellen, die als App im Browser laufen.</p>
+<p>Der Beitrag »<a href="https://medium.com/codex/say-goodbye-to-matplotlib-and-seaborn-for-your-python-plots-5cade2f7fba2">Say Goodbye to Matplotlib and Seaborn for Your Python Plots</a>« von <em>Anmol Tomar</em> gibt eine erste, kurze, aber hilfreiche Einführung. Ich sollte mir Plotly auch einmal genauer anschauen.</p>
+</section>
+<section id="mit-jupyterlite-ins-web" class="level3">
+<h3 class="anchored" data-anchor-id="mit-jupyterlite-ins-web">Mit JupyterLite ins Web</h3>
+<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlite.html">JuypterLite</a>, die Jupyter-Distrbution, die als Webanwendung im Browser läuft, hatte ich auf diesen Seiten auch schon <a href="http://blog.schockwellenreiter.de/2021/07/2021071603.html">mehrmals</a> <a href="http://blog.schockwellenreiter.de/2022/05/2022051601.html">vorgestellt</a>, aber nie getestet. Der Artikel »<a href="https://blog.jupyter.org/jupyter-everywhere-f8151c2cc6e8">Juypter Everywhere</a>« von <em>Jeremy Tuloup</em> machte mich auf <a href="https://blog.jupyter.org/jupyterlite-jupyter-%EF%B8%8F-webassembly-%EF%B8%8F-python-f6e2e41ab3fa">dieses Versäumnis</a> aufmerksam.</p>
+<p>In diesem Zusammenhang stolperte ich auch noch über den Beitrag »<a href="https://blog.jupyter.org/embed-interactive-itkwidgets-3d-renderings-into-jupyterlite-deployments-10eb9ea30980">Embed interactive itkwidgets 3D renderings into JupyterLite deployments</a>« von <em>Matt McCromick</em>. Es führt also kein Weg daran vorbei, ich muß JupyterLite dringend testen.</p>
+<p>In diesem Zusammenhang ist sicher auch das freie Online-Buch »<a href="http://learnpythonwithjupyter.com/">Learn Python with Jupyter</a>«, das <a href="https://blog.jupyter.org/introducing-learn-python-with-jupyter-11214f152159">hier lobend besprochen wird</a>, eine nützliche Hilfe.</p>
+</section>
+<section id="docsify-keine-statischen-seiten-aus-markdown" class="level3">
+<h3 class="anchored" data-anchor-id="docsify-keine-statischen-seiten-aus-markdown">Docsify: (keine) statischen Seiten aus Markdown</h3>
+<p><strong>War sonst noch was?</strong> Ach ja, auch auf der Markdown-Seite gibt es Bewegung: <a href="https://docsify.js.org/#/">Docsify</a> ist ein freier, »magischer« Generator für Dokumentationsseiten und andere Webauftritte. Das Online Tool »<a href="https://docsify-this.net/#/">Docsify-This</a>« lädt dafür die Markdown-Quelldateien hoch und generiert mithilfe vorgefertigter Templates die gewünschten Webseiten.</p>
+<p>Mit Unterstützung von GitHub oder ähnlicher Dienste kann man diesen Vorgang auch automatisieren. Der Beitrag »<a href="https://opensource.com/article/23/5/docsify-markdown-html">Generate web pages from Markdown with Docsify-This</a>« erklärt, wie es geht. Sollte ich mir auch unbedingt einmal genauer anschauen. <em>So viel zu testen, so wenig Zeit!</em></p>
+
+
+</section>
+
+ ]]></description>
+  <category>P5</category>
+  <category>Plotly</category>
+  <category>JupyterLite</category>
+  <category>Docsify</category>
+  <guid>https://kantel.github.io/posts/2023050402_p5_jupyter_und_mehr_online/index.html</guid>
+  <pubDate>Thu, 04 May 2023 15:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023050402_p5_jupyter_und_mehr_online/images/p5online.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Roboter im Netz – mit P5.js</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -857,35 +904,6 @@
   <guid>https://kantel.github.io/posts/2023042301_thonny_4_0_2/index.html</guid>
   <pubDate>Sun, 23 Apr 2023 13:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023042301_thonny_4_0_2/images/thonny402.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Wenn der Frühling kommt, dann zeig ich Dir Tulpen vom Britzer Damm</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52837240794/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen01-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Ich habe dieses Mal auf <a href="http://www.gabi-kantel.de/">Gabi</a> gehört. Sie meinte nämlich nach meinem <a href="https://kantel.github.io/posts/2023041302_keine_tulpen/">letzten Desaster</a>, daß ich doch einfach warten solle, bis in unserem Schattengärtchen die ersten Knospen ans Licht drängen, dann wären mit Sicherheit auch im <a href="https://www.britzergarten.de/">Britzer Garten</a> die Tupen bereit zum Blühen. Und Gabi hatte Recht, heute war die Tulpen- und Baumblüte dort geradezu explodiert:</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52837480900/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52836500077/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen03.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52836501017/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen04.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/52837072446/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837072036/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen06.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837518433/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen07.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/52837066196/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen09.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837068096/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen08.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837473520/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen10.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/52837466745/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen11.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837065151/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen12.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837463495/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen13.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/52837463290/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen14.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837063091/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen15.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837058631/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen16.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/52837058971/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen17.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52837240214/"><img src="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen18.jpg" class="img-fluid"></a></p>
-<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr jeweils auf eine Seite mit einer Vergrößerung.</em></p>
-<p>Es war ein schöner Nachmittag, besonders als mir zum Schluß dann auch noch die Garten-Töff-Töff vor die Linse schnaufte.</p>
-<p>Aus bekannten Gründen gibt es die Photostrecke nicht im Gesichtsbuch, sondern nur hier im <del>Blog</del> Kritzelheft. Da müßt Ihr wieder durch! <em>(Photos (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>): <a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a>)</em></p>
-
-
-
- ]]></description>
-  <category>Photographie</category>
-  <category>Neukölln</category>
-  <category>Parks und Gärten</category>
-  <guid>https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/index.html</guid>
-  <pubDate>Sat, 22 Apr 2023 17:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen01.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
