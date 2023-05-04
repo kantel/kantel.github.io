@@ -1,0 +1,69 @@
+---
+title: "Roboter im Netz -- mit P5.js"
+author: "Jörg Kantel"
+date: "2023-05-04 13:35:00"
+categories: [P5.js, Processing, Creative Coding]
+image: "images/roboterquarto.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+---
+
+[![](images/roboterquarto-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52867740726/)
+
+Meine [Spielereien](https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/) mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) machen natürlich erst dann richtig Spaß, wenn man sie auch in seine Webseite -- wie zum Beispiel in  dieses ~~Blog~~ Kritzelheft -- einbinden kann. Wie ich das in [RubyFrontier](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/rubyfrontier.html), meiner ehemaligen Engine für statische Seiten, anstellen konnte, hatte ich vor Jahren [hier](http://blog.schockwellenreiter.de/2015/11/2015112707.html) und [hier](http://blog.schockwellenreiter.de/2015/11/2015113001.html) schon einmal ausprobiert und dokumentiert. Daher war ich mir sicher, daß dies in [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html), der Engine, die seit Dezember letzten Jahres hinter diesen Seiten werkelt, ebenso einfach sein müßte. Spoiler: Wenn man sich durch die leider etwas [unstrukturierte Dokumentation](https://quarto.org/docs/output-formats/html-basics.html) gewühlt hat und daher weiß -- oder glaubt zu wissen -- wie das geht, scheint es tatsächlich ziemlich einfach zu sein: 
+
+<div id="robby"></div>
+
+Wichtig ist es, zu wissen, daß innerhalb einer Website die Informationen in den `index.qmd` und/oder ihren YAML-Headern ähnlich wie bei RubyFrontier behandelt werden. Die Informationen, die der herauszuschreibenden Seite am nächsten liegen, gelten oder überschreiben die darunterliegenden Informationen.
+
+Daher habe ich erst einmal ein Verzeichnis `js` als Unterverzeichnis der aktuellen Datei an- und in diese die Datei `p5.min.js` abgelegt, während ich im gleichen Verzeichnis wie die aktuelle Datei ich die Datei `sketch.js` abgelegt habe. Diese Strukturierung ist zwar nicht unbedingt erforderlich, aber sie spiegelt die vertraute Struktur wieder, wie sie auch der [P5 Web Editor](https://editor.p5js.org/) oder [py5.vscode](https://github.com/antiboredom/p5.vscode#readme) anlegen. Im YAML-Header meiner Seite habe ich dann
+
+~~~yaml
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+~~~
+
+Quarto mit diesen beiden Dateien verheiratet.
+
+Der Rest ist wie gehabt: Damit die HTML Seite auch weiß, wohin sie den Sketch verschieben soll, muß an der Stelle ein `div` angelegt werden, das zum Beispiel so aussieht:
+
+~~~html
+<div id="robby"></div>
+~~~
+
+Und in der `setup()` Methode des Sketches muß diese Position als `.parent` dem Sketch mitgeteilt werden:
+
+~~~javascript
+function setup() {
+  let myCanvas = createCanvas(WIDTH, HEIGHT);
+  myCanvas.parent("robby")
+~~~
+
+Oben seht Ihr, daß dies funktioniert (wenn Ihr nicht Eurem Browser die Ausführung von JavaScript verboten habt). Das macht mich natürlich scharf auf viele weitere Spielereien und dafür muß ich noch weiter JavaScript und P5.js lernen. Ich habe also zu tun!
+
+### Literatur
+
+Neben den oben schon verlinkten Beiträgen aus dem *Schockwellenreiter* und der offiziellen, aber leicht chaotischen [Quarto-Dokumentation](https://quarto.org/) haben mir diese Beiträge geholfen, mich in P5.js und Quarto besser zurechtzufinden:
+
+#### P5.js
+
+- [Learn to code with P5.js](https://www.p5js.gym-wst.de/de) ist eine nette, deutschsprachige Tutorial-Seite zu P5.js des [Gymnasiums Westerstede](https://www.gymnasium-westerstede.de/).
+- **Programmieren lernen** ist eine [umfangreiche Site](https://michaelkipp.de/processing/index.html) zu Processing und Java von [Prof. Dr. Michael Kipp](http://michaelkipp.de/) an der [Hochschule Augsburg](http://www.hs-augsburg.de/). Es gibt auch unter [E2&nbsp;Processing in JavaScript](https://michaelkipp.de/processing/p5js.html) einen Bereich des Vorlesungsskriptes, der sich mit P5.js befaßt.
+- **Lernkarten**: [Datenvisualisierung mit P5.js](https://futurium.de/uploads/documents/Lernkarten-p5js.pdf) (PDF-Slideshow).
+- **Im Schockwellenreiter (1)**: [Noch einmal Running Orc – diesmal mit p5.js](http://blog.schockwellenreiter.de/2016/03/2016030602.html).
+- **Im Schockwellenreiter (2)**: [Running Orc Reloaded (JavaScript/P5.js)](http://blog.schockwellenreiter.de/2020/12/2020121301.html).
+
+#### P5.js und Quarto
+
+- **Notes from a data witch**: [Fun and games with p5.js and observable.js in quarto](https://blog.djnavarro.net/posts/2023-01-14_p5js/). Okay it’s a short post in which I teach myself a bit of p5.js, but it does have five different donut examples which seems cool?
+- **Quarto Tutorial**: [Porting a distill blog to quarto](https://blog.djnavarro.net/posts/2022-04-20_porting-to-quarto/). I have moved this blog from distill over to quarto, and taken notes. A year after starting the blog, this promises to be an interesting reproducibility test.
+
+Der Sketch entspricht dem [hier vorgestellten Sketch](https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/) (bis auf die Änderung in der Fensterggröße (`WIDTH = 920`) und den oben vorgestellten Änderungen in der `setup()`-Methode). Dort (und in meinem GitHub-Repositorim) findet Ihr auch den [Quellcode](https://github.com/kantel/p5js/blob/master/robot/sketch.js).
+
+### Fazit
+
+Ich bin mir noch nicht sicher, ob das der sinnvollste Weg ist, P5.js-Skripte in eine Quarto-Site einzubinden, zumal ich vieles nur durch *Trial and Error* herausgefunden habe. Aber dieser Weg funktioniert, bis ich etwas anderes weiß, werde ich ihn nutzen. *Still digging!*

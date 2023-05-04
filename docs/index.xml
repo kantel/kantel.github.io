@@ -10,7 +10,76 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Wed, 03 May 2023 13:35:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 04 May 2023 11:35:00 GMT</lastBuildDate>
+<item>
+  <title>Roboter im Netz – mit P5.js</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023050401_roboter_im_netz/index.html</link>
+  <description><![CDATA[ 
+<script src="./sketch.js"></script>
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52867740726/"><img src="https://kantel.github.io/posts/2023050401_roboter_im_netz/images/roboterquarto-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Meine <a href="https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/">Spielereien</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> machen natürlich erst dann richtig Spaß, wenn man sie auch in seine Webseite – wie zum Beispiel in dieses <del>Blog</del> Kritzelheft – einbinden kann. Wie ich das in <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/rubyfrontier.html">RubyFrontier</a>, meiner ehemaligen Engine für statische Seiten, anstellen konnte, hatte ich vor Jahren <a href="http://blog.schockwellenreiter.de/2015/11/2015112707.html">hier</a> und <a href="http://blog.schockwellenreiter.de/2015/11/2015113001.html">hier</a> schon einmal ausprobiert und dokumentiert. Daher war ich mir sicher, daß dies in <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a>, der Engine, die seit Dezember letzten Jahres hinter diesen Seiten werkelt, ebenso einfach sein müßte. Spoiler: Wenn man sich durch die leider etwas <a href="https://quarto.org/docs/output-formats/html-basics.html">unstrukturierte Dokumentation</a> gewühlt hat und daher weiß – oder glaubt zu wissen – wie das geht, scheint es tatsächlich ziemlich einfach zu sein:</p>
+<div id="robby">
+
+</div>
+<p>Wichtig ist es, zu wissen, daß innerhalb einer Website die Informationen in den <code>index.qmd</code> und/oder ihren YAML-Headern ähnlich wie bei RubyFrontier behandelt werden. Die Informationen, die der herauszuschreibenden Seite am nächsten liegen, gelten oder überschreiben die darunterliegenden Informationen.</p>
+<p>Daher habe ich erst einmal ein Verzeichnis <code>js</code> als Unterverzeichnis der aktuellen Datei an- und in diese die Datei <code>p5.min.js</code> abgelegt, während ich im gleichen Verzeichnis wie die aktuelle Datei ich die Datei <code>sketch.js</code> abgelegt habe. Diese Strukturierung ist zwar nicht unbedingt erforderlich, aber sie spiegelt die vertraute Struktur wieder, wie sie auch der <a href="https://editor.p5js.org/">P5 Web Editor</a> oder <a href="https://github.com/antiboredom/p5.vscode#readme">py5.vscode</a> anlegen. Im YAML-Header meiner Seite habe ich dann</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><span class="fu" style="color: #4758AB;">include-in-header</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-2"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">text</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> &lt;script src="./js/p5.min.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;">include-before-body</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb1-4"><span class="at" style="color: #657422;">  </span><span class="kw" style="color: #003B4F;">-</span><span class="at" style="color: #657422;"> </span><span class="fu" style="color: #4758AB;">text</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> &lt;script src="./sketch.js"&gt;&lt;/script&gt;</span></span></code></pre></div>
+<p>Quarto mit diesen beiden Dateien verheiratet.</p>
+<p>Der Rest ist wie gehabt: Damit die HTML Seite auch weiß, wohin sie den Sketch verschieben soll, muß an der Stelle ein <code>div</code> angelegt werden, das zum Beispiel so aussieht:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="kw" style="color: #003B4F;">&lt;div</span> <span class="er" style="color: #AD0000;">id</span><span class="ot" style="color: #003B4F;">=</span><span class="st" style="color: #20794D;">"robby"</span><span class="kw" style="color: #003B4F;">&gt;&lt;/div&gt;</span></span></code></pre></div>
+<p>Und in der <code>setup()</code> Methode des Sketches muß diese Position als <code>.parent</code> dem Sketch mitgeteilt werden:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="kw" style="color: #003B4F;">function</span> <span class="fu" style="color: #4758AB;">setup</span>() {</span>
+<span id="cb3-2">  <span class="kw" style="color: #003B4F;">let</span> myCanvas <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">createCanvas</span>(WIDTH<span class="op" style="color: #5E5E5E;">,</span> HEIGHT)<span class="op" style="color: #5E5E5E;">;</span></span>
+<span id="cb3-3">  myCanvas<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">parent</span>(<span class="st" style="color: #20794D;">"robby"</span>)</span></code></pre></div>
+<p>Oben seht Ihr, daß dies funktioniert (wenn Ihr nicht Eurem Browser die Ausführung von JavaScript verboten habt). Das macht mich natürlich scharf auf viele weitere Spielereien und dafür muß ich noch weiter JavaScript und P5.js lernen. Ich habe also zu tun!</p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<p>Neben den oben schon verlinkten Beiträgen aus dem <em>Schockwellenreiter</em> und der offiziellen, aber leicht chaotischen <a href="https://quarto.org/">Quarto-Dokumentation</a> haben mir diese Beiträge geholfen, mich in P5.js und Quarto besser zurechtzufinden:</p>
+<section id="p5.js" class="level4">
+<h4 class="anchored" data-anchor-id="p5.js">P5.js</h4>
+<ul>
+<li><a href="https://www.p5js.gym-wst.de/de">Learn to code with P5.js</a> ist eine nette, deutschsprachige Tutorial-Seite zu P5.js des <a href="https://www.gymnasium-westerstede.de/">Gymnasiums Westerstede</a>.</li>
+<li><strong>Programmieren lernen</strong> ist eine <a href="https://michaelkipp.de/processing/index.html">umfangreiche Site</a> zu Processing und Java von&nbsp;<a href="http://michaelkipp.de/">Prof.&nbsp;Dr.&nbsp;Michael Kipp</a>&nbsp;an der&nbsp;<a href="http://www.hs-augsburg.de/">Hochschule Augsburg</a>. Es gibt auch unter <a href="https://michaelkipp.de/processing/p5js.html">E2&nbsp;Processing in JavaScript</a> einen Bereich des Vorlesungsskriptes, der sich mit P5.js befaßt.</li>
+<li><strong>Lernkarten</strong>: <a href="https://futurium.de/uploads/documents/Lernkarten-p5js.pdf">Datenvisualisierung mit P5.js</a> (PDF-Slideshow).</li>
+<li><strong>Im Schockwellenreiter (1)</strong>: <a href="http://blog.schockwellenreiter.de/2016/03/2016030602.html">Noch einmal Running Orc – diesmal mit p5.js</a>.</li>
+<li><strong>Im Schockwellenreiter (2)</strong>: <a href="http://blog.schockwellenreiter.de/2020/12/2020121301.html">Running Orc Reloaded (JavaScript/P5.js)</a>.</li>
+</ul>
+</section>
+<section id="p5.js-und-quarto" class="level4">
+<h4 class="anchored" data-anchor-id="p5.js-und-quarto">P5.js und Quarto</h4>
+<ul>
+<li><strong>Notes from a data witch</strong>: <a href="https://blog.djnavarro.net/posts/2023-01-14_p5js/">Fun and games with p5.js and observable.js in quarto</a>. Okay it’s a short post in which I teach myself a bit of p5.js, but it does have five different donut examples which seems cool?</li>
+<li><strong>Quarto Tutorial</strong>: <a href="https://blog.djnavarro.net/posts/2022-04-20_porting-to-quarto/">Porting a distill blog to quarto</a>. I have moved this blog from distill over to quarto, and taken notes. A year after starting the blog, this promises to be an interesting reproducibility test.</li>
+</ul>
+<p>Der Sketch entspricht dem <a href="https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/">hier vorgestellten Sketch</a> (bis auf die Änderung in der Fensterggröße (<code>WIDTH = 920</code>) und den oben vorgestellten Änderungen in der <code>setup()</code>-Methode). Dort (und in meinem GitHub-Repositorim) findet Ihr auch den <a href="https://github.com/kantel/p5js/blob/master/robot/sketch.js">Quellcode</a>.</p>
+</section>
+</section>
+<section id="fazit" class="level3">
+<h3 class="anchored" data-anchor-id="fazit">Fazit</h3>
+<p>Ich bin mir noch nicht sicher, ob das der sinnvollste Weg ist, P5.js-Skripte in eine Quarto-Site einzubinden, zumal ich vieles nur durch <em>Trial and Error</em> herausgefunden habe. Aber dieser Weg funktioniert, bis ich etwas anderes weiß, werde ich ihn nutzen. <em>Still digging!</em></p>
+
+
+</section>
+
+ ]]></description>
+  <category>P5.js</category>
+  <category>Processing</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2023050401_roboter_im_netz/index.html</guid>
+  <pubDate>Thu, 04 May 2023 11:35:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023050401_roboter_im_netz/images/roboterquarto.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Der unordentliche Garten</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -817,40 +886,6 @@
   <guid>https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/index.html</guid>
   <pubDate>Sat, 22 Apr 2023 17:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023042201_tulpen_vom_britzer_damm/images/britzerdammtulpen01.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Video-Tutorials zum Wochenende: Spieleprogrammierung mit Pygame</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023042101_pygame_zum_wochenende/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.youtube.com/watch?v=u7LPRqrzry8"><img src="https://kantel.github.io/posts/2023042101_pygame_zum_wochenende/images/cameraspygame-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Es ist wieder Freitag und ich möchte Euch wieder mit ein paar Video-Tutorials für das Wochenende versorgen, damit Ihr nicht vor lauter Langeweile in die Kirchen rennt. Auch wenn es langsam ein wenig monothematisch wirkt, der Bestand an (guten) Tutorials zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> scheinen einfach unerschöpflich zu sein und so sind mir in den letzten Tagen wieder ein paar Highlights untergekommen, die ich Euch nicht vorenthalten möchte:</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/u7LPRqrzry8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Den Anfang macht mal wieder <em>Clear Code</em>, dessen mehr als einstündges Tutorial zu <a href="https://www.youtube.com/watch?v=u7LPRqrzry8">Cameras in Pygame</a> alleine schon einen Eintrag in dieses <del>Blog</del> Kritzelheft wert ist. Den <a href="https://github.com/clear-code-projects/Pygame-Cameras">Quellcode und die Assets</a> findet Ihr selbstverständlich auf GitHub.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3Oc9ZqzPnSc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Doch wartet, das ist noch nicht alles, denn da ist mir noch das fast zweieinhalbstündige »<a href="https://www.youtube.com/watch?v=3Oc9ZqzPnSc">Classic Arcade Style Shooting Game</a>« untergekommen, dessen Programmierung ein gutgelaunter <em>LeMaster Tech</em> präsentiert. Auch hier findet Ihr den <a href="https://github.com/plemaster01/ShootingGallery">Quellcode und die Assets</a> zum Download auf GitHub.</p>
-<p>Und falls das Wetter doch nicht – wie es die Wetterfrösche eigentlich versprochen haben – zu Freiluft-Aktivitäten animiert, das obige Video ist Teil der Playlist <a href="https://www.youtube.com/playlist?list=PLsFyHm8kJsx32EFcsJNt5sDI_nKsanRUu">PyGame Full Game Builds</a>, die derzeit aus 26 oft mehrstündigen Videos besteht. Ihr findet also genug Material, um ja keine Langeweile aufkommen zu lassen. Da das jüngste Update erst wenige Wochen alt ist, habe ich den Kanal abonniert.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nEEzUijhbkc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p><strong>War sonst noch was?</strong> Ach ja, Klimawandel und Computerspiele war eines der Themen der diesjährigen <em><a href="https://gdconf.com/news/welcome-first-day-gdc-2023">Game Developer Conference</a></em>, die vom 20. bis 24. März in San Francisco stattfand. <em>Arnaud Fayolle</em> von Ubisoft stellte dort (s)einen <em>Developer’s Field Guide</em> vor. Man merkte ihm seine Begeisterung an, aber ob dabei wirklich etwas herauskommt? Ich bin da eher skeptisch. Der Ansatz ist sicher gut gemeint, aber gut gemeint ist nicht automatisch auch gut gemacht.</p>
-
-
-
- ]]></description>
-  <category>Pygame</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2023042101_pygame_zum_wochenende/index.html</guid>
-  <pubDate>Fri, 21 Apr 2023 18:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023042101_pygame_zum_wochenende/images/cameraspygame.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

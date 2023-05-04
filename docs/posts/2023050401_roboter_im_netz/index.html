@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Roboter im Netz – mit P5.js</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+<script src="./js/p5.min.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<script src="./sketch.js"></script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Roboter im Netz – mit P5.js</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">P5.js</div>
+    <div class="quarto-category">Processing</div>
+    <div class="quarto-category">Creative Coding</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">4. Mai 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52867740726/"><img src="images/roboterquarto-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Meine <a href="https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/">Spielereien</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> machen natürlich erst dann richtig Spaß, wenn man sie auch in seine Webseite – wie zum Beispiel in dieses <del>Blog</del> Kritzelheft – einbinden kann. Wie ich das in <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/rubyfrontier.html">RubyFrontier</a>, meiner ehemaligen Engine für statische Seiten, anstellen konnte, hatte ich vor Jahren <a href="http://blog.schockwellenreiter.de/2015/11/2015112707.html">hier</a> und <a href="http://blog.schockwellenreiter.de/2015/11/2015113001.html">hier</a> schon einmal ausprobiert und dokumentiert. Daher war ich mir sicher, daß dies in <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a>, der Engine, die seit Dezember letzten Jahres hinter diesen Seiten werkelt, ebenso einfach sein müßte. Spoiler: Wenn man sich durch die leider etwas <a href="https://quarto.org/docs/output-formats/html-basics.html">unstrukturierte Dokumentation</a> gewühlt hat und daher weiß – oder glaubt zu wissen – wie das geht, scheint es tatsächlich ziemlich einfach zu sein:</p>
+<div id="robby">
+
+</div>
+<p>Wichtig ist es, zu wissen, daß innerhalb einer Website die Informationen in den <code>index.qmd</code> und/oder ihren YAML-Headern ähnlich wie bei RubyFrontier behandelt werden. Die Informationen, die der herauszuschreibenden Seite am nächsten liegen, gelten oder überschreiben die darunterliegenden Informationen.</p>
+<p>Daher habe ich erst einmal ein Verzeichnis <code>js</code> als Unterverzeichnis der aktuellen Datei an- und in diese die Datei <code>p5.min.js</code> abgelegt, während ich im gleichen Verzeichnis wie die aktuelle Datei ich die Datei <code>sketch.js</code> abgelegt habe. Diese Strukturierung ist zwar nicht unbedingt erforderlich, aber sie spiegelt die vertraute Struktur wieder, wie sie auch der <a href="https://editor.p5js.org/">P5 Web Editor</a> oder <a href="https://github.com/antiboredom/p5.vscode#readme">py5.vscode</a> anlegen. Im YAML-Header meiner Seite habe ich dann</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">include-in-header</span><span class="kw">:</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> &lt;script src="./js/p5.min.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">include-before-body</span><span class="kw">:</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">text</span><span class="kw">:</span><span class="at"> &lt;script src="./sketch.js"&gt;&lt;/script&gt;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Quarto mit diesen beiden Dateien verheiratet.</p>
+<p>Der Rest ist wie gehabt: Damit die HTML Seite auch weiß, wohin sie den Sketch verschieben soll, muß an der Stelle ein <code>div</code> angelegt werden, das zum Beispiel so aussieht:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">&lt;div</span> <span class="er">id</span><span class="ot">=</span><span class="st">"robby"</span><span class="kw">&gt;&lt;/div&gt;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Und in der <code>setup()</code> Methode des Sketches muß diese Position als <code>.parent</code> dem Sketch mitgeteilt werden:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">function</span> <span class="fu">setup</span>() {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="kw">let</span> myCanvas <span class="op">=</span> <span class="fu">createCanvas</span>(WIDTH<span class="op">,</span> HEIGHT)<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  myCanvas<span class="op">.</span><span class="fu">parent</span>(<span class="st">"robby"</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Oben seht Ihr, daß dies funktioniert (wenn Ihr nicht Eurem Browser die Ausführung von JavaScript verboten habt). Das macht mich natürlich scharf auf viele weitere Spielereien und dafür muß ich noch weiter JavaScript und P5.js lernen. Ich habe also zu tun!</p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<p>Neben den oben schon verlinkten Beiträgen aus dem <em>Schockwellenreiter</em> und der offiziellen, aber leicht chaotischen <a href="https://quarto.org/">Quarto-Dokumentation</a> haben mir diese Beiträge geholfen, mich in P5.js und Quarto besser zurechtzufinden:</p>
+<section id="p5.js" class="level4">
+<h4 class="anchored" data-anchor-id="p5.js">P5.js</h4>
+<ul>
+<li><a href="https://www.p5js.gym-wst.de/de">Learn to code with P5.js</a> ist eine nette, deutschsprachige Tutorial-Seite zu P5.js des <a href="https://www.gymnasium-westerstede.de/">Gymnasiums Westerstede</a>.</li>
+<li><strong>Programmieren lernen</strong> ist eine <a href="https://michaelkipp.de/processing/index.html">umfangreiche Site</a> zu Processing und Java von&nbsp;<a href="http://michaelkipp.de/">Prof.&nbsp;Dr.&nbsp;Michael Kipp</a>&nbsp;an der&nbsp;<a href="http://www.hs-augsburg.de/">Hochschule Augsburg</a>. Es gibt auch unter <a href="https://michaelkipp.de/processing/p5js.html">E2&nbsp;Processing in JavaScript</a> einen Bereich des Vorlesungsskriptes, der sich mit P5.js befaßt.</li>
+<li><strong>Lernkarten</strong>: <a href="https://futurium.de/uploads/documents/Lernkarten-p5js.pdf">Datenvisualisierung mit P5.js</a> (PDF-Slideshow).</li>
+<li><strong>Im Schockwellenreiter (1)</strong>: <a href="http://blog.schockwellenreiter.de/2016/03/2016030602.html">Noch einmal Running Orc – diesmal mit p5.js</a>.</li>
+<li><strong>Im Schockwellenreiter (2)</strong>: <a href="http://blog.schockwellenreiter.de/2020/12/2020121301.html">Running Orc Reloaded (JavaScript/P5.js)</a>.</li>
+</ul>
+</section>
+<section id="p5.js-und-quarto" class="level4">
+<h4 class="anchored" data-anchor-id="p5.js-und-quarto">P5.js und Quarto</h4>
+<ul>
+<li><strong>Notes from a data witch</strong>: <a href="https://blog.djnavarro.net/posts/2023-01-14_p5js/">Fun and games with p5.js and observable.js in quarto</a>. Okay it’s a short post in which I teach myself a bit of p5.js, but it does have five different donut examples which seems cool?</li>
+<li><strong>Quarto Tutorial</strong>: <a href="https://blog.djnavarro.net/posts/2022-04-20_porting-to-quarto/">Porting a distill blog to quarto</a>. I have moved this blog from distill over to quarto, and taken notes. A year after starting the blog, this promises to be an interesting reproducibility test.</li>
+</ul>
+<p>Der Sketch entspricht dem <a href="https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/">hier vorgestellten Sketch</a> (bis auf die Änderung in der Fensterggröße (<code>WIDTH = 920</code>) und den oben vorgestellten Änderungen in der <code>setup()</code>-Methode). Dort (und in meinem GitHub-Repositorim) findet Ihr auch den <a href="https://github.com/kantel/p5js/blob/master/robot/sketch.js">Quellcode</a>.</p>
+</section>
+</section>
+<section id="fazit" class="level3">
+<h3 class="anchored" data-anchor-id="fazit">Fazit</h3>
+<p>Ich bin mir noch nicht sicher, ob das der sinnvollste Weg ist, P5.js-Skripte in eine Quarto-Site einzubinden, zumal ich vieles nur durch <em>Trial and Error</em> herausgefunden habe. Aber dieser Weg funktioniert, bis ich etwas anderes weiß, werde ich ihn nutzen. <em>Still digging!</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
