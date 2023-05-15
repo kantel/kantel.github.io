@@ -1,0 +1,79 @@
+---
+title: "Erste Schritte mit D3.js"
+author: "Jörg Kantel"
+date: "2023-05-15 17:45:00"
+categories: [D3.js, JavaScript, Visualisierung, Visual Studio Code]
+image: "images/d3pagetemplate.jpg"
+---
+
+[![](images/d3pagetemplate-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52900060699/)
+
+Mein neues, gestern angekündigtes Projekt »[Datenvisualisierung mit P5.js und D3.js](https://kantel.github.io/posts/2023051402_p5js_mit_d3js/)« habe ich heute gestartet. Vernünftigerweise habe ich erst einmal damit begonnen, mich in [D3.js](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/visualisierung/d3.html) einzuarbeiten, bevor ich versuche, diese Bibliothek mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) zu verheiraten.
+
+Da ich nach Möglichkeit meine Anwendungen komplett lokal installieren möchte, statt mich auf *[Content Delivery Networks](https://de.wikipedia.org/wiki/Content_Delivery_Network)* (CDN) zu verlassen[^1], habe ich mir von der [D3-Website](https://d3js.org/) die aktuelle Version (zur Zeit ist das die Version 7.8.4) heruntergeladen und entpackt. Dann habe ich -- analog zu meinen [P5.js mit VS Code Versuchen](https://kantel.github.io/posts/2023050401_roboter_im_netz/) -- ein Verzeichnis mit folgender Struktur angelegt:
+
+[^1]: Das nicht nur, weil ich dann auch ohne Internetverbindung entwickeln kann, sondern es ist in meinen Augen auch ein wichtiger Schritt in Richtung Datenautonomie.
+
+---
+
+~~~
+- my_d3_project (Folder)
+  - index.html
+  - sketch.js
+  - js (Folder)
+    - d3.min.js
+~~~
+
+---
+
+Das scheint momentan alles zu sein, was benötigt wird, um ein D3-Projekt ohne weitere Abhängigkeiten zu starten[^2]. Testweise (und als Template) habe ich diese `index.html`
+
+[^2]: Natürlich ist die Struktur der Verzeichnisse und Unterverzeichnisse nicht festgeklopft, es sind auch andere Lösungen denkbar. Aber diese ist sehr stark an die Konventionen des [P5.js Webeditors](https://editor.p5js.org/) angelehnt und hat sich in meinen Augen bewährt.
+
+~~~html
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Page Template</title>
+        <script type="text/javascript" src="js/d3.min.js"></script>
+    </head>
+    <body>
+        <h2>D3 Page Template</h2>
+        <script type="text/javascript" src="sketch.js"></script>
+     
+    </body>
+</html>
+~~~
+
+und diese (einzeilige) `sketch.js` angelegt:
+
+~~~javascript
+d3.select("body").append("p").text("Hier kommt mein wunderschöner D3-Code hin.");
+~~~
+
+Als Entwicklungsumgebung habe ich wieder [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) ausgewählt, denn der von mir zusammen mit [p5.vscode](https://github.com/antiboredom/p5.vscode#readme) installierte [Live Server](https://ritwickdey.github.io/vscode-live-server/) erleichtert die Entwicklung ungemein.
+
+Das Ergebnis könnt Ihr in [diesem Screenshot](https://www.flickr.com/photos/schockwellenreiter/52900060699/) begutachten. Es sagt noch nichts über meine D3.js-Qualitäten aus, sondern nur, daß meine Installation funktioniert.&nbsp;🤓
+
+**War sonst noch was?** Ach ja, während der Vorbereitung zu diesem Projekt sind mir noch ein paar weitere, voraussichtlich nützliche Videos und Links untergekommen:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zXBdNDnqV2Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Erst einmal die gestern schon erwähnte *Shirley Wu*. Ihr Talk »[D3 and React, Together](https://www.youtube.com/watch?v=zXBdNDnqV2Q)« erinnerte mich daran, daß auch das JavaScript-Framework [React](http://cognitiones.kantel-chaos-team.de/webworking/frameworks/react.html), das auch clientseitig verwendet werden kann, schon lange auf meiner Testliste steht. Vielleicht kann man dies ja auch mit P5.js verheiraten. D3.js geht ja offensichtlich.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8jvoTV54nXw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Das Video »[Introduction to D3](https://www.youtube.com/watch?v=8jvoTV54nXw)« von *Curran Kelleher* ist Teil der Playlist »[D3 101](https://www.youtube.com/playlist?list=PL9yYRbwpkykvjkfuRslECO9c1qTq3GgUb)«, die aus sieben aus anderen Playlisten zusammengewürfelten Videos unterschiedlicher Länge (von fünf Minuten bis anderthalb Stunden) besteht.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/lzxAKqoBhDY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Und das für diesen Beitrag letzte Video für heute, »[D3: Setup](https://www.youtube.com/watch?v=lzxAKqoBhDY)«, ist das erste Video der 19-teiligen Playlist »[D3: Data Driven Documents – Data Science for Everyone](https://www.youtube.com/playlist?list=PLlbbWgBRF8EfU-MZNicdIGVKMIX-6krG8)«. Die Tutorials haben jeweils eine Länge zwischen fünf Minuten und maximal einer halben Stunde.
+
+Dann war da noch diese beiden Links:
+
+- Das Tutorial »[Setup D3.js Development Environment](https://www.tutorialsteacher.com/d3js/setup-d3js-development-environment)« ist Teil der 19-teiligen Reihe »[Learn D3.js](https://www.tutorialsteacher.com/d3js)« der *Tutorials Teacher*.
+- Jorick Defraine: *[How to Setup Your Environment for D3.js](https://www.datackling.com/how-to-setup-your-environment-for-d3/)?*, Datatackling.com vom 27.&nbsp;Oktober 2020
+
+Doch jetzt muß ich mich verabschieden, D3.js wartet auf mich. *Ich habe zu tun!*
+
