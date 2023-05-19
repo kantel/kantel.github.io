@@ -1,0 +1,134 @@
+---
+title: "Retro-Platformer mit P5.js (ES6) -- Stage 1"
+author: "Jörg Kantel"
+date: "2023-05-18 14:55:00"
+categories: [Spieleprogrammierung, P5.js, Retrogaming]
+image: "images/retroplatformer01.jpg"
+---
+
+[![](images/retroplatformer01-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52907878808/)
+
+Die [gestern vorgestellten](https://kantel.github.io/posts/2023051801_retrogaming_mit_p5js/) Video-Tutorials »[Creating a Retro-Style Platform Game in P5.js](https://www.youtube.com/playlist?list=PLBDInqUM5B26FjwMMZqGDxqQr1kX5V9Ul)« von *Mr. Erdreich* haben mich inspiriert. Ich möchte diese als Vorlage nehmen, um ein Spiele-Framework in [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) zu entwickeln, das -- im Gegensatz zu dem Framework, das *Mr. Erdreich* in seiner Playlist vorstellt -- sich an den Möglichkeiten von ES6 orientiert.
+
+Das entspringt zum einen meiner Erkenntnis, daß ich meine JavaScript (ES6) Kenntnisse vertiefen muß und zum anderen greift *Mr. Erdreich* ab dem zweiten Video auf die Bibliothek [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) zurück (in der aktuellen Version 3.x), mit der ich auch schon [seit ein paar Wochen](https://kantel.github.io/posts/2023050502_gamedev_p5js/) etwas anstellen möchte. Doch dazu mehr in einem späteren Beitrag.
+
+In der heutigen Version habe ich erst einmal einen Rahmen gebastelt, der sich noch weitgehend an *Mr. Erdreichs* vorlage hält. Hauptunterschied ist, daß ich auf ES6-Klassen setze, statt den Code mit Unmengen von Variablen zu verunreinigen. Beim derzeitigen Stand ist zwar dadurch das Programm etwas länger geraten, aber es ist besser für zukünftige Erweiterungen gerüstet.
+
+Zum anderen habe ich auf die klassische Koordinatenberechnung zurückgegriffen. Denn warum *Mr. Erdreich* auf `rectMode(CENTER)` zurückgreift, erschließt sich mir nicht. Im Gegenteil, wer gewohnt ist, traditionell die linke obere Ecke der Sprites und Tiles als Koordinatenursprung zu nehmen, den verwirren die überflüssigen Berechnungen nur. Falls in einigen seltenen Fällen (zum Beispiel bei Rotationen) ein `rectMode(CENTER)` doch sinnvoll ist, werde ich ihn lokal in der `update()`-Methode der einzelnen Klassen unterbringen und zwischen `push()` und `pop()` klammern, um den globalen Status nicht zu gefährden.
+
+Genau dies, nämlich die inflationäre Verwendung von `push()` und `pop()` könnt Ihr in meinem Framework an vielen Stellen finden. Sie ist zwar meistens -- bei sorgfältiger Programmierung -- überflüssig, aber sie macht den Code doch ein wenig sicherer, sollte man dennoch mal die Übersicht verlieren.
+
+Hier jetzt erst einmal der komplette Quellcode für alle unter Euch, die gerne Quellcode lesen und nachvollziehen möchten, was ich da eigentlich angestellt habe:
+
+~~~javascript
+// Retro Platformer Stage 1
+// Nach Mr. Erdreich: Creating a Retro-Style Platform Game in P5.js <https://www.youtube.com/playlist?list=PLBDInqUM5B26FjwMMZqGDxqQr1kX5V9Ul>, ca. 2020
+// Klassen nach ES 6 angepaßt: Jörg Kantel, 2023
+
+// Konstanten
+const winwidth = 480;
+const winheight = 224;
+
+// Globale Variablen
+let stage;
+const platforms = [];
+
+// Klassen
+
+// Spieler
+class Player {
+
+  constructor() {
+    this.x = 224;
+    this.y = 146;
+    this.w = 16;
+    this.h = 32
+  } // End Player constructor()
+
+  update() {
+
+  } // End Player update()
+
+  display() {
+    push();
+    stroke(0);
+    strokeWeight(2);
+    fill(150, 0, 150);  // purple
+    rect(this.x, this.y, this.w, this.h);
+    pop();
+  }  // End Player display()
+
+} // End Player
+
+// Platform
+class Platform {
+
+  constructor(_x, _y, _w, _h) {
+    this.x = _x;
+    this.y = _y;
+    this.w = _w;
+    this.h = _h;
+  } // End Platform constructor()
+
+  display() {
+    push();
+    stroke(0);
+    strokeWeight(2);
+    fill(250, 120, 10);  // Orange
+    rect(this.x, this.y, this.w, this.h);
+    pop();
+  } // End Platform display()
+
+} // End Platform
+// End Klassen
+
+// Funktionen
+function game() {
+  background(150, 230, 240);  // Himmelblau
+  // Grund
+  push();
+  noStroke();
+  fill(100, 200, 75);  // Grasgrün
+  rect(0, height - 50, width, height);
+  pop();
+  // Fensterrahmen
+  push();
+  noFill();
+  stroke(0)   // Schwarz
+  strokeWeight(7);
+  rect(0, 0, width, height);
+  pop();
+  // Platforms
+  for (let platform of platforms) {
+    platform.display();
+  }
+  // Player
+  player.display();
+} // end game()
+// End Funktionen
+
+// Hauptprogramm
+function setup() {
+  createCanvas(winwidth, winheight);
+  stage = 0;
+  // rectMode(CENTER);
+  // textAlign(CENTER);
+  platforms[0] = new Platform(65, 112, 128, 16);
+  player = new Player;
+} // end setup()
+
+function draw() {
+  if (stage == 0) {
+    game();
+  }
+} // end draw()
+// End Hauptprogramm
+~~~
+
+Wie immer könnt Ihr das gesamte Projekt [auch in meinem GitHub-Repositorium](https://github.com/kantel/p5js/tree/master/retroplatformer/stage01) finden.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1h6vZl-OuB0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Wie Ihr dem [Screenshot](https://www.flickr.com/photos/schockwellenreiter/52907878808/) entnehmen könnt, habe ich für das Projekt wieder auf [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) zurückgegriffen. Das Teil wird für meine Vorhaben immer unentbehrlicher. Daher freut es mich, daß *Daniel Shiffman* in einem Livestream »[Creative Coding with p5.js in Visual Studio Code](https://www.youtube.com/watch?v=1h6vZl-OuB0)« zeigt, wie man Visual Studio Code mit P5.js sinnvoll einsetzt. Okay, der Veranstalter ist Microsoft (als Eigner von Visual Studio Code), aber ich gehe mal davon aus, daß *Shiffman* weiß, auf was er sich da eingelassen hat und sich nicht zu sehr verkaufte.
+
+**War sonst noch was?** Ach ja, Ach ja, Die Erkundung von [D3.js](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/visualisierung/d3.html) steht ja auch noch auf meiner Todo-Liste. Und dazu habe ich -- Überraschung! -- ebenfalls noch ein Video von unserer allwissenden Datenkrake vorgeschlagen bekommen: »[What is D3JS -- A quick practical guide](https://www.youtube.com/watch?v=IdDuWwquSwA)« von *Hitesh Choudhary*. Das werde ich mir auch noch reinziehen, denn kurze, praktische Einführungen kann man eigentlich nie genug haben. *Still digging!*
