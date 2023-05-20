@@ -10,7 +10,68 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Fri, 19 May 2023 13:45:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 20 May 2023 16:00:00 GMT</lastBuildDate>
+<item>
+  <title>Neu in meinem Wiki: Simulationen mit SimPy und Mesa</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023052001_simualtion_simpy_mesa/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://raw.githubusercontent.com/projectmesa/mesa/main/docs/images/Mesa_Screenshot.png"><img src="https://kantel.github.io/posts/2023052001_simualtion_simpy_mesa/images/mesascreenshot-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Während einer eher zufälligen Diskussion kam meine Erinnerung an die 1972 veröffentlichte Studie »<a href="https://de.wikipedia.org/wiki/Die_Grenzen_des_Wachstums">Die Grenzen des Wachstums. Bericht des Club of Rome zur Lage der Menschheit</a>« wieder hoch. Ich hatte – wie viele andere – das Buch seinerzeit verschlungen und das dort verwendete Weltmodell hatte damals schon meine Begeisterung für Modellbildung und Simulation geweckt. Dies brachte mich darauf, daß ich zu diesem Thema schon lange nicht mehr gearbeitet hatte und ich beschloß, dies zu ändern.</p>
+<p>Wie immer in solchen Fällen kam bei mir natürlich zuerst die Frage nach der zu verwendenden Software hoch. Geneigte Leserinnen und Leser des <em>Schockwellenreiters</em> wissen, daß die Antwort bei mir natürlich nur Python heißen kann, doch welche Bibliotheken kann oder soll ich verwenden? Eine kurze Recherche ließ mich auf SimPy und Mesa stoßen.</p>
+<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/simpy.html">Simpy</a> (nicht zu verwechseln mit <a href="http://cognitiones.kantel-chaos-team.de/mathematik/sympy.html">SymPy</a>, einem Python-Paket für symbolische Mathematik) ist ein prozessbasiertes Simulationsframework für diskrete Ereignisse, das auf Standard-Python basiert. Es ermöglicht Benutzern, aktive Komponenten wie Kunden, Fahrzeuge oder Agenten als einfache Python-Generatorfunktionen zu modellieren. SimPy wird als Open-Source-Software unter der MIT-Lizenz veröffentlicht.</p>
+<p>Zu SimPy sind mir folgende Tutorials untergekommen:</p>
+<ul>
+<li>Jaya Zhané: <em><a href="https://realpython.com/simpy-simulating-with-python/">SimPy: Simulating Real-World Processes With Python</a></em>, Real Python, ohne Jahr</li>
+<li>Yasser Mushtaq: <em><a href="https://towardsdatascience.com/object-oriented-discrete-event-simulation-with-simpy-53ad82f5f6e2">Object-Oriented Discrete Event Simulation — with SimPy</a></em>, Toward Data Science vom 24. November 2022</li>
+<li>Dr.&nbsp;Kostas Alexis: <em><a href="http://www.kostasalexis.com/simulations-with-simpy.html">Vehicle Dynamics Simulation using SimPy</a> – A Quick Introduction to SimPy for ODE Simulations</em>, ohne Jahr</li>
+</ul>
+<p>Und diese Links runden das Ergebnis ab:</p>
+<ul>
+<li><a href="https://simpy.readthedocs.io/en/latest/index.html">SimPy Home @ ReadTheDocs</a></li>
+<li><a href="https://github.com/simpx/simpy">SimPy @ GitHub</a></li>
+<li><a href="https://pypi.org/project/simpy/">SimPy @ PyPI</a></li>
+<li><a href="https://en.wikipedia.org/wiki/SimPy">SimPy in der Weikipedia</a></li>
+</ul>
+<p>Dann ist da noch <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/mesa.html">Mesa</a>, ein ist ein freies (Apache-2-Lizenz), agentenbasiertes Modellierungs- (oder ABM-) Framework in Python. Damit können Nutzer mithilfe integrierter Kernkomponenten (zum Beispiel räumlicher Raster und Agentenplaner) oder benutzerdefinierter Implementierungen schnell agentenbasierte Modelle erstellen. Mesas Ziel ist es, ein Python 3-basierte Gegenstück zu <a href="http://cognitiones.kantel-chaos-team.de/programmierung/netlogo.html">NetLogo</a>, Repast oder MASON zu sein.</p>
+<p>Zu Mesa gibt es eine Reihe von YouTube-Videos (die hebe ich mir jedoch für den nächsten Freitag auf). Daneben gab das Netz auch noch folgende Tutorials frei:</p>
+<ul>
+<li>Ng Wai Foong: <em><a href="https://towardsdatascience.com/introduction-to-mesa-agent-based-modeling-in-python-bcb0596e1c9a">Introduction to Mesa: Agent-based Modeling in Python</a></em>, Towards Data Science vom 1. Novmber 2019</li>
+<li><a href="https://mesa.readthedocs.io/en/main/tutorials/intro_tutorial.html">Mesa: Introductory Tutorial</a></li>
+<li>Thomas Pike, Jackie Kazil: <em><a href="https://www.complexityexplorer.org/courses/172-agent-based-models-with-python-an-introduction-to-mesa">Agent-Based Models with Python: An Introduction to Mesa</a></em>, Santa Fe Institute 2023</li>
+</ul>
+<p>Die <a href="https://mesa.readthedocs.io/en/stable/overview.html">Mesa-Homepage</a> ist auf <em>ReadTheDocs</em> zu finden und natürlich besitzt die Bibliothek ebenfalls ein <a href="https://github.com/projectmesa/mesa">GitHub-Repositorium</a>.</p>
+<p><strong><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/simpy.html">SimPy</a></strong> und <strong><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/mesa.html">Mesa</a></strong> haben erst einmal je eine Seite in <a href="http://cognitiones.kantel-chaos-team.de/index.html">meinem Wiki</a> spendiert bekommen. Ich möchte damit in der nächsten Zeit etwas Sinnvolles anstellen, dazu habe ich erst einmal meine Bibliothek geplündert. Neben dem Originalbericht an den Club of Rome haben meine Regale auf die Schnelle diese Bücher freigegeben:</p>
+<ul>
+<li>E.F. Schumacher: <em><a href="https://www.oekom.de/buch/small-is-beautiful-9783962381363">Small is Beautiful. Die Rückkehr zum menschlichen Maß</a></em>. Meine Ausgabe ist 1985 im Rowohl Taschenbuch-Verlag erschienen.</li>
+<li>Joël de Rosnay: <em><a href="https://books.google.de/books/about/Das_Makroskop.html?id=ieAkNAAACAAJ&amp;redir_esc=y">Das Makroskop – Systemdenken als Werkzeug der Ökogesellschaft</a></em>, der Klassiker (meine Ausgabe ist 1979 bei Rowohlt erschienen), der schon damals über Computer und Simulationen (und ihr Folgen) nachdachte.</li>
+<li>Christine Ax, Friedrich Hinterberger: <em><a href="https://www.spiegel.de/kultur/literatur/streitschrift-wachstumswahn-von-christine-ax-friedrich-hinterberger-a-938306.html">Wachstumswahn: Was uns in die Krise führt - und wie wir wieder herauskommen</a></em>, München (Ludwig-Verlag) 2013.</li>
+<li>Robert und Edward Skidelsky: <em><a href="https://www.kunstmann.de/buch/robert_skidelsky_-wie_viel_ist_genug-9783888978227/t-0/">Wie viel ist genug? Vom Wachstumswahn zu einer Ökonomie des guten Lebens</a></em>, München (Verlag Antje Kunstmann) 2013.</li>
+<li>Donella H. Meadows: <em><a href="https://www.oekom.de/buch/die-grenzen-des-denkens-9783962381356">Die Grenzen des Denkens – Wie wir sie mit System erkennen und überwinden können</a></em> München (Oekom) 2019. Donella H. Meadows war schon Mitautorin beim ersten Bericht an den Club of Rome.</li>
+<li>Hartmut Bossel: <em><a href="https://link.springer.com/book/10.1007/978-3-322-83658-8">Modellbildung und Simulation – Konzepte, Verfahren und Modelle zum Verhalten dynamischer Systeme</a></em>, Braunschweig (Vieweg) 2. veränderte Auflage 1994. Mein Klassiker, der mich damals monatelang Simulationssoftware in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/pascal.html">Pascal</a> programmieren ließ.</li>
+<li>Dazu gab es dann auch noch den Zusatzband vom gleichen Autor: <em><a href="https://www.bod.de/buchshop/systeme-dynamik-simulation-hartmut-bossel-9783833409844">Systeme, Dynamik, Simulation – Modellbildung, Analyse und Simulation komplexer Systeme</a></em>, der 2005 bei <em>BoD</em> herausgekommen ist.</li>
+</ul>
+<p>Und dann natürlich alles von <a href="https://de.wikipedia.org/wiki/Frederic_Vester">Frederic Vester</a>, was meine Bibliothek hergab – und das ist nicht wenig. Vester war ebenfalls (seit 1993) Mitglied im <a href="https://de.wikipedia.org/wiki/Club_of_Rome">Club of Rome</a> und sein Buch <em><a href="https://www.frederic-vester.de/deu/werke/die-kunst-vernetzt-zu-denken/">Die Kunst vernetzt zu denken – Ideen und Werkzeuge für einen neuen Umgang mit Komplexität</a></em> wurde 199 als der »neue Bericht an den Club of Rome« veröffentlicht (ich besitze die Taschenbuchausgabe, die 2002 aktualisiert und erweitert bei dtv in München herauskam).</p>
+<p>Das ist doch mal wieder ein Programm, nicht nur für mich, sondern ich hoffe auch für Euch. Und habt Nachsicht mit den Kids, die sich derzeit an den Asphalt festkleben. Denn seit dem ersten Bericht an den <em>Club of Rome</em> vor über 50 Jahren hat sich in der Politik nichts verändert (wie auch? Jede Veränderung stellt die Systemfrage). Die Kids sind daher zu recht sauer.</p>
+
+
+
+ ]]></description>
+  <category>Simulation</category>
+  <category>SimPy</category>
+  <category>Mesa</category>
+  <category>Dynamische Systeme</category>
+  <guid>https://kantel.github.io/posts/2023052001_simualtion_simpy_mesa/index.html</guid>
+  <pubDate>Sat, 20 May 2023 16:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023052001_simualtion_simpy_mesa/images/mesascreenshot.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Apfel-Flickentag im Mai 2023</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4369,35 +4430,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2023050802_suedgelaende_im_mai/index.html</guid>
   <pubDate>Mon, 08 May 2023 17:10:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023050802_suedgelaende_im_mai/images/maisuedgelaende.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Zum Tag der Befreiung</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023050801_tag_der_befreiung/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52877352642/"><img src="https://kantel.github.io/posts/2023050801_tag_der_befreiung/images/befreiung2023-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Zum <strong><a href="https://de.wikipedia.org/wiki/Tag_der_Befreiung">Tag der Befreiung</a></strong>: Keine großen Worte, nur Dankbarkeit, verbunden mit Trauer über die vielen Opfer.</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52878386593/"><img src="https://kantel.github.io/posts/2023050801_tag_der_befreiung/images/befreiung202301.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52877348357/"><img src="https://kantel.github.io/posts/2023050801_tag_der_befreiung/images/befreiung202302.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/52877936961/"><img src="https://kantel.github.io/posts/2023050801_tag_der_befreiung/images/befreiung202303.jpg" class="img-fluid"></a></p>
-<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr jeweils auf eine Seite mit einer Vergrößerung.</em></p>
-<p>Und ein paar Photos, die ich gestern am <a href="https://de.wikipedia.org/wiki/Sowjetisches_Ehrenmal_im_Treptower_Park">Sowjetischen Ehrenmal im Treptower Park</a> aufgenommen hatte. <em>(Photos (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>): <a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a>)</em></p>
-
-
-
- ]]></description>
-  <category>Geschichte</category>
-  <category>Politik</category>
-  <category>Parks und Gärten</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2023050801_tag_der_befreiung/index.html</guid>
-  <pubDate>Mon, 08 May 2023 11:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023050801_tag_der_befreiung/images/befreiung2023.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

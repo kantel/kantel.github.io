@@ -1,0 +1,52 @@
+---
+title: "Neu in meinem Wiki: Simulationen mit SimPy und Mesa"
+author: "Jörg Kantel"
+date: "2023-05-20 18:00:00"
+categories: [Simulation, SimPy, Mesa, Dynamische Systeme]
+image: "images/mesascreenshot.jpg"
+---
+
+[![](images/mesascreenshot-b.jpg)](https://raw.githubusercontent.com/projectmesa/mesa/main/docs/images/Mesa_Screenshot.png)
+
+Während einer eher zufälligen Diskussion kam meine Erinnerung an die 1972 veröffentlichte Studie »[Die Grenzen des Wachstums. Bericht des Club of Rome zur Lage der Menschheit](https://de.wikipedia.org/wiki/Die_Grenzen_des_Wachstums)« wieder hoch. Ich hatte -- wie viele andere -- das Buch seinerzeit verschlungen und das dort verwendete Weltmodell hatte damals schon meine Begeisterung für Modellbildung und Simulation geweckt. Dies brachte mich darauf, daß ich zu diesem Thema schon lange nicht mehr gearbeitet hatte und ich beschloß, dies zu ändern.
+
+Wie immer in solchen Fällen kam bei mir natürlich zuerst die Frage nach der zu verwendenden Software hoch. Geneigte Leserinnen und Leser des *Schockwellenreiters* wissen, daß die Antwort bei mir natürlich nur Python heißen kann, doch welche Bibliotheken kann oder soll ich verwenden? Eine kurze Recherche ließ mich auf SimPy und Mesa stoßen.
+
+[Simpy](http://cognitiones.kantel-chaos-team.de/programmierung/python/simpy.html) (nicht zu  verwechseln mit [SymPy](http://cognitiones.kantel-chaos-team.de/mathematik/sympy.html), einem Python-Paket für symbolische Mathematik) ist ein prozessbasiertes Simulationsframework für diskrete Ereignisse, das auf Standard-Python basiert. Es ermöglicht Benutzern, aktive Komponenten wie Kunden, Fahrzeuge oder Agenten als einfache Python-Generatorfunktionen zu modellieren. SimPy wird als Open-Source-Software unter der MIT-Lizenz veröffentlicht.
+
+Zu SimPy sind mir folgende Tutorials untergekommen:
+
+- Jaya Zhané: *[SimPy: Simulating Real-World Processes With Python](https://realpython.com/simpy-simulating-with-python/)*, Real Python, ohne Jahr
+- Yasser Mushtaq: *[Object-Oriented Discrete Event Simulation — with SimPy](https://towardsdatascience.com/object-oriented-discrete-event-simulation-with-simpy-53ad82f5f6e2)*, Toward Data Science vom 24. November 2022
+- Dr. Kostas Alexis: *[Vehicle Dynamics Simulation using SimPy](http://www.kostasalexis.com/simulations-with-simpy.html) – A Quick Introduction to SimPy for ODE Simulations*, ohne Jahr
+
+Und diese Links runden das Ergebnis ab:
+
+- [SimPy Home @ ReadTheDocs](https://simpy.readthedocs.io/en/latest/index.html)
+- [SimPy @ GitHub](https://github.com/simpx/simpy)
+- [SimPy @ PyPI](https://pypi.org/project/simpy/)
+- [SimPy in der Weikipedia](https://en.wikipedia.org/wiki/SimPy)
+
+Dann ist da noch [Mesa](http://cognitiones.kantel-chaos-team.de/programmierung/python/mesa.html), ein ist ein freies (Apache-2-Lizenz), agentenbasiertes Modellierungs- (oder ABM-) Framework in Python. Damit können Nutzer mithilfe integrierter Kernkomponenten (zum Beispiel räumlicher Raster und Agentenplaner) oder benutzerdefinierter Implementierungen schnell agentenbasierte Modelle erstellen. Mesas Ziel ist es, ein Python 3-basierte Gegenstück zu [NetLogo](http://cognitiones.kantel-chaos-team.de/programmierung/netlogo.html), Repast oder MASON zu sein.
+
+Zu Mesa gibt es eine Reihe von YouTube-Videos (die hebe ich mir jedoch für den nächsten Freitag auf). Daneben gab das Netz auch noch folgende Tutorials frei:
+
+- Ng Wai Foong: *[Introduction to Mesa: Agent-based Modeling in Python](https://towardsdatascience.com/introduction-to-mesa-agent-based-modeling-in-python-bcb0596e1c9a)*, Towards Data Science vom 1. Novmber 2019
+- [Mesa: Introductory Tutorial](https://mesa.readthedocs.io/en/main/tutorials/intro_tutorial.html)
+- Thomas Pike, Jackie Kazil: *[Agent-Based Models with Python: An Introduction to Mesa](https://www.complexityexplorer.org/courses/172-agent-based-models-with-python-an-introduction-to-mesa)*, Santa Fe Institute 2023
+
+Die [Mesa-Homepage](https://mesa.readthedocs.io/en/stable/overview.html) ist auf *ReadTheDocs* zu finden und natürlich besitzt die Bibliothek ebenfalls ein [GitHub-Repositorium](https://github.com/projectmesa/mesa).
+
+**[SimPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/simpy.html)** und **[Mesa](http://cognitiones.kantel-chaos-team.de/programmierung/python/mesa.html)** haben erst einmal je eine Seite in [meinem Wiki](http://cognitiones.kantel-chaos-team.de/index.html) spendiert bekommen. Ich möchte damit in der nächsten Zeit etwas Sinnvolles anstellen, dazu habe ich erst einmal meine Bibliothek geplündert. Neben dem Originalbericht an den Club of Rome haben meine Regale auf die Schnelle diese Bücher freigegeben:
+
+- E.F. Schumacher: *[Small is Beautiful. Die Rückkehr zum menschlichen Maß](https://www.oekom.de/buch/small-is-beautiful-9783962381363)*. Meine Ausgabe ist 1985 im Rowohl Taschenbuch-Verlag erschienen.
+- Joël de Rosnay: *[Das Makroskop -- Systemdenken als Werkzeug der Ökogesellschaft](https://books.google.de/books/about/Das_Makroskop.html?id=ieAkNAAACAAJ&redir_esc=y)*, der Klassiker (meine Ausgabe ist 1979 bei Rowohlt erschienen), der schon damals über Computer und Simulationen (und ihr Folgen) nachdachte.
+- Christine Ax, Friedrich Hinterberger: *[Wachstumswahn: Was uns in die Krise führt - und wie wir wieder herauskommen](https://www.spiegel.de/kultur/literatur/streitschrift-wachstumswahn-von-christine-ax-friedrich-hinterberger-a-938306.html)*, München (Ludwig-Verlag) 2013.
+- Robert und Edward Skidelsky: *[Wie viel ist genug? Vom Wachstumswahn zu einer Ökonomie des guten Lebens](https://www.kunstmann.de/buch/robert_skidelsky_-wie_viel_ist_genug-9783888978227/t-0/)*, München (Verlag Antje Kunstmann) 2013.
+- Donella H. Meadows: *[Die Grenzen des Denkens -- Wie wir sie mit System erkennen und überwinden können](https://www.oekom.de/buch/die-grenzen-des-denkens-9783962381356)* München (Oekom) 2019. Donella H. Meadows war schon Mitautorin beim ersten Bericht an den Club of Rome.
+- Hartmut Bossel: *[Modellbildung und Simulation -- Konzepte, Verfahren und Modelle zum Verhalten dynamischer Systeme](https://link.springer.com/book/10.1007/978-3-322-83658-8)*, Braunschweig (Vieweg) 2. veränderte Auflage 1994. Mein Klassiker, der mich damals monatelang Simulationssoftware in [Pascal](http://cognitiones.kantel-chaos-team.de/programmierung/pascal.html) programmieren ließ.
+- Dazu gab es dann auch noch den Zusatzband vom gleichen Autor: *[Systeme, Dynamik, Simulation -- Modellbildung, Analyse und Simulation komplexer Systeme](https://www.bod.de/buchshop/systeme-dynamik-simulation-hartmut-bossel-9783833409844)*, der 2005 bei *BoD* herausgekommen ist.
+
+Und dann natürlich alles von [Frederic Vester](https://de.wikipedia.org/wiki/Frederic_Vester), was meine Bibliothek hergab -- und das ist nicht wenig. Vester war ebenfalls (seit 1993) Mitglied im [Club of Rome](https://de.wikipedia.org/wiki/Club_of_Rome) und sein Buch *[Die Kunst vernetzt zu denken -- Ideen und Werkzeuge für einen neuen Umgang mit Komplexität](https://www.frederic-vester.de/deu/werke/die-kunst-vernetzt-zu-denken/)* wurde 199 als der »neue Bericht an den Club of Rome« veröffentlicht (ich besitze die Taschenbuchausgabe, die 2002 aktualisiert und erweitert bei dtv in München herauskam).
+
+Das ist doch mal wieder ein Programm, nicht nur für mich, sondern ich hoffe auch für Euch. Und habt Nachsicht mit den Kids, die sich derzeit an den Asphalt festkleben. Denn seit dem ersten Bericht an den *Club of Rome* vor über 50 Jahren hat sich in der Politik nichts verändert (wie auch? Jede Veränderung stellt die Systemfrage). Die Kids sind daher zu recht sauer.
