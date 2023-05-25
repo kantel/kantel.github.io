@@ -1,0 +1,205 @@
+---
+title: "Retro-Playtformer mit P5.js (ES6) und P5.play -- Stage&nbsp;2"
+author: "Jörg Kantel"
+date: "2023-05-25 20:30:00"
+categories: [Retrogaming, Spieleprogrammierung, P5.js, P5.play]
+image: "images/retroplaytformerstage2.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+  - text: <script src="./js/planck.min.js"></script>
+  - text: <script src="./js/p5play.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+---
+
+[![](images/retroplaytformerstage2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52925543820/)
+
+Es gibt erste Fortschritte (und erste Probleme) mit meinem [Projekt eines Retrogame-Platformers](https://kantel.github.io/posts/2023051901_retrostyle_mit_p5js/) in [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) und [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html). Zum einen habe ich in [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) ein komplettes Framework erstellt, daß nicht nur P5.js, sondern auch P5.play einbindet, aber zum anderen nutzt *Mr. Erdreich*, dessen Video-Tutoria-Reihe »[Creating a Retro-Style Platform Game in P5.js](https://www.youtube.com/playlist?list=PLBDInqUM5B26FjwMMZqGDxqQr1kX5V9Ul)« ja die Anregung für dieses Projekt gab, nur Teile von P5.play und er scheint auch die neuen Methoden von P5.play Version 3.x zu ignorieren.
+
+Daher stellen sich mir erstmal folgende Fragen: Erstens, ist es sinnvoll, Unterklassen von `Sprite` zum Beispiel für `Player`, `Enemies` etc. zu bilden oder ist es einfacher, diesen ihre Eigenschaften und Methoden als Instanz der Klasse `Sprite` zuzuweisen? Also zum Beispiel:
+
+~~~javascript
+player = new Sprite();
+player.x = _x;
+player.y = _y;
+player.w = _w;
+player.h = _h;
+~~~
+
+Zweitens: Wie setze ich zum Beispiel Sprites in Gruppen sinnvoll ein?
+
+Um überhaupt eine Grundlage für meine Experimente zu besitzen, habe ich in das [Beispiel aus meinem ersten Versuch](https://kantel.github.io/posts/2023051901_retrostyle_mit_p5js/) einfach p5.play zusätzlich implementiert. Dafür mußte ich die Bibliotheken `planck.min.js` (darauf baut P5.play auf) und `p5play.js` importieren und meinem VS-Code in der `index.html` bekanntmachen (wie meine anderen JavaScript-Bibliotheken auch liegen sie im Verzeichnis `libraries`)[^1]:
+
+~~~html
+    <script src="libraries/planck.min.js"></script>
+    <script src="libraries/p5play.js"></script>
+~~~
+
+[^1]: Im Verzeichnisbaum dieser Seite liegen sie wiederum im Verzeichnis `js`. Von dort werden die Skripte im Header eingebunden.
+
+Um die Konfiguration testen zu können, habe ich die `game()`-Methode um folgende Zeilen ergänzt:
+
+~~~javascript
+ if (kb.pressing("left")) {
+    if (player.x > player.w) {
+      player.x -= player.speed;
+    }
+  } else if (kb.pressing("right")) {
+    if (player.x < width - player.w) {
+      player.x += player.speed;
+    }
+  } else {
+    player.x += 0;
+  }
+  player.display();
+  ~~~
+  
+Und schon könnt Ihr entweder mit den Pfeiltasten oder mit dem Tasten `a` und `d` das kleine, violette Rechteck nach rechts oder links bewegen[^2].
+
+[^2]: P5.play arbeitet klaglos mit [p5.vscode](https://github.com/antiboredom/p5.vscode#readme) zusammen. Um jedoch auch Auto-Vervollständigung und Syntax-Coloring dafür in Visual Studio Code nutzen zu können, empfiehlt sich noch die Erweiterung [p5play VSCode](https://marketplace.visualstudio.com/items?itemName=quinton-ashley.p5play-vscode) zu installieren.
+
+<div id="retro2"></div>
+
+Damit das auch in [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html) funktioniert, mußte ich im YAML-Header der `index.qmd` diese Zeilen einfügen[^3]:
+
+[^3]: Vergleiche dazu »[Roboter im Netz – mit P5.js](https://kantel.github.io/posts/2023050401_roboter_im_netz/)« in diesem ~~Blog~~ Kritzelheft am 4. Mai dieses Jahres.
+
+~~~yaml
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+  - text: <script src="./js/planck.min.js"></script>
+  - text: <script src="./js/p5play.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+~~~
+
+**Was habe ich erreicht?** Ich habe P5.js mit P5.play zur Zusammenarbeit bewegen können, und das sowohl in Visual Studio Code wie auch in Quarto. Und ich habe mir ein erstes Framework geschaffen, das als Basis für weitere Experimente dienen kann. Das ist schon eine ganze Menge und war sicher die Mühe wert, denn P5.play scheint eine phantastische (Physik-) Bibliothek zur Spieleprogrammierung zu sein. Es lohnt sich also für mich, dranzubleiben.
+
+**Was sind meine nächsten Schritte?** Ich werde erst einmal *Matthew Bardin* und seine [hier vorgestellt](https://kantel.github.io/posts/2023050502_gamedev_p5js/) beiden Playlists »[P5.play v3.0](https://www.youtube.com/playlist?list=PLvqAGa7mJm0XgzljScjXUsbOLshmIQ7-S)« und »[p5.play classroom lessons](https://www.youtube.com/playlist?list=PLvqAGa7mJm0WH-WCeAw3bkfre-CE5XF0y)« konsultieren. Denn *Matthew Bardin* ist (auch mangels echter Konkurrenz) für mich **die** Koryphäe für P5.play und ich habe noch viel zu lernen. Aber ich habe auch viel Spaß dabei. *Still digging!*
+
+Zum Abschluß wie immer für alle unter Euch, die gerne Quellcode lesen und/oder nachvollziehen wollen, hier der komplette Quellcode des Skriptes.
+
+~~~javascript
+// Retro Platformer Stage 2
+// Mit P5.play und planck.js
+// Nach Mr. Erdreich: Creating a Retro-Style Platform Game in P5.js <https://www.youtube.com/playlist?list=PLBDInqUM5B26FjwMMZqGDxqQr1kX5V9Ul>, ca. 2020
+// Klassen und nach ES 6 angepaßt: Jörg Kantel, 2023
+
+// Konstanten
+const winwidth = 480;
+const winheight = 224;
+
+// Globale Variablen
+let stage;
+let player;
+const platforms = [];
+
+// Klassen
+
+// Spieler
+class Player {
+
+  constructor() {
+    this.x = 240;
+    this.y = 146;
+    this.w = 16;
+    this.h = 32;
+    this.speed = 5;
+  } // End Player constructor()
+
+  update() {
+
+  } // End Player update()
+
+  display() {
+    push();
+    stroke(0);
+    strokeWeight(2);
+    fill(150, 0, 150);  // purple
+    rect(this.x, this.y, this.w, this.h);
+    pop();
+  }  // End Player display()
+
+} // End Player
+
+// Platform
+class Platform {
+
+  constructor(_x, _y, _w, _h) {
+    this.x = _x;
+    this.y = _y;
+    this.w = _w;
+    this.h = _h;
+  } // End Platform constructor()
+
+  display() {
+    push();
+    stroke(0);
+    strokeWeight(2);
+    fill(250, 120, 10);  // Orange
+    rect(this.x, this.y, this.w, this.h);
+    pop();
+  } // End Platform display()
+
+} // End Platform
+// End Klassen
+
+// Funktionen
+function game() {
+  background(150, 230, 240);  // Himmelblau
+  // Grund
+  push();
+  noStroke();
+  fill(100, 200, 75);  // Grasgrün
+  rect(width/2, height + 50, width, height);
+  pop();
+  // Fensterrahmen
+  push();
+  noFill();
+  stroke(0)   // Schwarz
+  strokeWeight(7);
+  rect(width/2, height/2, width, height);
+  pop();
+  // Platforms
+  for (let platform of platforms) {
+    platform.display();
+  }
+  // Player
+  if (kb.pressing("left")) {
+    if (player.x > player.w) {
+      player.x -= player.speed;
+    }
+  } else if (kb.pressing("right")) {
+    if (player.x < width - player.w) {
+      player.x += player.speed;
+    }
+  } else {
+    player.x += 0;
+  }
+  player.display();
+} // end game()
+// End Funktionen
+
+// Hauptprogramm
+function setup() {
+  myCanvas = createCanvas(winwidth, winheight);
+  myCanvas.parent("retro2");
+  stage = 0;
+  rectMode(CENTER);
+  textAlign(CENTER);
+  platforms[0] = new Platform(128, 112, 128, 16);
+  player = new Player;
+} // end setup()
+
+function draw() {
+  if (stage == 0) {
+    game();
+  }
+} // end draw()
+
+// End Hauptprogramm
+~~~
+
+Den Quelltext des Skriptes wie auch der `index.html` findet Ihr auch in [meinem Github-Repositorium](https://github.com/kantel/p5js/tree/master/retroplatformer/stage02) zu diesem Projekt.
+
+
