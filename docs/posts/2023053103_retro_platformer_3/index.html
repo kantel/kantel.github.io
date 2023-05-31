@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Retro Platformer in P5.play – Stage 3</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+<script src="./js/p5.min.js"></script>
+<script src="./js/planck.min.js"></script>
+<script src="./js/p5play.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<script src="./sketch.js"></script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Retro Platformer in P5.play – Stage 3</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">P5.play</div>
+    <div class="quarto-category">P5.js</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">31. Mai 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52939931902/"><img src="images/retroplatformerstage3-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Meine noch sehr tastenden Versuche mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html">P5.play</a>, der Spiele- und Physik-Engine für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> haben mir erste Erfolgserlebnisse beschert. Mit wenigen Zeilen Code ist es mir gelungen, einen kleinen Ninja-Frosch mittels Tastendruck über den Bildschirm hüpfen zu lassen. Denn P5.play bietet dafür eine Reihe sehr leistungsstarker Befehle an, die die Programmierung stark vereinfachen.</p>
+<p>Das beginnt mit dem Preload der Datein, die die geneigte Programmiererin oder der geneigte Programmierer nicht einzeln aufrufen und hochladen muß, sondern dies kann (am sinnvollsten in der Funktion <code>preload()</code>) in einem Rutsch erledigt werden. Das sieht dann so aus:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">function</span> <span class="fu">preload</span>() {</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  ninjaIdleAni <span class="op">=</span> <span class="fu">loadAni</span>(<span class="st">"data/ninjafrog/idle/ninjafrog_idle_00.png"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  ninjaWalkAni <span class="op">=</span> <span class="fu">loadAni</span>(<span class="st">"data/ninjafrog/walk/ninjafrog_walk_00.png"</span><span class="op">,</span> <span class="dv">11</span>)<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>P5.js kennt nämlich einen Befehl <code>loadAni()</code>, der ähnlich wie <code>loadImage()</code> funktioniert, aber nicht nur eine einzelne Datei, sondern eine ganze Sequenz von Dateien hochlädt und unter einem Variablennamen abspeichert. Die Dateien müssen dafür fortlaufend numeriert sein und der zweite Parameter im Aufruf gibt die letzte Dateinummer der Animation an, nicht die Anzahl der Dateien! Die erste (<code>idle</code>) Animation besteht daher aus 11 Einzelbildern, die von <code>00</code> bis <code>10</code> durchnumeriert sind.</p>
+<p>Hat man die Bildchen erst einmal hochgeladen, kann man in <code>setup()</code> ein Sprite-Objekt anlegen und diesem Objekt dann die gewünschten Animationen zuweisen:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1"></a>  ninja <span class="op">=</span> <span class="kw">new</span> <span class="fu">Sprite</span>(width<span class="op">/</span><span class="dv">2</span><span class="op">,</span> <span class="dv">174</span>)<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  walkAni <span class="op">=</span> ninja<span class="op">.</span><span class="fu">addAni</span>(<span class="st">"walk"</span><span class="op">,</span> ninjaWalkAni)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  idleAni <span class="op">=</span> ninja<span class="op">.</span><span class="fu">addAni</span>(<span class="st">"idle"</span><span class="op">,</span> ninjaIdleAni)<span class="op">;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der erste Parameter ist so etwas wie ein Schlüssel, ein Name, unter dem die Animation in <code>draw()</code> dann aufgerufen wird.</p>
+<p>P5.js erledigt viel unter der Haube. So startet das Programm per Default und ohne daß der Programmierer es separat programmieren muß, mit der letzten, mit <code>sprite.addAni()</code> zugewiesenen Animation, in meinem Fall also mit der <code>"idle"</code>-Animation.</p>
+<p>Relativ neu dokumentiert ist der <code>sprite.mirror.x</code>- oder <code>sprite.mirror.y</code>-Befehl. Er spiegelt das Sprite jeweils um die x- respektive y-Achse, so daß dafür keine separate Bildsequenz geladen werden muß.</p>
+<p>In <code>draw()</code> kommt dann die <code>kb.pressing()</code>-Methode zum Einsatz<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Hier gibt es die Besonderheit, daß die Parameter <code>"up"</code>, <code>"down"</code>, <code>"left"</code> und <code>"right"</code> sowohl auf die Pfeiltasten als auch auf die Tasten <code>WASD</code> reagieren<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>Die Steuerung des Ninja habe ich mit diesen Zeilen programmiert:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1"></a>  <span class="cf">if</span> (kb<span class="op">.</span><span class="fu">pressing</span>(<span class="st">"left"</span>)) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    ninja<span class="op">.</span><span class="at">mirror</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    ninja<span class="op">.</span><span class="at">ani</span> <span class="op">=</span> <span class="st">"walk"</span><span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="cf">if</span> (ninja<span class="op">.</span><span class="at">x</span> <span class="op">&gt;</span> <span class="dv">16</span>) {</span>
+<span id="cb3-5"><a href="#cb3-5"></a>      ninja<span class="op">.</span><span class="at">direction</span> <span class="op">=</span> <span class="dv">180</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>      ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> ninjaSpeed<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    } <span class="cf">else</span> {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>      ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>    }</span>
+<span id="cb3-10"><a href="#cb3-10"></a>  } <span class="cf">else</span> <span class="cf">if</span> (kb<span class="op">.</span><span class="fu">pressing</span>(<span class="st">"right"</span>)) {</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    ninja<span class="op">.</span><span class="at">mirror</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>    ninja<span class="op">.</span><span class="at">ani</span> <span class="op">=</span> <span class="st">"walk"</span><span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="cf">if</span> (ninja<span class="op">.</span><span class="at">x</span> <span class="op">&lt;</span> width <span class="op">-</span> <span class="dv">16</span>) {</span>
+<span id="cb3-14"><a href="#cb3-14"></a>      ninja<span class="op">.</span><span class="at">direction</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>      ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> ninjaSpeed<span class="op">;</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>    } <span class="cf">else</span> {</span>
+<span id="cb3-17"><a href="#cb3-17"></a>    ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>    }</span>
+<span id="cb3-19"><a href="#cb3-19"></a>  } <span class="cf">else</span> {</span>
+<span id="cb3-20"><a href="#cb3-20"></a>    ninja<span class="op">.</span><span class="at">ani</span> <span class="op">=</span> <span class="st">"idle"</span><span class="op">;</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>    ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a>  }</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das war eigentlich schon alles. Probiert es aus: Mit den Pfeiltastem rechts und links oder den Tasten <code>a</code> und <code>d</code> könnt ihr den Ninja-Frosch durch das Bildschirmfenster hüfen lassen:</p>
+<div id="mysketch">
+
+</div>
+<p>Dafür, daß der Sketch gerade einmal aus siebzig Zeilen Code besteht, passiert schon eine ganze Menge. Wie immer für alle unter Euch, die gerne Quellcode lesen und/oder ihn nachvollziehen wollen, hier noch einmal alles kompakt:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">// Retro Platformer Stage 2</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">// Mit P5.play und planck.js</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">// Assets: Pixel Adventure von Pixel Frog: https://pixelfrog-assets.itch.io/pixel-adventure-1</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="co">// Konstanten</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="kw">const</span> winwidth <span class="op">=</span> <span class="dv">640</span><span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">const</span> winheight <span class="op">=</span> <span class="dv">240</span><span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">const</span> ninjaSpeed <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">// Globale Variablen</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="kw">let</span> ninja<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="kw">let</span> ninjaIdleAni<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="kw">let</span> ninjaWalkAni<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="kw">let</span> idleAni<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="kw">let</span> walkAni<span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a></span>
+<span id="cb4-17"><a href="#cb4-17"></a></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">// Funktionen</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="kw">function</span> <span class="fu">displayGround</span>() {</span>
+<span id="cb4-20"><a href="#cb4-20"></a>  <span class="fu">push</span>()<span class="op">;</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>  <span class="fu">noStroke</span>()<span class="op">;</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>  <span class="fu">fill</span>(<span class="dv">150</span><span class="op">,</span> <span class="dv">63</span><span class="op">,</span> <span class="dv">62</span>)<span class="op">;</span>  <span class="co">// Rotbraun</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>  <span class="fu">rect</span>(<span class="dv">0</span><span class="op">,</span> height <span class="op">-</span> <span class="dv">50</span><span class="op">,</span> width<span class="op">,</span> height)<span class="op">;</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>  <span class="fu">pop</span>()<span class="op">;</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>}</span>
+<span id="cb4-26"><a href="#cb4-26"></a></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">// Hauptprogramm</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="kw">function</span> <span class="fu">preload</span>() {</span>
+<span id="cb4-29"><a href="#cb4-29"></a>  ninjaIdleAni <span class="op">=</span> <span class="fu">loadAni</span>(<span class="st">"data/ninjafrog/idle/ninjafrog_idle_00.png"</span><span class="op">,</span> <span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a>  ninjaWalkAni <span class="op">=</span> <span class="fu">loadAni</span>(<span class="st">"data/ninjafrog/walk/ninjafrog_walk_00.png"</span><span class="op">,</span> <span class="dv">11</span>)<span class="op">;</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a>}</span>
+<span id="cb4-32"><a href="#cb4-32"></a></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="kw">function</span> <span class="fu">setup</span>() {</span>
+<span id="cb4-34"><a href="#cb4-34"></a>  myCanvas <span class="op">=</span> <span class="fu">createCanvas</span>(winwidth<span class="op">,</span> winheight)<span class="op">;</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>  myCanvas<span class="op">.</span><span class="fu">parent</span>(<span class="st">"mysketch"</span>)<span class="op">;</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a>  ninja <span class="op">=</span> <span class="kw">new</span> <span class="fu">Sprite</span>(width<span class="op">/</span><span class="dv">2</span><span class="op">,</span> <span class="dv">174</span>)<span class="op">;</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a>  walkAni <span class="op">=</span> ninja<span class="op">.</span><span class="fu">addAni</span>(<span class="st">"walk"</span><span class="op">,</span> ninjaWalkAni)<span class="op">;</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a>  idleAni <span class="op">=</span> ninja<span class="op">.</span><span class="fu">addAni</span>(<span class="st">"idle"</span><span class="op">,</span> ninjaIdleAni)<span class="op">;</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a>  ninja<span class="op">.</span><span class="at">mirror</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>  ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>  } <span class="co">// end setup()</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a></span>
+<span id="cb4-43"><a href="#cb4-43"></a><span class="kw">function</span> <span class="fu">draw</span>() {</span>
+<span id="cb4-44"><a href="#cb4-44"></a>  <span class="fu">background</span>(<span class="dv">215</span><span class="op">,</span> <span class="dv">189</span><span class="op">,</span> <span class="dv">156</span>)<span class="op">;</span>  <span class="co">// Ocker </span></span>
+<span id="cb4-45"><a href="#cb4-45"></a>  <span class="fu">displayGround</span>()<span class="op">;</span></span>
+<span id="cb4-46"><a href="#cb4-46"></a></span>
+<span id="cb4-47"><a href="#cb4-47"></a>  <span class="cf">if</span> (kb<span class="op">.</span><span class="fu">pressing</span>(<span class="st">"left"</span>)) {</span>
+<span id="cb4-48"><a href="#cb4-48"></a>    ninja<span class="op">.</span><span class="at">mirror</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a>    ninja<span class="op">.</span><span class="at">ani</span> <span class="op">=</span> <span class="st">"walk"</span><span class="op">;</span></span>
+<span id="cb4-50"><a href="#cb4-50"></a>    <span class="cf">if</span> (ninja<span class="op">.</span><span class="at">x</span> <span class="op">&gt;</span> <span class="dv">16</span>) {</span>
+<span id="cb4-51"><a href="#cb4-51"></a>      ninja<span class="op">.</span><span class="at">direction</span> <span class="op">=</span> <span class="dv">180</span><span class="op">;</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a>      ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> ninjaSpeed<span class="op">;</span></span>
+<span id="cb4-53"><a href="#cb4-53"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-54"><a href="#cb4-54"></a>      ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a>    }</span>
+<span id="cb4-56"><a href="#cb4-56"></a>  } <span class="cf">else</span> <span class="cf">if</span> (kb<span class="op">.</span><span class="fu">pressing</span>(<span class="st">"right"</span>)) {</span>
+<span id="cb4-57"><a href="#cb4-57"></a>    ninja<span class="op">.</span><span class="at">mirror</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb4-58"><a href="#cb4-58"></a>    ninja<span class="op">.</span><span class="at">ani</span> <span class="op">=</span> <span class="st">"walk"</span><span class="op">;</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>    <span class="cf">if</span> (ninja<span class="op">.</span><span class="at">x</span> <span class="op">&lt;</span> width <span class="op">-</span> <span class="dv">16</span>) {</span>
+<span id="cb4-60"><a href="#cb4-60"></a>      ninja<span class="op">.</span><span class="at">direction</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-61"><a href="#cb4-61"></a>      ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> ninjaSpeed<span class="op">;</span></span>
+<span id="cb4-62"><a href="#cb4-62"></a>    } <span class="cf">else</span> {</span>
+<span id="cb4-63"><a href="#cb4-63"></a>    ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-64"><a href="#cb4-64"></a>    }</span>
+<span id="cb4-65"><a href="#cb4-65"></a>  } <span class="cf">else</span> {</span>
+<span id="cb4-66"><a href="#cb4-66"></a>    ninja<span class="op">.</span><span class="at">ani</span> <span class="op">=</span> <span class="st">"idle"</span><span class="op">;</span></span>
+<span id="cb4-67"><a href="#cb4-67"></a>    ninja<span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-68"><a href="#cb4-68"></a>  }</span>
+<span id="cb4-69"><a href="#cb4-69"></a>} <span class="co">// end draw()</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die <em>Credits</em> findet Ihr im Kopf des Quelltextes kommentiert und er ist auch wieder <a href="https://github.com/kantel/p5js/tree/master/retroplatformer/stage03">mit den verwendeten Assets in meinem GitHub-Repositorium</a> zu finden.</p>
+<p>Bisher habe ich nur an der Oberfläche von P5.play gekratzt. Der Spaß kommt jedoch erst, wenn ich auch noch die eingebaute Physik-Engine nutze. Darüber beim nächsten Mal mehr. <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Es gibt in dieser Gruppe die Befehle <code>presses()</code>, <code>pressing()</code>, <code>holding()</code> und <code>released()</code>. Der erste Befehl ist nach dem ersten Tastendruck verbraucht, der zweite Befehl reagiert, so lange die Taste gedrückt ist, beim dritten Kommande muß die Taste länger (per Default 12 Frames) gedrückt sein, und der letzte Befehl reagiert auf das Loslassen der Taste. Ähnliches gibt es für Interaktionen mit der Maus oder mit einem Game Controller. Hier empfiehlt sich auf jeden Fall ein <a href="https://p5play.org/learn/input_devices.html?page=0">Blick in die Dokumentation</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Zusätzlich kann auch ein zweiter Sprite (über einen zweiten Spieler) mit den Tasten <code>IJKL</code> gesteuert werden. Wie man das bewerkstelligt und wie man internationale Tastaturen dafür anpaßt, <a href="https://p5play.org/learn/input_devices.html?page=1">verrät ebenfalls die Dokumentation</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
