@@ -75,7 +75,8 @@ function draw() {
     ninja.speed = 0;
     }
   } else if (kb.presses("space")) {
-    ninja.vel.y = 400;                                   
+    ninja.vel.y = 400;
+    return false;                                   
   } else {
     ninja.ani = "idle";
     ninja.rotation = 0;
