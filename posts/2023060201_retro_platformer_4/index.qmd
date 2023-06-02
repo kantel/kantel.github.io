@@ -1,0 +1,159 @@
+---
+title: "Retro Platformer mit P5.play -- Stage 4"
+author: "Jörg Kantel"
+date: "2023-06-02 15:00:00"
+categories: Spieleprogrammierung, P5.play, P5.js]
+image: "images/retroplatformer4.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+  - text: <script src="./js/planck.min.js"></script>
+  - text: <script src="./js/p5play.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+---
+
+[![](images/retroplatformer4-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52943780908/)
+
+Mein Abenteuer »Spieleprogrammierung mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) und [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html)« geht weiter: Gemäß meiner [Ankündigung vom Mittwoch](https://kantel.github.io/posts/2023053103_retro_platformer_3/) wollte ich als nächstes etwas mit der in P5.play eingebauten *2D&nbsp;Physic Engine*, die auf  [Planck.js](https://piqnt.com/planck.js/), einem JavaScript-Port von [Box2D](https://en.wikipedia.org/wiki/Box2D), aufsetzt, anstellen. Mein erstes Fazit: Es funktioniert, aber ich weiß manchmal noch nicht wirklich warum. Da muß ich mich wohl noch ein wenig durch die [Dokumentation](https://github.com/shakiba/planck.js/wiki/) wühlen.
+
+Was habe ich also angestellt? Ich habe erst einmal mit
+
+~~~javascript
+  world.gravity.y = 50;
+  ground = new Sprite(width/2, height - 30, width, 48, "static");
+  ground.img = groundImage;
+~~~
+
+der Spielewelt eine Schwerkraft verpaßt (`World` ist wie `Sprite` oder `Turtle` ein in P5.play [»eingebautes« Objekt](https://p5play.org/learn/world.html)[^1]), von dem jede Spielewelt anscheinend genau eine Instanz besitzt).
+
+[^1]: Ich habe bei P5.play Schwierigkeiten mit dem Objektbegriff, denn von den »eingebauten« Objekten lassen sich keine Subklassen bilden: `class Player extends Sprite` funktioniert nicht. Aber dafür weiß ich auch noch zu wenig über JavaScript-Klassen, die anscheinend nur ein Wrapper über Funktionen sind und sich daher von den Klassen, wie ich sie von Java oder Python gewohnt bin, doch gewaltig unterscheiden. *Still digging!*
+
+Damit der Spieler dann nicht ins Bodenlose fällt, habe ich in den nächste beiden Zeilen einen Boden definiert und ihn ein Bild verpaßt. Der Boden ist `static`, das heißt, er reagiert nicht auf die Kollision mit anderen Sprites, hält diese aber auf.
+
+Ähnliches habe ich mit den beiden Plattformen angestellt:
+
+~~~javascript
+  platform1 = new Sprite(160, 128, 80, 32, "static");
+  platform1.img = platformImage;
+  platform2 = new Sprite(560, 160, 80, 32, "static");
+  platform2.img = platformImage;
+~~~
+
+In `draw()` habe ich einmal noch eine Bedingung hinzugefügt, die den Ninja-Frosch bei Betätigung der Leertaste (`"space"`) hüpfen läßt
+
+~~~javascript
+  } else if (kb.presses("space")) {
+    ninja.vel.y = 400; 
+  }
+~~~
+
+und da die Physic Engine den Spieler, wenn er von einer Plattform fällt, purzeln läßt, richte ich ihn in der finale `else`-Anweisung mit `sprite.rotation = 0` wieder auf:
+
+~~~javascript
+  } else {
+    ninja.ani = "idle";
+    ninja.rotation = 0;
+    ninja.speed = 0;
+  }
+~~~
+
+Das -- gerade das letzte `else` -- ist alles noch sehr *brute force* und es geht sicher eleganter, aber ich lerne ja noch. Hier erst einmal das Ergebnis:
+
+<div id="mysketch"></div>
+
+Wie oben schon geschrieben: Es funktioniert -- irgendwie. Aber mir ist noch nicht wirklich klar, wie zum Beispiel `world.gravity` und `sprite.velocity` zusammenwirken. Die seltsamen Werte habe ich per *trial and error* zusammengebastelt.
+
+Aber hier erst einmal der komplette Quellcode, den es -- mit allen Assets -- auch in [meinem GitHub-Repositorium](https://github.com/kantel/p5js/tree/master/retroplatformer/stage04) gibt:
+
+~~~javascript
+// Retro Platformer Stage 4
+// Mit P5.play und planck.js
+// Assets: Pixel Adventure von Pixel Frog: https://pixelfrog-assets.itch.io/pixel-adventure-1
+
+// Konstanten
+const winwidth = 640;
+const winheight = 240;
+const ninjaSpeed = 1.0;
+
+// Globale Variablen
+let ninja;
+let ninjaIdleAni;
+let ninjaWalkAni;
+let ground;
+let groundImage;
+let platform1, platform2;
+let platformImage;
+
+// Funktionen
+function displayGround() {
+  push();
+  noStroke();
+  fill(150, 63, 62);  // Rotbraun
+  rect(0, height - 50, width, height);
+  pop();
+}
+
+// Hauptprogramm
+function preload() {
+  ninjaIdleAni = loadAni("data/ninjafrog/idle/ninjafrog_idle_00.png", 10);
+  ninjaWalkAni = loadAni("data/ninjafrog/walk/ninjafrog_walk_00.png", 11);
+  groundImage   = loadImage("data/ground.png");
+  platformImage = loadImage("data/platform01.png");
+}
+
+function setup() {
+  myCanvas = createCanvas(winwidth, winheight);
+  myCanvas.parent("mysketch");
+  // Welt-Eigenschaften
+  world.gravity.y = 50;
+  ground = new Sprite(width/2, height - 30, width, 48, "static");
+  ground.img = groundImage;
+  platform1 = new Sprite(160, 128, 80, 32, "static");
+  platform1.img = platformImage;
+  platform2 = new Sprite(560, 160, 80, 32, "static");
+  platform2.img = platformImage;
+  // Ninja-Eigenschaften
+  ninja = new Sprite(148, 16);
+  ninja.addAni("walk", ninjaWalkAni);
+  ninja.addAni("idle", ninjaIdleAni);
+  ninja.mirror.x = false;
+  ninja.speed = 0;
+  } // end setup()
+
+function draw() {
+  background(215, 189, 156);  // Ocker 
+  // displayGround();
+
+  if (kb.pressing("left")) {
+    ninja.mirror.x = true;
+    ninja.ani = "walk";
+    if (ninja.x > 16) {
+      ninja.direction = 180;
+      ninja.speed = ninjaSpeed;
+    } else {
+      ninja.speed = 0;
+    }
+  } else if (kb.pressing("right")) {
+    ninja.mirror.x = false;
+    ninja.ani = "walk";
+    if (ninja.x < width - 16) {
+      ninja.direction = 0;
+      ninja.speed = ninjaSpeed;
+    } else {
+    ninja.speed = 0;
+    }
+  } else if (kb.presses("space")) {
+    ninja.vel.y = 400;                                   
+  } else {
+    ninja.ani = "idle";
+    ninja.rotation = 0;
+    ninja.speed = 0;
+  }
+} // end draw()
+
+// End Hauptprogramm
+~~~
+
+Neben dem Ninja-Frosch stammen auch die Tiles für den Grund und die Plattformen aus dem [Pixel Adventures Set des Pixel Frog](https://pixelfrog-assets.itch.io/pixel-adventure-1). Ich habe sie mit [Tiled](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tiled.html) zusammengebastelt und daraus als Bilder exportiert.
+
+Zum Schluß noch eine Frage an die Weisheit der Cloud: Wenn ich P5.play-Skripte in eine Webseite wie diese einbinde, erfreut Euch und mich die Bibliothek mit einem Splash-Screen. Nicht, daß ich ein wenig Reklame den Machern von P5.play nicht gönne (und auf einer Seite, die nur das Spiel enthält, finde ich das auch völlig okay), aber auf einer Tutorial-Seite wie hier in diesem ~~Blog~~ Kritzelheft stört es doch ein wenig. Weiß daher von Euch da draußen jemand, wie man dies abstellen kann?
