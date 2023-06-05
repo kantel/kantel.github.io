@@ -1,0 +1,49 @@
+---
+title: "Wie geil ist das denn? Pygame im Browser!"
+author: "Jörg Kantel"
+date: "2023-06-05 18:30:00"
+categories: [Pygame, Spieleprogrammierung]
+image: "images/pizzaplaneitchio.jpg"
+---
+
+[![](images/pizzaplane_pygbag.jpg)](https://www.flickr.com/photos/schockwellenreiter/52952596471/)
+
+Da experimentiere ich doch schon so lange mit [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) herum, um Python-Skripte im Browser ablaufen zu lassen, und dann macht mich der [Python-Enthusiast](https://www.youtube.com/watch?v=HDClvz3h4Xc) auf [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) aufmerksam, ein Programm, das [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Spiele, aber auch andere aber auch andere Python-Programme nach WebAssembly (WASM) übersetzt und sie so im Browser spielbar macht. Momentan (Stand Juni&nbsp;2023) kann Pygbag außer Pygame nur Module aus der Python-Standard-Bibliothek übersetzen, aber die Einbindung weiterer Pakete ist geplant.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6PhDmpBcezQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Pygbag ist eine freie (MIT-Lizenz) Anwendung und der [Quellcode](https://github.com/pygame-web/pygbag) ist auf GitHub zu finden. Das Programm ist noch jung (das erste Release ist vom Juni 2022, also gerade einmal ein Jahr alt) und wird ständig weiterentwickelt (das [aktuelle Release](https://github.com/pygame-web/pygbag/releases) ist die Version 0.6.7). Pygbag ist auch auf [PyPI zu finden](https://pypi.org/project/pygbag/0.1.5/), eine Installation ist also mit
+
+~~~bash
+pip install pygbag
+~~~
+
+leicht zu erledigen. [Ein Wiki](https://pygame-web.github.io/) erläutert die weiteren Schritte: Das Hauptprogramm muß `main.py` heißen und zusätzlich `asyncio` importieren. Dann muß die Pygame-Hauptschleife in die Funktion `async def main()` geklammert werden, die als (zusätzlichen) letzten Befehl im einfachsten Fall noch die Zeile
+
+~~~python
+      await asyncio.sleep(0)
+~~~
+
+erhält (das `sleep()` ist wichtig, sonst funktioniert das Skript nicht).
+
+Als allerletzten Befehl (ohne Einrückung) muß das Programm mit
+
+~~~python
+asyncio.run(main())
+~~~
+
+beendet werden (danach dürfen keine weiteren Programmbefehle mehr folgen). Ich habe das mit einer abgespeckten Version meines Pizzafliegers getestet ([Quellcode und Assets (inclusive `build`-Folder)](https://github.com/kantel/pygameprojects/tree/master/pizzaplane_browser) auf GitHub) und wie Ihr auf [obigem Screenshot](https://www.flickr.com/photos/schockwellenreiter/52952596471/) bewundern könnt, hat es funktioniert.
+
+Wenn Pygbag installiert und importiert ist, können die Skripte natürlich auch im Python-Interpreter getestet werden (habe ich mit [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) (Achtung, hier muß Pigbag natürlich auch für die Thonny-Umgebung installiert sein) und mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) erfogreich ausprobiert). Außerdem implementiert die App unter `localhost:8000` (der (Default-) Port 8000 kann bei Bedarf geändert werden) einen lokalen Webserver, mit dem die erfolgreiche Übersetzung nach WASM ebenfalls getestet werden kann.
+
+Bei der Übersetzung legt Pygbag einen `build` Folder an, der alle für das Web notwendige Daten und Skripte enthält. Dieser Folder ist erstaunlich kompakt (für mein Testprogramm inklusive Cache 25 MB). Wenn man diesen Ordner komprimiert, kann man ihn auch auf Itch.io hochladen und dort ausführen lassen (mein [Testprogramm könnt Ihr hier](https://kantel.itch.io/pygbag-test) finden und laufen lassen).
+
+Nach der ersten Übersetzung dauert es eine gewisse Zeit, bis das Programm startet (vermutlich weil erst noch ein Cache angelegt wird), bei jedem weiteren Start ist es dann aber »sofort« da.
+
+Aprops Geschwindigkeit: WebAssembly ist schnell, aber natürlich kann es keine Wunder vollbringen. Das obige Video spricht davon, daß die pure Python-Version im Extremfall um den Faktor fünf schneller ist als die Webversion. Das dürfte bei den meisten (2D-) Anwendungen keine Rolle spielen (die »idlen« sowieso die meiste Zeit, weil sie auf die Eingaben der Nutzer warten), aber bei extrem komplexen Spielen sollte man schon testen, ob sie noch spielbar sind (außerdem haben die Macher versprochen, daß sie an der *Performance* noch arbeiten).
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q25i2CCNvis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Das alles zwingt mich natürlich dazu, meine Strategie zu überdenken. Ich halte Pygame für ein Spieleframework, das -- alleine auf Grund seines Alters und seiner Verbreitung -- so ausgereift ist, wie kaum ein zweites. Lediglich die Tatsache, daß es keine vernünftige *Deployment*-Möglichkeit gab, hatte es ausgebremst. Sollte Pygbag das halten, was es verspricht (meine ersten Tests sind sehr positiv) und es auch noch weiterentwickelt werden (zum Beispiel ähnlich wie das auf [Pyodide](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html) aufsetzende [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) auch den *Scientific Stack*, insbesondere [SciPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html), [NumPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) oder die [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) einbinden können), wäre das ein echter *Game Changer*.
+
+Ich werde das jedenfalls mit großem Interesse weiter beobachten und habe daher **[Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html)** eine Seite in [meinem Wiki](http://cognitiones.kantel-chaos-team.de/index.html) spendiert. Und weitere Tests stehen natürlich auch noch an. Ich glaube, es warten spannende Zeiten auf Euch und (vor allem) auf mich. *Still digging!*
