@@ -1,0 +1,23 @@
+---
+title: "Pygbag (2): Nachschlag zu »Pygame im Browser«"
+author: "Jörg Kantel"
+date: "2023-06-06 14:00:00"
+categories: [Pygame, Spieleprogrammierung, Pygbag, WASM]
+image: "images/pizzaplaneitchioupdate.jpg"
+---
+
+[![](images/pizzaplaneitchioupdate-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52955310235/)
+
+Natürlich hat mich das [gestern vorgestellte](https://kantel.github.io/posts/2023060501_pygame_im_browser/) Paket »[Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html)«, mit dem es möglich ist, [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Skripte im Browser auszuführen, nicht in Ruhe gelassen, ich mußte noch ein wenig damit spielen. Dabei sind mir noch folgende Einzelheiten aufgefallen:
+
+<iframe frameborder="0" src="https://itch.io/embed-upload/8059129?color=00507d" allowfullscreen="" width="640" height="380"><a href="https://kantel.itch.io/pygbag-test">Play Pygbag Test on itch.io</a></iframe>
+
+Die einfachste Möglichkeit, die Skripte in den eigenen Seiten -- wie hier in diesem ~~Blog~~ Kritzelheft -- auszuführen, ist die, nach dem [Hochladen auf Itch.io](https://kantel.itch.io/pygbag-test) das dortige *Embed*-Widget zu nutzen (unter `Widgets -> Embed Game`). Wer einen [GitHub Pages](http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html)-Account besitzt, kann sie auch von dort hosten (hier eine [Anleitung](https://pygame-web.github.io/wiki/pygbag/github.io/)). Wie man sie ohne einen Dienst dazwischen zu schalten direkt in seine Webseite einbindet, habe ich noch nicht herausgefunden (einfach den Folder `web` hochzuladen und dann die dortige `index.html` per HTTP(S) aufzurufen, funktioniert nicht). Hier muß ich noch recherchieren, aber das Einbetten des Itch.io-Widgets hat ja auch seinen Charme (siehe oben).
+
+Ähnlich wie bei [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) und [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) gibt es auch bei von Pygbag erzeugten Skripten bei bestimmten Tasten (Pfeiltasten, Space, etc.) Konflikte mit dem Browsern, die diese Tastatureingaben einfach an sich reißen. Ich habe daher für den kleinen Pizzaflieger oben die Tasten `a` (für **aufwärts**) und `d` (für **down**) als Steuerung implementiert (später soll auch noch `s` (für **shoot**) hinzukommen). Es empfiehlt sich, bevor man Tastatur- oder Mauskommandos implementiert, zu testen, ob sie sich mit den Browsern vertragen.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tLsi2DeUsak" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Einer Fußnote habe ich entnommen, daß die Unterstützung der Physikbibliothek [Pymunk](http://cognitiones.kantel-chaos-team.de/programmierung/python/pymunk.html) schon in Pygbag implementiert sein soll. In diesem Zusammenhang ist daher das Video »[Physics Simulations With Python and PyMunk](https://www.youtube.com/watch?v=tLsi2DeUsak)« von großem Interesse, denn dann wären nicht nur Spiele, sondern auch Physik-Simulationen mit Pygame und Pymunk im Browser möglich.
+
+**War sonst noch was?** Ach ja, auch [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) möchte in seiner [Browser-Version](https://vscode.dev/) WebAssembly und die Ausführung von [Python-Code via WASM](https://github.com/brettcannon/cpython-wasi-build/releases) unterstützen. Dazu gibt es in dem Beitrag »[Run WebAssemblies in VS Code for the Web](https://code.visualstudio.com/blogs/2023/06/05/vscode-wasm-wasi)« so etwas wie eine Roadmap und eine Beschreibung, was aktuell schon möglich ist. Sicher nicht nur für Chromebook-Nutzer eine hochinteressante Entwicklung.

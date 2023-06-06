@@ -10,7 +10,42 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Tue, 06 Jun 2023 10:30:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 06 Jun 2023 12:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pygbag (2): Nachschlag zu »Pygame im Browser«</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023060602_pygbag_nachschlag/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52955310235/"><img src="https://kantel.github.io/posts/2023060602_pygbag_nachschlag/images/pizzaplaneitchioupdate-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Natürlich hat mich das <a href="https://kantel.github.io/posts/2023060501_pygame_im_browser/">gestern vorgestellte</a> Paket »<a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a>«, mit dem es möglich ist, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Skripte im Browser auszuführen, nicht in Ruhe gelassen, ich mußte noch ein wenig damit spielen. Dabei sind mir noch folgende Einzelheiten aufgefallen:</p>
+<iframe frameborder="0" src="https://itch.io/embed-upload/8059129?color=00507d" allowfullscreen="" width="640" height="380">
+<a href="https://kantel.itch.io/pygbag-test">Play Pygbag Test on itch.io</a>
+</iframe>
+<p>Die einfachste Möglichkeit, die Skripte in den eigenen Seiten – wie hier in diesem <del>Blog</del> Kritzelheft – auszuführen, ist die, nach dem <a href="https://kantel.itch.io/pygbag-test">Hochladen auf Itch.io</a> das dortige <em>Embed</em>-Widget zu nutzen (unter <code>Widgets -&gt; Embed Game</code>). Wer einen <a href="http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html">GitHub Pages</a>-Account besitzt, kann sie auch von dort hosten (hier eine <a href="https://pygame-web.github.io/wiki/pygbag/github.io/">Anleitung</a>). Wie man sie ohne einen Dienst dazwischen zu schalten direkt in seine Webseite einbindet, habe ich noch nicht herausgefunden (einfach den Folder <code>web</code> hochzuladen und dann die dortige <code>index.html</code> per HTTP(S) aufzurufen, funktioniert nicht). Hier muß ich noch recherchieren, aber das Einbetten des Itch.io-Widgets hat ja auch seinen Charme (siehe oben).</p>
+<p>Ähnlich wie bei <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> gibt es auch bei von Pygbag erzeugten Skripten bei bestimmten Tasten (Pfeiltasten, Space, etc.) Konflikte mit dem Browsern, die diese Tastatureingaben einfach an sich reißen. Ich habe daher für den kleinen Pizzaflieger oben die Tasten <code>a</code> (für <strong>aufwärts</strong>) und <code>d</code> (für <strong>down</strong>) als Steuerung implementiert (später soll auch noch <code>s</code> (für <strong>shoot</strong>) hinzukommen). Es empfiehlt sich, bevor man Tastatur- oder Mauskommandos implementiert, zu testen, ob sie sich mit den Browsern vertragen.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tLsi2DeUsak" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Einer Fußnote habe ich entnommen, daß die Unterstützung der Physikbibliothek <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pymunk.html">Pymunk</a> schon in Pygbag implementiert sein soll. In diesem Zusammenhang ist daher das Video »<a href="https://www.youtube.com/watch?v=tLsi2DeUsak">Physics Simulations With Python and PyMunk</a>« von großem Interesse, denn dann wären nicht nur Spiele, sondern auch Physik-Simulationen mit Pygame und Pymunk im Browser möglich.</p>
+<p><strong>War sonst noch was?</strong> Ach ja, auch <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> möchte in seiner <a href="https://vscode.dev/">Browser-Version</a> WebAssembly und die Ausführung von <a href="https://github.com/brettcannon/cpython-wasi-build/releases">Python-Code via WASM</a> unterstützen. Dazu gibt es in dem Beitrag »<a href="https://code.visualstudio.com/blogs/2023/06/05/vscode-wasm-wasi">Run WebAssemblies in VS Code for the Web</a>« so etwas wie eine Roadmap und eine Beschreibung, was aktuell schon möglich ist. Sicher nicht nur für Chromebook-Nutzer eine hochinteressante Entwicklung.</p>
+
+
+
+ ]]></description>
+  <category>Pygame</category>
+  <category>Spieleprogrammierung</category>
+  <category>Pygbag</category>
+  <category>WASM</category>
+  <guid>https://kantel.github.io/posts/2023060602_pygbag_nachschlag/index.html</guid>
+  <pubDate>Tue, 06 Jun 2023 12:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023060602_pygbag_nachschlag/images/pizzaplaneitchioupdate.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google Updates zum Juni-Patchday</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3322,46 +3357,6 @@ font-style: inherit;">// End Hauptprogramm</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023052401_brauhaus_rixdorf/index.html</guid>
   <pubDate>Wed, 24 May 2023 15:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023052401_brauhaus_rixdorf/images/brauhausrixdorf.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>JupyterLab Desktop als Arbeitsumgebung für SimPy und Mesa</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023052301_mesa_simpy_jupyterlab/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52912347429/"><img src="https://kantel.github.io/posts/2023052301_mesa_simpy_jupyterlab/images/jupyterlabdesktop4-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Die Tutorials zu den von mir am <a href="https://kantel.github.io/posts/2023052001_simualtion_simpy_mesa/">Wochenende vorgestellten</a> (Python-) Simulationsbibliotheken <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/simpy.html">SimPy</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/mesa.html">Mesa</a> scheinen alle davon auszugehen, daß man als Python-Umgebung irgendetwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html">Jupyter</a> nutzt, sei es <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JupyterLab</a> oder gar <a href="https://geekflare.com/de/google-colab/">Google Colab</a>. Zwar wird in einigen Tutorials betont, daß die Jupyter-Nutzung »optional« sei, jedoch habe ich den Eindruck, daß ich es mir einfacher mache, wenn ich für diese Zwecke Jupyter nicht ignoriere.</p>
-<p>Also habe ich mein vor wenigen Wochen frisch installiertes <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">JuypterLab Desktop</a> (in der Version 4.0.0-1) angeworfen und es für meine Bedürfnisse aufgehübscht: Links über die gesamte Länge des Fensters ein File-Browser, den Haupteil nimmt ein Fenster ein, das jenach Bedarf ein Jupyter-Notebook oder den Python-Quelltext aufnimmt und darunter noch zwei kleine Fenster je für ein Terminal und für die IPython-Console. Mehr brauche ich – glaube ich – nicht und im Darkmode sieht es auch recht hübsch aus (das Auge programmiert schließlich mit).</p>
-<p>Dann habe ich mir noch drei etwas längere Video-Tutorials herausgesucht, die mir helfen sollen, meine Scheu vor den Notebooks zu verlieren:</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5pf0_bpNbkw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Rob Mulla: <em><a href="https://www.youtube.com/watch?v=5pf0_bpNbkw">Jupyter Notebook Complete Beginner Guide 2023 - From Jupyter to Jupyterlab, Google Colab and Kaggle</a>!</em>, 25 Minuten, und</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/sfBg4EfJFpw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Center of Expertise in Big Geodata Science (CRIB): <em><a href="https://www.youtube.com/watch?v=sfBg4EfJFp">Introduction to JupyterLab</a></em>, etwas über zwei Stunden.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/yjjE-MJD5TI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p><em>Last but not least</em>: Christopher Cameron: <em><a href="https://www.youtube.com/watch?v=yjjE-MJD5TI">Introduction to Jupyter Lab for Python</a></em>, knapp eine Stunde.</p>
-<p>Das letzte Video ist Teil einer breit angelegten, 16-teiligen Playlist des <em>Cornell University Center for Advanced Computing</em>: »<a href="https://www.youtube.com/playlist?list=PL8ErN3EFA8Gx1cJN2CY1C8y532hbPCiBt">Computational Topics for Cornell Researchers</a>«, die von Python über R und Linux bis hin zu Excel-Dateien alles behandelt, was das Herz eines (zukünftigen) Data Scientists begehrt. Und der Name »Cornell« bürgt für Qualität.</p>
-<p>Wie immer in solchen Fällen: Ich habe erst einmal zu tun. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Simulation</category>
-  <category>SimPy</category>
-  <category>Mesa</category>
-  <category>Dynamische Systeme</category>
-  <category>JupyterLab Desktop</category>
-  <guid>https://kantel.github.io/posts/2023052301_mesa_simpy_jupyterlab/index.html</guid>
-  <pubDate>Tue, 23 May 2023 12:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023052301_mesa_simpy_jupyterlab/images/jupyterlabdesktop4.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
