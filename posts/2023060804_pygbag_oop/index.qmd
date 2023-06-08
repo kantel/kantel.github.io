@@ -1,0 +1,180 @@
+---
+title: "Pygbag objektorientiert -- ein Template"
+author: "Jörg Kantel"
+date: "2023-06-08 18:10:00"
+categories: [Python, Pygame, Pygbag, Spieleprogrammierung, OOP]
+image: "images/pygbagoop.jpg"
+---
+
+[![](images/pygbagoop-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52958185609/)
+
+Immer noch läßt mich [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html), das kleine Tool, das [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Spiele nach WebAssembly (WASM) kompiliert, so daß diese [auch im Browser](https://kantel.github.io/posts/2023060501_pygame_im_browser/) laufen [können](https://kantel.github.io/posts/2023060602_pygbag_nachschlag/), nicht los. Und da mein Ziel momentan sowohl in [Python und Pygame](https://kantel.github.io/posts/2023010701_pygame_oop/), wie auch in [P5.js und P5.play](https://kantel.github.io/posts/2023050203_javascript_oop_es6_p5js/) (JavaScript) auf einer sauberen, objektorientierten Implementierung ausgerichtet ist, hatte ich mich gestern hingesetzt und ein Template erstellt, daß meiner Vorstellung von Onjektorientierung in Python entspricht und das als Basis für weitere Programme gedacht ist.
+
+Ich habe mich dabei weitestgehend an mein an [Greenfoot](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/greenfoot.html) angelehntes Pygame Framework gehalten, das ich im Januar schon einmal [vorgestellt hatte](https://kantel.github.io/posts/2023010701_pygame_oop/). Lediglich die Hauptschleife verlangte eine Abweichung von der reinen Lehre, da Pygbag nicht mitspielte. Denn ursprünglich hatte ich -- analog zu der Pure-Pygame-Implementierung -- in der Klasse `GameWorld` eine Methode `run()` vorgesehen, die die Hauptschleife wie folgt implementierte,
+
+~~~python
+    def run(self):
+        # Hauptschleife des Spiels
+        while self.keep_going:
+            self.clock.tick(FPS)
+            self.events()
+            self.update()
+            self.draw()
+            await asyncio.sleep(0)  # Very important, and keep it 0
+~~~
+
+die ich im Programm (nachdem ich mit `world = GameWorld` eine Instanz der Spielewelt initalisiert hatte) wie folgt aufrufen wollte:
+
+~~~python
+async def main():
+    world.run()
+
+asyncio.run(main())
+~~~
+
+Das funktionierte seltsamerweise zwar im Python-Interpreter, aber nicht mehr im Browser. Also habe ich die `run()`-Methode wieder gelöscht und die einzelnen `GameWorld`-Methoden hintereinander in der `main()`-Schleife aufgerufen:
+
+~~~python
+async def main():
+    while world.keep_going:
+        world.clock.tick(FPS)
+        world.events()
+        world.update()
+        world.draw()
+        await asyncio.sleep(0)  # Very important, and keep it 0
+
+asyncio.run(main())
+~~~~
+
+Das funktionierte dann sowohl im Python-Interpreter wie auch im Browser, wie Ihr an meinem auf [Itch.io hochgeladenen Template](https://itch.io/embed-upload/8067264?color=0484d1) ausprobieren könnt.
+
+<iframe frameborder="0" src="https://itch.io/embed-upload/8067264?color=0484d1" allowfullscreen="" width="640" height="380"><a href="https://kantel.itch.io/pygbag-oop-template">Play Pygbag OOP Template on itch.io</a></iframe>
+
+Es passiert noch nicht viel -- es ist ja nur ein Template, aber mit den Tasten `a` (= Links), `d` (=&nbsp;rechts), `w` (= hoch) und `s` (= runter) könnt Ihr die kleine Spielekonsole durch das Fenster steuern. Damit habe ich (hoffentlich!) die Grundlagen gelegt, um mit den (teilweisen noch leeren) implementierten Methoden ein vollständiges Spiel zu entwickeln:
+
+~~~python
+import pygame as pg
+import asyncio
+from pygame.locals import *
+import os, sys
+
+## Settings
+WIDTH, HEIGHT = 640, 480   # 16x16: 40, 30; 32x32: 20, 15
+TITLE = "Pygame OOP Template"
+FPS = 60                   # Frame per second
+PLAYER_WIDTH = 30
+PLAYER_HEIGHT = 45
+PLAYER_SPEED = 5
+
+## Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.getcwd(), "data")
+
+## Farben
+BG_COLOR = (40, 40, 40)
+
+# Klassen
+
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pg.init()
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption(TITLE)
+
+        self.clock = pg.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pg.sprite.Group()
+        self.player = Player()
+        self.all_sprites.add(self.player)
+  
+    def events(self):
+        for event in pg.event.get():
+            if ((event.type == pg.QUIT)
+                or (event.type == pg.KEYDOWN
+                and event.key == pg.K_ESCAPE)):
+                self.keep_going = False
+                self.game_over()
+
+    def update(self):
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        self.all_sprites.draw(self.screen)
+        pg.display.flip()
+
+    def start_screen(self):
+        pass
+    
+    def win_screen(self):
+        pass
+    
+    def loose_screen(self):
+        pass
+
+    def game_over(self):
+        # print("Bye, Bye, Baby!")
+        pg.quit()
+        sys.exit()
+## Ende Class GameWorld
+
+## Class Player
+class Player(pg.sprite.Sprite):
+
+    def __init__(self):
+        pg.sprite.Sprite.__init__(self)
+        # Load Image
+        img = pg.image.load(os.path.join(DATAPATH, "platformchar_idle.png")).convert_alpha()
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.x, self.y = WIDTH/2, HEIGHT/2
+        self.speed = PLAYER_SPEED
+    
+    def update(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_w]:     # UP
+            if self.y > PLAYER_HEIGHT - 20:
+                self.y -= self.speed
+        elif keys[pg.K_s]:   # DOWN
+            if self.y < HEIGHT - PLAYER_HEIGHT:
+                self.y += self.speed
+        elif keys[pg.K_a]:   # LEFT
+            if self.x > PLAYER_WIDTH:
+                self.x -= self.speed
+        elif keys[pg.K_d]:   # RIGHT
+            if self.x < WIDTH - PLAYER_WIDTH:
+                self.x += self.speed
+        else:
+            self.x += 0
+            self.y += 0
+        self.rect.center = (self.x, self.y)
+## End Class Player
+
+# Hauptprgramm
+world = GameWorld()
+world.start_screen()
+world.reset()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        world.clock.tick(FPS)
+        world.events()
+        world.update()
+        world.draw()
+        await asyncio.sleep(0)  # Very important, and keep it 0
+
+asyncio.run(main())
+~~~
+
+Denn [Quellcode für dieses Template (mit den Assets und dem `build`-Folder)](https://github.com/kantel/pygameprojects/tree/master/pygbagoop_template) habe ich auch wieder auf mein GitHub-Repositorium hochgeladen und das fertige Skript könnt Ihr -- wie ich oben schon erwähnte -- auch [auf Itch.io spielen](https://kantel.itch.io/pygbag-oop-template).
+
+Die kleine gelbe Spielekonsole entstammt dem [gestern schon erwähnten](https://kantel.github.io/posts/2023060702_kenney_game_jam_2023/) freien ([CC0](https://creativecommons.org/share-your-work/public-domain/cc0/)) »[Simplified Platformer Pack](https://kenney.nl/assets/simplified-platformer-pack)« von Kenney.nl.
+
+Jetzt habe ich die Grundlagen für weitere Experimente mit Pygame im Browser gelegt. Schaun wir mal, was sich daraus noch entwickeln wird. *Still digging!*
