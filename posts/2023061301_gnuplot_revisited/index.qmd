@@ -1,0 +1,32 @@
+---
+title: "Gnuplot mit Aquaterm und Visual Studio Code"
+author: "Jörg Kantel"
+date: "2023-06-13 19:45:00"
+categories: [Gnuplot, Visual Studio Code, Visualisierung]
+image: "images/gnuplottest.jpg"
+---
+
+[![](images/gnuplottest-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52972457315/)
+
+Heute morgen fiel mir eher zufällig das  »[Gnuplot Cookbook](https://www.packtpub.com/product/gnuplot-cookbook/9781849517249)« von *Lee Phillips* in die Finger und erinnerte mich an ein bisher noch ungelöstes Problem: Schon seit einer geraumen Weile konnte ich [Gnuplot](http://cognitiones.kantel-chaos-team.de/mathematik/gnuplot.html) auf meinem Mac nicht mehr zur Zusammenarbeit mit [Aquaterm](http://cognitiones.kantel-chaos-team.de/mathematik/aquaterm.html) bewegen. Spontan beschloß ich, das Problem anzugehen.
+
+Eine kurze Recherche mit ~~der Suchmaschine meines Vertrauens~~ unser aller Datenkrake brachte auch so [etwas wie eine Lösung](https://gist.github.com/scuxiayiqian/c8ea9452f86dc1918de92b136e772c80) (Kommentare beachten): Schuld an dem Dilemma waren ausnahmsweise weder Gnuplot noch Aquaterm, sondern [Homebrew](https://gist.github.com/scuxiayiqian/c8ea9452f86dc1918de92b136e772c80) -- der Installer lieferte einfach kein aktuelles Paket von Gnuplot, das mit Aquaterm zusammen spielt. Als Lösung wurde die Installation via [MacPorts](https://de.wikipedia.org/wiki/MacPorts) vorgeschlagen. Obwohl ich bei MacPorts eigentlich immer skeptisch bin (bei jeder noch so kleinen Installation lädt die Paketverwaltung einem das halbe Internet auf die Festplatte), habe ich es gewagt -- ich wollte mit Gnuplot unbedingt mal wieder spielen und das mit Aquaterm.
+
+Die Installation verlief problemlos, aber wie erwartet: Ich hatte wieder das Gefühl, daß das halbe Internet (zumindest ein weiteres Python) auf meinem Rechner versenkt wird. Aber als Belohnung hatte ich danach ein weiteres Gnuplot auf meiner Festplatte[^1]. Die Betonung liegt auf ein »weiteres«, denn das alte, mit Homebrew installierte Programm wird nicht überschrieben, MacPorts installiert alle »seine« Installationen gesondert im Verzeichnis `/opt/local/`.
+
+[^1]: Wer es mir nachmachen will, sollte nicht vergessen, **vorher** Aquaterm zu installieren, der Gnuplot-Installer muß Aquaterm nämlich finden können.
+
+Dann wollte ich auch noch wissen, ob ich Gnuplot zur Zusammenarbeit mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) bewegen kann, denn das Editieren im Editor ist für mich immer noch einfacher, als das Herumhantieren mit der Kommandozeile. Es war einfacher, als ich dachte: Die Dateiendung `.gnu` wurde vom Editor anstandslos als Gnuplot-Datei akzeptiert und mit dem *Shebang*
+
+<div style="float: right; margin-left: 12px; margin-top: 6px;">[![](images/gnuplotaction.jpg)](https://www.manning.com/books/gnuplot-in-action-second-edition)</div>
+
+~~~bash
+#!/opt/local/bin/gnuplot
+~~~~~
+
+konnte ich ihn auch mit dem gewünschten Gnuplot-Interpreter vermählen.
+
+Jetzt bin ich erst einmal zufrieden: Ich habe wieder ein Gnuplot, das so funktioniert, wie ich es mir wünsche (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/52972457315/)). Und mit Gnuplot kann man oft einfacher und schneller publikationsreife Abbildungen erstellen, ohne vorher einen Python-Interpreter mit der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) anwerfen zu müssen. Außerdem ist Gnuplot ein weiteres, nerdiges Spielzeug, das man einfach in seinem Werkzeugkasten haben muß.
+
+Ich habe daher auch noch »[Gnuplot in Action](https://www.manning.com/books/gnuplot-in-action-second-edition)« von *Philipp K. Janert* aus meinem begehbaren Zettelkasten (also aus meinen Bücherregalen) hervorgekramt und werde mit dem Programm und diesen 400 Seiten sicher noch viel Spaß haben. *Still digging!*
+
