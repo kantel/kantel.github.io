@@ -1,0 +1,419 @@
+---
+title: "Ein Jump and Run (Mario Style) in Pygame und Pygbag (Stage 1)"
+author: "Jörg Kantel"
+date: "2023-06-17 16:30:00"
+categories: [Pygame, Pygbag, Spieleprogrammierung, Retrogaming]
+image: "images/platformerv02.jpg"
+---
+
+[![](images/platformerv02-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/52979473305/)
+
+Ich habe es getan! Genauer gesagt, ich habe damit angefangen. Wie [hier schon angedroht](https://kantel.github.io/posts/2023060901_pygame_python_tuts/), habe ich mich durch die ersten Video-Tutorials der Playlist »[Platformer](https://www.youtube.com/playlist?list=PLk64HPu_u_NOD0hC2XFZfDu1ZOr7OF1qB)« von *Jonathan Cooper* gewühlt und davon inspiriert angefangen, mein eigenes [Jump 'n' Run](https://de.wikipedia.org/wiki/Jump_%E2%80%99n%E2%80%99_Run) in [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) zu schreiben. Der Sinn der Übung ist, eben keine sklavische Kopie des Spiels von *Jonathan Cooper* zu programmieren, sondern es sollte meiner Vorstellung von objektorientierter Programmierung folgen, mithilfe von [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) auch im Browser zu spielen sein und *last but not least* die freien ([CC0](https://creativecommons.org/share-your-work/public-domain/cc0/)) Assets von [Kenneys](https://www.kenney.nl/) niedlichem *[Pixel Platformer](https://www.kenney.nl/assets/pixel-platformer)* (*[Farm Expansion](https://www.kenney.nl/assets/pixel-platformer-farm-expansion)*, *[Industrial Expansion](https://www.kenney.nl/assets/pixel-platformer-industrial-expansion)*) verwenden. Diese basieren zwar auf ein unübliches Raster von 18x18 Pixeln, aber man wächst ja mit seinen Aufgaben[^1].
+
+[^1]: Ich wollte ein recht kleines Pixelraster verwenden, damit das Spielfeld -- zumindest in den ersten Versionen -- auch problemlos in ein Browserfenster paßt. Das 64x64 große Pixelraster des *[Simplified Platformer Pack](https://www.kenney.nl/assets/simplified-platformer-pack)* (ebenfalls von Kenney.nl) schien mir dafür zu wuchtig (bei aller Sympathie, die ich für die kleine, animiert und gelbe Spielekonsole des Packs hege).
+
+Beim derzeitigen Stand der Entwicklung habe ich noch recht wenige Bildchen verwendet, aber ich habe ja noch vor, das Spiel ganz gewaltig aufzuhübschen. Aber es ist selbst in diesem frühen Stadium schon (dank [Itch.io](https://kantel.itch.io/simple-pygame-platformer)) im Browser zu spielen[^2]:
+
+[^2]: Wenn man, nachdem das Spiel gestartet ist, die Seite neu lädt oder verläßt, gibt der Browser eine Warnmeldung heraus, daß eventuelle Änderungen nicht gespeichert werden. Ich weiß nicht, ob das gewollt ist und ob oder wie man das abstellen kann. Momentan müßt Ihr und muß ich damit leben. 
+
+<iframe frameborder="0" src="https://itch.io/embed-upload/8120238?color=ede4d4" allowfullscreen="" width="720" height="290"><a href="https://kantel.itch.io/simple-pygame-platformer">Play Simple Pygame Platformer on itch.io</a></iframe>
+
+Da die Browser in ihrer Gier nach Input die Pfeiltasten und auch die Leertaste in Beschlag genommen haben, wird das Spiel wie in den 80er Jahren üblich mit den Tasten `a`, `d` und `w` gesteuert: `a` bewegt die Spielerfigur (das kleine, grüne Alien) nach links, `d` nach rechts und bei `w` hüpft sie nach oben.
+
+Was habe ich nun angestellt? Ich habe mir das [hier vorgestellte Template](https://kantel.github.io/posts/2023060804_pygbag_oop/) geschnappt und es behutsam ausgebaut. Damit das Alien nicht ins Bodenlose fällt, habe ich als erstes eine Klasse `Platform` erstellt:
+
+~~~python
+class Platform(pg.sprite.Sprite):
+
+    def __init__(self, _x, _y, _image):
+        super().__init__()
+        self.image = _image
+        self.rect = self.image.get_rect()
+        self.rect.x = _x*GRIDSIZE
+        self.rect.y = _y*GRIDSIZE
+~~~
+
+Da die Klasse von `pygame.sprite.Sprite` erbt, ist die Initialisierung alles, was sie benötigt. Für die Positionierung wird die Konstante `GRIDSIZE` verwendet (hier 18 Pixel), die es erlaubt, die Sprites im Raster zu positionieren. In meinem Fall ist das Raster 40 Einheiten weit und 15&nbsp;Einheiten hoch. Das ist leichter auszuzählen, als die Pixel (720x290).
+
+Um den Boden für das Alien zu zeichnen, habe ich erst einmal das Bild geladen
+
+~~~python
+        grass_image = pg.image.load(os.path.join(IMAGEPATH, "grass_02.png"))
+        .convert_alpha()
+~~~
+
+und die Tiles dann positioniert:
+
+~~~python
+        grass_locations = []
+        for i in range(GRID_WIDTH):
+            grass_loc = (i, GRID_HEIGHT - 1)
+            grass_locations.append(grass_loc)
+        self.all_sprites = pg.sprite.Group()
+        self.platforms = pg.sprite.Group()
+        for loc in grass_locations:
+            x = loc[0]
+            y = loc[1]
+            p = Platform(x, y, grass_image)
+            self.platforms.add(p)
+            self.all_sprites.add(p)
+~~~
+
+Da alle Sprites in der Klasse `GameWorld` meines Templates gezeichnet werden, mußte ich mir über die `draw()`-Methode keine Gedanken machen, das erledigt Pygame für mich.
+
+Dann habe ich eine Klasse `Player` spezifiziert:
+
+~~~python
+class Player(pg.sprite.Sprite):
+
+    def __init__(self, _x, _y):
+        super().__init__()
+        self.img = []
+        for i in range(2):
+            player_image = pg.image.load(os.path.join(IMAGEPATH,
+            "alien_green_0" + str(i) + ".png")).convert_alpha()
+            self.img.append(player_image)
+        self.image = self.img[0]
+        self.rect = self.image.get_rect()
+        self.rect.x = _x*GRIDSIZE
+        self.rect.bottom = _y*GRIDSIZE
+        # self.rect.topleft = (self.rect.x, self.rect.y)
+        self.speed = PLAYER_SPEED
+        self.jump_power = JUMP_POWER
+        self.vx = 0
+        self.vy = 0
+        self.gems = 0
+~~~
+
+Das zweite Bild benötige ich beim derzeitigen Stand der Entwicklung noch nicht, aber alles andere wird benötigt. Die Klasse hat diverse Hilfsmethoden, die in Summe alle in der Methode `update()` aufgerufen werden. Für das Verständnis der Implementierung notwendig ist die (Hilfs-) Methode `move()`, die auf die Tastatursteuerung reagiert und eine Kollisionserkennung besitzt:
+
+~~~python
+    def move(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_a]:        # LEFT
+            if self.rect.x > 0:
+                self.vx = -1*self.speed
+        elif keys[pg.K_d]:      # RIGHT
+            if self.rect.x < WIDTH - PLAYER_WIDTH:
+                self.vx = self.speed
+        elif keys[pg.K_w]:      # JUMP
+            self.jump()
+        else:
+            self.vx = 0
+        # Horizonfale Kollision
+        self.rect.x += self.vx
+        hits = pg.sprite.spritecollide(self, world.platforms, False)
+        for hit in hits:
+            if self.vx > 0:
+                self.rect.right = hit.rect.left
+            elif self.vx < 0:
+                self.rect.left = hit.rect.right
+        # Vertikale Kollision
+        self.rect.y += self.vy
+        hits = pg.sprite.spritecollide(self, world.platforms, False)
+        for hit in hits:
+            if self.vy > 0:
+                self.rect.bottom = hit.rect.top
+            elif self.vy < 0:
+                self.rect.top = hit.rect.bottom
+            self.vy = 0
+~~~
+
+Die Geschwindigkeit des Spielers wird mit den Variablen für *Velocity* (`vx`, `vy`) gesteuert, die unter anderem nur dann zu der x- oder y-Position des Spielers aufaddiert wird, wenn keine Kollision registriert wird. Kollisionen werden, je nachdem ob eine horizontale (`vx != 0`) oder vertikale (`vy != 0`) Kollision vorliegt, separat abgehandelt. Trifft der Spieler horizontal von rechts auf ein Hindernis gilt `self.rect.right = hit.rect.left` und umgekehrt (`self.rect.left = hit.rect.right`). Ähnliches gilt für die vertikale Kollision von oben (`self.rect.bottom = hit.rect.top)` oder unten (`self.rect.top = hit.rect.bottom`).
+
+Damit eine vertikale Kollision überhaupt stattfinden kann, müssen natürlich noch ein paar Plattformen installiert werden. Wie gewohnt wird erst das Bildchen geladen
+
+~~~python
+        block_image = pg.image.load(os.path.join(IMAGEPATH, "block_00.png"))
+        .convert_alpha()
+~~~
+
+und dann die Blöcke positioniert:
+
+~~~python
+        block_locations = [(18, 4), (19, 4), (20, 4), (21, 4),                         
+                           (11, 7), (12, 7), (13, 7), (14, 7),
+                           (25, 7), (26, 7), (27, 7),
+                           (17, 10), (18, 10), (19, 10),
+                           (38, 12), (38, 13)]
+        for loc in block_locations:
+            x = loc[0]
+            y = loc[1]
+            p = Platform(x, y, block_image)
+            self.platforms.add(p)
+            self.all_sprites.add(p)
+~~~
+
+Als letztes habe ich die Klasse `Gem` implementiert, die der Klasse `Platform` sehr ähnelt, aber zusätzlich noch die Methode `apply()` besitzt:
+
+~~~python
+class Gem(pg.sprite.Sprite):
+
+    def __init__(self, _x, _y, _image):
+        super().__init__()
+        self.image = _image
+        self.rect = self.image.get_rect()
+        self.rect.x = _x*GRIDSIZE
+        self.rect.y = _y*GRIDSIZE
+    
+    def apply(self, character):
+        character.gems += 1
+~~~
+
+Die Methode `apply` in `Gem` und nicht in `Player` zu implementieren, war eine Designentscheidung, damit in zukünftigen Versionen die Klasse auch auf andere Spielfiguren, wie zum Beispiel Gegner des Spielers, reagieren kann.
+
+Dazu braucht die Klasse `Player` aber auch eine Methode, die auf eine Kollision mit den Edelsteinen reagiert. Ich habe sie `check_items()` genannt:
+
+~~~python
+    def check_items(self):
+        hits = pg.sprite.spritecollide(self, world.items, True)
+        for item in hits:
+            item.apply(self)
+~~~
+
+Hier ist der letzte Parameter von `pygame.sprite.spritecollide()` zum ersten Mal auf `True` gesetzt. Das bedeutet, das bei einer Kollision das Item aus allen `sprite.Group` gelöscht wird und im Spiel nicht mehr existiert.
+
+Bevor ich Euch komplett verwirre, hier der vollständige Quellcode dieser Version 0.2, damit Ihr alles nachvollziehen und auch nachprogrammieren könnt:
+
+~~~python
+import pygame as pg
+import asyncio
+from pygame.locals import *
+import os, sys
+
+## Settings
+GRIDSIZE = 18
+GRID_WIDTH = 40
+GRID_HEIGHT = 15
+WIDTH, HEIGHT = GRID_WIDTH*GRIDSIZE, GRID_HEIGHT*GRIDSIZE
+TITLE = "Simple Platformer"
+FPS = 60                     # Frames per second
+PLAYER_WIDTH = 24
+PLAYER_HEIGHT = 24
+PLAYER_START_X, PLAYER_START_Y = 5, 1
+PLAYER_SPEED = 3
+
+# Physikalische Konstanten
+GRAVITY = 0.5
+JUMP_POWER = 10
+
+## Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+IMAGEPATH = os.path.join(os.getcwd(), "data/images")
+
+## Farben
+BG_COLOR = (65, 166, 246)     # Himmelblau
+
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pg.init()
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption(TITLE)
+
+        self.clock = pg.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        ## Load Assets
+        grass_image = pg.image.load(os.path.join(IMAGEPATH, "grass_02.png")).convert_alpha()
+        block_image = pg.image.load(os.path.join(IMAGEPATH, "block_00.png")).convert_alpha()
+        gem_image   = pg.image.load(os.path.join(IMAGEPATH, "gem.png")).convert_alpha()
+
+        grass_locations = []
+        for i in range(GRID_WIDTH):
+            grass_loc = (i, GRID_HEIGHT - 1)
+            grass_locations.append(grass_loc)
+        self.all_sprites = pg.sprite.Group()
+        self.platforms = pg.sprite.Group()
+        for loc in grass_locations:
+            x = loc[0]
+            y = loc[1]
+            p = Platform(x, y, grass_image)
+            self.platforms.add(p)
+            self.all_sprites.add(p)
+    
+        block_locations = [(18, 4), (19, 4), (20, 4), (21, 4),                         
+                           (11, 7), (12, 7), (13, 7), (14, 7),
+                           (25, 7), (26, 7), (27, 7),
+                           (17, 10), (18, 10), (19, 10),
+                           (38, 12), (38, 13)]
+        for loc in block_locations:
+            x = loc[0]
+            y = loc[1]
+            p = Platform(x, y, block_image)
+            self.platforms.add(p)
+            self.all_sprites.add(p)
+
+        gem_locations = [(20,3), (12, 6), (26,6), (36, 13)]
+        self.items = pg.sprite.Group()
+        for loc in gem_locations:
+            x = loc[0]
+            y = loc[1]
+            g = Gem(x, y, gem_image)
+            self.items.add(g)
+            self.all_sprites.add(g)
+
+        self.player = Player(PLAYER_START_X, PLAYER_START_Y)
+        self.player_sprite_group = pg.sprite.GroupSingle()
+        self.player_sprite_group.add(self.player)
+        self.all_sprites.add(self.player)
+  
+    def events(self):
+        for event in pg.event.get():
+            if ((event.type == pg.QUIT)
+                or (event.type == pg.KEYDOWN
+                and event.key == pg.K_ESCAPE)):
+                self.keep_going = False
+                self.game_over()
+
+    def update(self):
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        self.all_sprites.draw(self.screen)
+        pg.display.flip()
+
+    def start_screen(self):
+        pass
+    
+    def win_screen(self):
+        pass
+    
+    def loose_screen(self):
+        pass
+
+    def game_over(self):
+        # print("Bye, Bye, Baby!")
+        pg.quit()
+        sys.exit()
+## Ende Class GameWorld
+
+## Class Platform
+class Platform(pg.sprite.Sprite):
+
+    def __init__(self, _x, _y, _image):
+        super().__init__()
+        self.image = _image
+        self.rect = self.image.get_rect()
+        self.rect.x = _x*GRIDSIZE
+        self.rect.y = _y*GRIDSIZE
+## End Class Platform
+
+class Gem(pg.sprite.Sprite):
+
+    def __init__(self, _x, _y, _image):
+        super().__init__()
+        self.image = _image
+        self.rect = self.image.get_rect()
+        self.rect.x = _x*GRIDSIZE
+        self.rect.y = _y*GRIDSIZE
+    
+    def apply(self, character):
+        character.gems += 1
+## End Class Gem
+
+## Class Player
+class Player(pg.sprite.Sprite):
+
+    def __init__(self, _x, _y):
+        super().__init__()
+        self.img = []
+        for i in range(2):
+            player_image = pg.image.load(os.path.join(IMAGEPATH, "alien_green_0" + str(i) + ".png")).convert_alpha()
+            self.img.append(player_image)
+        self.image = self.img[0]
+        self.rect = self.image.get_rect()
+        self.rect.x = _x*GRIDSIZE
+        self.rect.bottom = _y*GRIDSIZE
+        self.speed = PLAYER_SPEED
+        self.jump_power = JUMP_POWER
+        self.vx = 0
+        self.vy = 0
+        self.gems = 0
+    
+    def jump(self):
+        self.rect.y += 2
+        hits = pg.sprite.spritecollide(self, world.platforms, False)
+        self.rect.y -= 2
+        if len(hits) > 0:
+            self.vy = -1*self.jump_power
+
+    def apply_gravity(self):
+        self.vy += GRAVITY
+
+    def move(self):
+        keys = pg.key.get_pressed()
+        if keys[pg.K_a]:        # LEFT
+            if self.rect.x > 0:
+                self.vx = -1*self.speed
+        elif keys[pg.K_d]:      # RIGHT
+            if self.rect.x < WIDTH - PLAYER_WIDTH:
+                self.vx = self.speed
+        elif keys[pg.K_w]:      # JUMP
+            self.jump()
+        else:
+            self.vx = 0
+        # Horizonfale Kollision
+        self.rect.x += self.vx
+        hits = pg.sprite.spritecollide(self, world.platforms, False)
+        for hit in hits:
+            if self.vx > 0:
+                self.rect.right = hit.rect.left
+            elif self.vx < 0:
+                self.rect.left = hit.rect.right
+        # Vertikale Kollision
+        self.rect.y += self.vy
+        hits = pg.sprite.spritecollide(self, world.platforms, False)
+        for hit in hits:
+            if self.vy > 0:
+                self.rect.bottom = hit.rect.top
+            elif self.vy < 0:
+                self.rect.top = hit.rect.bottom
+            self.vy = 0
+
+    def check_edges(self):
+        if self.rect.left < 0:
+            self.rect.left = 0
+        elif self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+    
+    def check_items(self):
+        hits = pg.sprite.spritecollide(self, world.items, True)
+        for item in hits:
+            item.apply(self)
+
+    def update(self):
+        self.apply_gravity()
+        self.move()
+        self.check_edges()
+        self.check_items()
+
+## End Class Player
+
+# Hauptprgramm
+world = GameWorld()
+world.start_screen()
+world.reset()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        world.clock.tick(FPS)
+        world.events()
+        world.update()
+        world.draw()
+        await asyncio.sleep(0)  # Very important, and keep it 0
+
+asyncio.run(main())
+~~~
+
+Das Spiel habe ich auf [Itch.io hochgeladen](https://kantel.itch.io/simple-pygame-platformer), Ihr könnt es also auch dort spielen. Allerdings wird es dort immer nur die letzte, gerade aktuelle Version geben -- jede neue Version überschreibt die vorherige Version. Ich will schließlich meinen Account nicht vollmüllen.
+
+Und wie immer gibt es den [Quellcode mit allen Assets](https://github.com/kantel/pygameprojects/tree/master/platformer) auch in meinem Github-Repositorium. Aber auch hier wird es immer nur die aktuelle Fassung geben, frühere Versionen könnt Ihr Euch ja notfalls aus der *History* ziehen (wozu hat man denn eine **Versionskontrolle**?).
+
+Als nächstes werde ich erst einmal ein *Refactoring* des bisher implmentierten vornehmen. Es sind mir nämlich zuviel Doppelungen im Quellcode vorhanden und auch ein paar Zeilen sind von früheren Versuchen noch funktions- und nutzlos im Code verblieben. Ich lasse Euch an den Fortschritten weiter teilhaben. *Still digging!*

@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.340">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Ein Jump and Run (Mario Style) in Pygame und Pygbag (Stage 1)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Ein Jump and Run (Mario Style) in Pygame und Pygbag (Stage 1)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Pygame</div>
+    <div class="quarto-category">Pygbag</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Retrogaming</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">17. Juni 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52979473305/"><img src="images/platformerv02-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich habe es getan! Genauer gesagt, ich habe damit angefangen. Wie <a href="https://kantel.github.io/posts/2023060901_pygame_python_tuts/">hier schon angedroht</a>, habe ich mich durch die ersten Video-Tutorials der Playlist »<a href="https://www.youtube.com/playlist?list=PLk64HPu_u_NOD0hC2XFZfDu1ZOr7OF1qB">Platformer</a>« von <em>Jonathan Cooper</em> gewühlt und davon inspiriert angefangen, mein eigenes <a href="https://de.wikipedia.org/wiki/Jump_%E2%80%99n%E2%80%99_Run">Jump ‘n’ Run</a> in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> zu schreiben. Der Sinn der Übung ist, eben keine sklavische Kopie des Spiels von <em>Jonathan Cooper</em> zu programmieren, sondern es sollte meiner Vorstellung von objektorientierter Programmierung folgen, mithilfe von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> auch im Browser zu spielen sein und <em>last but not least</em> die freien (<a href="https://creativecommons.org/share-your-work/public-domain/cc0/">CC0</a>) Assets von <a href="https://www.kenney.nl/">Kenneys</a> niedlichem <em><a href="https://www.kenney.nl/assets/pixel-platformer">Pixel Platformer</a></em> (<em><a href="https://www.kenney.nl/assets/pixel-platformer-farm-expansion">Farm Expansion</a></em>, <em><a href="https://www.kenney.nl/assets/pixel-platformer-industrial-expansion">Industrial Expansion</a></em>) verwenden. Diese basieren zwar auf ein unübliches Raster von 18x18 Pixeln, aber man wächst ja mit seinen Aufgaben<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Beim derzeitigen Stand der Entwicklung habe ich noch recht wenige Bildchen verwendet, aber ich habe ja noch vor, das Spiel ganz gewaltig aufzuhübschen. Aber es ist selbst in diesem frühen Stadium schon (dank <a href="https://kantel.itch.io/simple-pygame-platformer">Itch.io</a>) im Browser zu spielen<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<iframe frameborder="0" src="https://itch.io/embed-upload/8120238?color=ede4d4" allowfullscreen="" width="720" height="290">
+<a href="https://kantel.itch.io/simple-pygame-platformer">Play Simple Pygame Platformer on itch.io</a>
+</iframe>
+<p>Da die Browser in ihrer Gier nach Input die Pfeiltasten und auch die Leertaste in Beschlag genommen haben, wird das Spiel wie in den 80er Jahren üblich mit den Tasten <code>a</code>, <code>d</code> und <code>w</code> gesteuert: <code>a</code> bewegt die Spielerfigur (das kleine, grüne Alien) nach links, <code>d</code> nach rechts und bei <code>w</code> hüpft sie nach oben.</p>
+<p>Was habe ich nun angestellt? Ich habe mir das <a href="https://kantel.github.io/posts/2023060804_pygbag_oop/">hier vorgestellte Template</a> geschnappt und es behutsam ausgebaut. Damit das Alien nicht ins Bodenlose fällt, habe ich als erstes eine Klasse <code>Platform</code> erstellt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">class</span> Platform(pg.sprite.Sprite):</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y, _image):</span>
+<span id="cb1-4"><a href="#cb1-4"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-5"><a href="#cb1-5"></a>        <span class="va">self</span>.image <span class="op">=</span> _image</span>
+<span id="cb1-6"><a href="#cb1-6"></a>        <span class="va">self</span>.rect <span class="op">=</span> <span class="va">self</span>.image.get_rect()</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="va">self</span>.rect.x <span class="op">=</span> _x<span class="op">*</span>GRIDSIZE</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        <span class="va">self</span>.rect.y <span class="op">=</span> _y<span class="op">*</span>GRIDSIZE</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Da die Klasse von <code>pygame.sprite.Sprite</code> erbt, ist die Initialisierung alles, was sie benötigt. Für die Positionierung wird die Konstante <code>GRIDSIZE</code> verwendet (hier 18 Pixel), die es erlaubt, die Sprites im Raster zu positionieren. In meinem Fall ist das Raster 40 Einheiten weit und 15&nbsp;Einheiten hoch. Das ist leichter auszuzählen, als die Pixel (720x290).</p>
+<p>Um den Boden für das Alien zu zeichnen, habe ich erst einmal das Bild geladen</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>        grass_image <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH, <span class="st">"grass_02.png"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2"></a>        .convert_alpha()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und die Tiles dann positioniert:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>        grass_locations <span class="op">=</span> []</span>
+<span id="cb3-2"><a href="#cb3-2"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(GRID_WIDTH):</span>
+<span id="cb3-3"><a href="#cb3-3"></a>            grass_loc <span class="op">=</span> (i, GRID_HEIGHT <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>            grass_locations.append(grass_loc)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        <span class="va">self</span>.all_sprites <span class="op">=</span> pg.sprite.Group()</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="va">self</span>.platforms <span class="op">=</span> pg.sprite.Group()</span>
+<span id="cb3-7"><a href="#cb3-7"></a>        <span class="cf">for</span> loc <span class="kw">in</span> grass_locations:</span>
+<span id="cb3-8"><a href="#cb3-8"></a>            x <span class="op">=</span> loc[<span class="dv">0</span>]</span>
+<span id="cb3-9"><a href="#cb3-9"></a>            y <span class="op">=</span> loc[<span class="dv">1</span>]</span>
+<span id="cb3-10"><a href="#cb3-10"></a>            p <span class="op">=</span> Platform(x, y, grass_image)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>            <span class="va">self</span>.platforms.add(p)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>            <span class="va">self</span>.all_sprites.add(p)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Da alle Sprites in der Klasse <code>GameWorld</code> meines Templates gezeichnet werden, mußte ich mir über die <code>draw()</code>-Methode keine Gedanken machen, das erledigt Pygame für mich.</p>
+<p>Dann habe ich eine Klasse <code>Player</code> spezifiziert:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">class</span> Player(pg.sprite.Sprite):</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb4-4"><a href="#cb4-4"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb4-5"><a href="#cb4-5"></a>        <span class="va">self</span>.img <span class="op">=</span> []</span>
+<span id="cb4-6"><a href="#cb4-6"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb4-7"><a href="#cb4-7"></a>            player_image <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>            <span class="st">"alien_green_0"</span> <span class="op">+</span> <span class="bu">str</span>(i) <span class="op">+</span> <span class="st">".png"</span>)).convert_alpha()</span>
+<span id="cb4-9"><a href="#cb4-9"></a>            <span class="va">self</span>.img.append(player_image)</span>
+<span id="cb4-10"><a href="#cb4-10"></a>        <span class="va">self</span>.image <span class="op">=</span> <span class="va">self</span>.img[<span class="dv">0</span>]</span>
+<span id="cb4-11"><a href="#cb4-11"></a>        <span class="va">self</span>.rect <span class="op">=</span> <span class="va">self</span>.image.get_rect()</span>
+<span id="cb4-12"><a href="#cb4-12"></a>        <span class="va">self</span>.rect.x <span class="op">=</span> _x<span class="op">*</span>GRIDSIZE</span>
+<span id="cb4-13"><a href="#cb4-13"></a>        <span class="va">self</span>.rect.bottom <span class="op">=</span> _y<span class="op">*</span>GRIDSIZE</span>
+<span id="cb4-14"><a href="#cb4-14"></a>        <span class="co"># self.rect.topleft = (self.rect.x, self.rect.y)</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>        <span class="va">self</span>.speed <span class="op">=</span> PLAYER_SPEED</span>
+<span id="cb4-16"><a href="#cb4-16"></a>        <span class="va">self</span>.jump_power <span class="op">=</span> JUMP_POWER</span>
+<span id="cb4-17"><a href="#cb4-17"></a>        <span class="va">self</span>.vx <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>        <span class="va">self</span>.vy <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a>        <span class="va">self</span>.gems <span class="op">=</span> <span class="dv">0</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das zweite Bild benötige ich beim derzeitigen Stand der Entwicklung noch nicht, aber alles andere wird benötigt. Die Klasse hat diverse Hilfsmethoden, die in Summe alle in der Methode <code>update()</code> aufgerufen werden. Für das Verständnis der Implementierung notwendig ist die (Hilfs-) Methode <code>move()</code>, die auf die Tastatursteuerung reagiert und eine Kollisionserkennung besitzt:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>    <span class="kw">def</span> move(<span class="va">self</span>):</span>
+<span id="cb5-2"><a href="#cb5-2"></a>        keys <span class="op">=</span> pg.key.get_pressed()</span>
+<span id="cb5-3"><a href="#cb5-3"></a>        <span class="cf">if</span> keys[pg.K_a]:        <span class="co"># LEFT</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>            <span class="cf">if</span> <span class="va">self</span>.rect.x <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-5"><a href="#cb5-5"></a>                <span class="va">self</span>.vx <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span><span class="va">self</span>.speed</span>
+<span id="cb5-6"><a href="#cb5-6"></a>        <span class="cf">elif</span> keys[pg.K_d]:      <span class="co"># RIGHT</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>            <span class="cf">if</span> <span class="va">self</span>.rect.x <span class="op">&lt;</span> WIDTH <span class="op">-</span> PLAYER_WIDTH:</span>
+<span id="cb5-8"><a href="#cb5-8"></a>                <span class="va">self</span>.vx <span class="op">=</span> <span class="va">self</span>.speed</span>
+<span id="cb5-9"><a href="#cb5-9"></a>        <span class="cf">elif</span> keys[pg.K_w]:      <span class="co"># JUMP</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>            <span class="va">self</span>.jump()</span>
+<span id="cb5-11"><a href="#cb5-11"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-12"><a href="#cb5-12"></a>            <span class="va">self</span>.vx <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>        <span class="co"># Horizonfale Kollision</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>        <span class="va">self</span>.rect.x <span class="op">+=</span> <span class="va">self</span>.vx</span>
+<span id="cb5-15"><a href="#cb5-15"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.platforms, <span class="va">False</span>)</span>
+<span id="cb5-16"><a href="#cb5-16"></a>        <span class="cf">for</span> hit <span class="kw">in</span> hits:</span>
+<span id="cb5-17"><a href="#cb5-17"></a>            <span class="cf">if</span> <span class="va">self</span>.vx <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-18"><a href="#cb5-18"></a>                <span class="va">self</span>.rect.right <span class="op">=</span> hit.rect.left</span>
+<span id="cb5-19"><a href="#cb5-19"></a>            <span class="cf">elif</span> <span class="va">self</span>.vx <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-20"><a href="#cb5-20"></a>                <span class="va">self</span>.rect.left <span class="op">=</span> hit.rect.right</span>
+<span id="cb5-21"><a href="#cb5-21"></a>        <span class="co"># Vertikale Kollision</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>        <span class="va">self</span>.rect.y <span class="op">+=</span> <span class="va">self</span>.vy</span>
+<span id="cb5-23"><a href="#cb5-23"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.platforms, <span class="va">False</span>)</span>
+<span id="cb5-24"><a href="#cb5-24"></a>        <span class="cf">for</span> hit <span class="kw">in</span> hits:</span>
+<span id="cb5-25"><a href="#cb5-25"></a>            <span class="cf">if</span> <span class="va">self</span>.vy <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-26"><a href="#cb5-26"></a>                <span class="va">self</span>.rect.bottom <span class="op">=</span> hit.rect.top</span>
+<span id="cb5-27"><a href="#cb5-27"></a>            <span class="cf">elif</span> <span class="va">self</span>.vy <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb5-28"><a href="#cb5-28"></a>                <span class="va">self</span>.rect.top <span class="op">=</span> hit.rect.bottom</span>
+<span id="cb5-29"><a href="#cb5-29"></a>            <span class="va">self</span>.vy <span class="op">=</span> <span class="dv">0</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die Geschwindigkeit des Spielers wird mit den Variablen für <em>Velocity</em> (<code>vx</code>, <code>vy</code>) gesteuert, die unter anderem nur dann zu der x- oder y-Position des Spielers aufaddiert wird, wenn keine Kollision registriert wird. Kollisionen werden, je nachdem ob eine horizontale (<code>vx != 0</code>) oder vertikale (<code>vy != 0</code>) Kollision vorliegt, separat abgehandelt. Trifft der Spieler horizontal von rechts auf ein Hindernis gilt <code>self.rect.right = hit.rect.left</code> und umgekehrt (<code>self.rect.left = hit.rect.right</code>). Ähnliches gilt für die vertikale Kollision von oben (<code>self.rect.bottom = hit.rect.top)</code> oder unten (<code>self.rect.top = hit.rect.bottom</code>).</p>
+<p>Damit eine vertikale Kollision überhaupt stattfinden kann, müssen natürlich noch ein paar Plattformen installiert werden. Wie gewohnt wird erst das Bildchen geladen</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>        block_image <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH, <span class="st">"block_00.png"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2"></a>        .convert_alpha()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und dann die Blöcke positioniert:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>        block_locations <span class="op">=</span> [(<span class="dv">18</span>, <span class="dv">4</span>), (<span class="dv">19</span>, <span class="dv">4</span>), (<span class="dv">20</span>, <span class="dv">4</span>), (<span class="dv">21</span>, <span class="dv">4</span>),                         </span>
+<span id="cb7-2"><a href="#cb7-2"></a>                           (<span class="dv">11</span>, <span class="dv">7</span>), (<span class="dv">12</span>, <span class="dv">7</span>), (<span class="dv">13</span>, <span class="dv">7</span>), (<span class="dv">14</span>, <span class="dv">7</span>),</span>
+<span id="cb7-3"><a href="#cb7-3"></a>                           (<span class="dv">25</span>, <span class="dv">7</span>), (<span class="dv">26</span>, <span class="dv">7</span>), (<span class="dv">27</span>, <span class="dv">7</span>),</span>
+<span id="cb7-4"><a href="#cb7-4"></a>                           (<span class="dv">17</span>, <span class="dv">10</span>), (<span class="dv">18</span>, <span class="dv">10</span>), (<span class="dv">19</span>, <span class="dv">10</span>),</span>
+<span id="cb7-5"><a href="#cb7-5"></a>                           (<span class="dv">38</span>, <span class="dv">12</span>), (<span class="dv">38</span>, <span class="dv">13</span>)]</span>
+<span id="cb7-6"><a href="#cb7-6"></a>        <span class="cf">for</span> loc <span class="kw">in</span> block_locations:</span>
+<span id="cb7-7"><a href="#cb7-7"></a>            x <span class="op">=</span> loc[<span class="dv">0</span>]</span>
+<span id="cb7-8"><a href="#cb7-8"></a>            y <span class="op">=</span> loc[<span class="dv">1</span>]</span>
+<span id="cb7-9"><a href="#cb7-9"></a>            p <span class="op">=</span> Platform(x, y, block_image)</span>
+<span id="cb7-10"><a href="#cb7-10"></a>            <span class="va">self</span>.platforms.add(p)</span>
+<span id="cb7-11"><a href="#cb7-11"></a>            <span class="va">self</span>.all_sprites.add(p)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Als letztes habe ich die Klasse <code>Gem</code> implementiert, die der Klasse <code>Platform</code> sehr ähnelt, aber zusätzlich noch die Methode <code>apply()</code> besitzt:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">class</span> Gem(pg.sprite.Sprite):</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y, _image):</span>
+<span id="cb8-4"><a href="#cb8-4"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb8-5"><a href="#cb8-5"></a>        <span class="va">self</span>.image <span class="op">=</span> _image</span>
+<span id="cb8-6"><a href="#cb8-6"></a>        <span class="va">self</span>.rect <span class="op">=</span> <span class="va">self</span>.image.get_rect()</span>
+<span id="cb8-7"><a href="#cb8-7"></a>        <span class="va">self</span>.rect.x <span class="op">=</span> _x<span class="op">*</span>GRIDSIZE</span>
+<span id="cb8-8"><a href="#cb8-8"></a>        <span class="va">self</span>.rect.y <span class="op">=</span> _y<span class="op">*</span>GRIDSIZE</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    </span>
+<span id="cb8-10"><a href="#cb8-10"></a>    <span class="kw">def</span> <span class="bu">apply</span>(<span class="va">self</span>, character):</span>
+<span id="cb8-11"><a href="#cb8-11"></a>        character.gems <span class="op">+=</span> <span class="dv">1</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die Methode <code>apply</code> in <code>Gem</code> und nicht in <code>Player</code> zu implementieren, war eine Designentscheidung, damit in zukünftigen Versionen die Klasse auch auf andere Spielfiguren, wie zum Beispiel Gegner des Spielers, reagieren kann.</p>
+<p>Dazu braucht die Klasse <code>Player</code> aber auch eine Methode, die auf eine Kollision mit den Edelsteinen reagiert. Ich habe sie <code>check_items()</code> genannt:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>    <span class="kw">def</span> check_items(<span class="va">self</span>):</span>
+<span id="cb9-2"><a href="#cb9-2"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.items, <span class="va">True</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>        <span class="cf">for</span> item <span class="kw">in</span> hits:</span>
+<span id="cb9-4"><a href="#cb9-4"></a>            item.<span class="bu">apply</span>(<span class="va">self</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hier ist der letzte Parameter von <code>pygame.sprite.spritecollide()</code> zum ersten Mal auf <code>True</code> gesetzt. Das bedeutet, das bei einer Kollision das Item aus allen <code>sprite.Group</code> gelöscht wird und im Spiel nicht mehr existiert.</p>
+<p>Bevor ich Euch komplett verwirre, hier der vollständige Quellcode dieser Version 0.2, damit Ihr alles nachvollziehen und auch nachprogrammieren könnt:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a><span class="im">import</span> pygame <span class="im">as</span> pg</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="im">import</span> asyncio</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="im">from</span> pygame.<span class="bu">locals</span> <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="im">import</span> os, sys</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">## Settings</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>GRIDSIZE <span class="op">=</span> <span class="dv">18</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>GRID_WIDTH <span class="op">=</span> <span class="dv">40</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>GRID_HEIGHT <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>WIDTH, HEIGHT <span class="op">=</span> GRID_WIDTH<span class="op">*</span>GRIDSIZE, GRID_HEIGHT<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-11"><a href="#cb10-11"></a>TITLE <span class="op">=</span> <span class="st">"Simple Platformer"</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>FPS <span class="op">=</span> <span class="dv">60</span>                     <span class="co"># Frames per second</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>PLAYER_WIDTH <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>PLAYER_HEIGHT <span class="op">=</span> <span class="dv">24</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a>PLAYER_START_X, PLAYER_START_Y <span class="op">=</span> <span class="dv">5</span>, <span class="dv">1</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a>PLAYER_SPEED <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co"># Physikalische Konstanten</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>GRAVITY <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a>JUMP_POWER <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a></span>
+<span id="cb10-22"><a href="#cb10-22"></a><span class="co">## Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
+<span id="cb10-23"><a href="#cb10-23"></a>IMAGEPATH <span class="op">=</span> os.path.join(os.getcwd(), <span class="st">"data/images"</span>)</span>
+<span id="cb10-24"><a href="#cb10-24"></a></span>
+<span id="cb10-25"><a href="#cb10-25"></a><span class="co">## Farben</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>BG_COLOR <span class="op">=</span> (<span class="dv">65</span>, <span class="dv">166</span>, <span class="dv">246</span>)     <span class="co"># Himmelblau</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a></span>
+<span id="cb10-28"><a href="#cb10-28"></a><span class="co">## Class GameWorld</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a><span class="kw">class</span> GameWorld:</span>
+<span id="cb10-30"><a href="#cb10-30"></a></span>
+<span id="cb10-31"><a href="#cb10-31"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb10-32"><a href="#cb10-32"></a>        <span class="co"># Pygame und das Fenster initialisieren</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a>        pg.init()</span>
+<span id="cb10-34"><a href="#cb10-34"></a>        <span class="va">self</span>.screen <span class="op">=</span> pg.display.set_mode((WIDTH, HEIGHT))</span>
+<span id="cb10-35"><a href="#cb10-35"></a>        pg.display.set_caption(TITLE)</span>
+<span id="cb10-36"><a href="#cb10-36"></a></span>
+<span id="cb10-37"><a href="#cb10-37"></a>        <span class="va">self</span>.clock <span class="op">=</span> pg.time.Clock()</span>
+<span id="cb10-38"><a href="#cb10-38"></a>        <span class="va">self</span>.keep_going <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb10-39"><a href="#cb10-39"></a></span>
+<span id="cb10-40"><a href="#cb10-40"></a>    <span class="kw">def</span> reset(<span class="va">self</span>):</span>
+<span id="cb10-41"><a href="#cb10-41"></a>        <span class="co"># Neustart oder Status zurücksetzen</span></span>
+<span id="cb10-42"><a href="#cb10-42"></a>        <span class="co"># Hier werden alle Elemente der GameWorld initialisiert</span></span>
+<span id="cb10-43"><a href="#cb10-43"></a>        <span class="co">## Load Assets</span></span>
+<span id="cb10-44"><a href="#cb10-44"></a>        grass_image <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH, <span class="st">"grass_02.png"</span>)).convert_alpha()</span>
+<span id="cb10-45"><a href="#cb10-45"></a>        block_image <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH, <span class="st">"block_00.png"</span>)).convert_alpha()</span>
+<span id="cb10-46"><a href="#cb10-46"></a>        gem_image   <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH, <span class="st">"gem.png"</span>)).convert_alpha()</span>
+<span id="cb10-47"><a href="#cb10-47"></a></span>
+<span id="cb10-48"><a href="#cb10-48"></a>        grass_locations <span class="op">=</span> []</span>
+<span id="cb10-49"><a href="#cb10-49"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(GRID_WIDTH):</span>
+<span id="cb10-50"><a href="#cb10-50"></a>            grass_loc <span class="op">=</span> (i, GRID_HEIGHT <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb10-51"><a href="#cb10-51"></a>            grass_locations.append(grass_loc)</span>
+<span id="cb10-52"><a href="#cb10-52"></a>        <span class="va">self</span>.all_sprites <span class="op">=</span> pg.sprite.Group()</span>
+<span id="cb10-53"><a href="#cb10-53"></a>        <span class="va">self</span>.platforms <span class="op">=</span> pg.sprite.Group()</span>
+<span id="cb10-54"><a href="#cb10-54"></a>        <span class="cf">for</span> loc <span class="kw">in</span> grass_locations:</span>
+<span id="cb10-55"><a href="#cb10-55"></a>            x <span class="op">=</span> loc[<span class="dv">0</span>]</span>
+<span id="cb10-56"><a href="#cb10-56"></a>            y <span class="op">=</span> loc[<span class="dv">1</span>]</span>
+<span id="cb10-57"><a href="#cb10-57"></a>            p <span class="op">=</span> Platform(x, y, grass_image)</span>
+<span id="cb10-58"><a href="#cb10-58"></a>            <span class="va">self</span>.platforms.add(p)</span>
+<span id="cb10-59"><a href="#cb10-59"></a>            <span class="va">self</span>.all_sprites.add(p)</span>
+<span id="cb10-60"><a href="#cb10-60"></a>    </span>
+<span id="cb10-61"><a href="#cb10-61"></a>        block_locations <span class="op">=</span> [(<span class="dv">18</span>, <span class="dv">4</span>), (<span class="dv">19</span>, <span class="dv">4</span>), (<span class="dv">20</span>, <span class="dv">4</span>), (<span class="dv">21</span>, <span class="dv">4</span>),                         </span>
+<span id="cb10-62"><a href="#cb10-62"></a>                           (<span class="dv">11</span>, <span class="dv">7</span>), (<span class="dv">12</span>, <span class="dv">7</span>), (<span class="dv">13</span>, <span class="dv">7</span>), (<span class="dv">14</span>, <span class="dv">7</span>),</span>
+<span id="cb10-63"><a href="#cb10-63"></a>                           (<span class="dv">25</span>, <span class="dv">7</span>), (<span class="dv">26</span>, <span class="dv">7</span>), (<span class="dv">27</span>, <span class="dv">7</span>),</span>
+<span id="cb10-64"><a href="#cb10-64"></a>                           (<span class="dv">17</span>, <span class="dv">10</span>), (<span class="dv">18</span>, <span class="dv">10</span>), (<span class="dv">19</span>, <span class="dv">10</span>),</span>
+<span id="cb10-65"><a href="#cb10-65"></a>                           (<span class="dv">38</span>, <span class="dv">12</span>), (<span class="dv">38</span>, <span class="dv">13</span>)]</span>
+<span id="cb10-66"><a href="#cb10-66"></a>        <span class="cf">for</span> loc <span class="kw">in</span> block_locations:</span>
+<span id="cb10-67"><a href="#cb10-67"></a>            x <span class="op">=</span> loc[<span class="dv">0</span>]</span>
+<span id="cb10-68"><a href="#cb10-68"></a>            y <span class="op">=</span> loc[<span class="dv">1</span>]</span>
+<span id="cb10-69"><a href="#cb10-69"></a>            p <span class="op">=</span> Platform(x, y, block_image)</span>
+<span id="cb10-70"><a href="#cb10-70"></a>            <span class="va">self</span>.platforms.add(p)</span>
+<span id="cb10-71"><a href="#cb10-71"></a>            <span class="va">self</span>.all_sprites.add(p)</span>
+<span id="cb10-72"><a href="#cb10-72"></a></span>
+<span id="cb10-73"><a href="#cb10-73"></a>        gem_locations <span class="op">=</span> [(<span class="dv">20</span>,<span class="dv">3</span>), (<span class="dv">12</span>, <span class="dv">6</span>), (<span class="dv">26</span>,<span class="dv">6</span>), (<span class="dv">36</span>, <span class="dv">13</span>)]</span>
+<span id="cb10-74"><a href="#cb10-74"></a>        <span class="va">self</span>.items <span class="op">=</span> pg.sprite.Group()</span>
+<span id="cb10-75"><a href="#cb10-75"></a>        <span class="cf">for</span> loc <span class="kw">in</span> gem_locations:</span>
+<span id="cb10-76"><a href="#cb10-76"></a>            x <span class="op">=</span> loc[<span class="dv">0</span>]</span>
+<span id="cb10-77"><a href="#cb10-77"></a>            y <span class="op">=</span> loc[<span class="dv">1</span>]</span>
+<span id="cb10-78"><a href="#cb10-78"></a>            g <span class="op">=</span> Gem(x, y, gem_image)</span>
+<span id="cb10-79"><a href="#cb10-79"></a>            <span class="va">self</span>.items.add(g)</span>
+<span id="cb10-80"><a href="#cb10-80"></a>            <span class="va">self</span>.all_sprites.add(g)</span>
+<span id="cb10-81"><a href="#cb10-81"></a></span>
+<span id="cb10-82"><a href="#cb10-82"></a>        <span class="va">self</span>.player <span class="op">=</span> Player(PLAYER_START_X, PLAYER_START_Y)</span>
+<span id="cb10-83"><a href="#cb10-83"></a>        <span class="va">self</span>.player_sprite_group <span class="op">=</span> pg.sprite.GroupSingle()</span>
+<span id="cb10-84"><a href="#cb10-84"></a>        <span class="va">self</span>.player_sprite_group.add(<span class="va">self</span>.player)</span>
+<span id="cb10-85"><a href="#cb10-85"></a>        <span class="va">self</span>.all_sprites.add(<span class="va">self</span>.player)</span>
+<span id="cb10-86"><a href="#cb10-86"></a>  </span>
+<span id="cb10-87"><a href="#cb10-87"></a>    <span class="kw">def</span> events(<span class="va">self</span>):</span>
+<span id="cb10-88"><a href="#cb10-88"></a>        <span class="cf">for</span> event <span class="kw">in</span> pg.event.get():</span>
+<span id="cb10-89"><a href="#cb10-89"></a>            <span class="cf">if</span> ((event.<span class="bu">type</span> <span class="op">==</span> pg.QUIT)</span>
+<span id="cb10-90"><a href="#cb10-90"></a>                <span class="kw">or</span> (event.<span class="bu">type</span> <span class="op">==</span> pg.KEYDOWN</span>
+<span id="cb10-91"><a href="#cb10-91"></a>                <span class="kw">and</span> event.key <span class="op">==</span> pg.K_ESCAPE)):</span>
+<span id="cb10-92"><a href="#cb10-92"></a>                <span class="va">self</span>.keep_going <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb10-93"><a href="#cb10-93"></a>                <span class="va">self</span>.game_over()</span>
+<span id="cb10-94"><a href="#cb10-94"></a></span>
+<span id="cb10-95"><a href="#cb10-95"></a>    <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb10-96"><a href="#cb10-96"></a>        <span class="va">self</span>.all_sprites.update()</span>
+<span id="cb10-97"><a href="#cb10-97"></a></span>
+<span id="cb10-98"><a href="#cb10-98"></a>    <span class="kw">def</span> draw(<span class="va">self</span>):</span>
+<span id="cb10-99"><a href="#cb10-99"></a>        <span class="va">self</span>.screen.fill(BG_COLOR)</span>
+<span id="cb10-100"><a href="#cb10-100"></a>        <span class="va">self</span>.all_sprites.draw(<span class="va">self</span>.screen)</span>
+<span id="cb10-101"><a href="#cb10-101"></a>        pg.display.flip()</span>
+<span id="cb10-102"><a href="#cb10-102"></a></span>
+<span id="cb10-103"><a href="#cb10-103"></a>    <span class="kw">def</span> start_screen(<span class="va">self</span>):</span>
+<span id="cb10-104"><a href="#cb10-104"></a>        <span class="cf">pass</span></span>
+<span id="cb10-105"><a href="#cb10-105"></a>    </span>
+<span id="cb10-106"><a href="#cb10-106"></a>    <span class="kw">def</span> win_screen(<span class="va">self</span>):</span>
+<span id="cb10-107"><a href="#cb10-107"></a>        <span class="cf">pass</span></span>
+<span id="cb10-108"><a href="#cb10-108"></a>    </span>
+<span id="cb10-109"><a href="#cb10-109"></a>    <span class="kw">def</span> loose_screen(<span class="va">self</span>):</span>
+<span id="cb10-110"><a href="#cb10-110"></a>        <span class="cf">pass</span></span>
+<span id="cb10-111"><a href="#cb10-111"></a></span>
+<span id="cb10-112"><a href="#cb10-112"></a>    <span class="kw">def</span> game_over(<span class="va">self</span>):</span>
+<span id="cb10-113"><a href="#cb10-113"></a>        <span class="co"># print("Bye, Bye, Baby!")</span></span>
+<span id="cb10-114"><a href="#cb10-114"></a>        pg.quit()</span>
+<span id="cb10-115"><a href="#cb10-115"></a>        sys.exit()</span>
+<span id="cb10-116"><a href="#cb10-116"></a><span class="co">## Ende Class GameWorld</span></span>
+<span id="cb10-117"><a href="#cb10-117"></a></span>
+<span id="cb10-118"><a href="#cb10-118"></a><span class="co">## Class Platform</span></span>
+<span id="cb10-119"><a href="#cb10-119"></a><span class="kw">class</span> Platform(pg.sprite.Sprite):</span>
+<span id="cb10-120"><a href="#cb10-120"></a></span>
+<span id="cb10-121"><a href="#cb10-121"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y, _image):</span>
+<span id="cb10-122"><a href="#cb10-122"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb10-123"><a href="#cb10-123"></a>        <span class="va">self</span>.image <span class="op">=</span> _image</span>
+<span id="cb10-124"><a href="#cb10-124"></a>        <span class="va">self</span>.rect <span class="op">=</span> <span class="va">self</span>.image.get_rect()</span>
+<span id="cb10-125"><a href="#cb10-125"></a>        <span class="va">self</span>.rect.x <span class="op">=</span> _x<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-126"><a href="#cb10-126"></a>        <span class="va">self</span>.rect.y <span class="op">=</span> _y<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-127"><a href="#cb10-127"></a><span class="co">## End Class Platform</span></span>
+<span id="cb10-128"><a href="#cb10-128"></a></span>
+<span id="cb10-129"><a href="#cb10-129"></a><span class="kw">class</span> Gem(pg.sprite.Sprite):</span>
+<span id="cb10-130"><a href="#cb10-130"></a></span>
+<span id="cb10-131"><a href="#cb10-131"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y, _image):</span>
+<span id="cb10-132"><a href="#cb10-132"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb10-133"><a href="#cb10-133"></a>        <span class="va">self</span>.image <span class="op">=</span> _image</span>
+<span id="cb10-134"><a href="#cb10-134"></a>        <span class="va">self</span>.rect <span class="op">=</span> <span class="va">self</span>.image.get_rect()</span>
+<span id="cb10-135"><a href="#cb10-135"></a>        <span class="va">self</span>.rect.x <span class="op">=</span> _x<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-136"><a href="#cb10-136"></a>        <span class="va">self</span>.rect.y <span class="op">=</span> _y<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-137"><a href="#cb10-137"></a>    </span>
+<span id="cb10-138"><a href="#cb10-138"></a>    <span class="kw">def</span> <span class="bu">apply</span>(<span class="va">self</span>, character):</span>
+<span id="cb10-139"><a href="#cb10-139"></a>        character.gems <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb10-140"><a href="#cb10-140"></a><span class="co">## End Class Gem</span></span>
+<span id="cb10-141"><a href="#cb10-141"></a></span>
+<span id="cb10-142"><a href="#cb10-142"></a><span class="co">## Class Player</span></span>
+<span id="cb10-143"><a href="#cb10-143"></a><span class="kw">class</span> Player(pg.sprite.Sprite):</span>
+<span id="cb10-144"><a href="#cb10-144"></a></span>
+<span id="cb10-145"><a href="#cb10-145"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb10-146"><a href="#cb10-146"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb10-147"><a href="#cb10-147"></a>        <span class="va">self</span>.img <span class="op">=</span> []</span>
+<span id="cb10-148"><a href="#cb10-148"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>):</span>
+<span id="cb10-149"><a href="#cb10-149"></a>            player_image <span class="op">=</span> pg.image.load(os.path.join(IMAGEPATH, <span class="st">"alien_green_0"</span> <span class="op">+</span> <span class="bu">str</span>(i) <span class="op">+</span> <span class="st">".png"</span>)).convert_alpha()</span>
+<span id="cb10-150"><a href="#cb10-150"></a>            <span class="va">self</span>.img.append(player_image)</span>
+<span id="cb10-151"><a href="#cb10-151"></a>        <span class="va">self</span>.image <span class="op">=</span> <span class="va">self</span>.img[<span class="dv">0</span>]</span>
+<span id="cb10-152"><a href="#cb10-152"></a>        <span class="va">self</span>.rect <span class="op">=</span> <span class="va">self</span>.image.get_rect()</span>
+<span id="cb10-153"><a href="#cb10-153"></a>        <span class="va">self</span>.rect.x <span class="op">=</span> _x<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-154"><a href="#cb10-154"></a>        <span class="va">self</span>.rect.bottom <span class="op">=</span> _y<span class="op">*</span>GRIDSIZE</span>
+<span id="cb10-155"><a href="#cb10-155"></a>        <span class="va">self</span>.speed <span class="op">=</span> PLAYER_SPEED</span>
+<span id="cb10-156"><a href="#cb10-156"></a>        <span class="va">self</span>.jump_power <span class="op">=</span> JUMP_POWER</span>
+<span id="cb10-157"><a href="#cb10-157"></a>        <span class="va">self</span>.vx <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-158"><a href="#cb10-158"></a>        <span class="va">self</span>.vy <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-159"><a href="#cb10-159"></a>        <span class="va">self</span>.gems <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-160"><a href="#cb10-160"></a>    </span>
+<span id="cb10-161"><a href="#cb10-161"></a>    <span class="kw">def</span> jump(<span class="va">self</span>):</span>
+<span id="cb10-162"><a href="#cb10-162"></a>        <span class="va">self</span>.rect.y <span class="op">+=</span> <span class="dv">2</span></span>
+<span id="cb10-163"><a href="#cb10-163"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.platforms, <span class="va">False</span>)</span>
+<span id="cb10-164"><a href="#cb10-164"></a>        <span class="va">self</span>.rect.y <span class="op">-=</span> <span class="dv">2</span></span>
+<span id="cb10-165"><a href="#cb10-165"></a>        <span class="cf">if</span> <span class="bu">len</span>(hits) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-166"><a href="#cb10-166"></a>            <span class="va">self</span>.vy <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span><span class="va">self</span>.jump_power</span>
+<span id="cb10-167"><a href="#cb10-167"></a></span>
+<span id="cb10-168"><a href="#cb10-168"></a>    <span class="kw">def</span> apply_gravity(<span class="va">self</span>):</span>
+<span id="cb10-169"><a href="#cb10-169"></a>        <span class="va">self</span>.vy <span class="op">+=</span> GRAVITY</span>
+<span id="cb10-170"><a href="#cb10-170"></a></span>
+<span id="cb10-171"><a href="#cb10-171"></a>    <span class="kw">def</span> move(<span class="va">self</span>):</span>
+<span id="cb10-172"><a href="#cb10-172"></a>        keys <span class="op">=</span> pg.key.get_pressed()</span>
+<span id="cb10-173"><a href="#cb10-173"></a>        <span class="cf">if</span> keys[pg.K_a]:        <span class="co"># LEFT</span></span>
+<span id="cb10-174"><a href="#cb10-174"></a>            <span class="cf">if</span> <span class="va">self</span>.rect.x <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-175"><a href="#cb10-175"></a>                <span class="va">self</span>.vx <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">*</span><span class="va">self</span>.speed</span>
+<span id="cb10-176"><a href="#cb10-176"></a>        <span class="cf">elif</span> keys[pg.K_d]:      <span class="co"># RIGHT</span></span>
+<span id="cb10-177"><a href="#cb10-177"></a>            <span class="cf">if</span> <span class="va">self</span>.rect.x <span class="op">&lt;</span> WIDTH <span class="op">-</span> PLAYER_WIDTH:</span>
+<span id="cb10-178"><a href="#cb10-178"></a>                <span class="va">self</span>.vx <span class="op">=</span> <span class="va">self</span>.speed</span>
+<span id="cb10-179"><a href="#cb10-179"></a>        <span class="cf">elif</span> keys[pg.K_w]:      <span class="co"># JUMP</span></span>
+<span id="cb10-180"><a href="#cb10-180"></a>            <span class="va">self</span>.jump()</span>
+<span id="cb10-181"><a href="#cb10-181"></a>        <span class="cf">else</span>:</span>
+<span id="cb10-182"><a href="#cb10-182"></a>            <span class="va">self</span>.vx <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-183"><a href="#cb10-183"></a>        <span class="co"># Horizonfale Kollision</span></span>
+<span id="cb10-184"><a href="#cb10-184"></a>        <span class="va">self</span>.rect.x <span class="op">+=</span> <span class="va">self</span>.vx</span>
+<span id="cb10-185"><a href="#cb10-185"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.platforms, <span class="va">False</span>)</span>
+<span id="cb10-186"><a href="#cb10-186"></a>        <span class="cf">for</span> hit <span class="kw">in</span> hits:</span>
+<span id="cb10-187"><a href="#cb10-187"></a>            <span class="cf">if</span> <span class="va">self</span>.vx <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-188"><a href="#cb10-188"></a>                <span class="va">self</span>.rect.right <span class="op">=</span> hit.rect.left</span>
+<span id="cb10-189"><a href="#cb10-189"></a>            <span class="cf">elif</span> <span class="va">self</span>.vx <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-190"><a href="#cb10-190"></a>                <span class="va">self</span>.rect.left <span class="op">=</span> hit.rect.right</span>
+<span id="cb10-191"><a href="#cb10-191"></a>        <span class="co"># Vertikale Kollision</span></span>
+<span id="cb10-192"><a href="#cb10-192"></a>        <span class="va">self</span>.rect.y <span class="op">+=</span> <span class="va">self</span>.vy</span>
+<span id="cb10-193"><a href="#cb10-193"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.platforms, <span class="va">False</span>)</span>
+<span id="cb10-194"><a href="#cb10-194"></a>        <span class="cf">for</span> hit <span class="kw">in</span> hits:</span>
+<span id="cb10-195"><a href="#cb10-195"></a>            <span class="cf">if</span> <span class="va">self</span>.vy <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-196"><a href="#cb10-196"></a>                <span class="va">self</span>.rect.bottom <span class="op">=</span> hit.rect.top</span>
+<span id="cb10-197"><a href="#cb10-197"></a>            <span class="cf">elif</span> <span class="va">self</span>.vy <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-198"><a href="#cb10-198"></a>                <span class="va">self</span>.rect.top <span class="op">=</span> hit.rect.bottom</span>
+<span id="cb10-199"><a href="#cb10-199"></a>            <span class="va">self</span>.vy <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-200"><a href="#cb10-200"></a></span>
+<span id="cb10-201"><a href="#cb10-201"></a>    <span class="kw">def</span> check_edges(<span class="va">self</span>):</span>
+<span id="cb10-202"><a href="#cb10-202"></a>        <span class="cf">if</span> <span class="va">self</span>.rect.left <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb10-203"><a href="#cb10-203"></a>            <span class="va">self</span>.rect.left <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-204"><a href="#cb10-204"></a>        <span class="cf">elif</span> <span class="va">self</span>.rect.right <span class="op">&gt;</span> WIDTH:</span>
+<span id="cb10-205"><a href="#cb10-205"></a>            <span class="va">self</span>.rect.right <span class="op">=</span> WIDTH</span>
+<span id="cb10-206"><a href="#cb10-206"></a>    </span>
+<span id="cb10-207"><a href="#cb10-207"></a>    <span class="kw">def</span> check_items(<span class="va">self</span>):</span>
+<span id="cb10-208"><a href="#cb10-208"></a>        hits <span class="op">=</span> pg.sprite.spritecollide(<span class="va">self</span>, world.items, <span class="va">True</span>)</span>
+<span id="cb10-209"><a href="#cb10-209"></a>        <span class="cf">for</span> item <span class="kw">in</span> hits:</span>
+<span id="cb10-210"><a href="#cb10-210"></a>            item.<span class="bu">apply</span>(<span class="va">self</span>)</span>
+<span id="cb10-211"><a href="#cb10-211"></a></span>
+<span id="cb10-212"><a href="#cb10-212"></a>    <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb10-213"><a href="#cb10-213"></a>        <span class="va">self</span>.apply_gravity()</span>
+<span id="cb10-214"><a href="#cb10-214"></a>        <span class="va">self</span>.move()</span>
+<span id="cb10-215"><a href="#cb10-215"></a>        <span class="va">self</span>.check_edges()</span>
+<span id="cb10-216"><a href="#cb10-216"></a>        <span class="va">self</span>.check_items()</span>
+<span id="cb10-217"><a href="#cb10-217"></a></span>
+<span id="cb10-218"><a href="#cb10-218"></a><span class="co">## End Class Player</span></span>
+<span id="cb10-219"><a href="#cb10-219"></a></span>
+<span id="cb10-220"><a href="#cb10-220"></a><span class="co"># Hauptprgramm</span></span>
+<span id="cb10-221"><a href="#cb10-221"></a>world <span class="op">=</span> GameWorld()</span>
+<span id="cb10-222"><a href="#cb10-222"></a>world.start_screen()</span>
+<span id="cb10-223"><a href="#cb10-223"></a>world.reset()</span>
+<span id="cb10-224"><a href="#cb10-224"></a></span>
+<span id="cb10-225"><a href="#cb10-225"></a><span class="co"># Hauptschleife</span></span>
+<span id="cb10-226"><a href="#cb10-226"></a><span class="cf">async</span> <span class="kw">def</span> main():</span>
+<span id="cb10-227"><a href="#cb10-227"></a>    <span class="cf">while</span> world.keep_going:</span>
+<span id="cb10-228"><a href="#cb10-228"></a>        world.clock.tick(FPS)</span>
+<span id="cb10-229"><a href="#cb10-229"></a>        world.events()</span>
+<span id="cb10-230"><a href="#cb10-230"></a>        world.update()</span>
+<span id="cb10-231"><a href="#cb10-231"></a>        world.draw()</span>
+<span id="cb10-232"><a href="#cb10-232"></a>        <span class="cf">await</span> asyncio.sleep(<span class="dv">0</span>)  <span class="co"># Very important, and keep it 0</span></span>
+<span id="cb10-233"><a href="#cb10-233"></a></span>
+<span id="cb10-234"><a href="#cb10-234"></a>asyncio.run(main())</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das Spiel habe ich auf <a href="https://kantel.itch.io/simple-pygame-platformer">Itch.io hochgeladen</a>, Ihr könnt es also auch dort spielen. Allerdings wird es dort immer nur die letzte, gerade aktuelle Version geben – jede neue Version überschreibt die vorherige Version. Ich will schließlich meinen Account nicht vollmüllen.</p>
+<p>Und wie immer gibt es den <a href="https://github.com/kantel/pygameprojects/tree/master/platformer">Quellcode mit allen Assets</a> auch in meinem Github-Repositorium. Aber auch hier wird es immer nur die aktuelle Fassung geben, frühere Versionen könnt Ihr Euch ja notfalls aus der <em>History</em> ziehen (wozu hat man denn eine <strong>Versionskontrolle</strong>?).</p>
+<p>Als nächstes werde ich erst einmal ein <em>Refactoring</em> des bisher implmentierten vornehmen. Es sind mir nämlich zuviel Doppelungen im Quellcode vorhanden und auch ein paar Zeilen sind von früheren Versuchen noch funktions- und nutzlos im Code verblieben. Ich lasse Euch an den Fortschritten weiter teilhaben. <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich wollte ein recht kleines Pixelraster verwenden, damit das Spielfeld – zumindest in den ersten Versionen – auch problemlos in ein Browserfenster paßt. Das 64x64 große Pixelraster des <em><a href="https://www.kenney.nl/assets/simplified-platformer-pack">Simplified Platformer Pack</a></em> (ebenfalls von Kenney.nl) schien mir dafür zu wuchtig (bei aller Sympathie, die ich für die kleine, animiert und gelbe Spielekonsole des Packs hege).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Wenn man, nachdem das Spiel gestartet ist, die Seite neu lädt oder verläßt, gibt der Browser eine Warnmeldung heraus, daß eventuelle Änderungen nicht gespeichert werden. Ich weiß nicht, ob das gewollt ist und ob oder wie man das abstellen kann. Momentan müßt Ihr und muß ich damit leben.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
