@@ -10,7 +10,53 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Sun, 18 Jun 2023 14:15:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 20 Jun 2023 15:25:00 GMT</lastBuildDate>
+<item>
+  <title>Pygame objektorientiert: Braucht es die Klasse GameWorld?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023062001_gameworld_yes_no/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52962509456/"><img src="https://kantel.github.io/posts/2023062001_gameworld_yes_no/images/platformer1-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Da ich letzte Nacht wegen der sommerlichen Schwüle nicht richtig einschlafen konnte, ging mir im Halbschlaf mein Projekt »<a href="https://kantel.github.io/posts/2023010701_pygame_oop/">Pygame (sauber) objektorientiert</a>« nicht aus dem Kopf, für das ja mein von <em><a href="https://www.youtube.com/playlist?list=PLk64HPu_u_NOD0hC2XFZfDu1ZOr7OF1qB">Jonathan Cooper</a></em> inspiertes <a href="https://kantel.github.io/posts/2023061701_platformer_pygame_pygbag_1/">Jump-and-Run-Spiel</a> eine Art Referenz-Implementierung für <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> (damit es auch im Browser zu spielen ist) werden soll.</p>
+<p>Mich beschäftigte dabei in der Hauptsache die Frage, ob die Klasse <code>GameWorld</code> wirklich notwendig und sinnvoll sei? Denn schon bei meinen ersten Überlegungen stand sie ziemlich einsam und eigentlich funktionslos im Raum,</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2023062001_gameworld_yes_no/images/gameworldpygame.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">GameWorld in Pygame</figcaption>
+</figure>
+</div>
+<p>während sie in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/greenfoot.html">Greenfoot</a>, das ja die Blaupause für meine Implementierung war, eher eine Klasse ist, <strong>in</strong> der die anderen Klassen leben:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2023062001_gameworld_yes_no/images/gameworldgreenfoot.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">GameWorld in Greenfot</figcaption>
+</figure>
+</div>
+<p>Daher fragte ich mich, ob Pygames Hauptprogramm nicht selber schon die Funktion besitzt, die die Klasse <code>World</code> (oder <code>GameWorld</code>) in Greenfoot besitzt? Zumal zum einen die Objektorientierung in Java strenger behandelt wird als in Python, und zum zweiten ich die <code>run()</code>-Methode wegen der Eigenheiten der Pygbag-Implementierung sowieso aus <code>GameWorld</code> herauslösen und in die <code>main()</code>-Funktion (und dort in die <code>while True</code>-Hauptschleife) auslagern mußte.</p>
+<p>Das trägt sicher nicht zur Klarheit bei, die ich mit (m)einem OOP-Ansatz eigentllich erreichen wollte. Daher sollte ich bei dem sowieso geplanten Refaktoring diesen Ansatz noch einmal überdenken.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uWvb3QzA48c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Wenn ich mich recht erinnere, hatte <em>KidsCanCode</em> in seinem <a href="https://www.youtube.com/playlist?list=PLsk-HSGFjnaG-BwZkuAOcVwWldfCLu1pq">Platformer-Projekt</a>« schon vor etlichen Jahren eine Art <code>GameWorld</code>-Klasse in Pygame eingeführt. Ich sollte mir also die Playlist noch einmal reinziehen, vielleicht finde ich dort eine Begründung, die meine Zweifel ausräumt.</p>
+<p>Ein Seiteneffekt dieser Überlegungen: Die Beschäftigung mit Greenfoot hat mir Spaß gemacht (obwohl ich Java eigentlich nicht mag). Ich habe große Lust bekommen, damit auch einmal etwas absolut Verrücktes und Sinnloses anzustellen. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Pygame</category>
+  <category>Greenfoot</category>
+  <category>Spieleprgrammierung</category>
+  <category>OOP</category>
+  <guid>https://kantel.github.io/posts/2023062001_gameworld_yes_no/index.html</guid>
+  <pubDate>Tue, 20 Jun 2023 15:25:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023062001_gameworld_yes_no/images/platformer1.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Atlas Curiosa: Brunnenlandschaft Kranoldplatz (Neukölln)</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2817,54 +2863,6 @@ font-style: inherit;"># Very important, and keep it 0</span></span>
   <guid>https://kantel.github.io/posts/2023060601_google_juni_patchday/index.html</guid>
   <pubDate>Tue, 06 Jun 2023 10:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023060601_google_juni_patchday/images/grauessofa.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Wie geil ist das denn? Pygame im Browser!</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023060501_pygame_im_browser/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/52952596471/"><img src="https://kantel.github.io/posts/2023060501_pygame_im_browser/images/pizzaplane_pygbag.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Da experimentiere ich doch schon so lange mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> herum, um Python-Skripte im Browser ablaufen zu lassen, und dann macht mich der <a href="https://www.youtube.com/watch?v=HDClvz3h4Xc">Python-Enthusiast</a> auf <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> aufmerksam, ein Programm, das <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Spiele, aber auch andere aber auch andere Python-Programme nach WebAssembly (WASM) übersetzt und sie so im Browser spielbar macht. Momentan (Stand Juni&nbsp;2023) kann Pygbag außer Pygame nur Module aus der Python-Standard-Bibliothek übersetzen, aber die Einbindung weiterer Pakete ist geplant.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6PhDmpBcezQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Pygbag ist eine freie (MIT-Lizenz) Anwendung und der <a href="https://github.com/pygame-web/pygbag">Quellcode</a> ist auf GitHub zu finden. Das Programm ist noch jung (das erste Release ist vom Juni 2022, also gerade einmal ein Jahr alt) und wird ständig weiterentwickelt (das <a href="https://github.com/pygame-web/pygbag/releases">aktuelle Release</a> ist die Version 0.6.7). Pygbag ist auch auf <a href="https://pypi.org/project/pygbag/0.1.5/">PyPI zu finden</a>, eine Installation ist also mit</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">pip</span> install pygbag</span></code></pre></div>
-<p>leicht zu erledigen. <a href="https://pygame-web.github.io/">Ein Wiki</a> erläutert die weiteren Schritte: Das Hauptprogramm muß <code>main.py</code> heißen und zusätzlich <code>asyncio</code> importieren. Dann muß die Pygame-Hauptschleife in die Funktion <code>async def main()</code> geklammert werden, die als (zusätzlichen) letzten Befehl im einfachsten Fall noch die Zeile</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">      <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">await</span> asyncio.sleep(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span></code></pre></div>
-<p>erhält (das <code>sleep(0)</code> ist wichtig, sonst funktioniert das Skript nicht).</p>
-<p>Als allerletzten Befehl (ohne Einrückung) muß das Programm mit</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">asyncio.run(main())</span></code></pre></div>
-<p>beendet werden (danach dürfen keine weiteren Programmbefehle mehr folgen). Ich habe das mit einer abgespeckten Version meines Pizzafliegers getestet (<a href="https://github.com/kantel/pygameprojects/tree/master/pizzaplane_browser">Quellcode und Assets (inclusive <code>build</code>-Folder)</a> auf GitHub) und wie Ihr auf <a href="https://www.flickr.com/photos/schockwellenreiter/52952596471/">obigem Screenshot</a> bewundern könnt, hat es funktioniert.</p>
-<p>Wenn Pygbag installiert und importiert ist, können die Skripte natürlich auch im Python-Interpreter getestet werden (habe ich mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> (Achtung, hier muß Pigbag natürlich auch für die Thonny-Umgebung installiert sein) und mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> erfogreich ausprobiert). Außerdem implementiert die App unter <code>localhost:8000</code> (der (Default-) Port 8000 kann bei Bedarf geändert werden) einen lokalen Webserver, mit dem die erfolgreiche Übersetzung nach WASM ebenfalls getestet werden kann.</p>
-<p>Bei der Übersetzung legt Pygbag einen <code>build</code> Folder an, der alle für das Web notwendige Daten und Skripte enthält. Dieser Folder ist erstaunlich kompakt (für mein Testprogramm inklusive Cache 25 MB). Wenn man diesen Ordner komprimiert, kann man ihn auch auf Itch.io hochladen und dort ausführen (mein <a href="https://kantel.itch.io/pygbag-test">Testprogramm könnt Ihr hier</a> finden) und laufen lassen).</p>
-<p>Nach der ersten Übersetzung dauert es eine gewisse Zeit, bis das Programm startet (vermutlich weil erst noch ein Cache angelegt wird), bei jedem weiteren Start ist es dann aber »sofort« da.</p>
-<p>Aprops Geschwindigkeit: WebAssembly ist schnell, aber natürlich kann es keine Wunder vollbringen. Das obige Video spricht davon, daß die pure Python-Version im Extremfall um den Faktor fünf schneller ist als die Webversion. Das dürfte bei den meisten (2D-) Anwendungen keine Rolle spielen (die »idlen« sowieso die meiste Zeit, weil sie auf die Eingaben der Nutzer warten), aber bei extrem komplexen Spielen sollte man schon testen, ob sie noch spielbar sind (außerdem haben die Macher versprochen, daß sie an der <em>Performance</em> noch arbeiten).</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/q25i2CCNvis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Das alles zwingt mich natürlich dazu, meine Strategie zu überdenken. Ich halte Pygame für ein Spieleframework, das – alleine auf Grund seines Alters und seiner Verbreitung – so ausgereift ist, wie kaum ein zweites. Lediglich die Tatsache, daß es keine vernünftige <em>Deployment</em>-Möglichkeit gab, hatte es ausgebremst. Sollte Pygbag das halten, was es verspricht (meine ersten Tests sind sehr positiv) und es auch noch weiterentwickelt werden (zum Beispiel ähnlich wie das auf <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html">Pyodide</a> aufsetzende <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> auch den <em>Scientific Stack</em>, insbesondere <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html">SciPy</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">NumPy</a> oder die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> einbinden können), wäre das ein echter <em>Game Changer</em>.</p>
-<p>Ich werde das jedenfalls mit großem Interesse weiter beobachten und habe daher <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a></strong> eine Seite in <a href="http://cognitiones.kantel-chaos-team.de/index.html">meinem Wiki</a> spendiert. Und weitere Tests stehen natürlich auch noch an. Ich glaube, es warten spannende Zeiten auf Euch und (vor allem) auf mich. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Pygame</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2023060501_pygame_im_browser/index.html</guid>
-  <pubDate>Mon, 05 Jun 2023 16:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023060501_pygame_im_browser/images/pizzaplaneitchio.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
