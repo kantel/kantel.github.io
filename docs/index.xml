@@ -10,7 +10,1050 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.340</generator>
-<lastBuildDate>Fri, 23 Jun 2023 15:20:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 24 Jun 2023 18:40:00 GMT</lastBuildDate>
+<item>
+  <title>Spaß mit Pygame: Avoider Game Stage 1</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023062401_avoider_game_stage_1/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/52998409290/"><img src="https://kantel.github.io/posts/2023062401_avoider_game_stage_1/images/avoidergame1a-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Angestachelt durch die <a href="https://kantel.github.io/posts/2023062301_gemischtwarenladen/">gestrigen Video-Tutorials</a> zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>, aber auch durch meine (Wieder-) Entdeckung von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/greenfoot.html">Greenfoot</a>, und erneut inspiriert durch das <a href="https://kantel.github.io/posts/2023062202_avoider_game_greenfoot/">vorgestern vorgestellte</a> Buch »<a href="https://www.packtpub.com/product/creative-greenfoot/9781783980383">Creative Greenfoot</a> von <em>Michael Haungs</em> (Packt, 2015), habe ich – wie angedroht – angefangen, das dort vorgestellte <em>Avoider Game</em> nach Pygame (und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a>, damit es auch im Browser gespielt werden kann) zu portieren. Natürlich strikt objektorientiert.</p>
+<p>Auch wenn ich mir über die Sinnhaftigkeit <a href="https://kantel.github.io/posts/2023062001_gameworld_yes_no/">immer noch nicht</a> sicher bin, habe ich die Klasse <code>GameWorld</code> bei dieser Implementierung erst einmal beibehalten. Rauswerfen kann ich sie immer noch.</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://www.packtpub.com/product/creative-greenfoot/9781783980383"><img src="https://kantel.github.io/posts/2023062401_avoider_game_stage_1/images/creativegreenfoot.jpg" class="img-fluid"></a>
+</div>
+<p>Die Implementierung folgt einer <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a>-Version dieses Programmes, die ich vor Jahren verbrochen und <a href="http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/18avoidergame/">hier veröffentlicht</a> hatte. Es brauchte ein paar Überlegungen, die von <code>setup()</code> und <code>draw()</code> beeinflußte Processing-Logik in eine Pygame-Logik zu überfürhren, aber im Endeffekt habe ich ein nettes Skript zusammengeschustert, das neben der <code>GameWorld</code>, zu der die Klasse <code>HUD</code> <em>(Head Up Dislay)</em> gehört, aus den Klassen <code>Player</code> und <code>Enemy</code> besteht, die beides Unterklassen von <code>pygame.sprite.Sprite</code> sind.</p>
+<p>Als Kollisionserkennung habe ich Pygames <a href="https://www.pygame.org/docs/ref/sprite.html?highlight=collide_circle#pygame.sprite.collide_circle"><code>sprite.collide_circle</code></a> verwendet und dann auch noch den Radius des Players (des Totenschädels) reduziert. Denn es wirklte unnatürlich, wenn der Schädel schon getroffen sein sollte, wenn die Gegner gerade einmal die gekreuzten Knochen berührten.</p>
+<p>Ansonsten ist der Quellcode ziemlich selbsterklärend und ich hoffe leicht nachvollziehbar:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Avoider Game Stage 1</span></span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pygame <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pg</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> asyncio</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pygame.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">locals</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb1-6"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os, sys</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Settings</span></span>
+<span id="cb1-9">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb1-10">TITLE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Avoider Game, Stage 1"</span></span>
+<span id="cb1-11">FPS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>                   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Frame per second</span></span>
+<span id="cb1-12">TW, TH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Größe der einzelnen Sprites</span></span>
+<span id="cb1-13">TW2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TW <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-14">PLAYER_Y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span></span>
+<span id="cb1-15">NO_ENEMIES <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span></span>
+<span id="cb1-16">SPEED_MIN <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-17">SPEED_MAX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span></span>
+<span id="cb1-18">START_ZONE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span></span>
+<span id="cb1-19">DANGER_ZONE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PLAYER_Y</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
+<span id="cb1-22">DATAPATH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__file__</span>)), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>)</span>
+<span id="cb1-23"></span>
+<span id="cb1-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Farben</span></span>
+<span id="cb1-25">BG_COLOR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">57</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">52</span>)</span>
+<span id="cb1-26"></span>
+<span id="cb1-27"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Klassen</span></span>
+<span id="cb1-28"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class GameWorld</span></span>
+<span id="cb1-29"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> GameWorld:</span>
+<span id="cb1-30"></span>
+<span id="cb1-31">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-32">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Pygame und das Fenster initialisieren</span></span>
+<span id="cb1-33">        pg.init()</span>
+<span id="cb1-34">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.display.set_mode((WIDTH, HEIGHT))</span>
+<span id="cb1-35">        pg.display.set_caption(TITLE)</span>
+<span id="cb1-36"></span>
+<span id="cb1-37">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.clock <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.time.Clock()</span>
+<span id="cb1-38">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-39"></span>
+<span id="cb1-40">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load Assets</span></span>
+<span id="cb1-41">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.skull_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"skull2.png"</span>)).convert_alpha()</span>
+<span id="cb1-42">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.smiley0_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"smiley0.png"</span>)).convert_alpha()</span>
+<span id="cb1-43">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.smiley1_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"smiley1.png"</span>)).convert_alpha()</span>
+<span id="cb1-44">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.smiley2_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"smiley4.png"</span>)).convert_alpha()</span>
+<span id="cb1-45">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_font <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.font.Font(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"comichelvetic_medium.ttf"</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>)</span>
+<span id="cb1-46"></span>
+<span id="cb1-47">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Game State</span></span>
+<span id="cb1-48">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.start_game <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-49">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.play_game <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-50">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_over <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-51"></span>
+<span id="cb1-52"></span>
+<span id="cb1-53">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> reset(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-54">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Neustart oder Status zurücksetzen</span></span>
+<span id="cb1-55">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hier werden alle Elemente der GameWorld initialisiert</span></span>
+<span id="cb1-56">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.sprite.Group()</span>
+<span id="cb1-57">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.enemies <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.sprite.Group()</span>
+<span id="cb1-58">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(NO_ENEMIES):</span>
+<span id="cb1-59">            enemy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Enemy(randint(TW2, WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> TW2), <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>), <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb1-60">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.add(enemy)</span>
+<span id="cb1-61">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.enemies.add(enemy)        </span>
+<span id="cb1-62">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Player(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb1-63">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player)</span>
+<span id="cb1-64">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hud <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HUD(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb1-65">          </span>
+<span id="cb1-66">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> events(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-67">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> event <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> pg.event.get():</span>
+<span id="cb1-68">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> ((event.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pg.QUIT)</span>
+<span id="cb1-69">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">or</span> (event.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pg.KEYDOWN</span>
+<span id="cb1-70">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">and</span> event.key <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pg.K_ESCAPE)):</span>
+<span id="cb1-71">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing:</span>
+<span id="cb1-72">                    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-73">                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-74"> </span>
+<span id="cb1-75">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-76">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.update()</span>
+<span id="cb1-77">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hud.update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.score, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.lives)</span>
+<span id="cb1-78"></span>
+<span id="cb1-79">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-80">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen.fill(BG_COLOR)</span>
+<span id="cb1-81">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen)</span>
+<span id="cb1-82">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen.blit(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hud.score, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hud.score_rect)</span>
+<span id="cb1-83">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen.blit(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hud.lives, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.hud.lives_rect)</span>
+<span id="cb1-84">        pg.display.flip()</span>
+<span id="cb1-85">    </span>
+<span id="cb1-86">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> start_screen(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-87">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">pass</span></span>
+<span id="cb1-88"></span>
+<span id="cb1-89">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> game_over_screen(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-90">        text <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Game Over"</span>       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Debugging</span></span>
+<span id="cb1-91">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(text)</span>
+<span id="cb1-92">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># self.screen_font = self.score_font</span></span>
+<span id="cb1-93">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># text = self.screen_font.render(text, True, (255, 255, 255))</span></span>
+<span id="cb1-94">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># text_rect = text.get_rect()</span></span>
+<span id="cb1-95">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># text_rect.centerx = WIDTH // 2</span></span>
+<span id="cb1-96">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># text_rect.y = HEIGHT // 2</span></span>
+<span id="cb1-97">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># self.screen.blit(text, text_rect)</span></span>
+<span id="cb1-98">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Debugging</span></span>
+<span id="cb1-99"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Ende Class GameWorld</span></span>
+<span id="cb1-100"></span>
+<span id="cb1-101"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class Player</span></span>
+<span id="cb1-102"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Player(pg.sprite.Sprite):</span>
+<span id="cb1-103"></span>
+<span id="cb1-104">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _world):</span>
+<span id="cb1-105">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">super</span>().<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>()</span>
+<span id="cb1-106">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _world</span>
+<span id="cb1-107">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.skull_image</span>
+<span id="cb1-108">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image.get_rect()</span>
+<span id="cb1-109">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, PLAYER_Y</span>
+<span id="cb1-110">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TW2</span>
+<span id="cb1-111">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-112">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb1-113">    </span>
+<span id="cb1-114">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-115">        x, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.mouse.get_pos()</span>
+<span id="cb1-116">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> TW2:</span>
+<span id="cb1-117">            x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TW2</span>
+<span id="cb1-118">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> TW2:</span>
+<span id="cb1-119">            x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> TW2</span>
+<span id="cb1-120">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.center <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb1-121">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.check_and_handle_collisions()</span>
+<span id="cb1-122">    </span>
+<span id="cb1-123">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> check_and_handle_collisions(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-124">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> enemy <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.enemies:</span>
+<span id="cb1-125">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> pg.sprite.collide_circle(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, enemy):</span>
+<span id="cb1-126">                enemy.reset()</span>
+<span id="cb1-127">                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-128"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## End Class Player</span></span>
+<span id="cb1-129"></span>
+<span id="cb1-130"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class Enemy</span></span>
+<span id="cb1-131"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Enemy(pg.sprite.Sprite):</span>
+<span id="cb1-132"></span>
+<span id="cb1-133">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y, _world):</span>
+<span id="cb1-134">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">super</span>().<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>()</span>
+<span id="cb1-135">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x, _y</span>
+<span id="cb1-136">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _world</span>
+<span id="cb1-137">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.smiley0_image</span>
+<span id="cb1-138">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image.get_rect()</span>
+<span id="cb1-139">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.center <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb1-140">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(SPEED_MIN, SPEED_MAX)</span>
+<span id="cb1-141">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TW2</span>
+<span id="cb1-142">    </span>
+<span id="cb1-143">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-144">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.over <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-145">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.dy</span>
+<span id="cb1-146">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> START_ZONE:</span>
+<span id="cb1-147">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.smiley0_image</span>
+<span id="cb1-148">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> DANGER_ZONE:</span>
+<span id="cb1-149">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.smiley1_image</span>
+<span id="cb1-150">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-151">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.smiley2_image</span>
+<span id="cb1-152">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.center <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb1-153">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.top <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> HEIGHT:</span>
+<span id="cb1-154">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.over <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-155">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.player.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-156">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.reset()</span>
+<span id="cb1-157">    </span>
+<span id="cb1-158">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> reset(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-159">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(TW2, WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> TW2)</span>
+<span id="cb1-160">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>)</span>
+<span id="cb1-161">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.center <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb1-162">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(SPEED_MIN, SPEED_MAX)</span>
+<span id="cb1-163">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># End Class Enemy</span></span>
+<span id="cb1-164"></span>
+<span id="cb1-165"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> HUD():</span>
+<span id="cb1-166"></span>
+<span id="cb1-167">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _world):</span>
+<span id="cb1-168">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _world</span>
+<span id="cb1-169">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span id="cb1-170">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span></span>
+<span id="cb1-171">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_font <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.score_font</span>
+<span id="cb1-172">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span></span>
+<span id="cb1-173">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.live_count_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span></span>
+<span id="cb1-174">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.live_count_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span></span>
+<span id="cb1-175">    </span>
+<span id="cb1-176">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, points, lives):</span>
+<span id="cb1-177">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_font.render(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Score: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>points<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>))</span>
+<span id="cb1-178">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_rect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score.get_rect()</span>
+<span id="cb1-179">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_rect.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_x</span>
+<span id="cb1-180">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_rect.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_y</span>
+<span id="cb1-181">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score_font.render(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Lives: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>lives<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>))</span>
+<span id="cb1-182">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives_rect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives.get_rect()</span>
+<span id="cb1-183">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives_rect.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.live_count_x</span>
+<span id="cb1-184">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lives_rect.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.live_count_y</span>
+<span id="cb1-185">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># End Class HUD</span></span>
+<span id="cb1-186"></span>
+<span id="cb1-187"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hauptprgramm</span></span>
+<span id="cb1-188">world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> GameWorld()</span>
+<span id="cb1-189">world.start_screen()</span>
+<span id="cb1-190"></span>
+<span id="cb1-191"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hauptschleife</span></span>
+<span id="cb1-192"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">async</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> main():</span>
+<span id="cb1-193">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">while</span> world.keep_going:</span>
+<span id="cb1-194">        world.reset()</span>
+<span id="cb1-195">        world.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-196">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">while</span> world.playing:</span>
+<span id="cb1-197">            world.clock.tick(FPS)</span>
+<span id="cb1-198">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> world.player.lives <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb1-199">                world.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-200">            world.events()</span>
+<span id="cb1-201">            world.update()</span>
+<span id="cb1-202">            world.draw()</span>
+<span id="cb1-203">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">await</span> asyncio.sleep(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Very important, and keep it 0</span></span>
+<span id="cb1-204">        world.game_over_screen()</span>
+<span id="cb1-205">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"After Game Over Screen"</span>)</span>
+<span id="cb1-206">    pg.quit()</span>
+<span id="cb1-207">    sys.exit()</span>
+<span id="cb1-208"></span>
+<span id="cb1-209">asyncio.run(main())</span></code></pre></div>
+<p>Ich habe die Slots für einen Start- und einen Ende-Screen schon eingebaut, aber noch nicht implementiert. Außerdem sollen natürlich noch – wie in der Processing.py-Vorlage – <em>PowerUps</em> und <em>PowerDowns</em> implementiert werden, und auch optisch möchte ich das Spiel noch ein wenig aufpeppen.</p>
+<iframe frameborder="0" src="https://itch.io/embed-upload/8166851?color=ede4d4" allowfullscreen="" width="640" height="500">
+<a href="https://kantel.itch.io/avoider-game">Play Avoider Game on itch.io</a>
+</iframe>
+<p>Ihr könnt es hier spielen. Der Schädel wird mit der Maus gesteuert, aber er kann sich nur horizontal bewegen. Und Ihr bekommt fünf Leben zum Start. Verwirkt Ihr diese, ist das Spiel gnadenlos zu Ende.</p>
+<p>Die Assets habe ich – wie schon so oft – den freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) Twitter Emojis (<a href="https://twemoji.twitter.com/">Twmojis</a>) entnommen und mit einem Bildbearbeitungsprogramm meines Vertrauens auf die gewünschte Größe skaliert. Und das Spiel habe ich auch auf <a href="https://kantel.itch.io/">meinen Itch.io-Account</a> hochgeladen, so daß Ihr es auch <a href="https://kantel.itch.io/avoider-game">dort im Browser spielen</a> könnt.</p>
+<p>Den <a href="https://github.com/kantel/pygameprojects/tree/master/avoidergame/stage1">Quellcode und die Assets</a> findet Ihr wie immer auch in meinem GitHub-Repositorium.</p>
+
+
+
+ ]]></description>
+  <category>Spieleprogrammierung</category>
+  <category>Pygame</category>
+  <guid>https://kantel.github.io/posts/2023062401_avoider_game_stage_1/index.html</guid>
+  <pubDate>Sat, 24 Jun 2023 18:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023062401_avoider_game_stage_1/images/avoidergame1a.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Heute ein Gemischtwarenladen: Die Video-Tutorials zum Wochenende</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2922,35 +3965,6 @@ font-style: inherit;"># Very important, and keep it 0</span></span>
   <guid>https://kantel.github.io/posts/2023060801_thunderbird_update/index.html</guid>
   <pubDate>Thu, 08 Jun 2023 12:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023060801_thunderbird_update/images/lautenspielerin1918.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Kenney Game Jam 2023 – soll ich da teilnehmen?</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023060702_kenney_game_jam_2023/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://kenney.nl/media/pages/assets/simplified-platformer-pack/d5bb44c767-1677693195/preview.png"><img src="https://kantel.github.io/posts/2023060702_kenney_game_jam_2023/images/simple_platformer-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Mit der <a href="https://kantel.github.io/posts/2023060501_pygame_im_browser/">Entdeckung</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> eröffnen sich mir ganz neue Möglichkeiten. Da es nun möglich ist, meine <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Experimente im Browser spielbar zum Beispiel auf <a href="https://kantel.itch.io/">Itch.io</a> zu veröffentlichen, warum sollte ich dann nicht an einer der dort regelmäßig stattfindenden <a href="https://de.wikipedia.org/wiki/Game_Jam">Game Jams</a> teilnehmen?</p>
-<p>Diese Frage stellte sich mir, nachdem ich über diese Ankündigung der <a href="https://itch.io/jam/kenney-jam-2023">Kenney Jam 2023</a> gestolpert bin. Sie findet vom 21. Juli 2023, 12:00 Uhr bis 23. Juli 2023, 12:00 Uhr, also über 48 Stunden, statt. Das Thema des Jam wird beim Start bekanntgegeben und die »Einschränkung« ist, daß nur <a href="https://kenney.nl/assets">Assets von Kenney.nl</a> verwendet werden dürfen.</p>
-<p>Wenn das Thema irgendwie mein Interesse trifft, würde mich das schon reizen. Ich bin ja sowieso ein Fan von Kenney und ich finde die kleine gelbe, roboterähnliche Spielekonsole aus dem »<a href="https://kenney.nl/assets/simplified-platformer-pack">Simplified Platformer Pack</a>« ja extrem niedlich. Mit der würde ich gerne mal etwas anstellen. Ich habe ja noch nie an einer Game Jam teilgenommen (es wäre also eine Premiere für mich), aber ich habe auf jeden Fall den Termin der Jam schon einmal in meinem Kalender vermerkt. <em>Schaun wir mal.</em></p>
-<p>Schon vor einem Jahr hatte Kenney in seinem Blog den Beitrag »<a href="https://kenney.nl/learn/improving-the-presentation-of-jam-games">Improving the presentation of jam games</a>« veröffentlicht, eine Kurzanleitung, wie man mit (s)einem Spiel auf einer Game Jam Eindruck schindet. Sicher nicht ohne Hintergedanken hat er auf diesen Beitrag auf Twitter vor ein paar Tagen noch einmal hingewiesen.</p>
-
-
-
- ]]></description>
-  <category>Spieleprogrammierung</category>
-  <category>Tiles und Sprites</category>
-  <category>Pygame</category>
-  <category>Pygbag</category>
-  <guid>https://kantel.github.io/posts/2023060702_kenney_game_jam_2023/index.html</guid>
-  <pubDate>Wed, 07 Jun 2023 13:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023060702_kenney_game_jam_2023/images/simple_platformer.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
