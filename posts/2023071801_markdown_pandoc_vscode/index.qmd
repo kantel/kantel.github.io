@@ -1,0 +1,25 @@
+---
+title: "Worknote: Markdown, Pandoc und Visual Studio Code"
+author: "Jörg Kantel"
+date: "2023-07-18 21:15:00"
+categories: [Markdwon, Pandoc, Visual Studio Code, Zettelkasten]
+image: "images/markdownpandocvscode.jpg"
+---
+
+[![](images/markdownpandocvscode-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53055389629/)
+
+Da habe ich mir nun mit [Logseq](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html) einen wunderschönen, digitalen [Zettelkasten](http://cognitiones.kantel-chaos-team.de/medien/zettelkasten.html) geschaffen, der in der Kombination Markdown mit einem [Outliner](http://cognitiones.kantel-chaos-team.de/produktivitaet/outliner.html) all die Anforderungen abdeckt, die ich an (m)ein zweites Gehirn stelle, doch irgendwann muß und will man die (Teile der) Wissensfetzen, die man in dem Ideenprozessor gesammelt hat, ja auch in eine Publikation gießen.
+
+Da ich schon lange nicht mehr an die Existenz einer eierlegenden Wollmichsau glaube, hatte ich dieses Problem für Veröffentlichungen in diesem ~~Blog~~ Kritzelheft, ja schon lange mit der Kombination zweier Applikationen gelöst: Ideen sammeln und festhalten in Logseq und die Publikation auf diesen Seiten erfolgte dann via [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html). Und eigentlich -- da Quarto ja auf [Pandoc](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/pandoc.html) aufbaut -- ist dies auch der Weg für andere Publikationserzeugnisse, wie PDFs oder EPUBs. Aber es geht auch anders:
+
+Rein aus Neugierde hatte ich mir nämlich mal angeschaut, ob und wie Markdown und Pandoc mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) zusammenarbeiten. Und wie zu erwarten war, ist die Unterstützung ziemlich gut, die Frage ist eher, welche der unzähligen Erweiterungen man sinnvollerweise einsetzen sollte.
+
+Die [meistgenannten](https://bodo-schoenfeld.de/visual-studio-code-fuer-markdown-nutzen/) [Werkzeuge](https://www.markdownguide.org/tools/vscode/) für eine *Live Preview* von Markdown-Texten im Editor waren [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one) und [Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced). Ich habe erst einmal die letztgenannte Erweiterung installiert und ihr dann -- [wie hier beschrieben](https://www.makeuseof.com/vscode-ultimate-markdown-editor/) -- eine `CustomStyles.css` verpaßt, um die Vorschau auch im *Dark Mode* schwarz auf weiß sehen zu können.
+
+<div style="float: right; margin-left: 12px; margin-top: 6px;">[![](images/zenpandoc.jpg)](hhttps://books.hasecke.com/post/das-zen-von-pandoc/)</div>
+
+Da ich Pandoc auf meinen Rechnern schon [installiert hatte](https://pandoc.org/installing.html), fehlte mir nur noch die [vscode-pandoc Extension](https://marketplace.visualstudio.com/items?itemName=ChrisChinchilla.vscode-pandoc) (Achtung, der Link in [diesem sonst sehr empfehlenswerten Beitrag](https://thisdavej.com/build-an-amazing-markdown-editor-using-visual-studio-code-and-pandoc) zu `vscode pandoc` ist veraltet). Per Default sucht die Erweiterung allerdings Pandoc in einem Docker Container, das muß man noch in den *Settings* ausschalten.
+
+Damit hat man einen leichtgewichtigen und vielseitigen Markdown-Pandoc-Workflow, der sich hinter den Möglichkeiten von Quarto nicht verstecken muß. Ich habe gleich aus meiner Bibliothek »[Das ZEN von Pandoc](https://books.hasecke.com/post/das-zen-von-pandoc/)« von *Jan Ulrich Hasecke* wieder hervorgekramt, um meine verschütteten Pandoc-Kenntnisse aufzufrischen.
+
+Und in meiner frischerwachten Begeisterung habe ich dann auch [Marp](https://marp.app/) mit der zugehörigen [VS&nbsp;Code Erweiterung](https://marketplace.visualstudio.com/items?itemName=marp-team.marp-vscode) mitinstalliert. Seitdem ich Rentner bin, muß ich zwar nur noch sehr selten Vorträge halten und dafür Folien basteln, aber man kann ja nie wissen.
