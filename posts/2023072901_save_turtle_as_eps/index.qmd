@@ -1,0 +1,130 @@
+---
+title: "Generative Art: Pythons Turtle-Graphik als EPS-Datei abspeichern "
+author: "Jörg Kantel"
+date: "2023-07-29 19:00:00"
+categories: [Python, Turtle, Generative Art]
+image: "images/epsturtle.jpg"
+---
+
+[![](images/epsturtle-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53079603965/)
+
+Erinnert Ihr Euch noch an mein Projekt »[Generative Art zwischen zwei Pappedeckel](http://blog.schockwellenreiter.de/2022/03/2022031101.html)? Seit meinem [Abschied von TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) ist dies leider ein wenig eingeschlafen, denn [TigerJythons](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) Turtle-Bibliothek war eine Säule dieses Projekts (die andere war (und ist immer noch) [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html))[^1].
+
+[^1]: [DrawBot](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/drawbot.html), obwohl durchaus nicht ohne Charme, habe ich außen vorgelassen, da ich nicht schon wieder in die »Mac only« Falle tappen wollte.
+
+Seitdem ich aber über das [Py5-Update berichtet](https://kantel.github.io/posts/2023072402_py5_update/) hatte, fraß sich dieses Projekt wieder in meinen Gehirnwindungen fest. Das Problem war ja, daß [(C)Pythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) aus der Standard-Bibliothek keine Möglichkeit bot, die Ergebnisse hochaufgelöst abzuspeichern[^2]. Doch ist das wirklich so? Meine leicht verschütteten Tkinter-Kenntnisse (Pythons Turtle-Modul setzt auf Tkinter auf) brachten mich dann auf diese Lösung:
+
+~~~python
+Turtle.getscreen().getcanvas().postscript(file = file_name + ".eps", width = WIDTH, height = HEIGHT)
+~~~
+
+[^2]: Wie man dies in Py5 bewerkstelligt, [hatte ich hier getestet und beschrieben](http://blog.schockwellenreiter.de/2022/07/2022072201.html), eine Lösung für TigerJython ein paar Tage später [hier vorgestellt](http://blog.schockwellenreiter.de/2022/07/2022072301.html).
+
+Überraschenderweise funktionierte dies. Und wenn man -- wie bei mir eigentlich Standard -- der Turtle einen expliziten `Screen` spendiert, kann man den Monster-Aufruf sogar noch ein wenig herunterbrechen:
+
+~~~python
+cv = Screen.getcanvas()
+cv.postscript(file = file_name + ".eps", width = WIDTH, height = HEIGHT)
+~~~
+
+Bei einer Fenstergröße von `WIDTH = 640` und `HEIGHT = 480` ist die so erzeugte Postscript-Datei (und auch ein daraus erstelltes PDF) 1.335 Pixel weit und 1.005 Pixel hoch. Das entspricht einer Größe von etwa 22 x 17 Zentimetern und dürfte für nahezu jedes zwischen zwei Pappedeckel gepreßtes Druckerzeugnis ausreichend sein (lediglich für Poster und Plakate müßte man sich etwas anderes überlegen, doch dazu weiter unten mehr).
+
+Will man nun aus seinem Kunstwerk eine PNG-Datei erzeugen, kann man den Umweg über den *Python Image Library* (PIL) Nachfolger [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) nehmen. Dafür sind nur wenige weitere Zeilen im Quellcode notwendig:
+
+~~~python
+from PIL import Image
+
+img = Image.open(file_name + ".eps")
+img.save(file_name + ".png")
+~~~
+
+Diese Datei besitzt allerdings wieder nur die ursprüngliche Größe des Fensters, dafür aber einen weißen Hintergrund, den Ihr mit dem [Graphikprogramm Eures Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) auch transparent setzen könnt.
+
+Das verwendete Programm, das einen asymmetrieschen Pythagoras-Baum zeichnet, hatte ich [hier als Turtle-Programm schon einmal vorgestellt](http://blog.schockwellenreiter.de/2021/01/2021011401.html). Ich habe lediglich die Hintergrundfarbe verändert und eine [andere Palette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/malewitsch.html) verwendet. Denn kompletten Quellcode gibt es hier und in meinem [GitHub Repositorium](https://github.com/kantel/turtlepy/blob/master/sources/pythagoras3.py):
+
+~~~python
+# Asymmetrischer Pythagoras-Baum
+# Wird als Postcript-File gespeichert und dann
+# mittels PIL nach .jpg/.png konvertiert
+
+import turtle as t
+import math
+from PIL import Image
+
+WIDTH = 640  # 640
+HEIGHT = 480 # 480
+REC_LEVEL = 12      # Rekursions-Tiefe
+
+palette = [(42, 40, 45), (160, 51, 46), (54, 50, 80),
+           (50, 80, 105), (180, 144, 55),
+           (215, 158, 40), (140, 82, 48)]
+
+wn = t.Screen()
+wn.colormode(255)
+wn.bgcolor(230, 226, 204)
+wn.setup(width = WIDTH, height = HEIGHT)
+wn.title("Asymmetrischer Pythagoras-Baum")
+
+p = t.Turtle()
+p.speed(0)
+p.color(0, 100, 0)
+p.setheading(90)
+
+def tree(s, level):
+    if level < 1:
+        return
+    else:
+        quadrat(s)
+        # Linke Seite
+        ls = s*math.sqrt(3)/2
+        p.forward(s)
+        p.left(90)
+        p.forward(s)
+        p.right(150)
+        p.forward(ls)
+        p.left(90)
+        tree(ls, level - 1)
+        # Rechte Seite
+        rs = s/2
+        p.right(180)
+        p.forward(rs)
+        p.left(90)
+        tree(rs, level - 1)
+        p.left(60)
+        p.back(s)
+
+def quadrat(s):
+    p.color(palette[int(s)%len(palette)], palette[int(s)%len(palette)])
+    p.begin_fill()
+    for _ in range(4):
+        p.forward(s)
+        p.left(90)
+    p.end_fill()
+
+p.penup()
+p.setpos(120, -HEIGHT/2 + 60)
+# Bildschirm-Refresh ausschalten
+wn.tracer(0)
+p.pendown()
+# Für eine Rekursionstiefe > 14 braucht man schon sehr viel Geduld
+tree(85, REC_LEVEL) 
+p.hideturtle()
+# Bildschirm-Refresh wieder einschalten
+wn.update()
+
+file_name = "pythagoras"
+cv = wn.getcanvas()
+cv.postscript(file = file_name + ".eps", width = WIDTH, height = HEIGHT)
+# p.getscreen().getcanvas().postscript(file = file_name + ".eps", width = WIDTH, height = HEIGHT)
+
+img = Image.open(file_name + ".eps")
+img.save(file_name + ".png")
+
+print("I did it, Babe!")
+
+wn.mainloop()
+~~~
+
+Auch wenn diese Lösung erst einmal ausreichend scheint, ein wirklich zufriedenstellendes Ergebnis (siehe die obige Anmerkung zu Postern und Plakaten) wäre nur mit einer auflösungsunabhängigen Speicherung als SVG zu erreichen. Es gibt da die Bibliothek [SaVaGe Turtle](https://donkirkby.github.io/svg-turtle/) (aka svg-turte), die verspricht, dies zu können ([GitHub Repo](https://github.com/donkirkby/svg-turtle), [PyPI-Seite](https://pypi.org/project/svg-turtle/)). Bei meinen ersten Tests zeigte sie sich jedoch ein wenig störrisch (sie scheint mit Hex-Color-Werten nicht zurechtzukommen). Hier muß ich wohl noch ein wenig experimentieren. *Still digging!*
+
+**War sonst noch was?** Ach ja, beim [Stöbern durch meine alten Seiten](http://blog.schockwellenreiter.de/2022/03/2022033101.html) wurde ich an [Pelican](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/pelican.html) erinnert, den in Python geschriebenen *Static Site Generator*. Mit seinem Template [Photowall](https://github.com/getpelican/pelican-themes/tree/master/photowall) wäre das Teil doch auch ein möglicher Kandidat für mein [Kunst- und Wunderkammer-Projekt](https://kantel.github.io/posts/2023072001_wunderkammer/). Ich glaube, da muß ich auch noch einmal drüber nachdenken.
