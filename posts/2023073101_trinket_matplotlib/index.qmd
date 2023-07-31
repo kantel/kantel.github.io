@@ -1,0 +1,48 @@
+---
+title: "Trinket kann Matplotlib -- aber nur in der kostenlosen Version"
+author: "Jörg Kantel"
+date: "2023-07-31 19:25:00"
+categories: [Trinket, Python, Data Science, Visualisierung]
+image: "images/matplotlibtrinket.jpg"
+---
+
+[![](images/matplotlibtrinket-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53084263249/)
+
+[Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) treibt mich noch in den Wahnsinn. Ich hatte bisher immer einen großen Bogen um die *Modes* von Trinket gemacht, die mit einem kleinen, grünen Schlüssel angezeigt wurden, weil sie -- glaubte ich -- nach einem der kostenpflichtigen »[Plans](https://trinket.io/plans)« verlangten. Seit heute weiß ich, daß dies komplizierter und sehr ärgerlich ist:
+
+Denn in [diesem Artikel](https://medium.com/@6unpnp/draw-chart-in-python-using-trinket-c3c4ce1d4403) (Medium-Link, daher vermutlich leider hinter einer Bezahlschranke verborgen) zeigte *Sparisoma Viridi*, wie man in Trinket mit Hilfe des Modes »Python3« eine Applikation mit [Numpy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) und der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) erstellen kann. Und wie die Screenshots zeigten, nutzte er dafür ganz offensichtlich den freien, kostenlosen »Trinket Code«-Plan, den ich bisher auch immer genutzt hatte. Das wollte ich natürlich auch sofort ausprobieren. Also Trinket aufgerufen und (trotz grünem Schlüssel) ein neues Python3-Trinket mit diesem Code erstellt:
+
+~~~python
+import numpy as np
+import matplotlib.pyplot as plt
+
+NUM_POINTS = 100
+GRADIENT = 0.5
+
+x = np.array(range(NUM_POINTS))
+y = np.random.randn(NUM_POINTS)*10 + x*GRADIENT
+
+fig, ax = plt.subplots(figsize = (4, 2))
+
+colors = np.random.rand(NUM_POINTS)
+size = (2 + np.random.rand(NUM_POINTS)*8)**2
+ax.scatter(x, y, s = size, c = colors, alpha = 0.5)
+fig.suptitle("Zufalls-Scatterplot")
+
+plt.show()
+
+# Leerzeile, damit der Plot nicht so am oberen Fensterrand klebt.
+print("\n")
+~~~
+
+Erstaunlicherweise funktionierte dies (wie auch der [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53084263249/) im Banner oben beweist) ohne Probleme. Lediglich an der `figsize` mußte ich ein wenig schrauben, damit der Plot vollständig in das Ausgabefenster paßte und nicht an der rechten Seite abgeschnitten wurde. Doch -- und das war der Haken, mit dem die Nutzer auf eine kostenpflichtigen »Plan« gelockt werden sollten -- der Code ließ sich nicht als Trinket abspeichern und online stellen. Verließ man die Seite, war alles wieder weg.
+
+Zwar gibt es einen Notausgang: Der Code läßt sich herunterladen (und so ich habe ihn auch [in meinem GitHub-Repo angespeichert](https://github.com/kantel/trinket/blob/main/matplotlibtest/main.py)), so daß man ihn jederzeit neu hochladen und einpflegen kann. Doch schön ist anders. Also bin ich über meinen Schatten gesprungen und habe mir ein Update auf den »Plan Code+« geleistet. Die 3&nbsp;US-$/Monat (bei jährlicher Zahlung) schien mir der Spaß, nun mit Pythons *Scientific Stack* (und auch mit [Pygame](https://github.com/kantel/trinket/blob/main/matplotlibtest/main.py)!) online auf Trinket spielen zu können, wert zu sein.
+
+Das hätte ich lieber nicht tun sollen. Denn kaum war das Ugrade beim Trinket-Server akzeptiert, stieg das obige Scriptchen mit dieser Fehlermeldung aus:
+
+>Matplotlib created a temporary config/cache directory at /tmp/matplotlib-zhreju7y because the default path (/home/trinket/.config/matplotlib) is not a writable directory; it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+
+So wie es aussieht, ist der Trinket-Server nicht korrekt für die Nutzung (genauer: Speicherung) von Matplotlib-Anwendungen konfiguriert. Solange nichts gespeichert wird (wie in dem kostenlosen »Plan«) ist alles gut, aber sobald Trinket versucht, das Skript zu speichern steigt die Matplotlib aus. Eine Fehlermeldung an Trinket habe ich abgesetzt, aber ob und wann dieser Fehler behoben wird, steht in den Sternen. Mein mit zuviel Optimismus gestartetes Upgrade habe ich auch wieder storniert, aber das habe ich jetzt erst einmal für ein Jahr an der Backe.
+
+So bleibt mir nichts anderes übrig, als daß ich mir einen zweiten, kostenlosen Trinket-Account zulege, der dann -- wenn auch eigeschränkt -- mit der Matplotlib spielt. Das ist -- wie ich oben schon schrieb -- sehr ärgerlich und schön ist auch anders.
