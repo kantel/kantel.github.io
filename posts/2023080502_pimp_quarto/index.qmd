@@ -1,0 +1,131 @@
+---
+title: "Pimp my Quarto Site"
+author: "Jörg Kantel"
+date: "2023-08-05 19:50:00"
+categories: [Quarto, Statische Seiten, Interna]
+image: "images/bballpy5vector.jpg"
+---
+
+[![](images/bballpy5vector-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53095390734/)
+
+Erinnert Ihr Euch an *Albert Rapp*, den Schöpfer des »[Ultimate guide to starting a Quarto blog](https://albert-rapp.de/posts/13_quarto_blog_writing_guide/13_quarto_blog_writing_guide.html)? Der auch das Video »[How to style your Quarto blog without knowing a lot of HTML/CSS](https://www.youtube.com/watch?v=ErRX8plZpQE)« veröffentlicht hatte? Beides hatte ich im *Schockwellenreiter* ja schon [lobend erwähnt](https://kantel.github.io/posts/2022120902_quarto_blog_tutorial/).
+
+Nun hat er wieder zugeschlagen und diese drei kurzen Videos veröffentlicht:
+
+- [A Dead-Simple Strategy to style your Quarto docs without knowing HTML & CSS](https://www.youtube.com/watch?v=jX4_Dnzhl0M) (siebeneinhalb Minuten)
+- Den Nachfolger: [An easy way to style your Quarto docs without knowing HTML & CSS](https://www.youtube.com/watch?v=QU8wSya-Y9E) (elf Minuten)
+- Und als Follow-up: [A GPDR-compliant way to import Google fonts in Quarto](https://www.youtube.com/watch?v=vaPBOqfus7w) (vier Minuten)
+
+Besonders gefallen an diesen Videos hat mir, wie er die in [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html) eingebetteten Codeblöcke aufgemotzt hat. Da ich mit dem Default von Quarto schon seit Beginn leicht unzufrieden war, wollte ich auch so etwas. Also mußte zum Ausprobieren erst einmal [ein Codeblock her](http://blog.schockwellenreiter.de/2021/09/2021091501.html) -- es ist ein Expriment von vor zwei Jahren, in dem ich zum ersten Mal statt meiner eigenen `PVector`-Klasse die in [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) eingebaute `Py5Vector`-Klasse verwendet hatte:
+
+~~~python
+# Bouncing Balls w/ Classes (improved)
+# nach Peter Farrell »Math Adventures with Python«, p183ff
+# Einige Ungereimtheiten aus Farrells Code ausgeräumt und
+# erstmals Py5Vector anstelle meiner eigenen PVector-Implementierung genutzt
+from random import randint, choice
+
+WIDTH = 640
+HEIGHT = 480
+NO_BALLS = 40
+
+# Coding Train Farbpalette
+codingtrain = [(240, 80, 37), (248, 158, 80), (248, 239, 34) , (240, 99, 164),
+               (146, 82, 161), (129, 122, 198), (98, 199, 119)]
+
+class Ball():
+    
+    def __init__(self):
+        self.radius = randint(8, 24)
+        self.dia = 2*self.radius
+        self.location = Py5Vector(randint(self.dia, WIDTH - self.dia),
+                                  randint(self.dia, HEIGHT - self.dia))
+        self.vel = Py5Vector(random(-2, 2), random(-2, 2))
+        # No horizontal or vertical move
+        if self.vel.x == 0:
+            self.vel.x = 1
+        if self.vel.y == 0:
+            self.vel.y = -1
+        self.dir = Py5Vector(-1.5, 1.5)
+        self.col = choice(codingtrain)
+        
+    def update(self):
+        self.location.x += self.vel.x*self.dir.x
+        self.location.y += self.vel.y*self.dir.y
+    
+    def show(self):
+        fill(self.col[0], self.col[1], self.col[2])
+        circle(self.location.x, self.location.y, self.dia)
+    
+    def check_boundaries(self):
+        if self.location.x > width - self.radius or self.location.x < self.radius:
+            self.vel.x *= -1
+        if self.location.y > height - self.radius or self.location.y < self.radius:
+            self.vel.y *= -1            
+balls = []       
+
+def setup():
+    size(WIDTH, HEIGHT)
+    window_move(1400, 30)
+    window_title("Bouncing Balls w/Py5Vector")
+    for _ in range(NO_BALLS):
+        balls.append(Ball())
+
+def draw():
+    background(49, 197, 244)   # Hellblau
+    for ball in balls:
+        ball.show()
+        ball.check_boundaries()
+        ball.update()
+~~~
+
+Gemäß den Tutorials von *Albert Rapp* habe ich in dem Projektverzeichnis (das ist das Verzeichnis, das auch die Datei `_quarto.yml` enthält) eine Datei `custom_themes.css` angelegt. Diese Datei habe ich dann in meine `_quarto.yml` eingebunden:
+
+~~~yaml
+format:
+  html:
+    code-line-numbers: true
+    theme:
+      - litera
+      - custom_theme.scss
+    css: styles.css
+    link-external-icon: false
+    include-in-header: "js/goatcounter.js"
+~~~
+
+Damit man nicht sofort mit Fehlermeldungen überschüttet wird, **muß** die `custom_theme.css` (Ihr könnt sie übrigens nennen, wie Ihr wollt) mindestens diese zwei Zeilen enthalten:
+
+~~~yaml
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+~~~
+
+Ich wollte, daß die Code-Blöcke wie auch der Inline-Code mit einem leichten Grau (`#eeeeee`) hinterlegt wird. Außerdem sollte der Inline-Code mit einer grünen Schrift (`#009991`) dargestellt werden. Dies wird alles in den SCSS-Defaults festgelegt. Zu guter letzt wollte ich die Schrift in den Code-Blöcken etwas kleiner darstellen (`font-size: 0.8em;`), damit nicht sofort horizontale Scrollbalken provoziert werden. Diese Festlegung muß wiederum in den SCSS-Rules getroffen werden. Daher sieht meine `custom_theme.scss` nun wie folgt aus:
+
+~~~yaml
+/*-- scss:defaults --*/
+
+/*-- Define colors --*/
+$mybgcode: #eeeeee;
+$mycodecol: #009991;
+
+// Code block background
+$code-block-bg: $mybgcode;
+// Background color of inline code
+$code-bg: $mybgcode;
+// Color of inline Code
+$code-color: $mycodecol;
+
+/*-- scss:rules --*/
+
+div.sourceCode {
+  font-size: 0.8em;
+}
+~~~
+
+Es müssen nur die Werte in die `custom_theme.scss` eingetragen werden, die das Default-Theme (in meinem Fall `litera`) überschreiben. Die wichtigsten SCSS-Variblen, die man überschreiben kann, findet Ihr [auf dieser Seite](https://quarto.org/docs/output-formats/html-themes). Ganz unten auf der Seite gibt es noch einen Link zur Bootstrap-Dokumentation mit einer [Liste aller SCSS- (oder: SASS-) Variablen](https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss).
+
+So jedenfalls gefallen mir meine Code-Blöcke schon besser, aber ich kann mir weitere Verbesserungen durchaus vorstellen. Daher möchte ich mir als nächstes [diese Seite](https://hamel.dev/notes/quarto/highlighting.html) vornehmen, die beschreibt, wie man das *Syntax Highlighting* von Quarto verbessern kann. Eine [Liste der in Quarto vorhandenen Syntax-Highlighter findet Ihr hier](https://github.com/quarto-dev/quarto-cli/tree/main/src/resources/pandoc/highlight-styles).
+
+**War sonst noch was?** Ach ja, es gibt auch noch ein weiteres, nettes Video von *Albert Rapp*: »[How to build an interactive point-and-click game with {Shiny}](https://www.youtube.com/watch?v=4-6jDDCADvU)« (35 Minuten). Das hat zwar nichts (oder bestenfalls nur am Rande) mit Quarto zu tun, ist aber trotzdem interessant, da [Shiny for Python](https://shiny.rstudio.com/py/) auch schon lange auf der Liste der von mir zu testenden Bibliotheken steht. *Still digging!*
