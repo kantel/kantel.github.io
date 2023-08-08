@@ -10,7 +10,700 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Tue, 08 Aug 2023 13:50:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 08 Aug 2023 18:05:00 GMT</lastBuildDate>
+<item>
+  <title>»The Nature of Code« in Python (Py5): Ein einfaches Partikelsystem (Stage 1)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023080802_py5_particelsystem_1/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53099848727/"><img src="https://kantel.github.io/posts/2023080802_py5_particelsystem_1/images/partikelsystempy5-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich habe noch gestern meine <a href="https://kantel.github.io/posts/2023080701_partikelsysteme/">Ankündigung</a> wahrgemacht und ein einfaches <a href="https://de.wikipedia.org/wiki/Partikelsystem">Partikelsystem</a> in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> implementiert. Das ging deshalb so flott, nicht nur, weil ich ähnliches schon einmal in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> <a href="http://blog.schockwellenreiter.de/2019/05/2019050501.html">programmiert</a>, sondern ich auch schon einmal <a href="http://blog.schockwellenreiter.de/2021/08/2021081501.html">Versuche</a> mit der <a href="http://blog.schockwellenreiter.de/2018/05/2018052501.html">NodeBox 1</a> und sogar mit <a href="http://blog.schockwellenreiter.de/2018/05/2018052501.html">Pythons Schildkröte</a> angestellt hatte. Alle diese Programme basierten auf der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>-Version eines Partikelsystems, die <em>Daniel Shiffman</em> in seinem wunderbaren Buch »<a href="https://natureofcode.com/">The Nature of Code</a> im <a href="https://natureofcode.com/book/chapter-4-particle-systems/">vierten Kapitel</a> (Seiten 143-188) implementiert hatte.</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://natureofcode.com/"><img src="https://kantel.github.io/posts/2023080802_py5_particelsystem_1/images/noc.jpg" class="img-fluid"></a>
+</div>
+<p>Dadurch fiel mir der Port nach Py5 nicht allzu schwer, dennoch habe ich dabei einiges über Py5 und seine Besonderheiten gelernt. Als erstes: Ich hatte die Klassen <code>Particle()</code> und <code>RectParticle()</code> in eine separate Datei ausgelagert und daher endlich verstanden, welche <a href="https://kantel.github.io/posts/2023072402_py5_update/">Probleme seit dem letzten Update</a> mit dem <code>import</code>-Befehl im Py5-<em><a href="http://py5coding.org/content/importing_py5_code.html#importing-imported-mode-code">Imported Mode</a></em> nun behoben seien. Das mir die Probleme bisher nicht unterkamen, lag daran, daß ich nur Bibliotheken/Module importiert hatte, die nicht auf Py5 basierten und daher auch nicht den <code>JPype</code>-Übersetzer aufrufen mußten. Meine beiden Partikel-Klassen waren aber Py5-Klassen und mußten daher <code>JPype</code> passieren. Nur: Woher sollte <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> das wissen?</p>
+<p>Die Lösung fand ich in der <a href="https://py5coding.org/content/importing_py5_code.html#importing-imported-mode-code">Py5-Dokmentation</a>: Der Datei muß als »magischer Kommentar« die Zeile</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># PY5 IMPORTED MODE CODE</span></span></code></pre></div>
+<p>vorangestellt werden (es muß nicht unbedingt die erste Kommentarzeile sein, aber sie sollte vor den eigentlichen Codezeilen stehen). Und dieser »magische Kommentar« ist unabhängig von der Groß- oder Kleinschreibung: <code># py5 imported mode code</code> funktioniert ebenfalls, auch <code># py5 Imported Mode code</code> bringt keine Probleme. Ich empfehle aber zur besseren Hervorhebung und um die Zeile von den gewöhnlichen Kommentaren zu unterscheiden, die Großschreibung.</p>
+<p>Der zweite Stolperstein war ein seltsamer – denn darüber stolpern vermutlich nur diejenigen, die Processings PDE gewohnt sind. Dieser war es nämlich völlig egal, welcher Tab mit welcher Datei gerade offen war (den Fokus hatte), der <code>Run</code>-Befehl startete immmer die Datei mit dem jeweiligen Hauptprogramm.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53102946740/"><img src="https://kantel.github.io/posts/2023080802_py5_particelsystem_1/images/falschertabpy5.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Hier zeigt Thonny im Py5-Mode ein anderes Verhalten. Hat man zum Beispiel den Tab mit den Klassen-Definitionen offen, dann versucht der Interpreter, diese Datei zu starten. Und da er durch das »magische Kommando« <code># PY5 IMPORTED MODE CODE</code> weiß, das dies ein Py5-Programm ist, startet er ohne eine Fehlermeldung in »leeres« Py5-Programm mit dem Default-Fensterchen (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/53102946740/">Screenshot</a>).</p>
+<p>Eigentlich ist das ein logisches Verhalten, aber glaubt mir, ich habe lange geflucht und den Fehler bei mir und in meinem Code gesucht, bis ich darauf gekommen bin.</p>
+<p>Nachdem ich nun diese Hürden überwunden hatte, konnte ich mich endlich an meinem Partikelsystem erfreuen. Es besitzt einen <em>Emitter</em>, der zufällig entweder Scheiben oder Rechtecke (genauer: Quardrate) ausstößt, Diese fallen nach unten, und verblassen dabei, je länger sie leben (im System sind). Ist ihre Lebenszeit abgelaufen, werden sie aus dem System entfernt. Dafür habe ich – in Anlehnung an <em>Daniel Shiffmans</em> Sketch, eine Klasse <code>Particle()</code> entworfen:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Particle():</span>
+<span id="cb2-2">    </span>
+<span id="cb2-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y):</span>
+<span id="cb2-4">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Py5Vector(_x, _y)</span>
+<span id="cb2-5">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.acc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Py5Vector(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>)</span>
+<span id="cb2-6">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Py5Vector(random(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>), random(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>))</span>
+<span id="cb2-7">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random_choice(codingtrain)</span>
+<span id="cb2-8">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span></span>
+<span id="cb2-9">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span></span>
+<span id="cb2-10">        </span>
+<span id="cb2-11">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-12">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.update()</span>
+<span id="cb2-13">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.show()</span>
+<span id="cb2-14">        </span>
+<span id="cb2-15">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-16">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.acc</span>
+<span id="cb2-17">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel</span>
+<span id="cb2-18">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> random(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-19">        </span>
+<span id="cb2-20">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> show(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-21">        stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb2-22">        fill(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb2-23">        circle(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d)</span>
+<span id="cb2-24">        </span>
+<span id="cb2-25">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> is_not_alive(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-26">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb2-27">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb2-28">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-29">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span></code></pre></div>
+<p>Dabei habe ich dann den dritten Stolperstein überwinden müssen: <code>is_dead</code> ist in Py5 ein reserviertes Wort, daher habe ich die Methode <code>is_not_alive()</code> genannt.</p>
+<p>Die Klasse <code>RectParticle()</code> erbt von <code>Particle</code>. Daher waren im <em>Constructor</em> nur der <code>rect_mode(CENTER)</code> (wird für die Rotation der Quadrate gebraucht) und der Rotationswinkel zusätzlich nötig:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> RectParticle(Particle):</span>
+<span id="cb3-2">    </span>
+<span id="cb3-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y):</span>
+<span id="cb3-4">        Particle.<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y)</span>
+<span id="cb3-5">        rect_mode(CENTER)</span>
+<span id="cb3-6">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rota <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PI<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span></code></pre></div>
+<p>Und die Methode <code>show()</code> mußte – damit die Quadrate rotieren – komplett überschrieben werden. Hier kam die von mir heiß geliebte (weil in meinem Augen »pythonischere«) Sprachkonstruktion mit dem <code>with</code>-Statement zum Einsatz:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> show(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb4-2">        stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb4-3">        fill(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb4-4">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> push_matrix():</span>
+<span id="cb4-5">            translate(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y)</span>
+<span id="cb4-6">            rotate(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rota)</span>
+<span id="cb4-7">            rect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb4-8">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rota <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> random(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.02</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">.10</span>)</span></code></pre></div>
+<p>Als zusätzliche Reminiszenz an <em>Daniel Shiffman</em> und seinem <a href="https://thecodingtrain.com/">Coding Train</a> habe ich die Partikel noch mit der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/codingtrainfarben.html">Coding Train Farbpalette</a> eingefärbt.</p>
+<p>Nun zum kompletten Programm, damit Ihr auch alles nachlesen, nachvollziehen, nachprogrammieren und weiterentwickeln könnt. Das Hauptprogramm (<code>particles01.py</code>) ist – dank der Partikelklassen – von erfrischender Kürze:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> particles <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Particle, RectParticle</span>
+<span id="cb5-2"></span>
+<span id="cb5-3">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span></span>
+<span id="cb5-4">START_X, START_Y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">250</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span></span>
+<span id="cb5-5"></span>
+<span id="cb5-6">particles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb5-7"></span>
+<span id="cb5-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> setup():</span>
+<span id="cb5-9">    size(WIDTH, HEIGHT)</span>
+<span id="cb5-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># window_move(1400, 30)</span></span>
+<span id="cb5-11">    window_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Partikelsystem 1"</span>)</span>
+<span id="cb5-12">    </span>
+<span id="cb5-13"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb5-14">    background(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">49</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">197</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">244</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hellblau</span></span>
+<span id="cb5-15">    change <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span>
+<span id="cb5-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> change <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>:</span>
+<span id="cb5-17">        particles.append(Particle(START_X, START_Y))</span>
+<span id="cb5-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb5-19">        particles.append(RectParticle(START_X, START_Y))</span>
+<span id="cb5-20">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(particles) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb5-21">        particles[i].run()</span>
+<span id="cb5-22">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> particles[i].is_not_alive():</span>
+<span id="cb5-23">            particles.pop(i)</span></code></pre></div>
+<p>Die (auskommentierte) Zeile <code>window_move(1400, 30)</code> ist ein Hack, der das Ausgabefenster auf meinen zweiten Monitor positioniert. Ihr solltet sie daher nur verwenden, wenn Ihr ebenfalls einen zweiten Bildschirm besitzt und dessen Pixelkoordinaten kennt.</p>
+<p>Etwas fetter ist dann schon die Datei <code>particles.py</code> mit den beiden Klassen:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># PY5 IMPORTED MODE CODE</span></span>
+<span id="cb6-2"></span>
+<span id="cb6-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Coding Train Farbpalette</span></span>
+<span id="cb6-4">codingtrain <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">240</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">37</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">248</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">158</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">248</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">239</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">34</span>) , (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">240</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">99</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">164</span>),</span>
+<span id="cb6-5">               (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">146</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">82</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">161</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">129</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">122</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">198</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">98</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">199</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">119</span>)]</span>
+<span id="cb6-6"></span>
+<span id="cb6-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Particle():</span>
+<span id="cb6-8">    </span>
+<span id="cb6-9">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y):</span>
+<span id="cb6-10">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Py5Vector(_x, _y)</span>
+<span id="cb6-11">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.acc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Py5Vector(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span>)</span>
+<span id="cb6-12">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Py5Vector(random(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>), random(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>))</span>
+<span id="cb6-13">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random_choice(codingtrain)</span>
+<span id="cb6-14">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span></span>
+<span id="cb6-15">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span></span>
+<span id="cb6-16">        </span>
+<span id="cb6-17">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-18">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.update()</span>
+<span id="cb6-19">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.show()</span>
+<span id="cb6-20">        </span>
+<span id="cb6-21">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-22">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.acc</span>
+<span id="cb6-23">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel</span>
+<span id="cb6-24">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> random(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb6-25">        </span>
+<span id="cb6-26">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> show(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-27">        stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb6-28">        fill(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb6-29">        circle(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d)</span>
+<span id="cb6-30">        </span>
+<span id="cb6-31">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> is_not_alive(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-32">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb6-33">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb6-34">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb6-35">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb6-36">        </span>
+<span id="cb6-37"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> RectParticle(Particle):</span>
+<span id="cb6-38">    </span>
+<span id="cb6-39">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y):</span>
+<span id="cb6-40">        Particle.<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y)</span>
+<span id="cb6-41">        rect_mode(CENTER)</span>
+<span id="cb6-42">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rota <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PI<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb6-43">    </span>
+<span id="cb6-44">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> show(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-45">        stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb6-46">        fill(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.col[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.lifespan)</span>
+<span id="cb6-47">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">with</span> push_matrix():</span>
+<span id="cb6-48">            translate(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y)</span>
+<span id="cb6-49">            rotate(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rota)</span>
+<span id="cb6-50">            rect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb6-51">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rota <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> random(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.02</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">.10</span>)</span></code></pre></div>
+<p>Auf meinem betagten MacBook Pro (von 2012) läuft der Sketch gerade noch in erträglicher Geschwindigkeit. Wer über potentere Hardware verfügt, kann ja mal versuchen, den <code>lifespan</code> der Partikel zu verlängern.</p>
+<p>Natürlich sind die Dateien auch in meinem <a href="https://github.com/kantel/py5/tree/main/noc">GitHub-Repositorium</a> abgelegt (<a href="https://github.com/kantel/py5/blob/main/noc/particlesys01.py">particles01.py</a> und <a href="https://github.com/kantel/py5/blob/main/noc/particles.py">particles.py</a>). Ich möchte die Experimente gerne noch ein wenig fortführen. Also seid auf weitere Beiträge zu Py5 gespannt. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Py5</category>
+  <category>Processing</category>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <category>Nature of Code</category>
+  <guid>https://kantel.github.io/posts/2023080802_py5_particelsystem_1/index.html</guid>
+  <pubDate>Tue, 08 Aug 2023 18:05:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023080802_py5_particelsystem_1/images/partikelsystempy5.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google schließt am »August-Patchday« wieder Sicherheitslücken in Android</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1946,35 +2639,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span>
   <guid>https://kantel.github.io/posts/2023072801_klimakiller_kuehlschrank/index.html</guid>
   <pubDate>Fri, 28 Jul 2023 16:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023072801_klimakiller_kuehlschrank/images/klimakillerkuehschrank.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Warum Kiezblocks? Verkehrsberuhigung führt zu Entlastung statt Kollaps</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023072702_warum_kiezblocks/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53008187761/"><img src="https://kantel.github.io/posts/2023072702_warum_kiezblocks/images/kranoldkoernerkiezblock-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Wie ich schon <a href="https://kantel.github.io/posts/2023062802_kranold_kiezblock/">einige</a> <a href="https://kantel.github.io/posts/2023070603_kiezspaziergang_kranold_kiezblock/">Male</a> auch in diesem <del>Blog</del> Kritzelheft erwähnt hatte, bin ich in der Initiative <a href="https://www.kiezblocks.de/kranold/">Kranold Kiezblock</a> aktiv, die für einen verkehrsberuhigten und dadurch lebenswerteren Kiez (in dem auch ich lebe) eintritt. Dabei achte ich besonders darauf, daß die Interessen von Fußgängerinnen und Fußgängern sowie Nutzerinnen und Nutzern des ÖPNV nicht zu kurz kommen. Spätestens seit meiner eigenen Mobilitätseinschränkung durch meinen Schlaganfall ist mir dies ein besonderes Anliegen.</p>
-<p>Nun hat die Initiative – zusammen mit dem benachbarten <a href="https://www.kiezblocks.de/koerner/">Körner-Kiezblock</a> – einen Bericht mit dem Titel »<a href="https://www.kiezblocks.de/kranold-und-koerner-kiezblocks-gemeinsamer-einsatz-fuer-lebenswertere-wohnkieze-in-neukoelln/">Gemeinsamer Einsatz für lebenswerte Wohnkieze in Neukölln</a>« veröffentlicht. Darin weist sie unter anderem darauf hin, daß der Kranoldkiez laut dem <a href="https://www.berlin.de/sen/uvk/umwelt/nachhaltigkeit/umweltgerechtigkeit/">Berliner Umweltgerechtigkeitsatlas</a> eines der am stärksten belasteten Gebiete Berlins ist. Die Bewohnerinnen und Bewohner leiden unter Lärmbelästigung, Luftverschmutzung und einem Mangel an Grünflächen. Darüber hinaus beeinträchtigt der starke Durchgangsverkehr die Sicherheit von Fußgängerinnen, Fußgängern, Radfahrerinnen und Radfahrern, da es an hinreichend breiten, nicht zugeparkten Fuß- und Radwegen und gut einsehbaren (das heißt ebenfalls: nicht zugeparkten) Kreuzungen mangelt. Eine <a href="https://interaktiv.tagesspiegel.de/lab/analyse-zu-autobesitz-in-berlin/">Analyse des Tagesspiegels</a> zum Verhältnis von Autobesitz und -verkehr in Berliner Kiezen zwischen 2015 und 2022 hat zudem deutlich aufgezeigt, daß nur jeder sechste Haushalt im Kranoldkiez ein eigenes KfZ besitzt, jedoch wesentlich mehr Autos täglich durch den Kiez fahren.</p>
-<p>Rückendeckung gibt uns auch eine Studio des <em><a href="https://difu.de/">Deutschen Instituts für Urbanistik</a></em> (Difu), die zeigt, daß <a href="https://entwicklungsstadt.de/studie-zeigt-verkehrsberuhigung-fuehrt-zu-entlastung-statt-kollaps/">Verkehrsberuhigung durch Kiezblock zu Entlastung statt zu dem befürchteten Kollaps</a> führt. Die Datenauswertung zeigt, daß Verkehr noch mehr Verkehr anzieht (ein wichtiges Argument auch gegen den Autobahnausbau zum Beispiel der A100), wer dagegen verkehrsberuhigte Zonen schafft, ernte Lebensqualität und zugleich meht Mobilität. Im Umfeld von Kiezblocks werde mehr Fahrrad gefahren und zu Fuß gegangen.</p>
-<p>Die Difu-Projektleterin <em>Uta Bauer</em> resümiert daher: »Die Untersuchung zeigt, daß Maßnahmen, die den Autoverkehr in den Kommunen zähmen, im erwünschtem Sinne wirken: Mehr Lebensqualität und zugleich Mobilität. Daher gilt es, diese Ergebnisse auch in Kommunalpolitik und -verwaltung stärker zu berücksichtigen. Insbesondere in der Modellierung von Verkehrsberuhigungsmaßnahmen sollten die beschriebenen Effekte berücksichtigt werden.«</p>
-<p>Kämpfen wir daher gemeinsam weiter für mehr Lebensqualität im Kiez. <em>(Photo: (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>) 2023: Kranold-Kiezblock)</em></p>
-
-
-
- ]]></description>
-  <category>Verkehrswende</category>
-  <category>Kiezblock</category>
-  <category>Neukölln</category>
-  <guid>https://kantel.github.io/posts/2023072702_warum_kiezblocks/index.html</guid>
-  <pubDate>Thu, 27 Jul 2023 16:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023072702_warum_kiezblocks/images/kranoldkoernerkiezblock.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

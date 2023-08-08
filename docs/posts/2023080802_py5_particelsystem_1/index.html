@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - »The Nature of Code« in Python (Py5): Ein einfaches Partikelsystem (Stage&nbsp;1)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">»The Nature of Code« in Python (Py5): Ein einfaches Partikelsystem (Stage&nbsp;1)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Py5</div>
+    <div class="quarto-category">Processing</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Creative Coding</div>
+    <div class="quarto-category">Nature of Code</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">8. August 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53099848727/"><img src="images/partikelsystempy5-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich habe noch gestern meine <a href="https://kantel.github.io/posts/2023080701_partikelsysteme/">Ankündigung</a> wahrgemacht und ein einfaches <a href="https://de.wikipedia.org/wiki/Partikelsystem">Partikelsystem</a> in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> implementiert. Das ging deshalb so flott, nicht nur, weil ich ähnliches schon einmal in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> <a href="http://blog.schockwellenreiter.de/2019/05/2019050501.html">programmiert</a>, sondern ich auch schon einmal <a href="http://blog.schockwellenreiter.de/2021/08/2021081501.html">Versuche</a> mit der <a href="http://blog.schockwellenreiter.de/2018/05/2018052501.html">NodeBox 1</a> und sogar mit <a href="http://blog.schockwellenreiter.de/2018/05/2018052501.html">Pythons Schildkröte</a> angestellt hatte. Alle diese Programme basierten auf der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>-Version eines Partikelsystems, die <em>Daniel Shiffman</em> in seinem wunderbaren Buch »<a href="https://natureofcode.com/">The Nature of Code</a> im <a href="https://natureofcode.com/book/chapter-4-particle-systems/">vierten Kapitel</a> (Seiten 143-188) implementiert hatte.</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://natureofcode.com/"><img src="images/noc.jpg" class="img-fluid"></a>
+</div>
+<p>Dadurch fiel mir der Port nach Py5 nicht allzu schwer, dennoch habe ich dabei einiges über Py5 und seine Besonderheiten gelernt. Als erstes: Ich hatte die Klassen <code>Particle()</code> und <code>RectParticle()</code> in eine separate Datei ausgelagert und daher endlich verstanden, welche <a href="https://kantel.github.io/posts/2023072402_py5_update/">Probleme seit dem letzten Update</a> mit dem <code>import</code>-Befehl im Py5-<em><a href="http://py5coding.org/content/importing_py5_code.html#importing-imported-mode-code">Imported Mode</a></em> nun behoben seien. Das mir die Probleme bisher nicht unterkamen, lag daran, daß ich nur Bibliotheken/Module importiert hatte, die nicht auf Py5 basierten und daher auch nicht den <code>JPype</code>-Übersetzer aufrufen mußten. Meine beiden Partikel-Klassen waren aber Py5-Klassen und mußten daher <code>JPype</code> passieren. Nur: Woher sollte <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> das wissen?</p>
+<p>Die Lösung fand ich in der <a href="https://py5coding.org/content/importing_py5_code.html#importing-imported-mode-code">Py5-Dokmentation</a>: Der Datei muß als »magischer Kommentar« die Zeile</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># PY5 IMPORTED MODE CODE</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>vorangestellt werden (es muß nicht unbedingt die erste Kommentarzeile sein, aber sie sollte vor den eigentlichen Codezeilen stehen). Und dieser »magische Kommentar« ist unabhängig von der Groß- oder Kleinschreibung: <code># py5 imported mode code</code> funktioniert ebenfalls, auch <code># py5 Imported Mode code</code> bringt keine Probleme. Ich empfehle aber zur besseren Hervorhebung und um die Zeile von den gewöhnlichen Kommentaren zu unterscheiden, die Großschreibung.</p>
+<p>Der zweite Stolperstein war ein seltsamer – denn darüber stolpern vermutlich nur diejenigen, die Processings PDE gewohnt sind. Dieser war es nämlich völlig egal, welcher Tab mit welcher Datei gerade offen war (den Fokus hatte), der <code>Run</code>-Befehl startete immmer die Datei mit dem jeweiligen Hauptprogramm.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53102946740/"><img src="images/falschertabpy5.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Hier zeigt Thonny im Py5-Mode ein anderes Verhalten. Hat man zum Beispiel den Tab mit den Klassen-Definitionen offen, dann versucht der Interpreter, diese Datei zu starten. Und da er durch das »magische Kommando« <code># PY5 IMPORTED MODE CODE</code> weiß, das dies ein Py5-Programm ist, startet er ohne eine Fehlermeldung in »leeres« Py5-Programm mit dem Default-Fensterchen (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/53102946740/">Screenshot</a>).</p>
+<p>Eigentlich ist das ein logisches Verhalten, aber glaubt mir, ich habe lange geflucht und den Fehler bei mir und in meinem Code gesucht, bis ich darauf gekommen bin.</p>
+<p>Nachdem ich nun diese Hürden überwunden hatte, konnte ich mich endlich an meinem Partikelsystem erfreuen. Es besitzt einen <em>Emitter</em>, der zufällig entweder Scheiben oder Rechtecke (genauer: Quardrate) ausstößt, Diese fallen nach unten, und verblassen dabei, je länger sie leben (im System sind). Ist ihre Lebenszeit abgelaufen, werden sie aus dem System entfernt. Dafür habe ich – in Anlehnung an <em>Daniel Shiffmans</em> Sketch, eine Klasse <code>Particle()</code> entworfen:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">class</span> Particle():</span>
+<span id="cb2-2"><a href="#cb2-2"></a>    </span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb2-4"><a href="#cb2-4"></a>        <span class="va">self</span>.loc <span class="op">=</span> Py5Vector(_x, _y)</span>
+<span id="cb2-5"><a href="#cb2-5"></a>        <span class="va">self</span>.acc <span class="op">=</span> Py5Vector(<span class="dv">0</span>, <span class="fl">0.05</span>)</span>
+<span id="cb2-6"><a href="#cb2-6"></a>        <span class="va">self</span>.vel <span class="op">=</span> Py5Vector(random(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>), random(<span class="op">-</span><span class="fl">2.0</span>, <span class="fl">0.0</span>))</span>
+<span id="cb2-7"><a href="#cb2-7"></a>        <span class="va">self</span>.col <span class="op">=</span> random_choice(codingtrain)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>        <span class="va">self</span>.lifespan <span class="op">=</span> <span class="fl">255.0</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>        <span class="va">self</span>.d <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>        </span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="kw">def</span> run(<span class="va">self</span>):</span>
+<span id="cb2-12"><a href="#cb2-12"></a>        <span class="va">self</span>.update()</span>
+<span id="cb2-13"><a href="#cb2-13"></a>        <span class="va">self</span>.show()</span>
+<span id="cb2-14"><a href="#cb2-14"></a>        </span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb2-16"><a href="#cb2-16"></a>        <span class="va">self</span>.vel <span class="op">+=</span> <span class="va">self</span>.acc</span>
+<span id="cb2-17"><a href="#cb2-17"></a>        <span class="va">self</span>.loc <span class="op">+=</span> <span class="va">self</span>.vel</span>
+<span id="cb2-18"><a href="#cb2-18"></a>        <span class="va">self</span>.lifespan <span class="op">-=</span> random(<span class="fl">0.5</span>, <span class="fl">1.0</span>)<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>        </span>
+<span id="cb2-20"><a href="#cb2-20"></a>    <span class="kw">def</span> show(<span class="va">self</span>):</span>
+<span id="cb2-21"><a href="#cb2-21"></a>        stroke(<span class="dv">0</span>, <span class="va">self</span>.lifespan)</span>
+<span id="cb2-22"><a href="#cb2-22"></a>        fill(<span class="va">self</span>.col[<span class="dv">0</span>], <span class="va">self</span>.col[<span class="dv">1</span>], <span class="va">self</span>.col[<span class="dv">2</span>], <span class="va">self</span>.lifespan)</span>
+<span id="cb2-23"><a href="#cb2-23"></a>        circle(<span class="va">self</span>.loc.x, <span class="va">self</span>.loc.y, <span class="va">self</span>.d)</span>
+<span id="cb2-24"><a href="#cb2-24"></a>        </span>
+<span id="cb2-25"><a href="#cb2-25"></a>    <span class="kw">def</span> is_not_alive(<span class="va">self</span>):</span>
+<span id="cb2-26"><a href="#cb2-26"></a>        <span class="cf">if</span> <span class="va">self</span>.lifespan <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb2-27"><a href="#cb2-27"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-29"><a href="#cb2-29"></a>            <span class="cf">return</span> <span class="va">False</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dabei habe ich dann den dritten Stolperstein überwinden müssen: <code>is_dead</code> ist in Py5 ein reserviertes Wort, daher habe ich die Methode <code>is_not_alive()</code> genannt.</p>
+<p>Die Klasse <code>RectParticle()</code> erbt von <code>Particle</code>. Daher waren im <em>Constructor</em> nur der <code>rect_mode(CENTER)</code> (wird für die Rotation der Quadrate gebraucht) und der Rotationswinkel zusätzlich nötig:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">class</span> RectParticle(Particle):</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    </span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb3-4"><a href="#cb3-4"></a>        Particle.<span class="fu">__init__</span>(<span class="va">self</span>, _x, _y)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>        rect_mode(CENTER)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>        <span class="va">self</span>.rota <span class="op">=</span> PI<span class="op">/</span><span class="dv">3</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Und die Methode <code>show()</code> mußte – damit die Quadrate rotieren – komplett überschrieben werden. Hier kam die von mir heiß geliebte (weil in meinem Augen »pythonischere«) Sprachkonstruktion mit dem <code>with</code>-Statement zum Einsatz:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>    <span class="kw">def</span> show(<span class="va">self</span>):</span>
+<span id="cb4-2"><a href="#cb4-2"></a>        stroke(<span class="dv">0</span>, <span class="va">self</span>.lifespan)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>        fill(<span class="va">self</span>.col[<span class="dv">0</span>], <span class="va">self</span>.col[<span class="dv">1</span>], <span class="va">self</span>.col[<span class="dv">2</span>], <span class="va">self</span>.lifespan)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>        <span class="cf">with</span> push_matrix():</span>
+<span id="cb4-5"><a href="#cb4-5"></a>            translate(<span class="va">self</span>.loc.x, <span class="va">self</span>.loc.y)</span>
+<span id="cb4-6"><a href="#cb4-6"></a>            rotate(<span class="va">self</span>.rota)</span>
+<span id="cb4-7"><a href="#cb4-7"></a>            rect(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">20</span>)</span>
+<span id="cb4-8"><a href="#cb4-8"></a>        <span class="va">self</span>.rota <span class="op">+=</span> random(<span class="fl">0.02</span>, <span class="fl">.10</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Als zusätzliche Reminiszenz an <em>Daniel Shiffman</em> und seinem <a href="https://thecodingtrain.com/">Coding Train</a> habe ich die Partikel noch mit der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/codingtrainfarben.html">Coding Train Farbpalette</a> eingefärbt.</p>
+<p>Nun zum kompletten Programm, damit Ihr auch alles nachlesen, nachvollziehen, nachprogrammieren und weiterentwickeln könnt. Das Hauptprogramm (<code>particles01.py</code>) ist – dank der Partikelklassen – von erfrischender Kürze:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="im">from</span> particles <span class="im">import</span> Particle, RectParticle</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>WIDTH, HEIGHT <span class="op">=</span> <span class="dv">500</span>, <span class="dv">500</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>START_X, START_Y <span class="op">=</span> <span class="dv">250</span>, <span class="dv">70</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>particles <span class="op">=</span> []</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="kw">def</span> setup():</span>
+<span id="cb5-9"><a href="#cb5-9"></a>    size(WIDTH, HEIGHT)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="co"># window_move(1400, 30)</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>    window_title(<span class="st">"Partikelsystem 1"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    </span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="kw">def</span> draw():</span>
+<span id="cb5-14"><a href="#cb5-14"></a>    background(<span class="dv">49</span>, <span class="dv">197</span>, <span class="dv">244</span>)   <span class="co"># Hellblau</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>    change <span class="op">=</span> random(<span class="dv">10</span>)</span>
+<span id="cb5-16"><a href="#cb5-16"></a>    <span class="cf">if</span> change <span class="op">&lt;=</span> <span class="dv">5</span>:</span>
+<span id="cb5-17"><a href="#cb5-17"></a>        particles.append(Particle(START_X, START_Y))</span>
+<span id="cb5-18"><a href="#cb5-18"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-19"><a href="#cb5-19"></a>        particles.append(RectParticle(START_X, START_Y))</span>
+<span id="cb5-20"><a href="#cb5-20"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(particles) <span class="op">-</span> <span class="dv">1</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>):</span>
+<span id="cb5-21"><a href="#cb5-21"></a>        particles[i].run()</span>
+<span id="cb5-22"><a href="#cb5-22"></a>        <span class="cf">if</span> particles[i].is_not_alive():</span>
+<span id="cb5-23"><a href="#cb5-23"></a>            particles.pop(i)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die (auskommentierte) Zeile <code>window_move(1400, 30)</code> ist ein Hack, der das Ausgabefenster auf meinen zweiten Monitor positioniert. Ihr solltet sie daher nur verwenden, wenn Ihr ebenfalls einen zweiten Bildschirm besitzt und dessen Pixelkoordinaten kennt.</p>
+<p>Etwas fetter ist dann schon die Datei <code>particles.py</code> mit den beiden Klassen:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># PY5 IMPORTED MODE CODE</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># Coding Train Farbpalette</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>codingtrain <span class="op">=</span> [(<span class="dv">240</span>, <span class="dv">80</span>, <span class="dv">37</span>), (<span class="dv">248</span>, <span class="dv">158</span>, <span class="dv">80</span>), (<span class="dv">248</span>, <span class="dv">239</span>, <span class="dv">34</span>) , (<span class="dv">240</span>, <span class="dv">99</span>, <span class="dv">164</span>),</span>
+<span id="cb6-5"><a href="#cb6-5"></a>               (<span class="dv">146</span>, <span class="dv">82</span>, <span class="dv">161</span>), (<span class="dv">129</span>, <span class="dv">122</span>, <span class="dv">198</span>), (<span class="dv">98</span>, <span class="dv">199</span>, <span class="dv">119</span>)]</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">class</span> Particle():</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    </span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb6-10"><a href="#cb6-10"></a>        <span class="va">self</span>.loc <span class="op">=</span> Py5Vector(_x, _y)</span>
+<span id="cb6-11"><a href="#cb6-11"></a>        <span class="va">self</span>.acc <span class="op">=</span> Py5Vector(<span class="dv">0</span>, <span class="fl">0.05</span>)</span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="va">self</span>.vel <span class="op">=</span> Py5Vector(random(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>), random(<span class="op">-</span><span class="fl">2.0</span>, <span class="fl">0.0</span>))</span>
+<span id="cb6-13"><a href="#cb6-13"></a>        <span class="va">self</span>.col <span class="op">=</span> random_choice(codingtrain)</span>
+<span id="cb6-14"><a href="#cb6-14"></a>        <span class="va">self</span>.lifespan <span class="op">=</span> <span class="fl">255.0</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>        <span class="va">self</span>.d <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>        </span>
+<span id="cb6-17"><a href="#cb6-17"></a>    <span class="kw">def</span> run(<span class="va">self</span>):</span>
+<span id="cb6-18"><a href="#cb6-18"></a>        <span class="va">self</span>.update()</span>
+<span id="cb6-19"><a href="#cb6-19"></a>        <span class="va">self</span>.show()</span>
+<span id="cb6-20"><a href="#cb6-20"></a>        </span>
+<span id="cb6-21"><a href="#cb6-21"></a>    <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb6-22"><a href="#cb6-22"></a>        <span class="va">self</span>.vel <span class="op">+=</span> <span class="va">self</span>.acc</span>
+<span id="cb6-23"><a href="#cb6-23"></a>        <span class="va">self</span>.loc <span class="op">+=</span> <span class="va">self</span>.vel</span>
+<span id="cb6-24"><a href="#cb6-24"></a>        <span class="va">self</span>.lifespan <span class="op">-=</span> random(<span class="fl">0.5</span>, <span class="fl">1.0</span>)<span class="op">*</span><span class="dv">2</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>        </span>
+<span id="cb6-26"><a href="#cb6-26"></a>    <span class="kw">def</span> show(<span class="va">self</span>):</span>
+<span id="cb6-27"><a href="#cb6-27"></a>        stroke(<span class="dv">0</span>, <span class="va">self</span>.lifespan)</span>
+<span id="cb6-28"><a href="#cb6-28"></a>        fill(<span class="va">self</span>.col[<span class="dv">0</span>], <span class="va">self</span>.col[<span class="dv">1</span>], <span class="va">self</span>.col[<span class="dv">2</span>], <span class="va">self</span>.lifespan)</span>
+<span id="cb6-29"><a href="#cb6-29"></a>        circle(<span class="va">self</span>.loc.x, <span class="va">self</span>.loc.y, <span class="va">self</span>.d)</span>
+<span id="cb6-30"><a href="#cb6-30"></a>        </span>
+<span id="cb6-31"><a href="#cb6-31"></a>    <span class="kw">def</span> is_not_alive(<span class="va">self</span>):</span>
+<span id="cb6-32"><a href="#cb6-32"></a>        <span class="cf">if</span> <span class="va">self</span>.lifespan <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb6-33"><a href="#cb6-33"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb6-34"><a href="#cb6-34"></a>        <span class="cf">else</span>:</span>
+<span id="cb6-35"><a href="#cb6-35"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb6-36"><a href="#cb6-36"></a>        </span>
+<span id="cb6-37"><a href="#cb6-37"></a><span class="kw">class</span> RectParticle(Particle):</span>
+<span id="cb6-38"><a href="#cb6-38"></a>    </span>
+<span id="cb6-39"><a href="#cb6-39"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, _x, _y):</span>
+<span id="cb6-40"><a href="#cb6-40"></a>        Particle.<span class="fu">__init__</span>(<span class="va">self</span>, _x, _y)</span>
+<span id="cb6-41"><a href="#cb6-41"></a>        rect_mode(CENTER)</span>
+<span id="cb6-42"><a href="#cb6-42"></a>        <span class="va">self</span>.rota <span class="op">=</span> PI<span class="op">/</span><span class="dv">3</span></span>
+<span id="cb6-43"><a href="#cb6-43"></a>    </span>
+<span id="cb6-44"><a href="#cb6-44"></a>    <span class="kw">def</span> show(<span class="va">self</span>):</span>
+<span id="cb6-45"><a href="#cb6-45"></a>        stroke(<span class="dv">0</span>, <span class="va">self</span>.lifespan)</span>
+<span id="cb6-46"><a href="#cb6-46"></a>        fill(<span class="va">self</span>.col[<span class="dv">0</span>], <span class="va">self</span>.col[<span class="dv">1</span>], <span class="va">self</span>.col[<span class="dv">2</span>], <span class="va">self</span>.lifespan)</span>
+<span id="cb6-47"><a href="#cb6-47"></a>        <span class="cf">with</span> push_matrix():</span>
+<span id="cb6-48"><a href="#cb6-48"></a>            translate(<span class="va">self</span>.loc.x, <span class="va">self</span>.loc.y)</span>
+<span id="cb6-49"><a href="#cb6-49"></a>            rotate(<span class="va">self</span>.rota)</span>
+<span id="cb6-50"><a href="#cb6-50"></a>            rect(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">20</span>, <span class="dv">20</span>)</span>
+<span id="cb6-51"><a href="#cb6-51"></a>        <span class="va">self</span>.rota <span class="op">+=</span> random(<span class="fl">0.02</span>, <span class="fl">.10</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Auf meinem betagten MacBook Pro (von 2012) läuft der Sketch gerade noch in erträglicher Geschwindigkeit. Wer über potentere Hardware verfügt, kann ja mal versuchen, den <code>lifespan</code> der Partikel zu verlängern.</p>
+<p>Natürlich sind die Dateien auch in meinem <a href="https://github.com/kantel/py5/tree/main/noc">GitHub-Repositorium</a> abgelegt (<a href="https://github.com/kantel/py5/blob/main/noc/particlesys01.py">particles01.py</a> und <a href="https://github.com/kantel/py5/blob/main/noc/particles.py">particles.py</a>). Ich möchte die Experimente gerne noch ein wenig fortführen. Also seid auf weitere Beiträge zu Py5 gespannt. <em>Still digging!</em></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

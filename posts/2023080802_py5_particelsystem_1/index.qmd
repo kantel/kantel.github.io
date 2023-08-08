@@ -1,0 +1,183 @@
+---
+title: "»The Nature of Code« in Python (Py5): Ein einfaches Partikelsystem (Stage&nbsp;1)"
+author: "Jörg Kantel"
+date: "2023-08-08 20:05:00"
+categories: [Py5, Processing, Python, Creative Coding, Nature of Code]
+image: "images/partikelsystempy5.jpg"
+---
+
+[![](images/partikelsystempy5-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53099848727/)
+
+Ich habe noch gestern meine [Ankündigung](https://kantel.github.io/posts/2023080701_partikelsysteme/) wahrgemacht und ein einfaches [Partikelsystem](https://de.wikipedia.org/wiki/Partikelsystem) in [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) implementiert. Das ging deshalb so flott, nicht nur, weil ich ähnliches schon einmal in [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) [programmiert](http://blog.schockwellenreiter.de/2019/05/2019050501.html), sondern ich auch schon einmal [Versuche](http://blog.schockwellenreiter.de/2021/08/2021081501.html) mit der [NodeBox 1](http://blog.schockwellenreiter.de/2018/05/2018052501.html) und sogar mit [Pythons Schildkröte](http://blog.schockwellenreiter.de/2018/05/2018052501.html) angestellt hatte. Alle diese Programme basierten auf der [Processing (Java)](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Version eines Partikelsystems, die *Daniel Shiffman* in seinem wunderbaren Buch »[The Nature of Code](https://natureofcode.com/) im [vierten Kapitel](https://natureofcode.com/book/chapter-4-particle-systems/) (Seiten 143-188) implementiert hatte.
+
+<div style="float: right; margin-left: 12px; margin-top: 6px;">[![](images/noc.jpg)](https://natureofcode.com/)</div>
+
+Dadurch fiel mir der Port nach Py5 nicht allzu schwer, dennoch habe ich dabei einiges über Py5 und seine Besonderheiten gelernt. Als erstes: Ich hatte die Klassen `Particle()` und `RectParticle()` in eine separate Datei ausgelagert und daher endlich verstanden, welche [Probleme seit dem letzten Update](https://kantel.github.io/posts/2023072402_py5_update/) mit dem `import`-Befehl im Py5-*[Imported Mode](http://py5coding.org/content/importing_py5_code.html#importing-imported-mode-code)* nun behoben seien. Das mir die Probleme bisher nicht unterkamen, lag daran, daß ich nur Bibliotheken/Module importiert hatte, die nicht auf Py5 basierten und daher auch nicht den `JPype`-Übersetzer aufrufen mußten. Meine beiden Partikel-Klassen waren aber Py5-Klassen und mußten daher `JPype` passieren. Nur: Woher sollte [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) das wissen?
+
+Die Lösung fand ich in der [Py5-Dokmentation](https://py5coding.org/content/importing_py5_code.html#importing-imported-mode-code): Der Datei muß als »magischer Kommentar« die Zeile
+
+~~~python
+# PY5 IMPORTED MODE CODE
+~~~
+
+vorangestellt werden (es muß nicht unbedingt die erste Kommentarzeile sein, aber sie sollte vor den eigentlichen Codezeilen stehen). Und dieser »magische Kommentar« ist unabhängig von der Groß- oder Kleinschreibung: `# py5 imported mode code` funktioniert ebenfalls, auch `# py5 Imported Mode code` bringt keine Probleme. Ich empfehle aber zur besseren Hervorhebung und um die Zeile von den gewöhnlichen Kommentaren zu unterscheiden, die Großschreibung.
+
+Der zweite Stolperstein war ein seltsamer -- denn darüber stolpern vermutlich nur diejenigen, die Processings PDE gewohnt sind. Dieser war es nämlich völlig egal, welcher Tab mit welcher Datei gerade offen war (den Fokus hatte), der `Run`-Befehl startete immmer die Datei mit dem jeweiligen Hauptprogramm.
+
+[![](images/falschertabpy5.jpg)](https://www.flickr.com/photos/schockwellenreiter/53102946740/)
+
+Hier zeigt Thonny im Py5-Mode ein anderes Verhalten. Hat man zum Beispiel den Tab mit den Klassen-Definitionen offen, dann versucht der Interpreter, diese Datei zu starten. Und da er durch das »magische Kommando« `# PY5 IMPORTED MODE CODE` weiß, das dies ein Py5-Programm ist, startet er ohne eine Fehlermeldung in »leeres« Py5-Programm mit dem Default-Fensterchen (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53102946740/)).
+
+Eigentlich ist das ein logisches Verhalten, aber glaubt mir, ich habe lange geflucht und den Fehler bei mir und in meinem Code gesucht, bis ich darauf gekommen bin.
+
+Nachdem ich nun diese Hürden überwunden hatte, konnte ich mich endlich an meinem Partikelsystem erfreuen. Es besitzt einen *Emitter*, der zufällig entweder Scheiben oder Rechtecke (genauer: Quardrate) ausstößt, Diese fallen nach unten, und verblassen dabei, je länger sie leben (im System sind). Ist ihre Lebenszeit abgelaufen, werden sie aus dem System entfernt. Dafür habe ich -- in Anlehnung an *Daniel Shiffmans* Sketch, eine Klasse `Particle()` entworfen:
+
+~~~python
+class Particle():
+    
+    def __init__(self, _x, _y):
+        self.loc = Py5Vector(_x, _y)
+        self.acc = Py5Vector(0, 0.05)
+        self.vel = Py5Vector(random(-1.0, 1.0), random(-2.0, 0.0))
+        self.col = random_choice(codingtrain)
+        self.lifespan = 255.0
+        self.d = 20
+        
+    def run(self):
+        self.update()
+        self.show()
+        
+    def update(self):
+        self.vel += self.acc
+        self.loc += self.vel
+        self.lifespan -= random(0.5, 1.0)*2
+        
+    def show(self):
+        stroke(0, self.lifespan)
+        fill(self.col[0], self.col[1], self.col[2], self.lifespan)
+        circle(self.loc.x, self.loc.y, self.d)
+        
+    def is_not_alive(self):
+        if self.lifespan <= 0:
+            return True
+        else:
+            return False
+~~~
+
+Dabei habe ich dann den dritten Stolperstein überwinden müssen: `is_dead` ist in Py5 ein reserviertes Wort, daher habe ich die Methode `is_not_alive()` genannt.
+
+Die Klasse `RectParticle()` erbt von `Particle`. Daher waren im *Constructor* nur der `rect_mode(CENTER)` (wird für die Rotation der Quadrate gebraucht) und der Rotationswinkel zusätzlich nötig:
+
+~~~python
+class RectParticle(Particle):
+    
+    def __init__(self, _x, _y):
+        Particle.__init__(self, _x, _y)
+        rect_mode(CENTER)
+        self.rota = PI/3
+~~~
+
+Und die Methode `show()` mußte -- damit die Quadrate rotieren -- komplett überschrieben werden. Hier kam die von mir heiß geliebte (weil in meinem Augen »pythonischere«) Sprachkonstruktion mit dem `with`-Statement zum Einsatz:
+
+~~~python
+    def show(self):
+        stroke(0, self.lifespan)
+        fill(self.col[0], self.col[1], self.col[2], self.lifespan)
+        with push_matrix():
+            translate(self.loc.x, self.loc.y)
+            rotate(self.rota)
+            rect(0, 0, 20, 20)
+        self.rota += random(0.02, .10)
+~~~
+
+Als zusätzliche Reminiszenz an *Daniel Shiffman* und seinem [Coding Train](https://thecodingtrain.com/) habe ich die Partikel noch mit der [Coding Train Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/codingtrainfarben.html) eingefärbt.
+
+Nun zum kompletten Programm, damit Ihr auch alles nachlesen, nachvollziehen, nachprogrammieren und weiterentwickeln könnt. Das Hauptprogramm (`particles01.py`) ist -- dank der Partikelklassen -- von erfrischender Kürze:
+
+~~~python
+from particles import Particle, RectParticle
+
+WIDTH, HEIGHT = 500, 500
+START_X, START_Y = 250, 70
+
+particles = []
+
+def setup():
+    size(WIDTH, HEIGHT)
+    # window_move(1400, 30)
+    window_title("Partikelsystem 1")
+    
+def draw():
+    background(49, 197, 244)   # Hellblau
+    change = random(10)
+    if change <= 5:
+        particles.append(Particle(START_X, START_Y))
+    else:
+        particles.append(RectParticle(START_X, START_Y))
+    for i in range(len(particles) - 1, 0, -1):
+        particles[i].run()
+        if particles[i].is_not_alive():
+            particles.pop(i)
+~~~
+
+Die (auskommentierte) Zeile `window_move(1400, 30)` ist ein Hack, der das Ausgabefenster auf meinen zweiten Monitor positioniert. Ihr solltet sie daher nur verwenden, wenn Ihr ebenfalls einen zweiten Bildschirm besitzt und dessen Pixelkoordinaten kennt.
+
+Etwas fetter ist dann schon die Datei `particles.py` mit den beiden Klassen:
+
+~~~python
+# PY5 IMPORTED MODE CODE
+
+# Coding Train Farbpalette
+codingtrain = [(240, 80, 37), (248, 158, 80), (248, 239, 34) , (240, 99, 164),
+               (146, 82, 161), (129, 122, 198), (98, 199, 119)]
+
+class Particle():
+    
+    def __init__(self, _x, _y):
+        self.loc = Py5Vector(_x, _y)
+        self.acc = Py5Vector(0, 0.05)
+        self.vel = Py5Vector(random(-1.0, 1.0), random(-2.0, 0.0))
+        self.col = random_choice(codingtrain)
+        self.lifespan = 255.0
+        self.d = 20
+        
+    def run(self):
+        self.update()
+        self.show()
+        
+    def update(self):
+        self.vel += self.acc
+        self.loc += self.vel
+        self.lifespan -= random(0.5, 1.0)*2
+        
+    def show(self):
+        stroke(0, self.lifespan)
+        fill(self.col[0], self.col[1], self.col[2], self.lifespan)
+        circle(self.loc.x, self.loc.y, self.d)
+        
+    def is_not_alive(self):
+        if self.lifespan <= 0:
+            return True
+        else:
+            return False
+        
+class RectParticle(Particle):
+    
+    def __init__(self, _x, _y):
+        Particle.__init__(self, _x, _y)
+        rect_mode(CENTER)
+        self.rota = PI/3
+    
+    def show(self):
+        stroke(0, self.lifespan)
+        fill(self.col[0], self.col[1], self.col[2], self.lifespan)
+        with push_matrix():
+            translate(self.loc.x, self.loc.y)
+            rotate(self.rota)
+            rect(0, 0, 20, 20)
+        self.rota += random(0.02, .10)
+~~~
+
+Auf meinem betagten MacBook Pro (von 2012) läuft der Sketch gerade noch in erträglicher Geschwindigkeit. Wer über potentere Hardware verfügt, kann ja mal versuchen, den `lifespan` der Partikel zu verlängern.
+
+Natürlich sind die Dateien auch in meinem [GitHub-Repositorium](https://github.com/kantel/py5/tree/main/noc) abgelegt  ([particles01.py](https://github.com/kantel/py5/blob/main/noc/particlesys01.py) und [particles.py](https://github.com/kantel/py5/blob/main/noc/particles.py)). Ich möchte die Experimente gerne noch ein wenig fortführen. Also seid auf weitere Beiträge zu Py5 gespannt. *Still digging!*
