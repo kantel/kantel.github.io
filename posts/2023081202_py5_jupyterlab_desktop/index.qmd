@@ -1,0 +1,47 @@
+---
+title: "Es muß nicht immer Thonny sein: Py5 und JupyterLab Desktop"
+author: "Jörg Kantel"
+date: "2023-08-12 20:15:00"
+categories: [Py5, JupyterLab Desktop]
+image: "images/py5jupyterlabdesktop.jpg"
+---
+
+[![](images/py5jupyterlabdesktop-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53110766127/)
+
+Da ich mich in Erinnerung an meine frühen Jahre, in denen ich offenen Auges und mit wachsender Begeisterung in die *Mac-Only-Falle* getappt war, mittlerweile sehr unwohl fühle, wenn ich von einem Programm und/oder einem Betriebssystem abhängig bin, wollte ich mich bei meinen [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html)-Experimenten aus meiner Abhängigkeit von [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) lösen. Denn immerhin habe ich mit Py5 noch einiges vor.
+
+Ich hatte schon vor einigen Monaten versucht, Py5 auch mit [Jupyter](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html) respektive [JupyterLab](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) zu verbandeln. Nachdem ich erst einmal in ein [mittleres Fiasko](http://blog.schockwellenreiter.de/2022/08/2022082302.html) geschlittert war, konnte ich dann doch mit Hilfe der Leserinnen und Leser des *Schockwellenreiters* das [Monster JupyterLab zähmen](http://blog.schockwellenreiter.de/2022/08/2022082601.html). Das benötigte jedoch eine [separate virtuelle Umgebung](http://blog.schockwellenreiter.de/2022/08/2022082801.html) und seltsamerweise wollte dennoch [JupyterLab Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html) einfach [nicht mit mir spielen](http://blog.schockwellenreiter.de/2022/08/2022082701.html). Und das war ein Game-Stopper, weil ich vom Editieren im Browser immer Pickel bekomme.
+
+Nun sind einige Monate ins Land gezogen und Jupyter inklusive JupyterLab/JupyterLab Desktop sind in einer brandneuen, [stark verbesserten Version erschienen](https://kantel.github.io/posts/2023060802_jupyterlab_4/). Und auch von [Py5 gab es ein Update](https://kantel.github.io/posts/2023050601_py5_090a0/). Also habe ich einen neuen Versuch gewagt. Ich habe mit
+
+~~~python
+pip install py5
+~~~
+
+erst einmal mein [Anaconda-Python](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html) mit Py5 vermählt. Danach habe ich mit
+
+~~~python
+pip install py5jupyter
+~~~
+
+auch noch die `py5jupyter`-Bibliothek installiert (die in der [Dokumentation](https://py5coding.org/content/install.html) vorgeschlagene Installation »auf einem Rutsch« mit `pip install py5[jupyter]` funktionierte bei mir nicht, vermutlich weil ich bei meinen früheren Experimenten schon ein -- wenn auch älteres -- Py5 für mein Anaconda-Python installiert hatte).
+
+Danach war ich mutig geworden und habe mit
+
+~~~python
+python -m py5jupyter.kernels.py5.install --sys-prefix
+~~~
+
+den `py5 Jupyter Notebook Kernel` und mit
+
+~~~python
+python -m py5jupyter.kernels.py5bot.install --sys-prefix
+~~~
+
+den `py5 Kernel` für den [»statischen Mode« in Jupyter](https://py5coding.org/content/py5_modes.html) installiert. Für den letzten habe ich momentan zwar noch kein Anwendungsstenario, aber man kann ja nie wissen.
+
+Und was soll ich sagen? Py5 lief ohne zu Meckern in JupyterLab Desktop. Und zwar in der Standard Anaconda-Umgebung ohne vorher separat eine virtuelle Umgebung einrichten zu müssen. Der *Module Mode* (und vermutlich auch der *Class Mode*) lief im Standard-Anaconda-Jupyter-Kernel, für den *Imported Mode* (das ist der Mode, mit dem Py5 auch in Thonny läuft) mußte man oben links im JuypterLab Desktop Menü auf den `py5`-Kernel umschalten uns für den *Static Mode* stellte JupyterLab Desktop den `py5bot`-Kernel an gleicher Stelle bereit.
+
+Der fünfte Mode *([Processing Mode](https://py5coding.org/content/processing_mode.html))* ist eine Art Bridge zwischen Py5, Processing und Java und klingt danach, als ob er nur für Leute wäre, die nicht nur Seltsames vorhaben, sondern auch genau wissen, was sie tun. Ich habe erst einmal die Finger davon gelassen und bin auch so mit dem Erreichten zufrieden.
+
+Auch wenn es etwas Zeit und einige Versuche gekostet hat, ich hatte jedenfalls Spaß an der Installation und freue mich, daß Py5 bei mir jetzt endlich auch mit und in JupyterLab Desktop läuft. Vielleicht werden Jupyter Notebooks und ich doch noch Freunde. Vor allem, weil erste Versuche gezeigt haben, daß Py5 in Jupyter Notebooks nun nicht nur in JupyterLab Desktop, sondern auch in [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) (nach Installation der [Jupyter-Erweiterungen](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)) läuft. Da tun sich doch noch viele weitere Möglichkeiten auf. *Still digging!*
