@@ -10,7 +10,207 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Sun, 13 Aug 2023 14:35:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 13 Aug 2023 19:00:00 GMT</lastBuildDate>
+<item>
+  <title>Py5 im Module Mode in Visual Studio Code</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023081302_py5_vscode/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53113984909/"><img src="https://kantel.github.io/posts/2023081302_py5_vscode/images/py5modulemode-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich bin Euch ja noch den Beweis schuldig, daß <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> im <a href="https://py5coding.org/content/py5_modes.html">Module Mode</a> so ziemlich mit allem zusammenspielt, was auch nur im Entferntesten nach einem Editor oder einer IDE aussieht. Als Beispiel habe ich es hier einmal mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> durchgezogen (vergleiche <a href="https://www.flickr.com/photos/schockwellenreiter/53113984909/">Screenshot</a>), aber auch andere Editoren (wie zum Beispiel <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/geany.html">Geany</a>) sollten damit zurecht kommen:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Random Rectangles in Py5</span></span>
+<span id="cb1-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Module Mode</span></span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> py5</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb1-6">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb1-7">NO_RECT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span></span>
+<span id="cb1-8"></span>
+<span id="cb1-9">a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># alpha</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11">colors <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">43</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">95</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">126</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">114</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">149</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">156</span>),</span>
+<span id="cb1-12">          py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">139</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">72</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">82</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">57</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">92</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">152</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">169</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">193</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>),</span>
+<span id="cb1-13">          py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">212</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">108</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">211</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">132</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">65</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">112</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">198</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">169</span>),</span>
+<span id="cb1-14">          py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">118</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">222</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">151</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">152</span>), py5.color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">237</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">199</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">176</span>)]</span>
+<span id="cb1-15"></span>
+<span id="cb1-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> setup():</span>
+<span id="cb1-17">    py5.size(WIDTH, HEIGHT)</span>
+<span id="cb1-18">    py5.window_move(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1400</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb1-19">    py5.window_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Random Rectangles"</span>)</span>
+<span id="cb1-20">    py5.rect_mode(py5.CENTER)</span>
+<span id="cb1-21">    py5.no_loop()</span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb1-24">    py5.background(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">233</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">195</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">91</span>)</span>
+<span id="cb1-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(NO_RECT):</span>
+<span id="cb1-26">        py5.fill(py5.random_choice(colors), a)</span>
+<span id="cb1-27">        rect_w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> py5.random_int(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb1-28">        rect_h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> py5.random_int(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb1-29">        py5.rect(py5.random_int(rect_w, py5.width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> rect_w),</span>
+<span id="cb1-30">                 py5.random_int(rect_h, py5.height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> rect_h),</span>
+<span id="cb1-31">                 rect_w, rect_h)</span>
+<span id="cb1-32">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span>
+<span id="cb1-33"></span>
+<span id="cb1-34">py5.run_sketch()</span></code></pre></div>
+<p>Was mich daran ein wenig stört, ist die inflationäre Verwendung des Prefixes <code>py5.</code>. Weniger, weil ich ein fauler Tipper bin (das auch), sondern mehr, weil ich oft überlegen muß, was denn nun ein Py5-Kommando ist und was nicht. Aber das passiert mir zum Beispiel mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">Numpy</a> (Prefix: <code>np.</code>) und anderen, umfangreichen Bibliotheken ebenfalls. Damit muß man leben&nbsp;…</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Py5</category>
+  <category>Visual Studio Code</category>
+  <guid>https://kantel.github.io/posts/2023081302_py5_vscode/index.html</guid>
+  <pubDate>Sun, 13 Aug 2023 19:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023081302_py5_vscode/images/py5modulemode.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Thonny Version 4.1.2 freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2195,31 +2395,6 @@ font-style: inherit;">}</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023080202_alice_twine_reloaded/index.html</guid>
   <pubDate>Wed, 02 Aug 2023 14:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023080202_alice_twine_reloaded/images/alicetwine.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Mozilla veröffentlicht neue Firefox-Version</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023080201_firefox_update_116/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQneTGl9grq2Iv6pSYqPqLBe2-v_neAxwJfhxoD7mRCOwBmN6wIA5T9mXMPNAM1VvsLUCDVJPgaINNHMNiMx3VqAGFtHo3Jm42N1haldla0zBK0KkdrB6-b4HkmUycmlAXTUU2jvjhopHaAFeW2H732AbMntrwXTSvCNvx_x1VG1OVAa_Nbj8AtAVD7-oK/s1684/june%2015%201910.jpg"><img src="https://kantel.github.io/posts/2023080201_firefox_update_116/images/powers1910-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Die Entwickler des Mozilla Firefox haben die neue Version 116.0 veröffentlicht und darin auch wieder <a href="https://www.mozilla.org/en-US/firefox/116.0/releasenotes/">Sicherheitslücken</a> behoben.</p>
-<p>Firefox weist selbst auf dieses Update hin. Diese Prozedur kann aber auch wie immer über das Menü <code>Hilfe &gt; Über Firefox</code> angestoßen werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<p><em>(Bild: <a href="http://john-adcock.blogspot.com/2023/07/t-e-powers-two-obituaries.html">Thomas E. Powers</a> (1870-1939), Chicago Examiner, 15. Juni 1910)</em></p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2023080201_firefox_update_116/index.html</guid>
-  <pubDate>Wed, 02 Aug 2023 13:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023080201_firefox_update_116/images/powers1910.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,50 @@
+---
+title: "Py5 im Module Mode in Visual Studio Code"
+author: "Jörg Kantel"
+date: "2023-08-13 21:00:00"
+categories: [Python, Py5, Visual Studio Code]
+image: "images/py5modulemode.jpg"
+---
+
+[![](images/py5modulemode-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53113984909/)
+
+Ich bin Euch ja noch den Beweis schuldig, daß [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) im [Module Mode](https://py5coding.org/content/py5_modes.html) so ziemlich mit allem zusammenspielt, was auch nur im Entferntesten nach einem Editor oder einer IDE aussieht. Als Beispiel habe ich es hier einmal mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) durchgezogen (vergleiche [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53113984909/)), aber auch andere Editoren (wie zum Beispiel [Geany](http://cognitiones.kantel-chaos-team.de/produktivitaet/geany.html)) sollten damit zurecht kommen:
+
+~~~python
+# Random Rectangles in Py5
+# Module Mode
+import py5
+
+WIDTH = 400
+HEIGHT = 400
+NO_RECT = 50
+
+a = 150      # alpha
+
+colors = [py5.color(43, 51, 95), py5.color(126, 32, 114), py5.color(25, 149, 156),
+          py5.color(139, 72, 82), py5.color(57, 92, 152), py5.color(169, 193, 255),
+          py5.color(212, 24, 108), py5.color(211, 132, 65), py5.color(112, 198, 169),
+          py5.color(118, 150, 222), py5.color(255, 151, 152), py5.color(237, 199, 176)]
+
+def setup():
+    py5.size(WIDTH, HEIGHT)
+    py5.window_move(1400, 30)
+    py5.window_title("Random Rectangles")
+    py5.rect_mode(py5.CENTER)
+    py5.no_loop()
+
+def draw():
+    py5.background(233, 195, 91)
+    for _ in range(NO_RECT):
+        py5.fill(py5.random_choice(colors), a)
+        rect_w = py5.random_int(10, 80)
+        rect_h = py5.random_int(10, 80)
+        py5.rect(py5.random_int(rect_w, py5.width - rect_w),
+                 py5.random_int(rect_h, py5.height - rect_h),
+                 rect_w, rect_h)
+    print("I did it, Babe!")
+
+py5.run_sketch()
+~~~
+
+Was mich daran ein wenig stört, ist die inflationäre Verwendung des Prefixes `py5.`. Weniger, weil ich ein fauler Tipper bin (das auch), sondern mehr, weil ich oft überlegen muß, was denn nun ein Py5-Kommando ist und was nicht. Aber das passiert mir zum Beispiel mit [Numpy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) (Prefix: `np.`) und anderen, umfangreichen Bibliotheken ebenfalls. Damit muß man leben&nbsp;…
