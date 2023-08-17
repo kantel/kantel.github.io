@@ -1,0 +1,34 @@
+---
+title: "Erste Schritte mit Tweego"
+author: "Jörg Kantel"
+date: "2023-08-17 19:15:00"
+categories: [Twine, Tweego, Visual Studio Code, Interactive Fiction]
+image: "images/tweego01.jpg"
+---
+
+[![](images/tweego01-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53123434818/)
+
+Es war eine verdammt harte Geburt, aber nachdem ich mehrere Stunden mehr oder weniger planlos herumexperimentiert hatte, spielt nun das [vorgestern](https://kantel.github.io/posts/2023081502_tweego/) vorgestellte [Tweego](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html) auch auf meinem betagten MacBook Pro mit meinem [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html). Die aufgetretenen Probleme lagen weniger an der Applikation denn mehr an der übermäßigen Fürsorge des Apple-Betriebssystems.
+
+Als erstes mußte ich dem Verzeichnis, in dem das Programm residierte (in meinem Fall `/Applications/tweego/`), samt sämtlicher Unterverzeichnisse Lese- und Schreibrechte für `staff` und `everyone` zuweisen, damit Apple mich nicht immer mit `access denied` nervte. Doch damit nicht genug, beim Download kam `tweego` als normale Datei und nicht als ausführbares CLI-Programme. Daher mußte ich im Terminal mit
+
+~~~bash
+cd /Applications/tweego
+chmod 755 tweego
+~~~
+
+die App erstmal zu einer »ausführbaren UNIX-Datei« (wie das im Mac-Jargon so schön heißt) erklären.
+
+Danach lief aber alles wie geschmiert, wie Ihr an obigem [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53123434818/) erkennen könnt.
+
+Damit das alles so hübsch wie im Screenshot aussieht, hatte ich zusätzlich in meinem Visual Studio Code das [Twee 3 Language Tool](Twee 3 Language Tools) (MIT-Lizenz, [Quellcode](https://github.com/cyrusfirheir/twee3-language-tools) auf GitHub) spendiert, das in der Hauptsache für das Syntax-Highlighting zuständig ist (aber auch eine [Story-Map View](https://raw.githubusercontent.com/cyrusfirheir/twee3-language-tools/9ed8ca924e872a130c7a0466f26cb8c8321d555f/docs/images/twee-storymap.png) soll eingebaut sein -- dieses Feature muß ich allerdings noch testen). Und wie Ihr ebenfalls am Screenshot im Banner oben erkennen könnt, ist das Einbinden von Multimedia-Inhalten (Bildern, Videos) ohne Gewürge möglich (allein dies rechtvertigt schon die Installation von Tweego).
+
+[![Twee Story Map View](images/twee-storymap.png)](https://raw.githubusercontent.com/cyrusfirheir/twee3-language-tools/9ed8ca924e872a130c7a0466f26cb8c8321d555f/docs/images/twee-storymap.png)
+
+Unterstützte Storyformate sollen alle Formate sein, die von Twine unterstützt werden, also neben [SugarCube](https://www.motoslave.net/sugarcube/2/docs/) mindestens auch [Harlowe](https://twine2.neocities.org/) und das neue [Chapbook](https://klembot.github.io/chapbook/guide/) (auch das ist bisher von mir noch nicht getestet).
+
+Tweego ist übrigens nicht der einzige Twee-Compiler, daneben gibt es noch [Extwee](https://github.com/videlais/extwee) des von mir sehr geschätzten *Dan Cox* und [Twee2](https://dan-q.github.io/twee2/index.html). Während ersteres eine [Node.js](http://cognitiones.kantel-chaos-team.de/webworking/frameworks/nodejs.html)-Anwendung ist, benötigt Twee2 ein aktuelles [Ruby](http://cognitiones.kantel-chaos-team.de/programmierung/ruby/ruby.html). Node war schnell auf meinem Rechner aktualisiert, aber `npx` weigerte sich, meine Twee-Dateien zu finden. Die Installation von Twee2 dagegen läuft zu Zeit noch, da ich mein [Homebrew](http://cognitiones.kantel-chaos-team.de/programmierung/homebrew.html) schon seit längere Zeit nicht mehr genutzt hatte und daher erst noch eine riesige und zeitaufwendige Upgrade-Orgie ansteht.
+
+Wie dem auch sei -- Extwee hin und Twee2 her --, ich werde mich erst einmal auf Tweego versteifen, denn die Beschäftigung damit scheint mir sehr vielversprechend. *Still digging!*
+
+Kleiner Funfakt noch zum Schluß: Die [neuen Twine-Tutorials](https://www.youtube.com/playlist?list=PLlXuD3kyVEr6DmZy52pG7zYWbr6t93JC7) des oben erwähnten *Dan Cox* (wir [berichteten](https://kantel.github.io/posts/2023071502_if_mit_twine_2_6/)) zeigten in [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) ein Menü `Exportiere als Twee`, das *mein* Twine ums Verrecken nicht kannte. Eine Update-Überprüfung aus Twine heraus behauptete zudem aber steif und fest, daß ich die zur Zeit aktuellste Version von Twine nutzen würde. Doch nachdem ich mißtrauisch geworden die [Twine-Homepage](http://twinery.org/) aufsuchte, stellte ich fest, daß *mein* Twine mittlerweile völlig veraltet sei. Und richtig, nach einem Update zeigte auch mein Twine den Menüeintrag `Exportiere als Twee`. Was wieder die Gültigkeit des alten, Lenin zugeschriebenen Spruchs »Vertrauen ist gut, Kontrolle ist besser« beweist.
