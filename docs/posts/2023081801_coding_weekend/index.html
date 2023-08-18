@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Video-Tutorials zum Wochenende: Coding mit der Schlange und mit P5.js</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Video-Tutorials zum Wochenende: Coding mit der Schlange und mit P5.js</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Turtle</div>
+    <div class="quarto-category">Processing</div>
+    <div class="quarto-category">P5.js</div>
+    <div class="quarto-category">Simulation</div>
+    <div class="quarto-category">Creative Coding</div>
+    <div class="quarto-category">Twine</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18. August 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://upload.wikimedia.org/wikipedia/commons/b/b1/Denslow%27s_Humpty_Dumpty_pg_13.jpg"><img src="images/humptydumpty13-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nachdem ich die letzten Male eher sparsam mit meiner Themenauswahl für die wöchentlichen Video-Tutorials war, gibt es an diesem Wochenende wieder einen Gemischtwarenladen, damit ich <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html">mein zweites Gehirn</a> wieder etwas freimachen kann. Es gibt Simulationen mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Schildkröte</a>, mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>. Und wo Processing dransteht, sind natürlich auch <em>Creative Coding</em> und <em>Generative Art</em> mit von der Partie. Zum Schluß – das ist meiner <a href="https://kantel.github.io/posts/2023081701_tweego_first_steps/">jüngsten Entdeckung</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> geschuldet – darf natürlich auch <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> nicht fehlen. Doch wie immer der Reihe nach:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/L7z3vv75jdI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p><a href="https://www.youtube.com/playlist?list=PLsGCUnpinsDnfiHYpasqrFC5VNzqnXFeh">Simulation with Processing</a> ist eine wunderbare und extrem lehrreiche Playlist mit zehn Videos zwischen je zehn und 45 Minuten. Und der <a href="https://www.youtube.com/@jeffkthompson">Kanal von Jeff Thompson</a> enthält noch viele weitere nützliche Playlisten zu Processing und und P5.js. Schaut daher ruhig bei ihm vorbei.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RxE5GBxvVM8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Dann ist da noch die Reihe <a href="https://www.youtube.com/playlist?list=PL5Y9p1EK4LbRyYSt_xt2oFY3Z8yCfKJNK">P5.js tutorials – Generative art</a> (fünf kurz Videos zwischen drei und zehn Minuten). Auch <a href="https://www.youtube.com/@hbyhadeel">dieser Kanal</a> harrt noch weiterer Entdeckungen, zum Beispiel diese Playlist »<a href="https://www.youtube.com/playlist?list=PL5Y9p1EK4LbSumwbRpTDAmGhW17CNHN2f">Processing tutorials – Generative art</a>« (zweiundzwanzig Videos, je zwischen einer Minute und einer dreiviertel Stunde Spieldauer).</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mO4aKYNRuws" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Der <a href="https://www.youtube.com/@datagardenproject">Data Garden</a> ist ein junges <em>Education Project</em>, das (nicht nur) jüngeren Menschen die Programmierung (in P5.js) näherbringen will. Bisher haben sie dazu <a href="https://www.youtube.com/@datagardenproject/playlists?view=1&amp;sort=dd&amp;shelf_id=0">sechs Playlists</a> veröffentlicht – fünf Module und eine <em>Sharing Session</em>. Das jüngste Update ist erst wenige Tage alt, also rechne ich mit weiteren Tutorials und habe daher den Datengarten abonniert.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XZTRJdzlD-M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>In die gleiche Kerbe schlägt das <a href="https://www.youtube.com/@gwccurriculum1640">GWC Curriculum</a> aus dem YouTube-Kanal der <a href="https://girlswhocode.com/">Girls Who Code</a>, die den <em>Gender Gap</em> in den Technologie-Fächern schließen wollen. Besonders gefallen haben mir daraus diese Playlists:</p>
+<ul>
+<li><a href="https://www.youtube.com/playlist?list=PLxuXeImzB_r3STAftmyESUUFQtbd5-Osi">Personal Website HTML Project</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLxuXeImzB_r0_4f9iF3kTMSDCCIr06iQO">Welcome to p5.js</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLxuXeImzB_r0WKEWpWFPDVI0p3zx9BKQm">Meteor Catcher Game in p5.js</a></li>
+<li><a href="https://www.youtube.com/playlist?list=PLxuXeImzB_r2VJ686txtjgxxB8T6Ti1fT">Storytelling in Python Activity Set</a></li>
+</ul>
+<p>Von Webworking über P5.js bis hin zu Python ist dieser Kanal breit aufgestellt. Nicht nur darum habe ich auch diesem Kanal abonniert.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/iaOKlximufY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p><a href="https://www.youtube.com/playlist?list=PLmzkEJ1Zz_uZN89BdPwr9qQ06jqsm6UY6">Genetische Algorithmen mit der Schlange</a>: In dieser Serie geht es darum, einen einfachen Bot zu programmieren, der später mit anderen Bots rekombiniert werden soll, um seine Eigenschaften zu verbessern, die ihm helfen, Nahrung zu finden und zu überleben. Das Projekt ist leider eingeschlafen, aber die bisherigen Videos sind als Grundlage für eigenen Experimente doch ganz interessant.</p>
+<p>Das Video nutzt für die graphische Darstellung die ebenfalls nicht mehr weiterentwickelte Bibliothek <a href="https://github.com/intjelic/python-sfml">PySFML</a>, jedoch sollte es nicht schwer sein, diese auf <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> umzuschreiben.</p>
+<p>Eine weitere, <a href="https://www.youtube.com/playlist?list=PLmzkEJ1Zz_uZ5nvTOLaGHfinCzEVEVBlz">kurze Playlist</a> (vier etwa zehnminütige Videos) des gleichen Autors führt in die Python-Graphikbibliothek <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/graphicspy.html">Graphics.py</a> ein. Auch wenn ich <a href="http://blog.schockwellenreiter.de/2017/11/2017111101.html">um 2017</a> <a href="http://blog.schockwellenreiter.de/2017/11/2017111302.html">ebenfalls</a> mal mit dieser <a href="http://blog.schockwellenreiter.de/2020/04/2020041101.html">Bibliothek</a> <a href="http://blog.schockwellenreiter.de/2017/11/2017111404.html">gespielt</a> <a href="http://blog.schockwellenreiter.de/2017/11/2017112601.html">hatte</a>, dürfte das heute nur noch von historischem Interesse sein.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6IF8V7FTaPs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Man kann auch mit P5.js Physik simulieren. Das zeigt die Playlist <a href="https://www.youtube.com/playlist?list=PLISRe8GegO8ShKCTLUQp2mcF2CQEnlr1M">Magnetic Force (a.k.a. Mass Spectrometer)</a> (vier Videos je etwa zehn Minuten bis eine Viertelstunde Spieldauer). Da dies als eine Inspiration für mein geplantes Projekt »<a href="https://kantel.github.io/posts/2023081402_plaene_schmieden/">Py5 in Beispielen</a>« dienen könnte (auch wenn der Vortrag gelegentlich doch ein wenig trocken ist), habe ich mir den Link zum <a href="https://editor.p5js.org/ChrisOrban/sketches/HJ1UdD9yM">Quellcode</a> und zur <a href="https://www.asc.ohio-state.edu/orban.14/physics_coding/bfield.html">Step-py-Step Instruction</a> notiert.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/5zpQXlaIA5s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Das Video <a href="https://www.youtube.com/watch?v=5zpQXlaIA5s">Coding Randomly Generated Color Bubbles in Python</a> stellt auch was mit Pythons Turtle an und ist Teil der Playlist <a href="https://www.youtube.com/playlist?list=PL7idXwkT0hgrM5syH_X22sd8yA-a_Tjsf">Various Programming Tutorials</a> (30 Videos) von <em>Brian Fedluk</em>.</p>
+<p><strong>War sonst noch was?</strong> Ach ja, ich wollte Twine ja nicht vergessen: <a href="https://www.youtube.com/playlist?list=PLHPiz_8klh0zT-0vpoK6MYF5bQ3MCmRNS">Introduction to Twine</a> ist eine kurze (dreiteilige) Playlist zu Twine. Und damit wende ich mich wieder Tweego zu und wünsche Euch allen da draußen noch ein schönes Wochenende.</p>
+<p><em>(Bild: <a href="https://en.wikipedia.org/wiki/W._W._Denslow">William Wallace Denslow</a> (1856-1915), Humpty Dumpty, 1903. Bildquelle: <a href="https://commons.wikimedia.org/wiki/File:Denslow%27s_Humpty_Dumpty_pg_13.jpg">Wikimedia Commons</a>)</em></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
