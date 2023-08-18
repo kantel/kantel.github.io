@@ -1,0 +1,28 @@
+---
+title: "Tweego und die Storyformate -- ein weiterer Zwischenbericht"
+author: "Jörg Kantel"
+date: "2023-08-18 17:30:00"
+categories: [Twine, Tweego, Visual Studio Code, Interactive Fiction]
+image: "images/harlowetweego.jpg"
+---
+
+[![](images/harlowetweego-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53125327615/)
+
+Mit meinen [Erkundungen](https://kantel.github.io/posts/2023081701_tweego_first_steps/) von [Tweego](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html) und [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) und wie das alles mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) zusammenspielt, bin ich ein gutes Stück vorangekommen.
+
+Gestern war ja noch die Frage, welche Storyformate Tweego unterstützt, nicht durch Tests abschließend geklärt. Das habe ich nun abklären können: Tweego wird mit den Storyformaten [Harlowe](https://twine2.neocities.org/), [Sugarcube](https://www.motoslave.net/sugarcube/2/), [Snowman](https://videlais.github.io/snowman/), [Chapbook](https://klembot.github.io/chapbook/guide/) und dem *Proofing*-Format [Paperthin](https://github.com/klembot/paperthin) ausgeliefert -- auch teils mit (zusätzlichen) älteren Versionen. Davon getestet habe ich SugarCube (Version 2.30.0), Harlowe (Version 3.1.0) und Chapbook (Version 1.0.0). Denn das sind die Storyformate, die auch ich verwende und die in diesen Versionen mitgeliefert werden.
+
+Aufmerksamen Leserinnen und Lesern wird sicher aufgefallen sein, daß die Versionsnummern nicht gerade die aktuellsten sind. Wenn man jedoch eine aktuelle `format.js` für das gewünschte Storyformat irgendwo organisieren kann und die zusammen mit einer `logo.svg` und der Lizenzdatei (ob diese beiden Dateien obligatorisch sind, weiß ich nicht -- ich habe sie im Zweifelsfalle von einer älteren Version kopiert) in einem Unterverzeichnis von `storyformats` ablegt, dann findet `tweego` auch die aktuellen Versionen. Getestet habe ich dies mit SugarCube Version 2.36.1 und heruntergeladen und installiert (der Test steht aber noch aus) habe ich Chapbook Version 1.2.3.
+
+Was fehlt, ist ein aktualisiertes Harlowe (Version 3.3.6). Die `format.js` im [Repositorium](https://foss.heptapod.net/games/harlowe/) sah ganz anders aus, als die bei Tweego mitgelieferte und auch anders als die aktualisierten von Chapbook und SugarCube. Sie sieht bei Harlowe eher wie ein Platzhalter aus, aus dem man sich die gewünschte `format.js` noch selber zusammenbasteln muß. Aber ich weiß leider nicht, wie ich das bewerkstelligen kann. Wenn also von meinen Leserinnen und Lesern da draußen jemand einen Hinweis hat, wäre ich für eine Benachrichtigung dankbar.
+
+Zum Schluß noch ein Tip zu SugarCube: Die »Schummelknöpfe« `back` und `forward` in der Seitenleiste bekommt man weg, wenn man im JavaScript-Tab von Twine die Zeile `config.history.controls = false;` eingibt. Oder in Tweego dieses Stück Code:
+
+~~~twee
+:: StoryScript [script]
+config.history.controls = false;
+~~~
+
+Da habe ich lange nach gesucht …
+
+Jetzt werde ich aber endgültig mit Visual Studio Code und Twine/Tweego in meinen Wunderland-Kosmos abtauchen und schauen, was ich sonst noch herausbekomme. *Still digging!*

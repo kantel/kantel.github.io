@@ -10,7 +10,41 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Fri, 18 Aug 2023 13:30:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 18 Aug 2023 15:30:00 GMT</lastBuildDate>
+<item>
+  <title>Tweego und die Storyformate – ein weiterer Zwischenbericht</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023081802_tweego_storyformate/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53125327615/"><img src="https://kantel.github.io/posts/2023081802_tweego_storyformate/images/harlowetweego-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Mit meinen <a href="https://kantel.github.io/posts/2023081701_tweego_first_steps/">Erkundungen</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und wie das alles mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> zusammenspielt, bin ich ein gutes Stück vorangekommen.</p>
+<p>Gestern war ja noch die Frage, welche Storyformate Tweego unterstützt, nicht durch Tests abschließend geklärt. Das habe ich nun abklären können: Tweego wird mit den Storyformaten <a href="https://twine2.neocities.org/">Harlowe</a>, <a href="https://www.motoslave.net/sugarcube/2/">Sugarcube</a>, <a href="https://videlais.github.io/snowman/">Snowman</a>, <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> und dem <em>Proofing</em>-Format <a href="https://github.com/klembot/paperthin">Paperthin</a> ausgeliefert – auch teils mit (zusätzlichen) älteren Versionen. Davon getestet habe ich SugarCube (Version 2.30.0), Harlowe (Version 3.1.0) und Chapbook (Version 1.0.0). Denn das sind die Storyformate, die auch ich verwende und die in diesen Versionen mitgeliefert werden.</p>
+<p>Aufmerksamen Leserinnen und Lesern wird sicher aufgefallen sein, daß die Versionsnummern nicht gerade die aktuellsten sind. Wenn man jedoch eine aktuelle <code>format.js</code> für das gewünschte Storyformat irgendwo organisieren kann und die zusammen mit einer <code>logo.svg</code> und der Lizenzdatei (ob diese beiden Dateien obligatorisch sind, weiß ich nicht – ich habe sie im Zweifelsfalle von einer älteren Version kopiert) in einem Unterverzeichnis von <code>storyformats</code> ablegt, dann findet <code>tweego</code> auch die aktuellen Versionen. Getestet habe ich dies mit SugarCube Version 2.36.1 und heruntergeladen und installiert (der Test steht aber noch aus) habe ich Chapbook Version 1.2.3.</p>
+<p>Was fehlt, ist ein aktualisiertes Harlowe (Version 3.3.6). Die <code>format.js</code> im <a href="https://foss.heptapod.net/games/harlowe/">Repositorium</a> sah ganz anders aus, als die bei Tweego mitgelieferte und auch anders als die aktualisierten von Chapbook und SugarCube. Sie sieht bei Harlowe eher wie ein Platzhalter aus, aus dem man sich die gewünschte <code>format.js</code> noch selber zusammenbasteln muß. Aber ich weiß leider nicht, wie ich das bewerkstelligen kann. Wenn also von meinen Leserinnen und Lesern da draußen jemand einen Hinweis hat, wäre ich für eine Benachrichtigung dankbar.</p>
+<p>Zum Schluß noch ein Tip zu SugarCube: Die »Schummelknöpfe« <code>back</code> und <code>forward</code> in der Seitenleiste bekommt man weg, wenn man im JavaScript-Tab von Twine die Zeile <code>config.history.controls = false;</code> eingibt. Oder in Tweego dieses Stück Code:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">:: StoryScript [script]</span>
+<span id="cb1-2">config.history.controls = false;</span></code></pre></div>
+<p>Da habe ich lange nach gesucht …</p>
+<p>Jetzt werde ich aber endgültig mit Visual Studio Code und Twine/Tweego in meinen Wunderland-Kosmos abtauchen und schauen, was ich sonst noch herausbekomme. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Tweego</category>
+  <category>Visual Studio Code</category>
+  <category>Interactive Fiction</category>
+  <guid>https://kantel.github.io/posts/2023081802_tweego_storyformate/index.html</guid>
+  <pubDate>Fri, 18 Aug 2023 15:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023081802_tweego_storyformate/images/harlowetweego.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Video-Tutorials zum Wochenende: Coding mit der Schlange und mit P5.js</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1496,41 +1530,6 @@ font-style: inherit;">.10</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023080801_android_patchday/index.html</guid>
   <pubDate>Tue, 08 Aug 2023 13:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023080801_android_patchday/images/cubaoccupation.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Partikelsysteme programmieren</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023080701_partikelsysteme/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://thecodingtrain.com/tracks/the-nature-of-code-2/noc/4-particles/1-particle-system"><img src="https://kantel.github.io/posts/2023080701_partikelsysteme/images/particlesystem-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p><a href="https://www.gorillasun.de/blog/spring-physics-and-connecting-particles-with-springs/">Spring Physics, Particles and Meshes</a> ist der vorerst letzte Beitrag einer Tutorialreihe zu <a href="https://de.wikipedia.org/wiki/Partikelsystem">Partikelsystemen</a>, die <em><a href="https://www.gorillasun.de/about/">Ahmad Moussa</a></em> in seinem Blog »<a href="https://www.gorillasun.de/">Gorilla Sun</a>« veröffentlicht hat. Die Programme (oder besser: Sketche) sind in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, der JavaScript-Version von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a> geschrieben und mit Hilfe der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5 Widgets</a> seinen Blog-Leserinnen und -Lesern zugänglich gemacht.</p>
-<p>Die anderen, bisher erschienenen Beiträge zu diesem Thema sind (in chronologischer Reihenfolge):</p>
-<ul>
-<li><a href="https://www.gorillasun.de/blog/programming-a-particle-system-with-chatgpt/">Programming a Particle System with ChatGPT</a></li>
-<li><a href="https://www.gorillasun.de/blog/an-algorithm-for-particle-systems-with-collisions/">An Algorithm for Particle Systems with Collisions</a></li>
-<li><a href="https://www.gorillasun.de/blog/particle-system-optimization-grid-lookup-spatial-hashing/">Optimizing Particle Systems with a Grid Lookup and Spatial Hashing</a></li>
-</ul>
-<p><em>Ahmad Moussa</em> orientiert sich bei seinen Tutorials stark an <em>Daniel Shiffmans</em> <a href="https://thecodingtrain.com/tracks/the-nature-of-code-2">The Nature of Code 2</a>. Und das erinnert mich natürlich daran, daß ich ja auch mal eine Python-Version von <em><a href="https://natureofcode.com/book/">The Nature of Code</a></em> angefangen hatte. Und mein <a href="https://kantel.github.io/posts/2023080601_ghostly_disks/">gestriger Sketch</a> über Geister-Pucks in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> legt ja schon fast so etwas wie die Grundlagen für ein <a href="https://natureofcode.com/book/chapter-4-particle-systems/">Partikelsystem</a>. Ich glaube, ich bin angefixt. Ich muß mich sofort hinsetzen und ein Partikelsystem in Py5 implementieren.</p>
-<p>Auch die Reihe von <em>Ahmad Moussa</em> wird vermutlich fortgesetzt. Und die <a href="https://www.gorillasun.de/articles/">anderen Artikel</a> aus seinem (noch jungen) Blog scheinen ebenfalls hochinteressant zu sein. Ich muß mich da aber erst einmal durchwühlen, bevor ich weitere Inspirationen daraus tanke. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Py5</category>
-  <category>Processing</category>
-  <category>P5.js</category>
-  <category>Creative Coding</category>
-  <category>Nature of Code</category>
-  <guid>https://kantel.github.io/posts/2023080701_partikelsysteme/index.html</guid>
-  <pubDate>Mon, 07 Aug 2023 15:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023080701_partikelsysteme/images/particlesystem.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
