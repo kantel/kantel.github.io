@@ -10,7 +10,214 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Sat, 19 Aug 2023 15:40:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 20 Aug 2023 14:15:00 GMT</lastBuildDate>
+<item>
+  <title>Tweego und Chapbook – ein Testbericht</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023082001_tweego_chapbook/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53128025520/"><img src="https://kantel.github.io/posts/2023082001_tweego_chapbook/images/chapbooktweego-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Meine <a href="https://kantel.github.io/posts/2023081802_tweego_storyformate/">Tests</a>, wie weit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> zusammenspielen, habe ich zu einem erfolgreichen vorläufigen Abschluß gebracht, denn auch Tweego und das Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> funzen ziemlich gut mit Visual Studio Code.</p>
+<p>Der Anfang war etwas holprig, weil ich die <a href="https://klembot.github.io/chapbook/guide/state/the-vars-section.html">Vars Section</a> nicht korrekt untergebracht bekam. Hier half ein Trick: Ich habe eine bestehende Chapbook-Story als <code>Twee</code> exportiert und dann nachgeschaut, wo die Metadaten dort standen. Die Lösung war, daß sie unmittelbar unter dem Passagenamen stehen müssen und nicht – wie ich dachte – direkt zu Beginn der Datei. So bekam ich das Layout meines Spiels in den Griff, ohne mich mit CSS herumschlagen zu müssen:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">:: Start</span>
+<span id="cb1-2">config.style.page.color: "gray-1 on black"</span>
+<span id="cb1-3">config.style.page.link.font: "18 none"</span>
+<span id="cb1-4">config.style.page.link.color: "orange-4"</span>
+<span id="cb1-5">config.style.page.link.lineColor: "orange-4"</span>
+<span id="cb1-6">config.style.page.link.active.color: "orange-4"</span>
+<span id="cb1-7">config.style.page.fork.divider.style: "none"</span>
+<span id="cb1-8">--</span></code></pre></div>
+<p>Weiter schön an Tweego ist, daß es – ähnlich wie <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> – rekursiv ein Verzeichnis durchsucht und alle <code>.twee</code>-, <code>.tw</code>-, <code>.css</code>- und <code>.js</code>-Dateien in <strong>eine</strong> Zieldatei-HTML-Datei herausrendert (im Extremfall auch alle Bilddateien, dazu weiter unten mehr). Ich habe daher meine Projekte jeweils wie folgt organisiert:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Projektverzeichnis</span></span>
+<span id="cb2-2">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">--</span> Verzeichnis images</span>
+<span id="cb2-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">--</span> Vereichnis src</span>
+<span id="cb2-4">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">index.html</span></span></code></pre></div>
+<p>Tweego wird dann mit folgendem Kommando(s) aufgerufen:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>projektverzeichnis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb3-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/Applications/tweego/tweego'</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'index.html'</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'src'</span></span></code></pre></div>
+<p>Da einige Storyformate auch Bilder als Passagen verwenden können und – auch wenn Tweego wahnsinnig schell ist – ich daher unnötige Rendereien vermeiden wollte, habe ich das Assetverzeichnis <code>images</code> <strong>oberhalb</strong> von <code>src</code> angelegt. Die Bilder werden daher von Tweego nicht angefaßt und zum anderen kann ich zum Beispiel in Chapbook sie mit folgendem Makro einbinden:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">{embed image: "images/&lt;bildname.png&gt;", alt: "&lt;bildbeschreibung&gt;"}</span></code></pre></div>
+<p>In <a href="https://www.motoslave.net/sugarcube/2/">SugarCube</a> heißt der entsprechende Befehl:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">[img[images/&lt;bildname.png&gt;]]</span></code></pre></div>
+<p>Während man in <a href="https://twine2.neocities.org/">Harlowe</a> <em>plain old HTML</em> bemühen muß:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;img</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">bildname.png&gt;"</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">alt</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">bildbeschreibung&gt;"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">/&gt;</span></span></code></pre></div>
+<p>Da die resultierende <code>index.html</code> auch oberhalb des <code>src</code>-Verzeichnisses herausgeschrieben wird, hat diese Methode den Vorteil, daß die Datei ihre Bilder auch ohne Verrenkungen findet.</p>
+<p>Doch jetzt erst einmal »Butter bei die Fisch«. Ich habe für mein Beispiel die (Chapbook) Twee-Dateien zu Testzwecken recht artifizell in Einzeldateien aufgesplittet, zuerst in die <code>storydate.twee</code>, die so aussieht:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1">:: StoryData</span>
+<span id="cb7-2">{</span>
+<span id="cb7-3">  "ifid": "5AA26DF4-EA52-4A16-A3F9-036F87214882",</span>
+<span id="cb7-4">  "format": "Chapbook",</span>
+<span id="cb7-5">  "format-version": "1.2.3",</span>
+<span id="cb7-6">  "start": "Start",</span>
+<span id="cb7-7">  "zoom": 1</span>
+<span id="cb7-8">}</span></code></pre></div>
+<p>Die <code>ifid</code> wird von Tweego beim ersten Durchlauf erzeugt und man wird aufgefordert, sie dann in <code>StoryData</code> einzufügen.</p>
+<p>Dann die <code>title.twee</code>, die naturgemäß recht klein geraten ist:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1">:: StoryTitle</span>
+<span id="cb8-2">Alien Attack</span></code></pre></div>
+<p>Die eigentliche Story beginnt mit der <code>start.twee</code>, die auch die Style-Anweisungen enthält:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1">:: Start</span>
+<span id="cb9-2">config.style.page.color: "gray-1 on black"</span>
+<span id="cb9-3">config.style.page.link.font: "18 none"</span>
+<span id="cb9-4">config.style.page.link.color: "orange-4"</span>
+<span id="cb9-5">config.style.page.link.lineColor: "orange-4"</span>
+<span id="cb9-6">config.style.page.link.active.color: "orange-4"</span>
+<span id="cb9-7">config.style.page.fork.divider.style: "none"</span>
+<span id="cb9-8">--</span>
+<span id="cb9-9"></span>
+<span id="cb9-10"># Die Geschichte beginnt hier …</span>
+<span id="cb9-11"></span>
+<span id="cb9-12">[note]</span>
+<span id="cb9-13">Auftritt Hans Blond.</span>
+<span id="cb9-14">Hans Blond neutral</span>
+<span id="cb9-15">[continued]</span>
+<span id="cb9-16"></span>
+<span id="cb9-17">{embed image: "images/buero_blond_1.png", alt: "Büro Hans Blond"}</span>
+<span id="cb9-18"></span>
+<span id="cb9-19">Mein Name ist Blond, Hans Blond.</span>
+<span id="cb9-20"></span>
+<span id="cb9-21">Meine Chefin *Sylvia Berlin* hat mich zu einem [[Meeting-&gt;meeting_1]] gerufen.</span></code></pre></div>
+<p>Sie mündet dann in die etwas längere <code>meeting.twee</code>:</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1">:: meeting_1</span>
+<span id="cb10-2"></span>
+<span id="cb10-3">[note]</span>
+<span id="cb10-4">Auftritt Sylvia von rechts</span>
+<span id="cb10-5">[continued]</span>
+<span id="cb10-6"></span>
+<span id="cb10-7"></span>
+<span id="cb10-8">{embed image: "images/buero_sylvia_1.png", alt: "Büro Sylvia Berlin"}</span>
+<span id="cb10-9"></span>
+<span id="cb10-10">Klopf, Klopf!</span>
+<span id="cb10-11"></span>
+<span id="cb10-12">[[Herein!-&gt;meeting_2]]</span>
+<span id="cb10-13"></span>
+<span id="cb10-14">:: meeting_2</span>
+<span id="cb10-15"></span>
+<span id="cb10-16">[note]</span>
+<span id="cb10-17">Auftritt Blond von links.</span>
+<span id="cb10-18">Sylvia Talking</span>
+<span id="cb10-19">[continued]</span>
+<span id="cb10-20"></span>
+<span id="cb10-21">{embed image: "images/buero_sylvia_2.png", alt: "Büro Sylvia 2"}</span>
+<span id="cb10-22"></span>
+<span id="cb10-23">Sylvia: »Mein lieber Herr Blond, die Bürgermeisterin hat mich gebeten,</span>
+<span id="cb10-24">ihr für die anstehende Wahlwiederholung meinen besten IT-Spezialisten</span>
+<span id="cb10-25">zur Verfügung zu stellen. Und da habe ich natürlich sofort an Sie gedacht.</span>
+<span id="cb10-26">Sie können gleich morgen anfangen.«</span>
+<span id="cb10-27"></span>
+<span id="cb10-28">Hans war sofort klar: Damit wollte Sylvia ihn als Konkurrenten um</span>
+<span id="cb10-29">die Referatsleitung kaltstellen. Doch was sollte er tun?</span>
+<span id="cb10-30"></span>
+<span id="cb10-31">&gt; [[Wütend den Raum verlassen und die Tür hinter sich zuknallen?-&gt;wut_1]]</span>
+<span id="cb10-32">&gt; [[Gute Miene zum bösen Spiel machen und der Versetzung zustimmen?-&gt;gute_miene]]</span>
+<span id="cb10-33"></span>
+<span id="cb10-34">:: wut_1</span>
+<span id="cb10-35"></span>
+<span id="cb10-36">[note]</span>
+<span id="cb10-37">Abgang Blond nach links</span>
+<span id="cb10-38">[continued]</span>
+<span id="cb10-39"></span>
+<span id="cb10-40">Hans [[verließ wütend den Raum-&gt;bad_ending]] und schlug die Tür mit einem</span>
+<span id="cb10-41">lauten Knall hinter sich zu.</span>
+<span id="cb10-42"></span>
+<span id="cb10-43">:: bad_ending</span>
+<span id="cb10-44"></span>
+<span id="cb10-45">{embed image: "images/buero_blond_2.png", alt: "Hans Blond traurig"}</span>
+<span id="cb10-46"></span>
+<span id="cb10-47">Kaum war Hans wieder in seinem Büro, als er auch schon eine Email bekam.</span>
+<span id="cb10-48">Darin stand in dürren Worten, daß sein Antrag auf Beförderung abgelehnt sei.</span>
+<span id="cb10-49"></span>
+<span id="cb10-50">Tja Hans, zu hoch gepokert.</span>
+<span id="cb10-51"></span>
+<span id="cb10-52">Das ist das viel zu frühe Ende!</span>
+<span id="cb10-53"></span>
+<span id="cb10-54">&gt; {restart link, label: "Noch einmal versuchen?"}</span>
+<span id="cb10-55"></span>
+<span id="cb10-56">:: gute_miene</span>
+<span id="cb10-57"></span>
+<span id="cb10-58">Hans: »Dann werde ich mal [[mein Büro räumen-&gt;buero_2]].«</span></code></pre></div>
+<p>Um dann in der <code>buero_2.twee</code> zu enden:</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1">:: buero_2</span>
+<span id="cb11-2"></span>
+<span id="cb11-3">[note]</span>
+<span id="cb11-4">Auftritt Hans Blond von rechts.</span>
+<span id="cb11-5">Hans Blond konfus</span>
+<span id="cb11-6">[continued]</span>
+<span id="cb11-7"></span>
+<span id="cb11-8">{embed image: "images/buero_blond_3.png", alt: "Hans Blond konfus"}</span>
+<span id="cb11-9"></span>
+<span id="cb11-10">Hans (zu sich): »Sylvia ist zwar ein intrigantes Biest, aber süß ist sie dennoch.« ❤️</span></code></pre></div>
+<p>Die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alienattackv2/src">Twee-Sourcen</a>, alle <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alienattackv2/images">Bilder</a> und natürlich die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alienattackv2">finale <code>index.html</code></a> findet Ihr natürlich auch wieder in meinem GitHub-Repositorium.</p>
+<p>Chapbook ist in meinen Augen immer noch das am Besten geeignete Twine-Storyformat, um interaktive Geschichten zu entwerfen, die dann im Endeffekt in Ren’Py realisiert werden (ähnlich wie <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html">Ink</a> mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html">Unity</a> zusammenspielt). Daher enthält mein Testspiel entsprechende »Regieanweisungen« in den <code>[note] … [continued]</code>-Blöcken.</p>
+<p>Für »normale« interaktive Geschichten scheinen mir jedoch Harlowe und SugarCube die geeigneteren Storyformate zu sein, wobei die SugarCube-Tweego-Integration am weitesten vorangeschritten ist. Da ist aber auch nicht verwunderlich, da <em>Thomas Michael Edwards</em>, der Hauptentwickler von SugarCube, auch der Hauptentwickler von Tweego ist.</p>
+<p>Aber ansonsten gilt: Die Auswahl eines geeigneten Storyformats hängt auch viel von persönlichen Vorlieben ab. Daher solltet Ihr ausprobieren, was Euch am Besten liegt. Ich hoffe, mit meinen Beiträgen Euch bei Eurer Entscheidung helfen zu können.</p>
+<p>Und das war sicher nicht der letzte Beitrag zu Twine und Tweego. Besonders die SugarCube-Integration finde ich faszinierend. Ich werde daher weiter testen und berichten. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Tweego</category>
+  <category>Visual Studio Code</category>
+  <category>Interactive Fiction</category>
+  <category>RenPy</category>
+  <guid>https://kantel.github.io/posts/2023082001_tweego_chapbook/index.html</guid>
+  <pubDate>Sun, 20 Aug 2023 14:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023082001_tweego_chapbook/images/chapbooktweego.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neues von meinem (digitalen) Zettelkasten: Logseq 0.9.14 freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -848,32 +1055,6 @@ font-style: inherit;">-</span>prefix</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023081001_bierpinsel/index.html</guid>
   <pubDate>Thu, 10 Aug 2023 17:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023081001_bierpinsel/images/bierpinsel2023.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Security Alert: Neue Schwachstelle in Intel-CPUs ermöglicht Datendiebstahl</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023080902_intel_security_alert/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiIu-xeUKR_xFCW5MkiX6jW_g8fWDMHqocCKH2IcR8TscCNg6suMfRkWsJsZLqFeH1j4RnVnlSE3FOpOHAb5XANPUphh_d0h4oVxTRXgHlv98aoViUzELbPdmntUS4XFIiKPdpv5tdvRk5GYLZwAYF0sQKBvWlikuNAoA_so0GQyUqx0KOdXGdiyMkbAeZA/s1723/Jan%2019,%201913.jpg"><img src="https://kantel.github.io/posts/2023080902_intel_security_alert/images/goatgetters-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Der Sicherheitsforscher <em>Daniel Moghimi</em> hat eine »Downfall« genannte Schwachstelle in mehreren CPU-Modellen von Intel entdeckt. Diese erlaubt es einem Angreifer sensible Daten wie zum Beispiel Passwörter, Verschlüsselungsschlüssel oder Bankverbindungen zu stehlen. Näheres hat der Entdecker auf <a href="https://downfall.page/">dieser Informationsseite</a> erläutert.</p>
-<p>Diese Sicherheitslücke läßt sich auch aus der Ferne ausnutzen. Gefährdet sind zudem besonders Cloud-Systeme, da dort ein Angreifer zum Beispiel Anmeldeinformationen anderer Benutzer stehlen könnte.</p>
-<p>Betroffen sind besonders die Intel-Prozessoren, die auf den Prozessorarchitekturen Skylake (6.&nbsp;Intel-Core-Generation) bis Tiger Lake (11. Intel-Core-Generation) basieren. Der Hersteller wird hier zeitnah Microcodes bereitstellen. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<p><em>(Bild: <a href="http://john-adcock.blogspot.com/2023/07/t-e-powers-two-obituaries.html">Thomas E. Powers</a> (1870-1939), Chicago Examiner, 19. Januar 1913)</em></p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2023080902_intel_security_alert/index.html</guid>
-  <pubDate>Wed, 09 Aug 2023 16:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023080902_intel_security_alert/images/goatgetters.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
