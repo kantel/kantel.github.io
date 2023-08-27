@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Der Schockwellenreiter - Neu in meinem Wiki: Tweego</title>
+<title>Der Schockwellenreiter - Tutorial: Mit Twine und Chapbook in das Wunderland, Version 0.0</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -120,12 +154,10 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Neu in meinem Wiki: Tweego</h1>
+<h1 class="title">Tutorial: Mit Twine und Chapbook in das Wunderland, Version 0.0</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Spieleprogrammierung</div>
     <div class="quarto-category">Twine</div>
-    <div class="quarto-category">RenPy</div>
-    <div class="quarto-category">Visual Studio Code</div>
+    <div class="quarto-category">Chapbook</div>
     <div class="quarto-category">Interactive Fiction</div>
   </div>
   </div>
@@ -144,7 +176,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">15. August 2023</p>
+      <p class="date">27. August 2023</p>
     </div>
   </div>
   
@@ -156,14 +188,64 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://www.youtube.com/watch?v=sy2lye_3wpg"><img src="images/tweego-b.jpg" class="img-fluid figure-img"></a></p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53143377865/"><img src="images/chapbooktwinev00-b.jpg" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
-<p>Wenn Dein Visual-Novel-Projekt Dir über den Kopf zu wachsen droht, dann nimmst Du einfach ein paar blasse, farbstichige Food-Photos und <a href="http://www.motoslave.net/tweego/">Tweego</a> – und alles wird wieder gut. Aber im Ernst: Der freie (BSD-Lizenz), in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/go.html">Go</a> geschriebene <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>-/Twee-Compiler könnte eine Lösung für meine Idee zu sein, einen Prototypen interaktiver Geschichten erst in Twine zu entwickeln und dann das endgültige Produkt in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> zu schreiben.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/sy2lye_3wpg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Das wäre dann so etwas wie die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html">Ink</a>-/<a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html">Unity</a>-Integration. Dafür spricht, daß man Tweego-Skripte in einem Editor wie <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> erstellen und bearbeiten kann. Ich bearbeite meine Ren’Py-Skripte ebenfalls in Visual Studio Code, daher dürfte der Transfer von der einen in die andere Applikation recht schmerzfrei verlaufen.</p>
-<p>Ob diese Kombination wirklich etwas taugt, muß ich erst noch durch weitere Tests herausfinden. Aber wie immer in solchen Fällen habe ich <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a></strong> schon einmal eine Seite in <a href="http://cognitiones.kantel-chaos-team.de/index.html">meinem Wiki</a> spendiert. <em>Still digging!</em></p>
+<p><em>Alea iacta est</em>: Ich habe mich entschieden, meinen Ausflügen mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> ins Wunderland ein Reboot zu spendieren und die Reise nun mit <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> anstelle von <a href="http://twine2.neocities.org/">Harlowe</a> oder <a href="https://www.motoslave.net/sugarcube/2/docs/">SugarCube</a> als StoryFormat anzutreten. Das bedeutet, daß ich meine bisherigen Tutorials komplett neu überarbeiten werde. Heute gibt es die erste Lieferung:</p>
+<p>Das Tutorial geht davon aus, daß Ihr Twine auf dem Desktop installiert habt oder Ihr wißt, wie die Online-Version von Twine zu bedienen ist. Außerdem setzt es voraus, daß Ihr entweder Chapbook zu Eurem Default-Storyformat erklärt oder Ihr die Tutorials auf Chapbook umgestellt habt (Menü: <code>Geschichte -&gt; Details -&gt; Geschichtsformat: Chapbook 1.2.3</code>).</p>
+<p>Als erstes habe ich die unbenannte Passage in <code>Start</code> umbenannt und dann diesen Text dort hineingeschrieben:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>:: Start</span>
+<span id="cb1-2"><a href="#cb1-2"></a>Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie</span>
+<span id="cb1-3"><a href="#cb1-3"></a>hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über</span>
+<span id="cb1-4"><a href="#cb1-4"></a>ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich</span>
+<span id="cb1-5"><a href="#cb1-5"></a>von hier aus weitergehen soll!«</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.</span>
+<span id="cb1-8"><a href="#cb1-8"></a>Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur</span>
+<span id="cb1-9"><a href="#cb1-9"></a>[[Teeparty des verrückten Hutmachers-&gt;Teeparty]] und rechts triffst Du die</span>
+<span id="cb1-10"><a href="#cb1-10"></a>[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]].«</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Um den Quellcode der einzelnen Passagen wiederzugeben, nutze ich <a href="http://twinery.org/cookbook/terms/terms_twee.html">Twee</a>. Das heißt, die erste Zeile mit den beiden Doppelpunkten kann von Euch ignoriert werden, sie enthält nur zu Eurer Orientierung den Namen der Passage (das heißt, Ihr übernehmt diese Zeile auch nicht in Euer Twine).</p>
+<p>Zum zweiten habe ich, um horizontale Scrollbalken zu vermeiden, den Quelltext manuell umgebrochen. Absätze sind durch zwei Umbrüche (doppelte Leerzeilen) gekennzeichnet, den Rest solltet Ihr ohne Umbrüche in Euer Passagenfenster übernehmen.</p>
+<p>Dieser Absatz zeigt schon die wichtigste Funktionsweise von Twine: Wie werden Links (zu anderen Passagen) erstellt? Der einfachste Weg ist, das Linkziel zwischen zwei eckigen Klammerpaaren (<code>[[]]</code>) zu schreiben, so wie in <code>[[Haus der Herzogin]]</code>. Hier sind Linktext und Linkziel identisch, das heißt, der Link <code>Haus der Herzogin</code> führt auch zur Passage <code>Haus der Herzogin</code>.</p>
+<p>Doch nicht immer – sogar in den meisten Fällen – sind Linktext und Linkziel identisch. Hierfür gibt es in Twine die Pfeilnotation: <code>Linktext-&gt;Linkziel</code>, wie zum Beispiel in <code>[[Teeparty des verrückten Hutmachers-&gt;Teeparty]]</code>. Hier verlinkt der komplette Text <code>Teeparty des verrückten Hutmachers</code> auf eine Passage mit dem Namen <code>Teeparty</code>. Dabei ist zu beachten, daß Leerzeichen zählen. Daher sollte zumindest nach der Pfeilspitze kein Leerzeichen stehen, denn Twine sucht sonst das Linkziel <code>Teeparty</code> mit vorangestelltem Leerzeichen und das bringt nicht nur Twine, sondern – wie man in vielen Online-Tutorien sehen kann – auch Euch durcheinander. Wenn Ihr aber rechts und links von den Pfeilen keine Leerzeichen zulaßt, seid Ihr immer auf der sicheren Seite.</p>
+<p>Es gibt noch eine zweite Schreibweise mit rückwärtsgerichtetem Pfeil, die Linkkziel und Linktext umkehrt: <code>[[Linkziel&lt;-Linktext]]</code>, also – um bei unserem Beispiel zu bleiben – <code>[[Teeparty&lt;-Teeparty des verrückten Hutmachers]]</code>. Mir hat sich der Sinn dieser vermutlich aus historischen Quellen gespeisten Schreibweise nie erschlossen und ich habe sie auch noch nie nutzen müssen.</p>
+<p>Um die Verwirrung komplett zu machen, gibt es auch noch eine dritte Schreibweise mit einem vertikalen Trennstrich (<code>|</code>) in der Mitte: <code>[[Linktext|Linkziel]]</code>, also <code>[[Teeparty des verrückten Hutmachers|Teeparty]]</code>. Hier weiß ich zumindest den Grund, die Schreibweise stammt aus Twine 1.x und ich habe sie aus reiner Gewohnheit auch lange noch verwendet. Hier gilt übrigens das gleiche wie bei den Pfeilen: Keine Leerzeichen rechts und/oder links vom vertikalen Strich. Und selbst ich als Gewohnheitstier habe mich von dieser Schreibweise verabschiedet. Wer daher neu in Twine ist, sollte keinen Grund haben, auf dieser veralteten Konvention zu beharren.</p>
+<p>Wenn Ihr – nachdem Ihr die Startpassage mit dem Text gefüttert habt – auf das Twine-Fenster schaut, werdet Ihr feststellen, daß Twine die Passagen <code>Haus der Herzogin</code>, <code>Teeparty</code> und <code>Raupe</code> für Euch schon angelegt und mit Pfeilen versehen hat. Die Pfeile zeigen von der Startpassage jeweils auf die verlinkte Passage und – sollte es von da einen Rücklink geben – als Doppelpfeil auch wieder zurück.</p>
+<p>Ihr könnt die Passagen in dem Fenster beliebig mit der Maus hin- und herschieben und so ein wenig Struktur in Eure Geschichten bekommen.</p>
+<p>Natürlich wollen auch diese Passagen mit Text gefüttert werden. Ich fange mit dem <code>Haus der Herzogin</code>an:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href="#cb2-1"></a>:: Haus der Herzogin</span>
+<span id="cb2-2"><a href="#cb2-2"></a>Im Haus der Herzogin herrschte Chaos. Die Herzogin warf erst mit einem Topf nach</span>
+<span id="cb2-3"><a href="#cb2-3"></a>Alice, doch dann drückte sie ihr ein plärrendes [[Baby in den Arm-&gt;Schweinchen]].</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Auch die <code>Teeparty</code> und die <code>Raupe</code> bekommen je einen Text:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href="#cb3-1"></a>:: Teeparty</span>
+<span id="cb3-2"><a href="#cb3-2"></a>Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser</span>
+<span id="cb3-3"><a href="#cb3-3"></a>deklamierte gerade ein langes, dafür um so langweiligeres Gedicht.</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>Alice hatte sehr schnell genug davon, also beschloß sie, doch die [[Raupe]]</span>
+<span id="cb3-6"><a href="#cb3-6"></a>aufzusuchen.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>:: Raupe</span>
+<span id="cb4-2"><a href="#cb4-2"></a>Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte</span>
+<span id="cb4-3"><a href="#cb4-3"></a>nur immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen</span>
+<span id="cb4-4"><a href="#cb4-4"></a>müßte. Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a>Alice beschloß, daß sie für heute genug habe und ging nach [[Hause-&gt;Home]].</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wenn Ihr jetzt wieder auf Euer Twine-Fenster schaut, werdet Ihr zwei weitere, neue, aber noch leere Passagen finden, die Twine für Euch angelegt und mit Pfeilen versehen hat: <code>Schweinchen</code> und <code>Home</code>. Ihr könnt sie zur besseren Übersicht erst einmal anordnen, wie im <a href="https://www.flickr.com/photos/schockwellenreiter/53143377865/">Screenshot</a> im Banner oben und dann ebenfalls mit Text füllen:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href="#cb5-1"></a>:: Schweinchen</span>
+<span id="cb5-2"><a href="#cb5-2"></a>Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem</span>
+<span id="cb5-3"><a href="#cb5-3"></a>Grunzen und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen</span>
+<span id="cb5-4"><a href="#cb5-4"></a>im Arm hielt.</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a>Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt</span>
+<span id="cb5-7"><a href="#cb5-7"></a>zurück an den {restart link, label: "Start"}.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href="#cb6-1"></a>:: Home</span>
+<span id="cb6-2"><a href="#cb6-2"></a>Auf dem Weg nach Hause begegnete Alice noch einmal der Grinsekatze. Sie grinste</span>
+<span id="cb6-3"><a href="#cb6-3"></a>Alice breit an – wie es Grinsekatzen eben so tun – und fragte: »Na, war die</span>
+<span id="cb6-4"><a href="#cb6-4"></a>Raupe wieder bekifft?«</span>
+<span id="cb6-5"><a href="#cb6-5"></a></span>
+<span id="cb6-6"><a href="#cb6-6"></a>Damit ist die Geschichte zu Ende. {restart link, label: "Noch einmal spielen"}?</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Diese Passagen enthalten nichts Neues bis auf den <code>{restart link, label: "Irgendein Text"}</code>. Das ist ein Chapbook-eigenes Feature, zwischen den geschweiften Klammern steht ein sogenanntes <code>insert</code>, eine Art Makro. Insert sind ein wichtiges Sprachfeature von Chapbook, ich werde in späteren Tutorials noch ausführlich darauf zurückkommen. Für den Moment muüßt Ihr nur wissen, daß dies ein Link auf die Startpassage ist (wobei <code>label</code> denn Linktext bezeichnet), der das Spiel auf seine Startwerte zurücksetzt. Sollte Euere Alice im Spiel also Erfahrungspunkte gesammelt haben, werden diese wieder auf den Startwert zurückgesetzt. Da es momentan aber noch keine Variablen wie zum Beispiel Erfahrungspunkte im Spiel gibt, wird einfach nur die Liste der besuchten Passagen geleert. Daher wäre es momentan auch kein Beinbruch, zum Beispiel in der <code>Home</code>-Passage den <code>restart link</code> durch den einfachen Link <code>[[Noch einmal spielen-&gt;Start]]</code> zu ersetzen. Twine würde dies dann auch mit einem Pfeil von <code>Home</code> auf <code>Start</code> honorieren.</p>
+<p>Dies ist eigentlich alles, was Ihr über Twine und Chapbook wissen müßt. Mit diesem einfachen Linkmechanismus (der übrigens in dieser Form in fast allen Storyformaten existiert) könnt Ihr Eure eigene interaktive und verzweigte Geschichte im Stil der »Choose Your Own Adventure Books« <em>(CYOA)</em> schreiben. Denn das ist der Kern von Twine, alles andere ist im Grunde genommen nur Kosmetik. Aber da Kosmetik vieles doch erst schön macht, werde ich Euch in weiteren Tutorials zeigen, wie Ihr diese auftragt und nutzt, um Twine und Chapbook bis an die Grenzen auszureizen.</p>
+<p>Das »Spiel« habe ich auf meinem Itch.io-Account <a href="https://kantel.itch.io/alice-und-chapbook-stage-0">hochgeladen</a>, damit Ihr das Ergebnis in Aktion erleben könnt. Und den <a href="https://github.com/kantel/twine-entdecken/blob/master/tweego/alice/alice00chapbook.twee">Twee-Code</a> wie auch die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alice">HTML-Datei</a> (<code>alice00chapbook.html</code>) findet Ihr in meinem GitHub-Repositorium, so daß Ihr das Beispiel in Eurem eigenen Twine importieren könnt.</p>
 
 
 

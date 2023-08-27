@@ -1,0 +1,99 @@
+---
+title: "Tutorial: Mit Twine und Chapbook in das Wunderland, Version 0.0"
+author: "Jörg Kantel"
+date: "2023-08-27 20:15:00"
+categories: [Twine, Chapbook, Interactive Fiction]
+image: "images/chapbooktwinev00.jpg"
+---
+
+[![](images/chapbooktwinev00-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53143377865/)
+
+*Alea iacta est*: Ich habe mich entschieden, meinen Ausflügen mit [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) ins Wunderland ein Reboot zu spendieren und die Reise nun mit [Chapbook](https://klembot.github.io/chapbook/guide/) anstelle von [Harlowe](http://twine2.neocities.org/) oder [SugarCube](https://www.motoslave.net/sugarcube/2/docs/) als StoryFormat anzutreten. Das bedeutet, daß ich meine bisherigen Tutorials komplett neu überarbeiten werde. Heute gibt es die erste Lieferung:
+
+Das Tutorial geht davon aus, daß Ihr Twine auf dem Desktop installiert habt oder Ihr wißt, wie die Online-Version von Twine zu bedienen ist. Außerdem setzt es voraus, daß Ihr entweder Chapbook zu Eurem Default-Storyformat erklärt oder Ihr die Tutorials auf Chapbook umgestellt habt (Menü: `Geschichte -> Details -> Geschichtsformat: Chapbook 1.2.3`).
+
+Als erstes habe ich die unbenannte Passage in `Start` umbenannt und dann diesen Text dort hineingeschrieben:
+
+~~~twee
+:: Start
+Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie
+hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über
+ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich
+von hier aus weitergehen soll!«
+
+Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.
+Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur
+[[Teeparty des verrückten Hutmachers->Teeparty]] und rechts triffst Du die
+[[kiffende Raupe auf ihrem Pilz->Raupe]].«
+~~~
+
+Um den Quellcode der einzelnen Passagen wiederzugeben, nutze ich [Twee](http://twinery.org/cookbook/terms/terms_twee.html). Das heißt, die erste Zeile mit den beiden Doppelpunkten kann von Euch ignoriert werden, sie enthält nur zu Eurer Orientierung den Namen der Passage (das heißt, Ihr übernehmt diese Zeile auch nicht in Euer Twine).
+
+Zum zweiten habe ich, um horizontale Scrollbalken zu vermeiden, den Quelltext manuell umgebrochen. Absätze sind durch zwei Umbrüche (doppelte Leerzeilen) gekennzeichnet, den Rest solltet Ihr ohne Umbrüche in Euer Passagenfenster übernehmen.
+
+Dieser Absatz zeigt schon die wichtigste Funktionsweise von Twine: Wie werden Links (zu anderen Passagen) erstellt? Der einfachste Weg ist, das Linkziel zwischen zwei eckigen Klammerpaaren (`[[]]`) zu schreiben, so wie in `[[Haus der Herzogin]]`. Hier sind Linktext und Linkziel identisch, das heißt, der Link `Haus der Herzogin` führt auch zur Passage `Haus der Herzogin`.
+
+Doch nicht immer -- sogar in den meisten Fällen -- sind Linktext und Linkziel identisch. Hierfür gibt es in Twine die Pfeilnotation: `Linktext->Linkziel`, wie zum Beispiel in `[[Teeparty des verrückten Hutmachers->Teeparty]]`. Hier verlinkt der komplette Text `Teeparty des verrückten Hutmachers` auf eine Passage mit dem Namen `Teeparty`. Dabei ist zu beachten, daß Leerzeichen zählen. Daher sollte zumindest nach der Pfeilspitze kein Leerzeichen stehen, denn Twine sucht sonst das Linkziel ` Teeparty` mit vorangestelltem Leerzeichen und das bringt nicht nur Twine, sondern -- wie man in vielen Online-Tutorien sehen kann -- auch Euch durcheinander. Wenn Ihr aber rechts und links von den Pfeilen keine Leerzeichen zulaßt, seid Ihr immer auf der sicheren Seite.
+
+Es gibt noch eine zweite Schreibweise mit rückwärtsgerichtetem Pfeil, die Linkkziel und Linktext umkehrt: `[[Linkziel<-Linktext]]`, also -- um bei unserem Beispiel zu bleiben -- `[[Teeparty<-Teeparty des verrückten Hutmachers]]`. Mir hat sich der Sinn dieser vermutlich aus historischen Quellen gespeisten Schreibweise nie erschlossen und ich habe sie auch noch nie nutzen müssen.
+
+Um die Verwirrung komplett zu machen, gibt es auch noch eine dritte Schreibweise mit einem vertikalen Trennstrich (`|`) in der Mitte: `[[Linktext|Linkziel]]`, also `[[Teeparty des verrückten Hutmachers|Teeparty]]`. Hier weiß ich zumindest den Grund, die Schreibweise stammt aus Twine 1.x und ich habe sie aus reiner Gewohnheit auch lange noch verwendet. Hier gilt übrigens das gleiche wie bei den Pfeilen: Keine Leerzeichen rechts und/oder links vom vertikalen Strich. Und selbst ich als Gewohnheitstier habe mich von dieser Schreibweise verabschiedet. Wer daher neu in Twine ist, sollte keinen Grund haben, auf dieser veralteten Konvention zu beharren.
+
+Wenn Ihr -- nachdem Ihr die Startpassage mit dem Text gefüttert habt -- auf das Twine-Fenster schaut, werdet Ihr feststellen, daß Twine die Passagen `Haus der Herzogin`, `Teeparty` und `Raupe` für Euch schon angelegt und mit Pfeilen versehen hat. Die Pfeile zeigen von der Startpassage jeweils auf die verlinkte Passage und -- sollte es von da einen Rücklink geben -- als Doppelpfeil auch wieder zurück.
+
+Ihr könnt die Passagen in dem Fenster beliebig mit der Maus hin- und herschieben und so ein wenig Struktur in Eure Geschichten bekommen.
+
+Natürlich wollen auch diese Passagen mit Text gefüttert werden. Ich fange mit dem `Haus der Herzogin`an:
+
+~~~twee
+:: Haus der Herzogin
+Im Haus der Herzogin herrschte Chaos. Die Herzogin warf erst mit einem Topf nach
+Alice, doch dann drückte sie ihr ein plärrendes [[Baby in den Arm->Schweinchen]].
+~~~
+
+Auch die `Teeparty` und die `Raupe` bekommen je einen Text:
+
+~~~twee
+:: Teeparty
+Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser
+deklamierte gerade ein langes, dafür um so langweiligeres Gedicht.
+
+Alice hatte sehr schnell genug davon, also beschloß sie, doch die [[Raupe]]
+aufzusuchen.
+~~~
+
+~~~twee
+:: Raupe
+Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte
+nur immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen
+müßte. Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.
+
+Alice beschloß, daß sie für heute genug habe und ging nach [[Hause->Home]].
+~~~
+
+Wenn Ihr jetzt wieder auf Euer Twine-Fenster schaut, werdet Ihr zwei weitere, neue, aber noch leere Passagen finden, die Twine für Euch angelegt und mit Pfeilen versehen hat: `Schweinchen` und `Home`. Ihr könnt sie zur besseren Übersicht erst einmal anordnen, wie im [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53143377865/) im Banner oben und dann ebenfalls mit Text füllen:
+
+~~~twee
+:: Schweinchen
+Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem
+Grunzen und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen
+im Arm hielt.
+
+Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt
+zurück an den {restart link, label: "Start"}.
+~~~
+
+~~~twee
+:: Home
+Auf dem Weg nach Hause begegnete Alice noch einmal der Grinsekatze. Sie grinste
+Alice breit an – wie es Grinsekatzen eben so tun – und fragte: »Na, war die
+Raupe wieder bekifft?«
+
+Damit ist die Geschichte zu Ende. {restart link, label: "Noch einmal spielen"}?
+~~~
+
+Diese Passagen enthalten nichts Neues bis auf den `{restart link, label: "Irgendein Text"}`. Das ist ein Chapbook-eigenes Feature, zwischen den geschweiften Klammern steht ein sogenanntes `insert`, eine Art Makro. Insert sind ein wichtiges Sprachfeature von Chapbook, ich werde in späteren Tutorials noch ausführlich darauf zurückkommen. Für den Moment muüßt Ihr nur wissen, daß dies ein Link auf die Startpassage ist (wobei `label` denn Linktext bezeichnet), der das Spiel auf seine Startwerte zurücksetzt. Sollte Euere Alice im Spiel also Erfahrungspunkte gesammelt haben, werden diese wieder auf den Startwert zurückgesetzt. Da es momentan aber noch keine Variablen wie zum Beispiel Erfahrungspunkte im Spiel gibt, wird einfach nur die Liste der besuchten Passagen geleert. Daher wäre es momentan auch kein Beinbruch, zum Beispiel in der `Home`-Passage den `restart link` durch den einfachen Link `[[Noch einmal spielen->Start]]` zu ersetzen. Twine würde dies dann auch mit einem Pfeil von `Home` auf `Start` honorieren.
+
+Dies ist eigentlich alles, was Ihr über Twine und Chapbook wissen müßt. Mit diesem einfachen Linkmechanismus (der übrigens in dieser Form in fast allen Storyformaten existiert) könnt Ihr Eure eigene interaktive und verzweigte Geschichte im Stil der »Choose Your Own Adventure Books« *(CYOA)* schreiben. Denn das ist der Kern von Twine, alles andere ist im Grunde genommen nur Kosmetik. Aber da Kosmetik vieles doch erst schön macht, werde ich Euch in weiteren Tutorials zeigen, wie Ihr diese auftragt und nutzt, um Twine und Chapbook bis an die Grenzen auszureizen.
+
+Das »Spiel« habe ich auf meinem Itch.io-Account [hochgeladen](https://kantel.itch.io/alice-und-chapbook-stage-0), damit Ihr das Ergebnis in Aktion erleben könnt. Und den [Twee-Code](https://github.com/kantel/twine-entdecken/blob/master/tweego/alice/alice00chapbook.twee) wie auch die [HTML-Datei](https://github.com/kantel/twine-entdecken/tree/master/tweego/alice) (`alice00chapbook.html`) findet Ihr in meinem GitHub-Repositorium, so daß Ihr das Beispiel in Eurem eigenen Twine importieren könnt.
