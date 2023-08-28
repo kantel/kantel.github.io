@@ -1,0 +1,103 @@
+---
+title: "Mit Twine und Chapbook in das Wunderland, Version&nbsp;0.1: Wir wollen Bilder!"
+author: "Jörg Kantel"
+date: "2023-08-28 19:50:00"
+categories: [Twine, Chapbook, Interactive Fiction]
+image: "images/chapbooktwinev01.jpg"
+---
+
+[![](images/chapbooktwinev01-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53147889364/)
+
+>Alice fing an sich zu langweilen; sie saß schon lange bei ihrer Schwester am Ufer und hatte nichts zu tun. Das Buch, das ihre Schwester las, gefiel ihr nicht; denn es waren weder Bilder noch Gespräche darin. „»Und was nützen Bücher,« dachte Alice, »ohne Bilder und Gespräche?«
+
+In dieser zweiten Folge meiner kleinen Tutorialreihe zu [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) und dem Storyformat [Chapbook](https://klembot.github.io/chapbook/guide/) möchte ich das größte Manko der [ersten Folge](https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/) beheben: Denn was sind Geschichten ohne Bilder?
+
+Doch das Verhältnis von Twine zu Bildern (und anderen Mulitmediadateien wie Musik, Sound oder Filmen) war von Anfang an ein schwieriges. Denn Twine war ursprünglich entworfen, um textbasierte, interaktive Abenteuer zu erzählen. Bilder waren da nicht vorgesehen. Doch das Publikum wollte -- wie Alice -- Bilder und so haben sich zwei mehr oder weniger inkomaptible Lösungen gefunden:
+
+### Lösung 1: Bilder online einbinden
+
+Der erste Ansatz ist, die Multimediadateien online auf einem Server abzulegen, und sie dann per HTTP(S) einzubinden. Der Vorteil dieser Lösung ist, daß die Bilder -- eine Online-Anbindung vorausgesetzt -- immer von Twine gefunden werden, egal ob die Twine Story **in** Twine (im Test-Modus) aufgerufen wird, oder ob sie *standalone* läuft. Jedoch hat diese Methode auch zwei gewichtige Nachteile. Der erste Nachteil: Es ist **Euer** Server, auf dem die Daten liegen, Ihr zahlt für die Bandbreite. Und zweitens: Ihr müßt zwingend online sein, auch wenn Ihr Euer Spiel entwickelt. Ein Schreiben oder Spielen am Strand ist damit in der Regel nicht möglich.
+
+Außerdem hat sich hier noch eine böse Unsitte entwickelt, die man leider häufig auch Twine-Tutorials findet. Dort wird dann einfach mit einer Bildersuchmaschine ein passendes Bild gesucht. Ist dieses Bild gefunden, wird die URL kopiert und die Datei ohne Rücksicht auf Verluste vom **fremden** Server in die eigene Geschichte eingebunden.
+
+Dieses *Hotlinking* genannte Verfahren ist aus mehreren Gründen eine Sünde: Erstens, wenn man sich nicht um die Bildrechte kümmert, gerät man dabei leicht in die Fallstricke einer Urheberrechtsverletzung und das kann teuer werden. Zweitens zahlt der Serverbetreiber und nicht Ihr die Kosten für den Datentransfer. Das macht ihn sicher nicht glücklich. Und drittens habt Ihr keine Kontrolle über die Daten. Auch ich habe schon einmal eines meiner (eigentlich harmlosen und unter einer freien Lizenz stehenenden) Photos einer Berliner Touristen-Attraktion gegen das Bild einer leicht bekleideten Dame ausgetauscht, nachdem ich bemerkt hatte, daß irgendein Dödel dieses Bild ungefragt per Hotlinking in seine dusselige Kommerzseite eingebunden hatte.
+
+### Lösung 2: Daten lokal einbinden
+
+Die zweite Lösung ist, die Daten lokal einzubinden. Dafür legt man sich am sinnvollsten unterhalb der eigentlichen Story-Datei (Beispiel: `story.html`) ein Verzeichnis (oder mehrere Vereichnisse) an, die die Asset-Dateien beinhalten. Das kann dann beispielsweise so aussehen:
+
+~~~bash
+- story.html
+- images
+  - image01.jpg
+  - image02.jpg
+- audio
+  - song01.mp3
+~~~
+
+Wenn dann ein Bild in eine Twine-Story per relativer URL eingebunden ist, in Chapbook zum Beispiel mit:
+
+~~~twee
+{embed image: 'images/image01.jpg', alt: 'Mein super-duper Bild'}
+~~~
+
+Dann findet Eure Twine-Story nach dem Publizieren das Bild auch, unabhängig davon, ob sie lokal oder über eine Webverbindung aufgerufen wurde.
+
+Der Zusatz »nach dem Publizieren« weist auch gleich auf den größten Nachteil dieser Methode hin: Wird die Geschichte **innerhalb** von Twine gestartet (sei es über den Test- oder über den Play-Button), dann findet Twine Eure Assets nicht. Das liegt daran, daß Twine die Story temporär auf eine völlig obskure und nicht nachvolltiehbare URL hinausschreibt, beispielsweise auf (gekürzt)
+
+~~~bash
+file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4d8-6ee9f02e7df4.html
+~~~
+
+und wo soll das arme Twine da Eure Assets finden?
+
+Der größte Vorteil dieser Methode ist allerdings der: Ist Eure Story mal publiziert, dann läßt sich die Datei mitsamt den Asset-Verzeichnissen entweder als `.zip`-Datei oder auch unkomprimiert auf jeden Server oder Dienst Eurer Wahl hochladen (zum Beispiel auf Itch.io) oder als Email an Eure Freunde verschicken. Und sie können sie dann auch spielen, ohne auf eine Internetverbindung angewiesen zu sein.
+
+### Der Kompromiß: Lokaler Webserver
+
+Nun möchte man aber gerne auch während der Entwicklung in Twine seine Bilder sehen, und sei es nur, um das Layout kontrollieren zu können. Bei mir hat sich folgende Vorgehensweise als sinnvoll herausgestellt: Auf meinem Rechnern läuft sowieso permanent ein lokaler Webserver ([MAMP](http://cognitiones.kantel-chaos-team.de/webworking/mamp.html), aber auch [XAMPP](http://cognitiones.kantel-chaos-team.de/webworking/xampp.html) wäre eine Alternative). Dort lege ich für jede Twine-Story ein Verzeichnis mit den benötigten Bildern und anderen Assets an. Diese kann ich dann nach der **Lösung 1** via `localhost` so einbinden, als lägen sie auf einem externen Server. In Chapbook sieht das dann so aus:
+
+~~~twee
+{embed image: "http://localhost:8888/twine/alice01/images/bild01.jpg", alt: "Grinsekatze"}
+~~~
+
+(Mein MAMP lauscht auf Port `8888`, den Port müßt Ihr gegebenenfalls an Eure Umgebung anpassen.)
+
+Ist die Entwicklung dann abgeschlossen und die Story kann publiziert werden, dann tausche ich per globales *Suchen und Ersetzen* alle absoluten, aber dennoch lokalen URLs `http://localhost:8888/twine/alice01/images` durch ein schlichtes `images` aus. Das obige Beispiel wird dann zu
+
+~~~twee
+{embed image: "images/bild01.jpg", alt: "Grinsekatze"}
+~~~
+
+und damit zu einer relativen URL und zur **Lösung 2**. Ganz besonders schlaue Entwickler exportieren ihre Twine Story erst nach `Twee` bevor sie die globale Ersetzung vornehmen und schreiben die Story danach dann zum Beispiel mit [Tweego](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html) als HTML-Datei heraus. So bleibt die Story im Twine-Editor unverändert, sollte man doch noch einmal Änderungen vornehmen wollen oder müssen.
+
+Die Verwendung des `alt`-Textes sollte in Chapbook (aber nicht nur dort, sondern eigentlich überall) obligatorisch sein, damit sich sehbehinderte Menschen von ihrem Screenreader die Bildbeschreibung vorlesen lassen können. Sollte das Bild rein dekorativen Zwecken dienen, zum Beispiel eine schöne Seitenumrandung, dann kann der `alt`-Text auch einfach nur aus einem leeren String bestehen:
+
+~~~twee
+{embed image: "asterisk.png", alt: ""}
+~~~
+
+Moderne Screenreader werden dieses Bild dann freudig ignorieren.
+
+So, und jetzt nach der langen Vorrede die neuesten Abenteuer von Alice mit Twine und Chapbook. Sie sind nahezu identisch mit der ersten Version, nur daß sie nun mit Bildern illustriert sind. Hier der Twee-Code der ersten Passage:
+
+~~~twee
+:: Start
+{embed image: "http://localhost:8888/twine/images/grinsekatze.jpg", alt: "Grinsekatze"}
+
+Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland.
+Sie hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über
+ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich
+von hier aus weitergehen soll!«
+
+Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.
+Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur
+[[Teeparty des verrückten Hutmachers->Teeparty]] und rechts triffst Du die 
+[[kiffende Raupe auf ihrem Pilz->Raupe]].«
+~~~
+
+Auf den Abdruck der übrigen Passagen habe ich verzichtet, denn den [vollständigen Twee-Code](https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice00chapbook.twee) wie auch die [HTML-Datei](https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook) (`alice01chapbook.html`) und die [Bilder](https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images) könnt Ihr wieder in meinem GitHub-Repositorium finden.
+
+Und auch diese Version habe ich wieder auf Itch.io [hochgeladen](https://kantel.itch.io/alice-und-chapbook-stage-1). Ihr könnt sie dort spielen.
+
+Die Bilder sind übrigens von *[John Tenniel](https://de.wikipedia.org/wiki/John_Tenniel)* (1820-1914) (Startpassage) und *[Arthur Rackham](https://collectingalice.com/arthur-rackham-dark-alice/)* (1867-1939) (alle übrigen Bilder). Beide Künstler sind vor hinreichend langer Zeit gestorben, so daß es -- auch wenn Ihr sie weiterverwenden wollt -- zumindest nach europäischem Recht keine Urheberrechtsprobleme gibt. Denn es gilt: *Ihr ehrt die toten Künstler, in dem Ihr sie remixed!*

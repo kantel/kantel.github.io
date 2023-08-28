@@ -10,7 +10,101 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Sun, 27 Aug 2023 18:15:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 28 Aug 2023 17:50:00 GMT</lastBuildDate>
+<item>
+  <title>Mit Twine und Chapbook in das Wunderland, Version 0.1: Wir wollen Bilder!</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53147889364/"><img src="https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/images/chapbooktwinev01-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Alice fing an sich zu langweilen; sie saß schon lange bei ihrer Schwester am Ufer und hatte nichts zu tun. Das Buch, das ihre Schwester las, gefiel ihr nicht; denn es waren weder Bilder noch Gespräche darin. „»Und was nützen Bücher,« dachte Alice, »ohne Bilder und Gespräche?«</p>
+</blockquote>
+<p>In dieser zweiten Folge meiner kleinen Tutorialreihe zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und dem Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> möchte ich das größte Manko der <a href="https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/">ersten Folge</a> beheben: Denn was sind Geschichten ohne Bilder?</p>
+<p>Doch das Verhältnis von Twine zu Bildern (und anderen Mulitmediadateien wie Musik, Sound oder Filmen) war von Anfang an ein schwieriges. Denn Twine war ursprünglich entworfen, um textbasierte, interaktive Abenteuer zu erzählen. Bilder waren da nicht vorgesehen. Doch das Publikum wollte – wie Alice – Bilder und so haben sich zwei mehr oder weniger inkomaptible Lösungen gefunden:</p>
+<section id="lösung-1-bilder-online-einbinden" class="level3">
+<h3 class="anchored" data-anchor-id="lösung-1-bilder-online-einbinden">Lösung 1: Bilder online einbinden</h3>
+<p>Der erste Ansatz ist, die Multimediadateien online auf einem Server abzulegen, und sie dann per HTTP(S) einzubinden. Der Vorteil dieser Lösung ist, daß die Bilder – eine Online-Anbindung vorausgesetzt – immer von Twine gefunden werden, egal ob die Twine Story <strong>in</strong> Twine (im Test-Modus) aufgerufen wird, oder ob sie <em>standalone</em> läuft. Jedoch hat diese Methode auch zwei gewichtige Nachteile. Der erste Nachteil: Es ist <strong>Euer</strong> Server, auf dem die Daten liegen, Ihr zahlt für die Bandbreite. Und zweitens: Ihr müßt zwingend online sein, auch wenn Ihr Euer Spiel entwickelt. Ein Schreiben oder Spielen am Strand ist damit in der Regel nicht möglich.</p>
+<p>Außerdem hat sich hier noch eine böse Unsitte entwickelt, die man leider häufig auch Twine-Tutorials findet. Dort wird dann einfach mit einer Bildersuchmaschine ein passendes Bild gesucht. Ist dieses Bild gefunden, wird die URL kopiert und die Datei ohne Rücksicht auf Verluste vom <strong>fremden</strong> Server in die eigene Geschichte eingebunden.</p>
+<p>Dieses <em>Hotlinking</em> genannte Verfahren ist aus mehreren Gründen eine Sünde: Erstens, wenn man sich nicht um die Bildrechte kümmert, gerät man dabei leicht in die Fallstricke einer Urheberrechtsverletzung und das kann teuer werden. Zweitens zahlt der Serverbetreiber und nicht Ihr die Kosten für den Datentransfer. Das macht ihn sicher nicht glücklich. Und drittens habt Ihr keine Kontrolle über die Daten. Auch ich habe schon einmal eines meiner (eigentlich harmlosen und unter einer freien Lizenz stehenenden) Photos einer Berliner Touristen-Attraktion gegen das Bild einer leicht bekleideten Dame ausgetauscht, nachdem ich bemerkt hatte, daß irgendein Dödel dieses Bild ungefragt per Hotlinking in seine dusselige Kommerzseite eingebunden hatte.</p>
+</section>
+<section id="lösung-2-daten-lokal-einbinden" class="level3">
+<h3 class="anchored" data-anchor-id="lösung-2-daten-lokal-einbinden">Lösung 2: Daten lokal einbinden</h3>
+<p>Die zweite Lösung ist, die Daten lokal einzubinden. Dafür legt man sich am sinnvollsten unterhalb der eigentlichen Story-Datei (Beispiel: <code>story.html</code>) ein Verzeichnis (oder mehrere Vereichnisse) an, die die Asset-Dateien beinhalten. Das kann dann beispielsweise so aussehen:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> story.html</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> images</span>
+<span id="cb1-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> image01.jpg</span>
+<span id="cb1-4">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> image02.jpg</span>
+<span id="cb1-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> audio</span>
+<span id="cb1-6">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> song01.mp3</span></code></pre></div>
+<p>Wenn dann ein Bild in eine Twine-Story per relativer URL eingebunden ist, in Chapbook zum Beispiel mit:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1">{embed image: 'images/image01.jpg', alt: 'Mein super-duper Bild'}</span></code></pre></div>
+<p>Dann findet Eure Twine-Story nach dem Publizieren das Bild auch, unabhängig davon, ob sie lokal oder über eine Webverbindung aufgerufen wurde.</p>
+<p>Der Zusatz »nach dem Publizieren« weist auch gleich auf den größten Nachteil dieser Methode hin: Wird die Geschichte <strong>innerhalb</strong> von Twine gestartet (sei es über den Test- oder über den Play-Button), dann findet Twine Eure Assets nicht. Das liegt daran, daß Twine die Story temporär auf eine völlig obskure und nicht nachvolltiehbare URL hinausschreibt, beispielsweise auf (gekürzt)</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4d8-6ee9f02e7df4.html</span></span></code></pre></div>
+<p>und wo soll das arme Twine da Eure Assets finden?</p>
+<p>Der größte Vorteil dieser Methode ist allerdings der: Ist Eure Story mal publiziert, dann läßt sich die Datei mitsamt den Asset-Verzeichnissen entweder als <code>.zip</code>-Datei oder auch unkomprimiert auf jeden Server oder Dienst Eurer Wahl hochladen (zum Beispiel auf Itch.io) oder als Email an Eure Freunde verschicken. Und sie können sie dann auch spielen, ohne auf eine Internetverbindung angewiesen zu sein.</p>
+</section>
+<section id="der-kompromiß-lokaler-webserver" class="level3">
+<h3 class="anchored" data-anchor-id="der-kompromiß-lokaler-webserver">Der Kompromiß: Lokaler Webserver</h3>
+<p>Nun möchte man aber gerne auch während der Entwicklung in Twine seine Bilder sehen, und sei es nur, um das Layout kontrollieren zu können. Bei mir hat sich folgende Vorgehensweise als sinnvoll herausgestellt: Auf meinem Rechnern läuft sowieso permanent ein lokaler Webserver (<a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a>, aber auch <a href="http://cognitiones.kantel-chaos-team.de/webworking/xampp.html">XAMPP</a> wäre eine Alternative). Dort lege ich für jede Twine-Story ein Verzeichnis mit den benötigten Bildern und anderen Assets an. Diese kann ich dann nach der <strong>Lösung 1</strong> via <code>localhost</code> so einbinden, als lägen sie auf einem externen Server. In Chapbook sieht das dann so aus:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">{embed image: "http://localhost:8888/twine/alice01/images/bild01.jpg", alt: "Grinsekatze"}</span></code></pre></div>
+<p>(Mein MAMP lauscht auf Port <code>8888</code>, den Port müßt Ihr gegebenenfalls an Eure Umgebung anpassen.)</p>
+<p>Ist die Entwicklung dann abgeschlossen und die Story kann publiziert werden, dann tausche ich per globales <em>Suchen und Ersetzen</em> alle absoluten, aber dennoch lokalen URLs <code>http://localhost:8888/twine/alice01/images</code> durch ein schlichtes <code>images</code> aus. Das obige Beispiel wird dann zu</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">{embed image: "images/bild01.jpg", alt: "Grinsekatze"}</span></code></pre></div>
+<p>und damit zu einer relativen URL und zur <strong>Lösung 2</strong>. Ganz besonders schlaue Entwickler exportieren ihre Twine Story erst nach <code>Twee</code> bevor sie die globale Ersetzung vornehmen und schreiben die Story danach dann zum Beispiel mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> als HTML-Datei heraus. So bleibt die Story im Twine-Editor unverändert, sollte man doch noch einmal Änderungen vornehmen wollen oder müssen.</p>
+<p>Die Verwendung des <code>alt</code>-Textes sollte in Chapbook (aber nicht nur dort, sondern eigentlich überall) obligatorisch sein, damit sich sehbehinderte Menschen von ihrem Screenreader die Bildbeschreibung vorlesen lassen können. Sollte das Bild rein dekorativen Zwecken dienen, zum Beispiel eine schöne Seitenumrandung, dann kann der <code>alt</code>-Text auch einfach nur aus einem leeren String bestehen:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1">{embed image: "asterisk.png", alt: ""}</span></code></pre></div>
+<p>Moderne Screenreader werden dieses Bild dann freudig ignorieren.</p>
+<p>So, und jetzt nach der langen Vorrede die neuesten Abenteuer von Alice mit Twine und Chapbook. Sie sind nahezu identisch mit der ersten Version, nur daß sie nun mit Bildern illustriert sind. Hier der Twee-Code der ersten Passage:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1">:: Start</span>
+<span id="cb7-2">{embed image: "http://localhost:8888/twine/images/grinsekatze.jpg", alt: "Grinsekatze"}</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland.</span>
+<span id="cb7-5">Sie hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über</span>
+<span id="cb7-6">ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich</span>
+<span id="cb7-7">von hier aus weitergehen soll!«</span>
+<span id="cb7-8"></span>
+<span id="cb7-9">Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.</span>
+<span id="cb7-10">Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur</span>
+<span id="cb7-11">[[Teeparty des verrückten Hutmachers-&gt;Teeparty]] und rechts triffst Du die </span>
+<span id="cb7-12">[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]].«</span></code></pre></div>
+<p>Auf den Abdruck der übrigen Passagen habe ich verzichtet, denn den <a href="https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice00chapbook.twee">vollständigen Twee-Code</a> wie auch die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook">HTML-Datei</a> (<code>alice01chapbook.html</code>) und die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images">Bilder</a> könnt Ihr wieder in meinem GitHub-Repositorium finden.</p>
+<p>Und auch diese Version habe ich wieder auf Itch.io <a href="https://kantel.itch.io/alice-und-chapbook-stage-1">hochgeladen</a>. Ihr könnt sie dort spielen.</p>
+<p>Die Bilder sind übrigens von <em><a href="https://de.wikipedia.org/wiki/John_Tenniel">John Tenniel</a></em> (1820-1914) (Startpassage) und <em><a href="https://collectingalice.com/arthur-rackham-dark-alice/">Arthur Rackham</a></em> (1867-1939) (alle übrigen Bilder). Beide Künstler sind vor hinreichend langer Zeit gestorben, so daß es – auch wenn Ihr sie weiterverwenden wollt – zumindest nach europäischem Recht keine Urheberrechtsprobleme gibt. Denn es gilt: <em>Ihr ehrt die toten Künstler, in dem Ihr sie remixed!</em></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Chapbook</category>
+  <category>Interactive Fiction</category>
+  <guid>https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/index.html</guid>
+  <pubDate>Mon, 28 Aug 2023 17:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/images/chapbooktwinev01.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Tutorial: Mit Twine und Chapbook in das Wunderland, Version 0.0</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -867,31 +961,6 @@ font-style: inherit;">chmod</span> 755 tweego</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023081602_chrome_update/index.html</guid>
   <pubDate>Wed, 16 Aug 2023 14:35:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023081602_chrome_update/images/adiposegentleman.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Microsoft veröffentlicht Update für Office for Mac</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023081601_office_mac_update/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtIRqgpSHCrwSdoA5mJewqKA6u12JKL5HrHi7fQ4ZTC5cSPZVsfPVJx3lj7Bmd44MI9qOPg9gPn1c-zXZJlVDXPxSWA2Vu9Q58FNv6maBQLdZwwbYUv102yEiCzf0e2VGtdqRvhy8Z9HsiIjHJK4opHd3FB1eh06-rNvCy7scbif7cyOBt8gVkXiOF9x07/s1276/T.E.%20Powers,%20Nov%2026,%201912.jpeg"><img src="https://kantel.github.io/posts/2023081601_office_mac_update/images/thanksgivingsport-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Microsoft liefert mit dem <a href="https://docs.microsoft.com/en-us/officeupdates/release-notes-office-for-mac">Update auf 16.76 für Office 365, 2021 und 2019 for Mac</a> natürlich auch wieder aktuelle Sicherheitskorrekturen.</p>
-<p>Sofern Office nicht schon von sich aus darauf hinweist, erhält man die Korrekturen am einfachsten über Microsofts AutoUpdate – in einem beliebigen Office-Programm über Menü <code>Hilfe &gt; Auf Updates überprüfen</code>. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<p><em>(Bild: <a href="http://john-adcock.blogspot.com/2023/07/t-e-powers-two-obituaries.html">Thomas E. Powers</a> (1870-1939), Chicago Examiner, 26. November 1912)</em></p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2023081601_office_mac_update/index.html</guid>
-  <pubDate>Wed, 16 Aug 2023 14:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023081601_office_mac_update/images/thanksgivingsport.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
