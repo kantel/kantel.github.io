@@ -10,7 +10,51 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Wed, 30 Aug 2023 17:45:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 31 Aug 2023 17:55:00 GMT</lastBuildDate>
+<item>
+  <title>Twine und Chapbook im Wunderland – jetzt mit Stil</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023083101_chapbook_mit_stil/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53154395787/"><img src="https://kantel.github.io/posts/2023083101_chapbook_mit_stil/images/chapbooktwinestil-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Bevor ich Alice weitere Abenteuer mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> im Wunderland erleben lasse, möchte ich das <a href="https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/">bisher erreichte</a> noch etwas aufhübschen und der Geschichte ein wenig Stil spendieren.</p>
+<p>Chapbook besitzt einen von der restlichen Passage separierten Variablen-Abschnitt. Dieser steht immer als erstes zu Beginn einer Passage und wird von der restlichen Passage durch eine Zeile mit zwei Strichen (<code>--</code>) getrennt. Dieser Abschnitt kann nicht nur selbstdefinierte Variablen wie <code>has_key</code> oder <code>health_points</code> aufnehmen (dazu in einem späteren Beitrag mehr), sondern auch Variable, die das Layout der Geschichte beeinflussen. Diese sind in der Regel in den Objekten <code>config.style</code>, <code>config.header</code> und <code>config.footer</code> zusammengefaßt.</p>
+<p>Wenn man also das Aussehen eines Links beeinflussen will, kann man zum Beispiel mit der Zeile</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">config.style.page.link.font: "18 bold none"</span></code></pre></div>
+<p>erreichen, daß der Link mit der Fontgröße 18 in fett und ohne Unterstreichung dargestellt wird. Für die Farbe des Links sind die Zeilen</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1">config.style.page.link.color: "teal-8"</span>
+<span id="cb2-2">config.style.page.link.active.color: "teal-8"</span></code></pre></div>
+<p>zuständig, die – in diesem Fall – dafür sorgen, daß ein Link in einem leichten grün dargestellt und dieses Aussehen auch nicht verändert, wenn mit der Maus über den Link gefahren wird (<code>active</code> gleich <code>hover</code>).</p>
+<p>Ein Wort zu den Farben: Chapbook unterstützt per Default eine Palette, die <a href="https://yeun.github.io/open-color/">Open Color</a> genannt wird. Diese besteht aus dreizehn Farben, die in je zehn Schattierungen angegeben werden können (zum Beispiel <code>teal-0</code> bis <code>teal-9</code>). Eine Übersicht bietet das <a href="https://klembot.github.io/chapbook/guide/customization/fonts-and-colors.html">Chapbook-Handbuch</a>. Wem dies nicht ausreicht, der kann natürlich auch jede andere Farbbezeichnung verwenden, die CSS versteht (von der gewohnten Hex-Notation wie zum Beispiel <code>#0b7285</code> bis hin zu sehr speziellen Notationen wie beispielsweise <code>hsla(0%, 65%, 48%, 0.75)</code>).</p>
+<p>Die <code>config</code>-Objekte besitzen – wie alle Variablen in Chapbook – einen globalen Gültigkeitsbereich. Es ist daher in der Regel keine gute Idee, diese innerhalb einer Geschichte mehrmals zu definieren (man sollte dann wirklich genau wissen, was man tut).</p>
+<p>Ich habe für mein Alice-Beispiel folgende <code>config</code>-Objekte in der Start-Passage definiert:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">:: Start</span>
+<span id="cb3-2">config.style.page.link.font: "18 bold none"</span>
+<span id="cb3-3">config.style.page.link.color: "teal-8"</span>
+<span id="cb3-4">config.style.page.link.active.color: "teal-8"</span>
+<span id="cb3-5">config.footer.left: "Alice im Reich der Ringe"</span>
+<span id="cb3-6">--</span></code></pre></div>
+<p>Eine Besonderheit ist die letzte Zeile, in der festgelegt wird, daß die Zeichenfolge <code>Alice im Reich der Ringe</code> links im Footer jeder Seite erscheint.</p>
+<p>Welche <code>config</code>-Objekte existieren und mit welchen Default-Werten sie vorbelegt sind, könnt Ihr nachschauen, wenn Ihr in der <em>Backstage View</em> der Testumgebung unter dem Reiter <code>Stage</code> den Button <code>Show Defaults</code> ankreuzt. Alle diese Werte können von Euch bei Bedarf überschrieben werden.</p>
+<p>Das Update habe ich auch wieder auf Itch.io <a href="https://kantel.itch.io/alice-und-chapbook-stage-1">hochgeladen</a>. Ihr könnt es dort im Browser spielen.</p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Chapbook</category>
+  <category>Interactive Fiction</category>
+  <guid>https://kantel.github.io/posts/2023083101_chapbook_mit_stil/index.html</guid>
+  <pubDate>Thu, 31 Aug 2023 17:55:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023083101_chapbook_mit_stil/images/chapbooktwinestil.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Interaktive Publikationen mit MyST Markdown und Jupyter Book</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -890,38 +934,6 @@ font-style: inherit;">/&gt;</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023082001_tweego_chapbook/index.html</guid>
   <pubDate>Sun, 20 Aug 2023 14:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023082001_tweego_chapbook/images/chapbooktweego.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Neues von meinem (digitalen) Zettelkasten: Logseq 0.9.14 freigegeben</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023081902_logseq_0914/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53127373944/"><img src="https://kantel.github.io/posts/2023081902_logseq_0914/images/logseq0914-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Normalerweise aktualisiert sich mein <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html">zweites Gehirn</a> ja selbstständig, aber dieses Mal hatte entweder der automatische Updater versagt oder ich war zu ungeduldig. Jedenfalls habe ich erst via <a href="https://twitter.com/logseq/status/1692522864459829731?t=bfwsV_tyK3AHidI9bFwQpA&amp;s=03">Twitter</a> erfahren, daß <a href="https://logseq.com/">Logseq</a> die Version 0.9.14 freigegeben hatte.</p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://github.com/yoyurec/logseq-awesome-styler"><img src="https://kantel.github.io/posts/2023081902_logseq_0914/images/awesomestyler.png" class="img-fluid"></a>
-</div>
-<p>Der <a href="https://blog.logseq.com/logseq-0-9-14-better-sidebars-and-smart-merge-for-sync/">zugehörige Blogeintrag</a> verspricht ein größeres Update: So werden verbesserte Seitenleisten angekündigt, die bei mir allerdings noch nicht greifen, bis meine Plugins <a href="https://github.com/yoyurec/logseq-awesome-styler">Awesome Styler</a> oder <a href="https://github.com/yoyurec/logseq-awesome-ui">Awesome UI</a> (oder beide) ebenfalls ein Update vorgelegt haben.</p>
-<p>Dann gibt es mit <em>Smart Merge</em> ein neues (noch exerimentelles) Feature, das die Synchronisation zwischen verschiedenen Devices verbessern soll. Wie man dieses Feature freischaltet, ist ebenfalls im <a href="https://blog.logseq.com/logseq-0-9-14-better-sidebars-and-smart-merge-for-sync/">Blogpost</a> beschrieben.</p>
-<p>Außerdem soll bald ein neues Logseq-Handbuch als <em>In-App Documentation</em> integriert werden. Das alte, aber extrem nützliche <a href="https://docs.logseq.com/">docs.logseq.com</a> soll uns aber weiterhin erhalten bleiben.</p>
-<p>Bei mir lief das Update ohne Probleme, wie der <a href="https://www.flickr.com/photos/schockwellenreiter/53127373944/">Screenshot</a> oben im Banner beweist. Damit ich aber in den Genuß der schönen neuen Features komme, muß ich aber wohl noch auf ein Update meiner Plugins warten.</p>
-
-
-
- ]]></description>
-  <category>Logseq</category>
-  <category>Outliner</category>
-  <category>Zettelkasten</category>
-  <guid>https://kantel.github.io/posts/2023081902_logseq_0914/index.html</guid>
-  <pubDate>Sat, 19 Aug 2023 15:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023081902_logseq_0914/images/logseq0914.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

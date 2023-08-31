@@ -1,0 +1,49 @@
+---
+title: "Twine und Chapbook im Wunderland -- jetzt mit Stil"
+author: "Jörg Kantel"
+date: "2023-08-31 19:55:00"
+categories: [Twine, Chapbook, Interactive Fiction]
+image: "images/chapbooktwinestil.jpg"
+---
+
+[![](images/chapbooktwinestil-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53154395787/)
+
+Bevor ich Alice weitere Abenteuer mit [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) und [Chapbook](https://klembot.github.io/chapbook/guide/) im Wunderland erleben lasse, möchte ich das [bisher erreichte](https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/) noch etwas aufhübschen und der Geschichte ein wenig Stil spendieren.
+
+Chapbook besitzt einen von der restlichen Passage separierten Variablen-Abschnitt. Dieser steht immer als erstes zu Beginn einer Passage und wird von der restlichen Passage durch eine Zeile mit zwei Strichen (`--`) getrennt. Dieser Abschnitt kann nicht nur selbstdefinierte Variablen wie `has_key` oder `health_points` aufnehmen (dazu in einem späteren Beitrag mehr), sondern auch Variable, die das Layout der Geschichte beeinflussen. Diese sind in der Regel in den Objekten `config.style`, `config.header` und `config.footer` zusammengefaßt.
+
+Wenn man also das Aussehen eines Links beeinflussen will, kann man zum Beispiel mit der Zeile
+
+~~~twee
+config.style.page.link.font: "18 bold none"
+~~~
+
+erreichen, daß der Link mit der Fontgröße 18 in fett und ohne Unterstreichung dargestellt wird. Für die Farbe des Links sind die Zeilen
+
+~~~twee
+config.style.page.link.color: "teal-8"
+config.style.page.link.active.color: "teal-8"
+~~~
+
+zuständig, die -- in diesem Fall -- dafür sorgen, daß ein Link in einem leichten grün dargestellt und dieses Aussehen auch nicht verändert, wenn mit der Maus über den Link gefahren wird (`active` gleich `hover`).
+
+Ein Wort zu den Farben: Chapbook unterstützt per Default eine Palette, die [Open Color](https://yeun.github.io/open-color/) genannt wird. Diese besteht aus dreizehn Farben, die in je zehn Schattierungen angegeben werden können (zum Beispiel `teal-0` bis `teal-9`). Eine Übersicht bietet das [Chapbook-Handbuch](https://klembot.github.io/chapbook/guide/customization/fonts-and-colors.html). Wem dies nicht ausreicht, der kann natürlich auch jede andere Farbbezeichnung verwenden, die CSS versteht (von der gewohnten Hex-Notation wie zum Beispiel `#0b7285` bis hin zu sehr speziellen Notationen wie beispielsweise `hsla(0%, 65%, 48%, 0.75)`).
+
+Die `config`-Objekte besitzen -- wie alle Variablen in Chapbook -- einen globalen Gültigkeitsbereich. Es ist daher in der Regel keine gute Idee, diese innerhalb einer Geschichte mehrmals zu definieren (man sollte dann wirklich genau wissen, was man tut).
+
+Ich habe für mein Alice-Beispiel folgende `config`-Objekte in der Start-Passage definiert:
+
+~~~twee
+:: Start
+config.style.page.link.font: "18 bold none"
+config.style.page.link.color: "teal-8"
+config.style.page.link.active.color: "teal-8"
+config.footer.left: "Alice im Reich der Ringe"
+--
+~~~
+
+Eine Besonderheit ist die letzte Zeile, in der festgelegt wird, daß die Zeichenfolge `Alice im Reich der Ringe` links im Footer jeder Seite erscheint.
+
+Welche `config`-Objekte existieren und mit welchen Default-Werten sie vorbelegt sind, könnt Ihr nachschauen, wenn Ihr in der *Backstage View* der Testumgebung unter dem Reiter `Stage` den Button `Show Defaults` ankreuzt. Alle diese Werte können von Euch bei Bedarf überschrieben werden.
+
+Das Update habe ich auch wieder auf Itch.io [hochgeladen](https://kantel.itch.io/alice-und-chapbook-stage-1). Ihr könnt es dort im Browser spielen.
