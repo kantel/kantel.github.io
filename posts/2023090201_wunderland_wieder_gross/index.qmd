@@ -1,0 +1,93 @@
+---
+title: "Macht Wunderland wieder groß -- jetzt mit noch mehr Stil"
+author: "Jörg Kantel"
+date: "2023-09-02 16:30:00"
+categories: [Twine, Chapbook, Interactive Fiction]
+image: "images/wunderlandgross.jpg"
+---
+
+[![](images/wunderlandgross-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53157785833/)
+
+Wie versprochen habe ich mich gestern vor meinem Rechner gesetzt und meinen Wunderland-Kosmos ein wenig erweitert. Dabei ging es mir darum, zu zeigen, welche Einflußmöglichkeiten man mit [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) und [Chapbook](https://klembot.github.io/chapbook/guide/) auf die Gestaltung des Textes besitzt.
+
+Um das Ergebnis vorwegzunehmen: Die Möglichkeiten sind relativ gering bis gar nicht vorhanden. Das ist nicht unbedingt ein Beinbruch, da man in der Regel ja auf das darunterliegenden HTML und CSS zurückgreifen kann, aber ich hätte mir doch schon ein paar der komfortablen Möglichkeiten, wie sie das Storyformat [Harlowe](https://twine2.neocities.org/) anbietet, gewünscht.
+
+Doch jetzt zurück ins Wunderland. Ich habe beschlossen, alle neuen Experimente in die vorhandene Geschichte einzubauen. Also wurde von mir erst einmal die Passage `Teeparty` mit einem neuen Text versehen:
+
+~~~twee
+:: Teeparty
+{embed image: "images/teaparty_large.jpg", alt: "Teeparty"}
+
+Alice erreichte die Teeparty mit dem Märzhasen und dem weißen Kaninchen vor dem
+Haus des verrückten Hutmachers. Dieser deklamierte gerade ein langes, dafür um
+so langweiligeres Gedicht. stand dann auf, hob seine Teetasse und begann
+[[lautstark zu schwadronieren->Hutmacher]].
+~~~
+
+Dies führte -- beginnend mit der Passage `Hutmacher` zu einem neuen Zweig der Geschichte, die über die Passagen `Märzhase`, `Kaninchen` und `Flamingo` entweder zurück zur Passage `Raupe` führte oder über die Passage `Grinsekatze` die Geschichte zu einem neuen, alternativen Ende brachte:
+
+~~~twee
+:: Hutmacher
+[align center]
+{embed image: "images/madhattercol-s.jpg", alt: "Mad Hatter"}
+
+»Macht Wunderland wieder <span style="color:red; font-size: 60px;">groß!</span>
+[continue]
+
+Der Märzhase entgegnete [[schüchtern->Märzhase]] …
+~~~
+
+In dieser Passage gibt es ein neues Sprachelement von Chapbook, einen *[Modifier](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/modifiers-and-text-alignment.html)*. Sie beginnen immer mit einer Zeile, die mit einfachen, eckigen Klammern (`[]`) begrenzt ist. Die Testmodifikationen gelten immer so lange, bis sie durch den Modifier `[continue]` (alternative Schreibweise auch `[cont'd]` oder `[cont.]`) aufgehoben werden. Modifier können nicht nur für das Text-Alignment verwendet werden, sondern auch [Delayed Text](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/delayed-text.html) und [Notizen und Todos](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/notes.html) sind damit möglich.
+
+Doch jetzt weiter im Text:
+
+~~~twee
+:: Märzhase
+{embed image: "images/marchhare.jpg", alt: "Märzhase"}
+
+»Ich fand es aber <span style="color:green; font-size:14px;">klein</span> viel schöner.«
+
+Das weiße Kaninchen schaute auf seine Uhr und jammerte: »Ich komme wieder **viel**
+zu [[spät->Kaninchen]] …«
+~~~
+
+In diesen beiden Passagen habe ich die Änderungen im Textstil (einen großen, roten und einen kleinen grünen Text) mit dem Durchgriff auf das darunterliegende HTML (`<span style="irgendeine CSS-Funktion">`) realisiert. Chapbook kann Textmodifikationen mit Markdown, also \*kursiver\* und \*\*fetter\*\* Text sind mit einer einfachen Auszeichung möglich.
+
+Die nächsten beiden neuen Passage besitzen nur bekannte Sprachelemente. Zuerst das `Kaninchen`:
+
+~~~twee
+:: Kaninchen
+{embed image: "images/whiterabbitclock00tr.png", alt: "Weißes Kaninchen mit Uhr"}
+
+Sprach's und hoppelte aufgeregt davon.
+
+[[Zurück->Flamingo]] …
+~~~
+
+Und dann den `Flamingo`:
+
+~~~twee
+:: Flamingo {"position":"700,250","size":"100,100"}
+{embed image: "images/flamingo2_s.jpg", alt: "Alice mit rosa Flamingo"}
+
+Alice dachte, daß ihr dies zu dumm sei. Außerdem wußte sie nicht, wieso sie auf
+einmal einen rosa Flamingo im Arm hatte. Sie überlegte, ob sie ihren Freund,
+die [[bekiffte Raupe->Raupe]] besuchen oder mit der [[Grinsekatze]] plaudern solle.
+~~~
+
+Damit ist die Geschichte schon beinahe in die gewohnten Bahnen zurückgekehrt. Lediglich die `Grinsekatze` spendiert uns noch ein weiteres, alternatives Ende:
+
+~~~twee
+:: Grinsekatze
+{embed image: "images/grinsekatze1.png", alt: "Grinsekatze"}
+
+Die Grinsekatze sagte »Schön, daß Du mich mal wieder besuchen kommst« und verschwand …
+
+Das ist das Ende.
+
+Alles auf {restart link, label: "Anfang"}?
+~~~
+
+Die Geschichte nimmt so langsam an Umfang zu und besteht jetzt schon aus elf Passagen. Und das Ende der Fahnenstange ist noch lange nicht erreicht. Es wird weitere Abenteuer mit Alice und Twine und Chapbook im Wunderland-Universum geben. Ein paar Ideen habe ich schon in der Mache. *Still digging!*
+
+Wie immer gibt es den [Twee-Quellcode](https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice01achapbook.twee) und [sämtliche Assets](https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images) in meinem GitHub-Repositorium und die Geschichte habe ich auch wieder auf Itch.io [hochgeladen](https://kantel.itch.io/alice-und-chapbook-stage-1), damit Ihr sie dort im Browser spielen könnt.

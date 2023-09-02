@@ -10,7 +10,85 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Fri, 01 Sep 2023 13:15:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 02 Sep 2023 14:30:00 GMT</lastBuildDate>
+<item>
+  <title>Macht Wunderland wieder groß – jetzt mit noch mehr Stil</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023090201_wunderland_wieder_gross/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53157785833/"><img src="https://kantel.github.io/posts/2023090201_wunderland_wieder_gross/images/wunderlandgross-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Wie versprochen habe ich mich gestern vor meinem Rechner gesetzt und meinen Wunderland-Kosmos ein wenig erweitert. Dabei ging es mir darum, zu zeigen, welche Einflußmöglichkeiten man mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> auf die Gestaltung des Textes besitzt.</p>
+<p>Um das Ergebnis vorwegzunehmen: Die Möglichkeiten sind relativ gering bis gar nicht vorhanden. Das ist nicht unbedingt ein Beinbruch, da man in der Regel ja auf das darunterliegenden HTML und CSS zurückgreifen kann, aber ich hätte mir doch schon ein paar der komfortablen Möglichkeiten, wie sie das Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> anbietet, gewünscht.</p>
+<p>Doch jetzt zurück ins Wunderland. Ich habe beschlossen, alle neuen Experimente in die vorhandene Geschichte einzubauen. Also wurde von mir erst einmal die Passage <code>Teeparty</code> mit einem neuen Text versehen:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">:: Teeparty</span>
+<span id="cb1-2">{embed image: "images/teaparty_large.jpg", alt: "Teeparty"}</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">Alice erreichte die Teeparty mit dem Märzhasen und dem weißen Kaninchen vor dem</span>
+<span id="cb1-5">Haus des verrückten Hutmachers. Dieser deklamierte gerade ein langes, dafür um</span>
+<span id="cb1-6">so langweiligeres Gedicht. stand dann auf, hob seine Teetasse und begann</span>
+<span id="cb1-7">[[lautstark zu schwadronieren-&gt;Hutmacher]].</span></code></pre></div>
+<p>Dies führte – beginnend mit der Passage <code>Hutmacher</code> zu einem neuen Zweig der Geschichte, die über die Passagen <code>Märzhase</code>, <code>Kaninchen</code> und <code>Flamingo</code> entweder zurück zur Passage <code>Raupe</code> führte oder über die Passage <code>Grinsekatze</code> die Geschichte zu einem neuen, alternativen Ende brachte:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1">:: Hutmacher</span>
+<span id="cb2-2">[align center]</span>
+<span id="cb2-3">{embed image: "images/madhattercol-s.jpg", alt: "Mad Hatter"}</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">»Macht Wunderland wieder &lt;span style="color:red; font-size: 60px;"&gt;groß!&lt;/span&gt;</span>
+<span id="cb2-6">[continue]</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">Der Märzhase entgegnete [[schüchtern-&gt;Märzhase]] …</span></code></pre></div>
+<p>In dieser Passage gibt es ein neues Sprachelement von Chapbook, einen <em><a href="https://klembot.github.io/chapbook/guide/modifiers-and-inserts/modifiers-and-text-alignment.html">Modifier</a></em>. Sie beginnen immer mit einer Zeile, die mit einfachen, eckigen Klammern (<code>[]</code>) begrenzt ist. Die Testmodifikationen gelten immer so lange, bis sie durch den Modifier <code>[continue]</code> (alternative Schreibweise auch <code>[cont'd]</code> oder <code>[cont.]</code>) aufgehoben werden. Modifier können nicht nur für das Text-Alignment verwendet werden, sondern auch <a href="https://klembot.github.io/chapbook/guide/modifiers-and-inserts/delayed-text.html">Delayed Text</a> und <a href="https://klembot.github.io/chapbook/guide/modifiers-and-inserts/notes.html">Notizen und Todos</a> sind damit möglich.</p>
+<p>Doch jetzt weiter im Text:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">:: Märzhase</span>
+<span id="cb3-2">{embed image: "images/marchhare.jpg", alt: "Märzhase"}</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">»Ich fand es aber &lt;span style="color:green; font-size:14px;"&gt;klein&lt;/span&gt; viel schöner.«</span>
+<span id="cb3-5"></span>
+<span id="cb3-6">Das weiße Kaninchen schaute auf seine Uhr und jammerte: »Ich komme wieder **viel**</span>
+<span id="cb3-7">zu [[spät-&gt;Kaninchen]] …«</span></code></pre></div>
+<p>In diesen beiden Passagen habe ich die Änderungen im Textstil (einen großen, roten und einen kleinen grünen Text) mit dem Durchgriff auf das darunterliegende HTML (<code>&lt;span style="irgendeine CSS-Funktion"&gt;</code>) realisiert. Chapbook kann Textmodifikationen mit Markdown, also *kursiver* und **fetter** Text sind mit einer einfachen Auszeichung möglich.</p>
+<p>Die nächsten beiden neuen Passage besitzen nur bekannte Sprachelemente. Zuerst das <code>Kaninchen</code>:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">:: Kaninchen</span>
+<span id="cb4-2">{embed image: "images/whiterabbitclock00tr.png", alt: "Weißes Kaninchen mit Uhr"}</span>
+<span id="cb4-3"></span>
+<span id="cb4-4">Sprach's und hoppelte aufgeregt davon.</span>
+<span id="cb4-5"></span>
+<span id="cb4-6">[[Zurück-&gt;Flamingo]] …</span></code></pre></div>
+<p>Und dann den <code>Flamingo</code>:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">:: Flamingo {"position":"700,250","size":"100,100"}</span>
+<span id="cb5-2">{embed image: "images/flamingo2_s.jpg", alt: "Alice mit rosa Flamingo"}</span>
+<span id="cb5-3"></span>
+<span id="cb5-4">Alice dachte, daß ihr dies zu dumm sei. Außerdem wußte sie nicht, wieso sie auf</span>
+<span id="cb5-5">einmal einen rosa Flamingo im Arm hatte. Sie überlegte, ob sie ihren Freund,</span>
+<span id="cb5-6">die [[bekiffte Raupe-&gt;Raupe]] besuchen oder mit der [[Grinsekatze]] plaudern solle.</span></code></pre></div>
+<p>Damit ist die Geschichte schon beinahe in die gewohnten Bahnen zurückgekehrt. Lediglich die <code>Grinsekatze</code> spendiert uns noch ein weiteres, alternatives Ende:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1">:: Grinsekatze</span>
+<span id="cb6-2">{embed image: "images/grinsekatze1.png", alt: "Grinsekatze"}</span>
+<span id="cb6-3"></span>
+<span id="cb6-4">Die Grinsekatze sagte »Schön, daß Du mich mal wieder besuchen kommst« und verschwand …</span>
+<span id="cb6-5"></span>
+<span id="cb6-6">Das ist das Ende.</span>
+<span id="cb6-7"></span>
+<span id="cb6-8">Alles auf {restart link, label: "Anfang"}?</span></code></pre></div>
+<p>Die Geschichte nimmt so langsam an Umfang zu und besteht jetzt schon aus elf Passagen. Und das Ende der Fahnenstange ist noch lange nicht erreicht. Es wird weitere Abenteuer mit Alice und Twine und Chapbook im Wunderland-Universum geben. Ein paar Ideen habe ich schon in der Mache. <em>Still digging!</em></p>
+<p>Wie immer gibt es den <a href="https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice01achapbook.twee">Twee-Quellcode</a> und <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images">sämtliche Assets</a> in meinem GitHub-Repositorium und die Geschichte habe ich auch wieder auf Itch.io <a href="https://kantel.itch.io/alice-und-chapbook-stage-1">hochgeladen</a>, damit Ihr sie dort im Browser spielen könnt.</p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Chapbook</category>
+  <category>Interactive Fiction</category>
+  <guid>https://kantel.github.io/posts/2023090201_wunderland_wieder_gross/index.html</guid>
+  <pubDate>Sat, 02 Sep 2023 14:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023090201_wunderland_wieder_gross/images/wunderlandgross.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Die letzten Zahlen des diesjährigen Sommers</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -721,45 +799,6 @@ font-style: inherit;">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4
   <guid>https://kantel.github.io/posts/2023082101_tweego_chapbook/index.html</guid>
   <pubDate>Mon, 21 Aug 2023 14:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023082101_tweego_chapbook/images/alicetweegochapbook.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Tutorials zu Twine und SugarCube</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023082002_twine_sugarcube/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53129942469/"><img src="https://kantel.github.io/posts/2023082002_twine_sugarcube/images/alicesugarcube-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Meine Erkundungen (<a href="https://kantel.github.io/posts/2023081701_tweego_first_steps/">1</a>, <a href="https://kantel.github.io/posts/2023081802_tweego_storyformate/">2</a> und <a href="https://kantel.github.io/posts/2023082001_tweego_chapbook/">3</a>) von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> haben mich nicht mehr losgelassen: Ich will jetzt damit (und speziell mit dem Storyformat <a href="https://www.motoslave.net/sugarcube/2/">SugarCube</a>) etwas anstellen. Da trifft es sich gut, daß ich vor etwa drei Jahren schon einen ersten <a href="http://blog.schockwellenreiter.de/2020/12/2020122502.html">Ausflug mit dem Zuckerwürfel in meinen Wunderland-Kosmos</a> begonnen, aber leider nie fortgeführt hatte.</p>
-<p>Das will ich nun ändern. Zur Vorbereitung habe ich mir erst einmal ein paar Tutorials zusammengeklaubt. Zwar ist die Anzahl der Video-Tutorials zu diesem Storyformat erstaunlich hoch, aber Tutorials, die man ganz konventionell lesen kann, sind doch etwas knapp. Gefunden und lesenswert sind meiner Meinung nach diese:</p>
-<ul>
-<li>Allison Parrish: <em><a href="https://catn.decontextualize.com/twine/">A Quick Twine (2.2+) Tutorial</a></em> ist ein umfangreiches Tutoral aus dem Jahre 2022, das auch eher ungewöhnliche Features behandelt.</li>
-<li>Seth Kenlon: <em><a href="https://opensource.com/article/18/2/twine-gaming">How to use Twine and SugarCube to create interactive adventure games</a></em>, opensource.com vom 9. Februar 2018. Auch der Unix-Geek von RedHat hat sich mit Twine und SugarCube befaßt.</li>
-<li>Adam Hammond: <em><a href="https://www.adamhammond.com/twineguide/">A Total Beginner’s Guide to Twine 2.1</a></em> ist ein Tutorial (mit begleitenden Videos), das der Autor für seine Lehrveranstaltung »Introduction to Digital Humanities« vor etwa fünf Jahren entwickelt hatte.</li>
-<li><em><a href="https://www.instructables.com/Generic-Rooms-in-Twine-With-Sugarcube/">Generic Rooms in Twine with SugarCube</a></em> ist ein witziges Tutorial, dessen Geschichte mich ein wenig an <em><a href="https://de.wikipedia.org/wiki/Lewis_Carroll">Lewis Carrolls</a></em> »<a href="https://de.wikipedia.org/wiki/The_Hunting_of_the_Snark">The Hunting of the Snark</a>« erinnert.</li>
-<li>Und <em>last but not least</em> ist da noch der <em>Vegetarian Zombie</em>, dessen Tutorial-Reihe <em><a href="https://www.learncreateplay.games/interactive-fiction-with-twine/">Interactive Fiction with Twine</a></em> ebenfalls mit begleitenden YouTube-Videos erschienen ist. Sie bricht im Januar dieses Jahres mit der <a href="https://www.learncreateplay.games/twine-2-tutorial-picking-up-placing-items/">12. Folge</a> etwas unvermittelt ab, aber vor wenigen Wochen (im Juli 2023) hat er <a href="https://www.learncreateplay.games/site-update/">neue Updates versprochen</a>.</li>
-</ul>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://www.pearson.de/writing-interactive-fiction-with-twine-9780134303123"><img src="https://kantel.github.io/posts/2023082002_twine_sugarcube/images/twinebook.jpg" class="img-fluid"></a>
-</div>
-<p>Und wer eine gründliche Einführung nicht nur in Twine, sondern auch in das Design interaktiver Spiele und Geschichten haben möchte, die oder dem kann ich nur das Buch »<a href="https://www.pearson.de/writing-interactive-fiction-with-twine-9780134303123">Writing Interactive Fiction with Twine</a>« von <em>Melissa Ford</em> empfehlen. Die 400 Seiten fette Schwarte ist von 2016 und als gedrucktes Buch vergriffen (und bei Amazon gebraucht nur noch zu Mondpreisen (aktuell 210 Euro) erhältlich), aber beim Verlag kann man ein PDF völlig legal für 16,04 Euro erwerben. Das Buch behandelt zur Hälfte <a href="https://twine2.neocities.org/">Harlowe</a> als Storyformat, aber im zweiten Teil (ab Seite 253) geht es auch auf SugarCube (Version 1 und Version 2) ein.</p>
-<p>So bestückt möchte ich nun meine Reise mit SugarCube durch das Wunderland-Universum fortsetzen. Ideen und Material habe ich schon gesammelt. Schaun wir mal, was sich daraus entwickelt. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Twine</category>
-  <category>Tweego</category>
-  <category>SugarCube</category>
-  <category>Interactive Fiction</category>
-  <guid>https://kantel.github.io/posts/2023082002_twine_sugarcube/index.html</guid>
-  <pubDate>Sun, 20 Aug 2023 17:55:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023082002_twine_sugarcube/images/alicesugarcube.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
