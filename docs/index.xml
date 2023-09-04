@@ -10,7 +10,252 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Sat, 02 Sep 2023 15:45:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 04 Sep 2023 16:05:00 GMT</lastBuildDate>
+<item>
+  <title>Alice und der weiße Ritter – ein neues Wunderland-Update</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023090401_alice_weisse_ritter/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53161139272/"><img src="https://kantel.github.io/posts/2023090401_alice_weisse_ritter/images/wunderlandupdate3-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Auch wenn es nach außen hin den Anschein hatte: Ich habe am Wochenende <strong>nicht</strong> auf der faulen Haut gelegen, sondern die kleine Alice mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> neue Abenteuer im Wunderland erleben lassen. Dabei habe ich ein paar Sprachelemente des von mir dabei genutzten Storyformats <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> verwendet, die ich bisher noch nicht vorgestellt hatte.</p>
+<p>Dafür bekam die Geschichte einen komplett neuen Strang, der von der Passage <code>Raupe</code> abzweigt. Aber zuerst mußte ich in der Startpassage in paar weitere Variablen definieren:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">:: Start</span>
+<span id="cb1-2">config.style.page.link.font: "18 bold none"</span>
+<span id="cb1-3">config.style.page.link.color: "teal-8"</span>
+<span id="cb1-4">config.style.page.link.active.color: "teal-8"</span>
+<span id="cb1-5">config.footer.left: "Alice im Reich der Ringe"</span>
+<span id="cb1-6">silberring: false</span>
+<span id="cb1-7">goldring: false</span>
+<span id="cb1-8">blumenring: false</span>
+<span id="cb1-9">gravurring: false</span>
+<span id="cb1-10">eisenring: false</span>
+<span id="cb1-11">brille: false</span>
+<span id="cb1-12">feder: false</span>
+<span id="cb1-13">zauberhut: false</span>
+<span id="cb1-14">key: false</span>
+<span id="cb1-15">--</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">{embed image: "images/grinsekatze.jpg", alt: "Grinsekatze"}</span>
+<span id="cb1-18"></span>
+<span id="cb1-19">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland.</span>
+<span id="cb1-20">Sie hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über</span>
+<span id="cb1-21">ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich</span>
+<span id="cb1-22">von hier aus weitergehen soll!«</span>
+<span id="cb1-23"></span>
+<span id="cb1-24">Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.</span>
+<span id="cb1-25">Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur</span>
+<span id="cb1-26">[[Teeparty des verrückten Hutmachers-&gt;Teeparty]] und rechts triffst Du die</span>
+<span id="cb1-27">[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]].«</span></code></pre></div>
+<p>Während ansonsten alle anderen bisherigen Passagen unverändert beibehalten wurden, bekam die Passage <code>Raupe</code> einen komplett neuen Inhalt:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1">:: Raupe</span>
+<span id="cb2-2">{embed image: "images/raupe_large.jpg", alt: "Raupe"}</span>
+<span id="cb2-3"></span>
+<span id="cb2-4"></span>
+<span id="cb2-5">Die Raupe erzählte Alice von einem geheimnisvollen Tal im Wunderland, das</span>
+<span id="cb2-6">»Reich der Ringe« genannt wurde. Nur fünf Zugänge gäbe es zu diesem Tal, jeder</span>
+<span id="cb2-7">sei durch einen besonderen Ring gesichert. Leider wüßte sie nicht, welcher Ring</span>
+<span id="cb2-8">zu welchem Zugang führe und welche Gefahren hinter den jeweiligen Zugängen</span>
+<span id="cb2-9">lauerten. Alice könne aber nur einen Ring mitnehmen. Die Raupe öffnete ein</span>
+<span id="cb2-10">kleines Schmuckkästchen und zeigte Ihr einen [[eisernen-&gt;Eisenring]], einen</span>
+<span id="cb2-11">[[silbernen-&gt;Silberring]], einen [[goldenen Ring-&gt;Goldring]], einen</span>
+<span id="cb2-12">[[Ring mit einer durchbrochenen Blume-&gt;Blumenring]] und schließlich einen</span>
+<span id="cb2-13">[[Ring mit einer seltsamen Gravur-&gt;Gravurring]].</span></code></pre></div>
+<p>Und hier beginnt ein neuer Strang der Geschichte, der erst einmal die diversen Ring-Passagen abhandelt:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">:: Eisenring</span>
+<span id="cb3-2">eisenring: true</span>
+<span id="cb3-3">ring: "Eisenring"</span>
+<span id="cb3-4">--</span>
+<span id="cb3-5"></span>
+<span id="cb3-6">Alice steckte den eisernen Ring an ihren Ringfinger.</span>
+<span id="cb3-7">{embed passage: "Magical Items"}</span></code></pre></div>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">:: Silberring</span>
+<span id="cb4-2">silberring: true</span>
+<span id="cb4-3">ring: "Silberring"</span>
+<span id="cb4-4">--</span>
+<span id="cb4-5"></span>
+<span id="cb4-6">Alice steckte den silbernen Ring an ihren Ringfinger.</span>
+<span id="cb4-7">{embed passage: "Magical Items"}</span></code></pre></div>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">:: Goldring</span>
+<span id="cb5-2">goldring: true</span>
+<span id="cb5-3">ring: "Goldring"</span>
+<span id="cb5-4">--</span>
+<span id="cb5-5"></span>
+<span id="cb5-6">Alice steckte den {ring} an ihren Ringfinger.</span>
+<span id="cb5-7">{embed passage: "Magical Items"}</span></code></pre></div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1">:: Blumenring</span>
+<span id="cb6-2">blumenringring: true</span>
+<span id="cb6-3">ring: "Blumenring"</span>
+<span id="cb6-4">--</span>
+<span id="cb6-5"></span>
+<span id="cb6-6">Alice steckte den {ring} an ihren Ringfinger.</span>
+<span id="cb6-7">{embed passage: "Magical Items"}</span></code></pre></div>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1">:: Gravurring</span>
+<span id="cb7-2">gravurring: true</span>
+<span id="cb7-3">ring: "Gravurring"</span>
+<span id="cb7-4">--</span>
+<span id="cb7-5"></span>
+<span id="cb7-6">Alice steckte den Ring mit der seltsamen Gravur an ihren Ringfinger.</span>
+<span id="cb7-7">{embed passage: "Magical Items"}</span></code></pre></div>
+<p>Neu ist hier das Konstrukt <em><a href="https://klembot.github.io/chapbook/guide/modifiers-and-inserts/embedding-passages.html">embed passage</a></em>, ein weiteres <em><a href="https://klembot.github.io/chapbook/guide/modifiers-and-inserts/link-inserts.html">Insert</a></em> aus dem Werkzeugkasten von Chapbook. Hiermit können wiederkehrende Texte/Textpassagen in bestehende Passagen eingebettet werden. In unserem Fall ist das die Passage <code>Magical Items</code>:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1">:: Magical Items</span>
+<span id="cb8-2">{embed image: "images/raupe3_g_kay.jpg", alt: "Alice und die Raupe"}</span>
+<span id="cb8-3"></span>
+<span id="cb8-4">Sie wollte schon den Pilz verlassen, aber die Raupe ergriff ihren Arm und sagte:</span>
+<span id="cb8-5">»Du kannst noch einen, aber nur einen weiteren Gegenstand aus meinem magischen</span>
+<span id="cb8-6">Kästchen für Deine gedahrvolle Reise mitnehmen. Jeder von ihnen kann Dir auf</span>
+<span id="cb8-7">seine Weise helfen, aber Du weißt nicht wie und ich weiß nicht wann.«</span>
+<span id="cb8-8"></span>
+<span id="cb8-9">Sie öffnete einen zweiten Kasten. Dort lagen eine [[Feder]], eine [[Brille]]</span>
+<span id="cb8-10">und ein [[Zauberhut]].</span></code></pre></div>
+<p>Die eingebetteten Passagen werden in Twine/Chapbook durch gestrichelte Pfeile dargestellt, damit man als Autor wenigstens ein wenig die Übersicht behält. Denn alle Ring-Passagen laufen in den <em>Magical Items</em> zusammen, um von dort wieder auf die Passagen <code>Feder</code>, <code>Brille</code> und <code>Zauberhut</code> zu verweisen:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1">:: Feder</span>
+<span id="cb9-2">feder: true</span>
+<span id="cb9-3">magical_item: "Feder"</span>
+<span id="cb9-4">--</span>
+<span id="cb9-5"></span>
+<span id="cb9-6">Alice ergriff die {magical_item} und verstaute sie vorsichtig in ihrer Tasche.</span>
+<span id="cb9-7">{embed passage: "Aufbruch"}</span></code></pre></div>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1">:: Brille</span>
+<span id="cb10-2">brille: true</span>
+<span id="cb10-3">magical_item: "Brille"</span>
+<span id="cb10-4">--</span>
+<span id="cb10-5"></span>
+<span id="cb10-6">Alice ergriff die {magical_item} und verstaute sie vorsichtig in ihrer Tasche.</span>
+<span id="cb10-7">{embed passage: "Aufbruch"}</span></code></pre></div>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1">:: Zauberhut</span>
+<span id="cb11-2">zauberhut: true</span>
+<span id="cb11-3">magical_item: "Zauberhut"</span>
+<span id="cb11-4">--</span>
+<span id="cb11-5"></span>
+<span id="cb11-6">Alice ergriff den {magical_item} und setzte ihn sich vorsichtig auf den Kopf.</span>
+<span id="cb11-7">Der Hut sagte zu ihr »Guten Tag, Alice. Das war eine gute Wahl. Alice war etwas</span>
+<span id="cb11-8">überrascht, sie hatte noch nie einen Hut getroffen, der reden konnte. Aber im</span>
+<span id="cb11-9">Wunderland überraschte sie schon lange nichts mehr. </span>
+<span id="cb11-10"></span>
+<span id="cb11-11">{embed passage: "Aufbruch"}</span></code></pre></div>
+<p>Alle drei Passagen haben die Passage <code>Aufbruch</code> eingebettet (was man in Twine wieder durch die gestrichelten Verbindungslinien erkennen kann). Mit dem <code>Aufbruch</code> geht es dann aber für alle drei Passagen gleich weiter:</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1">:: Aufbruch</span>
+<span id="cb12-2">{embed image: "images/redqueen.jpg", alt: "Alice rennt mit der roten Königin"}</span>
+<span id="cb12-3"></span>
+<span id="cb12-4">»Es ist Zeit zu gehen« sagte die Raupe, »der {ring} und die rote Königin werden</span>
+<span id="cb12-5">Dich führen.«</span>
+<span id="cb12-6"></span>
+<span id="cb12-7">Alice strich mit dem Zeigefinger über den {ring} und eine rote Königin tauchte</span>
+<span id="cb12-8">aus dem Nichts auf, ergriff sie am Arm und rannte mit ihr zu einem</span>
+<span id="cb12-9">[[neuen Ort voller Wunder-&gt;Wunderland]].</span></code></pre></div>
+<p>Wie Ihr sicher schon gesehen habt, kann mit in Chapbook Variablen mit geschweiften Klammern (<code>{variabele}</code>) in den Text einfügen. Im Gegensatz zu den meisten anderen Storyformaten (zum Beispiel <a href="http://twine2.neocities.org/">Harlowe</a> oder <a href="https://www.motoslave.net/sugarcube/2/docs/">SugarCube</a>) unterscheidet Chapbook nicht zwischen lokalen und globalen Variablen, alle Variablen sind global. Die manchmal verwendete Schreibweise mit einem führenden Unterstrich (<code>_variablenname</code>) ist lediglich eine Konvention, die den Autoren daran erinnern soll, daß diese Variable lokal gemeint ist und er den gleichen Namen nicht in einer weiteren Passage verwenden sollte.</p>
+<p>Aber weiter geht es mit dem <code>Wunderland</code>:</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1">:: Wunderland</span>
+<span id="cb13-2">{embed image: "images/chessboard.png", alt: "Blick auf das Wunderland"}</span>
+<span id="cb13-3"></span>
+<span id="cb13-4">Die rote Königin war wieder verschwunden. Alice staunte. Ist das der geheime Ort?</span>
+<span id="cb13-5">Sie stand auf einem Hügel, vor ihr ein weites Tal und dahinter das Meer. Auf</span>
+<span id="cb13-6">einem weiteren Hügel überragte eine Burg ein kleines Dorf, das sich im Halbkreis</span>
+<span id="cb13-7">um den Burghügel schmiegte.</span>
+<span id="cb13-8"></span>
+<span id="cb13-9">Sie drehte sich um und sah einen riesigen Baum hinter sich. An den Ästen hingen</span>
+<span id="cb13-10">dutzende bronzener Schlüssel.</span>
+<span id="cb13-11"></span>
+<span id="cb13-12">[if feder]</span>
+<span id="cb13-13">Die Feder schien sich in ihrer Tasche zu bewegen, so als ob sie Alice daran</span>
+<span id="cb13-14">erinnern wollte, daß sie [[fliegen könne-&gt;Flug]]. Oder sollte sie erst einmal</span>
+<span id="cb13-15">das [[Dorf aufsuchen-&gt;Dorf]] und weitere Erkundundungen einziehen?</span>
+<span id="cb13-16">[else]</span>
+<span id="cb13-17">Leider waren die Schlüssel unerreichbar für Alice. Sie beschloß daher,</span>
+<span id="cb13-18">[[den Hügel herunter ins Dorf-&gt;Dorf]] zu gehen.</span></code></pre></div>
+<p>Hier heben wir wieder ein neues Chapbook-Konstrukt, einen <code>[if] … [else]</code>-Block. Auch dieser wird durch <em><a href="https://klembot.github.io/chapbook/guide/modifiers-and-inserts/modifiers-and-text-alignment.html">Modifiers</a></em> geklammert und er steuert, das ein Textblock abhängig vom Wert einer Variablen angezeigt wird. Ein diesem Falle also: Wenn Alice die Feder besitzt, kann sie fliegen, wenn nicht (<code>[else]</code>) hat sie keine andere Wahl und muß ins Dorf laufen.</p>
+<p>Der <code>[else]</code>-Block ist optional und kann entfallen. Ebenso kann die Bedingug durch ein <code>[continue]</code> aufgehoben werden und die Passage geht ab hier normal weiter. Aber ich lasse Alice erst einmal fliegen und einen Schlüssel einsammeln:</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1">:: Flug</span>
+<span id="cb14-2">key: true</span>
+<span id="cb14-3">--</span>
+<span id="cb14-4"></span>
+<span id="cb14-5">Alice nahm die Feder in ihre Hand und schwebte langsam nach oben. Die Feder</span>
+<span id="cb14-6">brachte auch ihren {ring} zum Schimmern und der lenkte ihre Hand zu einem der</span>
+<span id="cb14-7">Schlüssel. Alice pflückte ihn vom Ast und verstaute ihn in ihrer Tasche.</span>
+<span id="cb14-8">Vorsichtig schwebte sie wieder nach unten.</span>
+<span id="cb14-9"></span>
+<span id="cb14-10">Nun war sie bereit, das [[Dorf-&gt;Dorf]] zu erkunden.</span></code></pre></div>
+<p>Dann geht es – relativ – unabhängig von der Vorgeschichte am weißen Ritter vorbei und weiter ins <code>Dorf</code>:</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1">:: Dorf</span>
+<span id="cb15-2">{embed image: "images/weisseritter.jpg", alt: "Der weiße Ritter"}</span>
+<span id="cb15-3"></span>
+<span id="cb15-4">Der Weg zum Dorf war von einem großen, steineren Wall versperrt. Nur ein</span>
+<span id="cb15-5">Durchgang war offen, der von einem traurig aussehenden, weißen Ritter auf einem</span>
+<span id="cb15-6">dürren Pferd blockiert wurde, der träumend vor sich hindöste.</span>
+<span id="cb15-7"></span>
+<span id="cb15-8">[if zauberhut]</span>
+<span id="cb15-9">Der {magical_item} vibrierte.</span>
+<span id="cb15-10">[else]</span>
+<span id="cb15-11">Die {magical_item} vibrierte.</span>
+<span id="cb15-12">[continue]</span>
+<span id="cb15-13"></span>
+<span id="cb15-14">[if feder]</span>
+<span id="cb15-15">Alice nahm die bewährte Feder und schwebte über den dösenden Ritter, der sie</span>
+<span id="cb15-16">nicht bemerkte.</span>
+<span id="cb15-17">[if brille]</span>
+<span id="cb15-18">Alice setzte sich die Brille auf und bemerkte, daß sie unsichtbar wurde.</span>
+<span id="cb15-19">Leise schlich sie an den Ritter vorbei auf die andere Seite.</span>
+<span id="cb15-20">[if zauberhut]</span>
+<span id="cb15-21">Der Zauberhut zog Alice förmlich direkt auf den Wall zu. Sie fühlte sich</span>
+<span id="cb15-22">elastisch wie eine Gummipuppe. Unbemerkt schob sie sich durch die Ritzen der</span>
+<span id="cb15-23">Mauer. Ihr Körper wurde dabei dünn wie ein Faden. Als sie die andere Seite</span>
+<span id="cb15-24">erreicht hatte, nahm sie wieder ihre normale Form an.</span>
+<span id="cb15-25">[continue]</span>
+<span id="cb15-26"></span>
+<span id="cb15-27">Alice erreichte so das Dorf und betrat einen [[Biergarten]] am Ortseingang.</span></code></pre></div>
+<p>Hier stößt man erst einmal auf eine Hilfskonstrkuktion, die man oft benötigt, wenn man eine Geschichte in deutscher Sprache schreibt. Die Auswahl des korrekten Artikels benötigt oft ebenfalls eine <code>[if] … [else]</code>-Konstrkuktion (der Engländer und/oder Amerikaner schreibt einfach <em>the</em> und ist damit glücklich).</p>
+<p>Und man sieht, wie man die <code>[continue]</code>-Zeile verwenden kann: Egal, mit welchen Hilfsmitteln sich Alice an dem weißen Ritter vorbeimogelt, am Ende führen alle Geschichtsstränge zusammen und Alice in den <code>Biergarten</code>,</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1">:: Biergarten</span>
+<span id="cb16-2">{embed image: "images/aliceteaparty.jpg", alt: "Teeparty"}</span>
+<span id="cb16-3"></span>
+<span id="cb16-4">Hier saßen seltsamerweise wieder ihre alten Freunde, der Märzhase, der verrückte</span>
+<span id="cb16-5">Hutmacher und die Haselmaus an einem Tisch und begrüßten sie lautstark. Alice</span>
+<span id="cb16-6">war verwirrt – aber [[blieb noch eine Weile-&gt;Haselmaus]].</span></code></pre></div>
+<p>den sie dann aber bald wieder fluchtartig zu verläßt:</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1">:: Haselmaus</span>
+<span id="cb17-2">{embed image: "images/haselmaus.jpg", alt: "Schabernack mit der Haselmaus"}</span>
+<span id="cb17-3"></span>
+<span id="cb17-4">Als der Hutmacher und der Märzhase jedoch anfingen, die Haselmaus kopfüber in</span>
+<span id="cb17-5">den Teetopf zu stülpen, hatte sie genug. Sie beschloß, die Party zu</span>
+<span id="cb17-6">[[verlassen-&gt;Ende]]</span></code></pre></div>
+<p>Hier ist dann auch dieser Strang der Geschichte erst einmal zu <code>Ende</code>:</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1">:: Ende {"position":"825,525","size":"100,100"}</span>
+<span id="cb18-2">{embed image: "images/grinsekatze5.jpg", alt: "Grinsekatze"}</span>
+<span id="cb18-3"></span>
+<span id="cb18-4">Am Ausgang des Biergartens traf sie auf die Grinsekatze. Sie grinste nur und</span>
+<span id="cb18-5">meinte: »Hat die Raupe wieder zu viel gekifft?« Und verschwand …</span>
+<span id="cb18-6"></span>
+<span id="cb18-7">Hier ist die Geschichte vorläufig zu Ende.</span>
+<span id="cb18-8"></span>
+<span id="cb18-9">[if key]</span>
+<span id="cb18-10">Glückwunschsch! Das war der längste Durchlauf, der bisher spielbar ist.</span>
+<span id="cb18-11">[else]</span>
+<span id="cb18-12">Du bist schon weit gekommen, aber da geht noch mehr…</span>
+<span id="cb18-13">[continue]</span>
+<span id="cb18-14"></span>
+<span id="cb18-15">{restart link, label: "Noch einmal spielen"}?</span></code></pre></div>
+<p>Hier gibt es dann um ersten Mal so etwas wie eine Bewertung; Hat Alice den Schlüssel, dann hat sie die größtmögliche Anzahl von Passagen durchgespielt, aber noch lange nicht alle. Daher auch hier zum Schluß wieder die Möglichkeit, das Spiel noch einmal zu spielen.</p>
+<p>Das Projekt hat mittlerweile schon eine gewisse Komplexität erreicht und besteht aus 26 Passagen (wie der <a href="https://www.flickr.com/photos/schockwellenreiter/53161139272/">Screenhot</a> im Banner oben zeigt).</p>
+<p>Wer es nachbauen will: Den aus Twine generierten <a href="https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice01bchapbook.twee">Twee-Code</a> und die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images">Bilder</a> findet Ihr in meinem GitHub-Repositorium.</p>
+<p>Und auch auf Itch.io habe ich alles wieder <a href="https://kantel.itch.io/alice-und-chapbook-stage-1">hochgeladen</a>, damit Ihr es online spielen könnt.</p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Chapbook</category>
+  <category>Interactive Fiction</category>
+  <guid>https://kantel.github.io/posts/2023090401_alice_weisse_ritter/index.html</guid>
+  <pubDate>Mon, 04 Sep 2023 16:05:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023090401_alice_weisse_ritter/images/wunderlandupdate3.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neue Tiles und Sprites bei Kenney.nl</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -770,36 +1015,6 @@ font-style: inherit;">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4
   <guid>https://kantel.github.io/posts/2023082301_chrome update/index.html</guid>
   <pubDate>Wed, 23 Aug 2023 14:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023082301_chrome update/images/powers1910.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Tweaking Ren’Py: Die Engine kann mehr als nur Visual Novels</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023082102_tweaking_renpy/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.kenney.nl/media/pages/assets/tiny-dungeon/a54d5f0c77-1674742412/sample.png"><img src="https://kantel.github.io/posts/2023082102_tweaking_renpy/images/tinydungeon-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Manchmal bekommt man Videos vorgesetzt, die hauen einen glatt aus den Socken. So ging es mir mit dem <a href="https://www.youtube.com/watch?v=eUchqIZ8J20">unten vorgestellten Video</a>, in dem <em>Kia Azad</em> <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> bis über die Grenzen hinaus ausgereizt hat, um ein RPG damit zu programmieren.</p>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/eUchqIZ8J20" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Auch wenn ich natürlich gerne wissen würde, wie er das angestellt hat, befürchte ich, daß ich damit weit überfordert wäre. Aber es hat mich daran erinnert, daß auch ich schon lange die Programmierung eines RPG (aber in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>) auf meiner Agenda habe. Und das Video nutzt Tiles, die mich stark an Kenneys <a href="https://www.kenney.nl/assets/tiny-dungeon">Tiny Dungeon</a> aus seiner <a href="https://www.kenney.nl/assets/series:Tiny">Tiny-Reihe</a> erinnern. Wollte ich für meine eigenen Experimente festhalten, damit ich mich beizeiten daran erinnere.</p>
-<p><em>Kia Azad</em> hat auch eine <a href="https://kia.itch.io/">Seite auf Itch.io</a>, auf der es unter anderem ebenfalls Tiles und Sprites gibt, die in ein 32x32 Pixel oder 16x16 Pixel großes Raster passen und die Ihr für nichtkommerzielle Projekte frei herunterladen könnt. Ich habe diese Seite gleich abonniert, denn Tiles und Sprites kann man nie genug haben.</p>
-
-
-
- ]]></description>
-  <category>RenPy</category>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <category>Tiles und Sprites</category>
-  <guid>https://kantel.github.io/posts/2023082102_tweaking_renpy/index.html</guid>
-  <pubDate>Mon, 21 Aug 2023 15:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023082102_tweaking_renpy/images/rpgonrenpy.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

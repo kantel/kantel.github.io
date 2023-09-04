@@ -1,0 +1,304 @@
+---
+title: "Alice und der weiße Ritter -- ein neues Wunderland-Update"
+author: "Jörg Kantel"
+date: "2023-09-04 18:05:00"
+categories: [Twine, Chapbook, Interactive Fiction]
+image: "images/wunderlandupdate3.jpg"
+---
+
+[![](images/wunderlandupdate3-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53161139272/)
+
+Auch wenn es nach außen hin den Anschein hatte: Ich habe am Wochenende **nicht** auf der faulen Haut gelegen, sondern die kleine Alice mit [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) neue Abenteuer im Wunderland erleben lassen. Dabei habe ich ein paar Sprachelemente des von mir dabei genutzten Storyformats [Chapbook](https://klembot.github.io/chapbook/guide/) verwendet, die ich bisher noch nicht vorgestellt hatte.
+
+Dafür bekam die Geschichte einen komplett neuen Strang, der von der Passage `Raupe` abzweigt. Aber zuerst mußte ich in der Startpassage in paar weitere Variablen definieren:
+
+~~~twee
+:: Start
+config.style.page.link.font: "18 bold none"
+config.style.page.link.color: "teal-8"
+config.style.page.link.active.color: "teal-8"
+config.footer.left: "Alice im Reich der Ringe"
+silberring: false
+goldring: false
+blumenring: false
+gravurring: false
+eisenring: false
+brille: false
+feder: false
+zauberhut: false
+key: false
+--
+
+{embed image: "images/grinsekatze.jpg", alt: "Grinsekatze"}
+
+Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland.
+Sie hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über
+ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich
+von hier aus weitergehen soll!«
+
+Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.
+Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur
+[[Teeparty des verrückten Hutmachers->Teeparty]] und rechts triffst Du die
+[[kiffende Raupe auf ihrem Pilz->Raupe]].«
+~~~
+
+Während ansonsten alle anderen bisherigen Passagen unverändert beibehalten wurden, bekam die Passage `Raupe` einen komplett neuen Inhalt:
+
+~~~twee
+:: Raupe
+{embed image: "images/raupe_large.jpg", alt: "Raupe"}
+
+
+Die Raupe erzählte Alice von einem geheimnisvollen Tal im Wunderland, das
+»Reich der Ringe« genannt wurde. Nur fünf Zugänge gäbe es zu diesem Tal, jeder
+sei durch einen besonderen Ring gesichert. Leider wüßte sie nicht, welcher Ring
+zu welchem Zugang führe und welche Gefahren hinter den jeweiligen Zugängen
+lauerten. Alice könne aber nur einen Ring mitnehmen. Die Raupe öffnete ein
+kleines Schmuckkästchen und zeigte Ihr einen [[eisernen->Eisenring]], einen
+[[silbernen->Silberring]], einen [[goldenen Ring->Goldring]], einen
+[[Ring mit einer durchbrochenen Blume->Blumenring]] und schließlich einen
+[[Ring mit einer seltsamen Gravur->Gravurring]].
+~~~
+
+Und hier beginnt ein neuer Strang der Geschichte, der erst einmal die diversen Ring-Passagen abhandelt:
+
+~~~twee
+:: Eisenring
+eisenring: true
+ring: "Eisenring"
+--
+
+Alice steckte den eisernen Ring an ihren Ringfinger.
+{embed passage: "Magical Items"}
+~~~
+
+~~~twee
+:: Silberring
+silberring: true
+ring: "Silberring"
+--
+
+Alice steckte den silbernen Ring an ihren Ringfinger.
+{embed passage: "Magical Items"}
+~~~
+
+~~~twee
+:: Goldring
+goldring: true
+ring: "Goldring"
+--
+
+Alice steckte den {ring} an ihren Ringfinger.
+{embed passage: "Magical Items"}
+~~~
+
+~~~twee
+:: Blumenring
+blumenringring: true
+ring: "Blumenring"
+--
+
+Alice steckte den {ring} an ihren Ringfinger.
+{embed passage: "Magical Items"}
+~~~
+
+~~~twee
+:: Gravurring
+gravurring: true
+ring: "Gravurring"
+--
+
+Alice steckte den Ring mit der seltsamen Gravur an ihren Ringfinger.
+{embed passage: "Magical Items"}
+~~~
+
+Neu ist hier das Konstrukt *[embed passage](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/embedding-passages.html)*, ein weiteres *[Insert](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/link-inserts.html)* aus dem Werkzeugkasten von Chapbook. Hiermit können wiederkehrende Texte/Textpassagen in bestehende Passagen eingebettet werden. In unserem Fall ist das die Passage `Magical Items`:
+
+~~~twee
+:: Magical Items
+{embed image: "images/raupe3_g_kay.jpg", alt: "Alice und die Raupe"}
+
+Sie wollte schon den Pilz verlassen, aber die Raupe ergriff ihren Arm und sagte:
+»Du kannst noch einen, aber nur einen weiteren Gegenstand aus meinem magischen
+Kästchen für Deine gedahrvolle Reise mitnehmen. Jeder von ihnen kann Dir auf
+seine Weise helfen, aber Du weißt nicht wie und ich weiß nicht wann.«
+
+Sie öffnete einen zweiten Kasten. Dort lagen eine [[Feder]], eine [[Brille]]
+und ein [[Zauberhut]].
+~~~
+
+Die eingebetteten Passagen werden in Twine/Chapbook durch gestrichelte Pfeile dargestellt, damit man als Autor wenigstens ein wenig die Übersicht behält. Denn alle Ring-Passagen laufen in den *Magical Items* zusammen, um von dort wieder auf die Passagen `Feder`, `Brille` und `Zauberhut` zu verweisen:
+
+~~~twee
+:: Feder
+feder: true
+magical_item: "Feder"
+--
+
+Alice ergriff die {magical_item} und verstaute sie vorsichtig in ihrer Tasche.
+{embed passage: "Aufbruch"}
+~~~
+
+~~~twee
+:: Brille
+brille: true
+magical_item: "Brille"
+--
+
+Alice ergriff die {magical_item} und verstaute sie vorsichtig in ihrer Tasche.
+{embed passage: "Aufbruch"}
+~~~
+
+~~~twee
+:: Zauberhut
+zauberhut: true
+magical_item: "Zauberhut"
+--
+
+Alice ergriff den {magical_item} und setzte ihn sich vorsichtig auf den Kopf.
+Der Hut sagte zu ihr »Guten Tag, Alice. Das war eine gute Wahl. Alice war etwas
+überrascht, sie hatte noch nie einen Hut getroffen, der reden konnte. Aber im
+Wunderland überraschte sie schon lange nichts mehr. 
+
+{embed passage: "Aufbruch"}
+~~~
+
+Alle drei Passagen haben die Passage `Aufbruch` eingebettet (was man in Twine wieder durch die gestrichelten Verbindungslinien erkennen kann). Mit dem `Aufbruch` geht es dann aber für alle drei Passagen gleich weiter:
+
+~~~twee
+:: Aufbruch
+{embed image: "images/redqueen.jpg", alt: "Alice rennt mit der roten Königin"}
+
+»Es ist Zeit zu gehen« sagte die Raupe, »der {ring} und die rote Königin werden
+Dich führen.«
+
+Alice strich mit dem Zeigefinger über den {ring} und eine rote Königin tauchte
+aus dem Nichts auf, ergriff sie am Arm und rannte mit ihr zu einem
+[[neuen Ort voller Wunder->Wunderland]].
+~~~
+
+Wie Ihr sicher schon gesehen habt, kann mit in Chapbook Variablen mit geschweiften Klammern (`{variabele}`) in den Text einfügen. Im Gegensatz zu den meisten anderen Storyformaten (zum Beispiel [Harlowe](http://twine2.neocities.org/) oder [SugarCube](https://www.motoslave.net/sugarcube/2/docs/)) unterscheidet Chapbook nicht zwischen lokalen und globalen Variablen, alle Variablen sind global. Die manchmal verwendete Schreibweise mit einem führenden Unterstrich (`_variablenname`) ist lediglich eine Konvention, die den Autoren daran erinnern soll, daß diese Variable lokal gemeint ist und er den gleichen Namen nicht in einer weiteren Passage verwenden sollte.
+
+Aber weiter geht es mit dem `Wunderland`:
+
+~~~twee
+:: Wunderland
+{embed image: "images/chessboard.png", alt: "Blick auf das Wunderland"}
+
+Die rote Königin war wieder verschwunden. Alice staunte. Ist das der geheime Ort?
+Sie stand auf einem Hügel, vor ihr ein weites Tal und dahinter das Meer. Auf
+einem weiteren Hügel überragte eine Burg ein kleines Dorf, das sich im Halbkreis
+um den Burghügel schmiegte.
+
+Sie drehte sich um und sah einen riesigen Baum hinter sich. An den Ästen hingen
+dutzende bronzener Schlüssel.
+
+[if feder]
+Die Feder schien sich in ihrer Tasche zu bewegen, so als ob sie Alice daran
+erinnern wollte, daß sie [[fliegen könne->Flug]]. Oder sollte sie erst einmal
+das [[Dorf aufsuchen->Dorf]] und weitere Erkundundungen einziehen?
+[else]
+Leider waren die Schlüssel unerreichbar für Alice. Sie beschloß daher,
+[[den Hügel herunter ins Dorf->Dorf]] zu gehen.
+~~~
+
+Hier heben wir wieder ein neues Chapbook-Konstrukt, einen `[if] … [else]`-Block. Auch dieser wird durch *[Modifiers](https://klembot.github.io/chapbook/guide/modifiers-and-inserts/modifiers-and-text-alignment.html)* geklammert und er steuert, das ein Textblock abhängig vom Wert einer Variablen angezeigt wird. Ein diesem Falle also: Wenn Alice die Feder besitzt, kann sie fliegen, wenn nicht (`[else]`) hat sie keine andere Wahl und muß ins Dorf laufen.
+
+Der `[else]`-Block ist optional und kann entfallen. Ebenso kann die Bedingug durch ein `[continue]` aufgehoben werden und die Passage geht ab hier normal weiter. Aber ich lasse Alice erst einmal fliegen und einen Schlüssel einsammeln:
+
+~~~twee
+:: Flug
+key: true
+--
+
+Alice nahm die Feder in ihre Hand und schwebte langsam nach oben. Die Feder
+brachte auch ihren {ring} zum Schimmern und der lenkte ihre Hand zu einem der
+Schlüssel. Alice pflückte ihn vom Ast und verstaute ihn in ihrer Tasche.
+Vorsichtig schwebte sie wieder nach unten.
+
+Nun war sie bereit, das [[Dorf->Dorf]] zu erkunden.
+~~~
+
+Dann geht es -- relativ -- unabhängig von der Vorgeschichte am weißen Ritter vorbei und weiter ins `Dorf`:
+
+~~~twee
+:: Dorf
+{embed image: "images/weisseritter.jpg", alt: "Der weiße Ritter"}
+
+Der Weg zum Dorf war von einem großen, steineren Wall versperrt. Nur ein
+Durchgang war offen, der von einem traurig aussehenden, weißen Ritter auf einem
+dürren Pferd blockiert wurde, der träumend vor sich hindöste.
+
+[if zauberhut]
+Der {magical_item} vibrierte.
+[else]
+Die {magical_item} vibrierte.
+[continue]
+
+[if feder]
+Alice nahm die bewährte Feder und schwebte über den dösenden Ritter, der sie
+nicht bemerkte.
+[if brille]
+Alice setzte sich die Brille auf und bemerkte, daß sie unsichtbar wurde.
+Leise schlich sie an den Ritter vorbei auf die andere Seite.
+[if zauberhut]
+Der Zauberhut zog Alice förmlich direkt auf den Wall zu. Sie fühlte sich
+elastisch wie eine Gummipuppe. Unbemerkt schob sie sich durch die Ritzen der
+Mauer. Ihr Körper wurde dabei dünn wie ein Faden. Als sie die andere Seite
+erreicht hatte, nahm sie wieder ihre normale Form an.
+[continue]
+
+Alice erreichte so das Dorf und betrat einen [[Biergarten]] am Ortseingang.
+~~~
+
+Hier stößt man erst einmal auf eine Hilfskonstrkuktion, die man oft benötigt, wenn man eine Geschichte in deutscher Sprache schreibt. Die Auswahl des korrekten Artikels benötigt oft ebenfalls eine `[if] … [else]`-Konstrkuktion (der Engländer und/oder Amerikaner schreibt einfach *the* und ist damit glücklich).
+
+Und man sieht, wie man die `[continue]`-Zeile verwenden kann: Egal, mit welchen Hilfsmitteln sich Alice an dem weißen Ritter vorbeimogelt, am Ende führen alle Geschichtsstränge zusammen und Alice in den `Biergarten`,
+
+~~~twee
+:: Biergarten
+{embed image: "images/aliceteaparty.jpg", alt: "Teeparty"}
+
+Hier saßen seltsamerweise wieder ihre alten Freunde, der Märzhase, der verrückte
+Hutmacher und die Haselmaus an einem Tisch und begrüßten sie lautstark. Alice
+war verwirrt – aber [[blieb noch eine Weile->Haselmaus]].
+~~~
+
+den sie dann aber bald wieder fluchtartig zu verläßt:
+
+~~~twee
+:: Haselmaus
+{embed image: "images/haselmaus.jpg", alt: "Schabernack mit der Haselmaus"}
+
+Als der Hutmacher und der Märzhase jedoch anfingen, die Haselmaus kopfüber in
+den Teetopf zu stülpen, hatte sie genug. Sie beschloß, die Party zu
+[[verlassen->Ende]]
+~~~
+
+Hier ist dann auch dieser Strang der Geschichte erst einmal zu `Ende`:
+
+~~~twee
+:: Ende {"position":"825,525","size":"100,100"}
+{embed image: "images/grinsekatze5.jpg", alt: "Grinsekatze"}
+
+Am Ausgang des Biergartens traf sie auf die Grinsekatze. Sie grinste nur und
+meinte: »Hat die Raupe wieder zu viel gekifft?« Und verschwand …
+
+Hier ist die Geschichte vorläufig zu Ende.
+
+[if key]
+Glückwunschsch! Das war der längste Durchlauf, der bisher spielbar ist.
+[else]
+Du bist schon weit gekommen, aber da geht noch mehr…
+[continue]
+
+{restart link, label: "Noch einmal spielen"}?
+~~~
+
+Hier gibt es dann um ersten Mal so etwas wie eine Bewertung; Hat Alice den Schlüssel, dann hat sie die größtmögliche Anzahl von Passagen durchgespielt, aber noch lange nicht alle. Daher auch hier zum Schluß wieder die Möglichkeit, das Spiel noch einmal zu spielen.
+
+Das Projekt hat mittlerweile schon eine gewisse Komplexität erreicht und besteht aus 26 Passagen (wie der [Screenhot](https://www.flickr.com/photos/schockwellenreiter/53161139272/) im Banner oben zeigt).
+
+Wer es nachbauen will: Den aus Twine generierten [Twee-Code](https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice01bchapbook.twee) und die [Bilder](https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images) findet Ihr in meinem GitHub-Repositorium.
+
+Und auch auf Itch.io habe ich alles wieder [hochgeladen](https://kantel.itch.io/alice-und-chapbook-stage-1), damit Ihr es online spielen könnt.
