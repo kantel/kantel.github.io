@@ -1,0 +1,94 @@
+---
+title: "Processing (Java) und Visual Studio Code -- das geht!"
+author: "Jörg Kantel"
+date: "2023-09-08 17:35:00"
+categories: [Processing, Visual Studio Code, Processing.py]
+image: "images/processingvscode.jpg"
+---
+
+[![](images/processingvscode-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53173241220/)
+
+[Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html) schien mir so untrennbar mit der mit ausgelieferten PDE verbunden, daß ich gar nicht auf die Idee gekommen wäre, daß man -- zumindest schmerzfrei -- einen Processing-Sketch auch außerhalb der PDE bearbeiten und starten könne. Bis mir gestern das Video »[Processing and Visual Studio Code setup for Mac](https://www.youtube.com/watch?v=FlVFRzX6jtE)« untergekommen war, das diese Sicht völlig veränderte.
+
+Fazit: Wenn man ein paar einfache Vorarbeiten leistet, kann man einen Processing-Sketch problemlos und komfortabel in [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) erstellen und auch aus diesem Editor heraus starten. Und da ich zumindest einen ständigen Leser in Bremen habe (Hallo, Kalle!), der sich zum einen für Processing interessiert und zum anderen gerne eine ausführliche Schritt-für-Schritt-Anleitung vorgesetzt bekommt, hier also die Beschreibung, welche Vorarbeiten notwendig waren, damit Processing mit Visual Studio Code zusammenspielte.
+
+**Erstens**: Diese Anleitung habe ich nur für den Mac auf meinem MacBook Pro mit der letzten Catalina-Version getestet. Ich habe keine Ahnung, ob und wie das ganze unter Windows und/oder Linux funktioniert. Aber ich sehe auch keine prinzipiellen Hindernisse, daß es nicht funktionieren könnte.
+
+**Zweitens**: Ich gehe davon aus, daß ein aktuelles Processing (Processing 4.3 oder jünger) und ein akutelles Visual Studio Code (Version 1.82.0 oder jünger) auf Euren Rechnern schon installiert ist. Wenn nicht holt das bitte nach.
+
+**Schritt 1**: Processing starten. Aus der PDE heraus unter dem Menü `Tools -> "Processing-java" installieren …` die Kommandozeilen-Version von Processing global für alle Nutzer des Rechners installieren. Wenn dies erfolgreich war, sollte ein Aufruf von `processing-java` mit dem Terminal-Programm Eures Vertrauens so etwas wie folgenden Output generieren:
+
+[![`processing-java` in iTerm](images/processing-java.jpg)](https://www.flickr.com/photos/schockwellenreiter/53172298342/)
+
+**Schritt 2**: In Visual Studio Code die Extension [Processing for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=Luke-zhang-04.processing-vscode) von *Luke Zhang* installeren. Das ist eine Fork des in obigem Video vorgestellten Plug-ins von *Tobiah Zarlez*, die das Handling noch einmal vereinfacht.
+
+**Schritt 3** (nur zur Sicherheit): Visual Studio Code neu starten.
+
+Das ist alles. Nun könnt Ihr Euer erstes Processing-Projekt in Visual Studio Code anlegen. Zu beachten ist dabei nur, daß das Verzeichnis, das die `.pde`-Sketch-Datei enthält, namensgleich mit der PDE-Datei sein muß, also wie in meinem Beispiel ([Screenshot](https://www.flickr.com/photos/schockwellenreiter/53173241220/)) muß die Datei `test1.pde` im Verzeichnis `test1` liegen, sonst findet Visual Studio Code (und/oder `processing-java` den Sketch nicht).
+
+Dann  könnt Ihr Euren Super-Duper-Sketch eintippen, Und wenn alles korrekt gelaufen ist, zeigt VS-Code nicht nur ein nettes Syntax-Highlighting und macht Vorschläge zur Code-Vervollständigung, sondern links oben findet Ihr auch einen kleinen, grünen Pfeil, der auf Mausklick Euren Sketch startet (oder falls etwas schiefgelaufen ist, im Terminal des Editors eine Fehlermeldung ausgibt).
+
+Ich habe das mit folgendem, kleinen Sketch getestet:
+
+~~~java
+class Ball {
+
+    PVector location;
+    PVector velocity;
+    color c;
+
+    Ball() {
+        location = new PVector(random(width), random(height));
+        velocity = new PVector(random(-2, 2), random(-2, 2));
+        c = color(random(50, 200), random(50, 200), random(50, 200));
+    }
+
+    void update() {
+        location.add(velocity);
+    }
+
+    void checkEdges() {
+        if (location.x > width) {
+            location.x = 0;
+        } else if (location.x < 0) {
+            location.x = width;
+        }
+        
+        if (location.y > height) {
+            location.y = 0;
+        } else if (location.y < 0) {
+            location.y = height;
+        }
+    }
+
+    void display() {
+        stroke(0);
+        fill(c);
+        circle(location.x, location.y, 16);
+    }
+}
+
+Ball[] balls;
+
+void setup() {
+    size(320, 240);
+    windowTitle("Processing in VS Code");
+    balls = new Ball[10];
+    for (int i = 0; i < balls.length; i++) {
+        balls[i] = new Ball();
+    }
+}
+
+void draw() {
+    background(200);
+    for (int i = 0; i < balls.length; i++) {
+        balls[i].update();
+        balls[i].checkEdges();
+        balls[i].display();
+    }   
+}
+~~~
+
+Okay, ob das alles einen Nähr- oder gar einen Mehrwert hat (außer für Leute wie mich, die gerne ihren Editor bis an die Grenzen ausreizen, bis er so kaputtkonfiguriert ist, daß ihn nur eine komplette Neuinstallation wieder verschlanken kann&nbsp;🤓), weiß ich nicht. Aber zum einen finde ich schön, daß es geht und ich Processing aus den Fängen der PDE befreien kann (es gibt durchaus Szenarien, wo das sinnvoll sein kann -- wenn man zum Beispiel mit vielen großen, externen Datensätzen hantieren muß).
+
+Wichtiger aber ist noch: Auf den GitHub-Seiten des Projekts habe ich eine [Anleitung entdeckt](https://github.com/Luke-zhang-04/processing-vscode#processing-python), wie man das Plug-in und Visual Studio Code auch mit [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) verheiraten kann. Ich habe das bisher noch nicht getestet, aber wenn es funktioniert, kann es eigentlich nur besser funktionieren als in der Processing-4-PDE (dort gibt es nämlich für Processing.py keinerlei Fehler- oder Rückmeldungen mehr -- ein Processing.py-Sketch stirbt stumm und in voller Schönheit). Ich weiß daher, was dringend noch auf meiner Testliste steht. *Still digging!*
