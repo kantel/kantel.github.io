@@ -1,0 +1,29 @@
+---
+title: "Erste (und vermutlich letzte) Schritte mit Typst"
+author: "Jörg Kantel"
+date: "2023-09-10 17:15:00"
+categories: [Typst, Markdown, LaTeX]
+image: "images/typstfirststeps.jpg"
+---
+
+[![](images/typstfirststeps-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53175696259/)
+
+Ich konnte gestern noch die Gelegenheit nutzen, mit dem [hier vorgestellten](https://kantel.github.io/posts/2023090902_publikations_werkzeugkasten/) Publikationswerkzeug **[Typst](https://typst.app/)** erste Tests zu fahren. Mein Interesse an diesem Tool ist dabei von vorsichtigem Wohlwollen in blankes Entsetzen umgeschlagen.
+
+Das beginnt damit, daß -- entgegen meiner ursprünglichen Annahme -- die verwendete Auszeichungssprache **kein** Superset von Markdown ist, sondern etwas ganz eigenes, selbstgestricktes, das durch Überschneidungen und inkompatible Auszeichnungen eine Konvertierung zwischen den beiden Auszeichungssprachen nahezu unmöglich macht. Das ist der erste Punkt, wo man mit Typst in eine Sackgasse gerät.
+
+Der zweite Punkt ist, daß Typst nicht auf Standards wie [Pandoc](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/pandoc.html) setzt, sondern den Ehrgeiz entwickelt, das Rad neu zu erfinden und eine Alternative zu LaTeX (oder -- schlimmer noch -- zu TeX) zu entwickeln. Das kann man machen, aber man sollte wirklich gute Gründe dafür haben und diese auch offenlegen (und nein: Das vielzitierte »weil es geht« ist zwar ein von mir oft ein akzeptierter Grund, in diesem Falle aber nicht).
+
+So hat es den Anschein, als ob Typst eine Art *Zero Boilerplate*-TeX sein will, das den Umstand vergißt, daß Boilerplates zwar manchmal lästig sind und die Lernkurve erhöhen, sie aber Stellschrauben zur Verfügung stellen, an denen man als fortgeschrittener Nutzer drehen kann, um das System an seine Bedürfnisse anzupassen[^1].
+
+[^1]: Das ist zum Beispiel auch der Grund, warum sich [Pygame Zero](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html) auch gegenüber [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) nicht durchgesetzt hat. Die Boilerplate-freie Implementierung von Pygame Zero bietet Anfängern zwar erst einmal einen einfachen Einstieg, dem fortgeschrittenen Nutzer fehlen dann aber die Stellschrauben, und er muß dann doch auf das darunterliegenden Pygame zurückgreifen.
+
+Der dritte Grund ist, daß Typst einem vollkommen veraltetem Modell von »wissenschaftlichem Publizieren« nachhängt: Einziges Ziel ist nach wie vor eine Print-Publikation, andere wissenschaftliche Publikationsformen wie zum Beispiel interaktive Notebooks im [Jupyter](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html)-[Ökosystem](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) oder [Mathematica](http://cognitiones.kantel-chaos-team.de/mathematik/mathematica.html), aber auch nichtlineare Online-Publikationen, wie sie etwa mit dem [CollectionBuilder](https://collectionbuilder.github.io/) der Universität von Idaho möglich sind, kommen in der eingeschränkten Vorstellung von »wissenschaftlicher Publikation« der Macher von Typst nicht vor.
+
+Dabei haben *Sven Dierig* und ich schon 1997 (später stieß dann auch noch *Henning Schmidgen* zu uns) am Max-Planck-Institut für Wissenschaftsgeschichte (MPIWG) mit dem [Virtual Laboratory](https://de.wikipedia.org/wiki/Virtual_Laboratory) eine [Plattform geschaffen](https://vlp.mpiwg-berlin.mpg.de/index_html), die wissenschaftliche Online-Publikationen ermöglichen sollte und unter anderem auch das Erstellen von Datenbanken als wissenschaftliche Publikation propagierte[^2]. Diese Arbeiten wurden später auch von anderen am MPIWG fortgesetzt und damit Alternativen zur Print-Publikation im wissenschaftlichen Bereich etabliert (das war vor 2000 noch völliges Neuland). Ein Zurückgehen auf reine Print-Publikationen, wie sie Typst propagiert, ist daher schlichtweg reaktionär[^3].
+
+[^2]: Vergleiche: Sven Dierig, Jörg Kantel, Henning Schmidgen: *[The Virtual Laboratory for Physiology](https://www.mpiwg-berlin.mpg.de/Preprints/P140.PDF)*. Max-Planck-Institut für Wissenschaftsgeschichte Preprint 140, 2000. (PDF, englisch; 6,0 MB)
+
+[^3]: Als Rentner muß ich nicht mehr so viel Rücksicht auf meinen ehemaligen Brötchengeber nehmen und kann mir daher durchaus auch mal deutlichere Sätze erlauben, wo ich mich als Mitarbeiter eines Max-Planck-Institutes noch zurückgehalten hätte.
+
+Bleibt also die Frage: WTF? Typst ist ein Rückschritt gegenüber Pandoc-basierten Tools wie [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html) oder [Jupyter Book](https://jupyterbook.org/en/stable/intro.html) und bringt weder neue Erkenntnisse noch neue Möglichkeiten für einen zukünftigen, wissenschaftlichen Publikations-Workflow. Es ist mit seiner rückwärtsgewandten, auf (oder besser: »gegen«) TeX fixierten Ideologie eher schädlich und sollte daher schnellstens vergessen werden. Es tut mir leid, daß ich dieses Teil überhaupt als Teil meines Publikations-Werkzeugkastens in Erwägung gezogen hatte und ich mich daher mit diesem Beitrag davon wieder distanzieren muß.

@@ -10,7 +10,46 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Sun, 10 Sep 2023 13:10:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 10 Sep 2023 15:15:00 GMT</lastBuildDate>
+<item>
+  <title>Erste (und vermutlich letzte) Schritte mit Typst</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023091002_typst_1st_steps/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53175696259/"><img src="https://kantel.github.io/posts/2023091002_typst_1st_steps/images/typstfirststeps-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich konnte gestern noch die Gelegenheit nutzen, mit dem <a href="https://kantel.github.io/posts/2023090902_publikations_werkzeugkasten/">hier vorgestellten</a> Publikationswerkzeug <strong><a href="https://typst.app/">Typst</a></strong> erste Tests zu fahren. Mein Interesse an diesem Tool ist dabei von vorsichtigem Wohlwollen in blankes Entsetzen umgeschlagen.</p>
+<p>Das beginnt damit, daß – entgegen meiner ursprünglichen Annahme – die verwendete Auszeichungssprache <strong>kein</strong> Superset von Markdown ist, sondern etwas ganz eigenes, selbstgestricktes, das durch Überschneidungen und inkompatible Auszeichnungen eine Konvertierung zwischen den beiden Auszeichungssprachen nahezu unmöglich macht. Das ist der erste Punkt, wo man mit Typst in eine Sackgasse gerät.</p>
+<p>Der zweite Punkt ist, daß Typst nicht auf Standards wie <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/pandoc.html">Pandoc</a> setzt, sondern den Ehrgeiz entwickelt, das Rad neu zu erfinden und eine Alternative zu LaTeX (oder – schlimmer noch – zu TeX) zu entwickeln. Das kann man machen, aber man sollte wirklich gute Gründe dafür haben und diese auch offenlegen (und nein: Das vielzitierte »weil es geht« ist zwar ein von mir oft ein akzeptierter Grund, in diesem Falle aber nicht).</p>
+<p>So hat es den Anschein, als ob Typst eine Art <em>Zero Boilerplate</em>-TeX sein will, das den Umstand vergißt, daß Boilerplates zwar manchmal lästig sind und die Lernkurve erhöhen, sie aber Stellschrauben zur Verfügung stellen, an denen man als fortgeschrittener Nutzer drehen kann, um das System an seine Bedürfnisse anzupassen<sup>1</sup>.</p>
+<p>Der dritte Grund ist, daß Typst einem vollkommen veraltetem Modell von »wissenschaftlichem Publizieren« nachhängt: Einziges Ziel ist nach wie vor eine Print-Publikation, andere wissenschaftliche Publikationsformen wie zum Beispiel interaktive Notebooks im <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html">Jupyter</a>-<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">Ökosystem</a> oder <a href="http://cognitiones.kantel-chaos-team.de/mathematik/mathematica.html">Mathematica</a>, aber auch nichtlineare Online-Publikationen, wie sie etwa mit dem <a href="https://collectionbuilder.github.io/">CollectionBuilder</a> der Universität von Idaho möglich sind, kommen in der eingeschränkten Vorstellung von »wissenschaftlicher Publikation« der Macher von Typst nicht vor.</p>
+<p>Dabei haben <em>Sven Dierig</em> und ich schon 1997 (später stieß dann auch noch <em>Henning Schmidgen</em> zu uns) am Max-Planck-Institut für Wissenschaftsgeschichte (MPIWG) mit dem <a href="https://de.wikipedia.org/wiki/Virtual_Laboratory">Virtual Laboratory</a> eine <a href="https://vlp.mpiwg-berlin.mpg.de/index_html">Plattform geschaffen</a>, die wissenschaftliche Online-Publikationen ermöglichen sollte und unter anderem auch das Erstellen von Datenbanken als wissenschaftliche Publikation propagierte<sup>2</sup>. Diese Arbeiten wurden später auch von anderen am MPIWG fortgesetzt und damit Alternativen zur Print-Publikation im wissenschaftlichen Bereich etabliert (das war vor 2000 noch völliges Neuland). Ein Zurückgehen auf reine Print-Publikationen, wie sie Typst propagiert, ist daher schlichtweg reaktionär<sup>3</sup>.</p>
+<p>Bleibt also die Frage: WTF? Typst ist ein Rückschritt gegenüber Pandoc-basierten Tools wie <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> oder <a href="https://jupyterbook.org/en/stable/intro.html">Jupyter Book</a> und bringt weder neue Erkenntnisse noch neue Möglichkeiten für einen zukünftigen, wissenschaftlichen Publikations-Workflow. Es ist mit seiner rückwärtsgewandten, auf (oder besser: »gegen«) TeX fixierten Ideologie eher schädlich und sollte daher schnellstens vergessen werden. Es tut mir leid, daß ich dieses Teil überhaupt als Teil meines Publikations-Werkzeugkastens in Erwägung gezogen hatte und ich mich daher mit diesem Beitrag davon wieder distanzieren muß.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Das ist zum Beispiel auch der Grund, warum sich <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html">Pygame Zero</a> auch gegenüber <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> nicht durchgesetzt hat. Die Boilerplate-freie Implementierung von Pygame Zero bietet Anfängern zwar erst einmal einen einfachen Einstieg, dem fortgeschrittenen Nutzer fehlen dann aber die Stellschrauben, und er muß dann doch auf das darunterliegenden Pygame zurückgreifen.↩︎</p></li>
+<li id="fn2"><p>Vergleiche: Sven Dierig, Jörg Kantel, Henning Schmidgen: <em><a href="https://www.mpiwg-berlin.mpg.de/Preprints/P140.PDF">The Virtual Laboratory for Physiology</a></em>. Max-Planck-Institut für Wissenschaftsgeschichte Preprint 140, 2000. (PDF, englisch; 6,0 MB)↩︎</p></li>
+<li id="fn3"><p>Als Rentner muß ich nicht mehr so viel Rücksicht auf meinen ehemaligen Brötchengeber nehmen und kann mir daher durchaus auch mal deutlichere Sätze erlauben, wo ich mich als Mitarbeiter eines Max-Planck-Institutes noch zurückgehalten hätte.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Typst</category>
+  <category>Markdown</category>
+  <category>LaTeX</category>
+  <guid>https://kantel.github.io/posts/2023091002_typst_1st_steps/index.html</guid>
+  <pubDate>Sun, 10 Sep 2023 15:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023091002_typst_1st_steps/images/typstfirststeps.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>DuschDas-Mogelpackung: Mit Öko-Bla-Bla zu weniger Inhalt</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1454,85 +1493,6 @@ font-style: inherit;">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4
   <guid>https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/index.html</guid>
   <pubDate>Mon, 28 Aug 2023 17:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/images/chapbooktwinev01.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Tutorial: Mit Twine und Chapbook in das Wunderland, Version 0.0</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53143377865/"><img src="https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/images/chapbooktwinev00-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p><em>Alea iacta est</em>: Ich habe mich entschieden, meinen Ausflügen mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> ins Wunderland ein Reboot zu spendieren und die Reise nun mit <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> anstelle von <a href="http://twine2.neocities.org/">Harlowe</a> oder <a href="https://www.motoslave.net/sugarcube/2/docs/">SugarCube</a> als StoryFormat anzutreten. Das bedeutet, daß ich meine bisherigen Tutorials komplett neu überarbeiten werde. Heute gibt es die erste Lieferung:</p>
-<p>Das Tutorial geht davon aus, daß Ihr Twine auf dem Desktop installiert habt oder Ihr wißt, wie die Online-Version von Twine zu bedienen ist. Außerdem setzt es voraus, daß Ihr entweder Chapbook zu Eurem Default-Storyformat erklärt oder Ihr die Tutorials auf Chapbook umgestellt habt (Menü: <code>Geschichte -&gt; Details -&gt; Geschichtsformat: Chapbook 1.2.3</code>).</p>
-<p>Als erstes habe ich die unbenannte Passage in <code>Start</code> umbenannt und dann diesen Text dort hineingeschrieben:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">:: Start</span>
-<span id="cb1-2">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie</span>
-<span id="cb1-3">hatte sich ein wenig verirrt. Plötzlich materialisierte sich im Gestrüpp über</span>
-<span id="cb1-4">ihrem Weg die Grinsekatze. Alice fragte sie: »Würdest Du mir bitte sagen, wie ich</span>
-<span id="cb1-5">von hier aus weitergehen soll!«</span>
-<span id="cb1-6"></span>
-<span id="cb1-7">Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.</span>
-<span id="cb1-8">Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin]], links zur</span>
-<span id="cb1-9">[[Teeparty des verrückten Hutmachers-&gt;Teeparty]] und rechts triffst Du die</span>
-<span id="cb1-10">[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]].«</span></code></pre></div>
-<p>Um den Quellcode der einzelnen Passagen wiederzugeben, nutze ich <a href="http://twinery.org/cookbook/terms/terms_twee.html">Twee</a>. Das heißt, die erste Zeile mit den beiden Doppelpunkten kann von Euch ignoriert werden, sie enthält nur zu Eurer Orientierung den Namen der Passage (das heißt, Ihr übernehmt diese Zeile auch nicht in Euer Twine).</p>
-<p>Zum zweiten habe ich, um horizontale Scrollbalken zu vermeiden, den Quelltext manuell umgebrochen. Absätze sind durch zwei Umbrüche (doppelte Leerzeilen) gekennzeichnet, den Rest solltet Ihr ohne Umbrüche in Euer Passagenfenster übernehmen.</p>
-<p>Dieser Absatz zeigt schon die wichtigste Funktionsweise von Twine: Wie werden Links (zu anderen Passagen) erstellt? Der einfachste Weg ist, das Linkziel zwischen zwei eckigen Klammerpaaren (<code>[[]]</code>) zu schreiben, so wie in <code>[[Haus der Herzogin]]</code>. Hier sind Linktext und Linkziel identisch, das heißt, der Link <code>Haus der Herzogin</code> führt auch zur Passage <code>Haus der Herzogin</code>.</p>
-<p>Doch nicht immer – sogar in den meisten Fällen – sind Linktext und Linkziel identisch. Hierfür gibt es in Twine die Pfeilnotation: <code>Linktext-&gt;Linkziel</code>, wie zum Beispiel in <code>[[Teeparty des verrückten Hutmachers-&gt;Teeparty]]</code>. Hier verlinkt der komplette Text <code>Teeparty des verrückten Hutmachers</code> auf eine Passage mit dem Namen <code>Teeparty</code>. Dabei ist zu beachten, daß Leerzeichen zählen. Daher sollte zumindest nach der Pfeilspitze kein Leerzeichen stehen, denn Twine sucht sonst das Linkziel <code>Teeparty</code> mit vorangestelltem Leerzeichen und das bringt nicht nur Twine, sondern – wie man in vielen Online-Tutorien sehen kann – auch Euch durcheinander. Wenn Ihr aber rechts und links von den Pfeilen keine Leerzeichen zulaßt, seid Ihr immer auf der sicheren Seite.</p>
-<p>Es gibt noch eine zweite Schreibweise mit rückwärtsgerichtetem Pfeil, die Linkkziel und Linktext umkehrt: <code>[[Linkziel&lt;-Linktext]]</code>, also – um bei unserem Beispiel zu bleiben – <code>[[Teeparty&lt;-Teeparty des verrückten Hutmachers]]</code>. Mir hat sich der Sinn dieser vermutlich aus historischen Quellen gespeisten Schreibweise nie erschlossen und ich habe sie auch noch nie nutzen müssen.</p>
-<p>Um die Verwirrung komplett zu machen, gibt es auch noch eine dritte Schreibweise mit einem vertikalen Trennstrich (<code>|</code>) in der Mitte: <code>[[Linktext|Linkziel]]</code>, also <code>[[Teeparty des verrückten Hutmachers|Teeparty]]</code>. Hier weiß ich zumindest den Grund, die Schreibweise stammt aus Twine 1.x und ich habe sie aus reiner Gewohnheit auch lange noch verwendet. Hier gilt übrigens das gleiche wie bei den Pfeilen: Keine Leerzeichen rechts und/oder links vom vertikalen Strich. Und selbst ich als Gewohnheitstier habe mich von dieser Schreibweise verabschiedet. Wer daher neu in Twine ist, sollte keinen Grund haben, auf dieser veralteten Konvention zu beharren.</p>
-<p>Wenn Ihr – nachdem Ihr die Startpassage mit dem Text gefüttert habt – auf das Twine-Fenster schaut, werdet Ihr feststellen, daß Twine die Passagen <code>Haus der Herzogin</code>, <code>Teeparty</code> und <code>Raupe</code> für Euch schon angelegt und mit Pfeilen versehen hat. Die Pfeile zeigen von der Startpassage jeweils auf die verlinkte Passage und – sollte es von da einen Rücklink geben – als Doppelpfeil auch wieder zurück.</p>
-<p>Ihr könnt die Passagen in dem Fenster beliebig mit der Maus hin- und herschieben und so ein wenig Struktur in Eure Geschichten bekommen.</p>
-<p>Natürlich wollen auch diese Passagen mit Text gefüttert werden. Ich fange mit dem <code>Haus der Herzogin</code>an:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1">:: Haus der Herzogin</span>
-<span id="cb2-2">Im Haus der Herzogin herrschte Chaos. Die Herzogin warf erst mit einem Topf nach</span>
-<span id="cb2-3">Alice, doch dann drückte sie ihr ein plärrendes [[Baby in den Arm-&gt;Schweinchen]].</span></code></pre></div>
-<p>Auch die <code>Teeparty</code> und die <code>Raupe</code> bekommen je einen Text:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">:: Teeparty</span>
-<span id="cb3-2">Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser</span>
-<span id="cb3-3">deklamierte gerade ein langes, dafür um so langweiligeres Gedicht.</span>
-<span id="cb3-4"></span>
-<span id="cb3-5">Alice hatte sehr schnell genug davon, also beschloß sie, doch die [[Raupe]]</span>
-<span id="cb3-6">aufzusuchen.</span></code></pre></div>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">:: Raupe</span>
-<span id="cb4-2">Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte</span>
-<span id="cb4-3">nur immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen</span>
-<span id="cb4-4">müßte. Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.</span>
-<span id="cb4-5"></span>
-<span id="cb4-6">Alice beschloß, daß sie für heute genug habe und ging nach [[Hause-&gt;Home]].</span></code></pre></div>
-<p>Wenn Ihr jetzt wieder auf Euer Twine-Fenster schaut, werdet Ihr zwei weitere, neue, aber noch leere Passagen finden, die Twine für Euch angelegt und mit Pfeilen versehen hat: <code>Schweinchen</code> und <code>Home</code>. Ihr könnt sie zur besseren Übersicht erst einmal anordnen, wie im <a href="https://www.flickr.com/photos/schockwellenreiter/53143377865/">Screenshot</a> im Banner oben und dann ebenfalls mit Text füllen:</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">:: Schweinchen</span>
-<span id="cb5-2">Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem</span>
-<span id="cb5-3">Grunzen und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen</span>
-<span id="cb5-4">im Arm hielt.</span>
-<span id="cb5-5"></span>
-<span id="cb5-6">Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt</span>
-<span id="cb5-7">zurück an den {restart link, label: "Start"}.</span></code></pre></div>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1">:: Home</span>
-<span id="cb6-2">Auf dem Weg nach Hause begegnete Alice noch einmal der Grinsekatze. Sie grinste</span>
-<span id="cb6-3">Alice breit an – wie es Grinsekatzen eben so tun – und fragte: »Na, war die</span>
-<span id="cb6-4">Raupe wieder bekifft?«</span>
-<span id="cb6-5"></span>
-<span id="cb6-6">Damit ist die Geschichte zu Ende. {restart link, label: "Noch einmal spielen"}?</span></code></pre></div>
-<p>Diese Passagen enthalten nichts Neues bis auf den <code>{restart link, label: "Irgendein Text"}</code>. Das ist ein Chapbook-eigenes Feature, zwischen den geschweiften Klammern steht ein sogenanntes <code>insert</code>, eine Art Makro. Inserts sind ein wichtiges Sprachfeature von Chapbook, ich werde in späteren Tutorials noch ausführlich darauf zurückkommen. Für den Moment müßt Ihr nur wissen, daß dies ein Link auf die Startpassage ist (wobei <code>label</code> denn Linktext bezeichnet), der das Spiel auf seine Startwerte zurücksetzt. Sollte Euere Alice im Spiel also Erfahrungspunkte gesammelt haben, werden diese wieder auf den Startwert zurückgesetzt. Da es momentan aber noch keine Variablen wie zum Beispiel Erfahrungspunkte im Spiel gibt, wird einfach nur die Liste der besuchten Passagen geleert. Daher wäre es momentan auch kein Beinbruch, zum Beispiel in der <code>Home</code>-Passage den <code>restart link</code> durch den einfachen Link <code>[[Noch einmal spielen-&gt;Start]]</code> zu ersetzen. Twine würde dies dann auch mit einem Pfeil von <code>Home</code> auf <code>Start</code> honorieren.</p>
-<p>Dies ist eigentlich alles, was Ihr über Twine und Chapbook wissen müßt. Mit diesem einfachen Linkmechanismus (der übrigens in dieser Form in fast allen Storyformaten existiert) könnt Ihr Eure eigene interaktive und verzweigte Geschichte im Stil der »Choose Your Own Adventure Books« <em>(CYOA)</em> schreiben. Denn das ist der Kern von Twine, alles andere ist im Grunde genommen nur Kosmetik. Aber da Kosmetik vieles doch erst schön macht, werde ich Euch in weiteren Tutorials zeigen, wie Ihr diese auftragt und nutzt, um Twine und Chapbook bis an die Grenzen auszureizen.</p>
-<p>Das »Spiel« habe ich auf meinem Itch.io-Account <a href="https://kantel.itch.io/alice-und-chapbook-stage-0">hochgeladen</a>, damit Ihr das Ergebnis in Aktion erleben könnt. Und den <a href="https://github.com/kantel/twine-entdecken/blob/master/tweego/alice/alice00chapbook.twee">Twee-Code</a> wie auch die <a href="https://github.com/kantel/twine-entdecken/tree/master/tweego/alice">HTML-Datei</a> (<code>alice00chapbook.html</code>) findet Ihr in meinem GitHub-Repositorium, so daß Ihr das Beispiel in Eurem eigenen Twine importieren könnt.</p>
-
-
-
- ]]></description>
-  <category>Twine</category>
-  <category>Chapbook</category>
-  <category>Interactive Fiction</category>
-  <guid>https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/index.html</guid>
-  <pubDate>Sun, 27 Aug 2023 18:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/images/chapbooktwinev00.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
