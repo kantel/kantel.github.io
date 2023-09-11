@@ -1,0 +1,130 @@
+---
+title: "Alice und Humpel Pumpel -- ein (vorläufig) letztes Wunderland-Update mit Twine und Chapbook"
+author: "Jörg Kantel"
+date: "2023-09-11 20:50:00"
+categories: [Twine, Chapbook, Interactive Fiction]
+image: "images/aliceandhumpty_kirk.jpg"
+---
+
+[![](images/aliceandhumpty_kirk-b.jpg)](http://hedgehogstudio.com/aliceandhumpty_kirk.jpg)
+
+Noch einmal möchte ich Alice mit [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) durch das Wunderland schicken, um neue Sprachelemente des Storyformats [Chapbook](https://klembot.github.io/chapbook/guide/) vorzustellen. In diesem neuen Zweig der Geschichte trifft sie auf »Humpel Pumpel« *([Humpty Dumpty](https://de.wikipedia.org/wiki/Humpty_Dumpty))*, einer Figur, die sich schon *Lewis Carroll* bei den Kinderreimen der  [Mutter Gans](https://de.wikipedia.org/wiki/Mother_Goose) *(Mother Goose)* ausgeborgt hatte.
+
+Dafür habe ich der Variablen-Sektion zu Beginn der Geschichte zwei zusätzliche Zeilen hinzugefügt:
+
+~~~twee
+:: Start
+config.style.page.verticalAlign: "top"
+config.body.transition.name: "none"
+~~~
+
+Die erste Anweisung bewirkt, daß der Text der Geschichte immer am oberen Seitenrand beginnt, und nicht -- wie es bei Chapbook der Default ist -- in der Mitte der Seite. Dadurch werden unschöne Zeilensprünge vermieden, wenn dem Text live Zeilen oder Abschnitte hinzugefügt werden.
+
+Die zweite Zeile schaltet die Übergänge *(Transitions)* zwischen den einzelnen Passagen aus.
+
+Als nächstes habe ich den neuen Strang der Geschichte in die Passage `Dorf` eingehängt:
+
+~~~twee
+:: Dorf
+Der Weg zum Dorf war von einem großen, steineren Wall versperrt. 
+
+[if gravurring]
+{embed passage: "Humpel Pumpel"}
+[else]
+{embed passage: "Weisser Ritter"}
+~~~
+
+Mit dem weißen Ritter geht es wie [in der letzten Version der Geschichte](https://kantel.github.io/posts/2023090401_alice_weisse_ritter/) weiter:
+
+~~~twee
+:: Weisser Ritter
+{embed image: "images/weisseritter.jpg", alt: "Der weiße Ritter"}
+
+Nur ein Durchgang war offen, der von einem traurig aussehenden, weißen Ritter
+auf einem dürren Pferd blockiert wurde, der träumend vor sich hindöste.
+~~~
+
+Neu ist hingegen, was in den Passagen `Humpel Pumpel` passiert:
+
+~~~twee
+:: Humpel Pumpel
+{embed image: "images/humpty_kirk.jpg", alt: "Humpel Pumpel"}
+
+Auf dieser Mauer saß ein seltsames Wesen und grinste Alice breit an.
+
+»Du mußt Humpel Pumpel sein« sagte Alice, nur um etwas freundliches zu sagen.
+
+{reveal link: "»Warum?« fragte Humpel Pumpel.", passage: "Humpel Pumpel 1"}
+~~~
+
+Das *Chapbook-Insert* `{reveal link: link, passage: Passagenname}` ersetzt nämlich den Linktext durch den Inhalt der genannten Passage -- und zwar **innerhalb** des Textes. Im obigen Beispiel wird daher `»Warum?« fragte Humpel Pumpel.` nach einem Klick durch den Inhalt der Passage `Humpel Pumpel 1` ersetzt:
+
+~~~twee
+:: Humpel Pumpel 1
+»Warum?« fragte Humpel Pumpel.
+
+»Weil Du wie ein Humpel Pumpel aussiehst« antwortete Alice.
+
+Humpel Pumpel schwieg eine Weile beleidigt.
+{reveal link: "»Und wie heißt Du?«", passage: "Humpel Pumpel 2"}
+~~~
+
+Zu beachten ist dabei, daß der Link tatsächlich **ersetzt** wird. Will man, daß der Linktext dennoch (nur nicht mehr als Link) erhalten bleibt, muß man ihn -- wie in obigem Beispiel -- in der einzusetzenden Passage noch einmal wiederholen.
+
+Das kann man natürlich beliebig fortführen und zum Beispiel auch noch eine weitere Passage `Humpel Pumpel 2` anhängen:
+
+~~~twee
+:: Humpel Pumpel 2 {"position":"850,525","size":"100,100"}
+»Und wie heißt Du?«
+
+»Alice«, antwortete Alice.
+
+»[[Du siehst aber gar nicht wie Alice aus->Humpel Pumpel 3]]« sagte Humpel Pumpel
+schon wieder fröhlicher.
+~~~
+
+Die eingebette Passage kann natürlich auch auf eine normal Passage weiterverlinken, so wie in obigem Beispiel auf die Passage `Humpel Pumpel 3`:
+
+~~~twee
+:: Humpel Pumpel 3
+{embed image: "images/humptydumpty-brooke.jpg", alt: "Humpel Pumpel"}
+
+Darauf wußte Alice keine Antwort. »Wenn Du weiter so auf der Mauer zappelst,
+wirst Du noch herunterfallen« sagte sie schließlich, nur um überhaupt etwas
+zu sagen.
+
+Humpel Pumpel: {reveal link: "»Nein!«", passage: "Humpel Pumpel 4"}
+~~~
+
+Weil es so schön war, gibt es den gleichen Trick mit dem Ersetzten des Links noch einmal in `Humpel Pumpel 4`:
+
+~~~twee
+:: Humpel Pumpel 4
+
+»Nein!«
+
+Alice: {reveal link: "»Doch!«", passage: "Humpel Pumpel 5"}
+~~~
+
+Die Passage `Humpel Pumpel 5` mündet dann über einen »normalen« Link in den `Biergarten`:
+
+~~~twee
+:: Humpel Pumpel 5
+»Doch!«
+
+Humpel Pumpel: »Oh!«
+
+Alice schlich sich an dem heruntergefallenen Humpel Pumpel vorbei und suchte
+das Dorf auf. Am Eingang des Dorfes unter einem großen Baum war ein
+[[Biergarten]].
+~~~
+
+Hier vereinigen sich die beiden Stränge »Weißer Ritter« und »Humpel Pumpel« wieder und die Geschichte läuft mit den gleichen Passagen wie in der vorigen Version weiter auf das Ende zu.
+
+[![So sieht die Geschichte in all ihrer Schönheit in Twine aus.](images/alicechapbookfinal.jpg)](https://www.flickr.com/photos/schockwellenreiter/53180801290/)
+
+Der Ausflug von Alice mit Twine und Chapbook ins Wunderland besteht nun aus 33 Passagen. In ihnen habe ich fast alle relevanten Sprachelemente von Chapbook behandelt. Lediglich zwei stehen noch aus, die aber meiner Meinung nach eher eine Bedeutung haben, wenn man Twine und Chapbook als ein Entwurfswerkezug für Prototypen nutzt, die letztendlich in [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html) implementiert werden sollen. Dies macht Twine/Chapbook für Ren'Py ähnlich nützlich, wie die von mir schon [vielfach](https://kantel.github.io/posts/2023090602_renpy_8_1_2/) als Vorbild und Referenz heangezogene [Ink/Inky](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html) nach [Unity](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html) Integration. Um dies an einem Beispiel zu zeigen, möchte ich aber -- wenigstens vorübergehend -- den Wunderland-Kosmos verlassen und ein kleines Beispiel entwickeln, das dann auch tatsächlich nach Ren'Py portiert wird.
+
+Ansonsten habe ich den [Twee-Code der Geschichte](https://github.com/kantel/twine-entdecken/blob/master/tweego/alicechapbook/alice01cchapbook.twee) wie auch die [verwendeten Bilder](https://github.com/kantel/twine-entdecken/tree/master/tweego/alicechapbook/images) wieder in mein GitHub-Repositorium hochgeladen. Die Bilder von Humpel Pumpel stammen aus der 1904 erschienen Wunderland-Ausgabe von *[Marie Luise Kirk](https://de.wikipedia.org/wiki/Maria_Louise_Kirk)* (1860-1938) und aus dem 1897 erstveröffentlichten *The Nursery Rhyme Book* von *[Leonard Leslie Brooke](https://de.wikipedia.org/wiki/Leonard_Leslie_Brooke)* (1862-1940). Beide Künstlerinnen und Künstler sind also vor hinreichend langer Zeit verstorben, so daß ihre Zeichnungen zumindest in Europa gemeinfrei sind.
+
+Die aktuelle Version der Geschichte habe ich auch wieder auf Itch.io [hochgeladen](https://kantel.itch.io/alice-und-chapbook-stage-1), so daß Ihr sie dort im Browser spielen könnt.
