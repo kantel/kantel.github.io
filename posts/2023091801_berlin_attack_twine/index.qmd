@@ -1,0 +1,337 @@
+---
+title: "Berlin Attack: Prototypen mit Twine und Chapbook"
+author: "Jörg Kantel"
+date: "2023-09-18 17:50:00"
+categories: [Interactive Fiction, Twine, Chapbook, Tweego, Spieleprgrammierung, RenPy, Visual Studio Code]
+image: "images/berlinattackfinal.jpg"
+---
+
+[![](images/berlinattackfinal-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53194206856/)
+
+Wie [angekündigt](https://kantel.github.io/posts/2023091101_alice_humpel_pumpel/) möchte ich bei meinen Erkundungen von [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) und dem Storyformat [Chapbook](https://klembot.github.io/chapbook/guide/) vorübergehend den Wunderland-Kosmos verlassen und an einem ganz anderen Beispiel zeigen, warum Chapbook trotz (oder besser: gerade wegen) seiner Beschränkungen hervorragend geeignet ist, einen Prototypen in Twine zu bauen, der dann später nach [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html) portiert werden soll.
+
+Dafür habe ich meine alte [Räuberpistole](https://kantel.github.io/posts/2022122102_alien_invasion_stage_1/) wieder hervorgekramt, sie mit neuen Avataren aus [Clarissa Helps' 14 Sprite Pack](https://lemmasoft.renai.us/forums/viewtopic.php?f=52&t=30896) (die stehen unter der freien [CC-BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/legalcode)-Lizenz) aufgehübscht und ein wenig die Geschichte weitergesponnen.
+
+**Vorab**: Ich habe den Prototypen nicht in Twine, sondern in Twines Kommandozeilen-Compiler [Tweego](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html) entwickelt, weil ich da die einzelnen Passagen (einzeln oder auch mehrere, die meiner Meinung nach zusammengehören) in separate Dateien ablegen kann. Das hilft mir gewaltig, nicht die Übersicht zu verlieren.
+
+Das Pojektverzeichnis habe ich -- wie [hier beschrieben](https://kantel.github.io/posts/2023082001_tweego_chapbook/) -- so organisiert
+
+~~~bash
+Projektverzeichnis
+  -- Verzeichnis images
+  -- Vereichnis src
+  index.html
+~~~
+
+und dann Tweego jeweils mit diesem Kommando (die erste Zeile muß nur beim ersten Mal verwendet werden) aus dem Terminal von [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) heraus aufgerufen:
+
+~~~bash
+cd <projektverzeichnis>
+'/Applications/tweego/tweego' -o 'index.html' 'src'
+~~~
+
+Erst nachdem der Prototyp zu meiner Zufriedenheit fertiggestellt war, hatte ich ihn dann auch nach Twine importiert und die Passagen visuell ein wenig aufgeräumt, um den obigen [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53194206856/) zu erhalten. Doch das ist dann nur noch reine Kosmetik, der Prototyp funktioniert auch ohne den Re-Import nach Twine.
+
+**Doch nun in *medias res***: Die erste Passage ist die `Start`-Passage (`start.twee`), die erst einmal die notwendigen Angaben `StoryTitle` und `StoryDate` enthält:
+
+~~~twee
+:: StoryTitle
+Berlin Attack
+
+
+:: StoryData
+{
+  "ifid": <Your IF-ID here>,
+  "format": "Chapbook",
+  "format-version": "1.2.3",
+  "start": "Start",
+  "zoom": 1.0
+}
+~~~
+
+Die `IF-ID` wird von Tweego beim ersten Durchlauf automatisch erzeugt. Sie ist ein eindeutiger Identifier, den Ihr auch kein zweites Mal vergeben solltet.
+
+Dann folgt die eigentliche `Start`-Passage:
+
+~~~twee
+:: Start
+config.style.page.color: "gray-0 on black"
+config.style.page.link.font: "18 none"
+config.style.page.link.color: "orange-4"
+config.style.page.link.lineColor: "orange-4"
+config.style.page.link.active.color: "orange-4"
+config.style.page.fork.divider.style: "none"
+has_stick: false
+hide_stick: false
+--
+
+# Die Geschichte beginnt …
+
+[note]
+Auftritt Hans Blond.
+Hans neutral
+[continued]
+
+{embed image: "images/buero_hans_1.png",  alt: "Hans Blond im Büro"}
+
+Das ist Hans, Hans Blond.
+
+Er arbeitet in der IT des Landesamtes für Verfassungsschutz. Seine Chefin
+*Sylvia Berlin* hat ihn zu einem [[Meeting->Holger]] gerufen.
+~~~
+
+Hier habe ich im Header der Start-Passage erst einmal das Layout der Seiten definiert. Der Text sollte weiß auf schwarz erscheinen und alle Links in einem leuchtenden Orange erstrahlen. Und *last but not least* sollte eine `Fork` (dazu weiter unten mehr) ohne Trennstrich angezeigt werden.
+
+Dann habe ich noch die beiden Variablen `has_stick` und `hide_stick` mit `false` vorbelegt.
+
+Die darauf folgenden in `[note] … [continued]` geklammerten Zeilen sind »Regieanweisungen« für den Port nach Ren'Py, die von Twine ignoriert werden. Und da Chapbook -- im Gegensatz zu den Storyformaten [Harlowe](http://twine2.neocities.org/) oder [SugarCube](https://www.motoslave.net/sugarcube/2/docs/) sehr intelligent und intuitiv mit *White Spaces* umgeht, braucht man sich hier auch keine Sorgen zu machen: Chapbook ignoriert die Zeilen einfach und legt auch keine Leerzeilen an.
+
+Wie man Bilder einbettet und Links anlegt, hatte ich schon bei meinen Ausflügen mit Alice in den Wunderland-Kosmos erläutert. Und das Chapbook fast alle Markdown-Auszeichnungen versteht, sollte Euch auch schon bekannt sein.
+
+Daher komme ich nun zu dem Komplex `Holger`, dessen Passagen ich der Übersicht wegen in einer Datei (`holger.twee`) zusammengefaßt habe:
+
+~~~twee
+:: Holger
+has_stick: true
+--
+[note]
+Auftritt Holger Kern von rechts.
+Hans neutral
+[continued]
+
+{embed image: "images/buero_kern.png",  alt: "Hans und Holger"}
+
+Auf dem Weg zum Büro seiner Chefin lief Hans sein alter Freund und Kollege
+*Holger Kern* über den Weg.
+{reveal link: "Er war ganz aufgeregt.", passage: "Holger 1"}
+
+:: Holger 1
+
+<p>
+
+Holger: »Gut, daß ich Dich treffe. {reveal link: "Du mußt unbedingt diesen
+Datenstick für mich aufheben.«", passage: "Holger 2"}
+
+:: Holger 2
+
+Du mußt unbedingt diesen Datenstick für mich aufheben.«
+
+»Er enthält geheime Daten über eine
+{reveal link: "Verschwörung gegen den Senat.«", passage: "Holger 3"}
+
+:: Holger 3
+
+Verschwörung gegen den Senat.«
+
+»Du mußt ihn gut verstecken und darfst ihn niemanden geben,
+[[schon gar nicht Sylvia->Holger 4]].«
+
+:: Holger 4
+
+{embed image: "images/buero_kern_2.png",  alt: "Hans und Holger"}
+
+Er drückte Hans den Stick in die Hand. Doch was sollte dieser tun?
+
+> [[Zurück in sein Büro und den Stick dort verstecken und damit eine
+Verspätung mit seinem Meeting riskieren?->Hide Stick]]
+> [[Ihn einfach in die Tasche stecken und hoffen, daß alles gut geht?->Meeting]]
+~~~
+
+Wie man mit dem Insert `reveal link` umgeht, hatte ich ebenfalls [hier schon behandelt](https://kantel.github.io/posts/2023091101_alice_humpel_pumpel/). Im Zusammenhang mit dem geplanten Ren'Py-Port ist hier von Bedeutung, daß die Dialoge in Ren'Py oftmals per Mausklick weitergehen. Das kann man in Chapbook mit `{reveal link: link, passage: Passagenname}` sehr gut nachbauen.
+
+Hier mußte ich in Zeile 17 mit `<p>` doch einen Trick einbauen, um Twine zu zwingen, die neue Passage `Holger 1` in einem neuen Absatz anzuzeigen, denn sonst hätte Twine sie direkt an die vorherige Passage angehängt.
+
+Ganz neu sind die `Forks` in den Zeilen 42 bis 44. Sie sind Links, die abgesetzt vom übrigen Text jeweils auf neue Passagen verweisen und damit äquivalent zu den `Menues` in Ren'Py und sie können ähnlich eingesetzt werden. Per Default werden die einzelnen Forks mit einem horizontalen Strich getrennt, die Anweisung `config.style.page.fork.divider.style: "none"` in der Start-Passage verhindert dies[^1].
+
+[^1]: Da Forks mit einem `>` eingeleitet werden, beißt sich dieses mit der Markdown-Auszeichnung für *Blockquotes*. Daher müssen diese in Chapbook mit der HTML-Anweisung `<blockquote> … </blockuote>` geklammert werden.
+
+Die Forks verweisen einmal auf die Passage `Hide Stick` (`hide_stick.twee`) und auf die Passage `Meeting` (`meeting.twee`). In der ersten wird einfach der Stick versteckt und die Variable `hide_stick` auf `true` gesetzt:
+
+~~~twee
+:: Hide Stick
+hide_stick: true
+--
+[note]
+Auftritt Hans Blond von links.
+Hans neutral
+[continued]
+
+{embed image: "images/buero_hans_1a.png",  alt: "Hans Blond im Büro"}
+
+Hans versteckte den Stick in seinem Büro unter einer Kaffeetasse. Dann machte
+er sich schleunigst auf zu seinem [[Treffen mit seiner Chefin->Meeting]].
+~~~
+
+Dann läuft auch diese Passage mit `Meeting` zusammen. Das ist die komplexestes Passage dieses Prototypen. Sie sieht so aus:
+
+~~~twee
+:: Meeting
+
+{embed image: "images/buero_sylvia_1.png",  alt: "Sylvia Berlin im Büro"}
+
+Klopf, Klopf …
+
+[note]
+Auftritt Sylvia Berlin von rechts.
+[continued]
+
+[if has_stick && !hide_stick]
+
+{reveal link: "Sylvia: »Herein!«", passage: "Wachschutz 1"}
+
+[else]
+
+Sylvia: »[[Herein!->Meeting 2]]«
+
+:: Meeting 2
+
+[note]
+Auftritt Hans Blond von links.
+Sylvia talking.
+[continued]
+
+{embed image: "images/buero_sylvia_2.png",
+alt: "Sylvia Berlin und Hans Blond im Büro"}
+
+Sylvia: »Mein lieber Herr Blond, die Bürgermeisterin hat mich gebeten, ihr für
+die anstehende Wahlwiederholung meinen besten IT-Spezialisten zur Verfügung zu
+stellen. Und da habe ich an Sie gedacht. Sie können morgen gleich anfangen.«
+
+Hans war sofort klar: Damit wollte Sylvia ihn als Konkurrenten um die
+Referatsleitung kaltstellen. Doch was sollte er tun?
+
+> [[Wütend den Raum verlassen und die Tür hinter sich zuknallen?->Wut]]
+> [[Gute Miene zum bösen Spiel machen und der Versetzung zustimmen?
+->Versetzung zugestimmt]]
+~~~
+
+Sie beginnt mit einem Teil, der nur aufgerufen wird, wenn die Variablen `has_stick == true` **und** `hide_stick == false` sind[^2]. Wenn dies zutrifft, läuft die Story über die Passage `Wachschutz 1` in das erste `Bad Ending`.
+
+[^2]: Das hätte man auch mit einer Variable ausdrücken können, aber ich wollte ausprobieren, wie das `[if]`-Statement mit aus *und/oder* oder *not* zusammengesetzten boolschen Ausdrücken zurechtkommt. 
+
+Ansonsten geht es nach dem `[else]` weiter und mündet in eine zweite Fork.
+
+Doch zuerst einmal via `wachschutz.twee` zum ersten `Bad Ending` (`bad_ending_1.twee`):
+
+~~~twee
+:: Wachschutz 1
+
+Kaum hatte Hans den Raum betreten, heulten sämtliche Alarmsysteme des Amtes auf.
+Der Stick ihn seiner Hosentasche war wohl mit einem RFID ausgestattet und hatte
+den Alarm ausgelöst.
+
+Der Wachschutz betrat den Raum und [[führte Hans ab->Bad Ending 1]].
+~~~
+
+~~~twee
+:: Bad Ending 1
+
+Bad Ending 1
+
+{restart link, label: "Noch einmal versuchen?"}
+~~~
+
+Das hätte auch in eine Twee-Datei gepaßt, aber da ich in einer eventuellen, zukünftigen Fassung die Konfrontation mit dem Wachschutz noch ein wenig ausbauen und dramatisieren möchte, habe ich das vorsorglich getrennt.
+
+Die Fork im `[else]`-Teil der Passage mündet entweder über die Passage `Wut` in das zweite `Bad Ending`[^3] (`bad_ending_2.twee`) dieser kurzen Geschichte
+
+[^3]: Dramaturgisch ist es eigentlich ungeschickt, zwei *Bad Endings* so kurz hintereinander in eine Geschichte einzubauen, aber der Prototyp ist ja ebenfalls nur sehr kurz und irgendwie wollte ich zwei »böse Enden« einbauen.
+
+~~~twee
+:: Wut
+
+[note]
+Abgang Hans nach links
+[continued]
+
+Hans [[verließ wütend den Raum->Bad Ending 2]] und schlug die Tür mit einem
+lauten Knall hinter sich zu.
+
+:: Bad Ending 2
+
+[note]
+Auftritt Hans von rechts.
+Reginald Hans traurig
+[continued]
+
+{embed image: "images/buero_hans_2.png", alt: "Hans traurig"}
+
+Kaum war Hans wieder in seinem Büro, als er auch schon eine Email bekam. Darin
+stand in dürren Worten, daß sein Antrag auf Beförderung abgelehnt sei.
+
+Tja Hans, zu hoch gepokert.
+
+Das ist das viel zu frühe Ende!
+
+> {restart link, label: "Noch einmal versuchen?"}
+~~~
+
+während über `Versetzung zugestimmt` (`versetzung_zugestimmt.twee`) die Geschichte in »normalen« Bahnen fortgeführt wird:
+
+~~~twee
+:: Versetzung zugestimmt
+
+Hans: »Dann werde ich mal [[mein Büro räumen->Büro 2]].«
+
+:: Büro 2
+
+[note]
+Auftritt Hans Blond von rechts.
+Hans Flirting
+[continued]
+
+{embed image: "images/buero_hans_2a.png", alt: "Hans flirting"}
+
+Hans (zu sich): »Sylvia ist zwar ein intrigantes Biest, aber süß
+ist sie dennoch.« ❤️
+
+Hans beschloß, Feierband zu machen und [[nach Hause zu gehen->Im Park 1]].
+~~~
+
+Mit den beiden Passagen `Im Park 1` (`im_park.twee`) und `Hans Home 1` (`hans_home_1.twee`) erreicht die Geschichte ihr vorläufiges Ende. Diese Passagem enthalten keine neuen Sprachelemente mehr:
+
+~~~twee
+:: Im Park 1
+[note]
+Auftritt Felix Leiter von rechts.
+Auftritt Hans Blond von links.
+Felix Leiter neutral
+Reginald neutral
+[continued]
+
+{embed image: "images/im_park_1.jpg", alt: "Im Park"}
+
+Der Weg nach Hause führte Hans wie jeden Abend durch einen kleinen Park. Dort
+fiel ihm ein älterer Mann auf, der ihn zu beobachten schien. Er mußte ein
+Kollege sein, denn er trug ebenfalls ein Shirt mit dem Abzeichen des Amtes.
+In der Nähe einer zufällig dort stehenden Baumaschine sprach ihn der Fremde an:
+
+[note]
+Felix Leiter talking
+[cont]
+
+»Junger Mann, was immer in der nächsten Zeit passieren mag, gehen sie
+in den Untergrund!«
+
+[note]
+Abgang Felix Leiter nach links
+Hans Blond konfus
+[cont]
+
+Dann verschwand er wieder und lies Hans verwirrt zurück.
+
+Hans setzte seinen Weg [[nach Hause->Hans Home 1]] fort.
+~~~
+
+~~~twee
+:: Hans Home 1
+
+Zu Hause angekommen mixte sich Hans erst einmal einen Drink um die Ereignisse
+des Tages zu verarbeiten.
+
+… Fortsetzung folgt.
+~~~
+
+Das war es erst einmal. Als nächstes werde ich diesen Twine/Chapbook-Prototypen nach Ren'Py portieren und das Ergebnis ebenfalls auf diesen Seiten präsentieren.
+
+Wie immer habe ich die Geschichte einmal auf Itch.io [hochgeladen](https://kantel.itch.io/berlin-attack), damit Ihr sie dort spielen, und zum anderen gibt es den [Quellcode](https://github.com/kantel/twine-entdecken/tree/master/tweego/berlinattackchapbook/src) und die [Bilder](https://github.com/kantel/twine-entdecken/tree/master/tweego/berlinattackchapbook/images) auch in meinem GitHub-Repositorium, damit Ihr alles nachvollziehen und -programmieren könnt. Habt Spaß damit!
