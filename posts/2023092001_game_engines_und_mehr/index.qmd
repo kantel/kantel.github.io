@@ -1,0 +1,45 @@
+---
+title: "Zurück zum Hacken mit Code: microStudio, Python, Pygame und/oder Py5"
+author: "Jörg Kantel"
+date: "2023-09-20 17:25:00"
+categories: [Spieleprogrammierung, microStudio, Pygame, Py5, Simulation]
+image: "images/microstudiofirststeps.jpg"
+---
+
+[![](images/microstudiofirststeps-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53199499558/)
+
+Wie [gestern schon angedeutet](https://kantel.github.io/posts/2023091901_update_game_engines/) möchte ich für ein paar Tage eine Pause bei meinem [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html)- und [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html)-Projekt einlegen. Denn die Menge der Tutorials, die ich in den letzten Tagen herausgehauen habe, hat mich ein wenig ausgelaugt, und so möchte ich erst mal etwas anderes anstellen, um danach mit frischer Kraft mich wieder meinen Twine-Tutorials zu widmen.
+
+Angestachelt dazu hat mich auch das [Unity-Desaster](https://kantel.github.io/posts/2023091502_renpy_statt_unity/), das in den letzten Tagen durch die Spieleentwicklerszene geisterte. Die Suche nach freien Alternativen zu [Unity](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html) hat auch mich erfaßt, doch leider werde ich immer noch nicht mit dem als Top-Alternative gehandeltem [Godot](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/godot.html) wirklich warm. Das liegt auch daran, daß mein räumliches Vorstellungsvermögen anscheinend begrenzt ist und ich Schwierigkeiten habe, ein Spiel in 3D zu konzipieren. Und für 2D-Spiele scheint mir Godot doch ein wenig *Overkill* zu sein.
+
+Doch in meinen Kommentaren erinnerte mich ein Leser an [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html). Diese freie (MIT-Lizenz) 2D-Game-Engine hatte ich im Mai letzten Jahres schon einmal [im Schockwellenreiter vorgestellt](http://blog.schockwellenreiter.de/2022/05/2022053001.html) und wollte sie damals auch unbedingt testen. Doch leider ist dies im Alltagsgeschäft untergegangen und in Vergessenheit geraten.
+
+Nun habe ich die Gelegenheit am Schopf gefaßt und das Programm wieder hervorgekramt. Per Default wird die Engine mit [microScript](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html) programmiert, einer [Lua](http://cognitiones.kantel-chaos-team.de/programmierung/lua.html)-ähnlichen Programmiersprache, die nach JavaScript übersetzt. Aber auch die Programmierung in Lua selber, JavaScript direkt oder gar Python (genauer: [Brython](https://brython.info/)) ist möglich[^1].
+
+[^1]: Auch wenn ich testweise mal mit Brython und microStudio herumegespielt habe (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53199499558/)), werde ich bei weiteren Versuchen mich erst einmal auf microScript beschränken. Die Dokumentation für Brython in microStudio scheint mir doch noch zu spärlich. Aber sollte ich mit microStudio und microScript vertrauter werden, werde ich mich eventuell doch an die Python-Implementierung wagen.
+
+microStudio ist so etwas wie die freie Fantasykonsole [TIC-80](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html) (oder das proprietäre Pico-8), nur ohne deren gewollten, konzeptionellen, nostalgischen Einschränkungen. Und ich würde -- nicht nur wegen der Beschränkung auf 2D -- die Engine nicht unbedingt als Unity-Alternative sehen, sondern eher als freie und plattformübergreifende (Windows, macOS, Linux, Raspberry Pi) Alternative zum in der Indy-Szene immer noch beliebten, aber proprietären [Game Maker](https://de.wikipedia.org/wiki/Game_Maker) (und dem in der aktuellen Version nur noch unter Windows lauffähigen [GameMaker: Studio](https://de.wikipedia.org/wiki/GameMaker:_Studio)).
+
+Das Projekt ist noch recht jung und so ist auch die Literatur und die Anzahl der (Video-) Tutorials etwas knapp. Aber ein paar nette Tutorials habe ich doch für mich und Euch zusammengesucht (sie behandeln als darunterliegende Programmiersprache alle microScript):
+
+- Die [Tutorials von mrLman](https://sites.google.com/ed.act.edu.au/games-programming/game-elements/) werden sogar auf der microStudio-Homepage [empfohlen](https://microstudio.dev/community/resources/game-programming-tutorials-by-mrlman/52/).
+- [Basics of the microScript language](https://prog.world/basics-of-the-microscript-language/) ist ein sehr ausführliches und (ich glaube) vollständiges Tutorial zu microScript.
+- [Design, Code, Play](https://www.youtube.com/playlist?list=PLBe3We7ebJUQgy3ZRJfIcc2LH4sVOjPgg) ist eine Playlist der *Makercademy* mit drei Videos zwischen je ein- und zweistündiger Spieldauer.
+- Und *last but not least* hat der Kanal von *Retro Nick*, der sich sonst eher mit BASIC und (Free-) Pascal beschäftigt, auch einige Videos zu microStudio veröffentlicht (leider keine aussagekräftige Playlist). Gefunden habe ich dort:
+   - [microStudio - Easy Game Development](https://www.youtube.com/watch?v=1-1qmtFKudI) (25 Minuten)
+   - [microStudio - My Space Invaders](https://www.youtube.com/watch?v=4wM3YBtAYp8) (Fünf Minuten)
+   - [microStudio 2D Arrays And Other Problems](https://www.youtube.com/watch?v=isukdmx0fOk) (Zwölf Minuten)
+
+Schaun wir mal, was ich mit diesen Informationen anstellen werde …
+
+<div style="float: right; margin-left: 12px; margin-top: 6px;">[![](images/cover_bigbookpython_thumb.jpg)](https://inventwithpython.com/bigbookpython/)&nbsp;[![](images/cover_recursion_thumb.jpg)](https://inventwithpython.com/recursion/)</div>
+
+**Doch nun noch eine zweite Baustelle**: Eher zufällig hat mir YouTube das Video »[Forest fire simulation tutorial with PyGame](https://www.youtube.com/watch?v=o5ALfgFhYkQ)« von *Steve's Coding Lab* vorgeschlagen[^2]. Der hat in *Al Sweigarts* »[The Big Book of Small Python Projects](https://inventwithpython.com/bigbookpython/)« gestöbert und die dort behandelte [Waldbrand-Simulation](https://inventwithpython.com/bigbookpython/project29.html) nach [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) übertragen und die Auswertung mit der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) vorgenommen. Das hatte ich auch schon einmal im *Schockwellenreiter* [vorgestellt](http://blog.schockwellenreiter.de/2022/08/2022082901.html) und vor Jahren eine [graphische Version](http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/12zellautom/#der-waldbrand-simulator) auch schon einmal in [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) implementiert. Jetzt hätte ich große Lust, die Simulation auch einmal entweder in Pygame oder -- noch abgefahrener -- in [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) zu programmieren (im letzten Fall natürlich ebenfalls unter Einbeziehung der Matplotlib).
+
+[^2]: Das Video ist Teil der Playlist »[Python -- Intermediate](https://www.youtube.com/playlist?list=PLnvbxuUibBuV1CP-DKKKDCy0yPau7re-7)«. Daraus ist im Zusammenhang mit diesem Beitrag auch noch das [Video zu Conway's Game of Life](https://www.youtube.com/watch?v=M6x6m3c7khs) (15 Minuten) interessant.
+
+Das muß doch irgendwie zu machen sein. Auf jeden Fall habe ich mir schon einmal die Bücher von *Al Sweigart* (neben dem »Big Book of Small Python Projects« auch das »[Recursive Book of Recursion](https://inventwithpython.com/recursion/)« -- beide Bücher könnt Ihr online für umme lesen) aus meinen Bücherregalen [wieder hervorgekramt](http://blog.schockwellenreiter.de/2022/08/2022083102.html) und hoffe, daraus weitere Inspirationen zu ziehen.
+
+Abschließen möchte ich diesen Beitrag mit den beiden je etwa halbstündigen Videos »[Random Walk in 1D with Python](https://www.youtube.com/watch?v=dTX5nOoIXI0)« und »[Random Walk in 2D with Python](https://www.youtube.com/watch?v=tJ4eng0EnyE)« von *Abhijit Kar Gupta*. Auch hier juckt es mich in den Fingern, eine (Re-) Implementierung in Py5 oder in [Pythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) (die habe ich in den letzten Wochen ebenfalls sträflich vernachlässigt) zu versuchen.
+
+Ihr seht, neben Twine und Ren'Py habe ich noch etliche andere Baustellen zu bearbeiten. Ich habe daher zu tun. *Still digging!*
