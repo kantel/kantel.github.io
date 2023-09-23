@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Waldbrandsimulation in Python (Py5) – Stage&nbsp;1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Waldbrandsimulation in Python (Py5) – Stage&nbsp;1</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Simulation</div>
+    <div class="quarto-category">Py5</div>
+    <div class="quarto-category">Processing</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">23. September 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53206780452/"><img src="images/forestfiresimstage1-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich habe es getan: Ich habe mir das <a href="https://kantel.github.io/posts/2023092001_game_engines_und_mehr/">hier vorgestellte</a> Waldbrand-Simulation von <em>Al Sweigart</em> und meine eigene, in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> implementierte <a href="http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/12zellautom/#der-waldbrand-simulator">Version</a> geschnappt und daraus eine – wie ich hoffe – verbesserte Fassung in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> programmiert.</p>
+<p>Zwei grundsätzliche Änderungen gegenüber dem Programm von <em>Al Sweigart</em> habe ich vorgenommen: Zum einen habe ich die Randbedingungen vereinfacht, indem ich die Felder an den Rändern grundsätzlich leer gelassen habe (der Wald hört also nicht an den Rändern, sondern ein Zeile oder Spalte davor auf). Das ändert nichts an dem Verhalten der Simulation (der Wald ist einfach nur je eine Zeile oben und unten und je eine Spalte rechts und links kleiner), erspart der Programmiererin oder dem Programmierer aber eine Menge Arbeit bei der Behandlung der Ränder: Wenn die Abfragen immer nur von <code>range(1, N_ROWS-1)</code> respektive von <code>range(1, N_COLS-1)</code> können sie nie die Dimensionen einer zweidimendionalen Liste sprengen.</p>
+<p>Die zweite Änderung bedarf schon einer größeren Diskussion: Statt der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/softcomputing/moorenb.html">Moore-Nachbarschaft</a>, die von <em>Al Sweigart</em> verwendet wurde und bei der alle acht Nachbarfelder einer Zelle abgefragt werden, habe ich die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/softcomputing/neumannnb.html">Von-Neumann-Nachbarschaft</a> verwendet, bei der nur die vier Zellen, die eine Kante mit der Basisfläche gemeinsam haben, als Nachbarn berücksichtigt werden. Diese Nachbarschaft habe ich aus pragmatischen Gründen gewählt, da die Abfrage von vier statt von acht Nachbarn den Code halbiert. Und ich denke, daß man die Wahl damit begründen kann, daß die diagonal entfernten Felder, die nur eine Ecke mit der Basiszelle gemeinsam haben, weiter entfernt von der Basiszelle liegen und daher weniger der Brandgefahr ausgesetzt sind. Ich befinde mich da in guter Gesellschaft, da auch in der einschlägigen Literatur fast immer die <em>Von-Neumann-Nachbarschaft</em> Verwendung findet<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Das Modell hat in seiner einfachsten Form drei Paramter, an denen geschraubt werden kann und die Einfluß auf den Verlaut der Simulation haben: Es sind mit <code>a</code> die Wahrscheinlichkeit, mit der ein einem Feld ein Baum (nach-) wächst, <code>b</code> die Wahrscheinlichkeit, mit der ein Baum (zum Beispiel durch Blitzeinschlag) Feuer fängt und <code>s</code> die Wahrscheinlichkeit, mit welcher Dichte beim Start das Feld mit Bäumen besetzt ist. Sowohl bei Sweigart wie auch bei Scholz finden sich weiter Ideen, wie die Siumlation erweitert und ausgebaut werden kann.</p>
+<p>Doch jetzt erst einmal das komplette Programm, damit Ihr die Simulation nachlesen, nachprogrammieren oder mit eigenen Ideen erweitern könnt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co">## Forest Fire Simulation</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">from</span> random <span class="im">import</span> randint, uniform</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>TS <span class="op">=</span> <span class="dv">16</span>       <span class="co"># Tilesize</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>N_ROWS, N_COLS <span class="op">=</span> <span class="dv">40</span>, <span class="dv">30</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>PLOT_WIDTH <span class="op">=</span> <span class="dv">720</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>PLOT_HEIGHT <span class="op">=</span> N_COLS<span class="op">*</span>TS</span>
+<span id="cb1-8"><a href="#cb1-8"></a>SCREEN_WIDTH, SCREEN_HEIGHT <span class="op">=</span> N_ROWS<span class="op">*</span>TS, N_COLS<span class="op">*</span>TS   <span class="co"># 640x480 Pixel</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a>empty <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>tree <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>burning <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>w <span class="op">=</span> h <span class="op">=</span> TS</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a>a <span class="op">=</span> <span class="fl">4.0</span>        <span class="co"># Wachstumswahrscheinlichkeit in Prozent</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>b <span class="op">=</span> <span class="fl">0.2</span>        <span class="co"># Wahrscheinlichkeit Blitzeinschlag in Prozent</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>s <span class="op">=</span> <span class="dv">50</span>         <span class="co"># Startbepflanzung in Prozent</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a>grid <span class="op">=</span> []</span>
+<span id="cb1-20"><a href="#cb1-20"></a>newgrid <span class="op">=</span> []</span>
+<span id="cb1-21"><a href="#cb1-21"></a></span>
+<span id="cb1-22"><a href="#cb1-22"></a>trees <span class="op">=</span> []</span>
+<span id="cb1-23"><a href="#cb1-23"></a>fires <span class="op">=</span> []</span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="kw">def</span> setup():</span>
+<span id="cb1-26"><a href="#cb1-26"></a>    <span class="kw">global</span> tree_image, fire_image, no_trees, no_fire</span>
+<span id="cb1-27"><a href="#cb1-27"></a>    size(SCREEN_WIDTH, SCREEN_HEIGHT)</span>
+<span id="cb1-28"><a href="#cb1-28"></a>    window_title(<span class="st">"🌲 Forest Fire Simulation 🔥"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29"></a>    window_move(<span class="dv">1300</span>, <span class="dv">30</span>)</span>
+<span id="cb1-30"><a href="#cb1-30"></a>    tree_image <span class="op">=</span> load_image(<span class="st">"data/tree.png"</span>)</span>
+<span id="cb1-31"><a href="#cb1-31"></a>    fire_image <span class="op">=</span> load_image(<span class="st">"data/fire.png"</span>)</span>
+<span id="cb1-32"><a href="#cb1-32"></a>    no_trees <span class="op">=</span> no_fire <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>    create_new_forest()</span>
+<span id="cb1-34"><a href="#cb1-34"></a>    newgrid[:] <span class="op">=</span> grid[:]</span>
+<span id="cb1-35"><a href="#cb1-35"></a>    frame_rate(<span class="dv">1</span>)</span>
+<span id="cb1-36"><a href="#cb1-36"></a>    <span class="bu">print</span>(<span class="st">"Start: Bäume = "</span>, no_trees, <span class="st">" Brände = "</span>, no_fire)</span>
+<span id="cb1-37"><a href="#cb1-37"></a>    trees.append(no_trees)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>    fires.append(no_fire)</span>
+<span id="cb1-39"><a href="#cb1-39"></a>    </span>
+<span id="cb1-40"><a href="#cb1-40"></a><span class="kw">def</span> draw():</span>
+<span id="cb1-41"><a href="#cb1-41"></a>    background(<span class="dv">210</span>, <span class="dv">180</span>, <span class="dv">140</span>)</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    <span class="bu">print</span>(<span class="st">"Runde: "</span>, frame_count, <span class="st">" Bäume = "</span>, no_trees, <span class="st">" Brände = "</span>, no_fire)</span>
+<span id="cb1-43"><a href="#cb1-43"></a>    display_plot()</span>
+<span id="cb1-44"><a href="#cb1-44"></a>    trees.append(no_trees)</span>
+<span id="cb1-45"><a href="#cb1-45"></a>    fires.append(no_fire)</span>
+<span id="cb1-46"><a href="#cb1-46"></a>    display_forest()</span>
+<span id="cb1-47"><a href="#cb1-47"></a>    calc_next()</span>
+<span id="cb1-48"><a href="#cb1-48"></a>    <span class="cf">if</span> frame_count <span class="op">==</span> <span class="dv">30</span>:</span>
+<span id="cb1-49"><a href="#cb1-49"></a>        no_loop()</span>
+<span id="cb1-50"><a href="#cb1-50"></a></span>
+<span id="cb1-51"><a href="#cb1-51"></a><span class="kw">def</span> display_plot():</span>
+<span id="cb1-52"><a href="#cb1-52"></a>    <span class="cf">pass</span></span>
+<span id="cb1-53"><a href="#cb1-53"></a></span>
+<span id="cb1-54"><a href="#cb1-54"></a><span class="kw">def</span> create_new_forest():</span>
+<span id="cb1-55"><a href="#cb1-55"></a>    <span class="kw">global</span> no_trees</span>
+<span id="cb1-56"><a href="#cb1-56"></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(N_ROWS):</span>
+<span id="cb1-57"><a href="#cb1-57"></a>        grid.append([])</span>
+<span id="cb1-58"><a href="#cb1-58"></a>        newgrid.append([])</span>
+<span id="cb1-59"><a href="#cb1-59"></a>        <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(N_COLS):</span>
+<span id="cb1-60"><a href="#cb1-60"></a>            <span class="co"># Erstbepflanzung Wald</span></span>
+<span id="cb1-61"><a href="#cb1-61"></a>            <span class="cf">if</span> ((x <span class="op">&gt;</span> <span class="dv">0</span>) <span class="kw">and</span> (y <span class="op">&gt;</span> <span class="dv">0</span>) <span class="kw">and</span> (x <span class="op">&lt;</span> N_ROWS <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb1-62"><a href="#cb1-62"></a>                <span class="kw">and</span> (y <span class="op">&lt;</span> N_COLS <span class="op">-</span> <span class="dv">1</span>) <span class="kw">and</span> randint(<span class="dv">0</span>, <span class="dv">100</span>) <span class="op">&lt;=</span> s):</span>
+<span id="cb1-63"><a href="#cb1-63"></a>                grid[x].append(tree)</span>
+<span id="cb1-64"><a href="#cb1-64"></a>                no_trees <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-65"><a href="#cb1-65"></a>            <span class="cf">else</span>:</span>
+<span id="cb1-66"><a href="#cb1-66"></a>                <span class="co"># Ränder bleiben leer</span></span>
+<span id="cb1-67"><a href="#cb1-67"></a>                grid[x].append(empty)</span>
+<span id="cb1-68"><a href="#cb1-68"></a></span>
+<span id="cb1-69"><a href="#cb1-69"></a><span class="kw">def</span> display_forest():</span>
+<span id="cb1-70"><a href="#cb1-70"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N_ROWS):</span>
+<span id="cb1-71"><a href="#cb1-71"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(N_COLS):</span>
+<span id="cb1-72"><a href="#cb1-72"></a>            <span class="cf">if</span> grid[i][j] <span class="op">==</span> tree:</span>
+<span id="cb1-73"><a href="#cb1-73"></a>                image(tree_image, i<span class="op">*</span>w, j<span class="op">*</span>h, w, h)</span>
+<span id="cb1-74"><a href="#cb1-74"></a>            <span class="cf">elif</span> grid[i][j] <span class="op">==</span> burning:</span>
+<span id="cb1-75"><a href="#cb1-75"></a>                image(fire_image, i<span class="op">*</span>w, j<span class="op">*</span>h, w, h)</span>
+<span id="cb1-76"><a href="#cb1-76"></a></span>
+<span id="cb1-77"><a href="#cb1-77"></a><span class="kw">def</span> calc_next():</span>
+<span id="cb1-78"><a href="#cb1-78"></a>    <span class="kw">global</span> no_trees, no_fire</span>
+<span id="cb1-79"><a href="#cb1-79"></a>    newgrid[:] <span class="op">=</span> grid[:]</span>
+<span id="cb1-80"><a href="#cb1-80"></a>    <span class="co"># Next Generation, Randfelder ignorieren</span></span>
+<span id="cb1-81"><a href="#cb1-81"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N_ROWS <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb1-82"><a href="#cb1-82"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N_COLS <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb1-83"><a href="#cb1-83"></a>            <span class="cf">if</span> grid[i][j] <span class="op">==</span> burning:</span>
+<span id="cb1-84"><a href="#cb1-84"></a>                newgrid[i][j] <span class="op">=</span> empty</span>
+<span id="cb1-85"><a href="#cb1-85"></a>                no_fire <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb1-86"><a href="#cb1-86"></a>                <span class="co"># Nachbarbaum anzünden (von-Neumann-Nachbarschaft)</span></span>
+<span id="cb1-87"><a href="#cb1-87"></a>                <span class="cf">if</span> grid[i<span class="op">-</span><span class="dv">1</span>][j] <span class="op">==</span> tree:</span>
+<span id="cb1-88"><a href="#cb1-88"></a>                    newgrid[i<span class="op">-</span><span class="dv">1</span>][j] <span class="op">=</span> burning</span>
+<span id="cb1-89"><a href="#cb1-89"></a>                    no_trees <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb1-90"><a href="#cb1-90"></a>                    no_fire <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-91"><a href="#cb1-91"></a>                <span class="cf">if</span> grid[i][j<span class="op">-</span><span class="dv">1</span>] <span class="op">==</span> tree:</span>
+<span id="cb1-92"><a href="#cb1-92"></a>                    newgrid[i][j<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> burning</span>
+<span id="cb1-93"><a href="#cb1-93"></a>                    no_trees <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb1-94"><a href="#cb1-94"></a>                    no_fire <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-95"><a href="#cb1-95"></a>                <span class="cf">if</span> grid[i][j<span class="op">+</span><span class="dv">1</span>] <span class="op">==</span> tree:</span>
+<span id="cb1-96"><a href="#cb1-96"></a>                    newgrid[i][j<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> burning</span>
+<span id="cb1-97"><a href="#cb1-97"></a>                    no_trees <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb1-98"><a href="#cb1-98"></a>                    no_fire <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-99"><a href="#cb1-99"></a>                <span class="cf">if</span> grid[i<span class="op">+</span><span class="dv">1</span>][j] <span class="op">==</span> tree:</span>
+<span id="cb1-100"><a href="#cb1-100"></a>                    newgrid[i<span class="op">+</span><span class="dv">1</span>][j] <span class="op">=</span> burning</span>
+<span id="cb1-101"><a href="#cb1-101"></a>                    no_trees <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb1-102"><a href="#cb1-102"></a>                    no_fire <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-103"><a href="#cb1-103"></a>            <span class="co">## Neuer Baum?</span></span>
+<span id="cb1-104"><a href="#cb1-104"></a>            <span class="cf">elif</span> grid[i][j] <span class="op">==</span> empty:</span>
+<span id="cb1-105"><a href="#cb1-105"></a>                <span class="cf">if</span> uniform(<span class="dv">0</span>, <span class="dv">100</span>) <span class="op">&lt;</span> a:</span>
+<span id="cb1-106"><a href="#cb1-106"></a>                    newgrid[i][j] <span class="op">=</span> tree</span>
+<span id="cb1-107"><a href="#cb1-107"></a>                    no_trees <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-108"><a href="#cb1-108"></a>            <span class="co"># Schlägt ein Blitz ein?</span></span>
+<span id="cb1-109"><a href="#cb1-109"></a>            <span class="cf">if</span> grid[i][j] <span class="op">==</span> tree:</span>
+<span id="cb1-110"><a href="#cb1-110"></a>                <span class="cf">if</span> uniform(<span class="dv">0</span>, <span class="dv">100</span>) <span class="op">&lt;</span> b:</span>
+<span id="cb1-111"><a href="#cb1-111"></a>                    newgrid[i][j] <span class="op">=</span> burning</span>
+<span id="cb1-112"><a href="#cb1-112"></a>                    no_fire <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-113"><a href="#cb1-113"></a>    grid[:] <span class="op">=</span> newgrid[:]</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In dem Skript sind schon Slots offengehalten, um einen Plot des Simulationsverlaufes zu erstellen. Leider weigert sich die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> hartnäckig, mit Py5 zusammenzuarbeiten. Daher ist meine Idee, <a href="http://blog.schockwellenreiter.de/2021/03/2021031901.html">FPlotter</a> (<a href="http://blog.schockwellenreiter.de/2021/03/2021033002.html">2</a>), meine in Processing.py implementierte »Matplotlib für Arme« wieder zu reaktivieren und in dieser Simulation einzusetzen. Das wird vermutlich mein nächster Schritt sein.</p>
+<p>Ansionsten gibt es den <a href="https://github.com/kantel/py5/tree/main/forestfire">Quellcode</a> wie immer in meinem GitHub-Repositorium und die <a href="https://github.com/kantel/py5/tree/main/forestfire/data">Bilder</a> habe ich den freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) <a href="https://twemoji.twitter.com/">Twemojis</a> von Twitter entnommen und mit dem Graphikprogramm meines Vertrauens auf 16x16 Pixel verkleinert.</p>
+<section id="verwendete-literatur" class="level3">
+<h3 class="anchored" data-anchor-id="verwendete-literatur">Verwendete Literatur:</h3>
+<ul>
+<li>Heinz-Otto Peitgens, Hartmut Jürgens und Dietmar Saupe: <em>Bausteine des Chaos – Fraktale</em>, Berlin-Heidelberg-Stuttgart (Springer, Klett-Cotta) 1992</li>
+<li>Daniel Scholz: <em>Pixelspiele – Modellieren und Simulieren mit zellulären Automaten</em>, Berlin-Heidelberg (Springer) 2014</li>
+<li>Al Sweigart: <em><a href="https://inventwithpython.com/bigbookpython/">The Big Book of Small Python Projects</a> – 81 Easy Practice Programs</em>, San Francisco (No Starch Press) 2021</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Vergleiche Peitgen, Jürgens, Saupe: <em>Bausteine des Chaos – Fraktale</em>, Berlin-Heidelberg-Stuttgart (Klett-Cotta/Springer) 1992, Seiten 424ff. oder Scholz: <em>Pixelspiele</em>, Berlin-Heidelberg (Springer) 2014, Seiten 19ff.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

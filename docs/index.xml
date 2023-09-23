@@ -10,7 +10,568 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Fri, 22 Sep 2023 18:35:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 23 Sep 2023 17:40:00 GMT</lastBuildDate>
+<item>
+  <title>Waldbrandsimulation in Python (Py5) – Stage 1</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023092301_forestfire_sim_1/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53206780452/"><img src="https://kantel.github.io/posts/2023092301_forestfire_sim_1/images/forestfiresimstage1-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich habe es getan: Ich habe mir das <a href="https://kantel.github.io/posts/2023092001_game_engines_und_mehr/">hier vorgestellte</a> Waldbrand-Simulation von <em>Al Sweigart</em> und meine eigene, in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> implementierte <a href="http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/12zellautom/#der-waldbrand-simulator">Version</a> geschnappt und daraus eine – wie ich hoffe – verbesserte Fassung in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> programmiert.</p>
+<p>Zwei grundsätzliche Änderungen gegenüber dem Programm von <em>Al Sweigart</em> habe ich vorgenommen: Zum einen habe ich die Randbedingungen vereinfacht, indem ich die Felder an den Rändern grundsätzlich leer gelassen habe (der Wald hört also nicht an den Rändern, sondern ein Zeile oder Spalte davor auf). Das ändert nichts an dem Verhalten der Simulation (der Wald ist einfach nur je eine Zeile oben und unten und je eine Spalte rechts und links kleiner), erspart der Programmiererin oder dem Programmierer aber eine Menge Arbeit bei der Behandlung der Ränder: Wenn die Abfragen immer nur von <code>range(1, N_ROWS-1)</code> respektive von <code>range(1, N_COLS-1)</code> können sie nie die Dimensionen einer zweidimendionalen Liste sprengen.</p>
+<p>Die zweite Änderung bedarf schon einer größeren Diskussion: Statt der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/softcomputing/moorenb.html">Moore-Nachbarschaft</a>, die von <em>Al Sweigart</em> verwendet wurde und bei der alle acht Nachbarfelder einer Zelle abgefragt werden, habe ich die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/softcomputing/neumannnb.html">Von-Neumann-Nachbarschaft</a> verwendet, bei der nur die vier Zellen, die eine Kante mit der Basisfläche gemeinsam haben, als Nachbarn berücksichtigt werden. Diese Nachbarschaft habe ich aus pragmatischen Gründen gewählt, da die Abfrage von vier statt von acht Nachbarn den Code halbiert. Und ich denke, daß man die Wahl damit begründen kann, daß die diagonal entfernten Felder, die nur eine Ecke mit der Basiszelle gemeinsam haben, weiter entfernt von der Basiszelle liegen und daher weniger der Brandgefahr ausgesetzt sind. Ich befinde mich da in guter Gesellschaft, da auch in der einschlägigen Literatur fast immer die <em>Von-Neumann-Nachbarschaft</em> Verwendung findet<sup>1</sup>.</p>
+<p>Das Modell hat in seiner einfachsten Form drei Paramter, an denen geschraubt werden kann und die Einfluß auf den Verlaut der Simulation haben: Es sind mit <code>a</code> die Wahrscheinlichkeit, mit der ein einem Feld ein Baum (nach-) wächst, <code>b</code> die Wahrscheinlichkeit, mit der ein Baum (zum Beispiel durch Blitzeinschlag) Feuer fängt und <code>s</code> die Wahrscheinlichkeit, mit welcher Dichte beim Start das Feld mit Bäumen besetzt ist. Sowohl bei Sweigart wie auch bei Scholz finden sich weiter Ideen, wie die Siumlation erweitert und ausgebaut werden kann.</p>
+<p>Doch jetzt erst einmal das komplette Programm, damit Ihr die Simulation nachlesen, nachprogrammieren oder mit eigenen Ideen erweitern könnt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Forest Fire Simulation</span></span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint, uniform</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">TS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Tilesize</span></span>
+<span id="cb1-5">N_ROWS, N_COLS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span id="cb1-6">PLOT_WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">720</span></span>
+<span id="cb1-7">PLOT_HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> N_COLS<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS</span>
+<span id="cb1-8">SCREEN_WIDTH, SCREEN_HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> N_ROWS<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS, N_COLS<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 640x480 Pixel</span></span>
+<span id="cb1-9"></span>
+<span id="cb1-10">empty <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-11">tree <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-12">burning <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span></span>
+<span id="cb1-13">w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TS</span>
+<span id="cb1-14"></span>
+<span id="cb1-15">a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.0</span>        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Wachstumswahrscheinlichkeit in Prozent</span></span>
+<span id="cb1-16">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Wahrscheinlichkeit Blitzeinschlag in Prozent</span></span>
+<span id="cb1-17">s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>         <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Startbepflanzung in Prozent</span></span>
+<span id="cb1-18"></span>
+<span id="cb1-19">grid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-20">newgrid <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-21"></span>
+<span id="cb1-22">trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-23">fires <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb1-24"></span>
+<span id="cb1-25"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> setup():</span>
+<span id="cb1-26">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> tree_image, fire_image, no_trees, no_fire</span>
+<span id="cb1-27">    size(SCREEN_WIDTH, SCREEN_HEIGHT)</span>
+<span id="cb1-28">    window_title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🌲 Forest Fire Simulation 🔥"</span>)</span>
+<span id="cb1-29">    window_move(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1300</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb1-30">    tree_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_image(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/tree.png"</span>)</span>
+<span id="cb1-31">    fire_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> load_image(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/fire.png"</span>)</span>
+<span id="cb1-32">    no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-33">    create_new_forest()</span>
+<span id="cb1-34">    newgrid[:] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> grid[:]</span>
+<span id="cb1-35">    frame_rate(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-36">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Start: Bäume = "</span>, no_trees, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" Brände = "</span>, no_fire)</span>
+<span id="cb1-37">    trees.append(no_trees)</span>
+<span id="cb1-38">    fires.append(no_fire)</span>
+<span id="cb1-39">    </span>
+<span id="cb1-40"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb1-41">    background(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">210</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>)</span>
+<span id="cb1-42">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Runde: "</span>, frame_count, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" Bäume = "</span>, no_trees, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" Brände = "</span>, no_fire)</span>
+<span id="cb1-43">    display_plot()</span>
+<span id="cb1-44">    trees.append(no_trees)</span>
+<span id="cb1-45">    fires.append(no_fire)</span>
+<span id="cb1-46">    display_forest()</span>
+<span id="cb1-47">    calc_next()</span>
+<span id="cb1-48">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> frame_count <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>:</span>
+<span id="cb1-49">        no_loop()</span>
+<span id="cb1-50"></span>
+<span id="cb1-51"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display_plot():</span>
+<span id="cb1-52">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">pass</span></span>
+<span id="cb1-53"></span>
+<span id="cb1-54"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> create_new_forest():</span>
+<span id="cb1-55">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> no_trees</span>
+<span id="cb1-56">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(N_ROWS):</span>
+<span id="cb1-57">        grid.append([])</span>
+<span id="cb1-58">        newgrid.append([])</span>
+<span id="cb1-59">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> y <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(N_COLS):</span>
+<span id="cb1-60">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Erstbepflanzung Wald</span></span>
+<span id="cb1-61">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> ((x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">and</span> (y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">and</span> (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> N_ROWS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-62">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">and</span> (y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> N_COLS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">and</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> s):</span>
+<span id="cb1-63">                grid[x].append(tree)</span>
+<span id="cb1-64">                no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-65">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-66">                <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ränder bleiben leer</span></span>
+<span id="cb1-67">                grid[x].append(empty)</span>
+<span id="cb1-68"></span>
+<span id="cb1-69"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display_forest():</span>
+<span id="cb1-70">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(N_ROWS):</span>
+<span id="cb1-71">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(N_COLS):</span>
+<span id="cb1-72">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> tree:</span>
+<span id="cb1-73">                image(tree_image, i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>w, j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>h, w, h)</span>
+<span id="cb1-74">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> grid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> burning:</span>
+<span id="cb1-75">                image(fire_image, i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>w, j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>h, w, h)</span>
+<span id="cb1-76"></span>
+<span id="cb1-77"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> calc_next():</span>
+<span id="cb1-78">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> no_trees, no_fire</span>
+<span id="cb1-79">    newgrid[:] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> grid[:]</span>
+<span id="cb1-80">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Next Generation, Randfelder ignorieren</span></span>
+<span id="cb1-81">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, N_ROWS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb1-82">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> j <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, N_COLS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb1-83">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> burning:</span>
+<span id="cb1-84">                newgrid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> empty</span>
+<span id="cb1-85">                no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-86">                <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Nachbarbaum anzünden (von-Neumann-Nachbarschaft)</span></span>
+<span id="cb1-87">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> tree:</span>
+<span id="cb1-88">                    newgrid[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> burning</span>
+<span id="cb1-89">                    no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-90">                    no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-91">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i][j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> tree:</span>
+<span id="cb1-92">                    newgrid[i][j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> burning</span>
+<span id="cb1-93">                    no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-94">                    no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-95">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i][j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> tree:</span>
+<span id="cb1-96">                    newgrid[i][j<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> burning</span>
+<span id="cb1-97">                    no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-98">                    no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-99">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> tree:</span>
+<span id="cb1-100">                    newgrid[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> burning</span>
+<span id="cb1-101">                    no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-102">                    no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-103">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Neuer Baum?</span></span>
+<span id="cb1-104">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> grid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> empty:</span>
+<span id="cb1-105">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> uniform(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> a:</span>
+<span id="cb1-106">                    newgrid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> tree</span>
+<span id="cb1-107">                    no_trees <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-108">            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Schlägt ein Blitz ein?</span></span>
+<span id="cb1-109">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> grid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> tree:</span>
+<span id="cb1-110">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> uniform(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> b:</span>
+<span id="cb1-111">                    newgrid[i][j] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> burning</span>
+<span id="cb1-112">                    no_fire <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-113">    grid[:] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> newgrid[:]</span></code></pre></div>
+<p>In dem Skript sind schon Slots offengehalten, um einen Plot des Simulationsverlaufes zu erstellen. Leider weigert sich die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> hartnäckig, mit Py5 zusammenzuarbeiten. Daher ist meine Idee, <a href="http://blog.schockwellenreiter.de/2021/03/2021031901.html">FPlotter</a> (<a href="http://blog.schockwellenreiter.de/2021/03/2021033002.html">2</a>), meine in Processing.py implementierte »Matplotlib für Arme« wieder zu reaktivieren und in dieser Simulation einzusetzen. Das wird vermutlich mein nächster Schritt sein.</p>
+<p>Ansionsten gibt es den <a href="https://github.com/kantel/py5/tree/main/forestfire">Quellcode</a> wie immer in meinem GitHub-Repositorium und die <a href="https://github.com/kantel/py5/tree/main/forestfire/data">Bilder</a> habe ich den freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) <a href="https://twemoji.twitter.com/">Twemojis</a> von Twitter entnommen und mit dem Graphikprogramm meines Vertrauens auf 16x16 Pixel verkleinert.</p>
+<section id="verwendete-literatur" class="level3">
+<h3 class="anchored" data-anchor-id="verwendete-literatur">Verwendete Literatur:</h3>
+<ul>
+<li>Heinz-Otto Peitgens, Hartmut Jürgens und Dietmar Saupe: <em>Bausteine des Chaos – Fraktale</em>, Berlin-Heidelberg-Stuttgart (Springer, Klett-Cotta) 1992</li>
+<li>Daniel Scholz: <em>Pixelspiele – Modellieren und Simulieren mit zellulären Automaten</em>, Berlin-Heidelberg (Springer) 2014</li>
+<li>Al Sweigart: <em><a href="https://inventwithpython.com/bigbookpython/">The Big Book of Small Python Projects</a> – 81 Easy Practice Programs</em>, San Francisco (No Starch Press) 2021</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Vergleiche Peitgen, Jürgens, Saupe: <em>Bausteine des Chaos – Fraktale</em>, Berlin-Heidelberg-Stuttgart (Klett-Cotta/Springer) 1992, Seiten 424ff. oder Scholz: <em>Pixelspiele</em>, Berlin-Heidelberg (Springer) 2014, Seiten 19ff.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>Simulation</category>
+  <category>Py5</category>
+  <category>Processing</category>
+  <guid>https://kantel.github.io/posts/2023092301_forestfire_sim_1/index.html</guid>
+  <pubDate>Sat, 23 Sep 2023 17:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023092301_forestfire_sim_1/images/forestfiresimstage1.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Apples zweiter Flickentag in diesem Monat</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1060,47 +1621,6 @@ font-style: inherit;">'src'</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023090902_publikations_werkzeugkasten/index.html</guid>
   <pubDate>Sat, 09 Sep 2023 15:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023090902_publikations_werkzeugkasten/images/typest.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Apple-Flickentag im September</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023090901_apple_flickentag/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Courbet_-_Nude_Reclining_by_the_Sea%2C_1868.jpg/1220px-Courbet_-_Nude_Reclining_by_the_Sea%2C_1868.jpg"><img src="https://kantel.github.io/posts/2023090901_apple_flickentag/images/nuderecliningbythesea-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Ich bin ein wenig spät dran: Denn schon vor zwei Tagen hatte die Firma mit dem angebissenen Apfel im Logo ihren monatlichen <em>Patch-Day</em>, an dem sie für ihre diversen, noch unterstützten Betriebssysteme etliche, auch sicherheitsrelevante Updates herausgehauen hatte. Das gibt mir immerhin die Möglichkeit, sie alle <em>en bloc</em> abzuhandeln. Doch wie jeden Monat der Reihe nach:</p>
-<section id="apple-veröffentlicht-macos-ventura-13.5.2-und-korrigiert-fehler" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-macos-ventura-13.5.2-und-korrigiert-fehler">Apple veröffentlicht macOS Ventura 13.5.2 und korrigiert Fehler</h3>
-<p>Apple hat das Update auf die neue Betriebssystemversion macOS Ventura 13.5.2 freigegeben und korrigiert damit auch wieder <a href="https://support.apple.com/de-de/HT213906">Sicherheitsprobleme</a>.</p>
-<p>Das Update steht über die Systemeinstellungen zur Verfügung.</p>
-</section>
-<section id="apple-veröffentlicht-ios-16.6.1-und-ipados-16.6.1" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-ios-16.6.1-und-ipados-16.6.1">Apple veröffentlicht iOS 16.6.1 und iPadOS 16.6.1</h3>
-<p>Wie angekündigt hat Apple das Update auf iOS 16.6.1 und iPadOS 16.6.1 bereitgestellt. Die Updates korrigieren <a href="https://support.apple.com/de-de/HT213905">kritische Sicherheitslücken</a> und sollten daher zügig eingefahren werden.</p>
-<p>Das Update auf auf iOS 16.6.1 iPadOS 16.6.1 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code>, an ausreichender Akku-Kapazität und freien Speicherplatz sollte gedacht werden) oder über iTunes erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-</section>
-<section id="apple-veröffentlicht-watchos-9.6.2" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-watchos-9.6.2">Apple veröffentlicht watchOS 9.6.2</h3>
-<p><em>Last but not least</em> hat die Firma aus Cupertino auch ihre Uhr nicht vergessen und das Update für die Apple Watch watchOS 9.6.2 bereitgestellt und damit auch wieder <a href="https://support.apple.com/de-de/HT213907">Sicherheitsprobleme</a> behoben.</p>
-<p>Die Aktualisierung wird über die Apple-Watch-App auf dem iPhone gestartet unter <code>Allgemein &gt; Softwareupdate</code>. Dabei sollte sich die Uhr in Reichweite des iPhones befinden, mit dem Ladekabel verbunden und mindestens zu 50 Prozent geladen sein.</p>
-<p><em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<p><em>(Bild: Gustave Courbet (1819-1877): Nude Reclining by the Sea, 1868. Bildquelle: <a href="https://commons.wikimedia.org/wiki/File:Courbet_-_Nude_Reclining_by_the_Sea,_1868.jpg">Wikimedia Commons</a>)</em></p>
-
-
-</section>
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2023090901_apple_flickentag/index.html</guid>
-  <pubDate>Sat, 09 Sep 2023 13:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023090901_apple_flickentag/images/nuderecliningbythesea.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
