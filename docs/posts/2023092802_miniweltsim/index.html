@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Dynamik eines nichtlinearen Mini-Weltmodells: Experimente mit Py5 und FPlotter</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Dynamik eines nichtlinearen Mini-Weltmodells: Experimente mit Py5 und FPlotter</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Py5</div>
+    <div class="quarto-category">Simulation</div>
+    <div class="quarto-category">Modellierung</div>
+    <div class="quarto-category">Dynamische Systeme</div>
+    <div class="quarto-category">FPlotter</div>
+    <div class="quarto-category">Visualisierung</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">28. September 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53216111029/"><img src="images/weltsim-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nachdem ich vor ein <a href="https://kantel.github.io/posts/2023092401_fplotter_py5/">paar Tagen</a> meine »Matplotlib für Arme« <a href="http://blog.schockwellenreiter.de/2021/03/2021031901.html">FPlotter</a> (<a href="http://blog.schockwellenreiter.de/2021/03/2021033002.html">2</a>) von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> nach <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> portiert hatte, galt es, dies auch mit Leben zu erfüllen. Bevor ich damit die Ergebnisse der hier vorgestellten <a href="https://kantel.github.io/posts/2023092301_forestfire_sim_1/">Waldbrandsimulation</a> nach <em>Al Sweigart</em> visualisiere, wollte ich als Fingerübung erst einmal ein Modell von <em>Hartmut Bossel</em>, ein »nichtlineares Mini-Weltmodell«<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> in Py5 implementieren. Das erwies sich aufwendiger, als ursprünglich geplant, aber dafür kann sich das Ergebnis durchaus sehen lassen.</p>
+<p>Ziel der Simulation ist es, ein (stark vereinfachtes) »Weltmodell« zu erstellen, das eine in etwa richtige Beschreibung der globalen Dynamik liefern kann, wie sie sich aus dem Zusammenspiel zwischen Bevölkerungsentwicklung, Umweltbelastung und Konsum entweickeln könnte. Dafür wird ein System aus drei gekoppelten Differentialgleichungen angenommen, die sich wie folgt zusammensetzen:</p>
+<p>Die <strong>Bevölkerungsentwicklung</strong> (<span class="math inline">\(V\)</span>) entspricht in etwa der Beziehung <em>neue Bevölkerungszahl = alte alte Bevölkerungszahl + Geburtenrate (<span class="math inline">\(B\)</span>) - Sterberate (<span class="math inline">\(D\)</span>)</em> (als Einheit wird – auch in allen folgenden Beziehungen/Gleichungen – ein Jahr vorausgesetzt). Das ergibt die Gleichung</p>
+<p><span class="math display">\[
+\frac{\Delta V}{\Delta t}=B-D
+\]</span></p>
+<p>Im Teilmodell der <strong>Umweltbelastung</strong> (<span class="math inline">\(L\)</span>) müssen zwei Verhaltensmöglichkeiten berücksichtigt werden. Liegt sie <strong>unter</strong> einem kritischen Wert (der Kapazitätsgrenze <span class="math inline">\(L^\ast\)</span>), so ist der Abbau pro Zeiteinheit proportional zur vorhandenen Umweltbelastung. Liegt die Belastung dagegen <strong>über</strong> den kritischen Wert, so kann pro Zeiteinheit nur noch die (konstante) Menge abgebaut werden, die der Kapazitätsgrenze entspricht. Wenn die Belastung mit Schadstoffen pro Zeiteinheit gleich <span class="math inline">\(S\)</span> ist und das Maß für die relative Umweltbelastung <span class="math inline">\(Q=\frac{L^\ast}{L}\)</span>, dann ergibt sich mit dem Parameter <span class="math inline">\(a\)</span> für die spezifische Abbaurate folgende Gleichung:</p>
+<p><span class="math display">\[
+\frac{\Delta L}{\Delta t} = \begin{cases}
+                            S - a \cdot L &amp; \text{ falls } L &lt;= L^\ast \\
+                            S - a \cdot L \cdot Q &amp; \text{ falls } L &gt; L^\ast
+\end{cases}
+\]</span> Die Entwicklung des <strong>Konsums</strong> hingegen ist weitestgehend <em>autokatalytisch</em>, das heißt, es besteht eine positive Rückkoppelung zwischen dem Konsumniveau (<span class="math inline">\(K\)</span>) und seiner Wachstumsrate. Das führt bei einer konstanten Wachstumsrage <span class="math inline">\(c\)</span> zu exponentiellem Wachstum:</p>
+<p><span class="math display">\[
+\frac{\Delta K}{\Delta t} = c \cdot K
+\]</span></p>
+<p>Da jedoch auch beim Konsumniveau exponentielles Wachstum zu einem Zusammenbruch des Gesamtsystems führen würde, wird also einer mehr oder weniger realistische Wachstumsbegrenzung angenommen. Sinnvoll ist die Annahme einer Kapazitätsgrenze <span class="math inline">\(K^\ast\)</span> und der Modifizierung der Wachstumsrate so, daß diese sich bei der Annäherung an die Kapazitätsgrenze auf Null reduziert. Dies kann erreicht werden duch den <em>logistischen</em> Ansatz</p>
+<p><span class="math display">\[
+\frac{\Delta K}{\Delta t} = c \cdot K \cdot (1 - f \cdot K)
+\]</span></p>
+<p>Dabei bestimmt der Kapazitätsfaktor <span class="math inline">\(f = \frac{1}{K^\ast}\)</span>, auf welchem Konsumniveau Sättigung eintritt.</p>
+<p>Jetzt müssen diese Teilmodelle »nur« noch verkoppelt werden. Dabei trifft <em>Bossel</em> folgende Annahmen:</p>
+<p>Die erste Verkopplung von Umweltbelastung (im Quellcode <code>last</code>) mit der Bevölkerungsentwicklung (im Quellcode <code>volk</code>) ist intendiert als Maßnahme zur Bevölkerungskontrolle in Reaktion auf hohe Umweltbelastung. Sie setzt daher bei der Geburtenrate an. Ausgangspunkt ist zweckmäßigerweise der bereits definierte Umweltqualitätsfaktor <span class="math inline">\(Q = \frac{L^\ast}{L} = \frac{1}{L}\)</span>. Bei sinkender Umweltqualität würde damit die Geburtenrate entsprechend verringert. Diese Wirkung ist durch den Faktor <span class="math inline">\(u\)</span> zu beeinflussen<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>Die zweite Kopplung von <code>last</code> nach <code>volk</code> beschreibt ein Sinken der Lebenserwartung durch den gesundheitsschädlichen Einfluß der Umweltbelastung. Sie muß deshalb von <span class="math inline">\(L\)</span> auf die Sterberate wirken. Im Modell wird <span class="math inline">\(L\)</span> direkt mit dem Faktor <span class="math inline">\(1\)</span> für die Sterberate genutzt.</p>
+<p>Die Kopplung von <code>volk</code>nach <code>last</code> steht in einem direkten Zusammenhang mit der Kopplung des Konsums (im Quellcode <code>kons</code>) nach <code>last</code>, da der Schadstoffeintrag sowohl von der Bevölkerungsgröße wie auch von der Höhe des Konsums abhängt. Er ist daher proprtional zum Produkt <span class="math inline">\(V \cdot K\)</span>. Als Wichtungsfaktor wird im Modell <span class="math inline">\(e = 0.02\)</span> eingesetzt.</p>
+<p>Die Kopplung von <code>kons</code> nach <code>volk</code> modelliert die Erhöhung der Zahl der (überlebenden) Kinder bei wachsendem Wohlstand. Ähnlich wie bei der Verbindung von <span class="math inline">\(L\)</span> auf die Sterberate wirkt <span class="math inline">\(K\)</span> (ebenfalls mit der Gewichtung von <span class="math inline">\(1\)</span>) direkt auf die Geburtenrate</p>
+<p>Die Kopplung von <code>kons</code> nach <code>volk</code> nimmt an, daß eine Erhöhung der Umweltbelastung auch eine Erhöhung des Konsums mit sich zieht, daß <span class="math inline">\(L\)</span> also auch auf die Wachstumsrate von <span class="math inline">\(K\)</span> wirkt. Auch hier nimmt Bossels Modell wieder einen einfachen, proportionalen Einfluß mit der Gewichtung von <span class="math inline">\(1\)</span> an.</p>
+<p>Die letzte verbleibende Kopplung von <code>last</code> nach <code>kons</code> besitzt eine von der Eingriffsstärke abhängige Gewichtung, die bewirkt, daß das Wachstum des Konsumniveaus eine Grenze findet. Im Modell wird daher sinnvollerweise <span class="math inline">\(L\)</span> mit dem Sättigungsterm so verkoppelt, daß auch diese Wichtung durch den Kapazitätsfaktor <span class="math inline">\(f\)</span> ausgedrückt wird.</p>
+<p>Unter diesen Annahmen erhalten wir ein Gleichungssystem, das aus folgenden, nichtlinearen Differentialgleichungen besteht:</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{\Delta V}{\Delta t} &amp; = b \cdot V \cdot u \cdot (\frac{L^\ast}{L} K - d \cdot V \cdot L) \\
+\frac{\Delta L}{\Delta t} &amp; = \begin{cases}
+                            e \cdot K \cdot V - a \cdot L^\ast &amp; \text{ falls } L &gt; L^\ast \\
+                            e \cdot K \cdot V - a \cdot L      &amp; \text{ falls } L &lt;= L^\ast
+\end{cases} \\
+\frac{\Delta K}{\Delta t} &amp; = c \cdot K \cdot L \cdot (1 - K \cdot L \cdot f)
+\end{align*}
+\]</span></p>
+<p>mit den Anfangsbedingungen</p>
+<p><span class="math display">\[
+V_0 = 1, L_0 = 1, K_0 = 1
+\]</span></p>
+<p>und den Paramtern</p>
+<p><span class="math display">\[
+a = 0.1, b = 0.03, c = 0.05, d = 0.01, e = 0.02
+\]</span></p>
+<p>Der Eingriffsparameter <span class="math inline">\(u\)</span> sollte in der Nähe von <span class="math inline">\(1\)</span> gewählt werden, der Eingriffsparameter <span class="math inline">\(f\)</span> kann zwischen etwa <span class="math inline">\(0\)</span> und <span class="math inline">\(10\)</span> liegen.</p>
+<p>In Code gegossen und mit Hilfe des Eulerschen Polygonzugverfahrens gelöst sieht das so aus:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">def</span> calc_world_model():</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">global</span> t, volk, last, kons</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    qual <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>last</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    volk_rate <span class="op">=</span> b<span class="op">*</span>volk<span class="op">*</span>u<span class="op">*</span>qual<span class="op">*</span>kons <span class="op">-</span> d<span class="op">*</span>volk<span class="op">*</span>last</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="cf">if</span> qual <span class="op">&gt;=</span> <span class="dv">1</span>:</span>
+<span id="cb1-6"><a href="#cb1-6"></a>        abbau <span class="op">=</span> a<span class="op">*</span>last</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        abbau <span class="op">=</span> a<span class="op">*</span>last<span class="op">*</span>qual</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    last_rate <span class="op">=</span> e<span class="op">*</span>kons<span class="op">*</span>volk <span class="op">-</span> abbau</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    kons_rate <span class="op">=</span> c<span class="op">*</span>kons<span class="op">*</span>last<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> (kons<span class="op">*</span>last<span class="op">*</span>f))</span>
+<span id="cb1-11"><a href="#cb1-11"></a>    <span class="co"># Numerische Lösung nach Euler</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>    volk <span class="op">=</span> volk <span class="op">+</span> volk_rate<span class="op">*</span>dt</span>
+<span id="cb1-13"><a href="#cb1-13"></a>    last <span class="op">=</span> last <span class="op">+</span> last_rate<span class="op">*</span>dt</span>
+<span id="cb1-14"><a href="#cb1-14"></a>    kons <span class="op">=</span> kons <span class="op">+</span> kons_rate<span class="op">*</span>dt</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    volk_array.append(volk)</span>
+<span id="cb1-16"><a href="#cb1-16"></a>    last_array.append(last)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>    kons_array.append(kons)</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    t <span class="op">+=</span> dt</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das der »Rest« des Skriptes mit insgesamt fast 200 Zeilen unerwarteterweise doch recht umfangreich geraten ist, liegt daran, daß mich das Bastelfieber gepackt hatte und ich die Plotfunktionen noch etwas aufhübschen wollte. Der Kasten links mit den Namen und Farben der einzelnen Kurven wie auch der Kasten unten mit den Eingriffsparamtern hatten etliche zusätzliche Codezeilen verursacht. Dafür ist das Gesamtergebnis (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/53216111029/">Screenshot</a>) doch recht nett geworden (wie ich als stolzer Schöpfer finde).</p>
+<p>Nun aber – wie gewohnt – für alle, die gerne Quellcode lesen, das Skript nachvollziehen, nachprogrammieren oder variieren wollen, hier das komplette Programm:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Einfache Simulation eines Weltmodells</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># nach Hartmut Bossel: Modellbildung und Simulation</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Braunschweig 2. Auflage 1994, Seiten 78ff.</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>WIN_WIDTH, WIN_HEIGHT <span class="op">=</span> <span class="dv">740</span>, <span class="dv">480</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co"># Plot-Parameter</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>plot_x1 <span class="op">=</span> <span class="dv">140</span>                    <span class="co"># Start Fensterbreite rechts</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>plot_x2 <span class="op">=</span> WIN_WIDTH <span class="op">-</span> <span class="dv">40</span>         <span class="co"># Ende Fensterbreite links</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>label_x <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>plot_y1 <span class="op">=</span> <span class="dv">60</span>                     <span class="co"># Start Fensterhöhe oben</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>plot_y2 <span class="op">=</span> WIN_HEIGHT <span class="op">-</span> <span class="dv">80</span>        <span class="co"># Ende Fensterhöhe unten</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>label_y <span class="op">=</span> WIN_HEIGHT <span class="op">-</span> <span class="dv">35</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>plot_title <span class="op">=</span> <span class="st">"Dynamik eines nichtlinearen Mini-Weltmodells"</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">## Sonstige Parameter</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>final <span class="op">=</span> <span class="dv">500</span>    <span class="co"># Simulationszeitraum (Jahre)</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>dt <span class="op">=</span> <span class="fl">0.2</span>       <span class="co"># Schrittweite</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">## Funktionsabhängige Konstanten</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>x_min <span class="op">=</span> <span class="dv">0</span>                        <span class="co"># Startwert x</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>x_max <span class="op">=</span> final                    <span class="co"># Maximalwert x</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>y_min <span class="op">=</span> <span class="dv">0</span>                        <span class="co"># Startwert f(x)</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>y_max <span class="op">=</span> <span class="dv">16</span>                       <span class="co"># Maximalwert f(x)</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>stepsize_x <span class="op">=</span> x_max<span class="op">//</span><span class="dv">10</span>           <span class="co"># Ticks auf der x-Achse</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>stepsize_y <span class="op">=</span> <span class="op">-</span><span class="dv">2</span>                  <span class="co"># Ticks auf der y-Achse</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="co"># Farben</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a>bg_color <span class="op">=</span> color(<span class="dv">234</span>, <span class="dv">218</span>, <span class="dv">184</span>)           <span class="co"># Packpapier</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a>text_color <span class="op">=</span> color(<span class="dv">0</span>, <span class="dv">150</span>, <span class="dv">0</span>)             <span class="co"># Grün</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a>text_color_2 <span class="op">=</span> color(<span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">20</span>)          <span class="co"># Schwarz</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a>plot_window_color <span class="op">=</span> color(<span class="dv">250</span>, <span class="dv">250</span>, <span class="dv">250</span>)  <span class="co"># Weiß</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>grid_color <span class="op">=</span> color(<span class="dv">0</span>, <span class="dv">250</span>, <span class="dv">250</span>)           <span class="co"># Blau-Grau</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a>line_color_1 <span class="op">=</span> color(<span class="dv">250</span>, <span class="dv">0</span>, <span class="dv">0</span>)           <span class="co"># Rot</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a>line_color_2 <span class="op">=</span> color(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">250</span>)           <span class="co"># Blau</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a>line_color_3 <span class="op">=</span> color(<span class="dv">235</span>, <span class="dv">146</span>, <span class="dv">52</span>)        <span class="co"># Orange</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a></span>
+<span id="cb2-39"><a href="#cb2-39"></a></span>
+<span id="cb2-40"><a href="#cb2-40"></a><span class="co"># Paramteter des Weltmodells</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a></span>
+<span id="cb2-42"><a href="#cb2-42"></a><span class="co">## Bevölkerungsentwicklung</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a>b <span class="op">=</span> <span class="fl">0.03</span>       <span class="co"># Geburtenrate</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a>d <span class="op">=</span> <span class="fl">0.01</span>       <span class="co"># Sterberate</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a></span>
+<span id="cb2-46"><a href="#cb2-46"></a><span class="co">## Umweltbelastung</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a>a <span class="op">=</span> <span class="fl">0.1</span>        <span class="co"># Abbaurate Umweltbelastung</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>e <span class="op">=</span> <span class="fl">0.02</span>       <span class="co"># Wichtungsfaktor Schadstoffeintrag</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a></span>
+<span id="cb2-50"><a href="#cb2-50"></a><span class="co">## Konsum</span></span>
+<span id="cb2-51"><a href="#cb2-51"></a>c <span class="op">=</span> <span class="fl">0.05</span>       <span class="co"># Wachstumsrate Konsum</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a></span>
+<span id="cb2-53"><a href="#cb2-53"></a><span class="co">## Eingriffsfaktoren -- Hier kann geändert werden ###################</span></span>
+<span id="cb2-54"><a href="#cb2-54"></a>u <span class="op">=</span> <span class="fl">1.0</span>        <span class="co"># Wirkung Umweltqualität auf Bevölkerungsentwicklung #</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a>f <span class="op">=</span> <span class="fl">0.03</span>       <span class="co"># Kapazitätsfaktor Sättigung Konsum                  #</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a><span class="co">#####################################################################</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a></span>
+<span id="cb2-58"><a href="#cb2-58"></a>volk_array <span class="op">=</span> []</span>
+<span id="cb2-59"><a href="#cb2-59"></a>last_array <span class="op">=</span> []</span>
+<span id="cb2-60"><a href="#cb2-60"></a>kons_array <span class="op">=</span> []</span>
+<span id="cb2-61"><a href="#cb2-61"></a></span>
+<span id="cb2-62"><a href="#cb2-62"></a><span class="kw">def</span> settings():</span>
+<span id="cb2-63"><a href="#cb2-63"></a>    size(WIN_WIDTH, WIN_HEIGHT)</span>
+<span id="cb2-64"><a href="#cb2-64"></a></span>
+<span id="cb2-65"><a href="#cb2-65"></a><span class="kw">def</span> setup():</span>
+<span id="cb2-66"><a href="#cb2-66"></a>    <span class="kw">global</span> t, volk, last, kons</span>
+<span id="cb2-67"><a href="#cb2-67"></a>    window_title(<span class="st">"Dynamik eines nichtlinearen Mini-Weltmodells"</span>)</span>
+<span id="cb2-68"><a href="#cb2-68"></a>    window_move(<span class="dv">1300</span>, <span class="dv">30</span>)</span>
+<span id="cb2-69"><a href="#cb2-69"></a></span>
+<span id="cb2-70"><a href="#cb2-70"></a>    <span class="co">## Anfangswerte</span></span>
+<span id="cb2-71"><a href="#cb2-71"></a>    t <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb2-72"><a href="#cb2-72"></a>    volk <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># Bevölkerungsentwicklung</span></span>
+<span id="cb2-73"><a href="#cb2-73"></a>    last <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># Umweltbelastung</span></span>
+<span id="cb2-74"><a href="#cb2-74"></a>    kons <span class="op">=</span> <span class="fl">1.0</span>     <span class="co"># Konsum</span></span>
+<span id="cb2-75"><a href="#cb2-75"></a>    </span>
+<span id="cb2-76"><a href="#cb2-76"></a><span class="kw">def</span> draw():</span>
+<span id="cb2-77"><a href="#cb2-77"></a>    background(bg_color)</span>
+<span id="cb2-78"><a href="#cb2-78"></a>    draw_plot_window()</span>
+<span id="cb2-79"><a href="#cb2-79"></a>    calc_world_model()</span>
+<span id="cb2-80"><a href="#cb2-80"></a>    </span>
+<span id="cb2-81"><a href="#cb2-81"></a>    <span class="cf">if</span> t <span class="op">&gt;=</span> final:</span>
+<span id="cb2-82"><a href="#cb2-82"></a>        <span class="bu">print</span>(volk, last, kons)</span>
+<span id="cb2-83"><a href="#cb2-83"></a>        x <span class="op">=</span> x_min</span>
+<span id="cb2-84"><a href="#cb2-84"></a>        i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-85"><a href="#cb2-85"></a>        <span class="cf">while</span> i <span class="op">&lt;</span> <span class="bu">len</span>(volk_array):</span>
+<span id="cb2-86"><a href="#cb2-86"></a>            stroke(line_color_1)</span>
+<span id="cb2-87"><a href="#cb2-87"></a>            x_v <span class="op">=</span> remap(x, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb2-88"><a href="#cb2-88"></a>            y_v <span class="op">=</span> remap(volk_array[i], y_min, y_max, plot_y2, plot_y1)</span>
+<span id="cb2-89"><a href="#cb2-89"></a>            circle(x_v, y_v, <span class="dv">2</span>)</span>
+<span id="cb2-90"><a href="#cb2-90"></a>            stroke(line_color_2)</span>
+<span id="cb2-91"><a href="#cb2-91"></a>            x_v <span class="op">=</span> remap(x, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb2-92"><a href="#cb2-92"></a>            y_v <span class="op">=</span> remap(last_array[i], y_min, y_max, plot_y2, plot_y1)</span>
+<span id="cb2-93"><a href="#cb2-93"></a>            circle(x_v, y_v, <span class="dv">2</span>)</span>
+<span id="cb2-94"><a href="#cb2-94"></a>            stroke(line_color_3)</span>
+<span id="cb2-95"><a href="#cb2-95"></a>            x_v <span class="op">=</span> remap(x, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb2-96"><a href="#cb2-96"></a>            y_v <span class="op">=</span> remap(kons_array[i], y_min, y_max, plot_y2, plot_y1)</span>
+<span id="cb2-97"><a href="#cb2-97"></a>            circle(x_v, y_v, <span class="dv">2</span>)</span>
+<span id="cb2-98"><a href="#cb2-98"></a>            x <span class="op">+=</span> dt</span>
+<span id="cb2-99"><a href="#cb2-99"></a>            i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb2-100"><a href="#cb2-100"></a>                                </span>
+<span id="cb2-101"><a href="#cb2-101"></a>        stroke(text_color)                       </span>
+<span id="cb2-102"><a href="#cb2-102"></a>        <span class="bu">print</span>(<span class="st">"I did it, Babe"</span>)</span>
+<span id="cb2-103"><a href="#cb2-103"></a>        no_loop()</span>
+<span id="cb2-104"><a href="#cb2-104"></a>    </span>
+<span id="cb2-105"><a href="#cb2-105"></a></span>
+<span id="cb2-106"><a href="#cb2-106"></a><span class="kw">def</span> calc_world_model():</span>
+<span id="cb2-107"><a href="#cb2-107"></a>    <span class="kw">global</span> t, volk, last, kons</span>
+<span id="cb2-108"><a href="#cb2-108"></a>    qual <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>last</span>
+<span id="cb2-109"><a href="#cb2-109"></a>    volk_rate <span class="op">=</span> b<span class="op">*</span>volk<span class="op">*</span>u<span class="op">*</span>qual<span class="op">*</span>kons <span class="op">-</span> d<span class="op">*</span>volk<span class="op">*</span>last</span>
+<span id="cb2-110"><a href="#cb2-110"></a>    <span class="cf">if</span> qual <span class="op">&gt;=</span> <span class="dv">1</span>:</span>
+<span id="cb2-111"><a href="#cb2-111"></a>        abbau <span class="op">=</span> a<span class="op">*</span>last</span>
+<span id="cb2-112"><a href="#cb2-112"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-113"><a href="#cb2-113"></a>        abbau <span class="op">=</span> a<span class="op">*</span>last<span class="op">*</span>qual</span>
+<span id="cb2-114"><a href="#cb2-114"></a>    last_rate <span class="op">=</span> e<span class="op">*</span>kons<span class="op">*</span>volk <span class="op">-</span> abbau</span>
+<span id="cb2-115"><a href="#cb2-115"></a>    kons_rate <span class="op">=</span> c<span class="op">*</span>kons<span class="op">*</span>last<span class="op">*</span>(<span class="dv">1</span> <span class="op">-</span> (kons<span class="op">*</span>last<span class="op">*</span>f))</span>
+<span id="cb2-116"><a href="#cb2-116"></a>    <span class="co"># Numerische Lösung nach Euler</span></span>
+<span id="cb2-117"><a href="#cb2-117"></a>    volk <span class="op">=</span> volk <span class="op">+</span> volk_rate<span class="op">*</span>dt</span>
+<span id="cb2-118"><a href="#cb2-118"></a>    last <span class="op">=</span> last <span class="op">+</span> last_rate<span class="op">*</span>dt</span>
+<span id="cb2-119"><a href="#cb2-119"></a>    kons <span class="op">=</span> kons <span class="op">+</span> kons_rate<span class="op">*</span>dt</span>
+<span id="cb2-120"><a href="#cb2-120"></a>    volk_array.append(volk)</span>
+<span id="cb2-121"><a href="#cb2-121"></a>    last_array.append(last)</span>
+<span id="cb2-122"><a href="#cb2-122"></a>    kons_array.append(kons)</span>
+<span id="cb2-123"><a href="#cb2-123"></a>    t <span class="op">+=</span> dt</span>
+<span id="cb2-124"><a href="#cb2-124"></a> </span>
+<span id="cb2-125"><a href="#cb2-125"></a><span class="kw">def</span> draw_plot_window():</span>
+<span id="cb2-126"><a href="#cb2-126"></a>    <span class="co"># Den Plot in einem weißen Kasten zeichnen</span></span>
+<span id="cb2-127"><a href="#cb2-127"></a>    fill(plot_window_color)</span>
+<span id="cb2-128"><a href="#cb2-128"></a>    rect_mode(CORNERS)</span>
+<span id="cb2-129"><a href="#cb2-129"></a>    no_stroke()</span>
+<span id="cb2-130"><a href="#cb2-130"></a>    rect(plot_x1, plot_y1, plot_x2, plot_y2)</span>
+<span id="cb2-131"><a href="#cb2-131"></a>    <span class="co"># Kasten für y-Label</span></span>
+<span id="cb2-132"><a href="#cb2-132"></a>    stroke(grid_color)</span>
+<span id="cb2-133"><a href="#cb2-133"></a>    stroke_weight(<span class="dv">1</span>)</span>
+<span id="cb2-134"><a href="#cb2-134"></a>    rect(label_x <span class="op">-</span> <span class="dv">5</span>, (plot_y1 <span class="op">+</span> plot_y2)<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">25</span>, label_x <span class="op">+</span> <span class="dv">100</span>, (plot_y1 <span class="op">+</span> plot_y2)<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">30</span>)</span>
+<span id="cb2-135"><a href="#cb2-135"></a>    no_stroke()</span>
+<span id="cb2-136"><a href="#cb2-136"></a>    <span class="co"># Kasten für x-Label</span></span>
+<span id="cb2-137"><a href="#cb2-137"></a>    stroke(grid_color)</span>
+<span id="cb2-138"><a href="#cb2-138"></a>    stroke_weight(<span class="dv">1</span>)</span>
+<span id="cb2-139"><a href="#cb2-139"></a>    rect(plot_x1, label_y <span class="op">-</span> <span class="dv">15</span>, plot_x1 <span class="op">+</span> <span class="dv">450</span>, label_y <span class="op">+</span> <span class="dv">15</span>)</span>
+<span id="cb2-140"><a href="#cb2-140"></a>    no_stroke()</span>
+<span id="cb2-141"><a href="#cb2-141"></a>    <span class="co"># Titel des Plots zeichnen</span></span>
+<span id="cb2-142"><a href="#cb2-142"></a>    fill(text_color)</span>
+<span id="cb2-143"><a href="#cb2-143"></a>    text_size(<span class="dv">20</span>)</span>
+<span id="cb2-144"><a href="#cb2-144"></a>    text_align(LEFT)</span>
+<span id="cb2-145"><a href="#cb2-145"></a>    text(plot_title, plot_x1, plot_y1 <span class="op">-</span> <span class="dv">10</span>)</span>
+<span id="cb2-146"><a href="#cb2-146"></a>    draw_grid()</span>
+<span id="cb2-147"><a href="#cb2-147"></a>    draw_axis_labels()</span>
+<span id="cb2-148"><a href="#cb2-148"></a>    </span>
+<span id="cb2-149"><a href="#cb2-149"></a><span class="kw">def</span> draw_grid():</span>
+<span id="cb2-150"><a href="#cb2-150"></a>    <span class="co"># Zeichne Gitter und Label</span></span>
+<span id="cb2-151"><a href="#cb2-151"></a>    text_size(<span class="dv">10</span>)</span>
+<span id="cb2-152"><a href="#cb2-152"></a>    text_align(CENTER, TOP)</span>
+<span id="cb2-153"><a href="#cb2-153"></a>    <span class="co"># x_Achse</span></span>
+<span id="cb2-154"><a href="#cb2-154"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(x_min, x_max <span class="op">+</span> <span class="dv">1</span>, stepsize_x):</span>
+<span id="cb2-155"><a href="#cb2-155"></a>        x <span class="op">=</span> remap(i, x_min, x_max, plot_x1, plot_x2)</span>
+<span id="cb2-156"><a href="#cb2-156"></a>        fill(text_color)</span>
+<span id="cb2-157"><a href="#cb2-157"></a>        text(<span class="bu">str</span>(i), x, plot_y2 <span class="op">+</span> <span class="dv">10</span>)</span>
+<span id="cb2-158"><a href="#cb2-158"></a>        stroke_weight(<span class="dv">1</span>)</span>
+<span id="cb2-159"><a href="#cb2-159"></a>        stroke(grid_color)</span>
+<span id="cb2-160"><a href="#cb2-160"></a>        line(x, plot_y1, x, plot_y2)</span>
+<span id="cb2-161"><a href="#cb2-161"></a>    <span class="co"># y-Achse</span></span>
+<span id="cb2-162"><a href="#cb2-162"></a>    <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(y_max, y_min <span class="op">-</span> <span class="dv">1</span>, stepsize_y):</span>
+<span id="cb2-163"><a href="#cb2-163"></a>        y <span class="op">=</span> remap(j, y_max, y_min, plot_y1, plot_y2)</span>
+<span id="cb2-164"><a href="#cb2-164"></a>        <span class="cf">if</span> j <span class="op">==</span> y_min:</span>
+<span id="cb2-165"><a href="#cb2-165"></a>            text_align(RIGHT, BOTTOM)   <span class="co"># Unten</span></span>
+<span id="cb2-166"><a href="#cb2-166"></a>        <span class="cf">elif</span> j <span class="op">==</span> y_max:</span>
+<span id="cb2-167"><a href="#cb2-167"></a>            text_align(RIGHT, TOP)      <span class="co"># Open</span></span>
+<span id="cb2-168"><a href="#cb2-168"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-169"><a href="#cb2-169"></a>            text_align(RIGHT, CENTER)   <span class="co"># Vertikal zentrieren</span></span>
+<span id="cb2-170"><a href="#cb2-170"></a>        fill(text_color)</span>
+<span id="cb2-171"><a href="#cb2-171"></a>        text(<span class="bu">str</span>(j), plot_x1 <span class="op">-</span> <span class="dv">10</span>, y)</span>
+<span id="cb2-172"><a href="#cb2-172"></a>        stroke_weight(<span class="dv">1</span>)</span>
+<span id="cb2-173"><a href="#cb2-173"></a>        stroke(grid_color)</span>
+<span id="cb2-174"><a href="#cb2-174"></a>        line(plot_x1, y, plot_x2, y)</span>
+<span id="cb2-175"><a href="#cb2-175"></a>        </span>
+<span id="cb2-176"><a href="#cb2-176"></a><span class="kw">def</span> draw_axis_labels():</span>
+<span id="cb2-177"><a href="#cb2-177"></a>    text_size(<span class="dv">13</span>)</span>
+<span id="cb2-178"><a href="#cb2-178"></a>    text_leading(<span class="dv">15</span>)</span>
+<span id="cb2-179"><a href="#cb2-179"></a>    <span class="co"># y-Achse</span></span>
+<span id="cb2-180"><a href="#cb2-180"></a>    text_align(LEFT, CENTER)</span>
+<span id="cb2-181"><a href="#cb2-181"></a>    fill(line_color_1)</span>
+<span id="cb2-182"><a href="#cb2-182"></a>    text(<span class="st">"Bevölkerung"</span>, label_x, (plot_y1 <span class="op">+</span> plot_y2)<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">20</span>)</span>
+<span id="cb2-183"><a href="#cb2-183"></a>    fill(line_color_2)</span>
+<span id="cb2-184"><a href="#cb2-184"></a>    text(<span class="st">"Umweltbelastung"</span>, label_x, (plot_y1 <span class="op">+</span> plot_y2)<span class="op">//</span><span class="dv">2</span>)</span>
+<span id="cb2-185"><a href="#cb2-185"></a>    fill(line_color_3)</span>
+<span id="cb2-186"><a href="#cb2-186"></a>    text(<span class="st">"Konsum"</span>, label_x, (plot_y1 <span class="op">+</span> plot_y2)<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">20</span>)</span>
+<span id="cb2-187"><a href="#cb2-187"></a>    <span class="co"># x-Achse</span></span>
+<span id="cb2-188"><a href="#cb2-188"></a>    fill(text_color_2)</span>
+<span id="cb2-189"><a href="#cb2-189"></a>    text_size(<span class="dv">13</span>)</span>
+<span id="cb2-190"><a href="#cb2-190"></a>    text(<span class="st">"Eingriffsparameter: Umwelt-Qualität: "</span> <span class="op">+</span> <span class="bu">str</span>(u) <span class="op">+</span> <span class="st">", Konsum-Faktor: "</span> <span class="op">+</span> <span class="bu">str</span>(f), plot_x1 <span class="op">+</span> <span class="dv">5</span>, label_y)</span>
+<span id="cb2-191"><a href="#cb2-191"></a>    fill(text_color)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Den Code findet Ihr natürlich auch in meinem <a href="https://github.com/kantel/py5/tree/main/weltsim">GitHub-Repositorium</a>.</p>
+<p>Ein Wort noch zur Gültigkeit des Modells: <em>Bossel</em> selber weist darauf hin (S. 92f), daß sich sein Programm zwar im großen und ganzen plausibel verhält, daß dieser Eindruck aber nie dazu verleiten darf, den Modellergebnissen ohne weitere Überprüfungen bedingungslos zu vertrauen oder sie gar zur Grundlage wichtiger Entscheidungen zu machen. Vor allem müßte die empirische Gültigkeit und die Anwendungsgültigkeit hinterfragt werden.</p>
+<p>Eine <strong>empirische Gültigkeit</strong>, das heißt eine zahlenmäßige Übereinstimmung mit der Realität, kann dieses Modell sicher nicht leisten. Dafür fehlen nicht nur die zahlenmäßigen Übereinstimmungen mit realen Größen mit meßbaren Entsprechungen im Realsystem, sondern auch die Parameter hätten wesentlich genauer (und komplexer) erfaßt und formuliert werden müssen.</p>
+<p>Dagegen dürfte eine <strong>Anwendungsgültigkeit</strong> als einfaches, didaktisches Modell zur Demonstration der dynamischen Effekte elementarer Zusammenhänge zwischen Umwelt und der menschlichen Gesellschaft durchaus gegeben sein.</p>
+<p>Diese Einschränkungen gelten aber nahezu für alle Modelle. So machen zum Beispiel <em>Svein Linge</em> und <em>Hans Petter Langtangen</em> in ihrem SIR-Modell zur Ausbreitung einer Grippe<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> ähnliche Einschränkungen zur Güligkeit – und das, obwohl ihre Modellparameter eine viel kleinere Gruppe (Schüler in einem Internat) und nicht die ganze Welt, sondern nur einen begrenzten Raum (das Internat ist abgeschlossen von der Umwelt und besitzt daher keinen Kontakt zur Außenwelt) umfassen.</p>
+<p>Behaltet diese Einschränkungen also im Hinterkopf, bevor Ihr in den sozialen Medien ein Faß aufmacht und über Wissenschaftlerinnen und Wissenschaftler im Besonderen und über Wissenschaft im Allgemeinen herzieht. Denn diese sind sich schon der Beschränkungen ihrer Modelle bewußt, aber die Presse, die die Ergebnisse vermitteln sollte, unterschlägt dies gerne und häufig.</p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Hartmut Bossel: <em>Modellbildung und Simulation. Konzepte, Verfahren und Modelle zum Verhalten dynamischer Systeme. Ein Lehr- und Arbeitsbuch</em>, Braunschweig (Vieweg) 2.,&nbsp;veränderte Auflage mit verbesserter Simulationssoftware 1994</li>
+<li>Svein Linge, Hans Petter Langtangen: <em>Programming Computations – Python. A Gentle Introduction to Numerical Simulations with Python 3.6</em>, Cham CH (Springer) Second Edition 2020</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Vergleiche: Hartmut Bossel, <em>Modellbildung und Simulation</em> Braunschweig (Vieweg), 2. Auflage 1994, Seiten 78ff<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><em>Bossel</em> nennt diesen Faktor <span class="math inline">\(g\)</span>, da aber <code>g</code> in Py5 ein »reservierter« Bezeichner ist, habe ich ihn in meiner Version durch <span class="math inline">\(u\)</span> ersetzt.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Vergleiche: Svein Linge, Hans Petter Langtangen: <em>Programming Computations</em>, Cham CH (Springer) 2.&nbsp;Auflage 2020, Seiten 225ff<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
