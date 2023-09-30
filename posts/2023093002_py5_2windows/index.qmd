@@ -1,0 +1,72 @@
+---
+title: "Neue Experimente mit Py5: Ein Sketch -- zwei (oder noch mehr) Fenster"
+author: "Jörg Kantel"
+date: "2023-09-30 17:55:00"
+categories: [Py5, Python, Creative Coding, JupyterLab Desktop, Jupyter Book]
+image: "images/py5twowindow.jpg"
+---
+
+[![](images/py5twowindow-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53222219531/)
+
+Ich gebe es ja zu, ich stehe manchmal ein wenig auf dem Schlauch. So hat es bis gestern gedauert, bis ich herausgefunden hatte, wozu der *[Class Mode](https://py5coding.org/content/py5_modes.html#class-mode)* in [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) eigentlich nützlich ist: Mit ihm kann man nämlich einen Sketch mit mehr als einem Fenster schreiben. Getestet habe ich das mit diesem Notebook, das mit in Skript zwei Fenster erzeugt, die zwar unabhängig sind, aber zur gleichen Zeit angezeigt werden (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53222219531/) im Banner oben).
+
+~~~python
+%gui osx
+from py5 import Sketch
+
+class Window_1(Sketch):
+    
+    def settings(self):
+        self.size(300, 300)
+        
+    def setup(self):
+        self.window_title("Fenster 1")
+        self.rect_mode(self.CENTER)
+        
+    def draw(self):
+        self.background(49, 197, 244)
+        self.fill(248, 239, 34)
+        self.circle(self.width//2, self.height//2, 80)
+        self.fill(248, 158, 80)
+        self.rect(self.mouse_x, self.mouse_y, 40, 40)
+
+window_1 = Window_1()
+window_1.run_sketch(py5_options=["--location=1300,30"])
+
+class Window_2(Sketch):
+    
+    def settings(self):
+        self.size(300, 300)
+        
+    def setup(self):
+        self.window_title("Fenster 2")
+        
+    def draw(self):
+        self.background(98, 199, 119)
+        self.fill(240, 99, 164)
+        self.rect(self.width//2 - 50, self.height//2 - 10, 100, 60)
+        self.fill(240, 80, 37)
+        self.circle(self.mouse_x, self.mouse_y, 40)
+        
+window_2 = Window_2()
+window_2.run_sketch(py5_options=["--location=1500,360"])
+
+window_2.println("Start Fenster 2")
+~~~
+
+Der Test läuft in meiner [Py5-Installation](https://kantel.github.io/posts/2023081202_py5_jupyterlab_desktop/) für [JupyterLab Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html). Die erste Zeile `%gui osx` ist nur für [Jupyter Notebooks unter macOS notwendig](https://py5coding.org/content/osx_users.html), Nutzer anderer Betriebssysteme müssen diese Zeile weglassen. Sollte ein Notebook auf verschiedenen Plattformen laufen, kann dies mit diesen Zeilen ermöglicht werden:
+
+~~~python
+import sys
+
+if sys.platform == "darwin":
+        get_ipython().run_line_magic("gui", "osx")
+~~~
+
+Die (optionalen) `py5_options="["--location=<x_screen>,<y_screen>"]` übergeben die Koordinaten, an denen die Fenster auf dem Monitor erscheinen sollen. Die x-Werte sind in diesem Sketch so hoch, weil das Ziel der beiden Fenster ein Platz auf meinem zweiten Monizor sein sollte. Das hat auch anstandslos geklappt. Wer keinen zweiten Monitor sein eigen nennt, sollte entweder kleinere x-Werte eintragen oder auf die Option verzichten. Py5 sucht sich dann selber einen passenden Wert für die Postion der Fenster.
+
+Ich bin jedenfalls erst einmal begeistert, denn dies eröffnet mir die Möglichkeit, in einem Fenster eine Simulation laufen zu lassen und in einem zweiten Fenster (zum Beispiel mit [FPlotter](https://kantel.github.io/posts/2023092401_fplotter_py5/)) einen Graphen mit den Ergebnissen dieser Simulation zu zeigen. Dies am Beispiel [meiner Waldbrandsimulation](https://kantel.github.io/posts/2023092301_forestfire_sim_1/) zu implementieren, wird eines meiner nächsten Schritte sein.
+
+Doch zuvor möchte ich noch ausprobieren, ob und wie der [*Class Mode* auch in einem stinknormalen Editor läuft](https://kantel.github.io/posts/2023081302_py5_vscode/), zum Beispiel in [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html). Und auch, ob Py5 im *Class Mode* mit der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) spielt, steht noch auf meiner Testliste. *Still digging!*
+
+**War sonst noch was?** Ach ja, ich habe für diesen Test mein JupyterLab Desktop auf die [neueste Version 4.0.5-1](https://github.com/jupyterlab/jupyterlab-desktop/releases/tag/v4.0.5-1) aktualisiert. Das ist noch nicht das Ende der Fahnenstange, denn [JupyterLab](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) selber ist schon bei der [Version 4.0.6](https://github.com/jupyterlab/jupyterlab/releases/tag/v4.0.6) angekommen. Sinn der Übung ist, daß ich für meine schon seit langem geplanten und angekündigten numerischen Experimente endlich meine Scheu vor Notebooks verlieren möchte. Denn das scheint sich zu lohnen, so man soll zum Beispiel mit [Voilà](https://blog.jupyter.org/and-voil%C3%A0-f6a2c08a4a93) (das aktuell die [Version 0.5.0](https://blog.jupyter.org/voil%C3%A0-0-5-0-homecoming-66f2465aa86f) erreicht hat) aus einem Jupyter Notebook eine *Standalone Web Applikation* oder ein *Dashboard* erzeugen können. Ich bin gespannt, ob das auch mir einem Py5-Kernel gelingt. Und mit [MyST](https://mystmd.org/) *(Markedly Structured Text)*, einem Markdown-Superset ähnlich [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html), und [Jupyter Book](https://jupyterbook.org/en/stable/intro.html) soll man aus [Jupyter](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html)-Notebooks (auch aus JupyterLab und JupyterLab Desktop heraus) [wunderschöne Publikationen erstellen](https://kantel.github.io/posts/2023083003_myst_jupyterbook/) können. Das kann ein Spielkalb wie ich doch nicht links liegen lassen. Also noch einmal: *Still digging!*
