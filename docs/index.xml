@@ -10,7 +10,78 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Wed, 11 Oct 2023 13:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 12 Oct 2023 19:00:00 GMT</lastBuildDate>
+<item>
+  <title>Bildergenerierung mit Künstlicher Intelligenz – ein Zwischenbericht</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53253345828/"><img src="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nachdem ich mich nun etwa zehn Tage mit dem Thema »Bilderzeugung mit Künstlicher Intelligenz« herum- und viel Zeit damit totgeschlagen habe, ist es an dieser für einen Zwischenbericht mit ersten Empfehlungen, damit ich meinen Kopf wieder ein wenig für andere Projekte freibekomme.</p>
+<p>Bei dieser Zwischenbilanz solltet Ihr berücksichtigen, daß ich mir die KI-Anwendungen unter der Prämisse angeschaut habe, ob und wie die damit generierten Bilder für Nutzung in interaktiven Geschichten, erstellt mit <a href="http://blog.schockwellenreiter.de/2022/03/2022031101.html">Twine</a> und/oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, geeignet sind. Wer andere Anwendungsszenarien im Auge hat, kommt unter Umständen zu anderen Einschätzungen.</p>
+<p>Intensiver getestet habe ich bisher die <em>AI Comic Factory</em>, <em>Leonardo AI</em> und <em>DreamStudio</em>, die mir nach meinem bisherigen Kenntnisstand am Geeignetsten schienen. Alle drei Programme brachten meist schon beim ersten Durchlauf recht brauchbare Ergebnisse, die sich allerdings durch mehrere Iterationen noch erheblich verbessern ließen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53253345828/"><img src="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman-m.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich beginne mit der <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a></strong>. Diese kostenlos zu nutzende Open-Source-Anwendung ist – bei allen Quirks, unter der die Software noch leidet – mein bisheriger Favorit. Zwar brauchen die generierten Bilder für die von mir geplante Nutzung noch ein gehöriges Maß an Nachbearbeitung (die einzelnen Panels müssen ausgeschnitten und skaliert werden), aber die Ergebnisse passen von den vorgegenenen Stilen her meiner Meinung nach einfach wunderbar zu der Art von interaktiven Geschichten, die ich im Kopf habe.</p>
+<p>Außerdem sind die dargestellten Charaktere meistens wenigstens annähernd konsistent (zumindestens innerhalb einer generierten Seite), so daß sie ohne zu große Brüche in einer Geschichte Verwendung finden können.</p>
+<p>Die <a href="https://kantel.github.io/posts/2023100201_wiki_comic_factory/">anfänglichen Schwierigkeiten</a> beim <a href="https://huggingface.co/spaces/jbilcke-hf/ai-comic-factory">Server von <em>Hugging Face</em></a> scheinen auch nur vorübergehend gewesen zu sein. Seit etlichen Tagen läuft er ohne Schluckauf. Lediglich beim <em>Redraw</em> einzelner Panels friert die Ausgabe immer noch meistens ein. Daher dieses erst anstoßen, nachdem Ihr die Seite sicherheitshalber schon einmal hochaufgelöst heruntergeladen habt – sonst ist das gesamte Ergebnis weg.</p>
+<p>Die beiden nächsten getesteten Anwendungen basieren auf <em><a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html">Stable Diffusion</a></em>. Zwar ist diese Software frei (MIT-Lizenz), doch die Qualität der generierten Bilder hängt stark von den Modellen ab, die dabei verwendet werden. Und für die Auswahl und Bereitstellung dieser Modelle lassen sich die Betreiber bezahlen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53253315599/"><img src="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman01.jpg" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Leonardo AI, Prompt: An elegant woman in a sexy dress and heels, with a corgi on a leash walking in the Tiergarten of Berlin, anime style, Style: Animation Style</figcaption>
+</figure>
+</div>
+<p>Einen schier unerschöpflichen Fundus an Modellen stellt <strong><a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/leonardoai.html">Leonardo AI</a></strong> bereit. Dennoch ist das Teil recht brauchbar kostenlos zu nutzen, denn es stellt dem User alle 24 Stunden 150 <em>Tokens</em> zur Verfügung, die er »verbraten« darf, ohne zur Kasse gebeten zu werden. Ein Bild verbraucht im Schnitt zwischen fünf und zehn Token. Wenn man also vorsichtig damit umgeht und nicht immer gleich die vorgeschlagenen vier Bilder je Iteration ausnutzt (zur ersten Einschätzung reichen oft ein oder zwei Bilder), kommt man damit schon recht weit. Sind die 150 Token verbraucht, muß man den Tag verstreichen lassen, spätestens nach 24 Stunden bekommt man zuverlässig neue 150 Token zugewiesen.</p>
+<p>Sollte man wirklich mal mehr benötigen, muß man leider ein <a href="https://app.leonardo.ai/buy">Abonnenment abschließen</a> und sich längerfristig an <em>Leonardo AI</em> binden. Das günstigste Abo mit 8.500 Tokens je Monat kostet – wenn man es für ein ganzes Jahr abschließt – US-$ 10 im Monat. Das ist eine Menge Holz im Vergleich zu den 4.500 freien Token, die man bei der kostenlosen Nutzung je Monat zur Verfügung hat. Wenn man wirklich von der Anwendung überzeugt ist und diese sehr intensiv nutzt, kann so ein Abo unumgänglich sein, dann sollte man sich aber überlegen, ob die beiden Angebote mit 25.000 oder gar 60.000 Token/Monat nicht sogar sinnvoller sind.</p>
+<p>Doch zurück zur Anwendung: Leonardo AI erlaubt nicht nur die Generierung von Bildern via eines Text-Promptes, sondern man kann auch ein Referenzbild hochladen und daraus zu diesem Bild ähnliche Bilder generieren lassen. Wie groß die Gewichtung dieses Referenzbildes, aber auch des Textpromptes sein soll, kann man in der GUI einstellen. <a href="https://www.youtube.com/watch?v=kBKwFOxiQNM">In den meisten Tutorials wird die Generierung konsistenter Charaktere mit Hilfe von (auch schon von Leonardo AI erzeugter) Referenzbilder vorgeschlagen</a>.</p>
+<p>Bei hochgeladenen Referenzbildern fremder Herkunft solltet Ihr auf jeden Fall die Urheberrechte an dem Bild und das <a href="https://de.wikipedia.org/wiki/Recht_am_eigenen_Bild">Recht am eigenen Bild</a> der eventuell abgebildeten Personen beachten. Ihr bekommt andernfalls schnell unerwünschte Anwaltspost<sup>1</sup>.</p>
+<p>Leonardo kann aber nicht nur Bilder generieren, sondern sie – unter dem Menü <code>AI Canvas</code> auch weiterbearbeiten. Neben der Retusche mit Hilfe von Künstlicher Intelligenz ist eine häufige genutzte Anwendung die Erweiterung von Bildern. Aber – und das ist für mich für die Verwendung mit <em>Ren’Py</em> interessant – der <em>AI Canvas</em> kann die erzeugten Charaktere auch mit wenigen Klicken vom Hintergrund freistellen. Auch dieses Ergebnis ist in der Regel recht brauchbar.</p>
+<p>Alles in allem ist Leonardo AI eine extrem leistungsfähige Applikation und sie ist auch die am häufigsten genannte Alternative zum nur noch gegen Abo zu nutzenden Platzhirschen <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/midjourney.html">Midjourney</a><sup>2</sup>.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53252125142/"><img src="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53252130867/"><img src="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman03.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53253514425/"><img src="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman04.jpg" class="img-fluid"></a></p>
+<p><em>DreamStudio, Prompt: An elegant woman in a autumn dress and heels, with a corgi on a leash walking in the Tiergarten of Berlin. Mit einem Klick auf die Vorschaubilder kommt Ihr je zu eine Seite mit einer Vergrößerung.</em></p>
+<p>Die Stable-Diffusion-Anwendung <strong><a href="https://beta.dreamstudio.ai/generate">DreamStudio</a></strong> hat sich in der Hauptsache mit seiner Preispolitik in diesen Vergleich geschmuggelt. Denn im Gegensatz zu fast allen anderen kommerziellen Anbietern muß man bei DreamStudio kein Abo abschließen, sondern man zahlt, was man (ver-) braucht. Nachdem ich die 25 »Credits«, die man zum Start erhält, verbraucht hatte, habe ich mir für US-$ 10 (plus MWSt.) 1.000 Credits nachgekauft. Und obwohl ich mittlerweile schon ziemlch viel mit diesem Teil experimentiert habe, sind davon immer noch knapp 900 Credits übrig. Das reicht also ziemlich lange, bevor ich wieder in die Tasche greifen muß.</p>
+<p>DreamStudio stellt bei weitem nicht so viele Modelle zur Verfügung wie zum Beispiel Leonardo AI, aber etliche der Modelle, die es dort gibt, sind für meine geplanten Anwendungen mit Twine und Ren’Py ziemlich genial. Die obigen Bildchen habe ich zum Beispiel (von links nach rechts) mit den Stilen <em>Anime</em>, <em>Fantasy Art</em> und <em>Comic Book</em> erstellt. Sie passen doch für interaktive Geschichten wie »Faust aufs Auge«.</p>
+<p>Allerdings ist DreamStudio ziemlich prüde. die Dame sollte eigentlich – wie bei den anderen Bildern auf dieser Seite – einen »sexy dress« tragen, aber das nahm mir die App übel. Erst nachdem ich den »sexy dress« durch einen »autumn dress« ersetzt hatte, war DreamStudio wieder mein Freund und akzeptierte den Prompt.</p>
+<p>Die Anwendung kann – wie Leonardo AI – ebenfalls mit Referenzbildern umgehen. Auch hier ist es die einfachste Möglichkeit, wenigstens annähernd konsistente Charaktere zu erzeugen. Einen »Canvas« besitzt DreamStudio aber nicht, in den meisten Tutorials wird zur Nachbearbeitung das kostenlos zu nutzende <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/canva.html">Canva</a> empfohlen. (Notiz an mich: Canva ebenfalls testen!)</p>
+<p>DreamStudio ist gerade wegen seiner beschränkten, aber ausreichenden Möglichkeiten schnell zu erlernen und einfach zu nutzen. Gerade wer nur hin und wieder eine künstliche Intelligenzia zur Bildgenerierung benötigt, findet hier <strong>sein</strong> Werkzeug.</p>
+<p><strong>Prompt-Gestaltung</strong>: Speziell bei den Stable-Diffusion-Ablegern wie Leonardo AI oder DreamStudio steht und fällt die Qualität der Ergebnisse mit den verwendeten Prompts<sup>3</sup>. Das Video »<a href="https://www.youtube.com/watch?v=qJW_OzZ8qcU">Crafting A Perfect AI Image Prompt</a>« will Euch zeigen, wie Ihr einen idealen Prompt gestaltet.</p>
+<p><strong>Wie geht es weiter?</strong> Natürlich stehen noch einige Anwendungen bei mir auf der Matte, die auf einen Test warten. Auch wenn ich jetzt erst einmal eine Pause machen möchte, in der Pipeline sind bei mir noch <strong>TensorArt</strong> (<a href="https://www.youtube.com/watch?v=b6DbLvov38Y">dieses Video</a> einer Dame, die ebenfalls vor lauter Dollarzeichen in den Augen kaum noch geradeaus schauen kann, hält den Einladungs-Code <code>monice1111</code> mit 100 freien Credits für mich und Euch vor), <strong><a href="https://lexica.art/aperture">Aperture by Lexica</a></strong> (auch ein Stable-Diffusion Ableger), <strong><a href="https://dreamlike.art/">Dreamlike</a></strong> und mit <strong><a href="https://instantart.io/">Instant Art</a></strong> eine weitere Stable-Diffusion-Anwendung. Zumindest die drei letztgenannten sollen wenigstens in einer Grundversion sinnvoll kostenlos zu nutzen sein. Schaun wir mal.</p>
+<p>Aber vor allem ist da noch das brandneue <strong><a href="https://openai.com/dall-e-3">DALL-E 3</a></strong> von OpenAI, das mit Lobeshymnen geradezu überhäuft wird. Bisher können es wohl nur Microsoft-/Bing-Nutzer (kostenlos) testen, aber auch andere Anbieter (zum Beispiel LibreOffice und ChatGPT) stehen in den Startlöchern und wollen ebenfalls eine <a href="https://www.youtube.com/watch?v=7KGw2T45D8U">kostenlose Nutzung</a> anbieten. Einen Vorgeschmack bietet der Beitrag »<a href="https://artificialcorner.com/now-you-can-generate-ai-images-in-chatgpt-with-dall-e-3-goodbye-midjourney-76a547321575">Now You Can Generate AI Images in ChatGPT with DALL-E 3</a>« von <em>Diana Dovgopol</em> (leider auf Medium.com und daher eventuell hinter einer Bezahlschranke verborgen, sorry).</p>
+<p>Jetzt habe ich alles herausgehauen, was ich bis heute über »Bilder mit Künstlicher Intelligenz erzeugen« weiß. So freigeschaufelt möchte ich als nächstes dem Monat entsprechend irgend etwas zum Thema »Halloween« anstellen. Ob ich dafür eine Künstliche Intelligenz benötige oder nicht, lasse ich erst einmal offen. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53253345828/">Elegant Woman with Corgi</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a>. Prompt: »<em>An elegant woman in a sexy dress and heels, with a corgi on a leash walking in the Tiergarten of Berlin</em>«. Style: Franco-Belgian.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Das gilt auch bei der Verwendung von Markenzeichen. In die Trainingsdaten der Modelle schleichen sich schnell geschützte Logos oder Markenzeichen von Firmen ein, die dann auch in Euren Bildern auftauchen. Viele der Rechteinhaber sind darüber vermutlich nicht <em>amused</em> und schalten dann ebenfalls einen Anwalt ein.↩︎</p></li>
+<li id="fn2"><p>Midjourney hat sich wegen seiner Preisgestaltung (die einmalig zur Verfügung gestellten 25 »Credits« reichten selbst für einen minimalen Test nicht aus) selber aus diesem Vergleich gekickt.↩︎</p></li>
+<li id="fn3"><p>Das gilt natürlich auch für die AI Comic Factory. Überhaupt ist mir nicht klar, ob bei ihr im Hintergrund nicht auch Stable Diffusion (oder ein Ableger davon) werkelt.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Bilder</category>
+  <category>Künstliche Intelligenz</category>
+  <category>Interactive Fiction</category>
+  <category>RenPy</category>
+  <category>Twine</category>
+  <guid>https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/index.html</guid>
+  <pubDate>Thu, 12 Oct 2023 19:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023101201_ki-bilder-zwischenbericht/images/corgiwoman.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Security Alert: Apple veröffentlicht iOS/iPadOS 16.7.1 für ältere Systeme</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -901,31 +972,6 @@ font-style: inherit;">"osx"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023093001_thunderbird_11531/index.html</guid>
   <pubDate>Sat, 30 Sep 2023 14:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023093001_thunderbird_11531/images/bacchante.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Mozilla hat eine neue Version Firefox 118.0.1 nachgeschoben</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023092902_firefox_11801/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Gustave_Courbet_-_Nude_Woman_with_Dog_-_WGA05508.jpg/948px-Gustave_Courbet_-_Nude_Woman_with_Dog_-_WGA05508.jpg"><img src="https://kantel.github.io/posts/2023092902_firefox_11801/images/femmechien-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Diesen Monat überschlagen sich die Softwarehäuser aber regelrecht mit ihren Updates. Hatte Mozilla erst <a href="https://kantel.github.io/posts/2023092601_firefox_118/">vor wenigen Tagen</a> die Firefox-Version 118.0 (und ESR 115.3) freigegeben, mußten sie gestern die Versionen <a href="https://www.mozilla.org/en-US/firefox/118.0.1/releasenotes/">118.0.1</a> und <a href="https://www.mozilla.org/en-US/firefox/115.3.1/releasenotes/">ESR 115.3.1</a> nachschieben und darin auch wieder Sicherheitslücken beheben.</p>
-<p>Wie immer: Firefox weist selbst auf dieses Update hin. Diese Prozedur kann aber auch über das Menü <code>Hilfe &gt; Über Firefox</code> angestoßen werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<p><em>(Bild: <a href="https://fr.wikipedia.org/wiki/Liste_de_tableaux_de_Gustave_Courbet">Gustave Courbet</a> (1819-1877): Femme nue au chien, etwa 1861-1862. Bildquelle: <a href="https://commons.wikimedia.org/wiki/File:Gustave_Courbet_-_Nude_Woman_with_Dog_-_WGA05508.jpg">Wikimedia Commons</a>)</em></p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2023092902_firefox_11801/index.html</guid>
-  <pubDate>Fri, 29 Sep 2023 12:25:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023092902_firefox_11801/images/femmechien.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

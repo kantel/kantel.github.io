@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Bildergenerierung mit Künstlicher Intelligenz – ein Zwischenbericht</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bildergenerierung mit Künstlicher Intelligenz – ein Zwischenbericht</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Bilder</div>
+    <div class="quarto-category">Künstliche Intelligenz</div>
+    <div class="quarto-category">Interactive Fiction</div>
+    <div class="quarto-category">RenPy</div>
+    <div class="quarto-category">Twine</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">12. Oktober 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53253345828/"><img src="images/corgiwoman-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nachdem ich mich nun etwa zehn Tage mit dem Thema »Bilderzeugung mit Künstlicher Intelligenz« herum- und viel Zeit damit totgeschlagen habe, ist es an dieser für einen Zwischenbericht mit ersten Empfehlungen, damit ich meinen Kopf wieder ein wenig für andere Projekte freibekomme.</p>
+<p>Bei dieser Zwischenbilanz solltet Ihr berücksichtigen, daß ich mir die KI-Anwendungen unter der Prämisse angeschaut habe, ob und wie die damit generierten Bilder für Nutzung in interaktiven Geschichten, erstellt mit <a href="http://blog.schockwellenreiter.de/2022/03/2022031101.html">Twine</a> und/oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, geeignet sind. Wer andere Anwendungsszenarien im Auge hat, kommt unter Umständen zu anderen Einschätzungen.</p>
+<p>Intensiver getestet habe ich bisher die <em>AI Comic Factory</em>, <em>Leonardo AI</em> und <em>DreamStudio</em>, die mir nach meinem bisherigen Kenntnisstand am Geeignetsten schienen. Alle drei Programme brachten meist schon beim ersten Durchlauf recht brauchbare Ergebnisse, die sich allerdings durch mehrere Iterationen noch erheblich verbessern ließen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53253345828/"><img src="images/corgiwoman-m.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Ich beginne mit der <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a></strong>. Diese kostenlos zu nutzende Open-Source-Anwendung ist – bei allen Quirks, unter der die Software noch leidet – mein bisheriger Favorit. Zwar brauchen die generierten Bilder für die von mir geplante Nutzung noch ein gehöriges Maß an Nachbearbeitung (die einzelnen Panels müssen ausgeschnitten und skaliert werden), aber die Ergebnisse passen von den vorgegenenen Stilen her meiner Meinung nach einfach wunderbar zu der Art von interaktiven Geschichten, die ich im Kopf habe.</p>
+<p>Außerdem sind die dargestellten Charaktere meistens wenigstens annähernd konsistent (zumindestens innerhalb einer generierten Seite), so daß sie ohne zu große Brüche in einer Geschichte Verwendung finden können.</p>
+<p>Die <a href="https://kantel.github.io/posts/2023100201_wiki_comic_factory/">anfänglichen Schwierigkeiten</a> beim <a href="https://huggingface.co/spaces/jbilcke-hf/ai-comic-factory">Server von <em>Hugging Face</em></a> scheinen auch nur vorübergehend gewesen zu sein. Seit etlichen Tagen läuft er ohne Schluckauf. Lediglich beim <em>Redraw</em> einzelner Panels friert die Ausgabe immer noch meistens ein. Daher dieses erst anstoßen, nachdem Ihr die Seite sicherheitshalber schon einmal hochaufgelöst heruntergeladen habt – sonst ist das gesamte Ergebnis weg.</p>
+<p>Die beiden nächsten getesteten Anwendungen basieren auf <em><a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html">Stable Diffusion</a></em>. Zwar ist diese Software frei (MIT-Lizenz), doch die Qualität der generierten Bilder hängt stark von den Modellen ab, die dabei verwendet werden. Und für die Auswahl und Bereitstellung dieser Modelle lassen sich die Betreiber bezahlen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53253315599/"><img src="images/corgiwoman01.jpg" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Leonardo AI, Prompt: An elegant woman in a sexy dress and heels, with a corgi on a leash walking in the Tiergarten of Berlin, anime style, Style: Animation Style</figcaption>
+</figure>
+</div>
+<p>Einen schier unerschöpflichen Fundus an Modellen stellt <strong><a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/leonardoai.html">Leonardo AI</a></strong> bereit. Dennoch ist das Teil recht brauchbar kostenlos zu nutzen, denn es stellt dem User alle 24 Stunden 150 <em>Tokens</em> zur Verfügung, die er »verbraten« darf, ohne zur Kasse gebeten zu werden. Ein Bild verbraucht im Schnitt zwischen fünf und zehn Token. Wenn man also vorsichtig damit umgeht und nicht immer gleich die vorgeschlagenen vier Bilder je Iteration ausnutzt (zur ersten Einschätzung reichen oft ein oder zwei Bilder), kommt man damit schon recht weit. Sind die 150 Token verbraucht, muß man den Tag verstreichen lassen, spätestens nach 24 Stunden bekommt man zuverlässig neue 150 Token zugewiesen.</p>
+<p>Sollte man wirklich mal mehr benötigen, muß man leider ein <a href="https://app.leonardo.ai/buy">Abonnenment abschließen</a> und sich längerfristig an <em>Leonardo AI</em> binden. Das günstigste Abo mit 8.500 Tokens je Monat kostet – wenn man es für ein ganzes Jahr abschließt – US-$ 10 im Monat. Das ist eine Menge Holz im Vergleich zu den 4.500 freien Token, die man bei der kostenlosen Nutzung je Monat zur Verfügung hat. Wenn man wirklich von der Anwendung überzeugt ist und diese sehr intensiv nutzt, kann so ein Abo unumgänglich sein, dann sollte man sich aber überlegen, ob die beiden Angebote mit 25.000 oder gar 60.000 Token/Monat nicht sogar sinnvoller sind.</p>
+<p>Doch zurück zur Anwendung: Leonardo AI erlaubt nicht nur die Generierung von Bildern via eines Text-Promptes, sondern man kann auch ein Referenzbild hochladen und daraus zu diesem Bild ähnliche Bilder generieren lassen. Wie groß die Gewichtung dieses Referenzbildes, aber auch des Textpromptes sein soll, kann man in der GUI einstellen. <a href="https://www.youtube.com/watch?v=kBKwFOxiQNM">In den meisten Tutorials wird die Generierung konsistenter Charaktere mit Hilfe von (auch schon von Leonardo AI erzeugter) Referenzbilder vorgeschlagen</a>.</p>
+<p>Bei hochgeladenen Referenzbildern fremder Herkunft solltet Ihr auf jeden Fall die Urheberrechte an dem Bild und das <a href="https://de.wikipedia.org/wiki/Recht_am_eigenen_Bild">Recht am eigenen Bild</a> der eventuell abgebildeten Personen beachten. Ihr bekommt andernfalls schnell unerwünschte Anwaltspost<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Leonardo kann aber nicht nur Bilder generieren, sondern sie – unter dem Menü <code>AI Canvas</code> auch weiterbearbeiten. Neben der Retusche mit Hilfe von Künstlicher Intelligenz ist eine häufige genutzte Anwendung die Erweiterung von Bildern. Aber – und das ist für mich für die Verwendung mit <em>Ren’Py</em> interessant – der <em>AI Canvas</em> kann die erzeugten Charaktere auch mit wenigen Klicken vom Hintergrund freistellen. Auch dieses Ergebnis ist in der Regel recht brauchbar.</p>
+<p>Alles in allem ist Leonardo AI eine extrem leistungsfähige Applikation und sie ist auch die am häufigsten genannte Alternative zum nur noch gegen Abo zu nutzenden Platzhirschen <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/midjourney.html">Midjourney</a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53252125142/"><img src="images/corgiwoman02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53252130867/"><img src="images/corgiwoman03.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53253514425/"><img src="images/corgiwoman04.jpg" class="img-fluid"></a></p>
+<p><em>DreamStudio, Prompt: An elegant woman in a autumn dress and heels, with a corgi on a leash walking in the Tiergarten of Berlin. Mit einem Klick auf die Vorschaubilder kommt Ihr je zu eine Seite mit einer Vergrößerung.</em></p>
+<p>Die Stable-Diffusion-Anwendung <strong><a href="https://beta.dreamstudio.ai/generate">DreamStudio</a></strong> hat sich in der Hauptsache mit seiner Preispolitik in diesen Vergleich geschmuggelt. Denn im Gegensatz zu fast allen anderen kommerziellen Anbietern muß man bei DreamStudio kein Abo abschließen, sondern man zahlt, was man (ver-) braucht. Nachdem ich die 25 »Credits«, die man zum Start erhält, verbraucht hatte, habe ich mir für US-$ 10 (plus MWSt.) 1.000 Credits nachgekauft. Und obwohl ich mittlerweile schon ziemlch viel mit diesem Teil experimentiert habe, sind davon immer noch knapp 900 Credits übrig. Das reicht also ziemlich lange, bevor ich wieder in die Tasche greifen muß.</p>
+<p>DreamStudio stellt bei weitem nicht so viele Modelle zur Verfügung wie zum Beispiel Leonardo AI, aber etliche der Modelle, die es dort gibt, sind für meine geplanten Anwendungen mit Twine und Ren’Py ziemlich genial. Die obigen Bildchen habe ich zum Beispiel (von links nach rechts) mit den Stilen <em>Anime</em>, <em>Fantasy Art</em> und <em>Comic Book</em> erstellt. Sie passen doch für interaktive Geschichten wie »Faust aufs Auge«.</p>
+<p>Allerdings ist DreamStudio ziemlich prüde. die Dame sollte eigentlich – wie bei den anderen Bildern auf dieser Seite – einen »sexy dress« tragen, aber das nahm mir die App übel. Erst nachdem ich den »sexy dress« durch einen »autumn dress« ersetzt hatte, war DreamStudio wieder mein Freund und akzeptierte den Prompt.</p>
+<p>Die Anwendung kann – wie Leonardo AI – ebenfalls mit Referenzbildern umgehen. Auch hier ist es die einfachste Möglichkeit, wenigstens annähernd konsistente Charaktere zu erzeugen. Einen »Canvas« besitzt DreamStudio aber nicht, in den meisten Tutorials wird zur Nachbearbeitung das kostenlos zu nutzende <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/canva.html">Canva</a> empfohlen. (Notiz an mich: Canva ebenfalls testen!)</p>
+<p>DreamStudio ist gerade wegen seiner beschränkten, aber ausreichenden Möglichkeiten schnell zu erlernen und einfach zu nutzen. Gerade wer nur hin und wieder eine künstliche Intelligenzia zur Bildgenerierung benötigt, findet hier <strong>sein</strong> Werkzeug.</p>
+<p><strong>Prompt-Gestaltung</strong>: Speziell bei den Stable-Diffusion-Ablegern wie Leonardo AI oder DreamStudio steht und fällt die Qualität der Ergebnisse mit den verwendeten Prompts<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Das Video »<a href="https://www.youtube.com/watch?v=qJW_OzZ8qcU">Crafting A Perfect AI Image Prompt</a>« will Euch zeigen, wie Ihr einen idealen Prompt gestaltet.</p>
+<p><strong>Wie geht es weiter?</strong> Natürlich stehen noch einige Anwendungen bei mir auf der Matte, die auf einen Test warten. Auch wenn ich jetzt erst einmal eine Pause machen möchte, in der Pipeline sind bei mir noch <strong>TensorArt</strong> (<a href="https://www.youtube.com/watch?v=b6DbLvov38Y">dieses Video</a> einer Dame, die ebenfalls vor lauter Dollarzeichen in den Augen kaum noch geradeaus schauen kann, hält den Einladungs-Code <code>monice1111</code> mit 100 freien Credits für mich und Euch vor), <strong><a href="https://lexica.art/aperture">Aperture by Lexica</a></strong> (auch ein Stable-Diffusion Ableger), <strong><a href="https://dreamlike.art/">Dreamlike</a></strong> und mit <strong><a href="https://instantart.io/">Instant Art</a></strong> eine weitere Stable-Diffusion-Anwendung. Zumindest die drei letztgenannten sollen wenigstens in einer Grundversion sinnvoll kostenlos zu nutzen sein. Schaun wir mal.</p>
+<p>Aber vor allem ist da noch das brandneue <strong><a href="https://openai.com/dall-e-3">DALL-E 3</a></strong> von OpenAI, das mit Lobeshymnen geradezu überhäuft wird. Bisher können es wohl nur Microsoft-/Bing-Nutzer (kostenlos) testen, aber auch andere Anbieter (zum Beispiel LibreOffice und ChatGPT) stehen in den Startlöchern und wollen ebenfalls eine <a href="https://www.youtube.com/watch?v=7KGw2T45D8U">kostenlose Nutzung</a> anbieten. Einen Vorgeschmack bietet der Beitrag »<a href="https://artificialcorner.com/now-you-can-generate-ai-images-in-chatgpt-with-dall-e-3-goodbye-midjourney-76a547321575">Now You Can Generate AI Images in ChatGPT with DALL-E 3</a>« von <em>Diana Dovgopol</em> (leider auf Medium.com und daher eventuell hinter einer Bezahlschranke verborgen, sorry).</p>
+<p>Jetzt habe ich alles herausgehauen, was ich bis heute über »Bilder mit Künstlicher Intelligenz erzeugen« weiß. So freigeschaufelt möchte ich als nächstes dem Monat entsprechend irgend etwas zum Thema »Halloween« anstellen. Ob ich dafür eine Künstliche Intelligenz benötige oder nicht, lasse ich erst einmal offen. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53253345828/">Elegant Woman with Corgi</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a>. Prompt: »<em>An elegant woman in a sexy dress and heels, with a corgi on a leash walking in the Tiergarten of Berlin</em>«. Style: Franco-Belgian.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Das gilt auch bei der Verwendung von Markenzeichen. In die Trainingsdaten der Modelle schleichen sich schnell geschützte Logos oder Markenzeichen von Firmen ein, die dann auch in Euren Bildern auftauchen. Viele der Rechteinhaber sind darüber vermutlich nicht <em>amused</em> und schalten dann ebenfalls einen Anwalt ein.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Midjourney hat sich wegen seiner Preisgestaltung (die einmalig zur Verfügung gestellten 25 »Credits« reichten selbst für einen minimalen Test nicht aus) selber aus diesem Vergleich gekickt.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Das gilt natürlich auch für die AI Comic Factory. Überhaupt ist mir nicht klar, ob bei ihr im Hintergrund nicht auch Stable Diffusion (oder ein Ableger davon) werkelt.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
