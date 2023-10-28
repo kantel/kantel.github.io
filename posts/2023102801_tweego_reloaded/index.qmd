@@ -1,0 +1,169 @@
+---
+title: "Zurück ins Wunderland: Twine, Harlowe und Tweego reloaded"
+author: "Jörg Kantel"
+date: "2023-10-28 19:15:00"
+categories: [Interactive Fiction, Twine, Tweego, Harlowe, Bilder, Künstliche Intelligenz]
+image: "images/aliceharlowe.jpg"
+---
+
+[![](images/aliceharlowe-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53291151422/)
+
+Auf ein Neues: Meine Beschäftigung mit den Bildgeneratoren aus dem Reich der gekünstelten Intelligenzia haben mich motiviert und inspiriert, meine Ausflüge in den Wunderland-Kosmos mit Alice und [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) wieder aufzunehmen. Doch hatte ich ursprünglich vor, dafür gemeinfreie Bilder längst verstorbener Illustratoren zu verwenden, habe ich nun beschlossen, die Gestaltung der Bilder einer Künstlichen Intelligenz zu übertragen.
+
+In diesem ersten Beispiel habe ich alle Bilder von der [AI Comic Factory](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html) erstellen lassen, Das war zwar eine nette, doch nicht unbedingt die klügste Entscheidung, andere Generatoren scheinen bedeutend vielseitiger und leistungsfähiger zu sein. Ich führe gerade intensive Tests mit einigen von ihnen durch, daher muß es nicht unbedingt bei der *Comic Factory* bleiben. Denn die [Stable Diffusion](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html)-Ableger [Leonardo AI](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/computergraphik.html), [DreamStudio](https://beta.dreamstudio.ai/generate) und [Clipdrop](https://clipdrop.co/) stehen ebenfalls noch auf meiner Testliste[^1].
+
+[^1]: Und sollte es mir gelingen, *Stable Diffusion* lokal auf meinem betagten MacBook Pro zur Mitarbeit zu bewegen, dann stehen mir noch viele weitere Möglichkeiten offen.
+
+Außerdem habe ich beschlossen, nicht in der GUI von Twine&nbsp;2 zu arbeiten, sondern den Twine-Compiler [Tweego](https://clipdrop.co/) zusammen mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) zu nutzen[^2]. Das ist keine Einschränkung, denn alles, was mit Tweego funktioniert, funktioniert auch in Twine direkt. Aber es ist in *Visual Studio Code* einfacher, den Quelltext zu extrahieren und hier im ~~Blog~~ Kritzelheft zu veröffentlichen.
+
+[^2]: Das ist unter anderem auch eine Geschmacksfrage. Mache Menschen (mich eingeschlossen) fühlen sich einfach wohler, wenn sie in ihrem gewohnten Texteditor herumsauen können und sich nicht duch eine GUI mit ihren vielen, in Menüs und Untermenüs versteckten Optionen quälen müssen.
+
+Ich bin auch wieder zum Default-Storyformat [Harlowe](http://twine2.neocities.org/) zurückgekehrt. [Chapbook](https://klembot.github.io/chapbook/guide/) hat zwar seine Vorzüge, wenn es darum geht, Prototypen in Twine zu schreiben, die später dann (zum Beispiel) nach [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html) portiert werden sollen, aber wenn man in Twine bleiben will, dann besitzt momentan Harlowe einfach noch mehr Features, mit denen Twine-Spiele aufgemotzt werden können. Daher denke ich, daß ich mit Harlowe erst einmal das Fundament legen sollte, bevor ich Ausflüge zu den Storyformaten Chapbook, [SugarCube](https://www.motoslave.net/sugarcube/2/docs/) oder gar [Snowman](https://bitbucket.org/klembot/snowman-2) unternehme.
+
+Aber jetzt zu meinem ersten Tutorial. Es ist eine Abwandlung einer alten Version, eigentlich sind nur die Bilder neu. Es beginnt wie fast jede Twine-Geschichte mit der Startpassage:
+
+~~~twee
+:: Start 
+
+<img src="images/grinsekatze1.jpg" />
+
+Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland.
+Sie hatte sich ein wenig verirrt. Plötzlich materialisierte sich vor der alten
+Ruine am Eingang des Wunderlandes die Grinsekatze.
+
+Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen
+soll!«
+
+Die Grinsekatze grinste: »Das hängt zum großen Teil davon ab, wohin Du möchtest.
+Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der Herzogin->herzogin]],
+links zur [[Teeparty des verrückten Hutmachers->teaparty]] und rechts triffst Du
+die [[kiffende Raupe->raupe]] auf ihrem Pilz.«
+~~~
+
+Harlowe besitzt im Gegensatz zu Chapbook oder SugarCube keine »eingebaute« Unterstützung für Multimedia-Inhalte wie Bilder, Töne oder Videos. Die Entwicklerin oder der Entwickler muß daher auf HTML zurückgreifen, was ich mit dem `img`-Tag demonstriere.
+
+In diesem ersten Tutorial kommt nur **ein** Link-Makro zum Einsatz, das in allen mir bekannten Storyformaten gleich funktioniert: Entweder `[[linktext]]` oder `[[linktext->linkziel]]` bringen das gewünschte Ergebnis. Dabei ist zu beachten, daß Twine sehr pickig auf Leerzeichen reagiert, die im Zweifelsfalle Teil des Linkziels werden. Da dies in der Regel nicht erwünscht ist, empfiehlt es sich, rechts und links von dem Pfeil `->` auf Leerzeichen zu verzichten.
+
+Die ganze Story besteht neben der Start-Passage nur aus wenigen weiteren Passagen und ist *straigt forward*:
+
+~~~twee
+:: herzogin
+
+<img src="images/duchesse.jpg" />
+
+Im Haus der Herzogin herrschte Chaos. Erst warf die Köchin mit einem Topf nach
+Alice, dann drückte die Herzogin ihr ein plärrendes [[Baby->schweinchen]] in
+den Arm.
+
+:: schweinchen
+
+<img src="images/alicepig.jpg" />
+
+
+Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem
+Grunzen und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen
+im Arm hielt.
+
+Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt
+zurück an den [[Start]].
+
+:: teaparty
+
+<img src="images/teaparty.jpg" />
+
+Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser
+deklamierte gerade ein langes, dafür um so langweiligeres Gedicht.
+
+Alice hatte sehr schnell genug davon, also überlegte sie, ob sie doch die
+[[Raupe->raupe]] aufzusuchen oder gleich nach [[Hause->home]] gehen sollte.
+
+:: raupe
+
+<img src="images/caterpillar.jpg" />
+
+
+Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte
+nur immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen
+müßte. Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.
+
+Alice beschloß, daß sie für heute genug habe und ging nach
+[[Hause->grinsekatze2]].
+
+:: grinsekatze2
+
+<img src="images/grinsekatze2.jpg" />
+
+Auf dem Weg nach Hause materialisierte sich pötzlich die Grinsekatze wieder vor
+Alice. Sie grinste breit – so breit können nur Grinsekatzen grinsen – und fragte:
+»Na, war die Raupe wieder bekifft?«
+
+Alice hatte jetzt endgültig genug von ihrem heutigen Ausflug und
+[[verließ das Wunderland->home]].
+
+:: home
+
+<img src="images/home.jpg" />
+
+Zuhause traf Alice auf ihre Schwester und das weiße Kaninchen, mit denen sie
+zusammen noch gemütlich ein Kännchen Kaffee trank. So wurde es doch noch ein
+gelungengener Nachmittag.
+
+[[Noch einmal spielen->Start]]?
+~~~
+
+Zu beachten ist, daß die Passagentitel hinter den doppelten Doppelpunkten in der Twine-GUI tatsächlich (ohne die zwei Doppelpunkte -- und **ohne** Leerzeichen!) als Passagentitel eingesetzt werden müssen.
+
+Und um das alles ein wenig zu verschönern, habe ich dem Spiel noch dieses zusätzliche Stylesheet (CSS) gegönnt:
+
+~~~css
+:: StoryStylesheet [stylesheet]
+tw-story {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+tw-link {
+  color: #009991;
+}
+
+tw-link.visited {
+  color: #009991;
+}
+
+tw-link.visited:hover 
+ {
+  color: #009991;
+}
+
+
+tw-link.hover {
+  color: #009991;
+}
+
+.enchantment-link:hover, tw-link:hover {
+ color: #009991;
+}
+
+
+tw-sidebar {
+	display: none;
+}
+
+tw-passage {
+        text-align: left; 
+        font-size: 4vh;
+        font-size: 4vw;
+        font-size: 4vmin;
+        line-height: normal;
+}
+
+img {max-width: 100%;
+     max-height: 100%;
+}
+~~~
+
+Dieses kleine Beispiel zeigt, daß man tatsächlich, ohne große Programmierkenntnisse besitzen zu müssen, in Twine auch recht komplexe, verzweigte interaktive Geschichten erzählen kann. In den nächsten Tutorials möchte ich dann aber doch auf die vielen Skriptmöglichkeiten von Harlowe eingehen, mit denen Ihr Eure Geschichten gewaltig aufmotzen könnt.
+
+Wie immer habe ich nicht nur den [Twee-Quellcode](https://github.com/kantel/twine-entdecken/tree/master/tweego/aliceharlowe/alice_1/src) und die [verwendeten Bildchen](https://github.com/kantel/twine-entdecken/tree/master/tweego/aliceharlowe/alice_1/images) in mein GitHub-Repositorium hochgeladen, sondern das fertige Teil auch als spielbare Version auf [Itch.io](https://kantel.itch.io/zurck-ins-wunderland) eingestellt, damit Ihr es dort testen könnt.
+
+Ex wird vielleicht noch ein wenig Zeit in Anspruch nehmen, aber es wird Fortsetzungen zu diesem Tutorial geben. Zwar fühle ich mich recht fit in Twine und Harlowe, aber mit den verschiedenen Implementierungen der Künstlichen Intelligenz für das Generieren der Bilder muß ich noch ein wenig vertrauter werden. *Still digging!*
