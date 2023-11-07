@@ -1,0 +1,28 @@
+---
+title: "Quarto: Mal wieder am Stylesheet gebastelt"
+author: "Jörg Kantel"
+date: "2023-11-07 16:00:00"
+categories: [Interna, Quarto]
+image: "images/cyberpunksysadmin05.jpg"
+---
+
+[![](images/cyberpunksysadmin05-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53315087847/)
+
+Nach einer längeren Pause sah ich mich mal wieder genötigt, am [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html)-Stylesheet, das dieses ~~Blog~~ Kritzelheft antreibt, Korrekturen vorzunehmen. Denn gestern fiel mir auf, daß die Listen nicht mit der gewünschten Serifen-Schrift, sondern mit einem serifenlosen Font angzeigt wurden.
+
+Es ist zwar nur eine Kleinigkeit, die mir bisher nie aufgefallen war. Aber wenn einem so etwas einmal aufgefallen ist, dann stört es plötzlich ungemein. Also habe ich die Entwickler-Tools meines Browsers angeworfen und mir angeschaut, wo ich hier engreifen muß. Und dann habe ich der Datei `custom_theme.scss` meiner Quarto-Implementierung noch diese Zeile spendiert:
+
+~~~css
+ul {
+  font-family: Georgia,Cambria,"Times New Roman",Times,serif;
+}
+~~~
+
+Danach war alle schick und ich konnte mir meine Seite(n) wieder anschauen, ohne Augenkrebs zu befürchten.
+
+(Das alles steht hier eigentlich nur, damit ich beim nächsten Mal nicht vergesse, was in solchen Fällen zu tun ist.)
+
+---
+
+**Bild**: *[Cypberpunk SysAdmin](https://www.flickr.com/photos/schockwellenreiter/53315087847/)*, erstellt mit [Clipdrop AI](https://clipdrop.co/stable-diffusion). Prompt: *»a young woman dressed in steampunk style sits in front of a vintage computer, background is a museum with strange artefacts«*. Model: Stable Diffusion XL, Style: Neon Punk.
+

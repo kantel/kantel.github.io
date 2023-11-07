@@ -10,7 +10,55 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Tue, 07 Nov 2023 14:05:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 07 Nov 2023 15:00:00 GMT</lastBuildDate>
+<item>
+  <title>Quarto: Mal wieder am Stylesheet gebastelt</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023110702_css_bastelei/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53315087847/"><img src="https://kantel.github.io/posts/2023110702_css_bastelei/images/cyberpunksysadmin05-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Nach einer längeren Pause sah ich mich mal wieder genötigt, am <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a>-Stylesheet, das dieses <del>Blog</del> Kritzelheft antreibt, Korrekturen vorzunehmen. Denn gestern fiel mir auf, daß die Listen nicht mit der gewünschten Serifen-Schrift, sondern mit einem serifenlosen Font angzeigt wurden.</p>
+<p>Es ist zwar nur eine Kleinigkeit, die mir bisher nie aufgefallen war. Aber wenn einem so etwas einmal aufgefallen ist, dann stört es plötzlich ungemein. Also habe ich die Entwickler-Tools meines Browsers angeworfen und mir angeschaut, wo ich hier engreifen muß. Und dann habe ich der Datei <code>custom_theme.scss</code> meiner Quarto-Implementierung noch diese Zeile spendiert:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb1-1">ul {</span>
+<span id="cb1-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">font-family</span>: Georgia<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span>Cambria<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Times New Roman"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span>Times<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-3">}</span></code></pre></div>
+<p>Danach war alle schick und ich konnte mir meine Seite(n) wieder anschauen, ohne Augenkrebs zu befürchten.</p>
+<p>(Das alles steht hier eigentlich nur, damit ich beim nächsten Mal nicht vergesse, was in solchen Fällen zu tun ist.)</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53315087847/">Cypberpunk SysAdmin</a></em>, erstellt mit <a href="https://clipdrop.co/stable-diffusion">Clipdrop AI</a>. Prompt: <em>»a young woman dressed in steampunk style sits in front of a vintage computer, background is a museum with strange artefacts«</em>. Model: Stable Diffusion XL, Style: Neon Punk.</p>
+
+
+
+ ]]></description>
+  <category>Interna</category>
+  <category>Quarto</category>
+  <guid>https://kantel.github.io/posts/2023110702_css_bastelei/index.html</guid>
+  <pubDate>Tue, 07 Nov 2023 15:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023110702_css_bastelei/images/cyberpunksysadmin05.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google schließt am »November-Patchday« wieder Sicherheitslücken in Android</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1296,38 +1344,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2023102601_big_apple_patchday/index.html</guid>
   <pubDate>Thu, 26 Oct 2023 14:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023102601_big_apple_patchday/images/whiterabbit4.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Google korrigiert schon wieder in Version 118 seines Browsers Chrome kritische Sicherheitslücken</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023102503_chrome_update/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53265298824/"><img src="https://kantel.github.io/posts/2023102503_chrome_update/images/grinsekatze-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Hatte ich beim <a href="https://kantel.github.io/posts/2023101801_chrome_update/">letzten Update</a> noch über einen wöchentlichen Flickentag-Rythmus gelästert, so scheint er sich tatsächlich zu bewahrheiten<sup>1</sup>: Denn genau eine Woche nach dem letzten und vierzehn Tage nach dem <a href="https://kantel.github.io/posts/2023101101_chrome_alert/">vorletzten Update</a> schiebt Google erneut ein weiteres Update der Version 118 (118.0.5993.117/118) seines Browsers Chrome nach und schließt wieder <a href="https://chromereleases.googleblog.com/2023/10/stable-channel-update-for-desktop_24.html">kritische Sicherheitslücken</a>.</p>
-<p>Chrome aktualisiert sich (außer bei Linux) über die integrierte Update-Funktion, kann aber – wenn es pressiert – auch <a href="https://www.google.com/intl/de/chrome/browser/">hier geladen</a> werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <a href="https://www.flickr.com/photos/schockwellenreiter/53265298824/">Cheshire Cat</a>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a>. Prompt: »<em>The Cheshire Cat sits on top of an abandoned, spooky house and disappears slowly</em>«. Style: Humanoid.</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Das ist <strong>keine</strong> Kritik an Google. Im Gegenteil, ich bin froh, daß die Datenkrake die Sicherheit der Nutzer offensichtlich ernst nimmt.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2023102503_chrome_update/index.html</guid>
-  <pubDate>Wed, 25 Oct 2023 18:25:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023102503_chrome_update/images/grinsekatze.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
