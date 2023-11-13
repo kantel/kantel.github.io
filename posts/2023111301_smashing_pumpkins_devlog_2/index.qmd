@@ -1,0 +1,107 @@
+---
+title: "Devlog: Smashing Pumpkins mit Twine und SugarCube (Teil&nbsp;2)"
+author: "Jörg Kantel"
+date: "2023-11-13 17:30:00"
+categories: [Interactive Fiction, Twine, Spieleprogrammierung, Stable Diffusion, Bilder, Künstliche Intelligenz]
+image: "images/smashingpumpkinsv01.jpg"
+---
+
+[![](images/smashingpumpkinsv01-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53327219136/)
+
+Für [mein kleines Spiel](https://kantel.github.io/posts/2023103102_halloween_twine/) in [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) (mit dem Storyformat [SugarCube](https://www.motoslave.net/sugarcube/2/docs/)), in dem eine kleine Hexe auf einem verwunschenen Friedhof Halloween-Kürbisse vor der [Zerstörungswut eines wahnsinnigen Priesters](https://kantel.github.io/posts/2023102101_smashed_pumpkins/) retten muß, habe ich ein Grundgerüst erstellt. Es besteht erst einmal aus neun Räumen, die alle miteinander verbunden sind, und je aus einem Startraum (der »Krypta«) und einem Raum (»Outside«), der nur beim erfolgreichen Ende des Spiels erreicht wird.
+
+[![Übersichtplan »Smashing Pumpkins«](images/smashing_pumpkins_v01.png)](https://www.flickr.com/photos/schockwellenreiter/53329920345/)
+
+Es werden noch ein paar Räume hinzukommen, die man aber erst erreichen kann, wenn der Spieler bestimmte Aktionen durchgeführt hat. Aber da man ja irgendwo anfangen muß, habe ich erst einmal diese Räume in Twine erstellt und sie jeweils miteinander verlinkt (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53327219136/) im Bannerbild oben). Alle bisher erstellten und verlinkten Räume besitzen ein Bild und einige haben auch schon einen (vorläufigen) Text spendiert bekommen, weil ich die Verlinkung untereinander nicht nur mechanisch durchführen wollte.
+
+Bisher habe ich noch keine SugarCube-spezifischen Makros eingebaut, das wird erst im zweiten Schritt erfolgen. Allerdings habe ich schon am Stylesheet gebastelt und da sind einige Klassen und IDs doch schon abhängig von SugarCube:
+
+~~~css
+body, #ui-bar {
+  background-color: #000000;
+  font-family: "Gorgia", serif;
+  font-size: 20px;
+  color: #ffffff;
+}
+
+a {
+  color: #fc9003;
+}
+
+a:hover {
+	color: #fc9003;
+}
+
+
+#ui-bar {
+  color: #ffffff;
+  /* max-width: 40%; */
+}
+
+#ui-bar-toggle {
+  /* display: none; */
+  color: #ffffff;
+}
+
+#ui-bar-toggle:hover {
+	background-color: #fc9003;
+	border-color: #eee;
+}
+
+#ui-bar-history {
+  /* display: normal; */
+  display: none;
+}
+
+#story-title {
+ font-size: 25px; 
+}
+
+#story-author {
+ font-size: 15px; 
+}
+
+
+#ui-dialog-body {
+	background-color: #000000;
+	border: 1px solid #444;
+	text-align: left;
+	line-height: 1.5;
+	padding: 1em;
+}
+#ui-dialog-titlebar {
+	background-color: #fc9003;
+	min-height: 24px;
+}
+#ui-dialog-title {
+	margin: 0;
+	padding: 0.2em 3.5em 0.2em 0.5em;
+	font-size: 1.5em;
+	text-align: center;
+	text-transform: none;
+}
+
+#menu li a {
+	display: block;
+	padding: 0.25em 0.75em;
+	border: 1px solid transparent;
+	color: #ffffff;
+	text-transform: none;
+}
+
+#menu li a:hover {
+	background-color: #fc9003;
+	border-color: #eee;
+}
+
+
+img {
+ 	max-width: 100%;
+	max-height: 100%;
+}
+~~~
+
+Das Storyformat SugarCube ist leider nur bedingt responsiv, jedoch habe ich das Stylesheet soweit hinbekommen, daß das Spiel selbst auf meinem Smartphone (auch im Hochformat) spielbar ist. Der Spieler muß allerdings manuell die Seitenleiste mit dem Button links oben ein- oder ausblenden (ich bin aber auch nicht gerade ein CSS-Guru, wenn also jemand von Euch da draußen weiß, wie man das automatisiert bekommt, die oder den bitte ich um Mitteilung in meinen Kommentaren).
+
+Falls Ihr Euch -- wie schon in den letzten Tagen -- über die Stille hier auf diesen Seiten wundert … ich habe keine Zeit, das Internet vollzuschreiben, ich muß an diesem Spiel weiterbasteln. *Still digging!*
+
