@@ -10,7 +10,211 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Sat, 18 Nov 2023 19:15:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 19 Nov 2023 18:40:00 GMT</lastBuildDate>
+<item>
+  <title>Devlog: Smashing Pumpkins mit Twine und SugarCube (Teil 3)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023111901_smashing_pumpkins_devlog_3/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53320680408/"><img src="https://kantel.github.io/posts/2023111901_smashing_pumpkins_devlog_3/images/smashingpumpkinscover-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p><a href="https://kantel.github.io/posts/2023111801_smashing_pumpkins_v03/">Wie ich gestern schon schrieb</a>, ist die aktuelle <em>Version 0.3 alpha</em> meines kleinen <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>-<a href="https://kantel.github.io/posts/2023103102_halloween_twine/">Spiels</a> über eine kleine Hexe, der ich den Namen »Emmy« gegeben habe, die einen <a href="https://kantel.github.io/posts/2023102101_smashed_pumpkins/">wahnsinningen, Kürbisse vernichtenden Priester</a> auf einem Friedhof stoppen muß, nicht nur die erste spielbare Fassung, sondern auch die erste, in der ich im großen Stil <a href="https://www.motoslave.net/sugarcube/2/docs/">SugarCube</a>-Makros einsetzte. Daher ist es an der Zeit für ein <a href="https://kantel.github.io/posts/2023110901_smashing_pumpkins_devlog_1/">weiteres</a> <a href="https://kantel.github.io/posts/2023111301_smashing_pumpkins_devlog_2/">Devlog</a>:</p>
+<p>Wenn man Makros nutzt, ist es in der Regel sinnvoll, die darin verwendeten Variablen beim Start des Spiels mit Werten vorzubelegen. Dafür gibt es in SugarCube eine spezielle Passage <code>StoryInit</code> die beim Start und Neustart eines jeden Spiels im Hintergrund als erstes aufgerufen wird. In der derzeitigen Fassung des Spiels sieht sie so aus:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">:: StoryInit [green] {"position":"50,75","size":"100,100"}</span>
+<span id="cb1-2">&lt;&lt;set $start to false&gt;&gt;</span>
+<span id="cb1-3">&lt;&lt;set $gateOpen to false&gt;&gt;</span>
+<span id="cb1-4">&lt;&lt;set $hasPickaxe to false&gt;&gt;</span>
+<span id="cb1-5">&lt;&lt;set $hasPotion to false&gt;&gt;</span>
+<span id="cb1-6">&lt;&lt;set $hasBroomstick to false&gt;&gt;</span>
+<span id="cb1-7">&lt;&lt;set $hasAttacked to false&gt;&gt;</span>
+<span id="cb1-8">&lt;&lt;set $hasKey to false&gt;&gt;</span></code></pre></div>
+<p>Der (optionale) Tag <code>green</code> ist mit der Farbe grün verbunden und soll signalisieren, daß es sich um eine Spezialpassage handelt. Und für diese Passagen ist es besonders wichtig, darauf zu achten, daß Groß- und Kleinschreibung zählt. Nur <code>StoryInit</code> wird als Spezialpassage erkannt, nicht jedoch <code>Storyinit</code>, <code>storyinit</code>, <code>storyInit</code> oder jede andere Form der Mischung von großen und kleinen Buchstaben.</p>
+<p>In dieser (Spezial-) Passage erkennt man schon folgendes:</p>
+<ul>
+<li>Makros werden in SugarCube zwischen zwei spitze Klammerpaare (<code>&lt;&lt;…&gt;&gt;</code>) geschrieben.</li>
+<li>Variablennamen beginnen in SugarCube immer mit dem Dollarzeichen <code>$</code>.</li>
+</ul>
+<p>Auch wenn dieses Spiel bisher mit dem Variablentyp <code>boolean</code> auskommt, SugarCube kennt noch zwei weitere Variablentypen, nämlich <code>arithmetic</code> und <code>string</code>. Das sieht im Passage-Markup wie folgt aus:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1">&lt;&lt;set $myBoolean to true&gt;&gt;        /* Boolean */</span>
+<span id="cb2-2">&lt;&lt;set $myNumber to 3.14&gt;&gt;         /* Arithmetic */</span>
+<span id="cb2-3">&lt;&lt;set $myName to "Jörg"&gt;&gt;         /* String */</span></code></pre></div>
+<p>Variablen vom Typ <code>boolean</code> können nur die Werte <code>true</code> oder <code>false</code> enthalten (auch hier die Kleinschreibung beachten, <code>True</code> oder <code>False</code> (wie in Python) geht gar nicht), Variblen vom Typ <code>arithmetic</code> können sowohl aus Fließkommazahlen (<code>&lt;&lt;set $pi to 3.14&gt;&gt;</code>) wie auch aus Integerwerten (<code>&lt;&lt;set $health to 10&gt;&gt;</code>) bestehen und für <code>string</code> gilt, daß alles was zwischen zwei Hochkommata (<code>"…"</code>) steht, als Text behandelt wird.</p>
+<p>Wie das obige Codeschnipsel zeigt, beherrscht SugarCube auch Kommentare, und zwar in folgenden Schreibweisen:</p>
+<ol type="1">
+<li><em>C-Style</em>: <code>/* Dies ist ein Kommentar. */</code></li>
+<li><em>TiddlyWiki Style</em>: <code>/% Dies ist ebenfalls ein Kommentar. %/</code></li>
+<li><em>HTML Style</em>: <code>&lt;!-- Und auch dies ist ein Kommentar. --&gt;</code></li>
+</ol>
+<p>Kommentare vom ersten Typ können sowohl im Passage Markup, wie auch in JavaScript- und CSS-Quellcode verwendet werden, während die beiden anderen nur im Passage-Markup gültige Kommentare sind. Daher empfehle ich, aus Gründen der Vereinheitlichung nur Kommentare vom Typ 1 <em>(C-Style)</em> zu verwenden. Sie sind einer Programmiererin oder einem Programierer auch am Geläufigsten.</p>
+<p>Variablen machen natürlich nur Sinn, wenn sie auch verändert werden können. Im einfachsten Fall erledigt auch dieses das <code>&lt;&lt;set …&gt;&gt;</code>-Makro, wie zum Beispiel in der Passage <code>Vorraum</code>, in der das Friedhofstor geöffnet wird:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">:: Vorraum {"position":"950,500","size":"100,100"}</span>
+<span id="cb3-2">[img[images/button1.jpg]]</span>
+<span id="cb3-3">&lt;&lt;set $gateOpen to true&gt;&gt;\</span>
+<span id="cb3-4"></span>
+<span id="cb3-5">An der Wand des Vorraums erkennt Emmy einen riesigen Schalter. Als sie diesen umlegt,</span>
+<span id="cb3-6">leuchtet an der Wand ein rotes Licht auf und ein Display unter dem Schalter verkündet:</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">!!!Gate Open!</span>
+<span id="cb3-9"></span>
+<span id="cb3-10">Die kleine Hexe verläßt das Pförtnerhaus und schlägt hinter sich die Tür mit einem</span>
+<span id="cb3-11">lauten Knall zu. Erst dann bemerkt sie, daß sie den Schlüssel zum Haus auf einem</span>
+<span id="cb3-12">Tisch im Raum vergessen hat.&lt;&lt;set $hasKey to false&gt;&gt;</span>
+<span id="cb3-13"></span>
+<span id="cb3-14">Egal, Emmy macht sich auf dem Weg zum alten [[Friedhofstor-&gt;Tor]].</span></code></pre></div>
+<p>In dieser Passage wird einmal mit <code>&lt;&lt;set $gateOpen to true&gt;&gt;</code> der Wert von <code>$gateOpen</code> verändert und zum zweiten der mit <code>&lt;&lt;set $hasKey to false&gt;&gt;</code> der Wert von <code>$hasKey</code>, der auf <code>true</code> gesetzt wurde, als die kleine Hexe den Priester besiegt und den Schlüssel an sich genommen hatte, wieder zurück auf <code>false</code> gesetzt, weil unsere Heldin den Schlüssel auf einem Tisch im Vorraum von liegen gelassen hatte. (Damit will ich verhindern, daß Emmy den Vorraum noch einmal betreten kann, wenn sie den Toröffnungsmechanismus schon einmal betätigt hatte.)</p>
+<p>Twine hat außerdem die Eigenart, Zeilen, die nur Makros und keinen sichtbaren Text enthalten, als Leerzeilen anzuzeigen, ein Problem, das erst mit dem Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> zufriedenstellend gelöst wurde. Bei den anderen Storyformaten muß gegen überflüssige Leerzeilen dagegen mit Tricks gekämpft werden: <a href="https://twine2.neocities.org/">Harlowe</a> zum Beispiel verwendet geschweifte Klammerpaare (<code>{…}</code>), um die Leerzeichen in Makros zu unterdrücken, während man in SugarCube dies am einfachsten durch einen Backslash (<code>\</code>) am Ende der jeweiligen Zeile erreicht.</p>
+<p>Dabei sind immer wieder Tests nötig, denn Twine mit SugarCube oder Harlowe ist manchmal sehr eigenwillig, wann es eine Leerzeile setzen will und wann nicht. Zum Beispiel habe ich an der Passage <code>Gräberfeld2</code> sehr lange probiert, bis die Kombination von Ersetzung durch Makros und Leerzeichen zufriedenstellend angezeigt wurde:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">:: Gräberfeld2 {"position":"950,175","size":"100,100"}</span>
+<span id="cb4-2">[img[images/graeberfeld2.jpg]]</span>
+<span id="cb4-3"></span>
+<span id="cb4-4">Das Feld am Ende des Pfades wirkt noch älter. Es wird von uralten, verwitterten</span>
+<span id="cb4-5">Bäumen umsäumt und nur noch wenige Gräber haben die Jahre überdauert.</span>
+<span id="cb4-6"></span>
+<span id="cb4-7">&lt;&lt;if not $hasBroomstick&gt;&gt;&lt;&lt;linkappend "An einem der alten Bäume lehnt Emmys</span>
+<span id="cb4-8">Hexenbesen, den sie schon die ganze Zeit vermißt hat. "&gt;&gt;Emmy nimmt den Besen an</span>
+<span id="cb4-9">sich.&lt;&lt;set $hasBroomstick to true&gt;&gt;&lt;&lt;/linkappend&gt;&gt;</span>
+<span id="cb4-10"></span>
+<span id="cb4-11">Es gibt von hier aus keinen weiteren Weg als den Pfad, den sie gekommen war,</span>
+<span id="cb4-12">zurück zum [[Gräberfeld-&gt;Urnengräber]] mit der Statue.</span>
+<span id="cb4-13">&lt;&lt;else&gt;&gt;\</span>
+<span id="cb4-14">Es gibt von hier aus keinen weiteren Weg als den Pfad, den sie gekommen war,</span>
+<span id="cb4-15">zurück zum [[Gräberfeld-&gt;Urnengräber]] mit der Statue.</span>
+<span id="cb4-16">&lt;&lt;/if&gt;&gt;\</span></code></pre></div>
+<p>Die Herausforderung war hier die Verschachtelung des <code>&lt;&lt;if … else&gt;&gt;</code>-Makros mit den Makros <code>&lt;&lt;linkappend …&gt;&gt;</code> und <code>&lt;&lt;set …&gt;&gt;</code>. <code>&lt;&lt;if …&gt;&gt;</code> prüft ab, ob eine Bedingung erfüllt ist (in diesem Falle, ob die Hexe (noch) <strong>keinen</strong> Hexenbesen besitzt (<code>not $hasBroomstick</code>)). Dann soll an dem im Makro eingeschlossenen Satz »<em>An einem der alten Bäume lehnt Emmys Hexenbesen, den sie schon die ganze Zeit vermißt hat.</em>« nicht nur der Satz »<em>Emmy nimmt den Besen an sich.</em>« angehängt werden, sondern Twine soll sich auch merken, daß die Hexe ab sofort einen Besen besitzt: <code>&lt;&lt;set $hasBroomstick to true&gt;&gt;</code>. Warum das die Bedingung einleitende <code>&lt;&lt;if&gt;&gt;</code> <strong>keinen</strong> Backslash benötigt, das <code>&lt;&lt;else&gt;&gt;</code> und das abschließende <code>&lt;&lt;/if&gt;&gt;</code> aber doch, darüber mußte ich lange nachdenken.</p>
+<p>Ähnlich sieht die Passage <code>Urnengräber</code> aus, die zweite Passage, an der die kleine Hexe bisher ein <em>Item</em> aufnehmen kann:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">:: Urnengräber {"position":"800,175","size":"100,100"}</span>
+<span id="cb5-2">[img[images/monument1.jpg]]</span>
+<span id="cb5-3"></span>
+<span id="cb5-4">Dieses Feld scheint der älteste Teil des Friedhofs zu sein. Die Gräber sind völlig</span>
+<span id="cb5-5">heruntergekommen und im Hintergrund erkennt man eine verfallene Kapelle</span>
+<span id="cb5-6">&lt;&lt;if not $hasPickaxe&gt;&gt;, an deren Mauer eine</span>
+<span id="cb5-7">&lt;&lt;linkappend "Spitzhacke lehnt. "&gt;&gt; Emmy nimmt die Hacke an sich und befestigt</span>
+<span id="cb5-8">sie an ihrem Gürtel. Mit dieser Waffe fühlt sie sich nicht mehr so hilflos.</span>
+<span id="cb5-9">&lt;&lt;set $hasPickaxe to true&gt;&gt;&lt;&lt;/linkappend&gt;&gt;&lt;&lt;/if&gt;&gt;</span>
+<span id="cb5-10"></span>
+<span id="cb5-11">In der Mitte steht eine relativ gut erhaltene, lebensgroße Statue eines Menschen</span>
+<span id="cb5-12">mit Fledermausflügeln. Hinter der Statue lädt ein [[versteckter Pfad-&gt;Gräberfeld2]]</span>
+<span id="cb5-13">zu weiteren Erkundungen dieses alten Friedhofteiles ein.</span>
+<span id="cb5-14"></span>
+<span id="cb5-15">Der Weg in den [[Süden-&gt;Tor]] führt zum alten Friedhofseingang mit seinem</span>
+<span id="cb5-16">riesigen Tor, im [[Westen-&gt;Brunnen]] hört sie das Plätschern eines Brunnens.</span></code></pre></div>
+<p>Da hier das das <code>&lt;&lt;linkappend …&gt;&gt;</code> einschließende <code>&lt;&lt;if …&gt;&gt;</code>-Makro jedoch keinen <code>&lt;&lt;else&gt;&gt;</code>-Zweig benötigte, konnten die Makros in den Passagentext eingeschlossen werden, und so gab es auch keine Probleme mit unerwünschten Leerzeilen. Auch hier wird mit <code>&lt;&lt;set $hasPickaxe to true&gt;&gt;</code> der Wert einer Variablen innerhalb des <code>&lt;&lt;if …&gt;&gt;</code>Makros verändert.</p>
+<p>Eine besondere Herausforderung waren dann die Passagen, die den Kampf der Hexe mit dem Priester betrafen. Hier mußte in den umliegenden Passagen <code>Brunnen</code> und <code>Pfad</code> erst einmal abgeprüft werden, ob der Kampf schon stattgefunden hat, um dann die Hexe entweder auf die Passage <code>Gräberfeld</code> oder <code>Gräberfeld leer</code> zu lenken:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1">:: Gräberfeld {"position":"250,175","size":"100,100"}</span>
+<span id="cb6-2">[img[images/priest2.jpg]]</span>
+<span id="cb6-3"></span>
+<span id="cb6-4">Emmy sieht auf einem weiten Gräberfeld den wahnsinnigen Priester mit einer großen</span>
+<span id="cb6-5">Schaufel auf die Halloween-Kürbisse einschlagen. Er starrt sie mit seinem irren</span>
+<span id="cb6-6">Gesichsausdruck und glasigen Augen böse an.</span>
+<span id="cb6-7"></span>
+<span id="cb6-8">&lt;&lt;if $hasPickaxe&gt;&gt;\</span>
+<span id="cb6-9">Emmy geht davon unbeeindruckt [[auf den Priester zu-&gt;Attacke1]].</span>
+<span id="cb6-10">&lt;&lt;else&gt;&gt;\</span>
+<span id="cb6-11">Emmy sieht ein, daß sie unbewaffner nichts gegen ihn ausrichten kann. Was soll</span>
+<span id="cb6-12">sie tun? Soll sie sich an dem Priester vorbei zum [[Brunnen-&gt;Attacke1]] im Osten</span>
+<span id="cb6-13">durchschlagen oder soll sie über den [[Pfad]] im Süden fliehen?</span>
+<span id="cb6-14">&lt;&lt;/if&gt;&gt;</span>
+<span id="cb6-15"></span>
+<span id="cb6-16">:: Gräberfeld leer {"position":"450,175","size":"100,100"}</span>
+<span id="cb6-17">[img[images/graeberfeldleer.jpg]]</span>
+<span id="cb6-18"></span>
+<span id="cb6-19">Emmy steht wieder auf dem Gräberfeld, auf dem sie den Priester besiegt hat.</span>
+<span id="cb6-20">Nun liegt es friedlich vor ihr. Im Süden sieht sie den schmalen, gewundenen</span>
+<span id="cb6-21">[[Pfad]] und im Osten plätschert immer noch der [[Brunnen]] an der Friedhofsmauer,</span>
+<span id="cb6-22">so als ob nichts gewesen wäre.</span></code></pre></div>
+<p>Wenn der Kampf stattgefunden und die kleine Hexe den Priester besiegt hat (in der derzeitigen Fassung kann die Hexe (noch) nicht verlieren), wird sie auf die Passage <code>Gräberfeld leer</code> geleitet. Dies ist eine stinknormale Passage, in der nichts anderes passiert, als daß sie von hier aus die umliegenden Passagen erreichen kann.</p>
+<p>In der eigentlichen Passage <code>Gräberfeld</code> findet jedoch, abhängig davon, ob Emmy mit einer Spitzhacke bewaffnet ist (<code>&lt;&lt;if $hasPickaxe&gt;&gt;</code>) die Vorbereitung zum Kampf statt (Passage <code>Attacke1</code>) oder sie entschließt sich zur Flucht. Falls sie diese in Richtung Brunnen unternimmt, wird sie ebenfalls über die Passage <code>Attacke1</code> geleitet. In dieser Passage gibt es daher noch eine weitere Verzweigung, je nachdem, ob die Hexe im Besitz der Spitzhacke ist oder nicht:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1">&lt;&lt;if $hasPickaxe&gt;&gt;\</span>
+<span id="cb7-2">[img[images/angriff1.jpg]]</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">Emmy ergreift die Spitzhacke mit ihren Fäusten und schlägt wütend und kräftig</span>
+<span id="cb7-5">auf den Priester ein. Nach einer kurzen, aber heftigen Gegenwehr</span>
+<span id="cb7-6">[[bricht er schwer verletzt zusammen-&gt;Key]].</span>
+<span id="cb7-7">&lt;&lt;else&gt;&gt;\</span>
+<span id="cb7-8">[img[images/priest1.jpg]]</span>
+<span id="cb7-9"></span>
+<span id="cb7-10">Der Priester bemerkt Emmy und droht ihr mit der Grabschaufel. Emmy weiß, daß sie</span>
+<span id="cb7-11">unbewaffnet keine Chance gegen den Irren hat und flieht weiter nach</span>
+<span id="cb7-12">[[Osten zum Brunnen-&gt;Brunnen]].</span></code></pre></div>
+<p>In dieser Passage erkennt man, daß innerhalb von <code>&lt;&lt;if … else&gt;&gt;</code>-Makros nicht nur unterschiedliche Texte stehen, sondern auch jeweils verschiedene Bilder gezeigt werden können. In diesem Fall wird, wenn die <code>&lt;&lt;if&gt;&gt;</code>-Bedinung erfüllt ist, das Bild <em>angriff1.jpg</em> angezeigt, wenn nicht das Bild <em>priest1.jpg</em>. Außerdem wird – je nachdem ob die Bedinung erfüllt ist – die Hexe zu unterschiedlichen Passagen geführt (im Angriffsfall zu <code>Key</code> und im Fluchtfall zu <code>Brunnen</code>).</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1">:: Key {"position":"250,25","size":"100,100"}</span>
+<span id="cb8-2">[img[images/dead7.jpg]]</span>
+<span id="cb8-3">&lt;&lt;set $hasAttacked to true&gt;&gt;\</span>
+<span id="cb8-4">&lt;&lt;set $hasKey to true&gt;&gt;\</span>
+<span id="cb8-5"></span>
+<span id="cb8-6">Sterbend bricht der Priester zusammen. Emmy nimmt dem kleinen Schlüssel an sich,</span>
+<span id="cb8-7">den er am Gürtel trug.</span>
+<span id="cb8-8"></span>
+<span id="cb8-9">Nun hat sie die Wahl. Sie kann zurück zum [[Brunnen]] oder sie kann dem</span>
+<span id="cb8-10">schmalen [[Pfad]] nach Süden folgen.</span></code></pre></div>
+<p>Die Passage <code>Key</code> kann nur einmal (nach dem Kampf) betreten werden (wenn nicht, habe ich etwas falsch gemacht). Sie hat auch nur den Zweck, die Variablen <code>$hasAttacked</code> und <code>$hasKey</code> auf <code>true</code> zu setzen.</p>
+<p>Ausgestattet mit diesem Schlüssel gibt nun die (weit entfernte) Passage <code>Pförtnerhaus</code> auch den Weg zu dem Vorraum mit dem Schalter zur Toröffnung frei:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1">:: Pförtnerhaus {"position":"800,500","size":"100,100"}</span>
+<span id="cb9-2">[img[images/house6.jpg]]</span>
+<span id="cb9-3"></span>
+<span id="cb9-4">Emmy steht vor dem ziemlich heruntergekommenen Pförtnerhaus. Die Tür zum Haus ist</span>
+<span id="cb9-5">verschlossen. Links davon steht ein verfallener Schuppen auf Stelzen. In dem</span>
+<span id="cb9-6">Gerümpel daneben liegt eine alte, rostige Gießkanne.</span>
+<span id="cb9-7"></span>
+<span id="cb9-8">[[Nördlich-&gt;Tor]] erkennt Emmy die Eingangspforte zum Friedhof. Sie kann aber</span>
+<span id="cb9-9">auch einen [[Weg nach Westen-&gt;Vorplatz]] gehen.</span>
+<span id="cb9-10"></span>
+<span id="cb9-11">&lt;&lt;if $hasKey&gt;&gt;\</span>
+<span id="cb9-12">Sie nimmt den Schlüssel, den sie dem toten Priester abgenommen hat, und öffnet</span>
+<span id="cb9-13">die Tür. Sie betritt den [[Vorraum]] des Pförtnerhauses, der in einem rötlichen</span>
+<span id="cb9-14">Licht schimmert.&lt;&lt;/if&gt;&gt;</span></code></pre></div>
+<p>Hier schließt sich der Kreis: Wenn Emmy den Vorraum (und damit auch das Pförtnerhaus) wieder verläßt, ist das Friedhofstor (Passage <code>Tor</code>) offen und sie kann den Friedhof verlassen (Passage <code>MissionAccomplished</code>):</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource twee number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1">:: Tor {"position":"800,325","size":"100,100"}</span>
+<span id="cb10-2">&lt;&lt;if $gateOpen&gt;&gt;\</span>
+<span id="cb10-3">[img[images/gate_open2.jpg]]</span>
+<span id="cb10-4"></span>
+<span id="cb10-5">Das Tor ist offen, der Weg ist [[frei-&gt;MissionAccomplished]]!</span>
+<span id="cb10-6">&lt;&lt;else&gt;&gt;\</span>
+<span id="cb10-7">[img[images/gate_closed2.jpg]]</span>
+<span id="cb10-8"></span>
+<span id="cb10-9">Das Eingangstor des Friedhofs ist fest verschlossen und es besitzt weder eine</span>
+<span id="cb10-10">Klinke noch ein Schloß. Irgendwo muß es jedoch einen versteckten Mechanismus</span>
+<span id="cb10-11">geben, mit dem das Tor aus der Ferne geöffnet werden kann.</span>
+<span id="cb10-12">&lt;&lt;/if&gt;&gt;\</span>
+<span id="cb10-13"></span>
+<span id="cb10-14">Im [[Norden-&gt;Urnengräber]] ist eine Statue im Mondlicht zu erkennen, im</span>
+<span id="cb10-15">[[Süden-&gt;Pförtnerhaus]] liegt die Ruine des alten Pförtnerhauses und nach</span>
+<span id="cb10-16">[[Westen-&gt;Vorplatz]] führt ein Weg zurück zum Vorplatz an der Krypta.</span>
+<span id="cb10-17"></span>
+<span id="cb10-18">:: MissionAccomplished {"position":"950,325","size":"100,100"}</span>
+<span id="cb10-19">[img[images/missionacc8.jpg]]</span>
+<span id="cb10-20"></span>
+<span id="cb10-21">Mission erfüllt. Fröhlich schwingt sich Emmy auf ihren Hexenbesen und fliegt</span>
+<span id="cb10-22">auf den Brocken zum Hexentanzplatz, begleitet von einigen jubelnden Kürbissen.</span>
+<span id="cb10-23"></span>
+<span id="cb10-24">!!!Ende</span></code></pre></div>
+<p>Auch in der Passage <code>Tor</code> gibt es je nach Bedingung, ob <code>&lt;&lt;if $gateOpen&gt;&gt;</code> oder nicht, entweder ein Bild des geschlossenen Tores oder ein Bild eines (halb-) offenen Tores – jeweils mit entsprechendem Begleittext.</p>
+<p>Zum Ende des Spiels gibt es noch eine kleine Ungereimtheit. Die Hexe kann durchaus die Passage <code>Gräberfeld2</code> wieder verlassen, ohne den Besen mitzunehmen. Das wird aber bisher noch nicht wieder abgefragt, die kleine Hexe kann sich also auf einen Besen schwingen, den sie noch gar nicht besitzt. Hier habe ich eine Korrektur in der nächsten Version vorgesehen. Ich wollte erst einmal eine durchspielbare Version schaffen, die ich auf Herz und Nieren durchtesten kann.</p>
+<p><a href="https://kantel.github.io/posts/2023103102_halloween_twine/">Wie hier schon erwähnt</a>, habe ich alle Bilder für das Spiel mit dem <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html">Stable Diffusion</a>-Ableger <a href="https://clipdrop.co/stable-diffusion">Clipdrop</a> von <em>Stability.ai</em> mit dem Modell SDXL 1.0 und dem Stil <em>Comic Book</em> erzeugt und in <a href="https://www.flickr.com/photos/schockwellenreiter/albums/72177720312336247">diesem Flickr-Album</a> abgelegt. Ich habe hunderte von Bildern erzeugt, von denen ich 75 Bilder aufgehoben habe, und von denen bisher zwanzig (inklusive Cover) Verwendung fanden. Die Prompts zu den jeweiligen »Zeichnungen« findet Ihr in den Bildbschreibungen auf Flickr.</p>
+<p>Auch wenn das nach viel Aufwand klingt, es hat sich meiner Meinung nach gelohnt. Die ausgesuchten Bilder passen vom Stil her gut in die Geschichte. Wenn man sich darauf einläßt und ein wenig mit den Prompts spielt, ist die Bildgenerierung mit Hilfe der gekünstelten Intelligenzia eine echte Alternative für jene wie mich, denen eine zeichnerische Begabung nicht in die Wiege gelegt wurde.</p>
+<p>Den <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/halloween">Quellcode</a> habe ich mit den verwendeten <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/halloween/images">Bildern</a> sowohl als HTML- wie auch als <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/halloween/src">.twee-Datei</a> in meinem GitHub-Repositorium abgelegt. Und damit Ihr das auch testen könnt (das ist ja der Sinn einer frühen Version) gibt es das auch als <a href="https://kantel.itch.io/smashing-pumpkins">spielbare Fassung</a> auf Itch.io. (Auch wenn SugarCube nicht wirklich ein responsives Storyformat ist, funzt es in der derzeitigen Fassung sogar auf meinem Android-Handy (auch im Hochformat). Allerdings muß man am Ende des Spiels das Mobilphone aus- und wieder einschalten, sonst hängt man fest. Das werde ich in der endgültigen Fassung noch mit dem Einbau eines externen Links zurück zu Itch.io ändern.)</p>
+<p><strong>Was kommt noch?</strong> Vorgesehen habe ich ein <em>bad ending</em>, in dem die Hexe den Kampf gegen den Priester auch verlieren kann. Die Überlebenschancen eröhen sich mit der Einnahme des Zaubertranks, dessen Flasche bisher noch sinnlos am Brunnen herumliegt. Und dann will ich noch eine Inventarliste anzeigen lassen (das ist zwar bei dem Mini-Inventar, das die Hexe mit sich herumschleppt, etwas <em>overkill</em>, aber da SugarCube das bietet und das Storyformat das Zeug dazu hat, auch aufwendigere Abenteuer zu entwickeln, möchte ich Euch zeigen, wie man so etwas realisiert). Daher: <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Interactive Fiction</category>
+  <category>SugarCube</category>
+  <category>Spieleprogrammierung</category>
+  <category>Bilder</category>
+  <category>Stable Diffusion</category>
+  <category>Künstliche Intelligenz</category>
+  <guid>https://kantel.github.io/posts/2023111901_smashing_pumpkins_devlog_3/index.html</guid>
+  <pubDate>Sun, 19 Nov 2023 18:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023111901_smashing_pumpkins_devlog_3/images/smashingpumpkinscover.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Smashing Pumpkins v0.3 alpha ist online 🎃</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1398,46 +1602,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2023110601_drawbot_reboot/index.html</guid>
   <pubDate>Mon, 06 Nov 2023 16:25:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023110601_drawbot_reboot/images/drawbotmalewitsch.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Retro Lines und andere freie Tile- und Spritesets für Programmierer von Retrospielen</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023110501_retrolines/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://img.itch.zone/aW1nLzEzOTEwNzE3LnBuZw==/original/2bvNCJ.png"><img src="https://kantel.github.io/posts/2023110501_retrolines/images/retrolines-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Die Pixelartistin oder der Pixelartist mit dem Kampfnamen <em>V3x3d</em> hat ihrem/seinen stylischen 16x16 Asset-Pack »<a href="https://v3x3d.itch.io/retro-lines">Retro Lines</a>« ein Update gegönnt. Neu in der <a href="https://v3x3d.itch.io/retro-lines/devlog/630925/041123-v30-underwater-and-winter-environment">Version 3.0</a> sind eine Unterwasserumgebung und drei neue, animierte Gegner. Passend dazu kann das Player-Sprite jetzt auch schwimmen (natürlich animiert).</p>
-<p>Daneben sind etliche winterliche <em>(Arctic)</em> Tiles und Sprites überarbeitet worden und auch einige Fehler und Ungereimtheiten wurden beseitigt.</p>
-<p>Das Asset-Pack kann kostenlos heruntergeladen und auch in kommerziellen Projekten verwendet werden. Trotzdem freut sich die Macherin oder der Macher über <em>Credits</em> und auch eine Spende beim Download ist natürlich willkommen.</p>
-<p>Aus der gleichen Pixelschmiede gibt es noch weitere, kostenlos zu nutzende Assets (auf die hatte ich sicher schon einmal hingewiesen, aber schließlich wird auch im Fernsehen alles wiederholt). Besonders gefallen haben mir (auch weil das 8x8-Pixel-Raster gut mit der Retro-Fantsiekonsole <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> harmonisiert):</p>
-<ul>
-<li><a href="https://v3x3d.itch.io/deep-night">Deep Night</a>, ein 8x8 Platformer Pack mit über 400 Tiles und Sprites, darunter auch animierte Gegner und natürlich die Spielerfigur.</li>
-<li><a href="https://v3x3d.itch.io/paper-pixels">Paper Pixels</a> ist vom Stil her ähnlich dem oben erwähnten <em>Retro Lines</em>, nur daß auch hier die Tiles und Sprites für ein 8x8-Raster optimiert sind.</li>
-</ul>
-<p>Neu für mich sind die 8x8 Tilesets des Users <em><a href="https://egordorichev.itch.io/">Egor Dorichev</a></em>. Sie sind Public Domain (<a href="https://creativecommons.org/share-your-work/public-domain/cc0/">CC0</a>), unterliegen daher in der Nutzung keinerlei Einschränkungen (aber auch hier freut sich der Schöpfer sicher über entsprechende <em>Credits</em> und Spenden):</p>
-<ul>
-<li><a href="https://egordorichev.itch.io/toi">Toi</a> enthält über einhundert 8x8 Pixel große Tiles für ein Dungeon.</li>
-<li><a href="https://egordorichev.itch.io/adve">Adve</a> ist ähnlich, nur daß die Tiles eher für ein Adventure Game designed sind.</li>
-<li>Und da ein Spiel auch Gegner und natürlich den Spieler benötigt, gibt es mit <a href="https://egordorichev.itch.io/chare">Chare</a> ein Paket mit 54 animierten Sprites, die ebenfalls alle ins 8x8-Pixel-Raster passen.</li>
-</ul>
-<p>Diese drei Pakete machten meinen heutigen Sonntag!</p>
-<p><strong>War sonst noch was</strong>? Ach ja, zwar hatte ich das 10x10-Pixel 1-Bit Tile-Pack <a href="https://v3x3d.itch.io/bountiful-bits">Bountiful Bits</a> schon einmal (auch damals mit dem Hinweis auf die nicht zu leugnende Verwandschaft zu Kenneys grandiosem 16x16 Pixel <a href="https://www.kenney.nl/assets/1-bit-pack">1-Bit Pack</a>), aber das Eindampfen auf 10x10 Pixel ist <em>V3x3d</em> so genial gelungen, daß ich das Pack durchaus in weiteres Mal empfehlen kann – zumal es auch unter der freien <a href="https://creativecommons.org/public-domain/cc0/">CC0</a>-Lizenz steht. Begleitet wird dieses Paket von der Spritesammlung <a href="https://v3x3d.itch.io/bit-bonanza">Bit Bonanza</a>, bestehend aus vielen Items und einigen Characters, ebenfalls 10x10 Pixel, 1-Bit und ebenfalls CC0. Damit dürftet Ihr genug freie, graphische Assets für ein eigenes 10x10 Pixel Retrogame besitzen (10x10 Pixel ist ja nicht gerade ein sehr verbreitetes Format).</p>
-
-
-
- ]]></description>
-  <category>Retrogaming</category>
-  <category>Spieleprogrammierung</category>
-  <category>Tiles und Sprites</category>
-  <guid>https://kantel.github.io/posts/2023110501_retrolines/index.html</guid>
-  <pubDate>Sun, 05 Nov 2023 15:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023110501_retrolines/images/retrolines.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
