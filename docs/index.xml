@@ -10,7 +10,47 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 07 Dec 2023 15:50:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 08 Dec 2023 19:20:00 GMT</lastBuildDate>
+<item>
+  <title>Avatare für interaktive Geschichten mit Playground AI erstellen</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023120801_playgroundai_avatare/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53384312634/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia00-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Die <a href="https://kantel.github.io/posts/2023120701_playground_ai/">gestern erzielten</a> ersten Erfolge mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/playgroundai.html">Playground AI</a> haben mir keine Ruhe gelassen. Speziell die Möglichkeit, die erzeugten Charaktere freistellen zu können, um sie dann als Avatare in <em>Visual Novel Engines</em> wie <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday JS</a> einzusetzen, fand ich besonders faszinierend.</p>
+<p>Also habe ich heute noch einmal eine kleine Versuchsreihe gestartet. Diesmal schwebte mir ein fester Charakter vor, nämich die hübsche, aber biestige <em>Sylvia Berlin</em>, die Chefin von <em>Hans Blond</em>, den Helden meiner geplanten »Räuberpistole« <a href="https://kantel.github.io/posts/2022122102_alien_invasion_stage_1/">Berlin Attack</a> (von der es je einen (frühen und extrem kurzen) <a href="https://kantel.itch.io/alien-attack-renpy-test">Ren’Py-Prototypen</a> und eine (ebenfalls frühe, aber schon etwas längere) <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>-<a href="https://kantel.itch.io/berlin-attack">Vorabversion</a> (<a href="https://kantel.github.io/posts/2023091801_berlin_attack_twine/">erstellt</a> mit dem Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a>) auf meinem <a href="https://kantel.itch.io/">Itch.io-Kanal</a> gibt).</p>
+<p>Diese habe ich also mit Playground AI generiert und dabei zu einem großen Teil den Prompt wiederverwendet (siehe unten), der zwar bei meinen ersten Versuchen keinen weiblichen Androiden erzeugte (zumindest war er für mich nicht offensichtlich ein Android), aber eine Frauenfigur, die meiner Vorstellung von einer <em>Sylvia Berlin</em> schon ziemlich nahe kam.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53384178998/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53384177013/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53384311919/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia03.jpg" class="img-fluid"></a></p>
+<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.</em></p>
+<p>Ich habe mich an die Empfehlung gehalten, die Bilder in der Größe von 1024x1024 Pixel zu generieren, weil das Model <em>Playground&nbsp;v2</em> darauf trainiert sei. Heraus kamen (mit dem Bannerbild oben) diese vier Bilder, die mir für erste Tests recht brauchbar schienen (auch wenn die KI eine recht kreative Vorstellung von einem »weißen Hintergrund« besitzt). Für einen »echten« Einsatz muß man vermutlich aber doch mehr Charakter-Versionen aus diesem Prompt generieren.</p>
+<p>Bei diesen Bildern habe ich dann mit den bordeigenen Mitteln von Playground&nbsp;AI den Hintergrund entfernt:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53383068587/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia00_rembg.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53384312384/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia01_rembg.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53384166138/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia02_rembg.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53383988476/"><img src="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia03_rembg.jpg" class="img-fluid"></a></p>
+<p>Für die Veröffentlichung in diesem <del>Blog</del> Kritzelheft habe ich die Bilder grob ein wenig nachbearbeitet, aber ich bin kein Pixelartist. Dennoch – auch wenn man noch ein wenig mehr nachbearbeitet – ist das Ergebnis recht brauchbar. Und wenn Ihr auf den Link hinter den freigestellten Bildern klickt und dann von Flickr das Original herunterladet, bekommt Ihr auch das PNG mit dem transparenten Hintergrund.</p>
+<p>Für die Nutzung in Ren’Py oder Tuesday JS ist die Größe eines Avatars von 1024 Pixeln sicher mehr als ausreichend. Jetzt muß ich nur noch herausbekommen, wie ich möglichst konsistente Charaktere mit unterschiedlichem Mienenspiel (traurig , lachend, lächelnd, verwirrt etc.) generiert bekomme.</p>
+<p>Und meine Räuberpistole besitzt schon in diesem frühen Stadium acht verschiedene Akteure (viel mehr werden es aber vermutlich nicht werden), für die ich alle noch Avatare generieren muß. Falls es also über dieses Wochenende etwas ruhiger auf diesen Seiten hier zugehen sollte: Ich bin auf dem Spielplatz. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bilder</strong>: <em>Sylvia Berlin</em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/playgroundai.html">Playground AI</a>. Prompt: »<em>A young woman with red lips, blue eyes, slim, brown, curly hair and glasses in a colorful checked shirt and vest, short blue skirt and high heels. full body, white background colored steampunk french comic style</em>«, Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Playground&nbsp;v2, Style: None.</p>
+
+
+
+ ]]></description>
+  <category>Bilder</category>
+  <category>Künstliche Intelligenz</category>
+  <category>Playground AI</category>
+  <category>Interactive Fiction</category>
+  <category>RenPy</category>
+  <category>Tuesday JS</category>
+  <guid>https://kantel.github.io/posts/2023120801_playgroundai_avatare/index.html</guid>
+  <pubDate>Fri, 08 Dec 2023 19:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023120801_playgroundai_avatare/images/avatarsylvia00.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google liefert zum »Dezember-Patchday« nun auch die Pixel Updates nach</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -635,41 +675,6 @@
   <guid>https://kantel.github.io/posts/2023113001_monochrome_piraten/index.html</guid>
   <pubDate>Thu, 30 Nov 2023 15:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023113001_monochrome_piraten/images/monochomepiraten.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Update: Das rote Einhorn hatte doch noch nicht fertig</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023112903_red_unicorn_2/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53364422958/"><img src="https://kantel.github.io/posts/2023112903_red_unicorn_2/images/winterunicorn03-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Entgegen meiner <a href="https://kantel.github.io/posts/2023112701_red_unicorn/">hier geäußerten Vermutung</a> hatte der Mann mit dem roten Einhorn als Maskottchen sein diesjähriges Semesterprogramm doch noch nicht fertig und hat für seine Reihe »Programming a Robotron Styled Game in Processing« die Teile sechs bis zehn mit insgesamt acht neuen Video-Tutorials nachgeschoben:</p>
-<ul>
-<li>Part 6: <a href="https://www.youtube.com/watch?v=OzIWfLE099I">Enemies p1</a> und <a href="https://www.youtube.com/watch?v=jWlIwkOgJ3o">Enemies p2</a></li>
-<li>Part 7: <a href="https://www.youtube.com/watch?v=n3L7gb9RjPM">Cursor</a></li>
-<li>Part 8: <a href="https://www.youtube.com/watch?v=0Xv6lVES26M">Multiple Enemy Types</a></li>
-<li>Part 9: <a href="https://www.youtube.com/watch?v=gmj_e4OcrzQ">Boss p1</a> und <a href="https://www.youtube.com/watch?v=alpF3g6FRPg">Boss p2</a></li>
-<li>Part 10: <a href="https://www.youtube.com/watch?v=wyaNNvbeH0s">Fireball p1</a> und <a href="https://www.youtube.com/watch?v=gGjTjPOdZpQ">Fireball p2</a></li>
-</ul>
-<p>Ich habe auch das Original-Posting entsprechend korrigiert und werde den Kanal von <em>John McCaffrey</em> weiter beobachten und Euch benachrichtigen, falls er uns mit noch mehr Updates überrascht.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53364422958/">Rotes Einhorn im Winter</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">Dream Studio</a>. Prompt: »<em>A red unicorn in a snowy college garden in winter in a small American town. colored french comic style</em>«. Model: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>Creative Coding</category>
-  <category>Processing</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2023112903_red_unicorn_2/index.html</guid>
-  <pubDate>Wed, 29 Nov 2023 17:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023112903_red_unicorn_2/images/winterunicorn03.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
