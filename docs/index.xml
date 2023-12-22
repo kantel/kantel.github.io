@@ -10,7 +10,209 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 21 Dec 2023 16:45:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 22 Dec 2023 15:00:00 GMT</lastBuildDate>
+<item>
+  <title>Python und die Turtle: Auf die Farben kommt es an</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023122201_turtle_spirale/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53412612886/"><img src="https://kantel.github.io/posts/2023122201_turtle_spirale/images/brspiral-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Manchmal kommt es einfach auf die Farbpalette an, um aus einer einfachen Idee ein ansehbares Bild zu schaffen. So wollte ich nur mal wieder zur Abwechslung ein wenig mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Schildkröte</a> spielen, doch mit der Nutzung einer <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/briley.html">Farbpalette nach Bridget Riley</a> verwandelte ich dabei eigentlich unscheinbare, beinahe langweilige Spiralen in nette, interessant aussehende Graphiken:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53414500685/"><img src="https://kantel.github.io/posts/2023122201_turtle_spirale/images/brspiral_o1.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53413141377/"><img src="https://kantel.github.io/posts/2023122201_turtle_spirale/images/brspiral_o2.jpg" class="img-fluid"></a></p>
+<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.</em></p>
+<p>Die Idee hinter dem Algorithmus ist eigentlich ganz einfach: Man zeichnet ein Dreieick, nur daß der Winkel in jeder Ecke um einen Grad (121° statt 120°) erhöht wird. Gleichzeitig wird auch die Länge des Schenkels bei jeder Drehung etwas verlängert. So entsteht (in meiner Version nach 300 Iterationen) die Dreieicksspirale:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>):</span>
+<span id="cb1-2">    p.color(pal[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>])</span>
+<span id="cb1-3">    p.forward(i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>)</span>
+<span id="cb1-4">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">121</span>)</span></code></pre></div>
+<p>Verkleinert man den Winkel auf 90° (respektive 91°) und verwendet aus der Palette alle vier Farben, erhält man ein Quadrat:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>):</span>
+<span id="cb2-2">    p.color(pal[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>])</span>
+<span id="cb2-3">    p.forward(i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>)</span>
+<span id="cb2-4">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">91</span>)</span></code></pre></div>
+<p>Mit dieser Methode kann man beliebige Vielecke zaubern, man muß sich dann nur eine <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/farbpaletten.html">Farbpalette aussuchen</a>, die genügend interessante Farben aufweist. Doch hier erst einmal der komplette Quellcode:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> turtle <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> t</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span></span>
+<span id="cb3-4">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span></span>
+<span id="cb3-5"></span>
+<span id="cb3-6">pal <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">155</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">183</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">226</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">107</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">67</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">240</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">192</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">68</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">144</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">166</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">215</span>)]</span>
+<span id="cb3-7"></span>
+<span id="cb3-8">wn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Screen()</span>
+<span id="cb3-9">wn.colormode(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb3-10">wn.bgcolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">31</span>)</span>
+<span id="cb3-11">wn.setup(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH, height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT)</span>
+<span id="cb3-12">wn.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bridget Riley Spirale"</span>)</span>
+<span id="cb3-13"></span>
+<span id="cb3-14">p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Turtle()</span>
+<span id="cb3-15">p.width(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-16">p.speed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-17">p.hideturtle()</span>
+<span id="cb3-18"></span>
+<span id="cb3-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dreick</span></span>
+<span id="cb3-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for i in range(300):</span></span>
+<span id="cb3-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#     p.color(pal[i%3])</span></span>
+<span id="cb3-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#     p.forward(i*1.5)</span></span>
+<span id="cb3-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#     p.right(121)</span></span>
+<span id="cb3-24"></span>
+<span id="cb3-25"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Quadrat</span></span>
+<span id="cb3-26"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>):</span>
+<span id="cb3-27">    p.color(pal[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>])</span>
+<span id="cb3-28">    p.forward(i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span>)</span>
+<span id="cb3-29">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">91</span>)</span>
+<span id="cb3-30"></span>
+<span id="cb3-31"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span>
+<span id="cb3-32"></span>
+<span id="cb3-33">wn.mainloop()</span></code></pre></div>
+<p>Wie immer gibt es den Code auch in meinem <a href="https://github.com/kantel/turtlepy/blob/master/sources/spiral.py">GitHub-Repositorium</a>.</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Turtle</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2023122201_turtle_spirale/index.html</guid>
+  <pubDate>Fri, 22 Dec 2023 15:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023122201_turtle_spirale/images/brspiral_titel.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google korrigiert erneut in der Version 120 seines Browsers Chrome kritische Sicherheitslücken</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -587,38 +789,6 @@ Ziehn die drei Könige vorbei, so längt er einen Hahnenschrei.</p>
   <guid>https://kantel.github.io/posts/2023121301_datenkrake/index.html</guid>
   <pubDate>Wed, 13 Dec 2023 14:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023121301_datenkrake/images/datenkrake3.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Bildergalerie: Downtown – Stable Diffusion für Interactive Fiction</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023121203_downtown/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53393585690/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown00-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Ich konnte es nicht lassen, aber <a href="https://twitter.com/DrClaytonForre1/status/1733696336132714795">inspiriert durch diesen (Midjourney-) Tweet</a> habe ich ein wenig mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html">Stable Diffusion</a> – genauer: mit der Stable-Diffusion-Variante <a href="https://clipdrop.co/stable-diffusion">Clipdrop</a> – gespielt. Ich wollte sehen, wie sich diese Open-Source-Implementierung im Vergleich zu dem großen, proprietären (und teuren) KI-Platzhirschen schlägt. Und die Ergebnisse können sich durchaus sehen lassen:</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53393456569/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393336728/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53392219247/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown03.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53393336513/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown04.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393585385/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393336443/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown06.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53393336433/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown07.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393143851/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown08.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393456124/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown09.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53393143781/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown10.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393143776/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown11.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393584805/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown12.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53393455769/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown13.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393335853/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown14.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53393143456/"><img src="https://kantel.github.io/posts/2023121203_downtown/images/downtown15.jpg" class="img-fluid"></a></p>
-<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.</em></p>
-<p>Die Bilder verlangen geradezu danach, als Hintergründe in einer (dystopischen?) interaktiven Geschichte oder <em>Visual Novel</em> verwendet zu werden (zumindest die, in denen Stable Diffusion auf Menschen als Staffage verzichtet hat). Und dann verführen die sparsam eingesetzten Farben dazu, diese zu extrahieren und sie meiner <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/farbpaletten.html">Sammlung von Farbpaletten</a> hinzuzufügen. Denn Farbpaletten kann man schließlich nie genug haben. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bilder</strong>: <em>Downtown</em>, erstellt mit <a href="https://clipdrop.co/stable-diffusion">Clipdrop</a>, Prompt: »<em>Sketchy colored downtown neighbourhoods</em>«, Model: Stable Diffusion XL&nbsp;1.0, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>Bilder</category>
-  <category>Künstliche Intelligenz</category>
-  <category>Stable Diffusion</category>
-  <category>Interactive Fiction</category>
-  <category>Farbpaletten</category>
-  <guid>https://kantel.github.io/posts/2023121203_downtown/index.html</guid>
-  <pubDate>Tue, 12 Dec 2023 19:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023121203_downtown/images/downtown00.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

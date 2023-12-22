@@ -1,0 +1,74 @@
+---
+title: "Python und die Turtle: Auf die Farben kommt es an"
+author: "Jörg Kantel"
+date: "2023-12-22 16:00:00"
+categories: [Python, Turtle, Creative Coding]
+image: "images/brspiral_titel.jpg"
+---
+
+[![](images/brspiral-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53412612886/)
+
+Manchmal kommt es einfach auf die Farbpalette an, um aus einer einfachen Idee ein ansehbares Bild zu schaffen. So wollte ich nur mal wieder zur Abwechslung ein wenig mit [Pythons Schildkröte](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) spielen, doch mit der Nutzung einer [Farbpalette nach Bridget Riley](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/briley.html) verwandelte ich dabei eigentlich unscheinbare, beinahe langweilige Spiralen in nette, interessant aussehende Graphiken:
+
+[![](images/brspiral_o1.jpg)](https://www.flickr.com/photos/schockwellenreiter/53414500685/)&nbsp;[![](images/brspiral_o2.jpg)](https://www.flickr.com/photos/schockwellenreiter/53413141377/)
+
+*Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.*
+
+Die Idee hinter dem Algorithmus ist eigentlich ganz einfach: Man zeichnet ein Dreieick, nur daß der Winkel in jeder Ecke um einen Grad (121° statt 120°) erhöht wird. Gleichzeitig wird auch die Länge des Schenkels bei jeder Drehung etwas verlängert. So entsteht (in meiner Version nach 300 Iterationen) die Dreieicksspirale:
+
+```python
+for i in range(300):
+    p.color(pal[i%3])
+    p.forward(i*1.5)
+    p.right(121)
+```
+
+Verkleinert man den Winkel auf 90° (respektive 91°) und verwendet aus der Palette alle vier Farben, erhält man ein Quadrat:
+
+```python
+for i in range(300):
+    p.color(pal[i%4])
+    p.forward(i*1.2)
+    p.right(91)
+```
+
+Mit dieser Methode kann man beliebige Vielecke zaubern, man muß sich dann nur eine [Farbpalette aussuchen](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/farbpaletten.html), die genügend interessante Farben aufweist. Doch hier erst einmal der komplette Quellcode:
+
+```python
+import turtle as t
+
+WIDTH = 600
+HEIGHT = 600
+
+pal = [(1, 155, 183), (226, 107, 67), (240, 192, 68), (144, 166, 215)]
+
+wn = t.Screen()
+wn.colormode(255)
+wn.bgcolor(4, 21, 31)
+wn.setup(width = WIDTH, height = HEIGHT)
+wn.title("Bridget Riley Spirale")
+
+p = t.Turtle()
+p.width(2)
+p.speed(0)
+p.hideturtle()
+
+# Dreick
+# for i in range(300):
+#     p.color(pal[i%3])
+#     p.forward(i*1.5)
+#     p.right(121)
+
+# Quadrat
+for i in range(300):
+    p.color(pal[i%4])
+    p.forward(i*1.2)
+    p.right(91)
+
+print("I did it, Babe!")
+
+wn.mainloop()
+```
+
+Wie immer gibt es den Code auch in meinem [GitHub-Repositorium](https://github.com/kantel/turtlepy/blob/master/sources/spiral.py).
+
