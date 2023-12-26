@@ -1,0 +1,103 @@
+---
+title: "Weihnachten mit P5.js: Santa schwebt über den Kleinstadthimmel"
+author: "Jörg Kantel"
+date: "2023-12-26 18:10:00"
+categories: [P5.js, Creative Coding]
+image: "images/santap5js.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+---
+
+[![](images/santap5js-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53422712070/)
+
+Auch wenn ich mit viel Mühe gebe, so ganz kann ich mich auch als Atheist dem Weihnachtsrummel nicht entziehen. Besonders dann nicht, wenn der *Potato Imaginator* mich mit einem [ziemlich genialen, kleinen Xmas-Sketch](https://www.youtube.com/watch?v=QLyKaOgJGYI) an mein Vorhaben erinnert, wieder mehr mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) anzustellen, der JavaScript-Variante von [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html). Ich habe daher seinen Sketch ein wenig aufgehübscht und ihn hier in diese Seiten eingebunden:
+
+<div id="santa"></div>
+
+Das Besondere am Sketch des *Potato Imaginators* ist, daß er statt Sprites Emojis für die Darstellung der Akteure einsetzt, die er folgerichtig mit der `text()`-Methode aufruft. 
+
+Für die Neugierigen unter meinen Leserinnen und Lesern hier der komplette Quellcode, den es natürlich mit allen Assets auch wieder in meinem [GitHub-Repositorium](https://github.com/kantel/p5js/tree/master/santa) gibt:
+
+~~~JavaScript
+// Santa, nach einer Idee von Potato Imaginator
+// (https://editor.p5js.org/PotatoImaginator/sketches/wIhXRmmK4)
+// Hintergrundbild mit DreamStudio erstellt
+
+const canvasWidth = 840;    // 940
+const canvasHeight = 400;   // 315
+let w = canvasWidth;
+let h0 = 150;               // Schlittenhöhe
+let f1 = 60;                // Frequenz
+let h1 = 35;                // Schwingung
+let snowflakes = [];        // Schnee-Array
+let n = 30;                 // Anzahl Schneeflocken
+let bg;
+
+function preload() {
+  bg = loadImage("images/wintervalley01.jpg");
+}
+
+function setup() {
+  myCanvas = createCanvas(canvasWidth, canvasHeight);
+  myCanvas.parent("santa");
+  // Schnee
+  for (let i = 1; i < n; i++) {
+    snowflakes[i] = {x: random(0, width), y: random(0, height),
+                     dy: 1/random(1, 3), size: random(1, 2)};
+  }
+  print(height);
+}
+
+function draw() {
+  background(bg);
+  updateSnow();
+  drawSnow();
+  santa(w);
+  w -= 3;
+  if (w < -400) {
+    w = width;
+  }
+}
+
+function santa(x) {
+  textSize(65);
+  // Hirsche
+  for (i = 0; i < 3; i++) {
+    text('🦌', x + 90*i, h0 + h1*sin((x + 100*i)/f1));
+  }
+  text('🛷', x + 300, h0 + h1*sin((x + 340)/f1));
+  textSize(37);
+  text('🎅', x + 325, (h0 - 30) + h1*sin((x + 340)/f1));
+}
+
+function updateSnow() {
+  for (let i = 1; i < n; i++) {
+    snowflakes[i].y += 3*snowflakes[i].dy;
+    if (snowflakes[i].y > height + 20) {
+      snowflakes[i] = {x: random(0, width), y: random(-50, -100),
+                       dy: 1/random(1, 3), size: random(1, 2)};
+    }
+  }
+}
+
+function drawSnow() {
+  blendMode(DODGE);
+  for (let i = 1; i < n; i++) {
+    textSize(30/snowflakes[i].size);
+    text('❄️',snowflakes[i].x+8*sin(snowflakes[i].y/30),snowflakes[i].y);
+    blendMode(BLEND);
+  }
+}
+~~~
+
+Den Original-Quellcode des *Potato Imaginators* findet Ihr in [seinem P5.js-Online-Editor](https://editor.p5js.org/PotatoImaginator/sketches/wIhXRmmK4). Und wie man die Schneeflocken auf den Canvas zaubern kann, darüber hat auch *Patt Vira* ein nettes, kleines [Video-Tutorial veröffentlicht](https://www.youtube.com/watch?v=ltI7CYZHrOg).
+
+Wie man P5.js-Sketche in eine [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html)-Seite einbindet, hatte ich [hier beschrieben](https://kantel.github.io/posts/2023050401_roboter_im_netz/). Dabei darf man nicht [vergessen](https://kantel.github.io/posts/2023051401_dancing_crab_p5js_v2/#fn2), daß man eventuell vorhandene Assets (in diesem Fall das Hintergrundbild im Verzeichnis `images`) per Fuß von `/posts/<verzeichnis_des_blogposts>/images` nach `docs/posts/<verzeichnis_des_blogposts>/images` herüberschaufeln muß, da Quarto dies leider nicht für mich und Euch erledigt.
+
+Das alles schreit natürlich nach mehr. Vielleicht sollte ich -- den [Rauhnächten](https://de.wikipedia.org/wiki/Raunacht) geschuldet -- noch eine Version schreiben, in der nicht Santa, sondern die [Wilde Jagd](https://de.wikipedia.org/wiki/Wilde_Jagd) den Himmel bevölkert. *Still digging!*
+
+---
+
+**Hintergrundbild**: *[Tal im Winter](https://www.flickr.com/photos/schockwellenreiter/53422096166/)*, erstellt mit [DreamStudio](https://beta.dreamstudio.ai/generate). Prompt: »*View from a hill into a snowy winter valley with a picturesque, medieval small town. It is a clear, bright full moon night with a dark blue sky*«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.
