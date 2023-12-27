@@ -64,6 +64,6 @@ function drawSnow() {
   for (let i = 1; i < n; i++) {
     textSize(30/snowflakes[i].size);
     text('❄️',snowflakes[i].x+8*sin(snowflakes[i].y/30),snowflakes[i].y);
-    blendMode(BLEND);
   }
+  blendMode(BLEND);
 }
