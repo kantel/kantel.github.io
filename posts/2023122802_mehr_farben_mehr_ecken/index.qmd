@@ -1,0 +1,79 @@
+---
+title: "Python und die Turtle: Mehr Farben und mehr Ecken"
+author: "Jörg Kantel"
+date: "2023-12-28 18:00:00"
+categories: [Python, Turtle, Creative Coding, Farbpaletten]
+image: "images/spiralfuenfeck_o.jpg"
+---
+
+[![](images/spiralsketchy-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53426515496/)
+
+Was nützen einem die schönsten, [selbstgebastelten Farbpaletten](https://kantel.github.io/posts/2023122701_sketchy/), wenn man sie nicht nutzt? Daher habe ich wieder [Pythons Schildkröte](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) geweckt und das [Spiralenprogramm von letzter Woche](https://kantel.github.io/posts/2023122201_turtle_spirale/) um eine Fünfeck- und eine Sechseck-Spirale erweitert.
+
+Dafür habe ich aus den [Sketchy-Farbpaletten](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/sketchy.html) diese Farben extrahiert:
+
+```python
+pal = [(173, 154, 133), (185, 217, 225), (229, 171, 115), (227, 214, 173),
+       (68, 140, 140), (223, 216, 196)]
+```
+
+Für eine Fünfeck-Spirale muß die `for`-Schleife im Skript wie folgt modifiziert werden:
+
+```python
+for i in range(300):
+    p.color(pal[i%5])
+    p.forward(i*1.1)
+    p.right(73)
+```
+
+Bei einer Sechseck-Spirale sieht sie so aus:
+```python
+for i in range(300):
+    p.color(pal[i%6])
+    p.forward(i*0.9)
+    p.right(61)
+```
+
+Die Winkelwerte ergeben sich, wenn man den vollen Kreis ($360°$) durch die Anzahl der gewünschten Ecken dividiert ($360:5=72$ und $360:5=60$) und jeweils ein Grad hinzuaddiert. Und mit dem Multiplikations-Faktor bei der Verlängerung der Spirale `p.forward()` ($1.1$ respektive $0.9$) habe ich dafür gesorgt, daß die Spirale noch ins Fenster paßt.
+
+[![](images/spiralfuenfeck.jpg)](https://www.flickr.com/photos/schockwellenreiter/53426670658/)&nbsp;[![](images/spiralsechseck.jpg)](https://www.flickr.com/photos/schockwellenreiter/53426938230/)
+
+*Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.*
+
+Auch mit dieser Farbpalette sind die Spiralen ganz ansehnlich geworden und stechen aus dem Einerlei der Standardfarben hervor.
+
+Der Quelltext ist nahezu identisch wie der bei den dreieckigen und quadratischen Spiralen, hier aber der Vollständigkeit halber noch einmal (für die Fünfeck-Spirale) abgedruckt:
+
+```python
+import turtle as t
+
+WIDTH = 600
+HEIGHT = 600
+
+pal = [(173, 154, 133), (185, 217, 225), (229, 171, 115), (227, 214, 173),
+       (68, 140, 140), (223, 216, 196)]
+
+wn = t.Screen()
+wn.colormode(255)
+wn.bgcolor(41, 37, 33)
+wn.setup(width = WIDTH, height = HEIGHT)
+wn.title("Fünfeck-Spirale")
+
+p = t.Turtle()
+p.width(2)
+p.speed(0)
+p.hideturtle()
+
+# Fünfeck
+for i in range(300):
+    p.color(pal[i%5])
+    p.forward(i*1.1)
+    p.right(73)
+
+print("I did it, Babe!")
+
+wn.mainloop()
+```
+
+Es gibt ihn aber auch wieder in meinem GitHub-Repositorium (hier für die [Fünfeck](https://github.com/kantel/turtlepy/blob/master/sources/spiral2.py)- und hier für die [Sechseck](https://github.com/kantel/turtlepy/blob/master/sources/spiral3.py)-Spirale).
+

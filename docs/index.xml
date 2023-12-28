@@ -10,7 +10,250 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Thu, 28 Dec 2023 15:40:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 28 Dec 2023 17:00:00 GMT</lastBuildDate>
+<item>
+  <title>Python und die Turtle: Mehr Farben und mehr Ecken</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53426515496/"><img src="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/images/spiralsketchy-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Was nützen einem die schönsten, <a href="https://kantel.github.io/posts/2023122701_sketchy/">selbstgebastelten Farbpaletten</a>, wenn man sie nicht nutzt? Daher habe ich wieder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Schildkröte</a> geweckt und das <a href="https://kantel.github.io/posts/2023122201_turtle_spirale/">Spiralenprogramm von letzter Woche</a> um eine Fünfeck- und eine Sechseck-Spirale erweitert.</p>
+<p>Dafür habe ich aus den <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/sketchy.html">Sketchy-Farbpaletten</a> diese Farben extrahiert:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">pal <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">173</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">154</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">133</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">185</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">217</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">225</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">229</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">171</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">115</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">227</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">214</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">173</span>),</span>
+<span id="cb1-2">       (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">68</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">223</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">216</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">196</span>)]</span></code></pre></div>
+<p>Für eine Fünfeck-Spirale muß die <code>for</code>-Schleife im Skript wie folgt modifiziert werden:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>):</span>
+<span id="cb2-2">    p.color(pal[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>])</span>
+<span id="cb2-3">    p.forward(i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.1</span>)</span>
+<span id="cb2-4">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">73</span>)</span></code></pre></div>
+<p>Bei einer Sechseck-Spirale sieht sie so aus:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>):</span>
+<span id="cb3-2">    p.color(pal[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>])</span>
+<span id="cb3-3">    p.forward(i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>)</span>
+<span id="cb3-4">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">61</span>)</span></code></pre></div>
+<p>Die Winkelwerte ergeben sich, wenn man den vollen Kreis (<img src="https://latex.codecogs.com/png.latex?360%C2%B0">) durch die Anzahl der gewünschten Ecken dividiert (<img src="https://latex.codecogs.com/png.latex?360:5=72"> und <img src="https://latex.codecogs.com/png.latex?360:5=60">) und jeweils ein Grad hinzuaddiert. Und mit dem Multiplikations-Faktor bei der Verlängerung der Spirale <code>p.forward()</code> (<img src="https://latex.codecogs.com/png.latex?1.1"> respektive <img src="https://latex.codecogs.com/png.latex?0.9">) habe ich dafür gesorgt, daß die Spirale noch ins Fenster paßt.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53426670658/"><img src="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/images/spiralfuenfeck.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53426938230/"><img src="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/images/spiralsechseck.jpg" class="img-fluid"></a></p>
+<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.</em></p>
+<p>Auch mit dieser Farbpalette sind die Spiralen ganz ansehnlich geworden und stechen aus dem Einerlei der Standardfarben hervor.</p>
+<p>Der Quelltext ist nahezu identisch wie der bei den dreieckigen und quadratischen Spiralen, hier aber der Vollständigkeit halber noch einmal (für die Fünfeck-Spirale) abgedruckt:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> turtle <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> t</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span></span>
+<span id="cb4-4">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">600</span></span>
+<span id="cb4-5"></span>
+<span id="cb4-6">pal <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">173</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">154</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">133</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">185</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">217</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">225</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">229</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">171</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">115</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">227</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">214</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">173</span>),</span>
+<span id="cb4-7">       (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">68</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">223</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">216</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">196</span>)]</span>
+<span id="cb4-8"></span>
+<span id="cb4-9">wn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Screen()</span>
+<span id="cb4-10">wn.colormode(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb4-11">wn.bgcolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">41</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">37</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33</span>)</span>
+<span id="cb4-12">wn.setup(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH, height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT)</span>
+<span id="cb4-13">wn.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fünfeck-Spirale"</span>)</span>
+<span id="cb4-14"></span>
+<span id="cb4-15">p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Turtle()</span>
+<span id="cb4-16">p.width(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb4-17">p.speed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb4-18">p.hideturtle()</span>
+<span id="cb4-19"></span>
+<span id="cb4-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Fünfeck</span></span>
+<span id="cb4-21"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>):</span>
+<span id="cb4-22">    p.color(pal[i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>])</span>
+<span id="cb4-23">    p.forward(i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.1</span>)</span>
+<span id="cb4-24">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">73</span>)</span>
+<span id="cb4-25"></span>
+<span id="cb4-26"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span>
+<span id="cb4-27"></span>
+<span id="cb4-28">wn.mainloop()</span></code></pre></div>
+<p>Es gibt ihn aber auch wieder in meinem GitHub-Repositorium (hier für die <a href="https://github.com/kantel/turtlepy/blob/master/sources/spiral2.py">Fünfeck</a>- und hier für die <a href="https://github.com/kantel/turtlepy/blob/master/sources/spiral3.py">Sechseck</a>-Spirale).</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Turtle</category>
+  <category>Creative Coding</category>
+  <category>Farbpaletten</category>
+  <guid>https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/index.html</guid>
+  <pubDate>Thu, 28 Dec 2023 17:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/images/spiralfuenfeck_o.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neuköllner Bilderbogen: Sofa mit Buddy</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1394,46 +1637,6 @@ Ziehn die drei Könige vorbei, so längt er einen Hahnenschrei.</p>
   <guid>https://kantel.github.io/posts/2023121901_work_in_progress/index.html</guid>
   <pubDate>Tue, 19 Dec 2023 14:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023121901_work_in_progress/images/desktop.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Bildergalerie: Alice im Humpel-Pumpel-Land</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023121802_humpel_pumpel/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53404167534/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel00-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Die letzten Tage habe ich mal wieder damit verbracht, meine Expeditionen mit Alice, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und dem <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html">Stable Diffusion</a>-Ableger <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a> durch das Wunderland fortzusetzen. Wie ich <a href="https://kantel.github.io/posts/2023120302_white_rabbit/">hier schon schrieb</a>, ist eines der Ziele dieser Expeditionen, herauszubekommen, ob und wie man mit den Bildgeneratoren der gekünstelten Intelligenzia Illustrationen für interaktive Geschichten erstellen kann.</p>
-<p>Dabei scheint es ein vielversprechender Weg zu sein, sich erst in Grundzügen eine (Teil-) Geschichte auszudenken, dann die Künstliche Intelligenz seines Vertrauens mit ein paar vielversprechenden Prompts zu füttern und dann an Hand der generierten Bilder die Geschichte weiter zu entwickeln und anzupassen.</p>
-<p>Ich habe für das <a href="https://kantel.github.io/posts/2023120302_white_rabbit/">weiße Kaninchen mit der Taschenuhr</a>, für den <a href="https://kantel.github.io/posts/2023112602_dreamstudio_party/">verrückten Hutmacher</a> und für die <a href="https://kantel.github.io/posts/2023101602_alice_raupe/">dauerkiffenden Raupe</a> schon ein paar erfolgversrpechende Bildergalerien geschaffen, mit denen ich glaube, schon etwas anstellen zu können. Eine weitere Expedition soll Alice in die Stadt der Humpty Dumpties (die bei mir »Humpel Pumpel« heißen) führen (diese Idee habe ich schamlos aus der Oz-Zyklus geklaut, nur daß dort die Humpty Dumtpties Porzellanpupppen sind). Dafür habe ich wieder ein paar hundert Bilder generiert und etwa sechzig davon sind in die engere Wahl gekommen.</p>
-<p>Diese lege ich mir nun hier aus, damit ich daraus eine Geschichte spinnen kann:</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53318832095/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53318362486/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53317494472/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel03.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53318362426/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel04.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53318363371/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404140985/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel06.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53403708591/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel07.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403893533/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel08.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404030839/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel09.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404144680/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel10.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404144895/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel11.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404145250/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel12.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53402784597/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel13.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402787527/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel14.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402787812/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel15.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53403901018/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel16.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404038804/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel17.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403719791/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel18.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404042424/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel19.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403720421/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel20.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402792962/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel21.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53402795407/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel22.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403723536/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel23.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402795637/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel24.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404156700/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel25.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403833081/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel26.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403833096/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel27.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404016923/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel28.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404265175/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel29.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403836931/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel30.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404020923/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel31.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404021023/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel32.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404158779/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel33.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404024483/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel34.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402912187/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel35.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404162619/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel36.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404024963/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel37.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402916712/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel38.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403845946/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel39.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404167699/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel40.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404281600/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel41.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403849711/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel42.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404171244/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel43.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402920432/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel44.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404037518/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel45.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53403853796/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel46.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404175164/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel47.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404175229/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel48.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404290545/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel49.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404290735/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel50.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404290760/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel51.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53402929942/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel52.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404292145/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel53.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53404185234/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel54.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53403864261/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel55.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402935352/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel56.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53402935947/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel57.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53404051408/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel58.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53403867386/"><img src="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel59.jpg" class="img-fluid"></a></p>
-<p><em>Mit einem Klick auf die Vorschaubilder kommt Ihr je auf eine Seite mit einer Vergrößerung.</em></p>
-<p>Natürlich sind nicht alle Bilder gleich gut für eine Geschichte geeignet. Einige habe ich auch nur für diese Sammlung ausgewählt, um zu zeigen, was DreamStudio leisten kann, bei anderen muß ich wohl noch ein Bildbearbeitungsprogramm heranziehen, um zum Beispiel das Aussehen und die Kleidung von Alice zu vereinheitlichen. Ich sollte dafür vielleicht mal <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/canva.html">Canva</a> testen. Diese (in der Grundversion kostenlose) Online-App verspricht, ebenfalls mit Hilfe gekünstelter Intelligenzia den weniger begabten Pixelartisten unter die Arme zu greifen. Schaun wir mal, ob daraus etwas wird.</p>
-<p>Und manchmal verhält sich auch der interne Zensor bei DreamStudio sehr seltsam: <a href="https://www.flickr.com/photos/schockwellenreiter/53404292145/">Dieses Bild</a> zum Beispiel hat die Software ohne Beanstandung generiert, als ich es jedoch auf die doppelte Größe aufblasen wollte, hielt die DreamStudio-Anstandsdame dies für »unangebracht« und weigerte sich, meinem Wunsch nachzukommen. Wenigstens wurde mir diese Weigerung nicht in Rechnung gestellt.&nbsp;🤓</p>
-<p>Außerdem scheint entweder am verwendeten Modell (Stable Diffusion XL) oder am Stil (Comic Book) zwischenzeitlich geschraubt worden zu sein. Einen Teil der Bilder hatte ich schon im letzten Monat generiert, einen anderen Teil diesen Monat. Die Ergebnisse sind doch erkennbar verschieden – damit meine ich nicht die vier Bilder, die ich mit den Stil »Digital Art« generiert habe.</p>
-<p>Für Neugierige: Alle Bilder sind mit DreamStudio und dem Modell »stable-diffusion-xl-1024-v1-0« generiert worden. Die verwendeten Prompts und die Stile (entweder »Comic Book« oder »Digital Art«) habe ich in den Beschreibungen zu den einzelnen Bildern dokumentiert.</p>
-<hr>
-<p><strong>Photo</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53404167534/">Alice und Humpel Pumpel sitzen auf der Mauer</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>Egg shaped Humpty Dumpty, wearing jacket and vest, sits on the top of a huge wall and meets little girl Alice in a secret garden with strange looking buildings. Little Alice has blue eyes, long blonde hair with pigtails, blue coat and white apron. colored french comic style</em>«, Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>Twine</category>
-  <category>Interactive Fiction</category>
-  <category>Alice</category>
-  <category>Spieleprogrammierung</category>
-  <category>Künstliche Intelligenz</category>
-  <category>Stable Diffusion</category>
-  <category>Bilder</category>
-  <guid>https://kantel.github.io/posts/2023121802_humpel_pumpel/index.html</guid>
-  <pubDate>Mon, 18 Dec 2023 14:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023121802_humpel_pumpel/images/humpelpumpel00.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
