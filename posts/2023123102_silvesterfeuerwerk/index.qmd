@@ -1,0 +1,134 @@
+---
+title: "Zum Jahreswechsel ein Silvesterfeuerwerk (stille und ungefährliche Version)"
+author: "Jörg Kantel"
+date: "2023-12-31 16:45:00"
+categories: [P5.js, Processing, Creative Coding]
+image: "images/fireworkp5js.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+  - text: <script src="./particle.js"></script>
+---
+
+[![](images/fireworkp5js-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53433631900/)
+
+Zum Jahreswechsel wollte ich ein kleines, ungefährliches Feuerwerk programmieren, daß nicht nur -- im Gegensatz zu dem Höllenlärm vor unserem Fenster -- keinen Krach macht, sondern auch nur geringe Umweltschäden verursacht (die geforderte Rechenleistung ist nicht sehr hoch, daher dürfte dieses virtuelle Feuerwerk auch nur relativ wenig Energie verbrauchen).
+
+Da ich gleichzeitig meine [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)- (JavaScript-) Skills verbessern wollte, habe ich meine kleine Feuerwerksimulation in dieser [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Variante erstellt. Aber obwohl ich dafür auf (m)ein [bewährtes Partikelsystem](https://kantel.github.io/posts/2023080802_py5_particelsystem_1/) zurückgegriffen habe, daß ich schon in diversen Python-Dialekten programmiert hatte, bin ich dabei wohl über jede Falle gestolpert, die mir P5.js und JavaScript in den Weg stellten.
+
+<div id="sketch"></div>
+
+Aber nun steht es und ich habe dabei viel gelernt. Speziell, daß die Behandlung von Listen in P5.js/JavaScript sich doch von Pythons Listen ein wenig unterscheidet (der Quellcode verrät Euch mehr).
+
+Ich habe den Code in zwei Dateien aufgeteilt. Einmal die Datei `particle.js`, die die beiden Klassen `Particle` und `RectParticle` (die die meisten ihrer Eigenschaften von `Particle` »erbt«) enthält:
+
+```JavaScript
+// Farbpaletten
+codingtrain = [[240, 80, 37], [248, 158, 80], [248, 239, 34] , [240, 99, 164],
+               [146, 82, 161], [129, 122, 198], [98, 199, 119], [49, 197, 244]]
+
+class Particle {
+
+    constructor(x, y) {
+        this.pos = createVector(x, y);
+        this.acc = createVector(0, 0.05);
+        this.vel = createVector(random(-2.0, 2.0), random(-2.0, 0.0));
+        this.c = random(codingtrain);
+        this.lifespan = 255.0;
+        this.d = random(5, 30);
+         }
+
+    update() {
+        this.vel.add(this.acc);
+        this.pos.add(this.vel);
+        this.lifespan -= random(0.5, 1.0);
+    }
+
+    display() {
+        stroke(0, this.lifespan);
+        let fillColor = color(this.c[0], this.c[1], this.c[2], this.lifespan);
+        fill(fillColor);
+        circle(this.pos.x, this.pos.y, this.d);
+    }
+
+    isNotAlive() {
+        if (this.lifespan <= 0) {
+            return(true);
+        } else {
+            return(false);
+        }
+    }
+}
+
+class RectParticle extends Particle {
+
+    constructor(x, y) {
+        super(x, y);
+        rectMode(CENTER);
+        this.rota = PI/3;
+    }
+
+    display() {
+        stroke(0, this.lifespan);
+        let fillColor = color(this.c[0], this.c[1], this.c[2], this.lifespan);
+        fill(fillColor);
+        push();
+        translate(this.pos.x, this.pos.y);
+        rotate(this.rota);
+        rect(0, 0, this.d, this.d);
+        pop();
+        this.rota += random(0.02, .10);
+    }
+}
+```
+
+Und dann den Hauptsketch, der durch diese Zweiteilung relativ kurz geraten ist:
+
+```JavaScript
+const WIDTH = 840;
+const HEIGHT = 400;
+let startX;
+let startY;
+let bgImage;
+let p;
+let particles = [];
+
+
+function preload() {
+  bgImage = loadImage("data/bgsmallvillage.jpg");
+}
+
+function setup() {
+  myCanvas = createCanvas(WIDTH, HEIGHT);
+  myCanvas.parent("sketch");
+  startX = width/2;
+  startY = 70;
+}
+
+function draw() {
+  background(bgImage);
+  let change = random(10);
+  if (change <= 5) {
+    p = new Particle(startX, startY);
+  } else {
+    p = new RectParticle(startX, startY);
+  }
+  particles.push(p)
+   for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].display();
+    if (particles[i].isNotAlive()) {
+      particles.splice(i, 1);
+     }
+  }
+}
+```
+
+Den [Quellcode und das Hintergrundbild](https://github.com/kantel/p5js/tree/master/firework) gibt es -- wie immer -- auch in meinem GitHub-Repositorium.
+
+Auch wenn mir die Beschäftigung mit P5.js und JavaScript viel Spaß gemacht hat, hat das heutige [Update von Py5](https://kantel.github.io/posts/2023123101_py5_010/) meine Pläne über den Haufen geworden. Ich werde mich nun erst einmal wieder mit dieser Python-Variante herumschlagen. *Still digging!*
+
+---
+
+**Hintergrundbild**: *[Friedliches Dorf zu Silvester](https://www.flickr.com/photos/schockwellenreiter/53433595870/)*. erstellt mit [DreamStudio](https://beta.dreamstudio.ai/generate). Prompt: »*View from a hill into a valley with a picturesque, medieval small town. It is a clear, bright full moon night with a dark blue sky*«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.
