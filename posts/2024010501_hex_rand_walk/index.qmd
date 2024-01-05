@@ -1,0 +1,98 @@
+---
+title: "Hexagonaler Random Walker (mit der Turtle und in Trinket)"
+author: "Jörg Kantel"
+date: "2024-01-05 17:40:00"
+categories: [Python, Turtle, Trinket, Creative Coding]
+image: "images/hexawalker.jpg"
+---
+
+[![](images/hexawalker-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53441590727/)
+
+Da ich mit [meinen](https://kantel.github.io/posts/2023122201_turtle_spirale/) [Spiralen](https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/) blut geleckt hatte, wollte ich unbedingt zu Beginn des Jahres noch etwas mit [Pythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) anstellen. Also habe ich den [hexagonalen Random Walk](http://blog.schockwellenreiter.de/2017/12/2017121304.html), den ich im Dezember 2017 schon einmal hier in diesem ~~Blog~~ Kritzelheft vorgestellt hatte, wieder aus der Mottenkiste hervorgekramt und ein wenig aufgehübscht.
+
+Die wichtigste Änderung war, daß ich nun, wenn der Random Walker das Spielfeld verlassen will, ihn zurück an Start schicke, und er seine Reise neu antreten muß (das ist ein wenig wie beim Monopoly-Spiel). Außerdem habe ich, um die Reise farbiger zu gestalten, nicht nur auf die bewährte [Coding Train Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/codingtrainfarben.html) zurückgegriffen, sondern auch die Schildkörte angewiesen, alle zwanzig Schritte ihre Farbe zu wechseln.
+
+Da die Reise durch das hexagonale Turtle-Universum nur dann Spaß macht, wenn man der Schildkröte bei ihrem Herumirren zusehen kann, habe ich mich an meine [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html)-[Experimente](https://kantel.github.io/#category=Trinket) erinnert, den Random-Walk auch dort implementiert und das Ergbnis dann in diese Seite eingebunden:
+
+<iframe src="https://trinket.io/embed/python/5a5da6439d?outputOnly=true" width="100%" height="550" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Das lief erstaunlich schmerzfrei ab, der [Trinket-Code](https://trinket.io/library/trinkets/5a5da6439d) verlangte nur eine Änderung von meiner Original-Python-Implementierung: Die Hintergrundfarbe des Canvas kann erst initialisiert werden, **nachdem** der Turtle-Screen erstellt wurde.
+
+Die restlichen Aänderungen sind rein kosmetischer Natur (Anpassung an die Breite der Webseite etc.).
+
+Nun für alle neugierigen, kreativen Codiererinnen und Codierer unter Euch da draußen den vollständigen Quellcode, den es auch wie immer in meinem [GitHub-Repositorium](https://github.com/kantel/turtlepy/blob/master/sources/hexrandomwalk3.py) gibt:
+
+```python
+import turtle as t
+import random as r
+
+WIDTH, HEIGHT = 540, 640
+MIN_X = -WIDTH//2 + 10
+MAX_X = WIDTH//2 - 20
+MIN_Y = HEIGHT//2 - 10
+MAX_Y = -HEIGHT//2 + 20 
+BORDERSIZE = 1
+STEPSIZE = 15
+
+codingtrain = ["#f05025", "#f89e50", "#f8ef22", "#f063a4",
+               "#9252a1", "#817ac6", "#62c777", "#31c5f4"]
+
+wn = t.Screen()
+wn.colormode(255)
+wn.bgcolor("#2a282d")
+wn.setup(width = WIDTH, height = HEIGHT, startx = 1300, starty = 30)
+wn.title("🐢 Hexagonaler Random Walk 🐢")
+
+# Draw Border
+border = t.Turtle()
+border.speed(0)
+border.pensize(BORDERSIZE)
+border.pencolor("#e6e2cc")
+border.penup()
+border.hideturtle()
+border.goto(MIN_X, MIN_Y)
+border.pendown()
+border.goto(MAX_X, MIN_Y)
+border.goto(MAX_X, MAX_Y)
+border.goto(MIN_X, MAX_Y)
+border.goto(MIN_X, MIN_Y)
+
+# Start Random Walk
+hexi = t.Turtle()
+hexi.speed(0)
+hexi.pensize(2)
+
+def go_home():
+    hexi.penup()
+    hexi.home()
+    hexi.pendown()
+
+for step in range(5000):
+
+    # Set Pencolor
+    if step%20 == 0:
+        hexi.pencolor(codingtrain[r.randint(0, len(codingtrain) - 1)])
+
+    # Roll Dice and set Angle
+    roll = r.randint(0, 5)
+    angle = roll*60
+    hexi.seth(angle)
+    
+    # Check Border
+    if hexi.xcor() >= MAX_X:
+        go_home()
+    elif hexi.xcor() <= MIN_X:
+        go_home()
+    elif hexi.ycor() <= MAX_Y:
+        go_home()
+    elif hexi.ycor() >= MIN_Y:
+        go_home()
+    else:
+        hexi.fd(STEPSIZE)
+
+print("I did it, Babe!")
+wn.exitonclick()
+wn.mainloop()
+```
+
+Und die [Trinket-Implementierung](https://trinket.io/python/5a5da6439d) findet Ihr natürlich auf Trinket selber. Ihr könnt Euch davon eine Fork erstellen und weiter damit herumspielen. Habt Spaß dabei!

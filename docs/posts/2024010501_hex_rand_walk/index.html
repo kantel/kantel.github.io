@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Hexagonaler Random Walker (mit der Turtle und in Trinket)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html" rel="" target="">
+ <span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel" rel="" target=""><i class="bi bi-mastodon" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Hexagonaler Random Walker (mit der Turtle und in Trinket)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Turtle</div>
+    <div class="quarto-category">Trinket</div>
+    <div class="quarto-category">Creative Coding</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">5. Januar 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53441590727/"><img src="images/hexawalker-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Da ich mit <a href="https://kantel.github.io/posts/2023122201_turtle_spirale/">meinen</a> <a href="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/">Spiralen</a> blut geleckt hatte, wollte ich unbedingt zu Beginn des Jahres noch etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Turtle</a> anstellen. Also habe ich den <a href="http://blog.schockwellenreiter.de/2017/12/2017121304.html">hexagonalen Random Walk</a>, den ich im Dezember 2017 schon einmal hier in diesem <del>Blog</del> Kritzelheft vorgestellt hatte, wieder aus der Mottenkiste hervorgekramt und ein wenig aufgehübscht.</p>
+<p>Die wichtigste Änderung war, daß ich nun, wenn der Random Walker das Spielfeld verlassen will, ihn zurück an Start schicke, und er seine Reise neu antreten muß (das ist ein wenig wie beim Monopoly-Spiel). Außerdem habe ich, um die Reise farbiger zu gestalten, nicht nur auf die bewährte <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/codingtrainfarben.html">Coding Train Farbpalette</a> zurückgegriffen, sondern auch die Schildkörte angewiesen, alle zwanzig Schritte ihre Farbe zu wechseln.</p>
+<p>Da die Reise durch das hexagonale Turtle-Universum nur dann Spaß macht, wenn man der Schildkröte bei ihrem Herumirren zusehen kann, habe ich mich an meine <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a>-<a href="https://kantel.github.io/#category=Trinket">Experimente</a> erinnert, den Random-Walk auch dort implementiert und das Ergbnis dann in diese Seite eingebunden:</p>
+<iframe src="https://trinket.io/embed/python/5a5da6439d?outputOnly=true" width="100%" height="550" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Das lief erstaunlich schmerzfrei ab, der <a href="https://trinket.io/library/trinkets/5a5da6439d">Trinket-Code</a> verlangte nur eine Änderung von meiner Original-Python-Implementierung: Die Hintergrundfarbe des Canvas kann erst initialisiert werden, <strong>nachdem</strong> der Turtle-Screen erstellt wurde.</p>
+<p>Die restlichen Aänderungen sind rein kosmetischer Natur (Anpassung an die Breite der Webseite etc.).</p>
+<p>Nun für alle neugierigen, kreativen Codiererinnen und Codierer unter Euch da draußen den vollständigen Quellcode, den es auch wie immer in meinem <a href="https://github.com/kantel/turtlepy/blob/master/sources/hexrandomwalk3.py">GitHub-Repositorium</a> gibt:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> turtle <span class="im">as</span> t</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> random <span class="im">as</span> r</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>WIDTH, HEIGHT <span class="op">=</span> <span class="dv">540</span>, <span class="dv">640</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>MIN_X <span class="op">=</span> <span class="op">-</span>WIDTH<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>MAX_X <span class="op">=</span> WIDTH<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">20</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>MIN_Y <span class="op">=</span> HEIGHT<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">10</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>MAX_Y <span class="op">=</span> <span class="op">-</span>HEIGHT<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">20</span> </span>
+<span id="cb1-9"><a href="#cb1-9"></a>BORDERSIZE <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>STEPSIZE <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a>codingtrain <span class="op">=</span> [<span class="st">"#f05025"</span>, <span class="st">"#f89e50"</span>, <span class="st">"#f8ef22"</span>, <span class="st">"#f063a4"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13"></a>               <span class="st">"#9252a1"</span>, <span class="st">"#817ac6"</span>, <span class="st">"#62c777"</span>, <span class="st">"#31c5f4"</span>]</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a>wn <span class="op">=</span> t.Screen()</span>
+<span id="cb1-16"><a href="#cb1-16"></a>wn.colormode(<span class="dv">255</span>)</span>
+<span id="cb1-17"><a href="#cb1-17"></a>wn.bgcolor(<span class="st">"#2a282d"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18"></a>wn.setup(width <span class="op">=</span> WIDTH, height <span class="op">=</span> HEIGHT, startx <span class="op">=</span> <span class="dv">1300</span>, starty <span class="op">=</span> <span class="dv">30</span>)</span>
+<span id="cb1-19"><a href="#cb1-19"></a>wn.title(<span class="st">"🐢 Hexagonaler Random Walk 🐢"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20"></a></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co"># Draw Border</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a>border <span class="op">=</span> t.Turtle()</span>
+<span id="cb1-23"><a href="#cb1-23"></a>border.speed(<span class="dv">0</span>)</span>
+<span id="cb1-24"><a href="#cb1-24"></a>border.pensize(BORDERSIZE)</span>
+<span id="cb1-25"><a href="#cb1-25"></a>border.pencolor(<span class="st">"#e6e2cc"</span>)</span>
+<span id="cb1-26"><a href="#cb1-26"></a>border.penup()</span>
+<span id="cb1-27"><a href="#cb1-27"></a>border.hideturtle()</span>
+<span id="cb1-28"><a href="#cb1-28"></a>border.goto(MIN_X, MIN_Y)</span>
+<span id="cb1-29"><a href="#cb1-29"></a>border.pendown()</span>
+<span id="cb1-30"><a href="#cb1-30"></a>border.goto(MAX_X, MIN_Y)</span>
+<span id="cb1-31"><a href="#cb1-31"></a>border.goto(MAX_X, MAX_Y)</span>
+<span id="cb1-32"><a href="#cb1-32"></a>border.goto(MIN_X, MAX_Y)</span>
+<span id="cb1-33"><a href="#cb1-33"></a>border.goto(MIN_X, MIN_Y)</span>
+<span id="cb1-34"><a href="#cb1-34"></a></span>
+<span id="cb1-35"><a href="#cb1-35"></a><span class="co"># Start Random Walk</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>hexi <span class="op">=</span> t.Turtle()</span>
+<span id="cb1-37"><a href="#cb1-37"></a>hexi.speed(<span class="dv">0</span>)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>hexi.pensize(<span class="dv">2</span>)</span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a><span class="kw">def</span> go_home():</span>
+<span id="cb1-41"><a href="#cb1-41"></a>    hexi.penup()</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    hexi.home()</span>
+<span id="cb1-43"><a href="#cb1-43"></a>    hexi.pendown()</span>
+<span id="cb1-44"><a href="#cb1-44"></a></span>
+<span id="cb1-45"><a href="#cb1-45"></a><span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>):</span>
+<span id="cb1-46"><a href="#cb1-46"></a></span>
+<span id="cb1-47"><a href="#cb1-47"></a>    <span class="co"># Set Pencolor</span></span>
+<span id="cb1-48"><a href="#cb1-48"></a>    <span class="cf">if</span> step<span class="op">%</span><span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb1-49"><a href="#cb1-49"></a>        hexi.pencolor(codingtrain[r.randint(<span class="dv">0</span>, <span class="bu">len</span>(codingtrain) <span class="op">-</span> <span class="dv">1</span>)])</span>
+<span id="cb1-50"><a href="#cb1-50"></a></span>
+<span id="cb1-51"><a href="#cb1-51"></a>    <span class="co"># Roll Dice and set Angle</span></span>
+<span id="cb1-52"><a href="#cb1-52"></a>    roll <span class="op">=</span> r.randint(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb1-53"><a href="#cb1-53"></a>    angle <span class="op">=</span> roll<span class="op">*</span><span class="dv">60</span></span>
+<span id="cb1-54"><a href="#cb1-54"></a>    hexi.seth(angle)</span>
+<span id="cb1-55"><a href="#cb1-55"></a>    </span>
+<span id="cb1-56"><a href="#cb1-56"></a>    <span class="co"># Check Border</span></span>
+<span id="cb1-57"><a href="#cb1-57"></a>    <span class="cf">if</span> hexi.xcor() <span class="op">&gt;=</span> MAX_X:</span>
+<span id="cb1-58"><a href="#cb1-58"></a>        go_home()</span>
+<span id="cb1-59"><a href="#cb1-59"></a>    <span class="cf">elif</span> hexi.xcor() <span class="op">&lt;=</span> MIN_X:</span>
+<span id="cb1-60"><a href="#cb1-60"></a>        go_home()</span>
+<span id="cb1-61"><a href="#cb1-61"></a>    <span class="cf">elif</span> hexi.ycor() <span class="op">&lt;=</span> MAX_Y:</span>
+<span id="cb1-62"><a href="#cb1-62"></a>        go_home()</span>
+<span id="cb1-63"><a href="#cb1-63"></a>    <span class="cf">elif</span> hexi.ycor() <span class="op">&gt;=</span> MIN_Y:</span>
+<span id="cb1-64"><a href="#cb1-64"></a>        go_home()</span>
+<span id="cb1-65"><a href="#cb1-65"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-66"><a href="#cb1-66"></a>        hexi.fd(STEPSIZE)</span>
+<span id="cb1-67"><a href="#cb1-67"></a></span>
+<span id="cb1-68"><a href="#cb1-68"></a><span class="bu">print</span>(<span class="st">"I did it, Babe!"</span>)</span>
+<span id="cb1-69"><a href="#cb1-69"></a>wn.exitonclick()</span>
+<span id="cb1-70"><a href="#cb1-70"></a>wn.mainloop()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Und die <a href="https://trinket.io/python/5a5da6439d">Trinket-Implementierung</a> findet Ihr natürlich auf Trinket selber. Ihr könnt Euch davon eine Fork erstellen und weiter damit herumspielen. Habt Spaß dabei!</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
