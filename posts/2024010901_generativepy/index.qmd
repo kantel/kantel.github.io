@@ -1,0 +1,62 @@
+---
+title: "Neu in meinem Wiki: generativepy"
+author: "Jörg Kantel"
+date: "2024-01-08 16:40:00"
+categories: [Politik]
+image: "images/generativepy.jpg"
+---
+
+[![](images/generativepy-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53451950704/)
+
+Regelmäßige Leser des *Schockwellenreiters* wissen, daß ich ein [Faible](https://kantel.github.io/posts/2023110601_drawbot_reboot/) für [Drawbot](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/drawbot.html) besitze, einer Python-App für zweidimensionale Graphiken, deren Vorzug es ist, daß sie eher auf Vektor- denn auf Bitmap-Graphiken fokussiert ist und mit ihr daher leicht auflösungsunabhängige Graphiken zum Beispiel für Printerzeugnisse geschaffen werden können. Daher wäre sie ein ideales (und geiles) Werkzeug für mein Projekt »[Generative Art zwischen zwei Pappedeckel](http://blog.schockwellenreiter.de/2022/03/2022031101.html)«, mit dem ich dem NFT-Hype den Stinkefinger zeigen möchte. Ihr Nachteil ist aber, daß sie nur unter macOS läuft und ich möchte einfach nicht schon wieder in die Mac-Only-Falle tapsen.
+
+Jetzt ist mir aber vor wenigen Tagen [generativepy](https://generativepy.com/book/what-is/) untergekommen, eine kostenlose, freie (MIT-Lizenz) Open-Source-Bibliothek von *Martin McBride* zum Erstellen von Diagrammen, Bildern und Animationen in Python. Bei ihr liegt ähnlich wie bei Drawbot der Schwerpunkt auf die Erzeugung von Vektorgraphiken (sie kann aber -- wie Drawbot auch -- Bitmaps; und auch Animationen erzeugt sie ähnlich wie Drawbot als eine Folge von Einzeldateien). Die [Installation](https://generativepy.com/book/installation/) ist wegen einiger Abhängigkeiten, die von `pip` oder `conda` nicht aufgelöst werden (können), nicht unbedingt trivial, aber auch Anfänger sollten sie anhand der Anleitung schaffen. (Vorsicht: Ich habe `pycairo` nicht innerhalb von [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) installiert bekommen, irgendetwas stimmt mit dem `wheel`-Modul dort nicht, aber mein [Anaconda-Python](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html) installierte *Cairo* ohne zu murren.)
+
+Die anderem »minimalen« Anforderungen ([Numpy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) und [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html)) hatte ich sowieso schon installiert und `dvipng` ist Bestandteil meiner [MacTeX](http://cognitiones.kantel-chaos-team.de/produktivitaet/latex/latex.html)-Installation, so daß einem [ersten Test](https://generativepy.com/book/simple-image/) (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53451950704/)) nichts im Wege stand.
+
+Auch wenn ich damit bisher nur an der Oberfläche gekratzt habe, das Teil scheint Potential zu haben. Daher habe ich ihm **[eine Seite](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/generativepy.html)** in [meinem Wiki](http://cognitiones.kantel-chaos-team.de/index.html) spendiert:
+
+###  Literatur und Tutorials
+
+- [GraphicMaths](https://www.graphicmaths.com/), *Martin McBrides* begleitende Website zum [GraphicMaths YouTube-Kanal](https://www.youtube.com/@graphicmaths7677). Die Illustrationen und Animationen dort werden in der Hauptsache mit *generativepy* erstellt.
+- Martin McBride: *[Generative Art](https://www.pythoninformer.com/generative-art/)* @ *[PythonInformer](https://www.pythoninformer.com/)*
+- Martin McBride: *[The generativepy Book](https://generativepy.com/book/)* (WiP)
+- [Martin McBrides Blog](https://martinmcbride.org/blog/)
+
+### Links
+
+- [generativepy Home](https://generativepy.com/)
+- [generativepy @ GitHub](https://github.com/martinmcbride/generativepy)
+- [generativepy @ PyPI](https://pypi.org/project/generativepy/)
+- [generativepy Reference](https://generativepy.com/generativepy/)
+- [generativepy Tutorial](https://www.pythoninformer.com/generative-art/generativepy-tutorial/)
+
+Und als ersten Versuch habe ich dieses kleine Skriptchen zum Laufen bekommen:
+
+```python
+from generativepy.drawing import make_image, setup
+from generativepy.color import Color
+from generativepy.geometry import Rectangle
+import os
+
+file_path = os.path.dirname(os.path.abspath(__file__))
+image_folder = os.path.join(file_path, "images")
+
+def draw(ctx, pixel_width, pixel_height, frame_no, frame_count):
+
+    setup(ctx, pixel_width, pixel_height, background=Color(0.92))
+
+    color0 = Color(0.18, 0.20, 0.22)
+    Rectangle(ctx).of_corner_size((50, 150), 300, 50).fill(color0)
+    color1 = Color(0.77, 0.47, 0.22, 0.7)
+    Rectangle(ctx).of_corner_size((100, 50), 50, 200).fill(color1)
+    color2 = Color(0.45, 0.69, 0.91, 0.7)
+    Rectangle(ctx).of_corner_size((170, 70), 50, 200).fill(color2)
+    color3 = Color(0.94, 0.29, 0.17, 0.7)
+    Rectangle(ctx).of_corner_size((240, 90), 50, 200).fill(color3)
+
+make_image(os.path.join(image_folder, "rectangle.png"), draw, 500, 400)
+print("I did it, Babe!")
+```
+
+Das Skript ist noch ein wenig trivial, man kann aber dennoch schon erahnen, was mit dieser Bibliothek alles möglich sein könnte. *Still digging!*
