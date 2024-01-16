@@ -1,0 +1,220 @@
+---
+title: "Pizzaplane mit JavaScript (P5.js), Stage 1: All Actors on Board"
+author: "Jörg Kantel"
+date: "2024-01-16 18:40:00"
+categories: [Spieleprogrammierung, JavaScript, P5.js]
+image: "images/pizzaplanejsstage1.jpg"
+---
+
+[![](images/pizzaplanejsstage1-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53468224814/)
+
+Auf ein Neues! Nachdem meine Versuche zum Ende des Jahres mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html), der JavaScript-Version von [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html) recht erfolgreich waren, ein [Weihnachtsszenario](https://kantel.github.io/posts/2023122601_merry_xmas_p5js/) und ein (ungefährliches) [Silvesterfeuerwerk](https://kantel.github.io/posts/2023123102_silvesterfeuerwerk/) zu programmieren, habe ich Mut gefaßt und bin eine größere Aufgabe angegangen. Die Portierung meines (nie endgültig fertiggestellten) kleinen, grünen Pizzafliegers von Python ([Pygame-Version](https://kantel.github.io/posts/2023010102_pizzaplane4/), [Trinket/Processing.py-Version](https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/)) nach JavaScript/P5.js.
+
+Denn ich bin der Überzeugung, daß der Browser das in absehbarer Zukunft wichtigste Frontend (nicht nur) für Spiele sein und bleiben wird. Und bei aller Sympathie hinkt hier Python doch stark hinterher: Zwar gibt es mit [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) eine Bibliothek, die Pygame-Spiele nach WebAssembly übersetzt [und sie so im Browser spielbar macht](https://kantel.github.io/posts/2023060501_pygame_im_browser/), aber das hat (noch?) [seine Tücken](https://kantel.github.io/posts/2023060602_pygbag_nachschlag/), so treten zum Beispiel bei Tastatureingaben Konflikte mit dem Browser auf. Das gilt auch für [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html), hier kommt noch verschärfend hinzu, daß ich bis heute nicht herausgefunden habe, wie man zusätzliche (Google-) Fonts DSGVO-konform in Trinket einbindet.
+
+All diese Probleme hat JavaScript mit P5.js nicht, bei meiner [tanzenden Krabbe](https://kantel.github.io/posts/2023051401_dancing_crab_p5js_v2/) zum Beispiel habe ich gezeigt, wie man sowohl das Problem mit den Tastatureingaben [löst](https://kantel.github.io/posts/2023051001_dancing_crab_p5js/), wie auch Google-Fonts lokal einbindet. So soll der Pizzaflieger in der P5.js-Version endlich komplettiert werden (mit [Start](https://kantel.github.io/posts/2023011001_pizzaplane_trailer/)- und Ende-Screen und einem Head-Up-Display (HUD)).
+
+Im ersten Stage habe ich erst einmal alle Akteure auf das Spielfeld geschickt. Das beginnt mit der Klasse `Background`, der ich dieses Mal zwei freie Hintergrundbilder ([CC0](http://creativecommons.org/publicdomain/zero/1.0/)) des Users *rubberduck* von [OpenGameArt.org](https://opengameart.org/content/another-background-made-from-glitch-assets) spendiert habe. Der besseren Übersicht wegen habe ich diese Klasse in einer eigenen Datei (`background.js`) untergebracht:
+
+```javascript
+class Background {
+
+    constructor(_x, _y, _im) {
+      this.x = _x;
+      this.y = _y;
+      this.startx = _x;
+      this.img = _im;
+    }
+  
+    update() {
+      this.x -= 1;
+      if (this.x <= -bgWidth) {
+        this.x = bgWidth;
+      }
+  
+    }
+  
+    display() {
+      image(this.img, this.x, this.y);
+    }
+  
+  }
+  ```
+
+Diese und alle anderen Bilder werden in der Funktion `preload()` geladen.
+
+```javascript
+function preload() {
+  planImages[0] = loadImage("data/planegreen_1.png")
+  planImages[1] = loadImage("data/planegreen_2.png")
+  pizzaImg = loadImage("data/pizza.png")
+  bg1  = loadImage("data/background02a_2.png")
+  bg2  = loadImage("data/background02b_2.png")
+}
+```
+
+Diese Funktion wird in P5.js vor `setup()` aufgerufen und verhindert, daß die Bilder asynchron geladen werden, also das Skript unter Umständen weiterläuft, bevor alle Assets vorhanden sind.
+
+Dann kommen die Klassen für den Spieler und die Gegener, die ebenfalls eine eigene Datei (`sprites.js`) bekommen haben:
+
+```javascript
+// Class Plane
+class Plane {
+
+    constructor() {
+      this.x = 75;
+      this.y = 240;
+      this.img = planImages[0];
+      this.frame = 0;
+      this.speed = 5
+      this.anim  = 0;
+    }
+  
+    update() {
+      if (keyIsPressed) {
+        if (keyCode == UP_ARROW) {
+          if (this.y > 10) {
+            this.y -= this.speed;
+          }
+        }
+        if (keyCode == DOWN_ARROW) {
+          if (this.y < height - 100) {
+            this.y += this.speed;
+          }
+      }
+      return false;
+    }
+    this.anim += 1;
+    if (this.anim >= maxAnim) {
+      this.anim = 0;
+      this.frame += 1;
+      if (this.frame >= 2) {
+        this.frame = 0;
+      }
+      this.img = planImages[this.frame];
+    }
+  
+  }
+
+  display() {
+    image(this.img, this.x, this.y);
+  }
+}
+
+// Class Enemy
+class Enemy {
+
+    constructor(_x, _y, _im) {
+        this.x = _x;
+        this.y = _y;
+        this.img = _im;
+        this.speed = random(2, 6);
+    }
+
+    reset() {
+        this.x = width + random(30, 100);
+        this.y = random(10, height - 100);
+        this.speed = random(2, 6);
+    }
+
+    update() {
+        this.x -= this.speed;
+        if (this.x < - 30) {
+            this.reset();
+        }
+    }
+
+    display() {
+        image(this.img, this.x, this.y);
+    }
+}
+```
+
+Auch wenn es mein Bestreben eigentlich ist, daß »Hauptprogramm« durch die Auslagerung der Elemente in Klassen kurz zu halten, ist es doch knall fünfzig Zeilen lang geworden:
+
+```javascript
+const windowWidth = 720;
+const windowHeight = 520;
+const bgWidth = 2056;
+const fps = 60;
+const maxAnim = 4;      // Animation cycle
+const noPizzas = 10;
+let planImages = []
+let plane;
+let pizzas = [];
+let pizzaImg;
+let bg1, bg2;
+let back1, back2;
+
+function preload() {
+  planImages[0] = loadImage("data/planegreen_1.png")
+  planImages[1] = loadImage("data/planegreen_2.png")
+  pizzaImg = loadImage("data/pizza.png")
+  bg1  = loadImage("data/background02a_2.png")
+  bg2  = loadImage("data/background02b_2.png")
+}
+
+function setup() {
+  myCanvas = createCanvas(windowWidth, windowHeight);
+  myCanvas.parent("sketch");
+  frameRate(fps);
+  back1 = new Background(0, 0, bg1);
+  back2 = new Background(bgWidth, 0, bg2);
+  for (let i = 0; i < noPizzas; i++) {
+    let x = width + random(30, 100);
+    let y = random(10, height - 100);
+    pizzas[i] = new Enemy(x, y, pizzaImg);
+  }
+  plane = new Plane();
+}
+
+function draw() {
+  image(bg1, 0, 0);
+  back1.update();
+  back2.update();
+  back1.display();
+  back2.display();
+  for (pizza of pizzas) {
+    pizza.update();
+    pizza.display();
+  }
+  plane.update();
+  plane.display();
+}
+```
+
+Das ist aber in der Hauptsache den vielen Konstanten- und Variablen-Deklarationen zuzuschreiben (und der Funktion `preload()`, die vorab alle Assets lädt), die eigentliche Programmlogik findet tatsächlich in den Klassen-Deklarationen für die Objekte statt.
+
+Die vorläufige `index.html`, die das Skript zum Testen braucht, muß natürlich alle Dateien einbinden:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>🍕 Pizza Plane Stage 1 🍕</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="libraries/p5.min.js"></script>
+    <script src="libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <script src="background.js"></script>
+    <script src="sprites.js"></script>
+    <script src="sketch.js"></script>
+    <div id="sketch"></div>
+  </body>
+</html>
+```
+
+Und im Vorgriff auf die spätere Verwendung in (m)einem [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html)-Dokument habe ich der Datei schon einmal ein `<div id="sketch">` spendiert, dem im `setup()` des eigentlichen Skripts mit `myCanvas.parent("sketch")` der Ort zugewiesen wird, in der das Skript platziert wird.
+
+<div style="float: right; margin-left: 12px; margin-top: 6px;">[![](images/js02.jpg)](https://dpunkt.de/produkt/javascript-fuer-ungeduldige/)&nbsp;[![](images/js01.jpg)](https://www.rheinwerk-verlag.de/programmieren-lernen-mit-javascript/)</div>
+
+Ich hatte bisher viel Spaß mit der P5.js/JavaScript-Programmierung. Bei aufkommenden Fragen geholfen haben mir dabei vor allem die Bücher »*[Programmieren lernen mit JavaScript](https://www.rheinwerk-verlag.de/programmieren-lernen-mit-javascript/). Spiele und Co. ganz easy – auch für Erwachsene*« von Stephan Elter, Bonn (Rheinwerk), 3. Auflage 2022, und »*[JavaScript für Ungeduldige](https://dpunkt.de/produkt/javascript-fuer-ungeduldige/). Der schnelle Einstieg in modernes JavaScript*« von Cay Horstmann, Heidelberg (dpunkt) 2021. Das erste Buch hatte ich ausgewählt, weil es versprach, nicht nur für Kinder, sondern auch für Erwachsene zu sein (also direkt das Kind im Mann in mir ansprach), das zweite Buch natürlich, weil auf dem Titel das weiße Kaninchen aus »Alice im Wunderland« abgebildet war.
+
+Ich bin und bleibe doch ein riesengroßes Spielkalb.

@@ -10,7 +10,1261 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.3.433</generator>
-<lastBuildDate>Tue, 16 Jan 2024 14:45:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 16 Jan 2024 17:40:00 GMT</lastBuildDate>
+<item>
+  <title>Pizzaplane mit JavaScript (P5.js), Stage 1: All Actors on Board</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53468224814/"><img src="https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/images/pizzaplanejsstage1-b.jpg" class="img-fluid figure-img"></a></p>
+</figure>
+</div>
+<p>Auf ein Neues! Nachdem meine Versuche zum Ende des Jahres mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, der JavaScript-Version von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a> recht erfolgreich waren, ein <a href="https://kantel.github.io/posts/2023122601_merry_xmas_p5js/">Weihnachtsszenario</a> und ein (ungefährliches) <a href="https://kantel.github.io/posts/2023123102_silvesterfeuerwerk/">Silvesterfeuerwerk</a> zu programmieren, habe ich Mut gefaßt und bin eine größere Aufgabe angegangen. Die Portierung meines (nie endgültig fertiggestellten) kleinen, grünen Pizzafliegers von Python (<a href="https://kantel.github.io/posts/2023010102_pizzaplane4/">Pygame-Version</a>, <a href="https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/">Trinket/Processing.py-Version</a>) nach JavaScript/P5.js.</p>
+<p>Denn ich bin der Überzeugung, daß der Browser das in absehbarer Zukunft wichtigste Frontend (nicht nur) für Spiele sein und bleiben wird. Und bei aller Sympathie hinkt hier Python doch stark hinterher: Zwar gibt es mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> eine Bibliothek, die Pygame-Spiele nach WebAssembly übersetzt <a href="https://kantel.github.io/posts/2023060501_pygame_im_browser/">und sie so im Browser spielbar macht</a>, aber das hat (noch?) <a href="https://kantel.github.io/posts/2023060602_pygbag_nachschlag/">seine Tücken</a>, so treten zum Beispiel bei Tastatureingaben Konflikte mit dem Browser auf. Das gilt auch für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a>, hier kommt noch verschärfend hinzu, daß ich bis heute nicht herausgefunden habe, wie man zusätzliche (Google-) Fonts DSGVO-konform in Trinket einbindet.</p>
+<p>All diese Probleme hat JavaScript mit P5.js nicht, bei meiner <a href="https://kantel.github.io/posts/2023051401_dancing_crab_p5js_v2/">tanzenden Krabbe</a> zum Beispiel habe ich gezeigt, wie man sowohl das Problem mit den Tastatureingaben <a href="https://kantel.github.io/posts/2023051001_dancing_crab_p5js/">löst</a>, wie auch Google-Fonts lokal einbindet. So soll der Pizzaflieger in der P5.js-Version endlich komplettiert werden (mit <a href="https://kantel.github.io/posts/2023011001_pizzaplane_trailer/">Start</a>- und Ende-Screen und einem Head-Up-Display (HUD)).</p>
+<p>Im ersten Stage habe ich erst einmal alle Akteure auf das Spielfeld geschickt. Das beginnt mit der Klasse <code>Background</code>, der ich dieses Mal zwei freie Hintergrundbilder (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) des Users <em>rubberduck</em> von <a href="https://opengameart.org/content/another-background-made-from-glitch-assets">OpenGameArt.org</a> spendiert habe. Der besseren Übersicht wegen habe ich diese Klasse in einer eigenen Datei (<code>background.js</code>) untergebracht:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Background {</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>(_x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> _im) {</span>
+<span id="cb1-4">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-5">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-6">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">startx</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-7">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _im<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-8">    }</span>
+<span id="cb1-9">  </span>
+<span id="cb1-10">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb1-11">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-12">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>bgWidth) {</span>
+<span id="cb1-13">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bgWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-14">      }</span>
+<span id="cb1-15">  </span>
+<span id="cb1-16">    }</span>
+<span id="cb1-17">  </span>
+<span id="cb1-18">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb1-19">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-20">    }</span>
+<span id="cb1-21">  </span>
+<span id="cb1-22">  }</span></code></pre></div>
+<p>Diese und alle anderen Bilder werden in der Funktion <code>preload()</code> geladen.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">preload</span>() {</span>
+<span id="cb2-2">  planImages[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/planegreen_1.png"</span>)</span>
+<span id="cb2-3">  planImages[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/planegreen_2.png"</span>)</span>
+<span id="cb2-4">  pizzaImg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/pizza.png"</span>)</span>
+<span id="cb2-5">  bg1  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/background02a_2.png"</span>)</span>
+<span id="cb2-6">  bg2  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/background02b_2.png"</span>)</span>
+<span id="cb2-7">}</span></code></pre></div>
+<p>Diese Funktion wird in P5.js vor <code>setup()</code> aufgerufen und verhindert, daß die Bilder asynchron geladen werden, also das Skript unter Umständen weiterläuft, bevor alle Assets vorhanden sind.</p>
+<p>Dann kommen die Klassen für den Spieler und die Gegener, die ebenfalls eine eigene Datei (<code>sprites.js</code>) bekommen haben:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Class Plane</span></span>
+<span id="cb3-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Plane {</span>
+<span id="cb3-3"></span>
+<span id="cb3-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>() {</span>
+<span id="cb3-5">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-6">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">240</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-7">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> planImages[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-8">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-9">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb3-10">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">anim</span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-11">    }</span>
+<span id="cb3-12">  </span>
+<span id="cb3-13">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb3-14">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (keyIsPressed) {</span>
+<span id="cb3-15">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (keyCode <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> UP_ARROW) {</span>
+<span id="cb3-16">          <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>) {</span>
+<span id="cb3-17">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-18">          }</span>
+<span id="cb3-19">        }</span>
+<span id="cb3-20">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (keyCode <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> DOWN_ARROW) {</span>
+<span id="cb3-21">          <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>) {</span>
+<span id="cb3-22">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-23">          }</span>
+<span id="cb3-24">      }</span>
+<span id="cb3-25">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-26">    }</span>
+<span id="cb3-27">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">anim</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-28">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">anim</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> maxAnim) {</span>
+<span id="cb3-29">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">anim</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-30">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-31">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) {</span>
+<span id="cb3-32">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-33">      }</span>
+<span id="cb3-34">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> planImages[<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">frame</span>]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-35">    }</span>
+<span id="cb3-36">  </span>
+<span id="cb3-37">  }</span>
+<span id="cb3-38"></span>
+<span id="cb3-39">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb3-40">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-41">  }</span>
+<span id="cb3-42">}</span>
+<span id="cb3-43"></span>
+<span id="cb3-44"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Class Enemy</span></span>
+<span id="cb3-45"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Enemy {</span>
+<span id="cb3-46"></span>
+<span id="cb3-47">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>(_x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> _im) {</span>
+<span id="cb3-48">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-49">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-50">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _im<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-51">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-52">    }</span>
+<span id="cb3-53"></span>
+<span id="cb3-54">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>() {</span>
+<span id="cb3-55">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-56">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-57">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-58">    }</span>
+<span id="cb3-59"></span>
+<span id="cb3-60">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb3-61">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-62">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>) {</span>
+<span id="cb3-63">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-64">        }</span>
+<span id="cb3-65">    }</span>
+<span id="cb3-66"></span>
+<span id="cb3-67">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb3-68">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-69">    }</span>
+<span id="cb3-70">}</span></code></pre></div>
+<p>Auch wenn es mein Bestreben eigentlich ist, daß »Hauptprogramm« durch die Auslagerung der Elemente in Klassen kurz zu halten, ist es doch knall fünfzig Zeilen lang geworden:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> windowWidth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">720</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> windowHeight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">520</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> bgWidth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2056</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> fps <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> maxAnim <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Animation cycle</span></span>
+<span id="cb4-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> noPizzas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> planImages <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb4-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> plane<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> pizzas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-10"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> pizzaImg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-11"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> bg1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> bg2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> back1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> back2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-13"></span>
+<span id="cb4-14"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">preload</span>() {</span>
+<span id="cb4-15">  planImages[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/planegreen_1.png"</span>)</span>
+<span id="cb4-16">  planImages[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/planegreen_2.png"</span>)</span>
+<span id="cb4-17">  pizzaImg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/pizza.png"</span>)</span>
+<span id="cb4-18">  bg1  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/background02a_2.png"</span>)</span>
+<span id="cb4-19">  bg2  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/background02b_2.png"</span>)</span>
+<span id="cb4-20">}</span>
+<span id="cb4-21"></span>
+<span id="cb4-22"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb4-23">  myCanvas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(windowWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> windowHeight)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-24">  myCanvas<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parent</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sketch"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-25">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">frameRate</span>(fps)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-26">  back1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Background</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> bg1)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-27">  back2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Background</span>(bgWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> bg2)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-28">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> noPizzas<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb4-29">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-30">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-31">    pizzas[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Enemy</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> pizzaImg)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-32">  }</span>
+<span id="cb4-33">  plane <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Plane</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-34">}</span>
+<span id="cb4-35"></span>
+<span id="cb4-36"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw</span>() {</span>
+<span id="cb4-37">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(bg1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-38">  back1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-39">  back2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-40">  back1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-41">  back2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-42">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (pizza <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">of</span> pizzas) {</span>
+<span id="cb4-43">    pizza<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-44">    pizza<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-45">  }</span>
+<span id="cb4-46">  plane<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-47">  plane<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-48">}</span></code></pre></div>
+<p>Das ist aber in der Hauptsache den vielen Konstanten- und Variablen-Deklarationen zuzuschreiben (und der Funktion <code>preload()</code>, die vorab alle Assets lädt), die eigentliche Programmlogik findet tatsächlich in den Klassen-Deklarationen für die Objekte statt.</p>
+<p>Die vorläufige <code>index.html</code>, die das Skript zum Testen braucht, muß natürlich alle Dateien einbinden:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb5-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;!DOCTYPE </span>html<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb5-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;html</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">lang</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"en"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb5-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;head&gt;</span></span>
+<span id="cb5-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;meta</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">charset</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"utf-8"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb5-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;meta</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"viewport"</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">content</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"width=device-width, initial-scale=1.0"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb5-6"></span>
+<span id="cb5-7">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;title&gt;</span>🍕 Pizza Plane Stage 1 🍕<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;/title&gt;</span></span>
+<span id="cb5-8"></span>
+<span id="cb5-9">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;link</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">rel</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stylesheet"</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">type</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text/css"</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">href</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"style.css"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb5-10"></span>
+<span id="cb5-11">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"libraries/p5.min.js"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;&lt;/script&gt;</span></span>
+<span id="cb5-12">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"libraries/p5.sound.min.js"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;&lt;/script&gt;</span></span>
+<span id="cb5-13">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;/head&gt;</span></span>
+<span id="cb5-14"></span>
+<span id="cb5-15">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;body&gt;</span></span>
+<span id="cb5-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"background.js"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;&lt;/script&gt;</span></span>
+<span id="cb5-17">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sprites.js"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;&lt;/script&gt;</span></span>
+<span id="cb5-18">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;script</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">src</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sketch.js"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;&lt;/script&gt;</span></span>
+<span id="cb5-19">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;div</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">id</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sketch"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;&lt;/div&gt;</span></span>
+<span id="cb5-20">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;/body&gt;</span></span>
+<span id="cb5-21"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;/html&gt;</span></span></code></pre></div>
+<p>Und im Vorgriff auf die spätere Verwendung in (m)einem <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a>-Dokument habe ich der Datei schon einmal ein <code>&lt;div id="sketch"&gt;</code> spendiert, dem im <code>setup()</code> des eigentlichen Skripts mit <code>myCanvas.parent("sketch")</code> der Ort zugewiesen wird, in der das Skript platziert wird.</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://dpunkt.de/produkt/javascript-fuer-ungeduldige/"><img src="https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/images/js02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.rheinwerk-verlag.de/programmieren-lernen-mit-javascript/"><img src="https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/images/js01.jpg" class="img-fluid"></a>
+</div>
+<p>Ich hatte bisher viel Spaß mit der P5.js/JavaScript-Programmierung. Bei aufkommenden Fragen geholfen haben mir dabei vor allem die Bücher »<em><a href="https://www.rheinwerk-verlag.de/programmieren-lernen-mit-javascript/">Programmieren lernen mit JavaScript</a>. Spiele und Co.&nbsp;ganz easy – auch für Erwachsene</em>« von Stephan Elter, Bonn (Rheinwerk), 3. Auflage 2022, und »<em><a href="https://dpunkt.de/produkt/javascript-fuer-ungeduldige/">JavaScript für Ungeduldige</a>. Der schnelle Einstieg in modernes JavaScript</em>« von Cay Horstmann, Heidelberg (dpunkt) 2021. Das erste Buch hatte ich ausgewählt, weil es versprach, nicht nur für Kinder, sondern auch für Erwachsene zu sein (also direkt das Kind im Mann in mir ansprach), das zweite Buch natürlich, weil auf dem Titel das weiße Kaninchen aus »Alice im Wunderland« abgebildet war.</p>
+<p>Ich bin und bleibe doch ein riesengroßes Spielkalb.</p>
+
+
+
+ ]]></description>
+  <category>Spieleprogrammierung</category>
+  <category>JavaScript</category>
+  <category>P5.js</category>
+  <guid>https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/index.html</guid>
+  <pubDate>Tue, 16 Jan 2024 17:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/images/pizzaplanejsstage1.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Schnee trendet …</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1968,37 +3222,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2023123102_silvesterfeuerwerk/index.html</guid>
   <pubDate>Sun, 31 Dec 2023 15:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2023123102_silvesterfeuerwerk/images/fireworkp5js.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Stoppt die Presse: Py5 0.10.0a0 ist erschienen</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2023123101_py5_010/index.html</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53433012151/"><img src="https://kantel.github.io/posts/2023123101_py5_010/images/py5update01-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Kurz vor dem bevorstehenden Jahreswechsel machte <em>James Schmitz</em> mir und sicher vielen anderen da draußen eine große Freude und teilte mit, daß er von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem genialen Python-3-Port (Python &gt; Version 3.8) von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a> die <strong>Version 0.10.0a0</strong> <a href="https://ixora.io/blog/new-release-0100a0/">freigegeben hat</a>. Es ist ein großes Update mit vielen neuen Features, die in der Hauptsache die Integration in Pythons Ökosystem betreffen.</p>
-<p>Wichtig für mich ist die verbesserte <a href="https://py5coding.org/integrations/matplotlib.html">Integration der Matplotlib</a> in Py5, die <a href="https://py5coding.org/integrations/pillow.html">Unterstützung von Pillow</a> und die <a href="https://py5coding.org/integrations/numpy.html">Behandlung von Bildern</a> mit Hilfe von Numpys <code>np_pixels</code>-Arrays. All dies (und noch viel mehr) ist in dem runderneuerten Abschnitt »<a href="https://py5coding.org/integrations/python_ecosystem_integrations.html">Python Ecosystem Integrations</a>« der ohnehin schon umfangreichen Dokumentation nachzulesen.</p>
-<p>Und <em>last but not least</em> schreibt <em>James Schmitz</em>, daß er überzeugt sei, daß trotz der Verwerfungen im letzten Oktober die Processing Foundation und die Processing Community das Processing-Projekt weiterhin aktiv vorantreiben werden, und Processing auch in Zukunft ein großartiges Werkzeug für kreative Coder sein wird. (Ich habe leider nie wirklich verstanden, worum es bei diesen Auseinandersetzungen im Oktober ging – mein Englisch reicht nicht aus, um außerhalb des gesicherten Programmier-Jargons zwischen den Zeilen lesen zu können.)</p>
-<p>Ich spiele momentan noch ein wenig mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> herum (dazu im <a href="https://kantel.github.io/posts/2023123102_silvesterfeuerwerk/">nächsten Beitrag</a> mehr), aber eventuell noch heute, jedoch spätestens zu Beginn des neuen Jahres, werde ich mich mit den neuen Features von Py5 beschäftigen. Ich bin nämlich schon gespannt wie ein Flitzebogen. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53433012151/">Python und Py5 kurz vor dem Jahreswechsel</a></em>. erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A&nbsp;python stands in front of an easel in a laboratory with strange technical devices and paints colorful pictures. colored steampunk style</em>«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>Py5</category>
-  <category>Python</category>
-  <category>Processing</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2023123101_py5_010/index.html</guid>
-  <pubDate>Sun, 31 Dec 2023 13:55:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2023123101_py5_010/images/py5update01.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
