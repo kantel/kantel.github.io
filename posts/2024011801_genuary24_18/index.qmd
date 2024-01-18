@@ -1,0 +1,42 @@
+---
+title: "Genuary 2024: Neue Farbpaletten braucht das Land"
+author: "Jörg Kantel"
+date: "2024-01-18 17:25:00"
+categories: [Creative Coding, Generative Art, Farbpaletten, Py5, Python]
+image: "images/genuary24_18.jpg"
+---
+
+[![](images/genuary24_18-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53471968033/)
+
+Seit einigen Jahren gibt es jeden Januar den [Genuary](https://genuary.art/), einen Monat, in dem jede und jeder aufgefordert ist, seine *Generative Art*-Werke zu präsentieren. Dafür gibt es für jeden Tage des Monats einen [Prompt](https://genuary.art/prompts), der als Ideengeber fungieren soll. Der heutige Prompt heißt »Bauhaus«.
+
+Und um diesen Prompt zu feiern, hat *Ahmad Moussa* vom [Gorilla Sun Blog](https://www.gorillasun.de/) die [Farbpalette Minimal Bauhaus](https://twitter.com/gorillasu/status/1747793292312416740?t=HrbKVgmphkZs-tU-odOLNw) kreiert, mit der auch ich irgendetwas anstellen wollte. Herausgekommen ist dieses kleine [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html)-Skript:
+
+```python
+WIDTH = 400
+HEIGHT = 400
+NO_RECT = 50
+
+a = 150      # alpha
+
+colors = ["#F6340C", "#156CD2", "#0D0B1B", "#F1E4E8", "#ECCA2D"]
+
+def setup():
+    size(WIDTH, HEIGHT)
+    window_move(1400, 30)
+    window_title("Random Rectangles – Genuary 2024")
+    rect_mode(CENTER)
+    no_loop()
+
+def draw():
+    background("#4F615D")
+    for _ in range(NO_RECT):
+        fill(random_choice(colors), a)
+        rect_w = random_int(10, 80)
+        rect_h = random_int(10, 80)
+        rect(random_int(rect_w, width - rect_w), random_int(rect_h, height - rect_h),
+             rect_w, rect_h)
+    print("I did it, Babe!")
+```
+
+Und da man ja bekannntlich nie genug Farbpaletten im Vorrat haben kann, habe ich dieser Palette unter dem Namen **[Genuary 24](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/genuary24.html)** auch gleich eine Seite in [meinem Wiki](http://cognitiones.kantel-chaos-team.de/index.html) spendiert. Sie paßt gut zu [ihrer Schwester](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/genuary23.html) vom letzten Jahr.
