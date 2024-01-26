@@ -33,7 +33,6 @@ class Plane {
         this.fire();
         return false;
       }
-  
     }
     this.anim += 1;
     if (this.anim >= maxAnim) {
