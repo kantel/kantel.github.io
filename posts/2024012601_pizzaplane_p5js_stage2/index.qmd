@@ -1,0 +1,339 @@
+---
+title: "Pizzaplane mit JavaScript (P5.js), Stage 2: Erste spielbare Version"
+author: "Jörg Kantel"
+date: "2024-01-26 18:30:00"
+categories: [Spieleprogrammierung, JavaScript, P5.js]
+image: "images/pizzaplane2.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+  - text: <script src="./background.js"></script>
+  - text: <script src="./plane.js"></script>
+  - text: <script src="./enemy.js"></script>
+  - text: <script src="./missile.js"></script>
+  - text: <script src="./sprites.js"></script>
+---
+
+[![](images/pizzaplane2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53487070046/)
+
+Die Portierung meines Spiels mit dem kleinen, grünen Flieger, der die von den bösen Meloni geschickten Pizzen abschießen muß, bevor sie ihn treffen, schreitet voran. Nun habe ich den Status erreicht, den meine Python-Versionen ([Pygame-Implementierung](https://kantel.github.io/posts/2023010102_pizzaplane4/), [Trinket/Processing.py-Implementierung](https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/)) ebenfalls zum Schluß hatten. Alles weitere, was nun noch kommen wird, ist neu.
+
+Zu erst einmal habe ich den Hintergrund wieder ausgetauscht. Der in [Stage 1](https://kantel.github.io/posts/2024011602_pizzaplanejs_stage_1/) genutzte Hintergrund war zwar farbenfroh, aber im Endeffekt für meinen Geschmack zu lebhaft. Die Pizzen und der Flieger hoben sich kaum davon ab. Daher bin ich -- in Annäherung an die Python-Versionen -- wieder zu einem Wüstenbild zurückgekehrt, dieses Mal (ein wenig Abwechslung mußte dennoch sein) ein [freies Bild](https://opengameart.org/content/scrolling-desert-backgrounds) ([OGA-BY 3.0](http://opengameart.org/content/oga-by-30-faq)), das CraftPix.net erstellt und auf OpenGameArt hochgeladen hat.
+
+Die zweite Änderung: Ich habe den Code auf mehrere Dateien aufgeteilt, um einen besseren Überblick zu bekommen. Das ist in JavaScript einfacher als in Python, da im Endeffekt hier doch alles vom Browser als eine große Datei behandelt wird. Also entfallen `import`-Statements und eventuelle Mehrfach-Deklarationen. Hier also erst einmal die Datei `background.js` mit der Klasse `Background`:
+
+```javascript
+class Background {
+
+    constructor(_x, _y, _im) {
+      this.x = _x;
+      this.y = _y;
+      this.startx = _x;
+      this.img = _im;
+    }
+  
+    update() {
+      this.x -= 1;
+      if (this.x <= -bgWidth) {
+        this.x = bgWidth;
+      }
+  
+    }
+  
+    display() {
+      image(this.img, this.x, this.y);
+    }
+  
+  }
+  ```
+
+  Natürlich hat auch der Spieler eine eigene Klasse bekommen, die in der Datei `plane.js` beschrieben wird:
+
+  ```javascript
+// Class Plane
+class Plane {
+
+    constructor() {
+      this.x = 75;
+      this.y = 240;
+      this.img = planImages[0];
+      this.w = this.img.width;
+      this.h = this.img.height;
+      this.frame = 0;
+      this.speed = 5
+      this.anim  = 0;
+      this.firecount = 0;
+      this.score = 0;
+      this.lives = 5; 
+    }
+  
+    update() {
+      if (keyIsPressed) {
+        if (keyCode == UP_ARROW) {
+          if (this.y > 40) {
+            this.y -= this.speed;
+          }
+          return false;
+        }
+        if (keyCode == DOWN_ARROW) {
+          if (this.y < height - 100) {
+            this.y += this.speed;
+          }
+          return false;
+      }
+      if (keyCode == RIGHT_ARROW) {
+        this.fire();
+        return false;
+      }
+    }
+    this.anim += 1;
+    if (this.anim >= maxAnim) {
+      this.anim = 0;
+      this.frame += 1;
+      if (this.frame >= 2) {
+        this.frame = 0;
+      }
+      this.firecount -= 1;
+      this.img = planImages[this.frame];
+    }
+  }
+
+  fire() {
+    if (this.firecount < 0) {
+        let missile = new Missile(this.x + this.w, this.y + this.h/2);
+        missiles.push(missile);
+        this.firecount = 2;
+    }
+  }
+
+  display() {
+    image(this.img, this.x, this.y);
+  }
+}
+```
+
+Die Pizzen sind momentan als Klasse `Enemy` in der Datei `enemy.js` zu finden. Dies ist aber vermutlich vorläufig, da es eventuell später noch weitere Gegnerklassen (zum Beispiel `Pumpkin` und/oder `Meloni`) geben wird. Dann werde ich `Enemy` zu einer Oberklasse umschreiben, von der `Pizza` und die anderen Gegner erben werden:
+
+```javascript
+// Class Enemy
+class Enemy {
+
+    constructor(_x, _y, _im) {
+        this.x = _x;
+        this.y = _y;
+        this.img = _im;
+        this.w = this.img.width;
+        this.h = this.img.height;
+        this.speed = random(2, 5);
+    }
+
+    reset() {
+        this.x = width + random(30, 100);
+        this.y = random(40, height - 100);
+        this.speed = random(2, 5);
+    }
+
+    update() {
+        this.x -= this.speed;
+        for (let pizza of pizzas) {
+            if (isRectCollision(this, plane)) {
+                this.reset();
+                plane.lives -= 1;
+            }
+        }
+
+        if (this.x < - 30) {
+            this.reset();
+            plane.score -= 2;
+        }
+    }
+
+    display() {
+        image(this.img, this.x, this.y);
+    }
+}
+```
+
+Überhaupt schreit die ganze Implementierung nach einem *Refactoring*. Aber dafür will ich das alles erst einmal zum Laufen bekommen und mich auch noch tiefer in JavaScript einarbeiten.
+
+Die Datei `missile.js` enthält die Klassen für die Geschosse (`Missile`) und die durch sie ausgelösten Explosionen (`Explosion`):
+
+```javascript
+// Class Missile
+class Missile {
+
+    constructor(_x, _y) {
+      this.x = _x;
+      this.y = _y;
+      this.img = missileImg;
+      this.w = this.img.width;
+      this.h = this.img.height;
+      this.speed = 10;
+    }
+  
+    update() {
+      this.x += this.speed;
+      if (this.x >= width + 20) {
+        missiles.splice(-1);
+      }
+      for (let pizza of pizzas) {
+        if (isRectCollision(this, pizza)) {
+            pizza.reset();
+            missiles.shift();
+            let hit = new Explosion(this.x, this.y - 20);
+            hits.push(hit);
+            plane.score += 10;
+        }
+      }
+    }
+
+    display() {
+        image(this.img, this.x, this.y);
+    }
+  }
+  
+  // Class Explosion
+  class Explosion {
+
+    constructor(_x, _y) {
+        this.x = _x;
+        this.y = _y;
+        this.img = explosionImg;
+        this.timer = 5;
+    }
+
+    update() {
+        this.timer -= 1;
+        if (this.timer <= 0) {
+            hits.splice(-1);
+        }
+    }
+
+    display() {
+        image(this.img, this.x, this.y);
+    }
+  }
+  ```
+
+  Die Datei `sprites.js` zeugt von meiner Unsicherheit bezüglich eines *Refactorings*. Zum einen könnte sie -- analog zu [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) -- eine (abstrakte) Oberklasse `Sprites` aufnehmen, von der alle Akteure als Minimum die Methoden `update()` und `display()` erben (müssen). Aber da muß ich mich erst noch schlau machen, ob und wie abstrakte Klassen in JavaScript realisiert werden (können).
+
+  Zum anderen enthält diese Datei Funktionen, die auch in einer eigenen Klasse (zum Beispiel `HUD`) implementiert werden könnten oder in eine Klasse `GameWorld` gehören. Aber auch darüber muß ich noch einmal schlafen. *Still digging!*
+
+  Aktuell enthält diese Datei nur zwei ausgelagerte Funktionen (`isRectCollision()` und `displayHUD()`), die sonst den Hauptsketch aufblähen würden:
+
+  ```javascript
+  // Hilfsfunktionen zu Sprites
+// eventuell noch in eine Operklasse zu integrieren
+
+function isRectCollision(self, other) {
+  let distanceX = (self.x + self.w/2) - (other.x + other.w/2);
+  let distanceY = (self.y + self.h/2) - (other.y + other.h/2);
+  let halfW = self.w/2 + other.w/2;
+  let halfH = self.h/2 + other.h/2;
+  if (abs(distanceX) < halfW) {
+    if (abs(distanceY) < halfH) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function displayHUD() {
+  let hud1 = ("Score: " + plane.score);
+  let hud2 = ("Lives: " + plane.lives);
+  push();
+  stroke(0);
+  strokeWeight(1);
+  fill(200, 10, 10);
+  textSize(36);
+  text(hud1, 20, 40);
+  text(hud2, 250, 40);
+  pop();
+}
+```
+
+Durch diese Aufteilung auf mehrere Dateien ist zumindest der Hauptsketch (ganz traditionell `sketch.js` genannt) doch recht übersichtlich geraten. Lediglich die Variablendeklarationen und die Funktion `preload()`, die die Bilder und den Font vorab lädt, nehmen naturgemäß etwas mehr Raum ein:
+
+```javascript
+const windowWidth = 720;
+const windowHeight = 460;
+const bgWidth = 1920;
+const fps = 60;
+const maxAnim = 4;      // Animation cycle
+const noPizzas = 7;
+let planImages = []
+let plane;
+let missileImg;
+let missiles = [];
+let explosionImg;
+let hits = [];
+let pizzas = [];
+let pizzaImg;
+let bgImage;
+let back1, back2;
+
+function preload() {
+  planImages[0] = loadImage("data/planegreen_1.png");
+  planImages[1] = loadImage("data/planegreen_2.png");
+  missileImg = loadImage("data/missile.png");
+  explosionImg = loadImage("data/explosion.png")
+  pizzaImg = loadImage("data/pizza.png");
+  bgImage = loadImage("data/desertbackground_s.png");
+  displayFont = loadFont("data/RubikGemstones-Regular.ttf")
+  }
+
+function setup() {
+  myCanvas = createCanvas(windowWidth, windowHeight);
+  myCanvas.parent("sketch");
+  frameRate(fps);
+  textFont(displayFont);
+  back1 = new Background(0, 0, bgImage);
+  back2 = new Background(bgWidth, 0, bgImage);
+  for (let i = 0; i < noPizzas; i++) {
+    let x = width + random(300, 600);
+    let y = random(40, height - 100);
+    pizzas[i] = new Enemy(x, y, pizzaImg);
+  }
+  plane = new Plane();
+}
+
+function draw() {
+  back1.update();
+  back2.update();
+  back1.display();
+  back2.display();
+  for (let pizza of pizzas) {
+    pizza.update();
+    pizza.display();
+  }
+  for (let missile of missiles) {
+    missile.update();
+    missile.display();
+  }
+  for (let hit of hits) {
+      hit.update();
+      hit.display();
+  }
+  plane.update();
+  plane.display();
+  displayHUD();
+
+  if (plane.lives < 0 || plane.score < 0) {
+    print("Game Over!");
+    noLoop();
+  }
+}
+```
+
+Wie dem auch sei: Das Spiel läuft und ist (irgendwie) spielbar, wie Ihr Euch hier überzeugen könnt:
+
+<div id="sketch"></div>
+
+**Anleitung**: *Mit den Pfeiltasten nach oben und unten wird der Flieger gesteuert, mit der Pfeiltaste nach rechts wird auf die Pizzen geschossen. Für einen Neustart muß momentan leider noch die Seite im Browser komplett neu geladen werden.*
+
+Zu Beginn müßt Ihr ganz schnell ein paar Pizzen abschießen, damit Ihr ein Punktepolster habt. Danach könnt Ihr Euch darauf konzentrieren, den Pizzen auszuweichen, um möglichst lange zu überleben. Denn das Spiel endet in der derzeitigen Fassung recht brutal mit `nooLoop()`, wenn der Punktestand oder die Anzahl der »Leben« unter Null sinken. Darum müßt Ihr, wenn Ihr das Spiel neu starten wollt, einen Reload der Seite durchführen. Daher möchte ich in der nächsten und vorläufig letzten Fassung noch einen Start- und einen Ende-Bildschirm implementieren, der unter anderem auch einen Neustart innerbalb des Spiels ermöglicht.
+
+Unschön ist auch noch, daß trotz des `return false` am Ende der Tastaturabfragen der Browser (zumindest Googles Chrome) immer noch die Tasten kapert und das Fenster ein wenig nach oben oder unten verrückt. Wenn mir dagegen keine Lösung einfällt, werde ich das Spiel wohl -- wie schon bei meiner Trinket-Implementierung -- auf Maussteuerung umstellen müssen.
+
+Im nächsten Beitrag dazu werde ich dann noch auf Einzelheiten im Code der Implementierung eingehen. Denn momentan ist das alles auch bei mir noch *learning by doing*. Ich hoffe, ich weiß bis dahin dann mehr …
