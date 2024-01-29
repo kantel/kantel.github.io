@@ -1,0 +1,78 @@
+---
+title: "Pizzaplane Stage 3: Jetzt ohne gierige Browser"
+author: "Jörg Kantel"
+date: "2024-01-29 20:15:00"
+categories: [Spieleprogrammierung, JavaScript, P5.js]
+image: "images/pizzaplane3.jpg"
+include-in-header:
+  - text: <script src="./js/p5.min.js"></script>
+include-before-body:
+  - text: <script src="./sketch.js"></script>
+  - text: <script src="./background.js"></script>
+  - text: <script src="./plane.js"></script>
+  - text: <script src="./enemy.js"></script>
+  - text: <script src="./missile.js"></script>
+  - text: <script src="./sprites.js"></script>
+---
+
+[![](images/pizzaplane3-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53496037661/)
+
+So wie es aussieht, funktioniert der Workaround mit dem `return false` am Ende der Tastaturabfragen, um den Browsern das »gierige« Verhaltsen abzugewöhnen, nur in der Funktion `keyPressed()`. Daher habe ich der Version meines kleinen Pizzafliegers von [letzter Woche](https://kantel.github.io/posts/2024012601_pizzaplane_p5js_stage2/) diese Funktion (und analog dazu auch ein `keyReleased()`) im Hauptsketch spendiert
+
+```javascript
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    plane.dir = "UP";
+  }
+  else if (keyCode === DOWN_ARROW) {
+    plane.dir = "DOWN";
+  }
+  else if (keyCode === RIGHT_ARROW) {
+    plane.fire();
+  }
+  return false;
+}
+
+function keyReleased() {
+  plane.dir = "NONE";
+}
+```
+
+und die `update()`-Methode der Klasse `Plane` wie folgt geändert:
+
+```javascript
+  update() {
+      if (this.dir === "NONE") {
+        this.y += 0;
+      }
+      else if (this.dir === "UP") {
+        if (this.y > 40) {
+          this.y -= this.speed;
+        }
+      }
+      else if (this.dir === "DOWN") {
+        if (this.y < height - 100) {
+          this.y += this.speed;
+        }
+      }
+    this.anim += 1;
+    if (this.anim >= maxAnim) {
+      this.anim = 0;
+      this.frame += 1;
+      if (this.frame >= 2) {
+        this.frame = 0;
+      }
+      this.firecount -= 1;
+      this.img = planImages[this.frame];
+    }
+  }
+```
+So wie es aussieht, funktionieren nun auch im Browser die Pfeiltasten wie gewünscht, ohne das der Canvas nach oben oder unten ruckelt:
+
+<div id="sketch"></div>
+
+**Anleitung**: *Mit den Pfeiltasten nach oben und unten wird der Flieger gesteuert, mit der Pfeiltaste nach rechts wird auf die Pizzen geschossen. Für einen Neustart muß momentan leider noch die Seite im Browser komplett neu geladen werden.*
+
+Zwar müßt Ihr immer noch zu Beginn möglichst schnell und ohne Rücksicht auf Verluste ein paar Pizzen abschießen, um Euch ein Punktepolster zuzulegen (aber das sollte in der nächsten Version, die dann einen Startscreen besitzt, gefixt sein), aber wenigstens reicht [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) nun die Tasten, die es konsumiert hat, nicht mehr an den Browser durch.
+
+Die [vollständige, aktualisierte Version findet Ihr mit allen Assets](https://github.com/kantel/p5js/tree/master/pizzaplane) auf GitHub. Und ich bin froh, daß ich eine Lösung gegen gierige Browser gefunden habe. Jetzt kann ich guten Gewissens das Projekt weiterführen. *Still digging!*
