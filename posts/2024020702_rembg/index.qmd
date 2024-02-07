@@ -1,0 +1,55 @@
+---
+title: "Rembg – Bildhintergrund mit Python entfernen"
+author: "Jörg Kantel"
+date: "2024-02-07 21:00:00"
+categories: [Python, Creative Coding, Bilder, Pillow]
+image: "images/rembgpy.jpg"
+---
+
+[![](images/rembgpy-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53514357412/)
+
+Als Geheimwaffe, um Bilder vom Hintergrund freizustellen, wurde mir häufig die freie (MIT-Lizenz) Python-Bibliothek [Rembg](https://github.com/danielgatis/rembg) empfohlen. Doch auch, wenn das Teil [auf PyPI zu finden](https://pypi.org/project/rembg/2.0.28/) und daher leicht zu installieren war, hatte ich es nicht zum Laufen bekommen. Bis ich dann heute über [diese Anleitung](https://medium.com/@HeCanThink/rembg-effortlessly-remove-backgrounds-in-python-c2248501f992) stolperte.
+
+Dort stand nämlich, daß Rembg das Bild als `numpy.array()` benötigte, um zu funktionieren. Also mein Versuchsprogramm wie folgt geändert
+
+```python
+import rembg
+import numpy as np
+from PIL import Image
+import os
+
+DATAPATH = os.path.join(os.getcwd(), "images")
+
+input_path = os.path.join(DATAPATH, "maid05.png")
+output_path = os.path.join(DATAPATH, "maid05_output.png")
+
+# Load the input image
+input_image = Image.open(input_path)
+
+# Convert the input image to a numpy array
+input_array = np.array(input_image)
+
+# Apply background removal using rembg
+output_array = rembg.remove(input_array)
+
+# Create a PIL Image from the output array
+output_image = Image.fromarray(output_array)
+
+# Save the output image
+output_image.save(output_path)
+output_image.show()
+
+print("I did it, Babe!")
+```
+
+und schon funzte das mit der Bildhintergrund-Entfernung. Zwar gibt es noch eine `deprecation`-Warnung, aber die kann ich -- glaube ich -- erst einmal ignorieren.
+
+Warum ich so scharf auf das Teil bin, wo es doch so viele, meist kostenlose Online-Tools gibt, die vorgeben, das gleiche zu erledigen? Weil diese Tools meistens die Größe der Ausgabebilder beschränken (in der Regel auf 512 x 512 Pixel). Mein Testbild hatte aber die Größe von 4.096 x 4.096 Pixel und Rembg nahm akzeptierte diese Größe ohne zu meckern und produzierte auch eine gleich große Ausgabe.
+
+Das Testbild hatte ich mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html) generiert, genaueres entnehmt Ihr bitte der Bildbeschreibung unten.
+
+Wer das nachprogrammieren will: Die Pillow-Funktion `Image.show()` funtioniert nicht mit allen Betriebssystemen. Ihr könnt sie aber einfach auskommentieren, ohne daß die Funktionsfähigkeit des Skriptes beeinträchtigt wird.
+
+---
+
+**Bild**: *[Ein Dienstmädchen](https://www.flickr.com/photos/schockwellenreiter/53515278291/) (Entwurf für eine Visual Novel)*, erstellt mit Scenario, Prompt: »*A young maid with curly brown hair, green eyes and red lips, wearing a white bonnet, black dress and white apron, 2D graphic style+, point and click game character, full body shot*«, Negative Prompt: »*Background, ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers*«, Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook
