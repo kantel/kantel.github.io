@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Der Schockwellenreiter - Pizzaplane Stage 3: Jetzt ohne gierige Browser</title>
+<title>Der Schockwellenreiter - Kurios und kurioser: Tuesday JS v42 freigegeben</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -103,7 +69,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
-<script src="./js/p5.min.js"></script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -159,20 +124,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     
 <!-- main -->
 <main class="content" id="quarto-document-content">
-<script src="./sketch.js"></script>
-<script src="./background.js"></script>
-<script src="./plane.js"></script>
-<script src="./enemy.js"></script>
-<script src="./missile.js"></script>
-<script src="./sprites.js"></script>
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Pizzaplane Stage 3: Jetzt ohne gierige Browser</h1>
+<h1 class="title">Kurios und kurioser: Tuesday JS v42 freigegeben</h1>
   <div class="quarto-categories">
+    <div class="quarto-category">Tuesday JS</div>
+    <div class="quarto-category">Interactive Fiction</div>
     <div class="quarto-category">Spieleprogrammierung</div>
-    <div class="quarto-category">JavaScript</div>
-    <div class="quarto-category">P5.js</div>
+    <div class="quarto-category">Bilder</div>
+    <div class="quarto-category">Künstliche Intelligenz</div>
   </div>
   </div>
 
@@ -190,7 +151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">29. Januar 2024</p>
+      <p class="date">8. Februar 2024</p>
     </div>
   </div>
   
@@ -202,57 +163,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53496037661/"><img src="images/pizzaplane3-b.jpg" class="img-fluid"></a></p>
-<p>So wie es aussieht, funktioniert der Workaround mit dem <code>return false</code> am Ende der Tastaturabfragen, um den Browsern das »gierige« Verhalten abzugewöhnen, nur in der Funktion <code>keyPressed()</code>. Daher habe ich der Version meines kleinen Pizzafliegers von <a href="https://kantel.github.io/posts/2024012601_pizzaplane_p5js_stage2/">letzter Woche</a> diese Funktion (und analog dazu auch ein <code>keyReleased()</code>) im Hauptsketch spendiert</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">function</span> <span class="fu">keyPressed</span>() {</span>
-<span id="cb1-2"><a href="#cb1-2"></a>  <span class="cf">if</span> (keyCode <span class="op">===</span> UP_ARROW) {</span>
-<span id="cb1-3"><a href="#cb1-3"></a>    plane<span class="op">.</span><span class="at">dir</span> <span class="op">=</span> <span class="st">"UP"</span><span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>  }</span>
-<span id="cb1-5"><a href="#cb1-5"></a>  <span class="cf">else</span> <span class="cf">if</span> (keyCode <span class="op">===</span> DOWN_ARROW) {</span>
-<span id="cb1-6"><a href="#cb1-6"></a>    plane<span class="op">.</span><span class="at">dir</span> <span class="op">=</span> <span class="st">"DOWN"</span><span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>  }</span>
-<span id="cb1-8"><a href="#cb1-8"></a>  <span class="cf">else</span> <span class="cf">if</span> (keyCode <span class="op">===</span> RIGHT_ARROW) {</span>
-<span id="cb1-9"><a href="#cb1-9"></a>    plane<span class="op">.</span><span class="fu">fire</span>()<span class="op">;</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>  }</span>
-<span id="cb1-11"><a href="#cb1-11"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>}</span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">function</span> <span class="fu">keyReleased</span>() {</span>
-<span id="cb1-15"><a href="#cb1-15"></a>  plane<span class="op">.</span><span class="at">dir</span> <span class="op">=</span> <span class="st">"NONE"</span><span class="op">;</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>und die <code>update()</code>-Methode der Klasse <code>Plane</code> wie folgt geändert:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1"></a>  <span class="fu">update</span>() {</span>
-<span id="cb2-2"><a href="#cb2-2"></a>      <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">dir</span> <span class="op">===</span> <span class="st">"NONE"</span>) {</span>
-<span id="cb2-3"><a href="#cb2-3"></a>        <span class="kw">this</span><span class="op">.</span><span class="at">y</span> <span class="op">+=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>      }</span>
-<span id="cb2-5"><a href="#cb2-5"></a>      <span class="cf">else</span> <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">dir</span> <span class="op">===</span> <span class="st">"UP"</span>) {</span>
-<span id="cb2-6"><a href="#cb2-6"></a>        <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">y</span> <span class="op">&gt;</span> <span class="dv">40</span>) {</span>
-<span id="cb2-7"><a href="#cb2-7"></a>          <span class="kw">this</span><span class="op">.</span><span class="at">y</span> <span class="op">-=</span> <span class="kw">this</span><span class="op">.</span><span class="at">speed</span><span class="op">;</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>        }</span>
-<span id="cb2-9"><a href="#cb2-9"></a>      }</span>
-<span id="cb2-10"><a href="#cb2-10"></a>      <span class="cf">else</span> <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">dir</span> <span class="op">===</span> <span class="st">"DOWN"</span>) {</span>
-<span id="cb2-11"><a href="#cb2-11"></a>        <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">y</span> <span class="op">&lt;</span> height <span class="op">-</span> <span class="dv">100</span>) {</span>
-<span id="cb2-12"><a href="#cb2-12"></a>          <span class="kw">this</span><span class="op">.</span><span class="at">y</span> <span class="op">+=</span> <span class="kw">this</span><span class="op">.</span><span class="at">speed</span><span class="op">;</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a>        }</span>
-<span id="cb2-14"><a href="#cb2-14"></a>      }</span>
-<span id="cb2-15"><a href="#cb2-15"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">anim</span> <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">anim</span> <span class="op">&gt;=</span> maxAnim) {</span>
-<span id="cb2-17"><a href="#cb2-17"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">anim</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">frame</span> <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>      <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">frame</span> <span class="op">&gt;=</span> <span class="dv">2</span>) {</span>
-<span id="cb2-20"><a href="#cb2-20"></a>        <span class="kw">this</span><span class="op">.</span><span class="at">frame</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>      }</span>
-<span id="cb2-22"><a href="#cb2-22"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">firecount</span> <span class="op">-=</span> <span class="dv">1</span><span class="op">;</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">img</span> <span class="op">=</span> planImages[<span class="kw">this</span><span class="op">.</span><span class="at">frame</span>]<span class="op">;</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a>    }</span>
-<span id="cb2-25"><a href="#cb2-25"></a>  }</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>So wie es aussieht, funktionieren nun auch im Browser die Pfeiltasten wie gewünscht, ohne das der Canvas nach oben oder unten ruckelt:</p>
-<div id="sketch">
-
-</div>
-<p><strong>Anleitung</strong>: <em>Mit den Pfeiltasten nach oben und unten wird der Flieger gesteuert, mit der Pfeiltaste nach rechts wird auf die Pizzen geschossen. Für einen Neustart muß momentan leider noch die Seite im Browser komplett neu geladen werden.</em></p>
-<p>Zwar müßt Ihr immer noch zu Beginn möglichst schnell und ohne Rücksicht auf Verluste ein paar Pizzen abschießen, um Euch ein Punktepolster zuzulegen (aber das sollte in der nächsten Version, die dann einen Startscreen besitzt, gefixt sein), aber wenigstens reicht <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> nun die Tasten, die es konsumiert hat, nicht mehr an den Browser durch.</p>
-<p>Die <a href="https://github.com/kantel/p5js/tree/master/pizzaplane">vollständige, aktualisierte Version findet Ihr mit allen Assets</a> auf GitHub. Und ich bin froh, daß ich eine Lösung gegen gierige Browser gefunden habe. Jetzt kann ich guten Gewissens das Projekt weiterführen. <em>Still digging!</em></p>
+<p><a href="https://kirilllive.github.io/tuesday-js/screenshots/script_structure.jpg"><img src="images/tuesday_script_struct-b.jpg" class="img-fluid"></a></p>
+<p>Meine <a href="https://kantel.github.io/posts/2024020702_rembg/">gestrigen Experimente</a> mit dem Freistellen von Bildern hatte ich nicht grundlos durchgeführt. Denn gestern schneite in meinen Feedreader die Meldung herein, daß <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a>, die freie (Apache 2.0-Lizenz) JavaScript-basierte Engine für <em>Visual Novels</em> und interaktive Geschichten (und noch einiges mehr) in der <a href="https://github.com/Kirilllive/tuesday-js/releases/tag/42.0.0">Version 4.2 erschienen</a> sei (bisher fuhr ich mit der Version 35, das (wichtige!) Update auf die <a href="https://github.com/Kirilllive/tuesday-js/releases/tag/41.0.0">Version 41</a> vom 21. Dezember letzten Jahres hatte ich wohl im Festtagsstreß verschlafen).</p>
+<p>Das erinnerte mich – unabhängig davon, daß die Engine sowieso auf meiner Testliste steht – an eine Idee von mir: Schon lange wollte ich mal so etwas wie kurze, interaktive Geschichten entwickeln, die man im Netz (also vor allem auch in diesem <del>Blog</del> Kritzelheft) einbinden und präsentieren kann, kurze, bebilderte Nachrichten, satirische Kommentare oder ähnliches. Ursprünglich hatte ich dafür <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> vorgesehen (hier der <a href="https://kantel.itch.io/neuklln-ist-arm">Link zu einem Prototyp</a> auf Itch.io), aber der Ballast, den Ren’Py in seiner HTML-Version mitschleppt, ist so fett, daß die Ladezeit länger dauert als die Zeit, die das Skript zur Ausführung benötigt. Da ist Tuesday JS doch bedeutend schlanker und schneller (hier ebenfalls ein <a href="https://kantel.itch.io/tuesday-js-test">Link zu einem Prototyp</a> auf Itch.io) und zusätzlich kann die Applikation direkt vom eigenen Server in die Webseite eingebunden werden (ohne von einem dritten Anbieter kommen zu müssen) und lädt auch recht schnell:</p>
+<iframe src="anim/index.html" width="640" height="480" name="Tuesday JS Test">
+</iframe>
+<p>Daher will ich nun ein wenig mit Tuesday JS experimentieren und dazu gehört nicht nur, daß ich mir von einer gekünstelten Intelligenzia dafür die Bilder und Avatare erstellen lasse, sondern daß ich mir auch die Tutorials dazu reinziehe. Denn wie ich <a href="https://kantel.github.io/posts/2023101901_tuesdayjs_1st_steps/">hier schon schrieb</a>, ist für einen Menschen wie mich, der am liebsten in seinem Texteditor herumsaut, die <em>Point-and-Click</em>-Oberfläche eines Tools wie Tuesday JS doch recht gewöhnungsbedürftig.</p>
+<p>Daher hier (teilweise noch einmal) die Tutorials, die mir bisher zu dieser Engine untergekommen waren:</p>
+<ul>
+<li><a href="https://kirilllive.github.io/tuesday-js/doc_editor.html#quick_tutorial">Tuesday JS Quick Guide</a></li>
+<li><a href="https://kirill-live.itch.io/tuesday-js/devlog/241616/creation-html-desctop-app-for-windows-macos-and-linux">Creation html desctop app for windows macos and linux</a></li>
+<li>Creating Interactive Narratives Made Easy: <a href="https://medevel.com/tuseday-js/">Introducing Tuesday JS, the Open-Source Visual Novel Engine</a></li>
+</ul>
+<p>Als erstes habe ich vor, ich ein <a href="http://blog.schockwellenreiter.de/2021/10/2021101202.html">frühes</a> Ren’Py-Tutorial, das ich vor Jahren mal <a href="http://blog.schockwellenreiter.de/2021/10/2021101502.html">verbrochen hatte</a>, nach Tuesday zu portieren, um ein Gefühl für die Engine zu bekommen.</p>
+<p>Parallel dazu möchte ich mir mit den Bildern, die ich mit KI-Applikationen erstellen werde, eine Repertoire an Charakteren, Avataren und Hintergrundbildern zusammenstellen, die ein einigermaßen konsistentes Erscheinungsbild dieser Experimente ermöglchen. Da ich mit beiden Tools – der Bildergenerierung mit Hilfe Künstlicher Intelligenz, wie auch mit Tuesday JS – Neuland betrete, bin ich selber gespannt ob und wenn ja, was dabei herauskommen wird. <em>Still digging!</em></p>
+<p><strong>Was sonst noch was?</strong> Ach ja, <a href="https://kirilllive.github.io/tuesday-js/doc_editor.html#bot_telegram">Tuesday JS kann auch Chatbot</a>. Ein weiterer Grund, sich mit der Engine zu befassen.</p>
 
 
 
