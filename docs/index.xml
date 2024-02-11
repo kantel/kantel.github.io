@@ -10,7 +10,34 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sun, 11 Feb 2024 13:45:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 11 Feb 2024 19:30:00 GMT</lastBuildDate>
+<item>
+  <title>Erste Schritte mit Tuesday JS</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53523114788/"><img src="https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/images/poirottuesday-b.jpg" class="img-fluid"></a></p>
+<p>Ich habe meine <a href="https://kantel.github.io/posts/2024020801_tuesdayjs_update/">Ankündigung vom Donnerstag</a> wahrgemacht und so etwas wie erste Schritte mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday JS</a>, der freien (Apache-2.0-Lizenz) JavaScript-basierte Engine für <em>Visual Novels</em>, interaktive Geschichten und anderes unternommen. Und wenn ich ehrlich bin: Trotz der Klicki-Bunit-Oberfläche hat es nicht wirklich wehgetan, sondern sogar ein wenig Spaß gemacht.</p>
+<p>Zwar habe ich mich häufig – trotz der <a href="https://kirilllive.github.io/tuesday-js/doc_editor.html#quick_tutorial">Anleitung</a> – durch die Menüs wühlen müssen und einiges auch nur durch <em>Trial and Error</em> erreicht, aber <em>voilà</em>, hier ist er: Mein erster, echter Versuch mit Tuesday&nbsp;JS:</p>
+<iframe src="anim/index.html" width="640" height="366" name="Tuesday JS 1st Steps">
+</iframe>
+<p>Wie ich schon einmal schrieb, ist das Geniale an dieser Engine, daß sich die fertigen Ergebnisse problemlos in jede Webseite einbinden lassen und es damit ermöglicht, auch kleine Web-Comics oder ähnliche Experimente zu veröffentlichen. Ich werde darüber noch ein paar mal schlafen müssen.</p>
+<p>Und wenn ich wirklich verstanden habe, wie diese Maschine funktioniert, wird es auch kleine Tutorials dazu hier im <em>Schockwellenreiter</em> geben. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Tuesday JS</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/</guid>
+  <pubDate>Sun, 11 Feb 2024 19:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/images/poirottuesday.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Rembg - Kann die KI auch weiße Kaninchen?</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -787,359 +814,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024013001_patientenfalle_erezept/</guid>
   <pubDate>Tue, 30 Jan 2024 16:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024013001_patientenfalle_erezept/images/apothekerin01.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Pizzaplane Stage 3: Jetzt ohne gierige Browser</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024012902_pizzaplane_3/</link>
-  <description><![CDATA[ 
-<script src="./sketch.js"></script>
-<script src="./background.js"></script>
-<script src="./plane.js"></script>
-<script src="./enemy.js"></script>
-<script src="./missile.js"></script>
-<script src="./sprites.js"></script>
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53496037661/"><img src="https://kantel.github.io/posts/2024012902_pizzaplane_3/images/pizzaplane3-b.jpg" class="img-fluid"></a></p>
-<p>So wie es aussieht, funktioniert der Workaround mit dem <code>return false</code> am Ende der Tastaturabfragen, um den Browsern das »gierige« Verhalten abzugewöhnen, nur in der Funktion <code>keyPressed()</code>. Daher habe ich der Version meines kleinen Pizzafliegers von <a href="https://kantel.github.io/posts/2024012601_pizzaplane_p5js_stage2/">letzter Woche</a> diese Funktion (und analog dazu auch ein <code>keyReleased()</code>) im Hauptsketch spendiert</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">keyPressed</span>() {</span>
-<span id="cb1-2">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (keyCode <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">===</span> UP_ARROW) {</span>
-<span id="cb1-3">    plane<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"UP"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-4">  }</span>
-<span id="cb1-5">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (keyCode <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">===</span> DOWN_ARROW) {</span>
-<span id="cb1-6">    plane<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"DOWN"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-7">  }</span>
-<span id="cb1-8">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (keyCode <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">===</span> RIGHT_ARROW) {</span>
-<span id="cb1-9">    plane<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">fire</span>()<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-10">  }</span>
-<span id="cb1-11">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">return</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-12">}</span>
-<span id="cb1-13"></span>
-<span id="cb1-14"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">keyReleased</span>() {</span>
-<span id="cb1-15">  plane<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NONE"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-16">}</span></code></pre></div>
-<p>und die <code>update()</code>-Methode der Klasse <code>Plane</code> wie folgt geändert:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1">  <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">update</span>() {</span>
-<span id="cb2-2">      <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">===</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NONE"</span>) {</span>
-<span id="cb2-3">        <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-4">      }</span>
-<span id="cb2-5">      <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">===</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"UP"</span>) {</span>
-<span id="cb2-6">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">40</span>) {</span>
-<span id="cb2-7">          <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-=</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-8">        }</span>
-<span id="cb2-9">      }</span>
-<span id="cb2-10">      <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">===</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"DOWN"</span>) {</span>
-<span id="cb2-11">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> height <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>) {</span>
-<span id="cb2-12">          <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-13">        }</span>
-<span id="cb2-14">      }</span>
-<span id="cb2-15">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">anim</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-16">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">anim</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;=</span> maxAnim) {</span>
-<span id="cb2-17">      <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">anim</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-18">      <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-19">      <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>) {</span>
-<span id="cb2-20">        <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">frame</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-21">      }</span>
-<span id="cb2-22">      <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">firecount</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-23">      <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> planImages[<span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">frame</span>]<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb2-24">    }</span>
-<span id="cb2-25">  }</span></code></pre></div>
-<p>So wie es aussieht, funktionieren nun auch im Browser die Pfeiltasten wie gewünscht, ohne das der Canvas nach oben oder unten ruckelt:</p>
-<div id="sketch">
-
-</div>
-<p><strong>Anleitung</strong>: <em>Mit den Pfeiltasten nach oben und unten wird der Flieger gesteuert, mit der Pfeiltaste nach rechts wird auf die Pizzen geschossen. Für einen Neustart muß momentan leider noch die Seite im Browser komplett neu geladen werden.</em></p>
-<p>Zwar müßt Ihr immer noch zu Beginn möglichst schnell und ohne Rücksicht auf Verluste ein paar Pizzen abschießen, um Euch ein Punktepolster zuzulegen (aber das sollte in der nächsten Version, die dann einen Startscreen besitzt, gefixt sein), aber wenigstens reicht <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> nun die Tasten, die es konsumiert hat, nicht mehr an den Browser durch.</p>
-<p>Die <a href="https://github.com/kantel/p5js/tree/master/pizzaplane">vollständige, aktualisierte Version findet Ihr mit allen Assets</a> auf GitHub. Und ich bin froh, daß ich eine Lösung gegen gierige Browser gefunden habe. Jetzt kann ich guten Gewissens das Projekt weiterführen. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Spieleprogrammierung</category>
-  <category>JavaScript</category>
-  <category>P5.js</category>
-  <guid>https://kantel.github.io/posts/2024012902_pizzaplane_3/</guid>
-  <pubDate>Mon, 29 Jan 2024 19:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024012902_pizzaplane_3/images/pizzaplane3.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
