@@ -10,7 +10,131 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sat, 10 Feb 2024 15:05:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 11 Feb 2024 13:45:00 GMT</lastBuildDate>
+<item>
+  <title>Rembg - Kann die KI auch weiße Kaninchen?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024021101_white_rabbit/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53520935501/"><img src="https://kantel.github.io/posts/2024021101_white_rabbit/images/whiterabbit_bgrem-b.jpg" class="img-fluid"></a></p>
+<p>Gestern hatte ich mir <a href="https://kantel.github.io/posts/2024020702_rembg/">noch einmal Rembg</a> vorgeknöpft, denn mich interessierte natürlich brennend die Frage, ohne deren Antwort Ihr vermutlich auch nicht mehr ruhig schlafen könnt: Kann die gekünstelte Intelligenzia auch weiße Kaninchen freistellen? Spoiler: Sie kann – wenn auch mit Abstrichen.</p>
+<p>Die Frage ist nicht so unsinnig, wie es zunächst scheint. Denn vermutlich ist die KI, die hinter <a href="https://github.com/danielgatis/rembg">Rembg</a> werkelt, mit Bildern von Menschen trainiert worden. Daher ist die Frage »Kann das Teil auch etwas anderes als Menschen freistellen?« durchaus berechtigt. Um es der KI nicht allzuschwer zu machen, habe ich als Testobjekt ein anthtopomophes weißes Kaninchen ausgewählt, dessen Bilder ich schon <a href="https://kantel.github.io/posts/2023102601_big_apple_patchday/">im Oktober letzten Jahres</a> von der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a> habe generieren lassen.</p>
+<p>Dabei hat sich die KI ganz wacker geschlagen. Die Fehler in den freigestellten Bildern sind sicher zum großen Teil darauf zurückzuführen, daß der Konstrast zwischen Vorder- und Hintergrund zu gering war:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53520073552/"><img src="https://kantel.github.io/posts/2024021101_white_rabbit/images/whiterabbit01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53521396730/"><img src="https://kantel.github.io/posts/2024021101_white_rabbit/images/whiterabbit02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53520967381/"><img src="https://kantel.github.io/posts/2024021101_white_rabbit/images/whiterabbit03.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/53520967381/"><img src="https://kantel.github.io/posts/2024021101_white_rabbit/images/whiterabbit04.jpg" class="img-fluid"></a></p>
+<p>Trotzdem scheint die KI bei den freigestellten Kaninchen doch größere Probleme als bei Bildern von Menschen – auch wenn sie ebenfalls im Comic-Stil gezeichnet sind. Jedenfalls scheinen auch bei Rembg durchaus noch Tests notwendig zu sein, vor allem wenn man Alltagsgeräte wie Hexenbesen, Giftflaschen oder Zauberbücher freistellen will.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/65LQ1v-sidU?si=mLIaU6ov722eyDvw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+</iframe>
+<p>Für diese Tests habe ich eine Erweiterung in meinem Skript eingebaut, die ich beim User <em>Gravitar</em> in seinem Video »<a href="https://www.youtube.com/watch?v=65LQ1v-sidU">Python Tutorial deutsch, Objekte in Photos freistellen</a>« gefunden habe: Er läßt beide Bilder in einer Art »Vorher - Nacher«-Ansicht in einem Fenster anzeigen. Das mußte ich natürlich <em>stante pede</em> meinem Skipt ebenfalls gönnen:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> rembg</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> PIL <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Image</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">DATAPATH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images"</span>)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">input_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"whiterabbit03_02.png"</span>)</span>
+<span id="cb1-9">output_path <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"whiterabbit03_02_output.png"</span>)</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load the input image</span></span>
+<span id="cb1-12">input_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Image.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">open</span>(input_path)</span>
+<span id="cb1-13"></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert the input image to a numpy array</span></span>
+<span id="cb1-15">input_array <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array(input_image)</span>
+<span id="cb1-16"></span>
+<span id="cb1-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Apply background removal using rembg</span></span>
+<span id="cb1-18">output_array <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> rembg.remove(input_array)</span>
+<span id="cb1-19"></span>
+<span id="cb1-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create a PIL Image from the output array</span></span>
+<span id="cb1-21">output_image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Image.fromarray(output_array)</span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Save the output image</span></span>
+<span id="cb1-24">output_image.save(output_path)</span>
+<span id="cb1-25">result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Image.new(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'RGBA'</span>, (input_image.width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, input_image.height))</span>
+<span id="cb1-26">result.paste(input_image, (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))</span>
+<span id="cb1-27">result.paste(output_image, (input_image.width, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))</span>
+<span id="cb1-28">result.show()</span>
+<span id="cb1-29"></span>
+<span id="cb1-30"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
+<p><em>Gravatar</em> ist die Idee zu diesem Video durch <a href="https://kantel.github.io/posts/2024020702_rembg/">meinen Beitrag</a> hier in diesem ~<del>Blog</del>~ Kritzelheft gekommen, worauf er auch in seinem Video hinweist. Das war <a href="http://blog.schockwellenreiter.de/2022/10/2022101101.html">nicht das erste Mal</a> und ich freue mich natürlich immer über Feedback. Und noch ein Hinweis: <code>PIL</code> war ursprünglich der Name der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pil.html">Python Image Library</a>, die lange Jahre so etwas wie ein Standard für Bildbearbeitung in Python war. Aus Lizenzgründen war sie jedoch nie Bestandteil der Standardbibliothek, sondern mußte separat installiert werden. Seit etlichen Jahren wird sie jedoch nicht mehr weiterentwickelt und läuft daher auch nicht mehr unter Python&nbsp;3. Um diesem unerfreulichen Umstand abzuhelfen, hat eine Gruppe von Enthusiasten eine »befreundete« <em>(friendly)</em> Fork <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html">Pillow</a> ins Leben gerufen, die weitestgehen aufrufkompatibel zu PIL sein will. Jedoch sollte man – um Verwirrung zu vermeiden – nicht mit <code>import PIL</code> arbeiten, sondern mit <code>from PIL import Image</code>.</p>
+<hr>
+<p><strong>Bilder</strong>: Die Kaninchenbilder wurden im Original mit der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html">AI Comic Factory</a> erstellt. Prompt: »<em>a white rabbit with a pocket watch in his hand, wearing jacket and west, and a marabou with looking glasses, sitting on a coffeetable in the zoo</em>«, Style: Franco-Belgian</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <category>Pillow</category>
+  <guid>https://kantel.github.io/posts/2024021101_white_rabbit/</guid>
+  <pubDate>Sun, 11 Feb 2024 13:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024021101_white_rabbit/images/whiterabbit_bgrem.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neu in meinem Wiki: Ct.js – eine Spiele-Engine in pure JavaScript</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -22,8 +146,8 @@
 
 <p><a href="https://raw.githubusercontent.com/ct-js/ct-js/develop/branding/GithubHeader.png"><img src="https://kantel.github.io/posts/2024021001_ctJS/images/ctjs_banner-b.jpg" class="img-fluid"></a></p>
 <p>Soeben trudelte in meinem Feedreader die Meldung herein, daß <a href="https://ctjs.rocks/">Ct.js</a>, eine kleine, feine und vor allem freie (MIT-Lizenz) JavaScript-Game-Engine, in der <a href="https://ctjs.rocks/changelog/">Version 4.0</a> freigegeben wurde. Ich hatte das Teil vor etwa zwei Jahren schon einmal auf dem Schirm, aber nicht weiter beachtet. Nun aber – mit meiner frisch erwachten Begeisterung für JavaScript – finde ich, daß ich das Teil unbedingt einmal testen sollte.</p>
-<p>Das Teil behauptet von sich, eine 2D-Game-Engine mit hochwertiger Dokumentation, visuellen Tools für die Asset-Verwaltung und einem intelligenten Code-Editor, alles integriert in einer IDE, zu sein. Dammit ich meine guten Vorsätze nicht vergesse, habe ich dem Teil erst einmal <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/ctjs.html">eine Seite</a></strong> in <a href="http://cognitiones.kantel-chaos-team.de/index.html">meinem Wiki</a> spendiert.</p>
-<p>Auf der eigenen Homepage macht das Teil massiven Gebrauch von den freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) <a href="https://www.kenney.nl/assets">Kenney-Game-Assets</a> (siehe auch Bannerbild oben). Das brachte mich auf eine Idee: Wenn ich rechtzeitig mit meinen Tests des Teils beginne und mit ihm ein wenig vertraut bin, könnte ich vielleicht damit an der <a href="https://kantel.github.io/posts/2024012901_kenney_jam_2024/">Kenney Jam 2024</a> teilnehmen. Die Idee hat einen gewissen Charme. <em>Still digging!</em></p>
+<p>Denn es behauptet von sich, eine 2D-Game-Engine mit hochwertiger Dokumentation, visuellen Tools für die Asset-Verwaltung und einem intelligenten Code-Editor, alles integriert in einer IDE, zu sein. Dammit ich meine guten Vorsätze nicht vergesse, habe ich ihm erst einmal <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/ctjs.html">eine Seite</a></strong> in <a href="http://cognitiones.kantel-chaos-team.de/index.html">meinem Wiki</a> spendiert.</p>
+<p>Auf der eigenen Homepage macht das Teil massiven Gebrauch von den freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) <a href="https://www.kenney.nl/assets">Kenney-Game-Assets</a> (siehe auch Bannerbild oben). Das brachte mich auf eine Idee: Wenn ich rechtzeitig mit meinen Tests der Engine beginne und mit ihr ein wenig vertraut bin, könnte ich vielleicht damit an der <a href="https://kantel.github.io/posts/2024012901_kenney_jam_2024/">Kenney Jam 2024</a> teilnehmen. Die Idee hat einen gewissen Charme. <em>Still digging!</em></p>
 
 
 
@@ -1016,32 +1140,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2024012902_pizzaplane_3/</guid>
   <pubDate>Mon, 29 Jan 2024 19:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024012902_pizzaplane_3/images/pizzaplane3.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Save the Date! Kenney Game Jam 2024</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024012901_kenney_jam_2024/</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://kenney.nl/media/pages/assets/pixel-platformer/69c89d9e5d-1696667860/samplea.png"><img src="https://kantel.github.io/posts/2024012901_kenney_jam_2024/images/pixelplatformer-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Auch in diesem Jahr gibt es wieder eine <a href="https://itch.io/jam/kenney-jam-2024">Kenney Jam</a>, ein Wettbewerb, in dem das teilnehmende Team oder der teilnehmende Mensch innerhalb von 48 Stunden ein Spiel zu einem vorgegebenen Thema programmieren und einreichen muß. Einzige Einschränkung ist, daß die verwendeten Assets aus dem unerschöpflichen (und freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)) <a href="https://kenney.nl/assets">Fundus von Kenney</a> stammen müssen. Die diesjährige ist die achte Kenney Jam und sie startet am 19. Juli 2024, 6:00 Uhr früh und endet am 21. Juli 2024, ebenfalls um 6:00 Uhr früh. Das Thema wird zu Beginn der Jam bekanntgegeben.</p>
-<p>Ich hatte ja im letzten Jahr schon einen Versuch unternommen, <a href="https://kantel.github.io/posts/2023072102_kenney_jam_2023/">an dieser Jam teilzunehmen</a> und war <a href="https://kantel.github.io/posts/2023072301_night_in_the_park/">grandios gescheitert</a>, weil ich mir einfach zu viel vorgenommen hatte. Damals wollte ich ein Spiel mit dem genialen <a href="https://www.kenney.nl/assets/1-bit-pack">1-Bit Pack</a> entwickeln. Dieses Asset Pack ist immer noch meine erste Wahl, aber auch die <a href="https://kenney.nl/assets/series:Pixel%20Platformer?sort=update">Pixel Platformer Reihe</a> mit der etwas ungewohnten Tilegröße von 18x18 Pixel, die 16x16 Pixel große <a href="https://kenney.nl/assets/series:Tiny?sort=update">Tiny-Reihe</a> und – falls es noch kleiner werden soll oder ich mich entschließe, doch mal etwas mit der Fantasiekonsole <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> zu entwickeln – das 8x8 Pixel große <a href="https://kenney.nl/assets/micro-roguelike">Micro Roguelike</a> sind meiner Meinung nach für ein 2D-Spiel, das auch noch unter Zeitdruck entwickelt werden muß, gut geeignet.</p>
-<p>Ich habe mich jedenfalls für diese Jam schon angemeldet und freue mich auf die Teilnahme. Auch wenn ich wieder scheitern sollte, kann ich daraus nur lernen. Und auf die Tile- und Spritesets von Kenney habe ich auch verlinkt, weil man auf sie gar nicht oft genug hinweisen kann. Und außerdem möchte ich dem Eindruck entgegentreten, daß ich meine Assets nun ausschließlich mit einer gekünstelten Intelligenzia generiere. Dies kann hin und wieder durchaus eine Hilfe, aber sie kann nicht wirklich kreativ sein. Dafür braucht es die Fähigkeiten eines kreativen Kopfes wie Kenney.</p>
-
-
-
- ]]></description>
-  <category>Spieleprogrammierung</category>
-  <category>Tiles und Sprites</category>
-  <guid>https://kantel.github.io/posts/2024012901_kenney_jam_2024/</guid>
-  <pubDate>Mon, 29 Jan 2024 15:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024012901_kenney_jam_2024/images/pixelplatformer.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,64 @@
+---
+title: "Rembg - Kann die KI auch weiße Kaninchen?"
+author: "Jörg Kantel"
+date: "2024-02-11 14:45:00"
+categories: [Python, Creative Coding, Pillow]
+image: "images/whiterabbit_bgrem.jpg"
+---
+
+[![](images/whiterabbit_bgrem-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53520935501/)
+
+
+Gestern hatte ich mir [noch einmal Rembg](https://kantel.github.io/posts/2024020702_rembg/) vorgeknöpft, denn mich interessierte natürlich brennend die Frage, ohne deren Antwort Ihr vermutlich auch nicht mehr ruhig schlafen könnt: Kann die gekünstelte Intelligenzia auch weiße Kaninchen freistellen? Spoiler: Sie kann -- wenn auch mit Abstrichen.
+
+Die Frage ist nicht so unsinnig, wie es zunächst scheint. Denn vermutlich ist die KI, die hinter [Rembg](https://github.com/danielgatis/rembg) werkelt, mit Bildern von Menschen trainiert worden. Daher ist die Frage »Kann das Teil auch etwas anderes als Menschen freistellen?« durchaus berechtigt. Um es der KI nicht allzuschwer zu machen, habe ich als Testobjekt ein anthtopomophes weißes Kaninchen ausgewählt, dessen Bilder ich schon [im Oktober letzten Jahres](https://kantel.github.io/posts/2023102601_big_apple_patchday/) von der [AI Comic Factory](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html) habe generieren lassen.
+
+Dabei hat sich die KI ganz wacker geschlagen. Die Fehler in den freigestellten Bildern sind sicher zum großen Teil darauf zurückzuführen, daß der Konstrast zwischen Vorder- und Hintergrund zu gering war:
+
+[![](images/whiterabbit01.jpg)](https://www.flickr.com/photos/schockwellenreiter/53520073552/)&nbsp;[![](images/whiterabbit02.jpg)](https://www.flickr.com/photos/schockwellenreiter/53521396730/)&nbsp;[![](images/whiterabbit03.jpg)](https://www.flickr.com/photos/schockwellenreiter/53520967381/)<br /><br />
+[![](images/whiterabbit04.jpg)](https://www.flickr.com/photos/schockwellenreiter/53520967381/)
+
+Trotzdem scheint die KI bei den freigestellten Kaninchen doch größere Probleme als bei Bildern von Menschen -- auch wenn sie ebenfalls im Comic-Stil gezeichnet sind. Jedenfalls scheinen auch bei Rembg durchaus noch Tests notwendig zu sein, vor allem wenn man Alltagsgeräte wie Hexenbesen, Giftflaschen oder Zauberbücher freistellen will.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/65LQ1v-sidU?si=mLIaU6ov722eyDvw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Für diese Tests habe ich eine Erweiterung in meinem Skript eingebaut, die ich beim User *Gravitar* in seinem Video »[Python Tutorial deutsch, Objekte in Photos freistellen](https://www.youtube.com/watch?v=65LQ1v-sidU)« gefunden habe: Er läßt beide Bilder in einer Art »Vorher - Nacher«-Ansicht in einem Fenster anzeigen. Das mußte ich natürlich *stante pede* meinem Skipt ebenfalls gönnen:
+
+```python
+import rembg
+import numpy as np
+from PIL import Image
+import os
+
+DATAPATH = os.path.join(os.getcwd(), "images")
+
+input_path = os.path.join(DATAPATH, "whiterabbit03_02.png")
+output_path = os.path.join(DATAPATH, "whiterabbit03_02_output.png")
+
+# Load the input image
+input_image = Image.open(input_path)
+
+# Convert the input image to a numpy array
+input_array = np.array(input_image)
+
+# Apply background removal using rembg
+output_array = rembg.remove(input_array)
+
+# Create a PIL Image from the output array
+output_image = Image.fromarray(output_array)
+
+# Save the output image
+output_image.save(output_path)
+result = Image.new('RGBA', (input_image.width * 2, input_image.height))
+result.paste(input_image, (0, 0))
+result.paste(output_image, (input_image.width, 0))
+result.show()
+
+print("I did it, Babe!")
+```
+
+*Gravatar* ist die Idee zu diesem Video durch [meinen Beitrag](https://kantel.github.io/posts/2024020702_rembg/) hier in diesem ~~~Blog~~~ Kritzelheft gekommen, worauf er auch in seinem Video hinweist. Das war [nicht das erste Mal](http://blog.schockwellenreiter.de/2022/10/2022101101.html) und ich freue mich natürlich immer über Feedback. Und noch ein Hinweis: `PIL` war ursprünglich der Name der [Python Image Library](http://cognitiones.kantel-chaos-team.de/programmierung/python/pil.html), die lange Jahre so etwas wie ein Standard für Bildbearbeitung in Python war. Aus Lizenzgründen war sie jedoch nie Bestandteil der Standardbibliothek, sondern mußte separat installiert werden. Seit etlichen Jahren wird sie jedoch nicht mehr weiterentwickelt und läuft daher auch nicht mehr unter Python&nbsp;3. Um diesem unerfreulichen Umstand abzuhelfen, hat eine Gruppe von Enthusiasten eine »befreundete« *(friendly)* Fork [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) ins Leben gerufen, die weitestgehen aufrufkompatibel zu PIL sein will. Jedoch sollte man -- um Verwirrung zu vermeiden -- nicht mit `import PIL` arbeiten, sondern mit `from PIL import Image`.
+
+---
+
+**Bilder**: Die Kaninchenbilder wurden im Original mit der [AI Comic Factory](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/comicfactory.html) erstellt. Prompt: »*a white rabbit with a pocket watch in his hand, wearing jacket and west, and a marabou with looking glasses, sitting on a coffeetable in the zoo*«, Style: Franco-Belgian
