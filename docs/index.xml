@@ -10,7 +10,36 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sun, 11 Feb 2024 19:30:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 12 Feb 2024 19:35:00 GMT</lastBuildDate>
+<item>
+  <title>Es geht noch geiler: Web2Executable</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024021201_web2exec/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53524181232/"><img src="https://kantel.github.io/posts/2024021201_web2exec/images/web2exe-b.jpg" class="img-fluid"></a></p>
+<p>Vor <a href="https://kantel.github.io/posts/2024010702_bitsybox/">etwa einen Monat</a> berichtete ich über die <a href="https://ledoux.itch.io/bitsybox">Bitsybox</a>, einen Emulator für Windows, macOS und Linux, mit dem man Bitsy-Spiele »native« auf den genannten Plattformen abspielen kann, und kommentiere dies mit »wie geil ist das denn?«</p>
+<p>Es geht aber noch geiler: Denn bei meiner <a href="https://kantel.github.io/posts/2024020801_tuesdayjs_update/">jüngsten Erkundung</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday JS</a> stolperte ich auch über den Beitrag »<a href="https://kirill-live.itch.io/tuesday-js/devlog/241616/creation-html-desctop-app-for-windows-macos-and-linux">Creation html desctop app for windows macos and linux</a>«. Im Kontext, in dem er stand, vermutete ich zunächst, daß es um eine Anwendung ging, die Tuesday-JS-Spiele für den Desktop fit machen kann. Aber <a href="https://github.com/nwutils/Web2Executable">Web2Executable</a>, das Teil, um das es in diesem Beitrag geht, kann viel mehr – es kann nahezu jede JavaScript/HTML-App mit Hilfe von Node (genauer: <a href="https://github.com/nwutils/Web2Executable">NW.js</a> (das früher mal <a href="http://cognitiones.kantel-chaos-team.de/webworking/frameworks/nodewebkit.html">Node Webkit</a>) hieß), in eine Standalone-App für Windows, macOS und Linux verwandeln, ohne daß man einen Rechner mit den genannten Betriebssystemen besitzen muß (Okay, mindestens auf einen Rechner muß man natürlich Zugriff haben, aber auf dem kann man die Binaries auch für die »fremden« Betriebssysteme erzeugen).</p>
+<p>Das alles ist natürlich mehr als geil: Nicht nur, daß ich damit Desktop-Apps für Tuesday JS erzeugen kann, sondern auch aus interaktiven Geschichten mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html">Ink</a>, oder Spielen mit der <a href="https://kantel.github.io/posts/2024021001_ctJS/">jüngst entdeckten</a> JavaScript-Spiele-Engine <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/ctjs.html">Ct.js</a> könnte ich »native« Anwendungen »stricken«. Und das ist noch nicht alles: Wegen meiner frisch erwachten JavaScript Begeisterung träume schon von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Applikationen auf dem Desktop, die die DOM-Erweiterungen von P5.js nutzen, und noch an vieles mehr. Die Möglichkeiten sind nahezu grenzenlos. <em>Still dreaming!</em></p>
+<p>Aber erst einmal habe ich aus meinem <a href="https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/">gestern erstellten</a> Tuesday-JS-Prototypen eine Desktop-Anwendung erstellt. Die Mac-Version läuft, da ich jedoch keine Hardware habe, um die Linux- oder Windows-Version zu testen, habe ich alles <a href="https://kantel.itch.io/poirots-abenteuer">auf Itch.io hochgeladen</a> und bitte Euch da draußen, das auch mal unter Windows oder Linux anzuwerfen (Vorsicht, die Downloads sind naturgemäß (133 MB bis 157 MB) recht fett). Über Erfolgs- oder Mißerfolgsberichte in meinen Kommentaren wäre ich dankbar.</p>
+<p>Wenn Ihr das Teil selber testen wollt, gibt es zwei Hürden zu überwinden: Die jüngste <a href="https://github.com/nwutils/Web2Executable/releases/tag/v0.7.2b">Version 0.7.2b</a> gibt es momentan als Binariy nur für Windows, Nutzer »richtiger« Betriebssysteme müssen auf die <a href="https://github.com/nwutils/Web2Executable/releases/tag/v0.7.1b">Version 0.7.1b</a> zurückgreifen. Und Apple-Nutzer kämpfen wie gewohnt mit der Überfürsorge ihres Betriebssystems, das den Download als potentiell gefährlich einstuft. Dagegen hat vermutlich jede und jeder von Euch da draußen seine eigene Strategie entwickelt.</p>
+<p>Natürlich habe ich <strong><a href="http://cognitiones.kantel-chaos-team.de/webworking/frameworks/web2executable.html">Web2Executable</a></strong> auch eine Seite in <a href="http://cognitiones.kantel-chaos-team.de/index.html">meinem Wiki</a> spendiert.</p>
+<p><strong>War sonst noch was?</strong> Ach ja, wer lieber mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/frameworks/electron.html">Electron</a> statt mit NW.js hantiert, für den hat der gleiche Autor das Tool <a href="http://cognitiones.kantel-chaos-team.de/webworking/frameworks/electrify.html">Electrify</a> entwickelt, das ähnlich wie Web2Executable funktioniert. Aber diese Anwendung ist seit etlichen Jahren verwaist und wird nicht mehr weiterentwickelt. Aber mir persönlich gefiel sowieso <a href="http://blog.schockwellenreiter.de/essays/nodewebkit01.html">Node Webkit/NW.js besser</a> als Electron, denn der Ansatz, zuerst eine HTML-Seite für die Applikation zu schreiben und dann das JavaScript drumherum zu stricken, <a href="http://blog.schockwellenreiter.de/2017/12/2017121105.html">liegt mir mehr</a>, als ausgehend von einer JavaScript-Datei <code>main.js</code> die Applikation zu erzeugen. Aber das ist vermutlich Geschmackssache – beide Anwedungen erzeugen – das liegt ein der Natur der Sache – gleich fette Dateien.</p>
+
+
+
+ ]]></description>
+  <category>JavaScript</category>
+  <category>Creative Coding</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024021201_web2exec/</guid>
+  <pubDate>Mon, 12 Feb 2024 19:35:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024021201_web2exec/images/web2exe.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Erste Schritte mit Tuesday JS</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -786,34 +815,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024013002_microstudio_update/</guid>
   <pubDate>Tue, 30 Jan 2024 18:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024013002_microstudio_update/images/microstudio2.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Patientenfalle E-Rezept</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024013001_patientenfalle_erezept/</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53497171197/"><img src="https://kantel.github.io/posts/2024013001_patientenfalle_erezept/images/apothekerin01-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Als ältere Mensch – so wie ich –, aber nicht nur als älterer Mensch, benötigt man unter Umständen regelmäßig rezeptpflichtige Medikamente. Da die Beschaffung eines Rezeptes immer mit einem gewissen Aufwand verbunden ist, hatte ich mich wirklich über die Einführung des <a href="https://www.bundesgesundheitsministerium.de/e-rezept">E-Rezeptes</a> gefreut, denn trotz aller Datenschutzbedenken versprach es eine Erleichterung speziell für Patienten, die Dauermedikamente benötigen.</p>
-<p>Aber zu früh gefreut: Wenn Deutschland etwas kann, dann ist es die Digitalisierung verkacken. Seit mehreren Tagen versuche ich, eines meiner Dauermedikamente auf E-Rezept zu bekommen. Laut mehrmaliger Aussage der Praxis meines Hausarztes ist es auf meiner »Gesundheitskarte« freigeschaltet, aber laut der bei mehreren Fehlversuchen erfolgten Aussagen der Apothekerinnen ist dort aber nichts zu sehen und sie können mir daher mein Medikament nicht herausgeben.</p>
-<p>Ich weiß nicht an wem es liegt, aber offensichtlich ist irgendjemand der Beteiligten mit der Einführung es E-Rezeptes absolut überfordert. Die Einführung scheint mir auch etwas überhastet übers Knie gebrochen zu sein. Aber das kommt dabei heraus, wenn man einen <a href="https://de.wikipedia.org/wiki/Karl_Lauterbach">Pharmalobbyisten zum Gesundheitsminister</a> macht. Da bleiben die Interessen der Patienten schon mal auf der Strecke.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53497171197/">Apothekerin, verstrickt in die Tücken des E-Rezeptes</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>, Prompt: »<em>A female pharmacist, like Laocoon, entangled in the cables of her computer, is looking for a receipt. colored steampunk style</em>«, Negative Prompt: ugly, »<em>deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«, Modell: Stable Diffusion XL, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>Politik</category>
-  <category>Digitales Leben</category>
-  <guid>https://kantel.github.io/posts/2024013001_patientenfalle_erezept/</guid>
-  <pubDate>Tue, 30 Jan 2024 16:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024013001_patientenfalle_erezept/images/apothekerin01.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
