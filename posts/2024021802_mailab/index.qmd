@@ -1,0 +1,43 @@
+---
+title: "Mercator-Professur 2023 für Dr. Mai Thi Nguyen-Kim (maiLab)"
+author: "Jörg Kantel"
+date: "2024-02-18 18:00:00"
+categories: [Wissenschaft]
+image: "images/ehrendoktorin.jpg"
+---
+
+[![](images/ehrendoktorin-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53537297945/)
+
+Da ich meine [jüngsten Änderungen](https://kantel.github.io/posts/2024021801_iframe_respnonsive/) auch irgendwie verifizieren muß, freut es mich, daß die von mir sehr geschätzte Wissenschaftsjournalistin und Grimme-Preisträgerin *[Dr. Mai Thi Nguyen-Kim](https://de.wikipedia.org/wiki/Mai_Thi_Nguyen-Kim)* im November 2023 die [Mercator-Professur](https://de.wikipedia.org/wiki/Universit%C3%A4t_Duisburg-Essen#Mercator-Professoren) der Universität Duisburg-Essen erhalten hatte. Leider kann man das [Video der Preisverleihung](https://www.youtube.com/watch?v=Pjo5cniCzWM) mit dem wunderbaren Vortrag der Geehrten »There's no such thing as bad publicity?« nicht in dritte Webseiten einbinden, Ihr müßt es Euch daher auf YouTube direkt anschauen.
+
+Daher -- und damit ich endlich das responsive Verhalten von `iframes` testen kann -- habe ich Euch ein weiteres, ganz frisches MaiLab-Video herausgesucht:
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/_AV62rAyDc0?si=X7iQQexmNlV1WYqa" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Und vor wenigen Minuten kam auch noch dieses Video hinzu:
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/GtBnj3Z3eO4?si=UQCCqNgolQ4B_B2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Das Statement und das darauf folgende Video machen klar, warum *Mai Thi Nguyen-Kim* die Angstgegnerin aller Schwurbler, Verschwörungstheoreriker und sonstiger wissenschaftsfeindlicher Spinner ist. (Und sie ist einer der Gründe, warum ich immer noch gerne meine Rundfunkgebühren zahle.)
+
+Das Einbinden des Videos mit meinen neuen, responsiven Klassen scheint jedenfalls zu funktionieren. Ich habe dazu zwei CSS-Klassen (je eine für das Seitenverhältnis 16:9 und eine für das Seitenverhältnis 4:3) angelegt:
+
+```css
+iframe.if16_9  {
+  aspect-ratio: 16/9;
+    width: 75%;
+}
+
+iframe.if4_3 {
+  aspect-ratio: 4/3;
+    width: 75%;
+}
+```
+
+und in dem `iframe`-Code die Parameter `width` und `height` durch die Klassenangabe (in diesem Fall `class="if16_9"`) ersetzt.
+
+Und bevor sich hier jemand beschwert: Ich weiß es selber, das Bannerbild ist *Kitsch as Kitsch can*. Aber ich übe ja noch und arbeite mich hart an der gekünstelten Intelligenzia ab. Daher habe ich auf die Schnelle nichts Besseres zustande gebracht. Und manchmal darf man auch einfach keine Angst vor Kitsch haben.&nbsp;🤓
+
+---
+
+**Bild**: *[Ehrendoktorin](https://www.flickr.com/photos/schockwellenreiter/53537297945/)*, erstellt mit [Scenario](https://www.flickr.com/photos/schockwellenreiter/53537297945/). Prompt: »*A young woman, with long dark hair, receives an honorary doctorate, in a university town*«. Negative Prompt: »*ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers, double person, second character*«. Modell: Stable Diffusion XL, Style: Blocky Cartoon.
