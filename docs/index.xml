@@ -10,7 +10,60 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Fri, 16 Feb 2024 17:15:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 18 Feb 2024 15:15:00 GMT</lastBuildDate>
+<item>
+  <title>»Neues« (?) vom Webdesign: Iframe responsive</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024021801_iframe_respnonsive/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53432093827/"><img src="https://kantel.github.io/posts/2024021801_iframe_respnonsive/images/designresp-b.jpg" class="img-fluid"></a></p>
+<p>Da ich doch recht froh war, mit meinem <a href="https://kantel.github.io/posts/2022120602_schockwellenreiteronline/">Umzug zu Quarto</a> diese Seiten doch weitestgehend responsive gestaltet zu haben, hatte ich von den noch offenen Baustellen erst einmal die Finger gelassen. Ich bin kein Webdesigner und wollte einfach das Erreichte nicht wieder gefährden.</p>
+<p>Zu den noch offenen Baustellen gehören insbesondere die <code>Iframes</code> – bisher hielt ich die respnsove Gestaltung für doch <a href="https://www.w3schools.com/howto/howto_css_responsive_iframes.asp">recht kompliziert</a> (vor allem, da ich alle diese CSS-Klassen auch noch irgendwie <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> beibringen müßte). Daher hatte ich mich im großen und ganzen bei den <code>Iframes</code> auf die Einbindung von Videos beschränkt und es einfach hingenommen, daß in diesem Fall die Darstellung auf meinem Smartphone-Monitor (zumindest im Hochformat) doch recht suboptimal war.</p>
+<p>Mit meiner frisch erwachten Liebe zu JavaScript jedoch wurde das Problem wieder dringender: Programme erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> (-<a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">Widget</a>), <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> und nicht zuletzt all die einbindbaren <a href="https://kantel.itch.io/">Apps von Itch.io</a> – sie sie und noch vieles mehr schreit alles nach <code>IFrames</code>. Daher habe ich die Suchmaschine unserer aller Datenkrake noch einmal angeworfen und nachgeschaut, ob sie dafür eine Lösung <em>in petto</em> hat. Und wenig überraschend – sie hatte:</p>
+<p>Der Aufsatz »<a href="https://benmarshall.me/responsive-iframes/">Responsive iframes: Native CSS aspect-ratio Guide</a>« von <em>Ben Marshall</em> sagt, daß es eine »neue« <code>aspect-ratio</code> Eigenschaft in CSS gäbe und damit würde es genügen, in die CSS-Datei</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb1-1">iframe {</span>
+<span id="cb1-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">aspect-ratio</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>/<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">width</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">%</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-4">}</span></code></pre></div>
+<p>einzugeben und schon wäre alles gelaufen. Die Eigenschaft würde mittlerweile von <a href="https://caniuse.com/mdn-css_properties_aspect-ratio">allen wichtigen Browsern unterstützt</a>, so daß man sich in dieser Hinsicht keine Gedanken machen müßte.</p>
+<p>Ich muß jetzt noch ausprobieren, ob <code>aspect-ratio</code> auch mit CSS-Klassen funktioniert, da bei mir <code>Iframes</code> unterschiedliche Seitenverhältnisse haben können. In einem der nächsten Beiträge werde ich das mal an einem YouTube-Video testen. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53432093827/">Schlange erschrickt vor responsiven Design-Anforderungen</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A python stands in front of an easel in a laboratory with strange technical devices and paints colorful pictures. colored steampunk style</em>«, Modell: Stable Diffusion XL, Style: Comic Book.</p>
+
+
+
+ ]]></description>
+  <category>Quarto</category>
+  <category>Webworking</category>
+  <category>Interna</category>
+  <guid>https://kantel.github.io/posts/2024021801_iframe_respnonsive/</guid>
+  <pubDate>Sun, 18 Feb 2024 15:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024021801_iframe_respnonsive/images/designresp.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Life is Life: Conways Game of Life in Python und P5.js</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -24,7 +77,7 @@
 <p>Mit seinem »<a href="https://de.wikipedia.org/wiki/Conways_Spiel_des_Lebens">Spiel des Lebens</a>« <em>(Game of Life)</em> hat der britische Mathematiker <em><a href="https://de.wikipedia.org/wiki/John_Horton_Conway">John Horton Conway</a></em> 1970 eine Ikone der theoretischen Informatik und der Automatentheorie geschaffen, die auch <a href="https://mathematikalpha.de/game-of-life">heute noch fasziniert</a>. Aufgrund der einfachen Regeln ist dieses Spiel leich zu programmieren, überrascht aber doch immer wieder mit unerwarteten Ergebnissen. Hier zwei ganz frische Implementierungen, eine in Python und eine in JavaScript/P5.js:</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/PpywbmIcUhM?si=bsoWVHrGQwWSWytd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
 </iframe>
-<p>In »<a href="https://www.youtube.com/watch?v=PpywbmIcUhM">Create Conway’s Game of Life in Paython</a>« wird eine <a href="https://realpython.com/courses/conway-game-of-life-python/">Implementierung gezeigt</a>, die auch <a href="https://realpython.com/conway-game-of-life-python/">im Terminal läuft</a>. Damit erinnert sie mich nicht nur an <em>Al Sweigart</em> legendärem »<a href="http://blog.schockwellenreiter.de/2022/08/2022082901.html">Big Book of Small Python Projects</a>« (der auf Seite 59ff ebenfalls eine Terminal-Implementierung von Life vorstellt), sondern durch den Einsatz der Herzchen (♥︎) auch an <em>Nick Caseys</em> bahnbrechenden Aufsatz »<a href="https://ncase.me/simulating/index_old.html">Simulating the World in Emojis</a>« aus dem Jahre 2016.</p>
+<p>In »<a href="https://www.youtube.com/watch?v=PpywbmIcUhM">Create Conway’s Game of Life in Python</a>« wird eine <a href="https://realpython.com/courses/conway-game-of-life-python/">Implementierung gezeigt</a>, die auch <a href="https://realpython.com/conway-game-of-life-python/">im Terminal läuft</a>. Damit erinnert sie mich nicht nur an <em>Al Sweigart</em> legendärem »<a href="http://blog.schockwellenreiter.de/2022/08/2022082901.html">Big Book of Small Python Projects</a>« (der auf Seite 59ff ebenfalls eine Terminal-Implementierung von Life vorstellt), sondern durch den Einsatz der Herzchen (♥︎) auch an <em>Nick Caseys</em> bahnbrechenden Aufsatz »<a href="https://ncase.me/simulating/index_old.html">Simulating the World in Emojis</a>« aus dem Jahre 2016.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lsWulRIWzdo?si=koJFVpneandoinbo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
 </iframe>
 <p>Wenn ich an <em>Nick Caseys</em> Aufsatz denke, denke ich automatisch auch immer an <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, weil mit dem dort vorhandenen DOM-Modell sich sehr leicht Slider, Checkboxen oder andere GUI-Elemente in einen Sketch integrieren lassen. Daher möchte ich Euch auch noch das Video-Tutorial »<a href="https://www.youtube.com/watch?v=lsWulRIWzdo">Conway’s Game of Life</a>« vorstellen, das <em>Patt Vira</em> erst vor wenigen Stunden hochgeladen hat – zwar ohne DOM-Elemente, aber <em>Patt Viras</em> P5.js-Tutorials sind immer anschauenswert.</p>
@@ -751,41 +804,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024020501_berlinattack_itch/</guid>
   <pubDate>Mon, 05 Feb 2024 15:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024020501_berlinattack_itch/images/attackberlin_v02.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Auf ein Neues: Ren’Py und Scenario</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024020401_renpy_scenario/</link>
-  <description><![CDATA[ 
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53508931429/"><img src="https://kantel.github.io/posts/2024020401_renpy_scenario/images/attackscenario-b.jpg" class="img-fluid figure-img"></a></p>
-</figure>
-</div>
-<p>Meine Beschäftigung mit den Bildgeneratoren der gekünstelten Intelligenzia hat natürlich einen triftigen Grund: Ich möchte herausbekommen, ob oder wie weit diese Tools mittlerweile in der Lage sind, Bilder für interaktive Geschichten und Spiele zu erzeugen, die es auch Menschen wie mir – denen bei der Geburt der Zeichenstift nicht in die Wiege gelegt worden war – ermöglicht, solche Geschichten mit Bildern zu erzählen.</p>
-<p>Mein erster Versuch mit der <a href="https://kantel.github.io/posts/2023111901_smashing_pumpkins_devlog_3/">Hexe und den zertrümmerten Kürbissen</a> in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> verlief ja recht erfolgversprechend, wie Ihr auf meinem Itch.io-Account <a href="https://kantel.itch.io/smashing-pumpkins">nachspielen</a> könnt. Die <a href="https://www.flickr.com/photos/schockwellenreiter/albums/72177720312336247/with/53296778977">Bilder dafür</a> hatte ich – eher aus einer Laune heraus, denn aus einem wichtigen Grund – mit <a href="https://clipdrop.co/stable-diffusion">Clipdrop</a> erzeugt, aber ich glaube, jeder andere einiggermaßen leistungsfähige KI-Bildgenerator hätte dies auch gekonnt.</p>
-<p>Allerdings stellt solch eine Geschichte mit statischen Bildern noch keine allzu großen Anforderungen an die Konsistenz der Figuren: Bei den einzelnen Bildern, meist auch noch je auf einer eigenen Seite, verzeiht der Betrachter doch schnell leichte Abweichungen. Anders sieht es dagegen bei <em><a href="https://de.wikipedia.org/wiki/Point-and-Click-Adventure">Point-and-Click Adventures</a></em> aus, da hier die Charaktere auf <strong>einer</strong> Bühne (einem Bildschirm) auftreten und da Abweichungen eher auffallen.</p>
-<p>Da meine (geplante) »Räuberpistole« <a href="https://kantel.github.io/posts/2023091801_berlin_attack_twine/">Berlin Attack</a> (für die ich auch schon einen Prototypen in Twine mit <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> gebastelt hatte) im Prinzp so etwas wie ein <em>Point-and-Click-Adventure</em> ist, hatte ich das Teil wieder hervorgekramt und dafür mit <a href="https://app.scenario.com/">Scenario</a> ein paar Bilder erzeugt und sie in die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>-Version dieses Prototyps testweise eingesetzt.</p>
-<p>Scenario habe ich deswegen ausgewählt, weil auf dem YouTube-Kanal mehrere Videos (unter anderem »<a href="https://www.youtube.com/watch?v=gWOAO1ltZ_Y">The Arcade Hacker</a>«,»<a href="https://www.youtube.com/watch?v=-co2CLGsCpc">Murder Mystery</a>« und »<a href="https://www.youtube.com/watch?v=0_KAF4TziUY">The Stolen Necklace</a>«) damit prahlten, wie gut das Teil für die Generierung von Assets für <em>Point-and-Click-Games</em> geeignet sei. Zwar wird in diesen Tutorials <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html">Unity</a> als Zielplattform genutzt, aber – wie ich <a href="https://kantel.github.io/posts/2023091502_renpy_statt_unity/">hier schon schrieb</a> – ist für dieses Genre Ren’Py durchaus eine gute und leistungsfähige freie Alternative.</p>
-<p>Mit dem Ergebnis bin ich aber noch nicht wirklich zufrieden. Das liegt in der Hauptsache daran, daß die oben erwähnten Video-Tutorials einfach zu schnell durch die Generierung huschen und zu viel Vorwissen voraussetzen. So habe ich es zum Beispiel ums Verrecken nicht geschafft, meinen Protagonisten einen geöffneten, sprechenden Mund zu spendieren, obwohl zum Beispiel <em>The Stolen Necklace</em> zeigt, daß das geht. Aber mit der lakonischen Anweisung »Use the canvas to change your character’s facial expressions« bin ich einfach überfordert. Was muß ich wo im Canvas benutzen, um den Gesichtsausdruck meiner Figuren zu ändern?</p>
-<p>Prinzipiell scheint das aber möglich zu sein, hier muß ich mich aber erst noch durch das Dickicht der (offensichtkich zu) hastig erstellten (die Tools sind alle noch recht neu) Tutorials quälen. Und vermutlich besitzt nicht nur Scenario alleine diese Fähigkeiten, ich glaube (mindestens) jede <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html">Stable-Diffusion</a>-Anwendung scheint dazu in der Lage zu sein.</p>
-<p>Ich bleibe jedenfalls am Ball. Und neben Ren’Py steht ja auch noch die <em>Visual Novel Engine</em> <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday JS</a> in den Startlöchern und harrt einer Nutzung. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>RenPy</category>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <category>Künstliche Intelligenz</category>
-  <category>Scenario</category>
-  <category>Stable Diffusion</category>
-  <guid>https://kantel.github.io/posts/2024020401_renpy_scenario/</guid>
-  <pubDate>Sun, 04 Feb 2024 19:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024020401_renpy_scenario/images/attackscenario.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
