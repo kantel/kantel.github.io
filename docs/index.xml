@@ -10,7 +10,313 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Mon, 19 Feb 2024 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 20 Feb 2024 16:45:00 GMT</lastBuildDate>
+<item>
+  <title>Erste Schritte mit microStudio</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024022001_microstudio_1st_steps/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53540030015/"><img src="https://kantel.github.io/posts/2024022001_microstudio_1st_steps/images/flyingbadger-b.jpg" class="img-fluid"></a></p>
+<p>Nachdem ich in den letzten Wochen einige <a href="https://kantel.github.io/posts/2024013002_microstudio_update/">Spiele-Engines</a> <a href="https://kantel.github.io/posts/2024020801_tuesdayjs_update/">vorgestellt</a> <a href="https://kantel.github.io/posts/2024021001_ctJS/">hatte</a>, wollte ich mit ihnen auch etwas anstellen. Erste vorsichtige Versuche mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> hatte ich ja schon <a href="https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/">durchgeführt</a> und war mit dem <a href="https://kantel.itch.io/poirots-abenteuer">Ergebnis</a> eigentlich recht zufrieden. Blieben also noch <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/ctjs.html">Ct.js</a> und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a>.</p>
+<p>Ct.js war – zumindest in der Desktop-Version – eine Entäuschung. Das Teil fand die laut <a href="https://docs.ctjs.rocks/">Dokumentation</a> mitgelieferten Assets einfach nicht, obwohl ich Schritt für Schritt der <a href="https://docs.ctjs.rocks/tutorials/making-games-platformer.html">Anleitung</a> gefolgt war. Also habe ich mich microStudio zugewendet und dies nicht bereut.</p>
+<p>Ich habe als ersten Schritt eine kleine Animation erstellt (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/53540030015/">Bannerbild</a> oben), die noch ohne Interaktion mit dem Nutzer auskommt. Hier fliegt ein kleiner Dachs in einer Ballongondel über eine Wüstenlandschaft. Hat er das rechte Ende des Bildschirms erreicht, taucht er am linken Bildschirmrand erneut auf:</p>
+<iframe src="flyingbadger/index.html" class="if16_9" name="Flying Badger">
+</iframe>
+<p>Das Bild des Hintergrunds und den Sprite mit dem Dachs habe ich mit <a href="https://www.flickr.com/photos/schockwellenreiter/53537297945/">Scenario</a> erstellt, wobei ich den Dachs mit <a href="https://github.com/danielgatis/rembg">Rembg</a> vom Bildhintergrund freigestellt und mit einer <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html">Bildverarbeitung meines Vertrauens</a> noch grob nachgearbeitet hatte. Wie ich schon häufiger erwähnte, bin ich kein Pixelartists, aber für diesen kleinen Test war das Ergebnis (für mich) ausreichend.</p>
+<p>MicroStudio funktioniert ähnlich wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>: Die Engine besitzt eine Funktion <code>init()</code>, die genau einmal beim Start des Programms aufgerufen wird und die Funktionen <code>update()</code> und <code>draw()</code> die mit einer Framerate von sechzig Mal die Sekunde aufgerufen werden. Und auch wenn das Teil in Python, JavaScript und Lua programmiert werden kann, habe ich meine ersten Versuche mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a> unternommen, der nativen, Lua-ähnlichen Sprache von microStudio. Der Code sieht dann so aus:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb1-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">init</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-2">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">object</span></span>
+<span id="cb1-3">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span></span>
+<span id="cb1-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span></span>
+<span id="cb1-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">h</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75</span></span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>   </span>
+<span id="cb1-8">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb1-9"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">update</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-12">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">speed</span></span>
+<span id="cb1-13">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">width</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">then</span></span>
+<span id="cb1-14">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">width</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb1-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb1-17"></span>
+<span id="cb1-18"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">draw</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-19">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>fillRect<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">width</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">height</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(255, 255, 255)"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-20">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>drawSprite<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"desert"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">width</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">height</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-21">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>drawSprite<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flyingbadger_med"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">badger</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">h</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-22"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span></code></pre></div>
+<p>Im Gegensatz zu den meisten anderen Engines besitzt microStudio in eigenes, virtuelles und auflösungsunabhängiges Koordinatensystem, das seinen Mittelpunkt (0, 0) in der Mitte des Spielefensters besitzt. Bei einem (in den Einstellungen festgelegten) Seitenverhältnis von 16:9 geht die x-Achse von -178 (links) bis +178 (rechts) und die y-Achse von +100 (oben) bis -100 (unten). Die realen Koordinaten und die »reale« Größe der Bilder und Sprites werden dann von microStudio zur Laufzeit umgerechnet. Das ist erst einmal ungewohnt, macht aber einiges einfacher, da man sich als Entwickler nicht um die Auflösung der Zielplattformen kümmern muß.</p>
+<p>Das Teil behält erst einmal alles (Code und Assets) in seiner Engine, wenn man das Ergebnis irgendwo verwenden möchte, muß man es »publizieren«. Wenn man den entsprechenden Button in der IDE geklickt hat, bekommt man diverse Ziele angeboten (wobei mir nur Itch.io bekannt ist) oder kann unter <code>Zu HTML5 exportieren</code> eine Zip-Datei herunterladen, die ausgepackt alles enthält, was man benötigt, um das Spiel in seine eigenen Seiten einzubinden.</p>
+<p>Damit habe ich nicht nur das Einbinden in dieses <del>Blog</del> Kritzelheft bewerkstelligt, sondern auch die Synchronisation mit meinem <a href="https://github.com/kantel/microstudio">GitHub-Repositorium</a> vorgenommen. Wenn Ihr von dort die Datei <code>flyingbadger.zip</code> in Eure eigene microStudio-IDE (egal ob online oder auf dem Desktop) importiert, könnt Ihr Euch das »Spiel« nicht nur ansehen, sondern auch verändern und eigene Versionen davon entwickeln. Habt Spaß damit.</p>
+
+
+
+ ]]></description>
+  <category>microStudio</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024022001_microstudio_1st_steps/</guid>
+  <pubDate>Tue, 20 Feb 2024 16:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024022001_microstudio_1st_steps/images/flyingbadger.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Update: Decker goes Visual Novel</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -812,44 +1118,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024020701_chrome_update/</guid>
   <pubDate>Wed, 07 Feb 2024 14:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024020701_chrome_update/images/datenkrake20240201.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Quarto 1.4 released</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024020602_quarto_1_4/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://quarto.org/docs/blog/posts/2024-01-24-1.4-release/images/thumbnail.png"><img src="https://kantel.github.io/posts/2024020602_quarto_1_4/images/quarto14-b.jpg" class="img-fluid"></a></p>
-<p>Auch wenn es erst heute in meinen Feedreader spülte, schon vor etwa zwei Wochen, am 24. Januar 2024, wurde von Quarto die <a href="https://quarto.org/docs/blog/posts/2024-01-24-1.4-release/">Version 1.4 freigegeben</a>. Da <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> nicht nur seit <a href="https://kantel.github.io/posts/2022120802_hello_quarto/">etwas mehr als einem Jahr</a> diese Seiten antreibt (seit <a href="https://kantel.github.io/posts/2023121602_quarto_vscode/">Dezember letzten Jahres</a> zusammen mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> als Editor) diese Seiten antreibt, sondern auch – ebenfalls zusammen mit VS Code – eine <a href="https://kantel.github.io/posts/2023081101_logseq_quarto_vscode/">Schlüsselrolle in meinem Publikationsworkflow</a> einnimmt, war das natürlich eine wichtige Nachricht für mich.</p>
-<p>Zuerst einmal die übliche Entwarnung: Obwohl ich bei solchen wichtigen Updates immer ein wenig ein mulmiges Gefühl im Magen habe, verlief es auf meinem Mac problemlos. Einfach das <code>.pkg</code> <a href="https://quarto.org/docs/download/">herunterladen</a> und nach einem Doppelklick ersetzte die neue Version unsichtbar im Hintergrund meine biserige Version 1.3 (was icn nur in der Fußzeile meines Editors erkennen konnte).</p>
-<p>Und was ist nun neu? Nun, einmal besitzt Quarto nun eine bessere Unterstützung für interaktive <a href="https://quarto.org/docs/dashboards/">Dashboards</a>. Diese ist die neueste Sau, die durch das Data Science Dorf getrieben wird, und so war es wirklich nur eine Frage der Zeit, bis auch Quarto auf diese neue Sau setzte.</p>
-<p>Dann <a href="https://quarto.org/docs/output-formats/typst.html">unterstützt</a> Quarto in der neuen Version auch <a href="https://typst.app/">Typst</a>. Meine Meinung zu Typst hatte ich nach ersten (und vermutlich auch letzten) Tests <a href="https://kantel.github.io/posts/2023091002_typst_1st_steps/">hier unmißverständlich kundgetan</a>. Ich halte das Teil für so überflüssig wie ein Kropf. Aber man muß die Typst-Unterstützung ja nicht nutzen.</p>
-<p>Kommen wir zu einem angenehmeren neuen Feature: Quarto besitzt ein neues Publikationsformat für <a href="https://quarto.org/docs/manuscripts/">Manuskripte</a> und andere (nicht nur wissenschaftliche) Artikel. Das ist eine großartige Ergänzung zum bisherigen Publikationsformat <a href="https://quarto.org/docs/books/">Books</a> und wird sicher nicht nur meinen Publikationsworkflow bereichern.</p>
-<p>Weitere Neuerungen, die mir gefielen:</p>
-<ul>
-<li>Es gibt eine bessere <a href="https://quarto.org/docs/dashboards/interactivity/shiny-python/index.html">Unterstützung für Shiny for Python</a>.</li>
-<li>Mit der Jupyter-Engine lassen sich aus Quarto heraus Python-, Julia- oder R-Skriptdateien mit Markdown-Kommentaren als eine Art »Notebook für Arme« herausschreiben.</li>
-<li>Und das ist auch für den <em>Schockwellenreiter</em> nützlich: Quarto 1.4 unterstützt <a href="https://quarto.org/docs/output-formats/html-lightbox-figures.html">Lightbox-Galerien</a>, mit der Thumbnails mit Beschriftung in einer Art Galerie angzeigt und mit größeren Bildern verlinkt werden können. <em>(Notiz an mich: Unbedingt testen!)</em></li>
-</ul>
-<p>Quarto war schon lange kein Thema mehr auf diesen Seiten (warum auch? Es hat einfach funktioniert), aber ich möchte die Nachricht vom Update dazu nutzen, auch noch auf einige Video-Tutorials zum Thema hinzuweisen:</p>
-<ul>
-<li>Die Playlist »<a href="https://www.youtube.com/playlist?list=PLY9YSTWETzmq-3Qb6cmBN3nO5sPpATUl1">Introduction to Quarto</a>« (26 im Schnitt etwa zehnminütige Videos) von <em>Data&nbsp;&amp; Design</em> läßt kaum noch Fragen offen.</li>
-<li>Die Monsterplaylist zur »<a href="https://www.youtube.com/playlist?list=PL9HYL-VRX0oRFZslRGHwHuwea7SvAATHp">posit::conf (2023)</a>« (108 (sic!) Videos) bringt auch schon einige <a href="https://www.youtube.com/watch?v=AbuK2F57NEs">Teaser</a> zu neuen Quarto-Version.</li>
-</ul>
-<p><strong>War sonst noch was?</strong> Ach ja, auch wenn die versprochene, verbesserte Quarto-Unterstützung für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JupyterLab</a> sich offensichtlich verspätet, sind das Video »<a href="https://www.youtube.com/watch?v=cKFp8DBF75Y">From Zero to Hero with Notebooks in VS Code</a>« und die Playlist »<a href="https://www.youtube.com/playlist?list=PLj6YeMhvp2S6gDMYrkDb81vneeuk_Lf3v">Jupyter Notebooks Tutorials</a>« – beide vom <a href="https://www.youtube.com/@code"><em>Visual Studio Code Kanal</em></a> – sicher meiner (und Eurer) Aufmerksamkeit wert. Denn Visual Studio Code unterstützt JupyterLab schon länger und sehr umfangreich.</p>
-
-
-
- ]]></description>
-  <category>Quarto</category>
-  <category>Statische Seiten</category>
-  <category>Visual Studio Code</category>
-  <guid>https://kantel.github.io/posts/2024020602_quarto_1_4/</guid>
-  <pubDate>Tue, 06 Feb 2024 17:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024020602_quarto_1_4/images/quarto14.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

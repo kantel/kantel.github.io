@@ -1,0 +1,52 @@
+---
+title: "Erste Schritte mit microStudio"
+author: "Jörg Kantel"
+date: "2024-02-20 17:45:00"
+categories: [microStudio, Spieleprogrammierung]
+image: "images/flyingbadger.jpg"
+---
+
+[![](images/flyingbadger-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53540030015/)
+
+Nachdem ich in den letzten Wochen einige [Spiele-Engines](https://kantel.github.io/posts/2024013002_microstudio_update/) [vorgestellt](https://kantel.github.io/posts/2024020801_tuesdayjs_update/) [hatte](https://kantel.github.io/posts/2024021001_ctJS/), wollte ich mit ihnen auch etwas anstellen. Erste vorsichtige Versuche mit [Tuesday&nbsp;JS](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html) hatte ich ja schon [durchgeführt](https://kantel.github.io/posts/2024021102_tuesdayjs_1st_steps/) und war mit dem [Ergebnis](https://kantel.itch.io/poirots-abenteuer) eigentlich recht zufrieden. Blieben also noch [Ct.js](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/ctjs.html) und [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html).
+
+Ct.js war -- zumindest in der Desktop-Version -- eine Entäuschung. Das Teil fand die laut [Dokumentation](https://docs.ctjs.rocks/) mitgelieferten Assets einfach nicht, obwohl ich Schritt für Schritt der [Anleitung](https://docs.ctjs.rocks/tutorials/making-games-platformer.html) gefolgt war. Also habe ich mich microStudio zugewendet und dies nicht bereut.
+
+Ich habe als ersten Schritt eine kleine Animation erstellt (siehe [Bannerbild](https://www.flickr.com/photos/schockwellenreiter/53540030015/) oben), die noch ohne Interaktion mit dem Nutzer auskommt. Hier fliegt ein kleiner Dachs in einer Ballongondel über eine Wüstenlandschaft. Hat er das rechte Ende des Bildschirms erreicht, taucht er am linken Bildschirmrand erneut auf:
+
+<iframe src="flyingbadger/index.html" class="if16_9" name="Flying Badger"></iframe>
+
+Das Bild des Hintergrunds und den Sprite mit dem Dachs habe ich mit [Scenario](https://www.flickr.com/photos/schockwellenreiter/53537297945/) erstellt, wobei ich den Dachs mit [Rembg](https://github.com/danielgatis/rembg) vom Bildhintergrund freigestellt und mit einer [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) noch grob nachgearbeitet hatte. Wie ich schon häufiger erwähnte, bin ich kein Pixelartists, aber für diesen kleinen Test war das Ergebnis (für mich) ausreichend.
+
+MicroStudio funktioniert ähnlich wie [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html): Die Engine besitzt eine Funktion `init()`, die genau einmal beim Start des Programms aufgerufen wird und die Funktionen `update()` und `draw()` die mit einer Framerate von sechzig Mal die Sekunde aufgerufen werden. Und auch wenn das Teil in Python, JavaScript und Lua programmiert werden kann, habe ich meine ersten Versuche mit [microScript](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html) unternommen, der nativen, Lua-ähnlichen Sprache von microStudio. Der Code sieht dann so aus:
+
+```lua
+init = function()
+  badger = object
+    x = 0
+    y = 40
+    w = 42
+    h = 75
+    speed = 0.5   
+    end
+end
+
+update = function()
+  badger.x += badger.speed
+  if badger.x >= screen.width/2 + badger.w then
+    badger.x = -(screen.width/2 + badger.w)
+    end
+end
+
+draw = function()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(255, 255, 255)")
+  screen.drawSprite("desert", 0, 0, screen.width, screen.height)
+  screen.drawSprite("flyingbadger_med", badger.x, badger.y, badger.w, badger.h)
+end
+```
+
+Im Gegensatz zu den meisten anderen Engines besitzt microStudio in eigenes, virtuelles und auflösungsunabhängiges Koordinatensystem, das seinen Mittelpunkt (0, 0) in der Mitte des Spielefensters besitzt. Bei einem (in den Einstellungen festgelegten) Seitenverhältnis von 16:9 geht die x-Achse von -178 (links) bis +178 (rechts) und die y-Achse von +100 (oben) bis -100 (unten). Die realen Koordinaten und die »reale« Größe der Bilder und Sprites werden dann von microStudio zur Laufzeit umgerechnet. Das ist erst einmal ungewohnt, macht aber einiges einfacher, da man sich als Entwickler nicht um die Auflösung der Zielplattformen kümmern muß.
+
+Das Teil behält erst einmal alles (Code und Assets) in seiner Engine, wenn man das Ergebnis irgendwo verwenden möchte, muß man es »publizieren«. Wenn man den entsprechenden Button in der IDE geklickt hat, bekommt man diverse Ziele angeboten (wobei mir nur Itch.io bekannt ist) oder kann unter `Zu HTML5 exportieren` eine Zip-Datei herunterladen, die ausgepackt alles enthält, was man benötigt, um das Spiel in seine eigenen Seiten einzubinden.
+
+Damit habe ich nicht nur das Einbinden in dieses ~~Blog~~ Kritzelheft bewerkstelligt, sondern auch die Synchronisation mit meinem [GitHub-Repositorium](https://github.com/kantel/microstudio) vorgenommen. Wenn Ihr von dort die Datei `flyingbadger.zip` in Eure eigene microStudio-IDE (egal ob online oder auf dem Desktop) importiert, könnt Ihr Euch das »Spiel« nicht nur ansehen, sondern auch verändern und eigene Versionen davon entwickeln. Habt Spaß damit.
