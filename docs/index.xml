@@ -10,7 +10,30 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Tue, 20 Feb 2024 18:45:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 21 Feb 2024 14:20:00 GMT</lastBuildDate>
+<item>
+  <title>Réveil du Printemps</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024022101_printemps/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53534056200/"><img src="https://kantel.github.io/posts/2024022101_printemps/images/printemps-b.jpg" class="img-fluid"></a></p>
+<p>Bleibt stark! Bald habt Ihr es geschafft, in genau einem Monat beginnt der Frühling.</p>
+<p>Daher Notiz an mich: Dringend meine <a href="https://kantel.github.io/posts/2023031502_fruehlingsplaene/">Jahreskarte</a> für den <a href="https://www.britzergarten.de/">Britzer Garten</a> erneuern.</p>
+<hr>
+<p><strong>Photo</strong> (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>) 2024: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em>.</p>
+
+
+
+ ]]></description>
+  <category>Modernes Leben</category>
+  <guid>https://kantel.github.io/posts/2024022101_printemps/</guid>
+  <pubDate>Wed, 21 Feb 2024 14:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024022101_printemps/images/printemps.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>JupyterLab Desktop goes Thonny</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1018,111 +1041,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024020801_tuesdayjs_update/</guid>
   <pubDate>Thu, 08 Feb 2024 16:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024020801_tuesdayjs_update/images/tuesday_script_struct.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Rembg – Bildhintergrund mit Python entfernen</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024020702_rembg/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53514357412/"><img src="https://kantel.github.io/posts/2024020702_rembg/images/rembgpy-b.jpg" class="img-fluid"></a></p>
-<p>Als Geheimwaffe, um Bilder vom Hintergrund freizustellen, wurde mir häufig die freie (MIT-Lizenz) Python-Bibliothek <a href="https://github.com/danielgatis/rembg">Rembg</a> empfohlen. Doch auch, wenn das Teil <a href="https://pypi.org/project/rembg/2.0.28/">auf PyPI zu finden</a> und daher leicht zu installieren war, hatte ich es nicht zum Laufen bekommen. Bis ich dann heute über <a href="https://medium.com/@HeCanThink/rembg-effortlessly-remove-backgrounds-in-python-c2248501f992">diese Anleitung</a> stolperte.</p>
-<p>Dort stand nämlich, daß Rembg das Bild als <code>numpy.array()</code> benötigte, um zu funktionieren. Also mein Versuchsprogramm wie folgt geändert</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> rembg</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> np</span>
-<span id="cb1-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> PIL <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Image</span>
-<span id="cb1-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> os</span>
-<span id="cb1-5"></span>
-<span id="cb1-6">DATAPATH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"images"</span>)</span>
-<span id="cb1-7"></span>
-<span id="cb1-8">input_path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> os.path.join(DATAPATH, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"maid05.png"</span>)</span>
-<span id="cb1-9">output_path <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> os.path.join(DATAPATH, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"maid05_output.png"</span>)</span>
-<span id="cb1-10"></span>
-<span id="cb1-11"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Load the input image</span></span>
-<span id="cb1-12">input_image <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Image.<span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">open</span>(input_path)</span>
-<span id="cb1-13"></span>
-<span id="cb1-14"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Convert the input image to a numpy array</span></span>
-<span id="cb1-15">input_array <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> np.array(input_image)</span>
-<span id="cb1-16"></span>
-<span id="cb1-17"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Apply background removal using rembg</span></span>
-<span id="cb1-18">output_array <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> rembg.remove(input_array)</span>
-<span id="cb1-19"></span>
-<span id="cb1-20"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Create a PIL Image from the output array</span></span>
-<span id="cb1-21">output_image <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Image.fromarray(output_array)</span>
-<span id="cb1-22"></span>
-<span id="cb1-23"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Save the output image</span></span>
-<span id="cb1-24">output_image.save(output_path)</span>
-<span id="cb1-25">output_image.show()</span>
-<span id="cb1-26"></span>
-<span id="cb1-27"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
-<p>und schon funzte das mit der Bildhintergrund-Entfernung. Zwar gibt es noch eine <code>deprecation</code>-Warnung, aber die kann ich – glaube ich – erst einmal ignorieren.</p>
-<p>Warum ich so scharf auf das Teil bin, wo es doch so viele, meist kostenlose Online-Tools gibt, die vorgeben, das gleiche zu erledigen? Weil diese Tools meistens die Größe der Ausgabebilder beschränken (in der Regel auf 512 x 512 Pixel). Mein Testbild hatte aber die Größe von 4.096 x 4.096 Pixel und Rembg akzeptierte diese Größe ohne zu meckern und produzierte auch eine gleich große Ausgabe.</p>
-<p>Das Testbild hatte ich mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> generiert, genaueres entnehmt Ihr bitte der Bildbeschreibung unten.</p>
-<p>Wer das nachprogrammieren will: Die Pillow-Funktion <code>Image.show()</code> funtioniert nicht mit allen Betriebssystemen. Ihr könnt sie aber einfach auskommentieren, ohne daß die Funktionsfähigkeit des Skriptes beeinträchtigt wird.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53515278291/">Ein Dienstmädchen</a> (Entwurf für eine Visual Novel)</em>, erstellt mit Scenario, Prompt: »<em>A young maid with curly brown hair, green eyes and red lips, wearing a white bonnet, black dress and white apron, 2D graphic style+, point and click game character, full body shot</em>«, Negative Prompt: »<em>Background, ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«, Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook</p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <category>Creative Coding</category>
-  <category>Bilder</category>
-  <category>Pillow</category>
-  <guid>https://kantel.github.io/posts/2024020702_rembg/</guid>
-  <pubDate>Wed, 07 Feb 2024 20:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024020702_rembg/images/rembgpy.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
