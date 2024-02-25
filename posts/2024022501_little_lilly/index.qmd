@@ -1,0 +1,23 @@
+---
+title: "Little Lilly: Konsistente Charaktere für Rem'Py (mit Scenario)"
+author: "Jörg Kantel"
+date: "2024-02-24 20:40:00"
+categories: [RenPy, Interactive Fiction, Spieleprogrammierung, Künstliche Intelligenz, Scenario, Stable Diffusion]
+image: "images/lilly1.jpg"
+---
+
+[![](images/lilly1-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53550813087/)
+
+Die letzten Tage war es auf diesen Seiten vor allem deshalb ruhiger zugegangen, weil ich Stunden damit verbracht habe, den Bildgenerator der gekünstelten Intelligenzia [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html) zu überreden, konsistente Charaktere für interaktive Geschichten mit [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html) oder [Ren'Py](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html) zu generieren. Denn Scenario nimmt ja für sich in Anspruch, der KI-Bildgenerator für Spieleentwickler zu sein, und an diesem Anspruch muß sich die Anwendung messen lassen.
+
+Um es vorwegzunehmen: Ich bin gegenüber meinen [ersten, naiven Versuchen](https://kantel.github.io/posts/2024020902_ki_kons_char/) ein ganzes Stück weitergekommen. Der Trick war, das Ausgangsbild für die »Image zu Image«-Generierung auch schon mit Scenario zu erstellen. Dadurch (er-) kannte Scenario den Ausgangsprompt theoretisch mußte ich nur die gewünschten Änderungen im Ausdruck (*smiling*, *angry*, *confused*, *blushing* etc.) angeben, um weitestgehend konsistente Variationen des Ausgangsbildes zu bekommen.
+
+Zumindest theoretisch -- ein wenig Finetuning war trotz allem noch nötig: Das rot-braune Haar des Ausgangsbildes mußte ich auch im neuen Prompt noch einmal angeben, sonst wurde das Haar mittelbraun gezeichnet. Und die grünen Augen wurden ungefragt braun -- aber da dies konsequent bei (fast) allen Bildern durchgehalten wurde, habe ich dies Scenario nicht übelgenommen.
+
+Jedenfalls waren die Ergebnisse so überzeugend, daß ich daraus (nachdem ich die Bilder mit [Rembg freigestellt](https://kantel.github.io/posts/2024020702_rembg/) hatte), mit Ren'Py einen kleinen Prototypen bastelte:
+
+<iframe src="littlelilly/index.html" class="if16_9" name="Little Lilly"></iframe>
+
+Diesen Prototypen habe ich nicht nur hier in diese Seite eingebunden, sondern zum Testen (und weil ich ein wenig stolz auf das Erreichte bin) auch auf meinen Itch.io-Account [hochgeladen](https://kantel.itch.io/little-lilly).
+
+Doch das Ende der Fahnenstange ist bei Scenario noch lange nicht erreicht. Sie arbeiten dort hart daran, daß Problem der konsistenten Charaktere zu lösen (was bei [Stable Diffusion](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/stablediffusion.html) basierten Lösungen -- wie Scenario -- systemnedingt nicht einfach ist). Neben den Ansatz über LoRA-Modelle *(LowRankAdaption)* ([Teil 1](https://help.scenario.com/integrating-lora-character-bases-in-game-design), [Teil 2](https://help.scenario.com/integrating-lora-character-bases-in-game-design-part-2-base-style) und [Teil 3](https://help.scenario.com/integrating-lora-character-bases-in-game-design-part-3-base-base)) habe sie vor kurzem das [IP-Adapter Add-on vorgestellt](https://help.scenario.com/introducing-ip-adapter) *(Image-Prompt-Adapter)*, das ein weiterer Fortschritt bei der Generierung konsistenter Charaktere sein soll. Außer der [Frage des Prompt-Engineerings](https://help.scenario.com/prompt-expressions) werde ich wohl noch viele weitere Seiten des [Scenario Knowledge Centers](https://help.scenario.com/) durchstöbern müssen. Aber ich freue mich darauf, denn irgendwie macht mir das Spielen mit Scenario einen Heidenspaß. *Still digging!*
