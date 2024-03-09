@@ -1,0 +1,99 @@
+---
+title: "Jumping Engineer: Nächste Schritte mit microStudio"
+author: "Jörg Kantel"
+date: "2024-03-09 16:15:00"
+categories: [microStudio, Spieleprogrammierung]
+image: "images/jumpingengineer.jpg"
+---
+
+[![](images/jumpingengineer-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53576692851/)
+
+Ich habe über den gestrigen Feiertag [wie angekündigt](https://kantel.github.io/posts/2024030603_microstudio/) dafür genutzt, meine Experimente mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html), der kleinen, meiner Meinung nach völlig unterschätzten Game Engine, fortzusetzen. Dafür habe ich eines der [mitgelieferten Tutorien](https://microstudio.dev/projects/tutorialcreateagame/code/) gekapert und es nach meinen Bedürfnissen aufgemotzt.
+
+Herausgekommen ist dabei ein kleines, tatsächlich spielbares Plattform-Game:
+
+~~~lua
+init = function()
+  hero = object
+    y = 0
+    vy = 0
+    w = 32
+    h = 32
+    im = "hero_idle"
+  end
+  blades = [400, 600, 800]
+  passed = [0, 0, 0]
+  gameover = 0
+  running = 0
+  score = 0
+  position = 0
+  speed = 2
+  acc = 0.001
+end
+
+update = function()
+  if gameover > 0 then
+    gameover += 1
+    if gameover > 300 then
+      init()
+    end
+  elsif running then
+    hero.im = "hero_running"
+    position += speed
+    speed += acc
+    if keyboard.UP and hero.y == 0 then
+      hero.vy = 9
+    end
+    hero.vy -= 0.3
+    hero.y = max(0, hero.y + hero.vy)
+    for i=0 to blades.length - 1
+      if blades[i] < position - 120 then
+        blades[i] = position + 360 + random.next()*200
+        passed[i] = 0
+      end
+      if abs(position - blades[i]) < 16 then
+        if hero.y < 10 then
+          running = 0
+          gameover = 1
+        elsif not passed[i] then
+          passed[i] = 1
+          score += 1
+        end
+      end
+    end
+    else
+      if touch.touching then
+        running = 1
+      end
+  end
+end
+
+draw = function()
+  screen.fillRect(0,0,screen.width,screen.height,"rgb(49,147,81)")
+  screen.drawSprite(hero.im,-80,-44 + hero.y, hero.w)
+  for i=-6 to 6 by 1
+    screen.drawSprite("wall", i*40 - position % 40, -80, 40)
+  end
+  for i=0 to blades.length-1
+    screen.drawSprite("blade", blades[i]-position - 80, -54, 40)
+  end
+  screen.drawText(score, 120, 80, 20, "rgb(250, 25, 25")
+  if gameover then
+    hero.im = "hero_idle"
+    screen.fillRect(0, 0, screen.width, screen.height, "rgba(255, 0, 0, 0.5")
+    screen.drawText("GAME OVER", 0, 0, 50, "rgb(250, 250, 250")
+  end
+end
+~~~
+
+Ich habe dafür auch nur wenig mehr als 70 Zeilen Code gebraucht, denn die Animation des Player-Sprites übernahm die Engine komplett für mich. Das Spiel erfüllt all das, was man von einem Plattformer erwartet, Ihr könnt es selber testen:
+
+<iframe src="jumpingengineer/index.html" class="if16_9" name="Jumping Engineer"></iframe>
+
+*Ein Mausklick startet das Spiel, mit der UP-Taste wird der kleine Ingenieur zum Hüpfen gebracht.*
+
+Auch wenn es einfach aussieht, es spielt sich gar nicht so leicht. Ich jedenfalls bin bisher noch nicht weit über 25 Punkte hinausgekommen.
+
+Die Beschäftigung mit diesem Tutorial hat mir auch den Zusammenhang zwischen den Bildschirm- und den Game-Koordinaten klargemacht. Das war zu Beginn für mich doch ein wenig verwirrend. In einem späteren Beitrag werde ich diesen Zusammenhang ausführlicher erläutern.
+
+Die Sprites sind dieses Mal ausnahmsweise nicht von [Kenney](https://kenney.nl/assets), sondern entsammen dem freien ([CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)) [DawnLike-Tileset](https://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181) des Users *DragonDePlatino*. Mit dem wollte ich ebenfalls schon lange mal wieder etwas anstellen. Die Lizenz schreibt vor, daß man auch *[DawnBringer](https://opengameart.org/art-search-advanced?field_art_tags_tid=DawnBringer)* als Schöpfer und Ideengeber erwähnt. Dem bin ich hiermit nachgekommen.
