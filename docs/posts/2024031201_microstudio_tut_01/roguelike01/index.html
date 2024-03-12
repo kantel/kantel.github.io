@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><title>Roguelike 01</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"rogue_down.png","version":10,"size":675,"properties":{"frames":4,"fps":8}},{"file":"rogue_down_idle.png","version":1,"size":385,"properties":{}},{"file":"rogue_left.png","version":12,"size":734,"properties":{"frames":4,"fps":8}},{"file":"rogue_left_idle.png","version":1,"size":361,"properties":{}},{"file":"rogue_right.png","version":4,"size":738,"properties":{"frames":4,"fps":8}},{"file":"rogue_right_idle.png","version":1,"size":371,"properties":{}},{"file":"rogue_up.png","version":5,"size":613,"properties":{"frames":4,"fps":8}},{"file":"rogue_up_idle.png","version":1,"size":367,"properties":{}},{"file":"wall.png","version":1,"size":192,"properties":{}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+init = function()
+  rogue = object
+    x = 0
+    y = 0
+    w = 32
+    h = 32
+    im = "rogue_down_idle"
+    dir = "down"
+    speed = 1
+  end
+end
+
+update = function()
+  if keyboard.RIGHT then
+    rogue.x += rogue.speed
+    rogue.dir = "right"
+    rogue.im = "rogue_right"
+    // check border
+    if rogue.x >= screen.width/2 + rogue.w/2 then
+      rogue.x = floor(-screen.width/2 - rogue.w/2)
+    end
+  elsif keyboard.LEFT then
+    rogue.x -= rogue.speed
+    rogue.dir = "left"
+    rogue.im = "rogue_left"
+    // check border
+    if rogue.x <= -screen.width/2 - rogue.w/2 then
+      rogue.x = floor(screen.width/2 + rogue.w/2)
+    end
+  elsif keyboard.UP then
+    rogue.y += rogue.speed
+    rogue.dir = "up"
+    rogue.im = "rogue_up"
+    // check border
+    if rogue.y >= screen.height/2 + rogue.h/2 then
+      rogue.y = floor(-screen.height/2 - rogue.h/2)
+    end
+  elsif keyboard.DOWN then
+    rogue.y -= rogue.speed
+    rogue.dir = "down"
+    rogue.im = "rogue_down"
+    // check border
+    if rogue.y <= -screen.height/2 - rogue.h/2 then
+      rogue.y = floor(screen.height/2 - rogue.h/2)
+    end
+  else
+    if rogue.dir == "right" then
+      rogue.im = "rogue_right_idle"
+    elsif rogue.dir == "left" then
+      rogue.im = "rogue_left_idle"
+    elsif rogue.dir == "up" then
+      rogue.im = "rogue_up_idle"
+    elsif rogue.dir == "down" then
+      rogue.im = "rogue_down_idle"
+    end
+  end
+end
+
+draw = function()
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(109, 170, 44")
+  screen.drawSprite(rogue.im, rogue.x, rogue.y, rogue.w, rogue.h)
+end
+end()
+
+
+</script></html>

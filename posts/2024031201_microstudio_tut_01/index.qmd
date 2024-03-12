@@ -1,0 +1,87 @@
+---
+title: "More microStudio: Tutorial Teil 1"
+author: "Jörg Kantel"
+date: "2024-03-12 18:30:00"
+categories: [microStudio, Spieleprogrammierung, P5.play]
+image: "images/tinyroguev01.jpg"
+---
+
+[![](images/tinyroguev01-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53582018239/)
+
+Nachdem ich mir gestern [diese komplette Video-Tutorial-Reihe](https://www.youtube.com/playlist?list=PLKKvmO6ujLbJhyQTkkhjnXmzCVHXWGC66) von *mrLman* zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) reingezogen hatte, hatten meine Augen nicht nur die Form meines Monitors angenommen, sondern ich war auch motiviert, selber eine kleine Reihe abgeschlossener Tutorials zu schreiben und sie hier zu veröffentlichen, einmal um mich selber mit microStudio und [microScript](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html) vertrauter zu machen, zum anderen aber auch, um dem Teil die Beachtung zu verschaffen, die es meiner Meinung nach verdient.
+
+Hier ist also die erste Lieferung, die zeigt, wie man einen kleinen, animierten Rogue in allen vier Himmelsrichtungen über den Bildschirm schickt (er wird entweder mit den Pfeiltasten oder mit den Tasten `w`, `a`, `s`, `d` gesteuert):
+
+<iframe src="roguelike01/index.html" class="if16_9" name="Tiny Rugue v0.1"></iframe>
+
+Für den kleinen, animierten Rogue habe ich je vier Idle-Sprites und je vier Streifen mit jeweils vier Animationen benötigt, die ich [wieder](https://kantel.github.io/posts/2024030901_jumping_engineer/) dem freien ([CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)) Tileset [DawnLike](https://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181) von *DragonDePlatino* und *DawnBringer* entnommen habe. Damit sie in microStudio funktionieren, habe ich die Animationen mit einer [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) in vier einzelne Streifen für jede Richtung (`left`, `right`, `up` und `down`) zerlegt und diese Streifen dann in microStudio importiert.
+
+[![Screenshot 1: Strip zur Animation](images/ro_v0_sprite01.jpg)](https://www.flickr.com/photos/schockwellenreiter/53583477339/)
+
+Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button `Strip zur Animation` die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscbeinen die Bilder ziemlich gequetscht.
+
+[![Screenshot 2: Animationsgeschwindigkeit einstellen](images/ro_v0_sprite02.jpg)](https://www.flickr.com/photos/schockwellenreiter/53583152581/)
+
+Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekiet auf `8 FPS` eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion `draw()` zum Beispiel die Zeile
+
+```lua
+screen.drawSprite("hero_left", hero.x, hero.y, hero.w, hero.h)
+```
+
+eingibt, zeigt microStudio den komplette Aimationszyklus an, ohne daß man ihn zusätzlich programmieren muß.
+
+Jetzt gilt es nur noch, in `update()` die korrekten Richtungen abhängig davon, welche Taste gedrückt ist, zu programmieren:
+
+```lua
+  if keyboard.RIGHT then
+    rogue.x += rogue.speed
+    rogue.dir = "right"
+    rogue.im = "rogue_right"
+    // check border
+    if rogue.x >= screen.width/2 + rogue.w/2 then
+      rogue.x = floor(-screen.width/2 - rogue.w/2)
+    end
+  elsif keyboard.LEFT then
+    rogue.x -= rogue.speed
+    rogue.dir = "left"
+    rogue.im = "rogue_left"
+    // check border
+    if rogue.x <= -screen.width/2 - rogue.w/2 then
+      rogue.x = floor(screen.width/2 + rogue.w/2)
+    end
+  elsif keyboard.UP then
+    rogue.y += rogue.speed
+    rogue.dir = "up"
+    rogue.im = "rogue_up"
+    // check border
+    if rogue.y >= screen.height/2 + rogue.h/2 then
+      rogue.y = floor(-screen.height/2 - rogue.h/2)
+    end
+  elsif keyboard.DOWN then
+    rogue.y -= rogue.speed
+    rogue.dir = "down"
+    rogue.im = "rogue_down"
+    // check border
+    if rogue.y <= -screen.height/2 - rogue.h/2 then
+      rogue.y = floor(screen.height/2 - rogue.h/2)
+    end
+  else
+    if rogue.dir == "right" then
+      rogue.im = "rogue_right_idle"
+    elsif rogue.dir == "left" then
+      rogue.im = "rogue_left_idle"
+    elsif rogue.dir == "up" then
+      rogue.im = "rogue_up_idle"
+    elsif rogue.dir == "down" then
+      rogue.im = "rogue_down_idle"
+    end
+  end
+```
+
+Da ich wollte, daß der Rogue auch stehen bleibt, wenn die Taste wieder losgelassen wird, lasse ich im letzten `else` die einzelnen `idle`-Sprites (ohne Animation, aber in korrekter Richtung) anzeigen.
+
+Und es gibt jeweils eine `check border`-Abfrage, die den Rogue, falls er die Grenzen des Bildschirms erreicht hat, auf der gegenüberliegenden Seite wieder erscheinen läßt (Torus-Welt).
+
+Das war es auch schon, das komplette Tutorial inklusive Quellcode und aller verwendeten Assets habe ich auch auf den [Seiten von microStudio veröffentlicht](https://microstudio.dev/i/kantel/roguelike01/). Ihr könnt es Euch dort anschauen, klonen, herunterladen und/oder damit eigene Varianten erstellen.
+
+Und ich habe Blut geleckt, es wird mit Sicherheit weitere kleine Tutorials zu microStudio im *Schockwellenreiter* geben. *Still digging!*

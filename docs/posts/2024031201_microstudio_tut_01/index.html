@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Der Schockwellenreiter - MicroStudio ernstgenommen: Panzer! und Lords of War</title>
+<title>Der Schockwellenreiter - More microStudio: Tutorial Teil 1</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -127,15 +161,11 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">MicroStudio ernstgenommen: Panzer! und Lords of War</h1>
+<h1 class="title">More microStudio: Tutorial Teil 1</h1>
   <div class="quarto-categories">
     <div class="quarto-category">microStudio</div>
-    <div class="quarto-category">Creative Coding</div>
-    <div class="quarto-category">Generative Art</div>
     <div class="quarto-category">Spieleprogrammierung</div>
-    <div class="quarto-category">P5.js</div>
     <div class="quarto-category">P5.play</div>
-    <div class="quarto-category">Tiles und Sprites</div>
   </div>
   </div>
 
@@ -153,7 +183,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10. März 2024</p>
+      <p class="date">12. März 2024</p>
     </div>
   </div>
   
@@ -165,19 +195,76 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53579014801/"><img src="images/einhornloewe01-b.jpg" class="img-fluid"></a></p>
-<p>Einen Hinweis habe ich aber noch zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a>. Denn <em>Sebastian</em>, der den YouTube-Kanal <a href="https://www.youtube.com/@funthingshappen4026">{Fun things happen}</a> betreibt, gehört zu den wenigen, mir bekannten Menschen, der diese meist unterschätzte Game Engine wirklich ernst nimmt.</p>
-<p>Das hat er in zwei Playlisten dokumentiert. Einmal die Liste »<a href="https://www.youtube.com/playlist?list=PLfvzVqACVYiYJGH1bllJK7QN3jeBiE43V">Panzer!</a>« (bisher drei Videos und ein Trailer), in der er auch erläutert, warum er microStudio als die Game Engine seines Vertrauens ausgewählt hat:</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/WWmciThb680?si=m-60grjNpuDlBiiF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53582018239/"><img src="images/tinyroguev01-b.jpg" class="img-fluid"></a></p>
+<p>Nachdem ich mir gestern <a href="https://www.youtube.com/playlist?list=PLKKvmO6ujLbJhyQTkkhjnXmzCVHXWGC66">diese komplette Video-Tutorial-Reihe</a> von <em>mrLman</em> zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> reingezogen hatte, hatten meine Augen nicht nur die Form meines Monitors angenommen, sondern ich war auch motiviert, selber eine kleine Reihe abgeschlossener Tutorials zu schreiben und sie hier zu veröffentlichen, einmal um mich selber mit microStudio und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a> vertrauter zu machen, zum anderen aber auch, um dem Teil die Beachtung zu verschaffen, die es meiner Meinung nach verdient.</p>
+<p>Hier ist also die erste Lieferung, die zeigt, wie man einen kleinen, animierten Rogue in allen vier Himmelsrichtungen über den Bildschirm schickt (er wird entweder mit den Pfeiltasten oder mit den Tasten <code>w</code>, <code>a</code>, <code>s</code>, <code>d</code> gesteuert):</p>
+<iframe src="roguelike01/index.html" class="if16_9" name="Tiny Rugue v0.1">
 </iframe>
-<p>Darin macht er sich auch Gedanken über das GameDesign und kommt zu ähnlichen Schlußfolgerungen, <a href="https://kantel.github.io/posts/2023010701_pygame_oop/">wie auch ich sie vor einigen Monaten hatte</a>. Und er hat dieses Design in <a href="https://microstudio.dev/i/Sebastian/panzer/">seinem Prototyp implementiert</a> – in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a>. Da er diesen Prototyp auf <a href="https://microstudio.io/Sebastian/">seinen microStudio-Seiten</a> veröffentlicht hat, ist das eine phantastische Quelle, nicht nur um microScipt zu lernen, sondern auch, wie man darin ein <em>Entity Component System</em> objektorientiert in microScript implementiert.</p>
-<p>Außerdem gibt es im <a href="https://www.youtube.com/watch?v=WWmciThb680">Begleittext zum Video</a> eine Liste mit Links zu allen verwendeten freien Assets. Hier fand ich unter anderem die <a href="https://anokolisa.itch.io/">Tiles und Sprites von Anokolisa</a> bemerkens- und aufhebenswert.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/_jdPko0YAXg?si=CDlE9LjqsR8Lr-ox" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="">
-</iframe>
-<p>Die <a href="https://www.youtube.com/playlist?list=PLfvzVqACVYibFrxvueDnHgUkPAkVSc_-Y">zweite Playlist</a> geht noch darüber hinaus. Denn »<a href="https://microstudio.dev/i/Sebastian/lordsofwar2/">Lords of War</a>« will ein rundenbasiertes RPG/Strategiespiel werden, ähnlich wie das, <a href="https://kantel.github.io/posts/2022122803_stolen_crown/">was ich mir vorgenommen hatte</a>, wenn ich meine fliegenden Pizzen endlich alle abgeschossen habe. Es freut mich zu sehen, daß sich jemand traut, dies in mircoStudio zu implementieren. Bisher ist das alles noch ziemlich alpha, aber das, was man im Video sehen kann, ist schon ziemlich beeindruckend. Und den Fortschritt kann man nicht nur auf der <a href="https://microstudio.dev/i/Sebastian/lordsofwar2/">microStudio-Seite des Projekts</a> verfolgen, sondern es gibt auch ein <a href="https://github.com/saklis/Lords-of-War">GitHub-Repositorium</a> dazu.</p>
-<p>Ich hoffe, daß Sebastian die Entwicklung beider Spiele und die Video-Tutorials dazu weiterführt. Ich habe jedenfalls auch seinen Kanal abonniert.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53579014801/">Einhorn und Löwe spielen Schach</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A unicorn in a red dressing gown and a lion in a blue suit sit at a beer garden table with a beer and playing chess. It’s spring and the sun is shining over the beer garden. colored french comic style</em>«. Modell: Stable Diffusion XL, Style: Comic Book.</p>
+<p>Für den kleinen, animierten Rogue habe ich je vier Idle-Sprites und je vier Streifen mit jeweils vier Animationen benötigt, die ich <a href="https://kantel.github.io/posts/2024030901_jumping_engineer/">wieder</a> dem freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) Tileset <a href="https://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181">DawnLike</a> von <em>DragonDePlatino</em> und <em>DawnBringer</em> entnommen habe. Damit sie in microStudio funktionieren, habe ich die Animationen mit einer <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html">Bildverarbeitung meines Vertrauens</a> in vier einzelne Streifen für jede Richtung (<code>left</code>, <code>right</code>, <code>up</code> und <code>down</code>) zerlegt und diese Streifen dann in microStudio importiert.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53583477339/"><img src="images/ro_v0_sprite01.jpg" class="img-fluid figure-img" alt="Screenshot 1: Strip zur Animation"></a></p>
+<figcaption>Screenshot 1: Strip zur Animation</figcaption>
+</figure>
+</div>
+<p>Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button <code>Strip zur Animation</code> die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscbeinen die Bilder ziemlich gequetscht.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53583152581/"><img src="images/ro_v0_sprite02.jpg" class="img-fluid figure-img" alt="Screenshot 2: Animationsgeschwindigkeit einstellen"></a></p>
+<figcaption>Screenshot 2: Animationsgeschwindigkeit einstellen</figcaption>
+</figure>
+</div>
+<p>Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekiet auf <code>8 FPS</code> eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion <code>draw()</code> zum Beispiel die Zeile</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb1-1"><a href="#cb1-1"></a><span class="va">screen</span><span class="op">.</span>drawSprite<span class="op">(</span><span class="st">"hero_left"</span><span class="op">,</span> <span class="va">hero</span><span class="op">.</span><span class="va">x</span><span class="op">,</span> <span class="va">hero</span><span class="op">.</span><span class="va">y</span><span class="op">,</span> <span class="va">hero</span><span class="op">.</span><span class="va">w</span><span class="op">,</span> <span class="va">hero</span><span class="op">.</span><span class="va">h</span><span class="op">)</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>eingibt, zeigt microStudio den komplette Aimationszyklus an, ohne daß man ihn zusätzlich programmieren muß.</p>
+<p>Jetzt gilt es nur noch, in <code>update()</code> die korrekten Richtungen abhängig davon, welche Taste gedrückt ist, zu programmieren:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb2-1"><a href="#cb2-1"></a>  <span class="cf">if</span> <span class="va">keyboard</span><span class="op">.</span><span class="cn">RIGHT</span> <span class="cf">then</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">x</span> <span class="er">+=</span> <span class="va">rogue</span><span class="op">.</span><span class="va">speed</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">=</span> <span class="st">"right"</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_right"</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="op">//</span> <span class="va">check</span> <span class="va">border</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="cf">if</span> <span class="va">rogue</span><span class="op">.</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="va">screen</span><span class="op">.</span><span class="va">width</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="va">rogue</span><span class="op">.</span><span class="va">w</span><span class="op">/</span><span class="dv">2</span> <span class="cf">then</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">x</span> <span class="op">=</span> floor<span class="op">(-</span><span class="va">screen</span><span class="op">.</span><span class="va">width</span><span class="op">/</span><span class="dv">2</span> <span class="op">-</span> <span class="va">rogue</span><span class="op">.</span><span class="va">w</span><span class="op">/</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="cf">end</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  <span class="va">elsif</span> <span class="va">keyboard</span><span class="op">.</span><span class="cn">LEFT</span> <span class="cf">then</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">x</span> <span class="er">-=</span> <span class="va">rogue</span><span class="op">.</span><span class="va">speed</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">=</span> <span class="st">"left"</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_left"</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="op">//</span> <span class="va">check</span> <span class="va">border</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">if</span> <span class="va">rogue</span><span class="op">.</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="op">-</span><span class="va">screen</span><span class="op">.</span><span class="va">width</span><span class="op">/</span><span class="dv">2</span> <span class="op">-</span> <span class="va">rogue</span><span class="op">.</span><span class="va">w</span><span class="op">/</span><span class="dv">2</span> <span class="cf">then</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">x</span> <span class="op">=</span> floor<span class="op">(</span><span class="va">screen</span><span class="op">.</span><span class="va">width</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="va">rogue</span><span class="op">.</span><span class="va">w</span><span class="op">/</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>    <span class="cf">end</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  <span class="va">elsif</span> <span class="va">keyboard</span><span class="op">.</span><span class="cn">UP</span> <span class="cf">then</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">y</span> <span class="er">+=</span> <span class="va">rogue</span><span class="op">.</span><span class="va">speed</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">=</span> <span class="st">"up"</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_up"</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>    <span class="op">//</span> <span class="va">check</span> <span class="va">border</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>    <span class="cf">if</span> <span class="va">rogue</span><span class="op">.</span><span class="va">y</span> <span class="op">&gt;=</span> <span class="va">screen</span><span class="op">.</span><span class="va">height</span><span class="op">/</span><span class="dv">2</span> <span class="op">+</span> <span class="va">rogue</span><span class="op">.</span><span class="va">h</span><span class="op">/</span><span class="dv">2</span> <span class="cf">then</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">y</span> <span class="op">=</span> floor<span class="op">(-</span><span class="va">screen</span><span class="op">.</span><span class="va">height</span><span class="op">/</span><span class="dv">2</span> <span class="op">-</span> <span class="va">rogue</span><span class="op">.</span><span class="va">h</span><span class="op">/</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="cf">end</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>  <span class="va">elsif</span> <span class="va">keyboard</span><span class="op">.</span><span class="cn">DOWN</span> <span class="cf">then</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">y</span> <span class="er">-=</span> <span class="va">rogue</span><span class="op">.</span><span class="va">speed</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">=</span> <span class="st">"down"</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>    <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_down"</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>    <span class="op">//</span> <span class="va">check</span> <span class="va">border</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a>    <span class="cf">if</span> <span class="va">rogue</span><span class="op">.</span><span class="va">y</span> <span class="op">&lt;=</span> <span class="op">-</span><span class="va">screen</span><span class="op">.</span><span class="va">height</span><span class="op">/</span><span class="dv">2</span> <span class="op">-</span> <span class="va">rogue</span><span class="op">.</span><span class="va">h</span><span class="op">/</span><span class="dv">2</span> <span class="cf">then</span></span>
+<span id="cb2-31"><a href="#cb2-31"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">y</span> <span class="op">=</span> floor<span class="op">(</span><span class="va">screen</span><span class="op">.</span><span class="va">height</span><span class="op">/</span><span class="dv">2</span> <span class="op">-</span> <span class="va">rogue</span><span class="op">.</span><span class="va">h</span><span class="op">/</span><span class="dv">2</span><span class="op">)</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a>    <span class="cf">end</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a>  <span class="cf">else</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>    <span class="cf">if</span> <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">==</span> <span class="st">"right"</span> <span class="cf">then</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_right_idle"</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a>    <span class="va">elsif</span> <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">==</span> <span class="st">"left"</span> <span class="cf">then</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_left_idle"</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>    <span class="va">elsif</span> <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">==</span> <span class="st">"up"</span> <span class="cf">then</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_up_idle"</span></span>
+<span id="cb2-40"><a href="#cb2-40"></a>    <span class="va">elsif</span> <span class="va">rogue</span><span class="op">.</span><span class="va">dir</span> <span class="op">==</span> <span class="st">"down"</span> <span class="cf">then</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>      <span class="va">rogue</span><span class="op">.</span><span class="va">im</span> <span class="op">=</span> <span class="st">"rogue_down_idle"</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a>    <span class="cf">end</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a>  <span class="cf">end</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Da ich wollte, daß der Rogue auch stehen bleibt, wenn die Taste wieder losgelassen wird, lasse ich im letzten <code>else</code> die einzelnen <code>idle</code>-Sprites (ohne Animation, aber in korrekter Richtung) anzeigen.</p>
+<p>Und es gibt jeweils eine <code>check border</code>-Abfrage, die den Rogue, falls er die Grenzen des Bildschirms erreicht hat, auf der gegenüberliegenden Seite wieder erscheinen läßt (Torus-Welt).</p>
+<p>Das war es auch schon, das komplette Tutorial inklusive Quellcode und aller verwendeten Assets habe ich auch auf den <a href="https://microstudio.dev/i/kantel/roguelike01/">Seiten von microStudio veröffentlicht</a>. Ihr könnt es Euch dort anschauen, klonen, herunterladen und/oder damit eigene Varianten erstellen.</p>
+<p>Und ich habe Blut geleckt, es wird mit Sicherheit weitere kleine Tutorials zu microStudio im <em>Schockwellenreiter</em> geben. <em>Still digging!</em></p>
 
 
 
