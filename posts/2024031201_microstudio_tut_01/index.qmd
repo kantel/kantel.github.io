@@ -18,21 +18,21 @@ Für den kleinen, animierten Rogue habe ich je vier Idle-Sprites und je vier Str
 
 [![Screenshot 1: Strip zur Animation](images/ro_v0_sprite01.jpg)](https://www.flickr.com/photos/schockwellenreiter/53583477339/)
 
-Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button `Strip zur Animation` die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscbeinen die Bilder ziemlich gequetscht.
+Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button `Strip zur Animation` die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.
 
 [![Screenshot 2: Animationsgeschwindigkeit einstellen](images/ro_v0_sprite02.jpg)](https://www.flickr.com/photos/schockwellenreiter/53583152581/)
 
-Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekiet auf `8 FPS` eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion `draw()` zum Beispiel die Zeile
+Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekeit auf `8 FPS` eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion `draw()` zum Beispiel die Zeile
 
-```lua
+~~~lua
 screen.drawSprite("hero_left", hero.x, hero.y, hero.w, hero.h)
-```
+~~~
 
-eingibt, zeigt microStudio den komplette Aimationszyklus an, ohne daß man ihn zusätzlich programmieren muß.
+eingibt, zeigt microStudio den komplette Animationszyklus an, ohne daß man ihn zusätzlich programmieren muß.
 
-Jetzt gilt es nur noch, in `update()` die korrekten Richtungen abhängig davon, welche Taste gedrückt ist, zu programmieren:
+Jetzt gilt es nur noch, in `update()` die korrekten Richtungen abhängig davon, welche Taste gedrückt ist, zu implementieren:
 
-```lua
+~~~lua
   if keyboard.RIGHT then
     rogue.x += rogue.speed
     rogue.dir = "right"
@@ -76,9 +76,9 @@ Jetzt gilt es nur noch, in `update()` die korrekten Richtungen abhängig davon, 
       rogue.im = "rogue_down_idle"
     end
   end
-```
+~~~
 
-Da ich wollte, daß der Rogue auch stehen bleibt, wenn die Taste wieder losgelassen wird, lasse ich im letzten `else` die einzelnen `idle`-Sprites (ohne Animation, aber in korrekter Richtung) anzeigen.
+Da ich wollte, daß der Rogue auch stehen bleibt und nicht auf der Stelle zappelt, wenn die Taste wieder losgelassen wird, lasse ich im letzten `else` die einzelnen `idle`-Sprites (ohne Animation, aber in korrekter Richtung) anzeigen.
 
 Und es gibt jeweils eine `check border`-Abfrage, die den Rogue, falls er die Grenzen des Bildschirms erreicht hat, auf der gegenüberliegenden Seite wieder erscheinen läßt (Torus-Welt).
 
