@@ -1,0 +1,221 @@
+<!DOCTYPE html><html><head><title>Roguelike 02</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"elf_idle_left.png","version":4,"size":588,"properties":{"frames":4,"fps":5}},{"file":"elf_idle_right.png","version":2,"size":610,"properties":{"frames":4,"fps":5}},{"file":"elf_running_left.png","version":2,"size":631,"properties":{"frames":4,"fps":5}},{"file":"elf_running_right.png","version":2,"size":628,"properties":{"frames":4,"fps":5}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":17920,"properties":{"frames":1,"fps":5}},{"file":"pumpkin_idle_left.png","version":6,"size":635,"properties":{"frames":4,"fps":3}},{"file":"pumpkin_idle_right.png","version":4,"size":643,"properties":{"frames":4,"fps":3}},{"file":"pumpkin_running_left.png","version":3,"size":687,"properties":{"frames":4,"fps":3}},{"file":"pumpkin_running_right.png","version":2,"size":703,"properties":{"frames":4,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+init = function()
+  player = new Player()
+  pumpkins = []
+  timer = 0
+  score = 0
+end
+
+update = function()
+  timer += 1
+  if timer == 180 then
+    createPumpkin()
+    score += 1
+    end
+  player.move()
+  for p in pumpkins
+    p.move()
+    // check collision with player
+    if distance(p.x, p.y, player.x, player.y) < 20 then
+      print("Collision")
+      init()
+    end
+  end
+end
+
+draw = function()
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(109, 170, 44")
+  screen.drawSprite(player.im, player.x, player.y, player.w, player.h)
+  for p in pumpkins
+    p.show()
+  end
+  screen.drawText("Score: " + score, 120, 80, 20, "rgb(250, 25, 25)")
+end
+
+createPumpkin = function()
+  local choice = random.next()
+  if choice < 0.5 then dir = "left" else dir = "right" end
+    p = new Pumpkin((-180 + random.nextInt(360)),
+      (-100 + random.nextInt(200)), dir)
+    pumpkins.push(p)
+    timer = 0
+end
+end()
+
+
+
+function()
+Player = class
+  
+  constructor = function()
+    this.x = 0
+    this.y = 0
+    this.w = 16
+    this.h = 23
+    this.dir = "right"
+    this.im = "elf_idle_right"
+    this.vel = 1
+  end
+  
+  move = function()
+    if keyboard.RIGHT then
+      dir = "right"
+      im = "elf_running_right"
+      x += vel
+    elsif keyboard.LEFT then
+      dir = "left"
+      im = "elf_running_left"
+      x -= vel
+    elsif keyboard.UP then
+      y += vel
+    elsif keyboard.DOWN then
+      y -= vel
+    else
+      if dir == "right" then
+        im = "elf_idle_right"
+      else
+        im = "elf_idle_left"
+      end
+    end
+    wrap(this)
+  end
+  
+end
+
+end()
+
+
+
+function()
+Pumpkin = class
+  
+  constructor = function(_x, _y, _dir)
+    this.x = _x
+    this.y = _y
+    this.dir = _dir
+    this.w = 16
+    this.h = 23
+    this.im = "pumpkin_idle_right"
+    this.vel = 0.1
+  end
+  
+  move = function()
+    if dir == "right" then
+      im = "pumpkin_running_right"
+      x += vel
+    elsif dir == "left" then
+      im = "pumpkin_running_left"
+      x -= vel
+    else
+      im = "pumpkin_idle_right"
+    end
+    wrap(this)
+  end
+  
+  show = function()
+      screen.drawSprite(im, x, y, w, h)
+    end
+end
+
+end()
+
+
+
+function()
+// makes the object wrap around the screen when moving off the edge
+// note: object must have x and y fields (variables)
+wrap = function(obj, leeway = 0)
+  if obj.x + leeway < -screen.width/2 then
+    obj.x = screen.width/2 + leeway
+  elsif obj.x - leeway > screen.width/2 then
+    obj.x = -screen.width/2 - leeway
+  end 
+  if obj.y + leeway < -screen.height/2 then
+    obj.y = screen.height/2 + leeway
+  elsif obj.y - leeway > screen.height/2 then
+    obj.y = -screen.height/2 - leeway
+  end 
+end
+
+// returns a random item from a list
+choose = function(lst)
+  local index = random.nextInt(lst.length)
+  return lst[index]
+end
+
+// find the distance between object 1 and object 2
+// useful for a simple circular collision detection
+distance = function(x1, y1, x2, y2)
+  local a = x2 - x1
+  local b = y2 - y1
+  local c = sqrt(pow(a, 2) + pow(b, 2))
+  return c
+end
+
+end()
+
+
+</script></html>

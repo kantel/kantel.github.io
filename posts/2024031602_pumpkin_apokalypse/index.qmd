@@ -1,0 +1,319 @@
+---
+title: "MicroStudio-Tutorial 2: Pumpkin Apokalypse"
+author: "Jörg Kantel"
+date: "2024-03-16 20:55:00"
+categories: [microStudio, Spieleprogrammierung]
+image: "images/roguelike02.jpg"
+---
+
+[![](images/roguelike02-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53590045178/)
+
+Das ist die erste Fortsetzung zu meiner kleinen Serie mit Einführungstutorials zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html), der kleinen, meiner Meinung nach zu Unrecht unterschätzten Game-Engine. Wie schon beim [ersten Tutorial dieser Reihe](https://kantel.github.io/posts/2024031201_microstudio_tut_01/) zeige ich nur einen kleinen Ausschnitt dessen, was mit microStudio möglich ist. Ihr könnt Euch dann aus der Summe dieser (hoffentlich!) wachsenden Anzahl von Beispielprogrammen Euer eigenes Spiel selber stricken.
+
+Die Idee zum heutigen Beispiel habe ich schamlos bei *[David Bouchard](https://www.youtube.com/@davidbouchard)* geklaut, der in seiner Einführung in [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) (einer Spielebibliothek zu [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) in den beiden Videos [Sprites Animation](https://www.youtube.com/watch?v=eDpTtxFhP2s) und [Game States](https://www.youtube.com/watch?v=6Vqpf_vLsH0) den Spieler in eine Zombie-Apcalypse schickt, in der er möglichst lange den Zombies ausweichen muß.
+
+Für meine Version dieses Spiels hatte ich mir die freien ([CC0](https://itch.io/game-assets/assets-cc0)) Sprites und Tiles des [Dungein Tileset II](https://0x72.itch.io/dungeontileset-ii) des Users [0x72](https://0x72.itch.io/) ausgesucht, denn dort gab es nicht nur Zombies, sondern auch Halloween-Kürbisse als animierte Sprites. Und so wurde aus der *Zombie Apokalypse* kurzerhand die **Pumpkin Apokalypse**. Das Spieleprinzip ist jedoch (wenn auch stark vereinfacht) das gleiche geblieben:
+
+Der Spieler kann mit den Pfeiltasten in alle vier Himmelsrichtungen bewegt werden und muß den bösen Halloween-Kürbissen ausweichen, von denen alle drei Sekunden ein neuer das Spielfeld betritt. Die Kürbisse bewegen sich zwar etwas langsamer als der Spieler und können sich auch nur horizontal in einer Richtung bewegen, da sie jedoch immer mehr werden, ist eine Kollision irgendwann unvermeidlich. Sobald der Spieler mit einem Kürbis kollidiert, beginnt das Spiel von vorne.
+
+<iframe src="roguelike02/index.html" class="if16_9" name="Pumpkin Apokalypse"></iframe>
+
+Jedesmal wenn ein neuer Kürbis das Spielfeld betritt, bekommt der Spieler -- als Belohnung, weil er bis hierher überlebt hat -- einen Punkt gutgeschrieben. Einziges Ziel des Spiels ist es, so lange wie möglich den Kürbissen auszuweichen, um dadurch möglichst viele Punkte zu sammeln.
+
+Der Spieler wie die Kürbisse sind sowohl `idle` wie auch `running` animierte Sprites mit jeweils vier Einzelbildern je Richtung. Ich habe die Streifen wieder mit der [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) zusammengestrickt (wobei ich die `idle`-Animation der Kürbisse zur Zeit noch nicht nutze).
+
+Der Unterschied zwischen Klassen und Objekten ist in microStudio nicht sehr groß. Daher machen Klassen eigentlich erst dann Sinn, wenn man viele gleichartige Objekte erzeugen will -- in diesem Fall also die Kürbisse. Aus Gründen der Gleichbehandlung habe ich aber auch dem Spieler eine eigene Klasse spendiert:
+
+~~~lua
+Player = class
+  
+  constructor = function()
+    this.x = 0
+    this.y = 0
+    this.w = 16
+    this.h = 23
+    this.dir = "right"
+    this.im = "elf_idle_right"
+    this.vel = 1
+  end
+  
+  move = function()
+    if keyboard.RIGHT then
+      dir = "right"
+      im = "elf_running_right"
+      x += vel
+    elsif keyboard.LEFT then
+      dir = "left"
+      im = "elf_running_left"
+      x -= vel
+    elsif keyboard.UP then
+      y += vel
+    elsif keyboard.DOWN then
+      y -= vel
+    else
+      if dir == "right" then
+        im = "elf_idle_right"
+      else
+        im = "elf_idle_left"
+      end
+    end
+    wrap(this)
+  end
+~~~
+
+Sie ist dem `rogue`-Objekt des ersten Tutorials ziemlich ähnlich, lediglich bei der Border-Abfrage habe ich es mir einfacher gemacht und auf die `wrap()`-Funktion aus der [games-prog library v.02](https://microstudio.dev/i/mrLman/gamesproglibrary/) von *[mrLman](https://microstudio.io/mrLman/)* zurückgegriffen.
+
+Da der Spieler nun eine Klasse ist, mußte in der `init()`-Funktion des Hauptprogramms mit
+
+~~~lua
+  player = new Player()
+~~~
+
+das Player-Objket erzugt werden. Wenn nun in der `update()`-Funktion `player.move()` aufgerufen wird und die `draw()`-Funktion so aussieht:
+
+~~~lua
+draw = function()
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(109, 170, 44")
+~~~
+
+kann der Spieler auf dem Spielfeld mit den Pfeiltasten bewegt werden.
+
+Daher ist es nun Zeit, die Kürbisse einzuführen. Auch sie sind eine eigene Klasse,
+
+~~~lua
+Pumpkin = class
+  
+  constructor = function(_x, _y, _dir)
+    this.x = _x
+    this.y = _y
+    this.dir = _dir
+    this.w = 16
+    this.h = 23
+    this.im = "pumpkin_idle_right"
+    this.vel = 0.1
+  end
+  
+  move = function()
+    if dir == "right" then
+      im = "pumpkin_running_right"
+      x += vel
+    elsif dir == "left" then
+      im = "pumpkin_running_left"
+      x -= vel
+    else
+      im = "pumpkin_idle_right"
+    end
+    wrap(this)
+  end
+  
+  show = function()
+      screen.drawSprite(im, x, y, w, h)
+    end
+end
+~~~
+
+der ich neben der Methode `move()` auch noch die Methode `show()` spendiert habe.
+
+Da sie während des Spiels successive eingeführt, können sie nicht in der `init()`-Funktion initialisiert werden, sondern materialisieren sich erst in der `update()-Funktion zu Objekten (oder »Instanzen« der Klasse).
+
+Dafür habe ich in `init()` mit `timer = 0` erst einmal einen Timer erzeugt, den ich in `update()` hochzähle. Alle drei Sekunden (`timer == 180`) erstelle ich dann einen neuen Pumpkin und setze (un der Funktion `createPumpkin()`) den Timer zurück:
+
+~~~lua
+  timer += 1
+  if timer == 180 then
+    createPumpkin()
+    score += 1
+    end
+~~~~
+
+~~~lua
+createPumpkin = function()
+  local choice = random.next()
+  if choice < 0.5 then dir = "left" else dir = "right" end
+    p = new Pumpkin((-180 + random.nextInt(360)),
+      (-100 + random.nextInt(200)), dir)
+    pumpkins.push(p)
+    timer = 0
+end
+~~~
+
+Die schon ins Leben gerufenen Kürbisse werden in `update()` bewegt
+
+~~~lua
+  for p in pumpkins
+    p.move()
+    // check collision with player
+    if distance(p.x, p.y, player.x, player.y) < 20 then
+      print("Collision")
+      init()
+    end
+  end
+~~~
+
+und auf Kollision mit dem Player überprüft. Dafür setze ich mit `distance()` eine weitere Funktion aus der games-prog library v.02 ein.
+
+Das Zeichnen der einzelnen Kürbisse ist dank der `show()`-Methode der Klasse `Pumkin` wieder sehr einfach:
+
+~~~lua
+  for p in pumpkins
+    p.show()
+  end
+~~~
+
+Das war es auch schon. Die Punkte werden einfach hochgezählt und mit
+
+~~~lua
+  screen.drawText("Score: " + score, 120, 80, 20, "rgb(250, 25, 25)")
+~~~
+
+auf den Bildschirm gezeichnet. Da es dieses Mal schon ein recht umfangreiches Beispiel ist, drucke ich hier den kompletten Quellcode noch einmal vollständig ab. Zuerst das Hauptprogramm `main`:
+
+~~~lua
+init = function()
+  player = new Player()
+  pumpkins = []
+  timer = 0
+  score = 0
+end
+
+update = function()
+  timer += 1
+  if timer == 180 then
+    createPumpkin()
+    score += 1
+    end
+  player.move()
+  for p in pumpkins
+    p.move()
+    // check collision with player
+    if distance(p.x, p.y, player.x, player.y) < 20 then
+      print("Collision")
+      init()
+    end
+  end
+end
+
+draw = function()
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(109, 170, 44")
+  screen.drawSprite(player.im, player.x, player.y, player.w, player.h)
+  for p in pumpkins
+    p.show()
+  end
+  screen.drawText("Score: " + score, 120, 80, 20, "rgb(250, 25, 25)")
+end
+
+createPumpkin = function()
+  local choice = random.next()
+  if choice < 0.5 then dir = "left" else dir = "right" end
+    p = new Pumpkin((-180 + random.nextInt(360)),
+      (-100 + random.nextInt(200)), dir)
+    pumpkins.push(p)
+    timer = 0
+end
+~~~
+
+Dann die Klasse `Player`
+
+~~~lua
+Player = class
+  
+  constructor = function()
+    this.x = 0
+    this.y = 0
+    this.w = 16
+    this.h = 23
+    this.dir = "right"
+    this.im = "elf_idle_right"
+    this.vel = 1
+  end
+  
+  move = function()
+    if keyboard.RIGHT then
+      dir = "right"
+      im = "elf_running_right"
+      x += vel
+    elsif keyboard.LEFT then
+      dir = "left"
+      im = "elf_running_left"
+      x -= vel
+    elsif keyboard.UP then
+      y += vel
+    elsif keyboard.DOWN then
+      y -= vel
+    else
+      if dir == "right" then
+        im = "elf_idle_right"
+      else
+        im = "elf_idle_left"
+      end
+    end
+    wrap(this)
+  end 
+end
+~~~
+
+und die Klasse `Pumpkin`:
+
+~~~lua
+Pumpkin = class
+  
+  constructor = function(_x, _y, _dir)
+    this.x = _x
+    this.y = _y
+    this.dir = _dir
+    this.w = 16
+    this.h = 23
+    this.im = "pumpkin_idle_right"
+    this.vel = 0.1
+  end
+  
+  move = function()
+    if dir == "right" then
+      im = "pumpkin_running_right"
+      x += vel
+    elsif dir == "left" then
+      im = "pumpkin_running_left"
+      x -= vel
+    else
+      im = "pumpkin_idle_right"
+    end
+    wrap(this)
+  end
+  
+  show = function()
+      screen.drawSprite(im, x, y, w, h)
+    end
+end
+~~~
+
+Und *last but not least* die Datei `util` mit den beiden Helfermethoden des *MrLman*:
+
+~~~lua
+// makes the object wrap around the screen when moving off the edge
+// note: object must have x and y fields (variables)
+wrap = function(obj, leeway = 0)
+  if obj.x + leeway < -screen.width/2 then
+    obj.x = screen.width/2 + leeway
+  elsif obj.x - leeway > screen.width/2 then
+    obj.x = -screen.width/2 - leeway
+  end 
+  if obj.y + leeway < -screen.height/2 then
+    obj.y = screen.height/2 + leeway
+  elsif obj.y - leeway > screen.height/2 then
+    obj.y = -screen.height/2 - leeway
+  end 
+end
+
+// find the distance between object 1 and object 2
+// useful for a simple circular collision detection
+distance = function(x1, y1, x2, y2)
+  local a = x2 - x1
+  local b = y2 - y1
+  local c = sqrt(pow(a, 2) + pow(b, 2))
+  return c
+end
+~~~ 
+
+Außerdem habe ich das »Spiel« auch wieder auf den [Seiten von microStudio hochgeladen](https://microstudio.dev/projects/roguelike02/code/). Ihr könnt es dort klonen, weiterentwickeln oder einfach nur damit spielen.
