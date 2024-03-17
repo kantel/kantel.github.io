@@ -10,11 +10,11 @@ image: "images/roguelike02.jpg"
 
 Das ist die erste Fortsetzung zu meiner kleinen Serie mit Einführungstutorials zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html), der kleinen, meiner Meinung nach zu Unrecht unterschätzten Game-Engine. Wie schon beim [ersten Tutorial dieser Reihe](https://kantel.github.io/posts/2024031201_microstudio_tut_01/) zeige ich nur einen kleinen Ausschnitt dessen, was mit microStudio möglich ist. Ihr könnt Euch dann aus der Summe dieser (hoffentlich!) wachsenden Anzahl von Beispielprogrammen Euer eigenes Spiel selber stricken.
 
-Die Idee zum heutigen Beispiel habe ich schamlos bei *[David Bouchard](https://www.youtube.com/@davidbouchard)* geklaut, der in seiner Einführung in [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) (einer Spielebibliothek zu [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) in den beiden Videos [Sprites Animation](https://www.youtube.com/watch?v=eDpTtxFhP2s) und [Game States](https://www.youtube.com/watch?v=6Vqpf_vLsH0) den Spieler in eine Zombie-Apcalypse schickt, in der er möglichst lange den Zombies ausweichen muß.
+Die Idee zum heutigen Beispiel habe ich schamlos bei *[David Bouchard](https://www.youtube.com/@davidbouchard)* geklaut, der in seiner Einführung in [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) (einer Spielebibliothek zu [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) in den beiden Videos [Sprites Animation](https://www.youtube.com/watch?v=eDpTtxFhP2s) und [Game States](https://www.youtube.com/watch?v=6Vqpf_vLsH0) den Spieler in eine Zombie-Apocalypse schickt, in der er möglichst lange den Zombies ausweichen muß.
 
-Für meine Version dieses Spiels hatte ich mir die freien ([CC0](https://itch.io/game-assets/assets-cc0)) Sprites und Tiles des [Dungein Tileset II](https://0x72.itch.io/dungeontileset-ii) des Users [0x72](https://0x72.itch.io/) ausgesucht, denn dort gab es nicht nur Zombies, sondern auch Halloween-Kürbisse als animierte Sprites. Und so wurde aus der *Zombie Apokalypse* kurzerhand die **Pumpkin Apokalypse**. Das Spieleprinzip ist jedoch (wenn auch stark vereinfacht) das gleiche geblieben:
+Für meine Version dieses Spiels hatte ich mir die freien ([CC0](https://itch.io/game-assets/assets-cc0)) Sprites und Tiles des [Dungeon Tileset II](https://0x72.itch.io/dungeontileset-ii) des Users [0x72](https://0x72.itch.io/) ausgesucht, denn dort gab es nicht nur Zombies, sondern auch Halloween-Kürbisse als animierte Sprites. Und so wurde aus der *Zombie Apokalypse* kurzerhand die **Pumpkin Apokalypse**. Das Spieleprinzip ist jedoch (wenn auch stark vereinfacht) das gleiche geblieben:
 
-Der Spieler kann mit den Pfeiltasten in alle vier Himmelsrichtungen bewegt werden und muß den bösen Halloween-Kürbissen ausweichen, von denen alle drei Sekunden ein neuer das Spielfeld betritt. Die Kürbisse bewegen sich zwar etwas langsamer als der Spieler und können sich auch nur horizontal in einer Richtung bewegen, da sie jedoch immer mehr werden, ist eine Kollision irgendwann unvermeidlich. Sobald der Spieler mit einem Kürbis kollidiert, beginnt das Spiel von vorne.
+Der Spieler kann mit den Pfeiltasten in alle vier Himmelsrichtungen bewegt werden und muß den bösen Halloween-Kürbissen ausweichen, von denen alle drei Sekunden ein neuer das Spielfeld betritt. Die Kürbisse bewegen sich zwar etwas langsamer als der Spieler und können jeweils auch nur horizontal in eine Richtung laufen, da sie jedoch immer mehr werden, ist eine Kollision irgendwann unvermeidlich. Sobald der Spieler mit einem Kürbis kollidiert, beginnt das Spiel von vorne.
 
 <iframe src="roguelike02/index.html" class="if16_9" name="Pumpkin Apokalypse"></iframe>
 
@@ -79,7 +79,7 @@ draw = function()
 
 kann der Spieler auf dem Spielfeld mit den Pfeiltasten bewegt werden.
 
-Daher ist es nun Zeit, die Kürbisse einzuführen. Auch sie sind eine eigene Klasse,
+Daher ist es nun Zeit, die Kürbisse einzuführen. Auch sie haben eine eigene Klasse bekommen,
 
 ~~~lua
 Pumpkin = class
@@ -117,7 +117,7 @@ der ich neben der Methode `move()` auch noch die Methode `show()` spendiert habe
 
 Da sie während des Spiels successive eingeführt, können sie nicht in der `init()`-Funktion initialisiert werden, sondern materialisieren sich erst in der `update()-Funktion zu Objekten (oder »Instanzen« der Klasse).
 
-Dafür habe ich in `init()` mit `timer = 0` erst einmal einen Timer erzeugt, den ich in `update()` hochzähle. Alle drei Sekunden (`timer == 180`) erstelle ich dann einen neuen Pumpkin und setze (un der Funktion `createPumpkin()`) den Timer zurück:
+Dafür habe ich in `init()` mit `timer = 0` erst einmal einen Timer erzeugt, den ich in `update()` hochzähle. Alle drei Sekunden (`timer == 180`) erstelle ich dann einen neuen Pumpkin und setze (in der Funktion `createPumpkin()`) den Timer zurück:
 
 ~~~lua
   timer += 1
@@ -153,7 +153,7 @@ Die schon ins Leben gerufenen Kürbisse werden in `update()` bewegt
 
 und auf Kollision mit dem Player überprüft. Dafür setze ich mit `distance()` eine weitere Funktion aus der games-prog library v.02 ein.
 
-Das Zeichnen der einzelnen Kürbisse ist dank der `show()`-Methode der Klasse `Pumkin` wieder sehr einfach:
+Das Zeichnen der einzelnen Kürbisse ist dank der `show()`-Methode der Klasse `Pumpkin` wieder sehr einfach:
 
 ~~~lua
   for p in pumpkins
