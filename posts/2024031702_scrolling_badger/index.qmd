@@ -1,0 +1,96 @@
+---
+title: "MicroStudio Tutorial 3: (Endless) Scrolling Badger"
+author: "Jörg Kantel"
+date: "2024-03-17 19:10:00"
+categories: [microStudio, Spieleprogrammierung]
+image: "images/scrollingbadger.jpg"
+---
+
+[![](images/scrollingbadger-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53592592647/)
+
+Bei einem meiner [ersten Schritte](https://kantel.github.io/posts/2024022001_microstudio_1st_steps/) mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) hatte ich einen Dachs in einem Ballon majestätisch über einen Wüstenhimmel schweben lassen. Da dieser Wüstenhimmel endlich war (ich hatte ihn von [Scenario](https://www.flickr.com/photos/schockwellenreiter/53537297945/) erstellen lassen), mußte der Dachs, wenn er das rechte Ende des Bildschirmfensters erreicht hatte, einen Hüpfer machen, um am linken Ende des Fensters wieder erscheinen zu können.
+
+Das geht natürlich besser: Die Lösung heißt »endlos« scrollender Background. Natürlich ist der Hintergrund real nicht wirklich endlos, sondern er ist nur ein sehr breites Bild, dessen Enden so gestaltet sind, daß sie nahtlos wieder ineinander übergehen.
+
+Programmtechnisch wird das so realisiert: Das Bild des *Actors* -- also in diesem Fall des Dachses -- verharrt immer an der gleichen x-Position, während das Bild des Hintergrunds an ihm vorbeischwebt. Der Hintergrund besteht in diesem Fall aus zwei verschiedenen Bildern, die nahtlos ineinander übergehen. Hat das erste Bild das Ende des Fensters erreicht, klebt das zweite Bild daran und zieht an dem Dachs vorbei. Und das erste Bild wird wieder rechts außen an das zweite Bild angehängt. Und dieser Vorgang wird wieder und wieder wiederholt.
+
+<iframe src="scrollingbadger/index.html" class="if16_9" name="Scrolling Badger"></iframe>
+
+In meinem Beispielscript gleitet der Dachs eingemummelt in seinem roten Morgenmantel über eine phantastische Winterlandschaft, die aus den oben genannten zwei Bildern zusammengesetzt ist (eigentlich sind es keine zwei wirklich unterschiedlichen Bilder, sondern das zweite Bild ist einfach eine mit ein paar zusätzlichen Accessoires aufgepeppte Version des ersten Bildes). Diese Bilder hat der User *rubberduck* auf [OpenGameArt.org hochgeladen](https://opengameart.org/content/another-background-made-from-glitch-assets) und unter der [CC0-Lizenz](http://creativecommons.org/publicdomain/zero/1.0/) freigegeben.
+
+Das Script besteht aus drei Dateien. Zuerst die Datei mit der Klasse des Dachses, die sehr übersichtlich geraten ist:
+
+~~~lua
+Badger = class
+  
+  constructor = function()
+    this.x = -100
+    this.y = 30
+    this.w = 42
+    this.h = 75
+    this.im = "badger"
+  end  
+end
+~~~
+
+Das Bild des Dachses hatte ich ebenfalls mit Scenario erzeugt und mit [Rembg](https://github.com/danielgatis/rembg) vom Hintergrund freigestellt. Da die KI von Rembg bei der Freistellung von nichtmenschlichen Akteuren ihre Schwierigkeiten hat, mußte ich das Ergebnis noch in der [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) nachbearbeiten. Da ich kein Pixelartist bin, ist das, was dabei herausgekommen ist, sicher noch verbesserungsfähig, aber für dieses Beispiel reichte es mir.
+
+Die Klasse mit dem Bildhintergrund besitzt neben dem Konstruktor noch die Methoden `move()` und `show()`, aber auch sie ist dennoch vergleichsweise kurz geraten:
+
+~~~lua
+Background = class
+  
+  constructor = function(_x, _y, _im)
+    this.x = _x
+    this.y = _y
+    this.w = 1024
+    this.h = 260
+    this.speed = -0.25
+    this.im = _im
+  end
+  
+  move = function()
+    x += speed
+    if x <= -w then
+      x = w
+    end
+  end
+  
+  show = function()
+    screen.drawSprite(im, x, y, w, h)
+  end
+end
+~~~
+
+Dem Konstruktur werden als Parameter die x- und y-werte der Startposition und der Name des jeweiligen Sprites mitgegeben, die `move()`-Methode sorgt neben dem eigentlichen Scrollen des Bildes dafür, daß es anschließend wieder an das gegenüberliegende Ende angehängt wird, und die `show()`-Methode zeigt einfach nur das Bild an.
+
+Da im Script nun wirklich nicht viel passiert, ist auch das Hauptprogramm von erfrischender Kürze:
+
+~~~lua
+bgs = []
+
+init = function()
+  b = new Badger()
+  bgs[0] = new Background(128, -20, "bg1")
+  bgs[1] = new Background(1152, -20, "bg2")
+end
+
+update = function()
+  for bg in bgs
+    bg.move()
+  end
+end
+
+draw = function()
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(100, 160, 160)")
+  for bg in bgs
+    bg.show()
+  end
+  screen.drawSprite(b.im, b.x, b.y, b.w, b.h)
+end
+~~~
+
+Die beiden Objekte der Hintergrundbilder werden in einer Liste abgelegt (das spart jeweils eine Zeile in der `update()`- und in der `draw()`-Funktion). Ein wenig Gehirnschmalz haben mir die Startpositionen der Bilder abverlangt: Sie sind jeweils 1024 Pixel breit, da der Nullpunkt des Koordinatensystems in der Mitte des Bildschirmfensters liegt, ist der Startwert des ersten Bildes `x = 128` (1024/4) und der Startwert des zweiten Bildes `x = 1152` (1024 + 128). Den Wert von `y = -20` habe ich durch Versuche ermittelt, da das Bild mit seiner Höhe von 260 Pixeln etwas größer ist als die Bildschirmfensterhöhe von 200 Pixeln und ich wollte einfach einen möglichst schönen Ausschnitt haben.
+
+Auch dieses Tutorial habe ich wieder auf den [Seiten von microStudio veröffentlicht](https://microstudio.dev/projects/scrollingbadger/code/), damit Ihr es klonen, erweitern oder einfach nur damit herumspielen könnt. Denn das Ziel dieser kleinen Tutorial-Reihe ist ja, daß nicht nur ich, sondern auch Ihr microStudio lernt.

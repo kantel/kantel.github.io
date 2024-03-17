@@ -10,7 +10,546 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sun, 17 Mar 2024 14:10:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 17 Mar 2024 18:10:00 GMT</lastBuildDate>
+<item>
+  <title>MicroStudio Tutorial 3: (Endless) Scrolling Badger</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024031702_scrolling_badger/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53592592647/"><img src="https://kantel.github.io/posts/2024031702_scrolling_badger/images/scrollingbadger-b.jpg" class="img-fluid"></a></p>
+<p>Bei einem meiner <a href="https://kantel.github.io/posts/2024022001_microstudio_1st_steps/">ersten Schritte</a> mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> hatte ich einen Dachs in einem Ballon majestätisch über einen Wüstenhimmel schweben lassen. Da dieser Wüstenhimmel endlich war (ich hatte ihn von <a href="https://www.flickr.com/photos/schockwellenreiter/53537297945/">Scenario</a> erstellen lassen), mußte der Dachs, wenn er das rechte Ende des Bildschirmfensters erreicht hatte, einen Hüpfer machen, um am linken Ende des Fensters wieder erscheinen zu können.</p>
+<p>Das geht natürlich besser: Die Lösung heißt »endlos« scrollender Background. Natürlich ist der Hintergrund real nicht wirklich endlos, sondern er ist nur ein sehr breites Bild, dessen Enden so gestaltet sind, daß sie nahtlos wieder ineinander übergehen.</p>
+<p>Programmtechnisch wird das so realisiert: Das Bild des <em>Actors</em> – also in diesem Fall des Dachses – verharrt immer an der gleichen x-Position, während das Bild des Hintergrunds an ihm vorbeischwebt. Der Hintergrund besteht in diesem Fall aus zwei verschiedenen Bildern, die nahtlos ineinander übergehen. Hat das erste Bild das Ende des Fensters erreicht, klebt das zweite Bild daran und zieht an dem Dachs vorbei. Und das erste Bild wird wieder rechts außen an das zweite Bild angehängt. Und dieser Vorgang wird wieder und wieder wiederholt.</p>
+<iframe src="scrollingbadger/index.html" class="if16_9" name="Scrolling Badger">
+</iframe>
+<p>In meinem Beispielscript gleitet der Dachs eingemummelt in seinem roten Morgenmantel über eine phantastische Winterlandschaft, die aus den oben genannten zwei Bildern zusammengesetzt ist (eigentlich sind es keine zwei wirklich unterschiedlichen Bilder, sondern das zweite Bild ist einfach eine mit ein paar zusätzlichen Accessoires aufgepeppte Version des ersten Bildes). Diese Bilder hat der User <em>rubberduck</em> auf <a href="https://opengameart.org/content/another-background-made-from-glitch-assets">OpenGameArt.org hochgeladen</a> und unter der <a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0-Lizenz</a> freigegeben.</p>
+<p>Das Script besteht aus drei Dateien. Zuerst die Datei mit der Klasse des Dachses, die sehr übersichtlich geraten ist:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb1-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Badger</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">class</span></span>
+<span id="cb1-2">  </span>
+<span id="cb1-3">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">constructor</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span></span>
+<span id="cb1-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span id="cb1-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span></span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">h</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75</span></span>
+<span id="cb1-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">im</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"badger"</span></span>
+<span id="cb1-9">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span>  </span>
+<span id="cb1-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span></code></pre></div>
+<p>Das Bild des Dachses hatte ich ebenfalls mit Scenario erzeugt und mit <a href="https://github.com/danielgatis/rembg">Rembg</a> vom Hintergrund freigestellt. Da die KI von Rembg bei der Freistellung von nichtmenschlichen Akteuren ihre Schwierigkeiten hat, mußte ich das Ergebnis noch in der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html">Bildverarbeitung meines Vertrauens</a> nachbearbeiten. Da ich kein Pixelartist bin, ist das, was dabei herausgekommen ist, sicher noch verbesserungsfähig, aber für dieses Beispiel reichte es mir.</p>
+<p>Die Klasse mit dem Bildhintergrund besitzt neben dem Konstruktor noch die Methoden <code>move()</code> und <code>show()</code>, aber auch sie ist dennoch vergleichsweise kurz geraten:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb2-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Background</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">class</span></span>
+<span id="cb2-2">  </span>
+<span id="cb2-3">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">constructor</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">_x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">_y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">_im</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb2-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">_x</span></span>
+<span id="cb2-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">_y</span></span>
+<span id="cb2-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1024</span></span>
+<span id="cb2-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">h</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">260</span></span>
+<span id="cb2-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span></span>
+<span id="cb2-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">im</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">_im</span></span>
+<span id="cb2-10">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb2-11">  </span>
+<span id="cb2-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">move</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb2-13">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">speed</span></span>
+<span id="cb2-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">then</span></span>
+<span id="cb2-15">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span></span>
+<span id="cb2-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb2-17">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb2-18">  </span>
+<span id="cb2-19">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">show</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb2-20">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>drawSprite<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">im</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">h</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb2-21">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb2-22"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span></code></pre></div>
+<p>Dem Konstruktur werden als Parameter die x- und y-werte der Startposition und der Name des jeweiligen Sprites mitgegeben, die <code>move()</code>-Methode sorgt neben dem eigentlichen Scrollen des Bildes dafür, daß es anschließend wieder an das gegenüberliegende Ende angehängt wird, und die <code>show()</code>-Methode zeigt einfach nur das Bild an.</p>
+<p>Da im Script nun wirklich nicht viel passiert, ist auch das Hauptprogramm von erfrischender Kürze:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb3-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bgs</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[]</span></span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">init</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-4">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">new</span> Badger<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-5">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bgs</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">new</span> Background<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">128</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bg1"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-6">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bgs</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">new</span> Background<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1152</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bg2"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">update</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-10">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bg</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bgs</span></span>
+<span id="cb3-11">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bg</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>move<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-13"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-14"></span>
+<span id="cb3-15"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">draw</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-16">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>clear<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-17">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>fillRect<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">width</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">height</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(100, 160, 160)"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-18">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bg</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bgs</span></span>
+<span id="cb3-19">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">bg</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>show<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-20">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span>
+<span id="cb3-21">  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">screen</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>drawSprite<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">im</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">h</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-22"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">end</span></span></code></pre></div>
+<p>Die beiden Objekte der Hintergrundbilder werden in einer Liste abgelegt (das spart jeweils eine Zeile in der <code>update()</code>- und in der <code>draw()</code>-Funktion). Ein wenig Gehirnschmalz haben mir die Startpositionen der Bilder abverlangt: Sie sind jeweils 1024 Pixel breit, da der Nullpunkt des Koordinatensystems in der Mitte des Bildschirmfensters liegt, ist der Startwert des ersten Bildes <code>x = 128</code> (1024/4) und der Startwert des zweiten Bildes <code>x = 1152</code> (1024 + 128). Den Wert von <code>y = -20</code> habe ich durch Versuche ermittelt, da das Bild mit seiner Höhe von 260 Pixeln etwas größer ist als die Bildschirmfensterhöhe von 200 Pixeln und ich wollte einfach einen möglichst schönen Ausschnitt haben.</p>
+<p>Auch dieses Tutorial habe ich wieder auf den <a href="https://microstudio.dev/projects/scrollingbadger/code/">Seiten von microStudio veröffentlicht</a>, damit Ihr es klonen, erweitern oder einfach nur damit herumspielen könnt. Denn das Ziel dieser kleinen Tutorial-Reihe ist ja, daß nicht nur ich, sondern auch Ihr microStudio lernt.</p>
+
+
+
+ ]]></description>
+  <category>microStudio</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024031702_scrolling_badger/</guid>
+  <pubDate>Sun, 17 Mar 2024 18:10:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024031702_scrolling_badger/images/scrollingbadger.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neuköllner Bilderbogen: Frühlingserwachen</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4285,30 +4824,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024030601_security_alert_ios/</guid>
   <pubDate>Wed, 06 Mar 2024 14:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024030601_security_alert_ios/images/apples03.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Ren’Py 8.2.1 und Ren’Py 7.7.1 wurden gestern veröffentlicht</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024030503_renpy_8_2_1/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53568794647/"><img src="https://kantel.github.io/posts/2024030503_renpy_8_2_1/images/renpy821-b.jpg" class="img-fluid"></a></p>
-<p>Eine erfreuliche Nachricht war heute auch unter den vielen Update-Meldungen: Von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, der Engine für <em>Visual Novels</em>, interaktive Geschichten und mehr, wurde gestern die <a href="https://www.renpy.org/release/8.2.1">Version 8.2.1 freigegeben</a> (und für die, die wegen einem darunterliegenden Python 2.x nicht auf Ren’Py 8 wechseln können, auch die <a href="https://www.renpy.org/release/7.7.1">Version 7.7.1</a>). Darüber habe ich mich so gefreut, daß ich das Update gleich bei mir installieren und damit ein wenig an meiner »<a href="https://kantel.github.io/posts/2024020401_renpy_scenario/">Räuberpistole</a>« mit Bildern aus <a href="https://app.scenario.com/">Scenario</a> basteln mußte. Heraus ist zwar noch nichts gekommen, daß für eine <a href="https://kantel.github.io/posts/2024020501_berlinattack_itch/">Veröffentlichung</a>, aber wenigstens etwas, das für obigen <a href="https://www.flickr.com/photos/schockwellenreiter/53568794647/">Screenshot</a> taugt. Es geht also voran.</p>
-<p>Beide Updates sind ein erstes Bugfix-Update (ohne neue Features) der jeweiligen Nuller-Version (v8.2.0 respektive v.7.7.0). Eine vollständige Liste aller Änderungen findet Ihr wie immer im <a href="https://www.renpy.org/doc/html/changelog.html#renpy-8-2-1">Changelog</a>. Zusätzlich gibt es aucb eine <a href="https://www.renpy.org/doc/html/incompatible.html">Liste der inkompatiblen Änderungen</a>, die unter Umständen ein Update in Eurem Quellcode verlangen.</p>
-<p>Und im Mai dieses Jahres soll der Support für Ren’Py 7 und Python 2 endgültig auslaufen. Bis dahin solltet Ihr also Eure Anwendungen Python-3-fest gemacht haben.</p>
-
-
-
- ]]></description>
-  <category>RenPy</category>
-  <category>Spieleprogrammierung</category>
-  <category>Interactive Fiction</category>
-  <guid>https://kantel.github.io/posts/2024030503_renpy_8_2_1/</guid>
-  <pubDate>Tue, 05 Mar 2024 19:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024030503_renpy_8_2_1/images/renpy821.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

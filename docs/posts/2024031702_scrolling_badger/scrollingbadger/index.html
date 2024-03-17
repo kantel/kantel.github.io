@@ -1,0 +1,137 @@
+<!DOCTYPE html><html><head><title>Scrolling Badger</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"badger.png","version":1,"size":65748,"properties":{}},{"file":"bg1.png","version":1,"size":404507,"properties":{}},{"file":"bg2.png","version":1,"size":426861,"properties":{}},{"file":"desert.png","version":1,"size":123875,"properties":{}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":205575,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="compiler.js"></script><script src="parser.js"></script><script src="processor.js"></script><script src="program.js"></script><script src="routine.js"></script><script src="runner.js"></script><script src="token.js"></script><script src="tokenizer.js"></script><script src="transpiler.js"></script><script src="microengine.js"></script></body><script type="text/javascript">//
+//
+// The game is started with the code below.
+// Once you have received the "started" signal (see below),
+// you can do the following:
+// 1) Inject functions or objects into the global context of the microStudio engine, example:
+//
+//   window.player.setGlobal("special_callback",function(x) { console.info(x) }) ;
+//   // Your microScript code can now call the "special_callback" function
+//
+// 2) Call microScript global functions from your JavaScript code, example:
+//
+//   window.player.call("call_me_from_javascript",[10,1000]) ;
+//   // arguments to the function call are provided as an array
+//
+// 3) Run a microScript code snippet from your JavaScript code, example:
+//
+//   window.player.exec("player.position_x = 50",function(result) { console.log(result) ; }) ;
+//
+
+window.addEventListener("load",function() {
+  window.player = new Player(function(event) {
+    if (event.name == "started") {
+      // signal that the game is started
+    }
+    else if (event.name == "log") {
+      // console.info(event.data) ;
+    }
+  }) ;
+  document.body.focus() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+
+function()
+Background = class
+  
+  constructor = function(_x, _y, _im)
+    this.x = _x
+    this.y = _y
+    this.w = 1024
+    this.h = 260
+    this.speed = -0.25
+    this.im = _im
+  end
+  
+  move = function()
+    x += speed
+    if x <= -w then
+      x = w
+    end
+  end
+  
+  show = function()
+    screen.drawSprite(im, x, y, w, h)
+  end
+  
+end
+
+end()
+
+
+
+function()
+Badger = class
+  
+  constructor = function()
+    this.x = -100
+    this.y = 30
+    this.w = 42
+    this.h = 75
+    this.im = "badger"
+  end
+  
+end
+
+end()
+
+
+
+function()
+bgs = []
+
+init = function()
+  b = new Badger()
+  bgs[0] = new Background(128, -20, "bg1")
+  bgs[1] = new Background(1152, -20, "bg2")
+  // bgs[0] = new Background(208, 0)
+  // bgs[1] = new Background(1040, 0)
+end
+
+update = function()
+  for bg in bgs
+    bg.move()
+  end
+end
+
+draw = function()
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(100, 160, 160)")
+  for bg in bgs
+    bg.show()
+  end
+  screen.drawSprite(b.im, b.x, b.y, b.w, b.h)
+end
+end()
+
+
+</script></html>
