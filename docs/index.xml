@@ -10,7 +10,172 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 20 Mar 2024 14:50:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 20 Mar 2024 19:15:00 GMT</lastBuildDate>
+<item>
+  <title>Retrogaming mit Python: Erste Schritte mit Pyxel</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024032002_first_steps_pyxel/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53600288424/"><img src="https://kantel.github.io/posts/2024032002_first_steps_pyxel/images/pyxelfirststeps-b.jpg" class="img-fluid"></a></p>
+<p><a href="http://blog.schockwellenreiter.de/2018/08/2018080802.html">Vor Jahren</a> hatte ich <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a>, die kleine von PICO-8 und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> inspirierte Fantasiekonsole schon <a href="http://blog.schockwellenreiter.de/2021/10/2021102202.html">einmal auf dem Schirm</a>. Sie klang sehr vielversprechend, denn sie versprach Retrogaming mit Python&nbsp;3. Dennoch hatte ich die Beschäftigung damit schnell wieder aufgegeben, den die damalige Version Pyxel 1.7.1 wollte ums Verrecken nicht <a href="http://blog.schockwellenreiter.de/2022/07/2022071102.html">mit meinem Mac zusammenspielen</a>.</p>
+<p>Das Problem scheint erst mit Pyxel 1.9.0 im Oktober letzten Jahres gefixt worden zu sein, und als jetzt die Meldung eines <a href="https://github.com/kitao/pyxel/releases/tag/v2.0.9">Updates auf Pyxel 2.0.9</a> in meinen Feedreader schneite, wollte ich dem Teil noch einmal eine Chance geben. Denn dadurch, daß Pyxel zum einen dafür geschaffen wurde, Spiele im Retrogaming-Look zu entwickeln, zum anderen aber Zugriff auf das gesamte Python&nbsp;3-Ökosystem zuläßt, ist es für mein (momentan leider etwas eingeschlafenes) Projekt »<a href="http://blog.schockwellenreiter.de/2022/04/2022041401.html">Retrogaming und Künstliche Intelligenz</a>« geradezu prädestiniert (besser jedenfalls als das damals dafür von mir angedachte <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html">Pygame Zero</a>).</p>
+<p>Und was soll ich sagen? Nachdem ich noch vorhandene Reste des damals installierten Pyxel 1.7.1 händisch von meiner Festplatte gelöscht hatte, lief das neue Pyxel 2.0.9 sowohl in meiner <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a>-, wie auch in meiner <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html">Anaconda-Python</a>-Umgebung wie geschmiert (für beide Umgebungen brauchte ich natürlich jeweils eine eigene, seaparate Installation).</p>
+<p>Ein wenig gewöhnungsbedürftig ist lediglich der Aufruf des Ressourceneditors. Momentan bewege ich mich im Terminal in das Projektverzeichnis, um dann dort – ebenfalls im Terminal – den Editor mit <code>pyxel edit &lt;dateiname&gt;</code> zu starten. Also zum Beispiel:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> /Users/admin/git/pyxel/gettingstarted/assets</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pyxel</span> edit firststep</span></code></pre></div>
+<p>Dadurch habe ich sichergestellt, daß die Ressourcendatei auch immer da liegt, wo ich sie benötige, um sie in die Python-Datei einzubinden.</p>
+<p>Mit dem folgenden, kleinen Skript habe ich meine Pyxel-Installation dann (mit Thonny) getestet:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pyxel</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> App:</span>
+<span id="cb2-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-5">        pyxel.init(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"First Steps with Pyxel"</span>, display_scale <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb2-6">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pyxel.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-7">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-8"></span>
+<span id="cb2-9">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#Read resource file</span></span>
+<span id="cb2-10">        pyxel.load(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/firststep.pyxres"</span>)</span>
+<span id="cb2-11">        </span>
+<span id="cb2-12">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-13">        pyxel.run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.update, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.draw)</span>
+<span id="cb2-14"></span>
+<span id="cb2-15">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-16">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> pyxel.width</span>
+<span id="cb2-17"></span>
+<span id="cb2-18">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-19">        pyxel.cls(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb2-20">        pyxel.blt(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, pyxel.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb2-21"></span>
+<span id="cb2-22">App().run()</span></code></pre></div>
+<p>Doch wartet, es kommt noch besser: Denn seit der Version 1.8.0 kann Pyxel (mit Hilfe von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html">Pyodide</a>) auch Web: Pyxel-Skripte lassen sich <a href="https://tkitao.hatenablog.com/entry/2022/10/08/174438">im Browser ausführen</a>. Zwar nur hinter einen Webserver (vermutlich, weil die Ressourcen-Datei geladen werden muß), aber cool ist es auf jeden Fall:</p>
+<iframe src="pyxel/index.html" class="if16_9" name="Pyxel First Steps">
+</iframe>
+<p>Momentan lade ich die Pyxel-JavaScript-Datei noch mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb3-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>von einem <em>Content Delivery Network</em> (CDN), ob ich sie auch herunterladen und lokal auf meinem (GitHub Pages) Server installieren kann, muß ich noch herausbekommen. Jedenfalls ist das, was da oben über den Billdschirm wuselt, nicht nur mein erster Versuch mit Pyxel, sondern auch mein erster Versuch mit Pyxel im Browser.</p>
+<p>Das alles eröffnet natürlich ein Füllhorn neuer Möglichkeiten. Ich muß nur aufpassen, nicht völlig in Euphorie zu verfallen, denn ich habe Pyxel erst seit wenigen Stunden im Test. Ex können also immer noch Show-Stopper auftauchen. Aber dafür muß ich meine heute begonnenen Experimente fortsetzen. Und ich bin zum einen zuversichtlich, daß Pyxel hält, was es verspricht, und zum anderen fröhlich, weil ich zu tun habe. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Pyxel</category>
+  <category>Python</category>
+  <category>Retrogaming</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024032002_first_steps_pyxel/</guid>
+  <pubDate>Wed, 20 Mar 2024 19:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024032002_first_steps_pyxel/images/pyxelfirststeps.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google korrigiert mit der Version 123 seines Browsers Chrome kritische Sicherheitslücken</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4768,44 +4933,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024030901_jumping_engineer/</guid>
   <pubDate>Sat, 09 Mar 2024 15:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024030901_jumping_engineer/images/jumpingengineer.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Apple-Updates</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024030801_apple_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53570374222/"><img src="https://kantel.github.io/posts/2024030801_apple_update/images/apple01-b.jpg" class="img-fluid"></a></p>
-<p>Nach dem Notfall-Updates für die mobilen Geräte <a href="https://kantel.github.io/posts/2024030601_security_alert_ios/">Mitte der Woche</a> hat Apple nun die regulären, monatlichen Updates für die anderen, noch unterstützten Betriebssysteme nachgeschoben. Wie gewohnt werde ich sie alle <em>en bloc</em> abhandeln:</p>
-<section id="apple-veröffentlicht-macos-sonoma-14.4" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-macos-sonoma-14.4">Apple veröffentlicht macOS Sonoma 14.4</h3>
-<p>Apple hat das Update auf die neue Betriebssystemversion macOS Sonoma 14.4 freigegeben, bietet Leistungsverbesserungen und korrigiert auch wieder <a href="https://support.apple.com/de-de/HT214084">Sicherheitsprobleme</a>.</p>
-<p>Das Update steht über die Systemeinstellungen zur Verfügung.</p>
-</section>
-<section id="apple-veröffentlicht-sicherheitsupdate-für-macos-ventura-und-monterey" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-sicherheitsupdate-für-macos-ventura-und-monterey">Apple veröffentlicht Sicherheitsupdate für macOS Ventura und Monterey</h3>
-<p>Apple hat auch das Sicherheitsupdate auf <a href="https://support.apple.com/de-de/HT214085">macOS Ventura 13.6.5</a> und <a href="https://support.apple.com/de-de/HT214083">macOS Monterey 12.7.4</a> freigegeben.</p>
-<p>Die Updates stehen wie üblich über die Softwareaktualisierung bereit.</p>
-</section>
-<section id="apple-veröffentlicht-watchos-10.4" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-watchos-10.4">Apple veröffentlicht watchOS 10.4</h3>
-<p>Und <em>last but not least</em> die Uhr: Apple hat für die Apple Watch watchOS 10.4 bereitgestellt und behebt damit auch wieder <a href="https://support.apple.com/de-de/HT214088">Sicherheitsprobleme</a>.</p>
-<p>Die Aktualisierung wird über die Apple-Watch-App auf dem iPhone gestartet unter <code>Allgemein &gt; Softwareupdate</code>. Dabei sollte sich die Uhr in Reichweite des iPhones befinden, mit dem Ladekabel verbunden und mindestens zu 50 Prozent geladen sein.</p>
-<p><em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53570374222/">Snow White and the Big Apple</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>The evil witch gives Snow White a half-eaten apple in the fairytale forest</em>«. Modell: Stable Diffusion XL, Style: Hyper-Realistic Digital Watercolor + Vibrant Storybook.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024030801_apple_update/</guid>
-  <pubDate>Fri, 08 Mar 2024 14:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024030801_apple_update/images/apple01.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

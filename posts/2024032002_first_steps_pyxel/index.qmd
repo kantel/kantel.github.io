@@ -1,0 +1,65 @@
+---
+title: "Retrogaming mit Python: Erste Schritte mit Pyxel"
+author: "Jörg Kantel"
+date: "2024-03-20 20:15:00"
+categories: [Pyxel, Python, Retrogaming, Spieleprogrammierung]
+image: "images/pyxelfirststeps.jpg"
+---
+
+[![](images/pyxelfirststeps-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53600288424/)
+
+[Vor Jahren](http://blog.schockwellenreiter.de/2018/08/2018080802.html) hatte ich [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html), die kleine von PICO-8 und [TIC-80](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html) inspirierte Fantasiekonsole schon [einmal auf dem Schirm](http://blog.schockwellenreiter.de/2021/10/2021102202.html). Sie klang sehr vielversprechend, denn sie versprach Retrogaming mit Python&nbsp;3. Dennoch hatte ich die Beschäftigung damit schnell wieder aufgegeben, den die damalige Version Pyxel 1.7.1 wollte ums Verrecken nicht [mit meinem Mac zusammenspielen](http://blog.schockwellenreiter.de/2022/07/2022071102.html).
+
+Das Problem scheint erst mit Pyxel 1.9.0 im Oktober letzten Jahres gefixt worden zu sein, und als jetzt die Meldung eines [Updates auf Pyxel 2.0.9](https://github.com/kitao/pyxel/releases/tag/v2.0.9) in meinen Feedreader schneite, wollte ich dem Teil noch einmal eine Chance geben. Denn dadurch, daß Pyxel zum einen dafür geschaffen wurde, Spiele im Retrogaming-Look zu entwickeln, zum anderen aber Zugriff auf das gesamte Python&nbsp;3-Ökosystem zuläßt, ist es für mein (momentan leider etwas eingeschlafenes) Projekt »[Retrogaming und Künstliche Intelligenz](http://blog.schockwellenreiter.de/2022/04/2022041401.html)« geradezu prädestiniert (besser jedenfalls als das damals dafür von mir angedachte [Pygame Zero](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html)).
+
+Und was soll ich sagen? Nachdem ich noch vorhandene Reste des damals installierten Pyxel 1.7.1 händisch von meiner Festplatte gelöscht hatte, lief das neue Pyxel 2.0.9 sowohl in meiner [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html)-, wie auch in meiner [Anaconda-Python](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html)-Umgebung wie geschmiert (für beide Umgebungen brauchte ich natürlich jeweils eine eigene, seaparate Installation).
+
+Ein wenig gewöhnungsbedürftig ist lediglich der Aufruf des Ressourceneditors. Momentan bewege ich mich im Terminal in das Projektverzeichnis, um dann dort -- ebenfalls im Terminal -- den Editor mit `pyxel edit <dateiname>` zu starten. Also zum Beispiel:
+
+~~~bash
+cd /Users/admin/git/pyxel/gettingstarted/assets
+pyxel edit firststep
+~~~
+
+Dadurch habe ich sichergestellt, daß die Ressourcendatei auch immer da liegt, wo ich sie benötige, um sie in die Python-Datei einzubinden.
+
+Mit dem folgenden, kleinen Skript habe ich meine Pyxel-Installation dann (mit Thonny) getestet:
+
+~~~python
+import pyxel
+
+class App:
+    def __init__(self):
+        pyxel.init(100, 40, "First Steps with Pyxel", display_scale = 5)
+        self.x = pyxel.width/2
+        self.speed = 1
+
+        #Read resource file
+        pyxel.load("assets/firststep.pyxres")
+        
+    def run(self):
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        self.x = (self.x + self.speed) % pyxel.width
+
+    def draw(self):
+        pyxel.cls(0)
+        pyxel.blt(self.x, pyxel.height/2, 0, 0, 0, 8, 8, 0)
+
+App().run()
+~~~
+
+Doch wartet, es kommt noch besser: Denn seit der Version 1.8.0 kann Pyxel (mit Hilfe von [Pyodide](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html)) auch Web: Pyxel-Skripte lassen sich [im Browser ausführen](https://tkitao.hatenablog.com/entry/2022/10/08/174438). Zwar nur hinter einen Webserver (vermutlich, weil die Ressourcen-Datei geladen werden muß), aber cool ist es auf jeden Fall:
+
+<iframe src="pyxel/index.html" class="if16_9" name="Pyxel First Steps"></iframe>
+
+Momentan lade ich die Pyxel-JavaScript-Datei noch mit
+
+~~~html
+<script src="https://cdn.jsdelivr.net/gh/kitao/pyxel/wasm/pyxel.js"></script>
+~~~
+
+von einem *Content Delivery Network* (CDN), ob ich sie auch herunterladen und lokal auf meinem (GitHub Pages) Server installieren kann, muß ich noch herausbekommen. Jedenfalls ist das, was da oben über den Billdschirm wuselt, nicht nur mein erster Versuch mit Pyxel, sondern auch mein erster Versuch mit Pyxel im Browser.
+
+Das alles eröffnet natürlich ein Füllhorn neuer Möglichkeiten. Ich muß nur aufpassen, nicht völlig in Euphorie zu verfallen, denn ich habe Pyxel erst seit wenigen Stunden im Test. Ex können also immer noch Show-Stopper auftauchen. Aber dafür muß ich meine heute begonnenen Experimente fortsetzen. Und ich bin zum einen zuversichtlich, daß Pyxel hält, was es verspricht, und zum anderen fröhlich, weil ich zu tun habe. *Still digging!*
