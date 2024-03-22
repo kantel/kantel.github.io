@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><title>Python Tutorial 1</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"idle_down.png","version":1,"size":6395,"properties":{}},{"file":"idle_left.png","version":4,"size":3153,"properties":{"frames":1,"fps":5}},{"file":"idle_right.png","version":1,"size":4894,"properties":{}},{"file":"idle_up.png","version":1,"size":5084,"properties":{}},{"file":"poster.png","version":1,"size":8118,"properties":{"frames":1,"fps":5}},{"file":"walking_left.png","version":2,"size":6087,"properties":{"frames":2,"fps":5}},{"file":"walking_right.png","version":2,"size":6067,"properties":{"frames":2,"fps":5}},{"file":"walking_up.png","version":4,"size":5837,"properties":{"frames":2,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+class Player:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 50
+    self.h = 50
+    self.im = "idle_down"
+    self.dir = "down"
+    self.speed = 1
+    
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+gboy = Player()
+
+def init():
+  pass
+
+def update():
+  if check_input(keyboard, "LEFT"):
+    gboy.dir = "left"
+    gboy.im = "walking_left"
+    gboy.x -= gboy.speed
+  elif check_input(keyboard, "RIGHT"):
+    gboy.dir = "right"
+    gboy.im = "walking_right"
+    gboy.x += gboy.speed
+  elif check_input(keyboard, "UP"):
+    gboy.dir = "up"
+    gboy.im = "walking_up"
+    gboy.y += gboy.speed
+  elif check_input(keyboard, "DOWN"):
+    gboy.dir = "down"
+    gboy.im = "walking_right"
+    gboy.y -= gboy.speed
+  else:
+    if gboy.dir == "right":
+      gboy.im = "idle_right"
+    elif gboy.dir == "left":
+      gboy.im = "idle_left"
+    elif gboy.dir == "up":
+      gboy.im = "idle_up"
+    elif gboy.dir == "down":
+      gboy.im = "idle_down"
+  wrap(gboy)
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(41, 54, 111")
+  gboy.display()
+  
+  
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+def wrap(obj, leeway = 0):
+  if obj.x + leeway < -screen.width/2:
+    obj.x = screen.width/2 + leeway
+  elif obj.x - leeway > screen.width/2:
+    obj.x = -screen.width/2 - leeway
+  if obj.y + leeway < -screen.height/2:
+    obj.y = screen.height/2 + leeway
+  elif obj.y - leeway > screen.height/2:
+    obj.y = -screen.height/2 - leeway
+
+
+</script></html>

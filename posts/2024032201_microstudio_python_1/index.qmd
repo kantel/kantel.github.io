@@ -1,0 +1,122 @@
+---
+title: "MicroStudio und Python: Tutorial 1"
+author: "Jörg Kantel"
+date: "2024-03-22 18:45:00"
+categories: [microStudio, Spieleprogrammierung, Python, Brython]
+image: "images/pythontutorial1.jpg"
+---
+
+[![](images/pythontutorial1-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53602933247/)
+
+Bevor ich mich in das [vorgestern vorgestellte](https://kantel.github.io/posts/2024032002_first_steps_pyxel/) Abenteuer [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html) stürze, möchte ich meine begonnene, kleine Tutorialreihe zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) wenigstens zu einem vorläufigen Abschluß bringen. Und da Pyxel in Python programmiert wird, dachte ich, daß es an der Zeit ist, auch die Programmierung von [microStudio mit Python](https://microstudio.dev/documentation/Python/) zu erkunden.
+
+Die Python-Implementierung in microStudio basiert auf [Brython](https://brython.info/), einer Python&nbsp;3-Version für den Browser, die JavaScript als Skriptsprache ersetzen will. Das führt zu einigen [Einschränkungen](https://brython.info/static_doc/3.12/en/faq.html), unter anderem die, daß C-basierte Python-Module nicht unterstützt werden. Das betrifft insbesondere den *Scientific Stack* mit [NumPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html), [SciPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html) und [Pandas](http://cognitiones.kantel-chaos-team.de/programmierung/python/pandas.html)[^1]. Dafür kann man in microStudio ähnliche, JavaScript basierte Bibliotheken einsetzen[^2].
+
+[^1]: Hier ist Pyxel weiter: Diese App basiert auf [Pyodide](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html) und dieses Projekt kann mit großen Teilen des *Scientific Stack* umgehen (Numpy, SciPy, Pandas, aber auch [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) werden in der [Dokumentation](https://pyodide.org/en/stable/usage/packages-in-pyodide.html) expizit aufgeführt).
+
+[^2]: Allerdings scheint die Integration von JavaScript in microStudio-Python/Bryton-Projekte nicht immer ganz schmerzfrei zu verlaufen. Hier ist neben dem (immer empfohlenen) [Blick in die Dokumentation](https://microstudio.dev/documentation/Advanced-microScript/) auch viel Experimentierfreude angesagt.
+
+Eine Folge ist, daß in Brython die Keyboard-Abfrage unter Umständen beim ersten Aufruf ein `undefined` zurückgibt. Um den Fehler zu umgehen, wird der Einsatz dieser Helper-Funktion
+
+~~~Python
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+empfohlen. Damit kann dann die Abfrage mit `check_input(keyboard, "<taste>")` entschärft werden.
+
+Nun aber zu meinem ersten microStudio/Python-Experiment: Es ist eine Abwandlung meines [ersten microScript-Tutorials](https://kantel.github.io/posts/2024031201_microstudio_tut_01/), nur daß ich hier zur Abwechslung mal wieder auf die beliebten Gameboy-Sprites von Kenneys freiem ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) [Simplified Platformer Pack](https://kenney.nl/assets/simplified-platformer-pack) zurückgegriffen habe, die ich -- wie im [ersten Tutorial Beschrieben](https://kantel.github.io/posts/2024031201_microstudio_tut_01/) -- mit der [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) zu microStudio-kompatiblen, animationstauglichen Bildstreifen zerlegt habe.
+
+Der Code selber birgt keine großen Überraschungen. Ich habe erst eine Klasse `Player` angelegt,
+
+~~~python
+class Player:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 50
+    self.h = 50
+    self.im = "idle_down"
+    self.dir = "down"
+    self.speed = 1
+    
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+die neben dem Konstrutor nur noch die Methode `display()` besitzt. Das eigentliche Update des Players wird in der `update()`-Funktion des Hauptprogramms erledigt:
+
+~~~python
+gboy = Player()
+
+def init():
+  # global gboy
+  # gboy = Player()
+  pass
+
+def update():
+  if check_input(keyboard, "LEFT"):
+    gboy.dir = "left"
+    gboy.im = "walking_left"
+    gboy.x -= gboy.speed
+  elif check_input(keyboard, "RIGHT"):
+    gboy.dir = "right"
+    gboy.im = "walking_right"
+    gboy.x += gboy.speed
+  elif check_input(keyboard, "UP"):
+    gboy.dir = "up"
+    gboy.im = "walking_up"
+    gboy.y += gboy.speed
+  elif check_input(keyboard, "DOWN"):
+    gboy.dir = "down"
+    gboy.im = "walking_right"
+    gboy.y -= gboy.speed
+  else:
+    if gboy.dir == "right":
+      gboy.im = "idle_right"
+    elif gboy.dir == "left":
+      gboy.im = "idle_left"
+    elif gboy.dir == "up":
+      gboy.im = "idle_up"
+    elif gboy.dir == "down":
+      gboy.im = "idle_down"
+  wrap(gboy)
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(41, 54, 111")
+  gboy.display()
+~~~
+
+In größeren Programmen sollte dies sicher der besseren Übersichtlichkeit wegen ebenfalls in einer Methode von `Player` gekapselt werden.
+
+Eine weitere Besonderheit war mir noch aufgefallen: Wenn eine Instanz einer Klasse (in diesem Fall `gboy = Player()`) in der Funktion `init()` initialisiert wird, muß diese Variable dort als `global` deklariert werden (vergleiche die auskommentierten Zeilen). Da ich in solchen Fällen immer sofort Namensraumverschmutzung wittere, habe ich die Initialisierung außerhalb auf der obersten Ebene des Skriptes vorgenommen[^3]. Damit ist sie automatisch und für alle sichtbar global.
+
+[^3]: Ob das wirklich eine gute Idee ist oder ob man doch besser in den sauren, `globalen` Apfel beißt, werden zukünfitge Experimente zeigen. Ich bin da selber noch unsicher&nbsp;…
+
+Zu guter Letzt habe ich dann auch noch *[MrLmans](https://microstudio.io/mrLman/)* `wrap()`-Funktion aus seiner [games-prog library v.02](https://microstudio.dev/i/mrLman/gamesproglibrary/) nach Python portiert und in dem Skript eingesetzt:
+
+~~~python
+def wrap(obj, leeway = 0):
+  if obj.x + leeway < -screen.width/2:
+    obj.x = screen.width/2 + leeway
+  elif obj.x - leeway > screen.width/2:
+    obj.x = -screen.width/2 - leeway
+  if obj.y + leeway < -screen.height/2:
+    obj.y = screen.height/2 + leeway
+  elif obj.y - leeway > screen.height/2:
+    obj.y = -screen.height/2 - leeway
+~~~
+
+Hier ist das Ergebnis dieser wenigen Zeilen in seiner vollen Pracht:
+
+<iframe src="pythontutorial1/index.html" class="if16_9" name="microStudio Python Tutorial 1"></iframe>
+
+Der kleine Gameboy kann mit den Pfeiltasten (oder (für die Traditionalisten unter Euch) mit den Tasten `w`, `a`, `s` und `d`) über den Bildschirm gescheucht werden.
+
+Wie immer habe ich das Tutorial auch auf [meinen microStudio-Account hochgeladen](https://microstudio.dev/projects/pythontutorial1/code/). Ihr könnt dort den Code studieren, ihn verändern und auch sonst alles damit anstellen, was Euch Spaß macht und/oder Euch weiterbringt.
+
+Der Schritt von microScript nach Python verlief (bisher) überraschend problemlos. Ich werde die Reihe daher fortsetzen. *Still digging!*
