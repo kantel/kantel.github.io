@@ -10,7 +10,682 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sat, 23 Mar 2024 19:30:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 24 Mar 2024 17:55:00 GMT</lastBuildDate>
+<item>
+  <title>MicroStudio und Python 2: Zombie Apokalypse</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024032401_microstudio_python_2/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53608416684/"><img src="https://kantel.github.io/posts/2024032401_microstudio_python_2/images/apozombie-b.jpg" class="img-fluid"></a></p>
+<p>Zu meinem Wechsel in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a> nach Python gibt es ein zweites Tutorial. Dieses Mal ist es schon fast ein echtes kleines Spiel.</p>
+<p>Ich habe dafür <a href="https://kantel.github.io/posts/2024031602_pumpkin_apokalypse/">dieses Tutorial</a>, dessen Idee ich damals schon schamlos bei <em><a href="https://www.youtube.com/@davidbouchard">David Bouchard</a></em> <a href="https://www.youtube.com/watch?v=eDpTtxFhP2s">geklaut</a> <a href="https://www.youtube.com/watch?v=6Vqpf_vLsH0">hatte</a>, auf seinen Ursprung zurückgeführt und aus der <em>Pumpkin Apokalypse</em> wieder eine <em>Zombie Apokalypse</em> gemacht.</p>
+<iframe src="zombieapokalypse/index.html" class="if16_9" name="Zombie Apokalypse">
+</iframe>
+<p><em>Unser Held wartet im Stadtpark auf ein Rendezvous mit seiner Freundin. Doch stattdessen tauchen plötzlich überall Zombies auf, denen er mit Hilfe der Pfeiltasten (oder den Tasten <code>w</code>, <code>a</code>, <code>s</code> und <code>d</code>) ausweichen muß. Das Tragische ist: Er kann den Zombies nicht entkommen, nur möglichst lange überleben und dabei Punkte sammeln.</em></p>
+<p>Den Helden habe ich in der Klasse <code>Player</code> implementiert. Sie ist <em>straightforward</em> und quasi eine Eins-zu-Eins-Übersetzung des microScript Codes:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Player:</span>
+<span id="cb1-2">  </span>
+<span id="cb1-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb1-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_idle"</span></span>
+<span id="cb1-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span></span>
+<span id="cb1-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-11">    </span>
+<span id="cb1-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LEFT"</span>):</span>
+<span id="cb1-14">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_walk"</span></span>
+<span id="cb1-15">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RIGHT"</span>):</span>
+<span id="cb1-17">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_walk"</span></span>
+<span id="cb1-18">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"UP"</span>):</span>
+<span id="cb1-20">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_walk"</span></span>
+<span id="cb1-21">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DOWN"</span>):</span>
+<span id="cb1-23">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_walk"</span></span>
+<span id="cb1-24">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-26">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_idle"</span></span>
+<span id="cb1-27">    wrap(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb1-28">  </span>
+<span id="cb1-29">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-30">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h)</span></code></pre></div>
+<p>Gleiches gilt auch für die Klasse <code>Zombie</code>:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Zombie:</span>
+<span id="cb2-2">  </span>
+<span id="cb2-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y, _dir):</span>
+<span id="cb2-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x</span>
+<span id="cb2-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _y</span>
+<span id="cb2-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb2-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb2-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _dir</span>
+<span id="cb2-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"zombie_idle"</span></span>
+<span id="cb2-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span></span>
+<span id="cb2-11">  </span>
+<span id="cb2-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span>:</span>
+<span id="cb2-14">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"zombie_walk"</span></span>
+<span id="cb2-15">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb2-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>:</span>
+<span id="cb2-17">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"zombie_walk"</span></span>
+<span id="cb2-18">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb2-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-20">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"zombie_idle"</span></span>
+<span id="cb2-21">    wrap(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb2-22">  </span>
+<span id="cb2-23">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-24">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h)</span></code></pre></div>
+<p>Ein wenig mehr aufpassen mußte ich jedoch im Hauptscript. Erst einmal kennt Python/Brython – was zu erwarten war – nicht die microScript-Module <code>math</code> und <code>random</code>. Hier mußte ich die entsprechenden Python-Mudule importieren und sie stattdessen nutzen. Das betraf einmal die beiden microScript-Funktionen <code>random.next()</code> und <code>random.nextInt()</code> die ich durch Pythons <code>random.random()</code> und <code>random.randint()</code> ersetzt habe. (Achtung: In Python liegen die Werte immer in einem halboffenen Intervall, das heißt der höchste Wert ist <strong>nicht</strong> eingeschlossen. Und <code>randint()</code> verlangt nach <strong>zwei</strong> Parametern, einen minimalen Wert (inklusive) und einen maximalen Wert (exklusive).)</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math, random</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"></span>
+<span id="cb3-4">timestep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb3-5">maxtime <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span></span>
+<span id="cb3-6"></span>
+<span id="cb3-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> init():</span>
+<span id="cb3-8">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> hero, zombies, timer, score</span>
+<span id="cb3-9">  hero <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Player()</span>
+<span id="cb3-10">  zombies <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb3-11">  timer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-12">  score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-13"></span>
+<span id="cb3-14"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update():</span>
+<span id="cb3-15">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> timer, score</span>
+<span id="cb3-16">  timer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> timestep</span>
+<span id="cb3-17">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> timer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> maxtime:</span>
+<span id="cb3-18">    create_zombie()</span>
+<span id="cb3-19">    score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb3-20">    timer <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-21">  hero.move()</span>
+<span id="cb3-22">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> z <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> zombies:</span>
+<span id="cb3-23">    z.move()</span>
+<span id="cb3-24">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check collision with hero</span></span>
+<span id="cb3-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> distance(z, hero) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>:</span>
+<span id="cb3-26">      <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Collision"</span>)</span>
+<span id="cb3-27">      init()</span>
+<span id="cb3-28"></span>
+<span id="cb3-29"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb3-30">  screen.clear()</span>
+<span id="cb3-31">  screen.fillRect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, screen.width, screen.height, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(109, 170, 44)"</span>)</span>
+<span id="cb3-32">  hero.display()</span>
+<span id="cb3-33">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> z <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> zombies:</span>
+<span id="cb3-34">    z.display()</span>
+<span id="cb3-35">  screen.drawText(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Score: "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(score), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(250, 25, 25)"</span>)</span>
+<span id="cb3-36"></span>
+<span id="cb3-37"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> create_zombie():</span>
+<span id="cb3-38">  choice <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random.random()</span>
+<span id="cb3-39">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> choice <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>:</span>
+<span id="cb3-40">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span></span>
+<span id="cb3-41">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span>:</span>
+<span id="cb3-42">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span></span>
+<span id="cb3-43">  z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Zombie((<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> random.randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">360</span>)),</span>
+<span id="cb3-44">             (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> random.randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span>)), <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span>)</span>
+<span id="cb3-45">  zombies.append(z)</span></code></pre></div>
+<p>Und wie ich <a href="https://kantel.github.io/posts/2024032201_microstudio_python_1/">im ersten Tutorial</a> schon befürchtet hatte, komme ich bei (m)einem naiven Ansatz an der Deklaration aller Variablen, die in Funktionen verändert werden, als <code>global</code> (in <em>allen</em> Funktionen, die die Werte verändern) nicht vorbei. Wenn man dies nicht will, muß man alles in Klassen kapseln und die Änderungen in den Methoden vornehmen.</p>
+<p>Zu guter Letzt gibt es noch ein paar Hilfsfunktionen, die ich wieder in <code>util</code> ausgelagert habe:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> check_input(obj, val):</span>
+<span id="cb4-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hasattr</span>(obj, val):</span>
+<span id="cb4-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> obj[val] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb4-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb4-5"></span>
+<span id="cb4-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> wrap(obj, leeway <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>):</span>
+<span id="cb4-7">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> obj.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> leeway <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb4-8">    obj.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> leeway</span>
+<span id="cb4-9">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> obj.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> leeway <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb4-10">    obj.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> leeway</span>
+<span id="cb4-11">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> obj.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> leeway <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb4-12">    obj.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> leeway</span>
+<span id="cb4-13">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> obj.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> leeway <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb4-14">    obj.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> leeway</span>
+<span id="cb4-15">    </span>
+<span id="cb4-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> distance(obj1, obj2):</span>
+<span id="cb4-17">  a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(obj2.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> obj1.x)</span>
+<span id="cb4-18">  b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(obj2.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> obj1.y)</span>
+<span id="cb4-19">  c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.sqrt(a<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>b)</span>
+<span id="cb4-20">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> c</span></code></pre></div>
+<p>Hier kommt in der Funktion <code>distance()</code> nicht nur der gute, alte Satz des Pythagoras, sondern auch das Modul <code>math</code> mit <code>math.sqrt()</code> zum Einsatz. (Auf <code>math.pow(x, n)</code> habe ich verzichtet und einfach mit <code>a*a</code> respektive <code>b*b</code> quadriert.)</p>
+<p>Auch dieses Tutorial habe ich wieder auf <a href="https://microstudio.dev/projects/pythontutorial2/code/">meinen microStudio-Account hochgeladen</a>, damit ihr es klonen, weiterentwickeln, damit spielen oder einfach nur daraus lernen könnt.</p>
+<p>Nun noch die Credits: Die Bilder sind mal wieder von Kenney, dieses Mal aus seinem freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) Pack <a href="https://kenney.nl/assets/toon-characters-1">Toon Characters 1</a>. Damit sie von microStudio geschluckt werden, habe ich sie auch dieses Mal der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html">Bildverarbeitung meines Vertrauens</a> zu den <a href="https://kantel.github.io/posts/2024031201_microstudio_tut_01/">verlangten Streifen</a> zurechtgeschnitten.</p>
+<p>Und das Spielen mit microStudio <strong>und</strong> Python macht mir mehr Spaß, als ich erwartet habe. Ihr könnt daher noch weitere Tutorials erwarten. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>microStudio</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024032401_microstudio_python_2/</guid>
+  <pubDate>Sun, 24 Mar 2024 17:55:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024032401_microstudio_python_2/images/apozombie.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neuköllner Sonnenuntergänge</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3740,60 +4415,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024031301_chrome_update/</guid>
   <pubDate>Wed, 13 Mar 2024 15:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024031301_chrome_update/images/octopussysym.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Writing for Games: Narrative Geschichten und Spiele</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024031202_writing_for_games/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53575354314/"><img src="https://kantel.github.io/posts/2024031202_writing_for_games/images/elfe01-b.jpg" class="img-fluid"></a></p>
-<p>Der unermüdliche <em>Dan Cox</em> schiebt ein Video-Tutorial nach dem anderen auf YouTube hoch. Selbst die von ihm eigentlich schon für abgeschlossen erklärte <a href="https://www.youtube.com/playlist?list=PLlXuD3kyVEr6bprFqUBCOEWT47xqYmVQ4">Reihe zu Bitsy</a> hat in den letzten Tage neue Updates erfahren. Daneben setzt er nicht nur die Arbeit an seinem <a href="https://www.youtube.com/playlist?list=PLlXuD3kyVEr662CjQjQHOVJhmdsl2TgYk">Twine-Handbuch</a> fort, sondern er hat mit »<a href="https://www.youtube.com/playlist?list=PLlXuD3kyVEr7Dvl1VnPem8p3oBjDhHS33">Writing for Games</a>« auch noch eine neue Baustelle eröffnet.</p>
-<p>Weil ich die ruhige und besonnene Art mag, mit der <em>Dan Cox</em> seine Tutorials präsentiert und damit ich nicht die Übersicht verliere, hier kurz all die Videos, die er ein den letzten vierzehn Tagen frisch hochgeladen hat. Als erste seine Reihe zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/bitsy.html">Bitsy</a>. Neu sind hier diese Videos:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=JKAfB3y91zU">A Gentle Introduction to Bitsy</a></li>
-<li><a href="https://www.youtube.com/watch?v=2KdAibi3R50">Introduction: Tools and Workflows</a></li>
-<li><a href="https://www.youtube.com/watch?v=EaRrQOpKEmY">Interactions: Text Effects</a></li>
-<li><a href="https://www.youtube.com/watch?v=eJvaMLv4Nv4">Interactions: Text Colors via Palettes</a></li>
-<li><a href="https://www.youtube.com/watch?v=pofJAs-tzI4">Interactions: Example: Important Terms</a></li>
-<li><a href="https://www.youtube.com/watch?v=_gtEk3Q2kx0">Interactions: Drawing Sprites and Items in Dialog</a></li>
-<li><a href="https://www.youtube.com/watch?v=G9YbUKhXJJc">Interactions: Example: Explaining Tasks</a></li>
-<li><a href="https://www.youtube.com/watch?v=21NvGyoGtYg">Actions: Changing Avatars</a></li>
-</ul>
-<p>Die meisten Änderungen hat es allerdings in seiner Playlist zu <a href="https://www.youtube.com/watch?v=21NvGyoGtYg">Twine</a> und <a href="http://twine2.neocities.org/">Harlowe</a> gegeben. Hier habe ich glaube ich schon ein wenig die Übersicht verloren, aber neu sind auf jeden Fall diese Tutorials:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=Ox_D4fjTtv8">Changers: Example: Showing and Hiding Windows</a></li>
-<li><a href="https://www.youtube.com/watch?v=JTyKp7C760I">Changers: Prepend, Replace, and Append</a></li>
-<li><a href="https://www.youtube.com/watch?v=JizYGdXHpcE">Changers: Example: Responding Dynamically to Links</a></li>
-<li><a href="https://www.youtube.com/watch?v=vXk9lyPYN3A">Changers: Color and Background Color</a></li>
-<li><a href="https://www.youtube.com/watch?v=9MfCtBx1L3w">Changers: CSS Macro</a></li>
-<li><a href="https://www.youtube.com/watch?v=z7oKtrU213I">Changers: Borders</a></li>
-<li><a href="https://www.youtube.com/watch?v=jIhBon_8aM8">Changers: Startup, Header, and Footer Tags</a></li>
-<li><a href="https://www.youtube.com/watch?v=X5YPPY4Ja_o">Changers: Example: Stylized Windows</a></li>
-<li><a href="https://www.youtube.com/watch?v=7nb1csCTV0E">Changers: Event</a></li>
-<li><a href="https://www.youtube.com/watch?v=RImzDTL7GzU">Changers: Example: Simple Input Filtering</a></li>
-<li><a href="https://www.youtube.com/watch?v=L-4D846wGOI">Changers: Text Rotate X, Y, and Z</a></li>
-<li><a href="https://www.youtube.com/watch?v=L0G8DcYPHgU">Changers: Example: Increasing Madness</a></li>
-<li><a href="https://www.youtube.com/watch?v=HM0zpZHh9ZM">Changers: Action</a></li>
-<li><a href="https://www.youtube.com/watch?v=nw3kKFluA7s">Changers: Example: Target Practice</a></li>
-</ul>
-<p><strong>Und zu guter Letzt</strong> ist da noch die komplett neue Playlist »<a href="https://www.youtube.com/playlist?list=PLlXuD3kyVEr7Dvl1VnPem8p3oBjDhHS33">Writing for Games</a>«, die bisher aus drei etwa zehnminütigen Videos besteht, die mir und Euch erzählen wollen, wie man Geschichten für Spiele schreibt. Ich habe da bisher noch nicht reingeschaut, aber ich halte <em>Dan Cox</em> für einen kompetenten Lehrer auch zu diesem Thema. Das letzte Update ist erst wenige Stunden alt, Ihr und ich dürft also mit weiteren Folgen rechnen. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53575354314/">Elfe im Zauberwald</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>three naked nymphs, reddish-brown hair, green eyes, big boobs, nice butt, red lips, dance in a sunny clearing, in an enchanted garden with many colorful flowers, A Pan+, with beard, with goat legs, sits on a pedestal, and accompanies her on his flute+, Fox and hare watch the scenario in amazement</em>«. Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers, antlers, deer, horns</em>«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Storybook + 3D.</p>
-
-
-
- ]]></description>
-  <category>Spieleprogrammierung</category>
-  <category>Interactive Fiction</category>
-  <category>Twine</category>
-  <category>Bitsy</category>
-  <guid>https://kantel.github.io/posts/2024031202_writing_for_games/</guid>
-  <pubDate>Tue, 12 Mar 2024 20:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024031202_writing_for_games/images/elfe01.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

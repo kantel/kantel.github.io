@@ -1,0 +1,166 @@
+---
+title: "MicroStudio und Python 2: Zombie Apokalypse"
+author: "Jörg Kantel"
+date: "2024-03-24 18:55:00"
+categories: [microStudio, Spieleprogrammierung]
+image: "images/apozombie.jpg"
+---
+
+[![](images/apozombie-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53608416684/)
+
+Zu meinem Wechsel in [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) von [microScript](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html) nach Python gibt es ein zweites Tutorial. Dieses Mal ist es schon fast ein echtes kleines Spiel.
+
+Ich habe dafür [dieses Tutorial](https://kantel.github.io/posts/2024031602_pumpkin_apokalypse/), dessen Idee ich damals schon schamlos bei *[David Bouchard](https://www.youtube.com/@davidbouchard)* [geklaut](https://www.youtube.com/watch?v=eDpTtxFhP2s) [hatte](https://www.youtube.com/watch?v=6Vqpf_vLsH0), auf seinen Ursprung zurückgeführt und aus der *Pumpkin Apokalypse* wieder eine *Zombie Apokalypse* gemacht.
+
+<iframe src="zombieapokalypse/index.html" class="if16_9" name="Zombie Apokalypse"></iframe>
+
+*Unser Held wartet im Stadtpark auf ein Rendezvous mit seiner Freundin. Doch stattdessen tauchen plötzlich überall Zombies auf, denen er mit Hilfe der Pfeiltasten (oder den Tasten `w`, `a`, `s` und `d`) ausweichen muß. Das Tragische ist: Er kann den Zombies nicht entkommen, nur möglichst lange überleben und dabei Punkte sammeln.*
+
+Den Helden habe ich in der Klasse `Player` implementiert. Sie ist *straightforward* und quasi eine Eins-zu-Eins-Übersetzung des microScript Codes:
+
+~~~python
+class Player:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 32
+    self.h = 32
+    self.im = "hero_idle"
+    self.dir = "right"
+    self.speed = 1
+    
+  def move(self):
+    if check_input(keyboard, "LEFT"):
+      self.im = "hero_walk"
+      self.x -= self.speed
+    elif check_input(keyboard, "RIGHT"):
+      self.im = "hero_walk"
+      self.x += self.speed
+    elif check_input(keyboard, "UP"):
+      self.im = "hero_walk"
+      self.y += self.speed
+    elif check_input(keyboard, "DOWN"):
+      self.im = "hero_walk"
+      self.y -= self.speed
+    else:
+      self.im = "hero_idle"
+    wrap(self)
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Gleiches gilt auch für die Klasse `Zombie`:
+
+~~~python
+class Zombie:
+  
+  def __init__(self, _x, _y, _dir):
+    self.x = _x
+    self.y = _y
+    self.w = 32
+    self.h = 32
+    self.dir = _dir
+    self.im = "zombie_idle"
+    self.speed = 0.1
+  
+  def move(self):
+    if self.dir == "right":
+      self.im = "zombie_walk"
+      self.x += self.speed
+    elif self.dir == "left":
+      self.im = "zombie_walk"
+      self.x -= self.speed
+    else:
+      self.im = "zombie_idle"
+    wrap(self)
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Ein wenig mehr aufpassen mußte ich jedoch im Hauptscript. Erst einmal kennt Python/Brython -- was zu erwarten war -- nicht die microScript-Module `math` und `random`. Hier mußte ich die entsprechenden Python-Mudule importieren und sie stattdessen nutzen. Das betraf einmal die beiden microScript-Funktionen `random.next()` und `random.nextInt()` die ich durch Pythons `random.random()` und `random.randint()` ersetzt habe. (Achtung: In Python liegen die Werte immer in einem halboffenen Intervall, das heißt der höchste Wert ist **nicht** eingeschlossen. Und `randint()` verlangt nach **zwei** Parametern, einen minimalen Wert (inklusive) und einen maximalen Wert (exklusive).)
+
+~~~python
+import math, random
+
+
+timestep = 1
+maxtime = 180
+
+def init():
+  global hero, zombies, timer, score
+  hero = Player()
+  zombies = []
+  timer = 0
+  score = 0
+
+def update():
+  global timer, score
+  timer += timestep
+  if timer >= maxtime:
+    create_zombie()
+    score += 1
+    timer = 0
+  hero.move()
+  for z in zombies:
+    z.move()
+    # check collision with hero
+    if distance(z, hero) < 20:
+      print("Collision")
+      init()
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(109, 170, 44)")
+  hero.display()
+  for z in zombies:
+    z.display()
+  screen.drawText("Score: " + str(score), 120, 80, 20, "rgb(250, 25, 25)")
+
+def create_zombie():
+  choice = random.random()
+  if choice < 0.5:
+    dir = "left"
+  else:
+    dir = "right"
+  z = Zombie((-180 + random.randint(10, 360)),
+             (-100 + random.randint(10, 200)), dir)
+  zombies.append(z)
+  ~~~
+
+Und wie ich [im ersten Tutorial](https://kantel.github.io/posts/2024032201_microstudio_python_1/) schon befürchtet hatte, komme ich bei (m)einem naiven Ansatz an der Deklaration aller Variablen, die in Funktionen verändert werden, als `global` (in *allen* Funktionen, die die Werte verändern) nicht vorbei. Wenn man dies nicht will, muß man alles in Klassen kapseln und die Änderungen in den Methoden vornehmen.
+
+Zu guter Letzt gibt es noch ein paar Hilfsfunktionen, die ich wieder in `util` ausgelagert habe:
+
+~~~python
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+def wrap(obj, leeway = 0):
+  if obj.x + leeway < -screen.width/2:
+    obj.x = screen.width/2 + leeway
+  elif obj.x - leeway > screen.width/2:
+    obj.x = -screen.width/2 - leeway
+  if obj.y + leeway < -screen.height/2:
+    obj.y = screen.height/2 + leeway
+  elif obj.y - leeway > screen.height/2:
+    obj.y = -screen.height/2 - leeway
+    
+def distance(obj1, obj2):
+  a = abs(obj2.x - obj1.x)
+  b = abs(obj2.y - obj1.y)
+  c = math.sqrt(a*a + b*b)
+  return c
+  ~~~
+
+  Hier kommt in der Funktion `distance()` nicht nur der gute, alte Satz des Pythagoras, sondern auch das Modul `math` mit `math.sqrt()` zum Einsatz. (Auf `math.pow(x, n)` habe ich verzichtet und einfach mit `a*a` respektive `b*b` quadriert.)
+
+  Auch dieses Tutorial habe ich wieder auf [meinen microStudio-Account hochgeladen](https://microstudio.dev/projects/pythontutorial2/code/), damit ihr es klonen, weiterentwickeln, damit spielen oder einfach nur daraus lernen könnt.
+
+  Nun noch die Credits: Die Bilder sind mal wieder von Kenney, dieses Mal aus seinem freien ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) Pack [Toon Characters 1](https://kenney.nl/assets/toon-characters-1). Damit sie von microStudio geschluckt werden, habe ich sie auch dieses Mal der [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) zu den [verlangten Streifen](https://kantel.github.io/posts/2024031201_microstudio_tut_01/) zurechtgeschnitten.
+
+  Und das Spielen mit microStudio **und** Python macht mir mehr Spaß, als ich erwartet habe. Ihr könnt daher noch weitere Tutorials erwarten. *Still digging!*

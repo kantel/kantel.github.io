@@ -1,0 +1,179 @@
+<!DOCTYPE html><html><head><title>Python Tutorial 2</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"hero_idle.png","version":1,"size":8000,"properties":{}},{"file":"hero_walk.png","version":2,"size":56219,"properties":{"frames":8,"fps":5}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":56943,"properties":{"frames":1,"fps":5}},{"file":"zombie_idle.png","version":1,"size":9076,"properties":{}},{"file":"zombie_walk.png","version":2,"size":62456,"properties":{"frames":8,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = 'free' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+import math, random
+
+
+timestep = 1
+maxtime = 180
+
+def init():
+  global hero, zombies, timer, score
+  hero = Player()
+  zombies = []
+  timer = 0
+  score = 0
+
+def update():
+  global timer, score
+  timer += timestep
+  if timer >= maxtime:
+    create_zombie()
+    score += 1
+    timer = 0
+  hero.move()
+  for z in zombies:
+    z.move()
+    # check collision with hero
+    if distance(z, hero) < 20:
+      print("Collision")
+      init()
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(109, 170, 44)")
+  hero.display()
+  for z in zombies:
+    z.display()
+  screen.drawText("Score: " + str(score), 120, 80, 20, "rgb(250, 25, 25)")
+
+def create_zombie():
+  choice = random.random()
+  if choice < 0.5:
+    dir = "left"
+  else:
+    dir = "right"
+  z = Zombie((-180 + random.randint(10, 360)),
+             (-100 + random.randint(10, 200)), dir)
+  zombies.append(z)
+
+class Player:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 32
+    self.h = 32
+    self.im = "hero_idle"
+    self.dir = "right"
+    self.speed = 1
+    
+  def move(self):
+    if check_input(keyboard, "LEFT"):
+      self.im = "hero_walk"
+      self.x -= self.speed
+    elif check_input(keyboard, "RIGHT"):
+      self.im = "hero_walk"
+      self.x += self.speed
+    elif check_input(keyboard, "UP"):
+      self.im = "hero_walk"
+      self.y += self.speed
+    elif check_input(keyboard, "DOWN"):
+      self.im = "hero_walk"
+      self.y -= self.speed
+    else:
+      self.im = "hero_idle"
+    wrap(self)
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+def wrap(obj, leeway = 0):
+  if obj.x + leeway < -screen.width/2:
+    obj.x = screen.width/2 + leeway
+  elif obj.x - leeway > screen.width/2:
+    obj.x = -screen.width/2 - leeway
+  if obj.y + leeway < -screen.height/2:
+    obj.y = screen.height/2 + leeway
+  elif obj.y - leeway > screen.height/2:
+    obj.y = -screen.height/2 - leeway
+    
+def distance(obj1, obj2):
+  a = abs(obj2.x - obj1.x)
+  b = abs(obj2.y - obj1.y)
+  c = math.sqrt(a*a + b*b)
+  return c
+
+class Zombie:
+  
+  def __init__(self, _x, _y, _dir):
+    self.x = _x
+    self.y = _y
+    self.w = 32
+    self.h = 32
+    self.dir = _dir
+    self.im = "zombie_idle"
+    self.speed = 0.1
+  
+  def move(self):
+    if self.dir == "right":
+      self.im = "zombie_walk"
+      self.x += self.speed
+    elif self.dir == "left":
+      self.im = "zombie_walk"
+      self.x -= self.speed
+    else:
+      self.im = "zombie_idle"
+    wrap(self)
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+</script></html>
