@@ -1,0 +1,194 @@
+<!DOCTYPE html><html><head><title>Python Tutorial 3</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"background.png","version":1,"size":35090,"properties":{}},{"file":"bubbleblue0.png","version":1,"size":1317,"properties":{}},{"file":"bubbleblue1.png","version":1,"size":3149,"properties":{}},{"file":"bubbleblue2.png","version":1,"size":5502,"properties":{}},{"file":"bubblered.png","version":1,"size":2928,"properties":{}},{"file":"crab.png","version":2,"size":2580,"properties":{"frames":2,"fps":5}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":65259,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'any' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+class Bubble:
+  
+  def __init__(self):
+    self.reset()
+    
+  def reset(self):
+    self.im = "bubbleblue1"
+    self.x = randint(-170, 170)
+    self.y = randint(100, 500)
+    self.w = randint(10, 20)
+    self.h = self.w
+    self.r = self.w//2
+    self.speed = uniform(0.5, 2.0)
+    
+  def is_circle_collision(self, other):
+    distance = math.dist([self.x, self.y], [other.x, other.y])
+    if distance < self.r + other.r:
+      return True
+    return False
+  
+  def move(self):
+    self.y -= self.speed
+    if self.y <= -150:
+      self.reset()
+      
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+    
+class RedBubble(Bubble):
+  
+  def __init__(self):
+    super().__init__()
+    self.reset()
+  
+  def reset(self):
+    self.im = "bubblered"
+    self.x = randint(-170, 170)
+    self.y = randint(100, 500)
+    self.w = randint(10, 20)
+    self.h = self.w
+    self.r = self.w//2
+    self.speed = uniform(1.5, 2.5)
+
+
+class Crab:
+  
+  def __init__(self):
+    self.w = 32
+    self.h = 32
+    self.r = self.w//2
+    self.x = 0
+    self.y = -65
+    self.speed = 2
+    self.score = 0
+    self.im = "crab"
+    
+  def move(self):
+    if check_input(keyboard, "LEFT"):
+      self.x -= self.speed
+      # check border
+      if self.x <= -160:
+        self.x = -160
+    elif check_input(keyboard, "RIGHT"):
+      self.x += self.speed
+      # check border
+      if self.x >= 160:
+        self.x = 160
+    # wrap(self)
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+# Dancing Crab
+# Jörg Kantel 2024
+# Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.
+# Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab
+# Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors
+# Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack
+
+from random import randint, uniform
+import math
+
+NUM_BUBBLES = 50
+NUM_RBUBBLES = 5
+bubbles = []
+redbubbles = []
+
+def init():
+  global crab, bubble, rb
+  for _ in range(NUM_BUBBLES):
+    bubble = Bubble()
+    bubbles.append(bubble)
+  for _ in range(NUM_RBUBBLES):
+    rb = RedBubble()
+    redbubbles.append(rb)
+  crab = Crab()
+
+def update():
+  for bubble in bubbles:
+    bubble.move()
+    if bubble.is_circle_collision(crab):
+      bubble.reset()
+      crab.score += 1
+  for rb in redbubbles:
+    rb.move()
+    if rb.is_circle_collision(crab):
+      rb.reset()
+      crab.score -= 10
+  crab.move()
+  if crab.score < 0:
+    print("GAME OVER!")
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(49, 197, 244)")
+  screen.drawSprite("background", 0, 0, screen.width, screen.height, 640, 416)
+  for bubble in bubbles:
+    bubble.display()
+  for rb in redbubbles:
+    rb.display()
+  crab.display()
+  screen.drawText("Score: " + str(crab.score), 120, 80, 20, "rgb(250, 25, 25)")
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+  
+def wrap(obj, leeway = 0):
+  if obj.x + leeway < -screen.width/2:
+    obj.x = screen.width/2 + leeway
+  elif obj.x - leeway > screen.width/2:
+    obj.x = -screen.width/2 - leeway
+  if obj.y + leeway < -screen.height/2:
+    obj.y = screen.height/2 + leeway
+  elif obj.y - leeway > screen.height/2:
+    obj.y = -screen.height/2 - leeway
+
+</script></html>

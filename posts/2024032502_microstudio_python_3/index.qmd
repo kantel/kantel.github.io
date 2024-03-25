@@ -1,0 +1,178 @@
+---
+title: "MicroStudio und Python (Teil 3): Dancing Crab"
+author: "Jörg Kantel"
+date: "2024-03-25 20:55:00"
+categories: [microStudio, Spieleprogrammierung]
+image: "images/dancingcrab.jpg"
+---
+
+[![](images/dancingcrab-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53611256725/)
+
+Heute habe ich das dritte Tutorial meiner kleinen Reihe zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) mit Python/[Brython](https://brython.info/) fertiggestellt. Dafür habe ich eine kleine, rote Krabbe mit Luftblasen tanzen lassen. Wenn sie mit einer »normalen« (durchsichtigen weißen) Luftblase zusammenstößt, bekommt sie einen Punkt gutgeschrieben. Kollidiert sie dagegen mit einer roten Luftblase, werden ihr zehn Punkte abgezogen. Sinkt das Punktekonto der Krabbe unter Null, ist das Spiel zu Ende.
+
+<iframe src="dancingcrab/index.html" class="if16_9" name="Dancing Crab"></iframe>
+
+Die Idee der tanzenden Krabbe ist nicht meine und nicht wirklich neu. Sie basiert auf einem Spiel, das *Hauke Fehr* schon 2019 in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) implementiert hatte[^1], und auch ich hatte, inspiriert davon, ziemlich genau vor einem Jahr auch schon einmal aus einer spontanen Laune heraus eine [Impementierung](https://kantel.github.io/posts/2023041403_dancing_crab_3/) in [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) vorgenommen.
+
+[^1]: Hauke Fehr: *[Let’s code Python](https://www.rheinwerk-verlag.de/lets-code-python/)*, Bonn (Rheinwerk Computing) 2019, Seiten 247 ff.
+
+Nun also das Ganze noch einmal in microStudio. Dafür habe ich als erstes der Krabbe eine eigene Klasse spendiert:
+
+~~~python
+class Crab:
+  
+  def __init__(self):
+    self.w = 32
+    self.h = 32
+    self.r = self.w//2
+    self.x = 0
+    self.y = -65
+    self.speed = 2
+    self.score = 0
+    self.im = "crab"
+    
+  def move(self):
+    if check_input(keyboard, "LEFT"):
+      self.x -= self.speed
+      # check border
+      if self.x <= -160:
+        self.x = -160
+    elif check_input(keyboard, "RIGHT"):
+      self.x += self.speed
+      # check border
+      if self.x >= 160:
+        self.x = 160
+    # wrap(self)
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Die Bewegung der Krabbe ist einfach, sie kann nur nach rechts oder links krabbeln und auch nicht aus dem Fenster laufen (sie wird in `move()` bei $-160$ oder $160$ zum Stoppen gebracht).
+
+Die Luftblasen, die sich in meinem Programm entgegen den Gesetzen der Physik nach unten statt nach oben bewegen (hey, das ist **mein** Spiel, da mache ich die Gesetze!), sind ebenfalls eine eigene Klasse:
+
+~~~python
+class Bubble:
+  
+  def __init__(self):
+    self.reset()
+    
+  def reset(self):
+    self.im = "bubbleblue1"
+    self.x = randint(-170, 170)
+    self.y = randint(100, 500)
+    self.w = randint(10, 20)
+    self.h = self.w
+    self.r = self.w//2
+    self.speed = uniform(0.5, 2.0)
+    
+  def is_circle_collision(self, other):
+    distance = math.dist([self.x, self.y], [other.x, other.y])
+    if distance < self.r + other.r:
+      return True
+    return False
+  
+  def move(self):
+    self.y -= self.speed
+    if self.y <= -150:
+      self.reset()
+      
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Neu ist hierbei, daß ich gelernt habe, daß das `math`-Modul in Python seit der Version Python&nbsp;3.8 ebenfalls eine [`dist()`-Methode besitzt](https://www.w3schools.com/python/ref_math_dist.asp), die den euklidischen Abstand zwischen zwei Punkten berechnet. Sie erwartet allerdings die Punktekoordinaten als Liste, dafür kann sie aber die Abstände zwischen beliebig-dimensionalen Punkten berechnen (beide Punkte müssen aber die gleiche Dimension besitzen). Also habe ich sie in der Methode `is_circle_collision()` eingesetzt, denn niemand sollte das Rad doppelt erfinden müssen.
+
+Da die roten Luftblasen -- abgesehen davon, daß sie »böse« sind -- sich nur in Nuancen von den »guten« Blasen unterscheiden, leben sie in einer Tochterklasse `RedBubble`, die von `Bubble` erbt:
+
+~~~python
+class RedBubble(Bubble):
+  
+  def __init__(self):
+    super().__init__()
+    self.reset()
+  
+  def reset(self):
+    self.im = "bubblered"
+    self.x = randint(-170, 170)
+    self.y = randint(100, 500)
+    self.w = randint(10, 20)
+    self.h = self.w
+    self.r = self.w//2
+    self.speed = uniform(1.5, 2.5)
+~~~
+
+So ist die Klasse recht kurz geraten.
+
+Auch das Hauptprogramm ist vergleichsweise kurz, einen großen Teil machen die *Credits* in den Kommentaren am Anfang aus:
+
+~~~python
+# Dancing Crab
+# Jörg Kantel 2024
+# Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.
+# Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab
+# Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors
+# Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack
+
+from random import randint, uniform
+import math
+
+NUM_BUBBLES = 50
+NUM_RBUBBLES = 5
+bubbles = []
+redbubbles = []
+
+def init():
+  global crab, bubble, rb
+  for _ in range(NUM_BUBBLES):
+    bubble = Bubble()
+    bubbles.append(bubble)
+  for _ in range(NUM_RBUBBLES):
+    rb = RedBubble()
+    redbubbles.append(rb)
+  crab = Crab()
+
+def update():
+  for bubble in bubbles:
+    bubble.move()
+    if bubble.is_circle_collision(crab):
+      bubble.reset()
+      crab.score += 1
+  for rb in redbubbles:
+    rb.move()
+    if rb.is_circle_collision(crab):
+      rb.reset()
+      crab.score -= 10
+  crab.move()
+  if crab.score < 0:
+    print("GAME OVER!")
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(49, 197, 244)")
+  screen.drawSprite("background", 0, 0, screen.width, screen.height, 640, 416)
+  for bubble in bubbles:
+    bubble.display()
+  for rb in redbubbles:
+    rb.display()
+  crab.display()
+  screen.drawText("Score: " + str(crab.score), 120, 80, 20, "rgb(250, 25, 25)")
+~~~
+
+Es gibt auch hier nichts wirklich Neues, alle Methoden der microScript-API wurden in den vorherigen Tutorials schon behandelt. Das gilt auch für die `util`-Datei, die nur aus der Brython-spezifischen Methode `check_input()` besteht (die Methode `wrap()` habe ich für die kleine Krabbe nicht benötigt):
+
+~~~python
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Da die Anzahl meiner microScript/Python-Tutorials (hoffentlich) immer weiter wächst, führe ich die bisher erschienenen am Ende des Artikels einzeln auf, damit Ihr (und ich) sie wiederfindet:
+
+- [MicroStudio und Python: Tutorial 1](https://kantel.github.io/posts/2024032201_microstudio_python_1/): Hallo Brython!
+[MicroStudio und Python (Teil 2)](https://kantel.github.io/posts/2024032401_microstudio_python_2/): Zombie Apokalypse
+MicroStudio und Python (Teil 3): Dancing Crab
+
+Die Reihe wird sicher fortgesetzt. Und natürlich habe ich zu Eurer Erbauung dieses dritte Tutorial auch wieder [auf meinen microStudio-Account hochgeladen](https://microstudio.dev/projects/pythontutorial3/code/). Habt Spaß damit!

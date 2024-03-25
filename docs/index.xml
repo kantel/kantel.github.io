@@ -10,7 +10,656 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Mon, 25 Mar 2024 16:05:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 25 Mar 2024 19:55:00 GMT</lastBuildDate>
+<item>
+  <title>MicroStudio und Python (Teil 3): Dancing Crab</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024032502_microstudio_python_3/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53611256725/"><img src="https://kantel.github.io/posts/2024032502_microstudio_python_3/images/dancingcrab-b.jpg" class="img-fluid"></a></p>
+<p>Heute habe ich das dritte Tutorial meiner kleinen Reihe zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> mit Python/<a href="https://brython.info/">Brython</a> fertiggestellt. Dafür habe ich eine kleine, rote Krabbe mit Luftblasen tanzen lassen. Wenn sie mit einer »normalen« (durchsichtigen weißen) Luftblase zusammenstößt, bekommt sie einen Punkt gutgeschrieben. Kollidiert sie dagegen mit einer roten Luftblase, werden ihr zehn Punkte abgezogen. Sinkt das Punktekonto der Krabbe unter Null, ist das Spiel zu Ende.</p>
+<iframe src="dancingcrab/index.html" class="if16_9" name="Dancing Crab">
+</iframe>
+<p>Die Idee der tanzenden Krabbe ist nicht meine und nicht wirklich neu. Sie basiert auf einem Spiel, das <em>Hauke Fehr</em> schon 2019 in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> implementiert hatte<sup>1</sup>, und auch ich hatte, inspiriert davon, ziemlich genau vor einem Jahr auch schon einmal aus einer spontanen Laune heraus eine <a href="https://kantel.github.io/posts/2023041403_dancing_crab_3/">Impementierung</a> in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> vorgenommen.</p>
+<p>Nun also das Ganze noch einmal in microStudio. Dafür habe ich als erstes der Krabbe eine eigene Klasse spendiert:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Crab:</span>
+<span id="cb1-2">  </span>
+<span id="cb1-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb1-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb1-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">65</span></span>
+<span id="cb1-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-11">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"crab"</span></span>
+<span id="cb1-12">    </span>
+<span id="cb1-13">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LEFT"</span>):</span>
+<span id="cb1-15">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-16">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check border</span></span>
+<span id="cb1-17">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span>:</span>
+<span id="cb1-18">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span></span>
+<span id="cb1-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RIGHT"</span>):</span>
+<span id="cb1-20">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-21">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check border</span></span>
+<span id="cb1-22">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span>:</span>
+<span id="cb1-23">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span></span>
+<span id="cb1-24">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># wrap(self)</span></span>
+<span id="cb1-25">  </span>
+<span id="cb1-26">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-27">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h)</span></code></pre></div>
+<p>Die Bewegung der Krabbe ist einfach, sie kann nur nach rechts oder links krabbeln und auch nicht aus dem Fenster laufen (sie wird in <code>move()</code> bei <img src="https://latex.codecogs.com/png.latex?-160"> oder <img src="https://latex.codecogs.com/png.latex?160"> zum Stoppen gebracht).</p>
+<p>Die Luftblasen, die sich in meinem Programm entgegen den Gesetzen der Physik nach unten statt nach oben bewegen (hey, das ist <strong>mein</strong> Spiel, da mache ich die Gesetze!), sind ebenfalls eine eigene Klasse:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Bubble:</span>
+<span id="cb2-2">  </span>
+<span id="cb2-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.reset()</span>
+<span id="cb2-5">    </span>
+<span id="cb2-6">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> reset(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bubbleblue1"</span></span>
+<span id="cb2-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">170</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">170</span>)</span>
+<span id="cb2-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>)</span>
+<span id="cb2-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb2-11">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w</span>
+<span id="cb2-12">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-13">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> uniform(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span>)</span>
+<span id="cb2-14">    </span>
+<span id="cb2-15">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> is_circle_collision(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, other):</span>
+<span id="cb2-16">    distance <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.dist([<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y], [other.x, other.y])</span>
+<span id="cb2-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> distance <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> other.r:</span>
+<span id="cb2-18">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb2-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb2-20">  </span>
+<span id="cb2-21">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-22">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb2-23">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>:</span>
+<span id="cb2-24">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.reset()</span>
+<span id="cb2-25">      </span>
+<span id="cb2-26">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-27">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h)</span></code></pre></div>
+<p>Neu ist hierbei, daß ich gelernt habe, daß das <code>math</code>-Modul in Python seit der Version Python&nbsp;3.8 ebenfalls eine <a href="https://www.w3schools.com/python/ref_math_dist.asp"><code>dist()</code>-Methode besitzt</a>, die den euklidischen Abstand zwischen zwei Punkten berechnet. Sie erwartet allerdings die Punktekoordinaten als Liste, dafür kann sie aber die Abstände zwischen beliebig-dimensionalen Punkten berechnen (beide Punkte müssen aber die gleiche Dimension besitzen). Also habe ich sie in der Methode <code>is_circle_collision()</code> eingesetzt, denn niemand sollte das Rad doppelt erfinden müssen.</p>
+<p>Da die roten Luftblasen – abgesehen davon, daß sie »böse« sind – sich nur in Nuancen von den »guten« Blasen unterscheiden, leben sie in einer Tochterklasse <code>RedBubble</code>, die von <code>Bubble</code> erbt:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> RedBubble(Bubble):</span>
+<span id="cb3-2">  </span>
+<span id="cb3-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-4">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">super</span>().<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>()</span>
+<span id="cb3-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.reset()</span>
+<span id="cb3-6">  </span>
+<span id="cb3-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> reset(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bubblered"</span></span>
+<span id="cb3-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">170</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">170</span>)</span>
+<span id="cb3-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">500</span>)</span>
+<span id="cb3-11">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb3-12">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w</span>
+<span id="cb3-13">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-14">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> uniform(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.5</span>)</span></code></pre></div>
+<p>So ist die Klasse recht kurz geraten.</p>
+<p>Auch das Hauptprogramm ist vergleichsweise kurz, einen großen Teil machen die <em>Credits</em> in den Kommentaren am Anfang aus:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dancing Crab</span></span>
+<span id="cb4-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Jörg Kantel 2024</span></span>
+<span id="cb4-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Inspiriert von Heiko Fehr: »Let's Code Python«, Bonn (Rheinwerk-Verlag) 2019, Seiten 247ff.</span></span>
+<span id="cb4-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Krabbe: Nitin Chowdary (CC0), https://opengameart.org/content/crab</span></span>
+<span id="cb4-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Luftblasen: HorrorPen (CC-BY 3.0), https://opengameart.org/content/bubbles8-colors</span></span>
+<span id="cb4-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bildhintergrund: Kenney.nl Fish Pack (CC0), https://www.kenney.nl/assets/fish-pack</span></span>
+<span id="cb4-7"></span>
+<span id="cb4-8"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint, uniform</span>
+<span id="cb4-9"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb4-10"></span>
+<span id="cb4-11">NUM_BUBBLES <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span></span>
+<span id="cb4-12">NUM_RBUBBLES <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb4-13">bubbles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb4-14">redbubbles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb4-15"></span>
+<span id="cb4-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> init():</span>
+<span id="cb4-17">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> crab, bubble, rb</span>
+<span id="cb4-18">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(NUM_BUBBLES):</span>
+<span id="cb4-19">    bubble <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Bubble()</span>
+<span id="cb4-20">    bubbles.append(bubble)</span>
+<span id="cb4-21">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(NUM_RBUBBLES):</span>
+<span id="cb4-22">    rb <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> RedBubble()</span>
+<span id="cb4-23">    redbubbles.append(rb)</span>
+<span id="cb4-24">  crab <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Crab()</span>
+<span id="cb4-25"></span>
+<span id="cb4-26"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update():</span>
+<span id="cb4-27">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> bubble <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> bubbles:</span>
+<span id="cb4-28">    bubble.move()</span>
+<span id="cb4-29">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> bubble.is_circle_collision(crab):</span>
+<span id="cb4-30">      bubble.reset()</span>
+<span id="cb4-31">      crab.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb4-32">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> rb <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> redbubbles:</span>
+<span id="cb4-33">    rb.move()</span>
+<span id="cb4-34">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> rb.is_circle_collision(crab):</span>
+<span id="cb4-35">      rb.reset()</span>
+<span id="cb4-36">      crab.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span></span>
+<span id="cb4-37">  crab.move()</span>
+<span id="cb4-38">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> crab.score <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb4-39">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GAME OVER!"</span>)</span>
+<span id="cb4-40"></span>
+<span id="cb4-41"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb4-42">  screen.clear()</span>
+<span id="cb4-43">  screen.fillRect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, screen.width, screen.height, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(49, 197, 244)"</span>)</span>
+<span id="cb4-44">  screen.drawSprite(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"background"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, screen.width, screen.height, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">416</span>)</span>
+<span id="cb4-45">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> bubble <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> bubbles:</span>
+<span id="cb4-46">    bubble.display()</span>
+<span id="cb4-47">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> rb <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> redbubbles:</span>
+<span id="cb4-48">    rb.display()</span>
+<span id="cb4-49">  crab.display()</span>
+<span id="cb4-50">  screen.drawText(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Score: "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(crab.score), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(250, 25, 25)"</span>)</span></code></pre></div>
+<p>Es gibt auch hier nichts wirklich Neues, alle Methoden der microScript-API wurden in den vorherigen Tutorials schon behandelt. Das gilt auch für die <code>util</code>-Datei, die nur aus der Brython-spezifischen Methode <code>check_input()</code> besteht (die Methode <code>wrap()</code> habe ich für die kleine Krabbe nicht benötigt):</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> check_input(obj, val):</span>
+<span id="cb5-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hasattr</span>(obj, val):</span>
+<span id="cb5-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> obj[val] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb5-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span></code></pre></div>
+<p>Da die Anzahl meiner microScript/Python-Tutorials (hoffentlich) immer weiter wächst, führe ich die bisher erschienenen am Ende des Artikels einzeln auf, damit Ihr (und ich) sie wiederfindet:</p>
+<ul>
+<li><a href="https://kantel.github.io/posts/2024032201_microstudio_python_1/">MicroStudio und Python: Tutorial 1</a>: Hallo Brython! <a href="https://kantel.github.io/posts/2024032401_microstudio_python_2/">MicroStudio und Python (Teil 2)</a>: Zombie Apokalypse MicroStudio und Python (Teil 3): Dancing Crab</li>
+</ul>
+<p>Die Reihe wird sicher fortgesetzt. Und natürlich habe ich zu Eurer Erbauung dieses dritte Tutorial auch wieder <a href="https://microstudio.dev/projects/pythontutorial3/code/">auf meinen microStudio-Account hochgeladen</a>. Habt Spaß damit!</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Hauke Fehr: <em><a href="https://www.rheinwerk-verlag.de/lets-code-python/">Let’s code Python</a></em>, Bonn (Rheinwerk Computing) 2019, Seiten 247 ff.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>microStudio</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024032502_microstudio_python_3/</guid>
+  <pubDate>Mon, 25 Mar 2024 19:55:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024032502_microstudio_python_3/images/dancingcrab.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Freie Tiles und Sprites für Minimalisten</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4409,29 +5058,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024031402_freies_sofa_buergerstrasse/</guid>
   <pubDate>Thu, 14 Mar 2024 15:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024031402_freies_sofa_buergerstrasse/images/freiessofa.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Microsoft veröffentlicht Update 16.83 für Office for Mac</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024031401_office_mac_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53581278191/"><img src="https://kantel.github.io/posts/2024031401_office_mac_update/images/futuristicoffice-b.jpg" class="img-fluid"></a></p>
-<p>Microsoft liefert mit dem Update auf 16.83 für Office 365, 2021 und 2019 for Mac natürlich auch wieder <a href="https://docs.microsoft.com/en-us/officeupdates/release-notes-office-for-mac">aktuelle Sicherheitskorrekturen</a>.</p>
-<p>Sofern Office nicht schon von sich aus darauf hinweist, erhält man die Korrekturen am einfachsten über Microsofts AutoUpdate – in einem beliebigen Office-Programm über Menü: <code>Hilfe &gt; Auf  Updates überprüfen</code>. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53581278191/">Office Lady</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A young lady sits in an office at a desk in front of a huge monitor with lots of colorful diagrams. There is a cup of coffee next to her and a computer keyboard in front of the monitor. On the wall there are shelves with files and books. The spring sun shines through a large window. colored french comic style</em>«. Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Stable Diffusion XL, Style: Scifi Magic + Belgian School.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024031401_office_mac_update/</guid>
-  <pubDate>Thu, 14 Mar 2024 15:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024031401_office_mac_update/images/futuristicoffice.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
