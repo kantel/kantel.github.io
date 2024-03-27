@@ -1,0 +1,62 @@
+---
+title: "MicroStudio-Tutorial (Teil&nbsp;4): Der fliegende Dachs -- jetzt auch in Python"
+author: "Jörg Kantel"
+date: "2024-03-27 19:30:00"
+categories: [microStudio, Python, Spieleprogrammierung]
+image: "images/flyingbadgerpython.jpg"
+---
+
+[![](images/flyingbadgerpython-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53539184633/)
+
+Mein Wechsel von [microScript](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html) nach Python/[Brython](https://brython.info/) in meiner kleinen Tutorialreihe zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) bedingt, daß ich auch einige meiner ersten Tutorials neu implementieren mußte. Dazu gehört auch [mein allererster Schritt mit microStudio](https://kantel.github.io/posts/2024022001_microstudio_1st_steps/), der einen kleinen Dachs im roten Morgenmantel im Ballon über einen Wüstenhimmel schweben ließ.
+
+<iframe src="pythontutorial4/index.html" class="if16_9" name="Flying Badger"></iframe>
+
+Viel hat hier nach dem Wechsel zu Brython nicht getan, da das Skript ohne Interaktion mit dem Nutzer auskommt, und auch sonst so einfach ist, daß nur wenige Zeilen Code benötigt werden:
+
+~~~python
+class Badger:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 40
+    self.w = 42
+    self.h = 75
+    self.im = "flyingbadger"
+    self.speed = 0.5
+  
+  def move(self):
+    badger.x += badger.speed
+    if badger.x >= screen.width//2 + badger.w:
+      badger.x = -screen.width//2 - badger.w
+  
+  def display(self):
+    screen.drawSprite(self.im, badger.x, badger.y, badger.w, badger.h)
+
+def init():
+  global badger
+  badger = Badger()
+
+def update():
+  badger.move()
+
+def draw():
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(255, 255, 255)")
+  screen.drawSprite("desert", 0, 0, screen.width, screen.height)
+  badger.display()
+~~~
+
+Aber da dieses Progrämmchen die Basis für weitere, geplante Tutorien bildet, soll es nicht nur hier in diesem ~~Blog~~ Kritzelheft abgedruckt werden, sondern ich habe es auch [auf meine microScript-Seiten hochgeladen](https://microstudio.dev/projects/pythontutorial4/code/), wo Ihr neben dem Quellcode auch die verwendeten Assets findet.
+
+Bisher sind ein meiner Reihe »microStudio mit Python« diese Tutorials erschienen:
+
+- MicroStudio und Python: Tutorial 1: [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): Flying Badger
+
+Die Reihenfolge der Beiträge ist wegen meines Wechsels von microScript nach Python ein wenig durcheinander geraten. Ich werde sie daher bei Gelegenheit noch umsortieren. *Still digging!*
+
+---
+
+**Bild**: *[Flying Badger](https://www.flickr.com/photos/schockwellenreiter/53539184633/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*A badger in a red dressing gown floats over the desert, sitting in the Passanger basket of a blue hot air balloon*«. Modell: Stable Diffusion XL, Style: Cel Shaded + Icon Stylizer.

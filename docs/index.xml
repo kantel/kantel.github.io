@@ -10,7 +10,170 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 27 Mar 2024 17:35:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 27 Mar 2024 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>MicroStudio-Tutorial (Teil 4): Der fliegende Dachs – jetzt auch in Python</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024032703_flying_badger_python/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53539184633/"><img src="https://kantel.github.io/posts/2024032703_flying_badger_python/images/flyingbadgerpython-b.jpg" class="img-fluid"></a></p>
+<p>Mein Wechsel von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a> nach Python/<a href="https://brython.info/">Brython</a> in meiner kleinen Tutorialreihe zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> bedingt, daß ich auch einige meiner ersten Tutorials neu implementieren mußte. Dazu gehört auch <a href="https://kantel.github.io/posts/2024022001_microstudio_1st_steps/">mein allererster Schritt mit microStudio</a>, der einen kleinen Dachs im roten Morgenmantel im Ballon über einen Wüstenhimmel schweben ließ.</p>
+<iframe src="pythontutorial4/index.html" class="if16_9" name="Flying Badger">
+</iframe>
+<p>Viel hat hier nach dem Wechsel zu Brython nicht getan, da das Skript ohne Interaktion mit dem Nutzer auskommt, und auch sonst so einfach ist, daß nur wenige Zeilen Code benötigt werden:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Badger:</span>
+<span id="cb1-2">  </span>
+<span id="cb1-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span></span>
+<span id="cb1-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span></span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75</span></span>
+<span id="cb1-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"flyingbadger"</span></span>
+<span id="cb1-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span></span>
+<span id="cb1-10">  </span>
+<span id="cb1-11">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-12">    badger.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> badger.speed</span>
+<span id="cb1-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> badger.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> badger.w:</span>
+<span id="cb1-14">      badger.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> badger.w</span>
+<span id="cb1-15">  </span>
+<span id="cb1-16">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-17">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, badger.x, badger.y, badger.w, badger.h)</span>
+<span id="cb1-18"></span>
+<span id="cb1-19"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> init():</span>
+<span id="cb1-20">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> badger</span>
+<span id="cb1-21">  badger <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Badger()</span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update():</span>
+<span id="cb1-24">  badger.move()</span>
+<span id="cb1-25"></span>
+<span id="cb1-26"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb1-27">  screen.fillRect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, screen.width, screen.height, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(255, 255, 255)"</span>)</span>
+<span id="cb1-28">  screen.drawSprite(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"desert"</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, screen.width, screen.height)</span>
+<span id="cb1-29">  badger.display()</span></code></pre></div>
+<p>Aber da dieses Progrämmchen die Basis für weitere, geplante Tutorien bildet, soll es nicht nur hier in diesem <del>Blog</del> Kritzelheft abgedruckt werden, sondern ich habe es auch <a href="https://microstudio.dev/projects/pythontutorial4/code/">auf meine microScript-Seiten hochgeladen</a>, wo Ihr neben dem Quellcode auch die verwendeten Assets findet.</p>
+<p>Bisher sind ein meiner Reihe »microStudio mit Python« diese Tutorials erschienen:</p>
+<ul>
+<li>MicroStudio und Python: Tutorial 1: <a href="https://kantel.github.io/posts/2024032201_microstudio_python_1/">Hallo Brython</a>!</li>
+<li>MicroStudio und Python (Teil 2): <a href="https://kantel.github.io/posts/2024032401_microstudio_python_2/">Zombie Apokalypse</a></li>
+<li>MicroStudio und Python (Teil 3): <a href="https://kantel.github.io/posts/2024032502_microstudio_python_3/">Dancing Crab</a></li>
+<li>MicroStudio und Python (Teil 4): Flying Badger</li>
+</ul>
+<p>Die Reihenfolge der Beiträge ist wegen meines Wechsels von microScript nach Python ein wenig durcheinander geraten. Ich werde sie daher bei Gelegenheit noch umsortieren. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53539184633/">Flying Badger</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A badger in a red dressing gown floats over the desert, sitting in the Passanger basket of a blue hot air balloon</em>«. Modell: Stable Diffusion XL, Style: Cel Shaded + Icon Stylizer.</p>
+
+
+
+ ]]></description>
+  <category>microStudio</category>
+  <category>Python</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024032703_flying_badger_python/</guid>
+  <pubDate>Wed, 27 Mar 2024 18:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024032703_flying_badger_python/images/flyingbadgerpython.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Vorfrühling im Britzer Garten</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -5043,31 +5206,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024031602_pumpkin_apokalypse/</guid>
   <pubDate>Sat, 16 Mar 2024 19:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024031602_pumpkin_apokalypse/images/roguelike02.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Neuköllner Bilderbogen: Sonnenuntergang im Carl-Weder-Park</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024031601_sonnenuntergang/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53591582349/"><img src="https://kantel.github.io/posts/2024031601_sonnenuntergang/images/sonnenuntergangcwp-b.jpg" class="img-fluid"></a></p>
-<p>Die Tage werden wieder länger und damit die Sonnenuntergänge auch wieder photogener (wenn das Wetter – so wie heute – mitspielt).</p>
-<hr>
-<p><strong>Photo</strong> (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>) 2024: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>Neukölln</category>
-  <category>Neuköllner Bilderbogen</category>
-  <category>Parks und Gärten</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2024031601_sonnenuntergang/</guid>
-  <pubDate>Sat, 16 Mar 2024 17:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024031601_sonnenuntergang/images/sonnenuntergangcwp.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
