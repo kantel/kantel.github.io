@@ -1,0 +1,209 @@
+---
+title: "MicroStudio-Tutorial 5: PVector2 und »The Nature of Code« mit microStudio?"
+author: "Jörg Kantel"
+date: "2024-03-28 20:15:00"
+categories: [microStudio, Python, Brython, Nature of Code, Creative Coding, Spieleprogrammierung]
+image: "images/pvector2stage1.jpg"
+---
+
+[![](images/pvector2stage1-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53617311650/)
+
+Je mehr und je länger ich mich mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) in der Python/[Brython](https://brython.info/)-Variante beschäftige, um so mehr gelange ich zu der Überzeugung, daß sich das Teil für viel mehr eignet, als nur Spiele zu programmieren (obwohl auch das schon eine anspruchsvolle Aufgabe ist).
+
+Mit der Nase darauf gestoßen wurde ich, als in meinen Feedreader die Videos »[Vector motion with the math.Vector2](https://www.youtube.com/watch?v=8V4aAQ8VwCI)« und »[Rotating an image around its center with arctan2 and math.Vector2](https://www.youtube.com/watch?v=cx0nTsrPt0M) gespült wurden[^1]. Sie behandeln die (relativ neue) [Klasse `math.Vector2`](https://www.pygame.org/docs/ref/math.html#pygame.math.Vector2) in [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html):
+
+[^1]: Die Videos sind Teil einer Monsterplaylist »[Game Programming](https://www.youtube.com/playlist?list=PLTwy92rWKPiHTwXoyygjW0ZQ1WfkEwhqV)«, bestehend aus (Stand heute) 66 Tutorials (das letzte Video ist vor fünf Tagen veröffentlicht worden, es kann also mit neuen Tutorials gerechnet werden). Und auch alle anderen Video-Tutorials des Kanals »*[DesignCodeDebugRepeat](https://www.youtube.com/@DesignCodeDebugRepeat)*« (dahinter steckt die Autorin *Margaret Burke*) sind beachtenswert. Ich habe ihn daher abonniert.
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/8V4aAQ8VwCI?si=oLcRgy9u0cOIGsxD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Das rief Erinnerungen in mir wach: Ich hatte doch auch einmal -- angelehnt an [Processings PVector-Klasse](https://www.processing.org/reference/PVector.html) eine [2D-Vector-Klasse](http://blog.schockwellenreiter.de/2018/11/2018112301.html) in Pure-Python [implementiert](http://blog.schockwellenreiter.de/2018/11/2018111902.html), die ich in der [Nodebox](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodebox.html), in der [Arcade-Bibliothek](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html) (hier ein [Beispiel](http://blog.schockwellenreiter.de/2020/06/2020062801.html)), in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) (auch ein [Beispiel](http://blog.schockwellenreiter.de/2021/02/2021020801.html)) und zuletzt in [P5 (Python)](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5py.html) (ein [letztes Beispiel](http://blog.schockwellenreiter.de/2018/11/2018111902.html)) eingesetzt hatte. Hinter all dem stand die Überlegung, Python-Versionen der Programme aus *Daniel Shiffmans* genialem Buch »[The Nature of Code](https://natureofcode.com/)« (das dieses Jahr in einer lang erwarteten Neuauflage herauskommen soll) zu schaffen.
+
+Und so kam in mir die Frage auf: Geht das nicht auch mit microStudio und Brython? Also habe ich ein altes [Beispiel hervorgekramt](http://blog.schockwellenreiter.de/2018/11/2018112401.html) und testweise im Rahmen meiner Tutorialreihe implementiert. Spoiler: Es geht!
+
+Zuerst habe ich die Klasse `Mover` implementiert:
+
+~~~python
+class Mover:
+  
+  def __init__(self):
+    self.loc = PVector2(uniform(-screen.width//2, screen.width//2), uniform(-screen.height//2, screen.height//2))
+    self.vel = PVector2(uniform(-5, 5), uniform(-5, 5))
+    self.r = 15
+    self.c = "rgba(255, 100, 255, 1.0)"
+    self.stroke = "rgb(0, 0, 0)"
+    
+  def move(self):
+    self.loc.add(self.vel)
+    self.check_boundaries()
+  
+  def display(self):
+    screen.fillRound(self.loc.x, self.loc.y, 2*self.r, 2*self.r, self.c)
+    screen.drawRound(self.loc.x, self.loc.y, 2*self.r, 2*self.r, self.stroke)
+  
+  def check_boundaries(self):
+    if self.loc.x >= screen.width//2 + 2*self.r:
+      self.loc.x = -screen.width//2 - 2*self.r
+    elif self.loc.x <= -screen.width//2 - 2*self.r:
+      self.loc.x = screen.width//2 + 2*self.r
+    if self.loc.y >= screen.height//2 + 2*self.r:
+      self.loc.y = -screen.height//2 - 2*self.r
+    elif self.loc.y <= -screen.height//2 -2*self.r:
+      self.loc.y = screen.height//2 + 2*self.r
+~~~
+
+Hier habe ich ausgenutzt, daß microStudio -- wie Ihr in der [API-Dokumentation](https://microstudio.dev/documentation/API/) unter »Drawing Shapes« nachlesen könnt, eigentlich alle Methoden besitzt, um graphische Primitive wie Linien, Rechtecke, Kurven, Kreise und Ellipsen etc. zeichnen zu können. Um den Kreis mit einem Rand zu versehen, habe ich auf einen Trick zurückgegriffen: Ich zeichne erst mit `fillRound()` einen ausgefüllten Kreis und ziehe dann an der gleichen Stelle mit `drawRound()` noch einmal die Umrisse dieses Kreises nach.
+
+Meine PVector-Klasse habe ich einfach aus meinem [GitHub-Repositrium](https://github.com/kantel/pvector) kopiert, lediglich den Namen habe ich -- zur Verdeutlichung, das es sich um eine reine 2D-Implementierung handelt -- in `PVector2` geändert:
+
+~~~python
+import math
+import random
+
+class PVector2():
+    
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+
+  def set(self, v):
+    self.x = v.x
+    self.y = v.y
+    
+  def get(self):
+    v = PVector2(self.x, self.y)
+    return v
+
+  def add(self, v):
+    self.x += v.x
+    self.y += v.y
+        
+  def sub(self, v):
+    self.x -= v.x
+    self.y -= v.y
+    
+  # Multiplikation mit einem Skalar
+  def mult(self, n):
+    self.x *= n
+    self.y *= n
+    
+  # Division durch einen Skalar
+  def div(self, n):
+    self.x /= n
+    self.y /= n
+
+  # Elementweise Multiplikation eines Vektor mit einem anderen Vektor
+  def mult2(self, v):
+    self.x *= v.x
+    self.y *= v.y
+
+  # Elementweise Division eines Vektor mit einem anderen Vektor
+  def div2(self, v):
+    self.x /= v.x
+    self.y /= v.y
+
+  # Magnitude
+  def mag(self):
+    return math.sqrt(self.x*self.x + self.y*self.y)
+    
+  # Normalisierung
+  def normalize(self):
+    m = self.mag()
+    if (m != 0):
+      self.div(m)
+
+# Berechnung der euklidischen Distanz zwischen zwei Vektoren
+  def dist(self, v):
+    dx = self.x - v.x
+    dy = self.y - v.y
+    return math.sqrt(dx*dx + dy+dy)
+    
+  # Berechnung des Skalarprodukts (inneren Produkts) eines Vektors
+  def dot(self, v):
+    return self.x*v.x + self.y*v.y
+    
+  # Begrenzt die Magnitude eines Vektors auf max
+  def limit(self, max):
+    if self.mag() > max:
+      self.normalize()
+      self.mult(max)
+    
+  # Berechnet den Winkel der Rotation eines Vektors
+  def heading(self):
+    angle = math.atan2(-self.y, self.x)
+    return -1*angle
+
+  def __add__(self, other):
+    x = self.x + other.x
+    y = self.y + other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __sub__(self, other):
+    x = self.x - other.x
+    y = self.y - other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __str__(self):
+    return "[" + str(self.x) + ", " + str(self.y) + "]"
+        
+  @classmethod
+  def random2D(cls):
+    x = random.uniform(-1, 1)
+    y = random.uniform(-1, 1)
+    v = cls(x, y)
+    v.normalize()
+    return v
+
+  # Klassenmethoden: Skalare Multiplikation und Division
+    
+  # Multiplikation mit einem Skalar
+  def smult(v, n):
+    x = v.x*n
+    y = v.y*n
+    result = PVector2(x, y)
+    return result
+
+  # Division mit einem Skalar
+  def sdiv(v, n):
+    if n != 0:
+      x = v.x/n
+      y = v.y/n
+      result = PVector2(x, y)
+      return result
+    else:
+      print("Error. Divison durch Null!")
+~~~
+
+Das Hauptprogramm ist durch diese Modularisierung -- so wie ich es liebe -- wieder sehr übersichtlich geraten:
+
+~~~python
+from random import uniform
+
+def init():
+  global mover
+  mover = Mover()
+
+def update():
+  mover.move()
+
+def draw():
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(32, 62, 80)")
+  mover.display()
+~~~
+
+Es passiert ja auch noch nicht viel: Nach jedem Neustart wird ein Kreis über den Bildschirm gejagt, der -- wenn er die Grenzen des Fensters erreicht --, an der gegenüberliegenden Seite wieder auftaucht. Aber in diesem einfachen Beispiel liegt das große Versprechen, daß in microStudio und Python/Brython ein komlettes »Nature of Code« liegen könnte.
+
+Und Vorsicht: Die PVector2-Klasse ist noch nicht wirklich ausgetestet. Ich werde mit ihr noch etliche Experimente durchführen müssen.
+
+Damit ist die Liste meiner Tutorials zu microStudio mit Python um ein weiteres Element gewachsen:
+
+- MicroStudio und Python: Tutorial 1: [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): PVector2 und »The Nature of Code«
+
+Auch dieses kleine Skript habe ich unter dem Titel »[Python Tutorial 5](https://microstudio.dev/projects/pythontutorial5/code/)« auf meinem [microStudio-Account](https://microstudio.dev/projects/pythontutorial5/code/) hochgeladen, damit Ihr damit spielen könnt. Und wer mir wirklich einen Gefallen tun will, der teste die PVector2-Klasse. Berichte in meinen Kommentaren sind willkommen.
+
+Ich muß gestehen, so viel Spaß wie ich in den letzten Tagen mit microStudio und Python hatte, hatte ich schon lange nicht mehr. *Still digging!*
