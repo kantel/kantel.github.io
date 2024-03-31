@@ -10,7 +10,395 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sun, 31 Mar 2024 14:15:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 31 Mar 2024 16:45:00 GMT</lastBuildDate>
+<item>
+  <title>Bouncing Balls mit microStudio (Python)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53623373035/"><img src="https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/images/bballs6-b.jpg" class="img-fluid"></a></p>
+<p>Die vor ein paar Tagen <a href="https://kantel.github.io/posts/2024032801_microstudio_noc_1/">hier aufgekeimte Idee</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> in der Python/<a href="https://brython.info/">Brython</a>-Variante als Grundlage für eine (angepaßte und aufgebohrte) Python-Version von <em>Daniel Shiffmans</em> genialem Buch »<a href="https://natureofcode.com/">The Nature of Code</a>« zu nehmen, hat mich einfach nicht in Ruhe gelassen. Zumal die noch in diesem Jahr erscheinende Neufassung (in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>) des Buches extra einen Anhang »<a href="https://natureofcode.com/appendix-creature/">Creature Design</a>« besitzt. Und das ist in microStudios Sprite-Editor schon mehr oder weniger fest eingbaut.</p>
+<p>Also habe ich erst einmal ein <a href="http://blog.schockwellenreiter.de/2021/02/2021020801.html">altes Beispiel</a>, das ich aufgrund ähnlicher Überlegungen in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> implementiert hatte (bevor ich mich wegen der unklaren Lizenz TigerJython <a href="http://blog.schockwellenreiter.de/2022/10/2022103001.html">den Laufpaß gab</a>) und dieses (inklusive PVecotr2) nach microStudio portiert.</p>
+<iframe src="bball6/index.html" class="if16_9" name="Bouncing Balls">
+</iframe>
+<p>Das ging – wie ich es eigentlich auch erwartet hatte – völlig schmerzfrei über die Bühne, Zuerst hatte ich eine Klasse <code>Ball</code> angelegt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint, uniform, choice</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Ball:</span>
+<span id="cb1-4">  </span>
+<span id="cb1-5">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-8">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)</span>
+<span id="cb1-9">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb1-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb1-11">    vel_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>)</span>
+<span id="cb1-12">    vel_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>)</span>
+<span id="cb1-13">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(vel_x, vel_y)</span>
+<span id="cb1-14">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> choice(colors)</span>
+<span id="cb1-15">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.stroke <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(0, 0, 0)"</span></span>
+<span id="cb1-16"></span>
+<span id="cb1-17">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-18">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel)</span>
+<span id="cb1-19">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check border</span></span>
+<span id="cb1-20">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">or</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d:</span>
+<span id="cb1-21">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">or</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d:</span>
+<span id="cb1-23">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-24">      </span>
+<span id="cb1-25">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-26">    screen.fillRound(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.c)</span>
+<span id="cb1-27">    screen.setLineWidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-28">    screen.drawRound(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.stroke)</span>
+<span id="cb1-29">    screen.setLineWidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div>
+<p>Neu ist hierbei lediglich, daß die Methode <code>setLineWidth()</code> auf alle graphischen Primitive angewendet werden kann, also auch beim Rand eines Kreises (<code>drawRound()</code>). Ich habe ihn daher testweise auf zwei Pixel gesetzt. Man sollte allerdings nicht verbessen, ihn anschließend mit <code>setLineWidth(1)</code> auf seinen Default-Wert zurückzusetzen. Die Ränder der Kreise erscheinen dadurch ziemlich »fett«, aber was nimmt man nicht alles in Kauf, um neue Dinge auszuprobieren?</p>
+<p>Dadurch, daß die Klasse <code>Ball</code> eine eigene <code>move()</code>- und eine eigene <code>display()</code>-Methode besitzt, ist das Hauptprogramm wieder recht übersichtlich geraten:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">colors <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(230, 96, 55, 200)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(17, 42, 106, 200)"</span>,</span>
+<span id="cb2-2">          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(183, 116, 64, 200)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(212, 251, 69, 200)"</span>,</span>
+<span id="cb2-3">          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(252, 75, 200, 200)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(159, 53, 233, 200)"</span>,</span>
+<span id="cb2-4">          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(57, 218, 56, 200)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(67, 253, 133, 200)"</span>,</span>
+<span id="cb2-5">          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(78, 148, 42, 200)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(67, 254, 211, 200)"</span>,</span>
+<span id="cb2-6">          <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(74, 143, 186, 200)"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgba(52, 99, 234, 200)"</span>]</span>
+<span id="cb2-7">balls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb2-8">NUM_BALLS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span id="cb2-9"></span>
+<span id="cb2-10"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> init():</span>
+<span id="cb2-11">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">global</span> ball</span>
+<span id="cb2-12">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(NUM_BALLS):</span>
+<span id="cb2-13">    ball <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Ball()</span>
+<span id="cb2-14">    balls.append(ball)</span>
+<span id="cb2-15"></span>
+<span id="cb2-16"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> update():</span>
+<span id="cb2-17">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> ball <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> balls:</span>
+<span id="cb2-18">    ball.move()</span>
+<span id="cb2-19">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> check_input(keyboard.press, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SPACE"</span>):</span>
+<span id="cb2-20">    balls.clear()</span>
+<span id="cb2-21">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RESTART"</span>)</span>
+<span id="cb2-22">    init()</span>
+<span id="cb2-23"></span>
+<span id="cb2-24"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb2-25">  screen.clear()</span>
+<span id="cb2-26">  screen.fillRect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, screen.width, screen.height, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(234, 218, 184)"</span>)</span>
+<span id="cb2-27">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> ball <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">in</span> balls:</span>
+<span id="cb2-28">    ball.display()</span></code></pre></div>
+<p>Wo ich die verwendete Farbpalette in <code>[colors]</code> her habe, weiß ich nicht mehr, die Farben sehen aber auf dem Monitor recht gut aus. Neu ist ansonsten nur, daß Ihr mit der <code>SPACE</code>-Taste das Skript neu starten könnt. Hierbei kommt (mit dem Brython-spezifischen Umweg über die <code>check_input()</code>-Funktion) die microStudio-Methode <code>keyboard.press</code> zum Einsatz, die im Gegensatz zu <code>keyboard</code> (das solange <code>True</code> zurückgibt, wie die Taste gedrückt bleibt) nur registriert, wenn die Taste erstmalig gedrückt wird.</p>
+<p>Die Hilfsfuntion <code>check_input()</code> hatte ich hier schon einmal aufgeführt, der Vollständigkeit wegen (und weil sie recht kurz ist) drucke ich sie hier aber noch einmal ab:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">def</span> check_input(obj, val):</span>
+<span id="cb3-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hasattr</span>(obj, val):</span>
+<span id="cb3-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> obj[val] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span></code></pre></div>
+<p>Dann ist da noch meine <code>PVector2</code>-Klasse, die ich <a href="https://kantel.github.io/posts/2024032801_microstudio_noc_1/">hier schon einmal komplett abgedruckt hatte</a>. Da sie sehr lang ist, verzichte ich auf einen erneuten Abdruck – vielleicht sollte ich sie als eine <a href="https://microstudio.dev/documentation/Creating-Libraries/">microStudio-Bibliothek</a> implementieren?</p>
+<p>Das komplette Projekt habe ich natürlich auch wieder auf meinen microStudio-Account <a href="https://microstudio.dev/projects/pythontutorial6/code/">hochgeladen</a>. Es ist das sechste Programm meiner kleinen microStudio/Python-Tutorial-Reihe:</p>
+<ul>
+<li>MicroStudio und Python: Tutorial 1: <a href="https://kantel.github.io/posts/2024032201_microstudio_python_1/">Hallo Brython</a>!</li>
+<li>MicroStudio und Python (Teil 2): <a href="https://kantel.github.io/posts/2024032401_microstudio_python_2/">Zombie Apokalypse</a></li>
+<li>MicroStudio und Python (Teil 3): <a href="https://kantel.github.io/posts/2024032502_microstudio_python_3/">Dancing Crab</a></li>
+<li>MicroStudio und Python (Teil 4): <a href="https://kantel.github.io/posts/2024032703_flying_badger_python/">Flying Badger</a></li>
+<li>MicroStudio und Python (Teil 5): <a href="https://kantel.github.io/posts/2024032801_microstudio_noc_1/">PVector2 und »The Nature of Code«</a></li>
+<li>MicroStudio und Python (Teil 6): Bouncing Balls</li>
+</ul>
+<p>Das war es für heute, mehr ist noch in der Pipeline. Bis zum nächsten Mal. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>microStudio</category>
+  <category>Python</category>
+  <category>Brython</category>
+  <category>Nature of Code</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/</guid>
+  <pubDate>Sun, 31 Mar 2024 16:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/images/bballs6.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Fröhliche Ostern, fröhliche Western (und ohne Religion)</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3342,29 +3730,6 @@ font-style: inherit;">&gt;</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024031901_tiny_creatures/</guid>
   <pubDate>Tue, 19 Mar 2024 15:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024031901_tiny_creatures/images/tinyrpg.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Mozilla veröffentlicht neue Firefox-Versionen</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024031801_firefox_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53538999891/"><img src="https://kantel.github.io/posts/2024031801_firefox_update/images/firefoxes2-b.jpg" class="img-fluid"></a></p>
-<p>Die Entwickler des Mozilla Firefox haben die neue <a href="https://www.mozilla.org/en-US/firefox/124.0/releasenotes/">Version 124.0</a> und die neue <a href="https://www.mozilla.org/en-US/firefox/115.9.0/releasenotes/">Version ESR 115.9</a> veröffentlicht und darin auch wieder Sicherheitslücken behoben. Außerdem sind in das Update auch viele Veränderungen geflossen.</p>
-<p>Firefox weist selbst auf dieses Update hin. Diese Prozedur kann aber auch wie immer über das Menü <code>Hilfe &gt; Über Firefox</code> angestoßen werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53538999891/">Ein Feuerfuchs kommt selten allein</a></em>, erstellt mit <a href="https://www.flickr.com/photos/schockwellenreiter/53537297945/">Scenario</a>. Prompt: »<em>A fire fox in a sunny clearing in the enchanted spring forest</em>«. Modell: Stable Diffusion XL, Style: Creepy Nordic Fairytale.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024031801_firefox_update/</guid>
-  <pubDate>Mon, 18 Mar 2024 16:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024031801_firefox_update/images/firefoxes2.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

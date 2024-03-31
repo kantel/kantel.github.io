@@ -1,0 +1,108 @@
+---
+title: "Bouncing Balls mit microStudio (Python)"
+author: "Jörg Kantel"
+date: "2024-03-31 18:45:00"
+categories: [microStudio, Python, Brython, Nature of Code, Creative Coding]
+image: "images/bballs6.jpg"
+---
+
+[![](images/bballs6-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53623373035/)
+
+Die vor ein paar Tagen [hier aufgekeimte Idee](https://kantel.github.io/posts/2024032801_microstudio_noc_1/), [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) in der Python/[Brython](https://brython.info/)-Variante als Grundlage für eine (angepaßte und aufgebohrte) Python-Version von *Daniel Shiffmans* genialem Buch »[The Nature of Code](https://natureofcode.com/)« zu nehmen, hat mich einfach nicht in Ruhe gelassen. Zumal die noch in diesem Jahr erscheinende Neufassung (in [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) des Buches extra einen Anhang »[Creature Design](https://natureofcode.com/appendix-creature/)« besitzt. Und das ist in microStudios Sprite-Editor schon mehr oder weniger fest eingbaut.
+
+Also habe ich erst einmal ein [altes Beispiel](http://blog.schockwellenreiter.de/2021/02/2021020801.html), das ich aufgrund ähnlicher Überlegungen in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) implementiert hatte (bevor ich mich wegen der unklaren Lizenz TigerJython [den Laufpaß gab](http://blog.schockwellenreiter.de/2022/10/2022103001.html)) und dieses (inklusive PVecotr2) nach microStudio portiert.
+
+<iframe src="bball6/index.html" class="if16_9" name="Bouncing Balls"></iframe>
+
+Das ging -- wie ich es eigentlich auch erwartet hatte -- völlig schmerzfrei über die Bühne, Zuerst hatte ich eine Klasse `Ball` angelegt:
+
+~~~python
+from random import randint, uniform, choice
+
+class Ball:
+  
+  def __init__(self):
+    self.d = randint(4, 10)
+    self.w, self.h = self.d*2, self.d*2
+    x = randint(-150, 150)
+    y = randint(-80, 80)
+    self.loc = PVector2(x, y)
+    vel_x = uniform(-1.5, 1.5)
+    vel_y = uniform(-1.5, 1.5)
+    self.vel = PVector2(vel_x, vel_y)
+    self.c = choice(colors)
+    self.stroke = "rgb(0, 0, 0)"
+
+  def move(self):
+    self.loc.add(self.vel)
+    # check border
+    if self.loc.x <= -screen.width//2 + self.d or self.loc.x >= screen.width//2 - self.d:
+      self.vel.x *=-1
+    if self.loc.y <= -screen.height//2 + self.d or self.loc.y >= screen.height//2 - self.d:
+      self.vel.y *=-1
+      
+  def display(self):
+    screen.fillRound(self.loc.x, self.loc.y, self.w, self.h, self.c)
+    screen.setLineWidth(2)
+    screen.drawRound(self.loc.x, self.loc.y, self.w, self.h, self.stroke)
+    screen.setLineWidth(1)
+~~~
+
+Neu ist hierbei lediglich, daß die Methode `setLineWidth()` auf alle graphischen Primitive angewendet werden kann, also auch beim Rand eines Kreises (`drawRound()`). Ich habe ihn daher testweise auf zwei Pixel gesetzt. Man sollte allerdings nicht verbessen, ihn anschließend mit `setLineWidth(1)` auf seinen Default-Wert zurückzusetzen. Die Ränder der Kreise erscheinen dadurch ziemlich »fett«, aber was nimmt man nicht alles in Kauf, um neue Dinge auszuprobieren?
+
+Dadurch, daß die Klasse `Ball` eine eigene `move()`- und eine eigene `display()`-Methode besitzt, ist das Hauptprogramm wieder recht übersichtlich geraten:
+
+~~~python
+colors = ["rgba(230, 96, 55, 200)", "rgba(17, 42, 106, 200)",
+          "rgba(183, 116, 64, 200)", "rgba(212, 251, 69, 200)",
+          "rgba(252, 75, 200, 200)", "rgba(159, 53, 233, 200)",
+          "rgba(57, 218, 56, 200)", "rgba(67, 253, 133, 200)",
+          "rgba(78, 148, 42, 200)", "rgba(67, 254, 211, 200)",
+          "rgba(74, 143, 186, 200)", "rgba(52, 99, 234, 200)"]
+balls = []
+NUM_BALLS = 30
+
+def init():
+  global ball
+  for _ in range(NUM_BALLS):
+    ball = Ball()
+    balls.append(ball)
+
+def update():
+  for ball in balls:
+    ball.move()
+  if check_input(keyboard.press, "SPACE"):
+    balls.clear()
+    print("RESTART")
+    init()
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(234, 218, 184)")
+  for ball in balls:
+    ball.display()
+~~~
+
+Wo ich die verwendete Farbpalette in `[colors]` her habe, weiß ich nicht mehr, die Farben sehen aber auf dem Monitor recht gut aus. Neu ist ansonsten nur, daß Ihr mit der `SPACE`-Taste das Skript neu starten könnt. Hierbei kommt (mit dem Brython-spezifischen Umweg über die `check_input()`-Funktion) die microStudio-Methode `keyboard.press` zum Einsatz, die im Gegensatz zu `keyboard` (das solange `True` zurückgibt, wie die Taste gedrückt bleibt) nur registriert, wenn die Taste erstmalig gedrückt wird.
+
+Die Hilfsfuntion `check_input()` hatte ich hier schon einmal aufgeführt, der Vollständigkeit wegen (und weil sie recht kurz ist) drucke ich sie hier aber noch einmal ab:
+
+~~~python
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Dann ist da noch meine `PVector2`-Klasse, die ich [hier schon einmal komplett abgedruckt hatte](https://kantel.github.io/posts/2024032801_microstudio_noc_1/). Da sie sehr lang ist, verzichte ich auf einen erneuten Abdruck -- vielleicht sollte ich sie als eine [microStudio-Bibliothek](https://microstudio.dev/documentation/Creating-Libraries/) implementieren?
+
+Das komplette Projekt habe ich natürlich auch wieder auf meinen microStudio-Account [hochgeladen](https://microstudio.dev/projects/pythontutorial6/code/). Es ist das sechste Programm meiner kleinen microStudio/Python-Tutorial-Reihe:
+
+- MicroStudio und Python: Tutorial 1: [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): Bouncing Balls
+
+Das war es für heute, mehr ist noch in der Pipeline. Bis zum nächsten Mal. *Still digging!*
