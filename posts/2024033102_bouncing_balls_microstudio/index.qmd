@@ -10,11 +10,11 @@ image: "images/bballs6.jpg"
 
 Die vor ein paar Tagen [hier aufgekeimte Idee](https://kantel.github.io/posts/2024032801_microstudio_noc_1/), [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) in der Python/[Brython](https://brython.info/)-Variante als Grundlage für eine (angepaßte und aufgebohrte) Python-Version von *Daniel Shiffmans* genialem Buch »[The Nature of Code](https://natureofcode.com/)« zu nehmen, hat mich einfach nicht in Ruhe gelassen. Zumal die noch in diesem Jahr erscheinende Neufassung (in [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) des Buches extra einen Anhang »[Creature Design](https://natureofcode.com/appendix-creature/)« besitzt. Und das ist in microStudios Sprite-Editor schon mehr oder weniger fest eingbaut.
 
-Also habe ich erst einmal ein [altes Beispiel](http://blog.schockwellenreiter.de/2021/02/2021020801.html), das ich aufgrund ähnlicher Überlegungen in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) implementiert hatte (bevor ich mich wegen der unklaren Lizenz TigerJython [den Laufpaß gab](http://blog.schockwellenreiter.de/2022/10/2022103001.html)) und dieses (inklusive PVecotr2) nach microStudio portiert.
+Also habe ich erst einmal ein [altes Beispiel](http://blog.schockwellenreiter.de/2021/02/2021020801.html), das ich aufgrund ähnlicher Überlegungen in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) implementiert hatte (bevor ich wegen der unklaren Lizenz TigerJython [den Laufpaß gab](http://blog.schockwellenreiter.de/2022/10/2022103001.html)) und dieses (inklusive PVector2) nach microStudio portiert.
 
 <iframe src="bball6/index.html" class="if16_9" name="Bouncing Balls"></iframe>
 
-Das ging -- wie ich es eigentlich auch erwartet hatte -- völlig schmerzfrei über die Bühne, Zuerst hatte ich eine Klasse `Ball` angelegt:
+Das ging -- wie ich es eigentlich auch erwartet hatte -- völlig schmerzfrei über die Bühne. Zuerst hatte ich eine Klasse `Ball` angelegt:
 
 ~~~python
 from random import randint, uniform, choice
@@ -48,7 +48,7 @@ class Ball:
     screen.setLineWidth(1)
 ~~~
 
-Neu ist hierbei lediglich, daß die Methode `setLineWidth()` auf alle graphischen Primitive angewendet werden kann, also auch beim Rand eines Kreises (`drawRound()`). Ich habe ihn daher testweise auf zwei Pixel gesetzt. Man sollte allerdings nicht verbessen, ihn anschließend mit `setLineWidth(1)` auf seinen Default-Wert zurückzusetzen. Die Ränder der Kreise erscheinen dadurch ziemlich »fett«, aber was nimmt man nicht alles in Kauf, um neue Dinge auszuprobieren?
+Neu ist hierbei lediglich, daß die Methode `setLineWidth()` auf alle graphischen Primitive angewendet werden kann, also auch beim Rand eines Kreises (`drawRound()`). Ich habe ihn daher testweise auf zwei Pixel gesetzt. Man sollte allerdings nicht vergessen, ihn anschließend mit `setLineWidth(1)` auf seinen Default-Wert zurückzusetzen. Die Ränder der Kreise erscheinen dadurch ziemlich »fett«, aber was nimmt man nicht alles in Kauf, um neue Dinge auszuprobieren?
 
 Dadurch, daß die Klasse `Ball` eine eigene `move()`- und eine eigene `display()`-Methode besitzt, ist das Hauptprogramm wieder recht übersichtlich geraten:
 
@@ -83,9 +83,9 @@ def draw():
     ball.display()
 ~~~
 
-Wo ich die verwendete Farbpalette in `[colors]` her habe, weiß ich nicht mehr, die Farben sehen aber auf dem Monitor recht gut aus. Neu ist ansonsten nur, daß Ihr mit der `SPACE`-Taste das Skript neu starten könnt. Hierbei kommt (mit dem Brython-spezifischen Umweg über die `check_input()`-Funktion) die microStudio-Methode `keyboard.press` zum Einsatz, die im Gegensatz zu `keyboard` (das solange `True` zurückgibt, wie die Taste gedrückt bleibt) nur registriert, wenn die Taste erstmalig gedrückt wird.
+Wo ich die verwendete Farbpalette in `[colors]` her habe, weiß ich nicht mehr, die Farben sehen aber auf meinem Monitor recht gut aus. Neu ist ansonsten nur, daß Ihr mit der `SPACE`-Taste das Skript neu starten könnt. Hierbei kommt (mit dem Brython-spezifischen Umweg über die `check_input()`-Funktion) die microStudio-Methode `keyboard.press` zum Einsatz, die im Gegensatz zu `keyboard` (das solange `True` zurückgibt, wie die Taste gedrückt bleibt) nur registriert, wenn die Taste erstmalig gedrückt wird.
 
-Die Hilfsfuntion `check_input()` hatte ich hier schon einmal aufgeführt, der Vollständigkeit wegen (und weil sie recht kurz ist) drucke ich sie hier aber noch einmal ab:
+Die Hilfsfuntion `check_input()` hatte ich hier schon einmal aufgeführt, der Vollständigkeit halber (und weil sie recht kurz ist) drucke ich sie hier aber noch einmal ab:
 
 ~~~python
 def check_input(obj, val):
