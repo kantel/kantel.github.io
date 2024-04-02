@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><title>Python Tutorial 7</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":8435,"properties":{"frames":1,"fps":5}},{"file":"rabbit.png","version":1,"size":6885,"properties":{}},{"file":"snake.png","version":1,"size":6940,"properties":{}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+class Back:
+  
+  def __init__(self):
+    self.bg_col = "rgb(234, 218, 184)"
+    
+  def display(self):
+    screen.fillRect(0, 0, screen.width, screen.height, self.bg_col)
+
+import math
+
+def init():
+  global rabbit, snake, back
+  back = Back()
+  rabbit = Rabbit()
+  snake = Snake()
+
+def update():
+  rabbit.move()
+  if is_circle_collision(rabbit, snake):
+    back.bg_col = "rgb(250, 25, 25)"
+  else:
+    back.bg_col = "rgb(234, 218, 184)"   
+    
+def draw():
+  back.display()
+  snake.display()
+  rabbit.display()
+  
+def is_circle_collision(obj1, obj2):
+  distance = math.dist([obj1.x, obj1.y], [obj2.x, obj2.y])
+  if distance < obj1.r + obj2.r:
+    return True
+  return False
+  
+
+class Rabbit:
+  
+  def __init__(self):
+    self.x = 120
+    self.y = 60
+    self.w = 40
+    self.h = 40
+    self.r = 20
+    self.im = "rabbit"
+    
+  def move(self):
+    self.x = mouse.x
+    self.y = mouse.y
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+class Snake:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 70
+    self.h = 70
+    self.r = 35
+    self.im = "snake"
+    
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+</script></html>
