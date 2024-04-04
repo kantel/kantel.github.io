@@ -1,0 +1,117 @@
+---
+title: "MicroStudio und Python: Bouncing Birds"
+author: "Jörg Kantel"
+date: "2024-04-04 18:45:00"
+categories: [microStudio, Python, Spieleprogrammierung]
+image: "images/bouncingbirds.jpg"
+---
+
+[![](images/bouncingbirds-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53627951378/)
+
+Nun ist es an der Zeit, daß ich mit den neu gewonnen Erkenntnissen zur [Kollisionserkennung von Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/) in [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) und Python/[Brython](https://brython.info/)  auch etwas anstelle. Ich habe daber eine Anzahl von kreisrunden Vögeln (in meiner Spielewelt sind nicht nur Schlagen und Kaninchen, sondern auch Vögel kugelrund) über den Bildschirm flattern lassen, die sich -- in der Regel (dazu weiter unten mehr) -- bei einer Kollision gegenseitig abstoßen und in entgegengesetzter Richtung weiter fliegen.
+
+<iframe src="pythontutorial8/index.html" class="if16_9" name="Bouncing Birds"></iframe>
+
+Dazu habe ich erst einmal eine Klasse `Bird` implementiert:
+
+~~~python
+from random import randint, uniform, choice
+import math
+
+bird_im = ["chick", "chicken", "duck", "owl",
+           "parrot", "penguin"]
+
+class Bird:
+  
+  def __init__(self):
+    self.r = randint(6, 12)
+    self.w, self.h = self.r*2, self.r*2
+    x = randint(-150, 150)
+    y = randint(-80, 80)
+    self.loc = PVector2(x, y)
+    vel_x = uniform(-1.5, 1.5) 
+    vel_y = uniform(-1.5, 1.5)
+    self.vel = PVector2(vel_x, vel_y)
+    self.im = choice(bird_im)
+
+  def move(self):
+    self.loc.add(self.vel)
+    # check border
+    if self.loc.x <= -screen.width//2 + self.w or self.loc.x >= screen.width//2 - self.w:
+      self.vel.x *=-1
+    if self.loc.y <= -screen.height//2 + self.h or self.loc.y >= screen.height//2 - self.h:
+      self.vel.y *=-1
+      
+  def display(self):
+    screen.drawSprite(self.im, self.loc.x, self.loc.y, self.w, self.h)
+
+  def is_circle_collision(self, other):
+    distance = math.dist([self.loc.x, self.loc.y], [other.loc.x, other.loc.y])
+    if distance < self.r + other.r:
+      return True
+    return False
+~~~
+
+Diese Klasse besitzt eine etwas erweiterte Methode `is_circle_collision()`, die überprüft, ob die eigene Instanz des Vogels mit einem anderen Objekt kollidiert. Die Vögel werden durch Vektoren für ihren Standort (`Bird.loc`) und ihre Bewegung (`Bird.vel`) repräsentiert. Dafür habe ich wieder meine [hier vorgestellte](https://kantel.github.io/posts/2024032801_microstudio_noc_1/), eigene Vektorenklasse `PVector2` eingesetzt (ich sollte sie wirklich als *Library* implementieren).
+
+Dann gibt es nur noch das Hauptskript, das das Spiel steuert:
+
+~~~python
+birds = []
+NUM_BIRDS = 15
+
+def init():
+  global b
+  for _ in range(NUM_BIRDS):
+    b = Bird()
+    birds.append(b)
+
+def update():
+  for b in birds:
+    b.move()
+    for b2 in birds:
+      if b != b2 and b.is_circle_collision(b2):
+        b.vel.x *= -1
+        b.vel.y *= -1
+  if check_input(keyboard.press, "SPACE"):
+    birds.clear()
+    print("RESTART")
+    init()
+
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(234, 218, 184)")
+  for b in birds:
+    b.display()
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Die Kollisionsbehandlung ist in `update()` implementiert. Da vermieden werden muß, daß der eigene Vogel prüft, ob er mit sich selber kollidiert (denn das tut er immer), war eine zweite Schleife in der ersten Schleife notwendig. In dieser wird einmal nachgeprüft, daß der eigene Vogel `b` nicht mit dem überprüften anderen Vogel `b2` identisch ist, **und** ob eine Kollision vorliegt:
+
+~~~python
+    for b2 in birds:
+      if b != b2 and b.is_circle_collision(b2):
+        b.vel.x *= -1
+        b.vel.y *= -1
+~~~
+
+Dann und nur dann wird die Bewegungsrichtung des Vogels umgekehrt. Diese Vorgehensweise habe ich von *Daniel Shiffman* aus seinen Videos »Checking Objects Intersection« ([Part 1](https://www.youtube.com/watch?v=uAfw-ko3kB8) und [Part 2](https://www.youtube.com/watch?v=GY-c2HO2liA)) gelernt.
+
+Gelegentlich kommt es vor, daß bei der Initialisierung schon zwei Vögel so weit überlappen, daß sie sich auch wenn sie von anderen Vögeln angestuppst werden, nicht mehr voneinander trennen können. Um dies zu vermeiden, müßte im `init()` schon bei der Positionierung der Vögel darauf geachtet werden, daß keine Kollisionen vorliegen. Um den Code des Tutorials nicht zu überfrachten, habe ich darauf verzichtet (die `for`-Schleife müßte dafür in eine `while`-Schleife geändert werden, die eine Initialisierung eines neuen Vogels nur dann vornimmt, wenn sich seine Posiiton mit keiner Position der schon vorher erstellten Vögel überlappt). Stattdessen kann der Nutzer, wenn sich die Vögel zu sehr ineinander verkeilen, mit der Leertaste (`SPACE`) einen Neustart anstoßen. Dafür habe ich in `main` auch wieder die Brython-spezifische Funtion `check_input()` implementiert.
+
+Die kreisrunden Vögel stammen wieder von *Kenney*, dieses Mal aus seinem freien ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) Paket [Animal Pack Redux](https://kenney.nl/assets/animal-pack-redux). Und hier sind wieder -- um die Übersicht nicht zu verlieren -- alle bisher im *Schockwellenreiter* erschienenen Tutorials zu microStudio mit Python:
+
+- MicroStudio und Python (Tel 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): Bouncing Birds
+
+Ein aufmerksamer Leser hat mich darauf hingewiesen, daß viele der bisher publizierten Links auf [meinen microStudio-Account](https://microstudio.io/kantel/) nur für mich zugänglich waren. Ich habe sie daher (hoffentlich alle) korrigiert, so auch der für dieses Tutorial, das hier mit Quellcode und allen Assets [hier finden solltet](https://microstudio.dev/i/kantel/pythontutorial8/). Wenn es damit dennoch Probleme gibt, schreibt es bitte in meine Kommentare.
