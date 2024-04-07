@@ -1,0 +1,119 @@
+---
+title: "MicroStudio und Python: Kollisionserkennung (2)"
+author: "Jörg Kantel"
+date: "2024-04-07 18:00:00"
+categories: [microStudio, Python, Creative Coding, Spieleprogrammierung]
+image: "images/mstudio_rect_col.jpg"
+---
+
+[![](images/mstudio_rect_col-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53637881438/)
+
+Dies ist ein weiterer Beitrag meiner kleinen Serie zur Spiele- und zur kreativen Programmierung mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) und Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html). Auf die [Kollisionserkennung zweier Kreise](https://kantel.github.io/posts/2024040201_collision_detection_1/) folgt nun die Kollisionserkennung zweier Rechtecke:
+
+<iframe src="pythontutorial9/index.html" class="if16_9" name="Rechteck-Kollision"></iframe>
+
+Bei der Kollisionserkennung zweier Rechtecke ist es -- speziell bei Spielen -- oftmals sinnvoll, zu unterscheiden, ob die Kollision von oben oder unten (Plattformer!) oder von rechts oder links erfolgt. In diesem Beispiel untersuche ich jedoch nur den einfachsten Fall: Eine Kollision wird gemeldet, egal von welcher Richtung sie stattfindet[^1]:
+
+[^1]: Ich folge dabei einem Beispielskript, das ich im [November 2019](http://blog.schockwellenreiter.de/2019/11/2019112002.html) schon einmal in [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) wie auch in JavaScript ([P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) implementiert hatte.
+
+~~~python
+def is_rect_collision(obj1, obj2):
+  distance_x = obj1.x - obj2.x
+  distance_y = obj1.y - obj2.y
+  half_w = obj1.w//2 + obj2.w//2
+  half_h = obj1.h//2 + obj2.h//2
+  if (abs(distance_x) < half_w):
+    if (abs(distance_y) < half_h):
+      return True
+  return False
+~~~
+
+Diese einfach Kollisionserkennung läßt sich jedoch -- da sie schon die horizontale von der vertikalen Kollision unterscheidet -- leicht aufbohren. Und auch daß im Beispielskript die Rechtecke Quadrate sind (Kenney hatte leider [neben den kreisrunden nur quadratische](https://kenney.nl/assets/animal-pack-redux) und keine rechteckigen Viecher im Portfolio), ist keine Einschränkung der Allgemeingültigkeit, denn die obige Funktion prüft Weite und Höhe der Objekte separat ab.
+
+Das Skript ist dem bisherigen Beispiel ziemlich ähnlich. Zuerst habe ich die einzelnen Klassen `Back` (für den Hintergrund) und `Parrot` und `Whal` (für die ~~rechteckigen~~ quadratischen Tiere) definiert:
+
+~~~python
+class Back:
+  
+  def __init__(self):
+    self.bg_col = "rgb(234, 218, 184)"
+    
+  def display(self):
+    screen.fillRect(0, 0, screen.width, screen.height, self.bg_col)
+
+class Parrot:
+  
+  def __init__(self):
+    self.x = 120
+    self.y = 60
+    self.w = 40
+    self.h = 40
+    self.im = "parrot"
+    
+  def move(self):
+    self.x = mouse.x
+    self.y = mouse.y
+  
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+class Whal:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 64
+    self.h = 64
+    self.im = "narwhal"
+    
+  def display(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Im Hauptprogramm versucht dann der Papagei (unterstützt von der Maus) auf dem Rücken des Wals zu landen. Jedesmal, wenn er auf den Wal trifft, verändert sich die Farbe des Hintergrunds:
+
+~~~python
+def init():
+  global back, parrot, whal
+  back = Back()
+  whal = Whal()
+  parrot = Parrot()
+
+def update():
+  parrot.move()
+  if is_rect_collision(parrot, whal):
+    back.bg_col = "rgb(243, 156, 18)"
+  else:
+    back.bg_col = "rgb(234, 218, 184)"
+
+def draw():
+  back.display()
+  whal.display()
+  parrot.display()
+  
+def is_rect_collision(obj1, obj2):
+  distance_x = obj1.x - obj2.x
+  distance_y = obj1.y - obj2.y
+  half_w = obj1.w//2 + obj2.w//2
+  half_h = obj1.h//2 + obj2.h//2
+  if (abs(distance_x) < half_w):
+    if (abs(distance_y) < half_h):
+      return True
+  return False
+~~~
+
+Die Funktion `is_rect_collision()` hier zu implementieren, war eine reine Design-Entscheidung. Ebensogut hätte sie als Methode zum Beispiel der Klasse `Parrot` implementiert werden können.
+
+Meine kleine Tutorial-Reihe zu microStudio mit Python ist mittlerweile schon auf neun Beiträge angewachsen. Hier noch einmal alle bisherigen Artikel, damit Ihr und auch ich nicht die Übersicht verliert:
+
+- MicroStudio und Python (Tel 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): [Bouncing Birds](https://kantel.github.io/posts/2024040401_bouncing_birds/)
+- MicroStudio und Python (Teil 9): Kollisionserkennung mit Rechtecken
+
+Und natürlich habe ich auch dieses Tutorial wieder auf meinem [microStudio-Acoount hochgeladen](https://microstudio.dev/i/kantel/pythontutorial9/) (dieses Mal hoffentlich mit korrektem Link), damit Ihr damit spielen und experimentieren könnt. Weitere Tutorials habe ich ebenfalls schon in der Planung. *Still digging!*
