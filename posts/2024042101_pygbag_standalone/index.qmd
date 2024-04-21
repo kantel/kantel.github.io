@@ -1,0 +1,46 @@
+---
+title: "Pygame/Pygbag ohne Umwege in die eigene Webseite einbinden"
+author: "Jörg Kantel"
+date: "2024-04-21 19:15:00"
+categories: [Python, Pygame, Pygbag, Spieleprogrammierung]
+image: "images/pygbagatlocalhost.jpg"
+---
+
+[![](images/pygbagatlocalhost-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53669079239/)
+
+Das Leben muß ja weitergehen und so habe ich mich zur Ablenkung eines schon lange offenstehenden Problems angenommen: Wie bringe ich [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Spielen, die ich mit Hilfe von [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) webtauglich gemacht habe, bei, daß sie sich direkt in Webseiten einbinden lassen, ohne den Umweg über spezielle Dienste wie zum Beispiel [Itch.io](https://kantel.itch.io/) nehmen zu müssen?
+
+Ich glaube, ich habe einen Weg gefunden (als Beispiel habe ich mein altes [Pygbag-OOP-Template](https://kantel.github.io/posts/2023060804_pygbag_oop/) wieder ausgegraben):
+
+<iframe src="pygbag_template/index.html" class="if16_9" name="Pygbag-Template"></iframe>
+
+Den ersten Schritt habe ich der [Dokumentation](https://github.com/pygame-web/pygbag) entnommen. Man muß nach der Installation von Pygbag zusätzlich
+
+~~~bash
+pygbag <your.app.folder>
+~~~
+
+aufrufen (`<your.app.folder>` ist natürlich das Verzeichnis Eures Pygame/Pygbag-Spiels). Wie oft man dies machen muß, weiß ich leider nicht, aber wenn nach einer Änderung das Spiel nicht mehr im Browser startet, schadet es zumindest nach meiner Erfahrung nicht, das Kommando noch einmal zu wiederholen[^1].
+
+[^1]: Der Sinn dieses Aufrufs hat sich mir leider nicht erschlossen. Ob er tatsächlich notwendig ist, weiß ich auch nicht wirklich (ich hatte den Aufruf getätigt, **bevor** ich irgend etwas anderes probiert hatte). Aber er scheint -- wie ich oben schon schrieb -- zumindest nicht zu schaden.
+
+Das zweite Problem war, daß die Webversion nicht meine Assets (in diesem Fall das Bildchen) laden konnte. Hier war die Ursache schnell ausgemacht: WebAssembly kommt mit den (Python-) Befehlen
+
+~~~python
+DATAPATH = os.path.join(os.getcwd(), "data")
+img = pg.image.load(os.path.join(DATAPATH, "platformchar_idle.png")).convert_alpha()
+~~~
+
+nicht zurecht. Diese beiden Zeilen einfach durch die Zeile
+
+~~~python
+img = pg.image.load("data/platformchar_idle.png").convert_alpha()
+~~~
+
+zu ersetzen, löste auch dieses Problem.
+
+Jetzt waren nur noch die von Pygbag erzeugten und im Ordner `web` abgelegten Dateien auf meinen Server hochzuladen und die dort abgelegte Datei `index.html` (wie [hier beschrieben](https://kantel.github.io/posts/2024021801_iframe_respnonsive/)) in einem `Iframe` aufzurufen[^2].
+
+[^2]: Pygbag erzeugt zusätzlich noch einen Folder `web-cache`, der nach jedem Aufruf immer »fetter« wird. Ich hielt daher ein Hochladen dieses Verzeichnisses nicht für sinnvoll.
+
+Noch nicht gelöst ist das Problem, daß die Browser einige Tasten gierig an sich reißen (in diesem Fall die Pfeiltasten `UP`, `DOWN`, `RIGHT` und `LEFT`). Ob man dieses lösen kann oder ob man nach alter Väter Sitte besser auf die Tasten `a`, `s`, `w` und `d` ausweicht, steht als nächstes auf meiner Agenda. *Still digging!*

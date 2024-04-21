@@ -10,7 +10,69 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Fri, 19 Apr 2024 12:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 21 Apr 2024 17:15:00 GMT</lastBuildDate>
+<item>
+  <title>Pygame/Pygbag ohne Umwege in die eigene Webseite einbinden</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024042101_pygbag_standalone/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53669079239/"><img src="https://kantel.github.io/posts/2024042101_pygbag_standalone/images/pygbagatlocalhost-b.jpg" class="img-fluid"></a></p>
+<p>Das Leben muß ja weitergehen und so habe ich mich zur Ablenkung eines schon lange offenstehenden Problems angenommen: Wie bringe ich <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Spielen, die ich mit Hilfe von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> webtauglich gemacht habe, bei, daß sie sich direkt in Webseiten einbinden lassen, ohne den Umweg über spezielle Dienste wie zum Beispiel <a href="https://kantel.itch.io/">Itch.io</a> nehmen zu müssen?</p>
+<p>Ich glaube, ich habe einen Weg gefunden (als Beispiel habe ich mein altes <a href="https://kantel.github.io/posts/2023060804_pygbag_oop/">Pygbag-OOP-Template</a> wieder ausgegraben):</p>
+<iframe src="pygbag_template/index.html" class="if16_9" name="Pygbag-Template">
+</iframe>
+<p>Den ersten Schritt habe ich der <a href="https://github.com/pygame-web/pygbag">Dokumentation</a> entnommen. Man muß nach der Installation von Pygbag zusätzlich</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pygbag</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>your.app.folder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>aufrufen (<code>&lt;your.app.folder&gt;</code> ist natürlich das Verzeichnis Eures Pygame/Pygbag-Spiels). Wie oft man dies machen muß, weiß ich leider nicht, aber wenn nach einer Änderung das Spiel nicht mehr im Browser startet, schadet es zumindest nach meiner Erfahrung nicht, das Kommando noch einmal zu wiederholen<sup>1</sup>.</p>
+<p>Das zweite Problem war, daß die Webversion nicht meine Assets (in diesem Fall das Bildchen) laden konnte. Hier war die Ursache schnell ausgemacht: WebAssembly kommt mit den (Python-) Befehlen</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">DATAPATH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(os.getcwd(), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>)</span>
+<span id="cb2-2">img <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"platformchar_idle.png"</span>)).convert_alpha()</span></code></pre></div>
+<p>nicht zurecht. Diese beiden Zeilen einfach durch die Zeile</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">img <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/platformchar_idle.png"</span>).convert_alpha()</span></code></pre></div>
+<p>zu ersetzen, löste auch dieses Problem.</p>
+<p>Jetzt waren nur noch die von Pygbag erzeugten und im Ordner <code>web</code> abgelegten Dateien auf meinen Server hochzuladen und die dort abgelegte Datei <code>index.html</code> (wie <a href="https://kantel.github.io/posts/2024021801_iframe_respnonsive/">hier beschrieben</a>) in einem <code>Iframe</code> aufzurufen<sup>2</sup>.</p>
+<p>Noch nicht gelöst ist das Problem, daß die Browser einige Tasten gierig an sich reißen (in diesem Fall die Pfeiltasten <code>UP</code>, <code>DOWN</code>, <code>RIGHT</code> und <code>LEFT</code>). Ob man dieses lösen kann oder ob man nach alter Väter Sitte besser auf die Tasten <code>a</code>, <code>s</code>, <code>w</code> und <code>d</code> ausweicht, steht als nächstes auf meiner Agenda. <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Der Sinn dieses Aufrufs hat sich mir leider nicht erschlossen. Ob er tatsächlich notwendig ist, weiß ich auch nicht wirklich (ich hatte den Aufruf getätigt, <strong>bevor</strong> ich irgend etwas anderes probiert hatte). Aber er scheint – wie ich oben schon schrieb – zumindest nicht zu schaden.↩︎</p></li>
+<li id="fn2"><p>Pygbag erzeugt zusätzlich noch einen Folder <code>web-cache</code>, der nach jedem Aufruf immer »fetter« wird. Ich hielt daher ein Hochladen dieses Verzeichnisses nicht für sinnvoll.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>Pygame</category>
+  <category>Pygbag</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024042101_pygbag_standalone/</guid>
+  <pubDate>Sun, 21 Apr 2024 17:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024042101_pygbag_standalone/images/pygbagatlocalhost.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Gabriele Kantel (4. Januar 1959 – 19. April 2024)</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1932,30 +1994,6 @@ font-style: inherit;">0</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/</guid>
   <pubDate>Sun, 31 Mar 2024 16:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/images/bballs6.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Fröhliche Ostern, fröhliche Western (und ohne Religion)</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024033101_happy_eastern/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53575004846/"><img src="https://kantel.github.io/posts/2024033101_happy_eastern/images/happyeastern-b.jpg" class="img-fluid"></a></p>
-<p>Euch allen da draußen wünsche ich ein fröhliches Osterfest. Feiert es als das Fest, das es einmal war, bevor es den Religioten jedweder Coleur in die Krallen geriet: Als fröhliches Frühlingsfest ohne religiösen Ballast. Und wer gar nicht ohne mythologisches Brimborium kann, der träume von ein paar nackten Nymphen in einem <a href="https://de.wikipedia.org/wiki/Arkadien_(Mythos)">arkadischen Märchenwald</a>. Mehr Religion ertrage ich nämlich nicht.</p>
-<p>Ich selber habe zur Feier des Frühlingsfestes meine Wintergarderobe bis zum kommenden Herbst eingemottet und hoffe, daß das nicht zu voreilig war.</p>
-<p>Und… habt Ihr alle Eure Uhren um eine Stunde <del>vor</del> <del>zurück</del> umgestellt?</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53575004846/">Et in Arcadia ego</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>three naked nymphs, reddish-brown hair, green eyes, big boobs, nice butt, red lips, dance in a sunny clearing, in an enchanted garden with many colorful flowers, A Pan+, with beard, with goat legs, sits on a pedestal, and accompanies her on his flute+, Fox and hare watch the scenario in amazement</em>«. Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers, antlers, deer, horns+, elf ears</em>«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Storybook + 3D.</p>
-
-
-
- ]]></description>
-  <category>Modernes Leben</category>
-  <guid>https://kantel.github.io/posts/2024033101_happy_eastern/</guid>
-  <pubDate>Sun, 31 Mar 2024 14:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024033101_happy_eastern/images/happyeastern.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
