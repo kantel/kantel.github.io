@@ -1,0 +1,111 @@
+---
+title: "MicroStudio und Python: Bubbly Emojis"
+author: "Jörg Kantel"
+date: "2024-04-23 22:45:00"
+categories: [microStudio, Python, Creative Coding]
+image: "images/pythontutorial10.jpg"
+---
+
+[![](images/pythontutorial10-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53673195352/)
+
+Eigentlich wollte ich meine Experimente mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) und Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) ja mal für eine Weile [unterbrechen](https://kantel.github.io/posts/2024042102_tuesdayjs_47/) und mich anderen Aspekten der kreativen Programmierung zuwenden, doch dann spülte das Video »[Bubbly Emoji Effect](https://www.youtube.com/watch?v=Rd1eeHEx_fM)« von *Patt Vira* in meinen Feedreader. Und diese kreative [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Spielerei faszinierte mich so, daß ich eine eigene Version davon unbedingt in microStudio mit Python implementieren mußte.
+
+<iframe src="pythontutorial10/index.html" class="if16_9" name="Bubbly Emojis"></iframe>
+
+Für diese Spielerei habe ich wieder meine [PVector2-Klasse](https://kantel.github.io/posts/2024032801_microstudio_noc_1/) genutzt, die Ihr -- falls Ihr das nachprogrammieren wollt -- ebenfalls in Euren Quellcode kopieren müßt. Und damit alles schön objektorientert vonstatten geht, habe ich den Luftblasen-Emojis eine eigene Klasse spendiert:
+
+~~~python
+from random import uniform, choice
+
+class Emoji:
+  
+  def __init__(self, _x, _y):
+    self.loc = PVector2(_x, _y)
+    self.vel = PVector2(uniform(-0.5, 0.5), uniform(3, 1))
+    self.done = False
+    self.size = 30
+    self.t = choice(emojis_pics)
+  
+  def update(self):
+    self.loc.add(self.vel)
+    if self.size <= 1:
+      self.done = True
+    else:
+      self.size -= 0.5 
+  
+  def display(self):
+    screen.drawText(self.t, self.loc.x, self.loc.y + self.size/2, self.size)
+~~~
+
+Da es nahezu kein kreatives Programmieren ohne (Pseudo-) Zufallszahlen gibt, habe ich die Funktionen `uniform()` und `choice()` aus Pythons `random`-Bibliothek importiert. Jedes Emoji besitzt einen Vektor für den Ort (`loc`) und einen zufällig erzeugten Vektor für die Bewegung nach oben (`vel`). Und aus einer Liste von Emojis wird mit `random.choice()` zufällig eines ausgewählt.
+
+In der `update()`-Methode wird das Emoji bewegt, indem die *Velocity* zur *Position* (`loc`) hinzuaddiert wird. Dann wird noch überprüft, ob die Größe des Emojis $1$ erreicht oder unterschritten hat. Hat sie das, wird die Eigenschaft `done` auf `True` gesetzt, wenn nicht, wird die Größe um $0.5$ verringert.
+
+Die `display()`-Methode nutzt `screen.drawText()` um das Emoji auf den Bildschirm zu bringen.
+
+Die eigentliche Programmlogik übernimmt dieses Mal die Hauptroutine `main`:
+
+~~~python
+emojis = []
+emojis_pics = ["🤓", "😎", "🤡", "💀", "🤖", "🎃",
+               "👽", "😈", "👹"]
+def init():
+  pass
+
+def update():
+  if mouse.pressed and mouse.left:
+    emoji = Emoji(mouse.x, mouse.y)
+    emojis.append(emoji)
+  for emoji in reversed(emojis):
+    if emoji.done:
+      emojis.remove(emoji)
+  for emoji in emojis:
+    emoji.update()
+  # if len(emojis) >= 40:
+  #   system.pause()
+  
+def draw():
+  screen.clear()
+  screen.fillRect(0, 0, screen.width, screen.height, "rgb(234, 218, 184)")
+  for emoji in emojis:
+    emoji.display()
+~~~ 
+
+Zuerst wird global eine leere Liste für die einzelnen Emojis erzeugt und die (konstante) Liste mit den Bildern der Emojis angelegt. Die `init()`-Funktion bleibt dieses Mal ungenutzt. Da microScript sie aber dennoch stur aufrufen will, muß sie als leere Funktion (mit dem Befehl `pass`) implementiert werden.
+
+Dafür erledigt die `update()`-Funktion von `main` die ganze Arbeit: Zuerst wird -- solange die linke Maustaste gedrückt ist (`if mouse.pressed and mouse.left`) -- ein neues Emoji angelegt und der Liste `emojis` hinzugefügt. Damit diese Liste aber nicht ins Unermeßliche wächst, wurde ja schon in der `update()`-Methode der Klasse `Emoji` überprüft, ob die Größe $1$ erreicht oder unterschritten hat in diesem Falle `done` auf `True` gesetzt. Daher sollen nun alle Emojis, die kleiner oder gleich $1$ sind, gelöscht werden. Geht man aber hierfür die Liste von vorne nach hinten durch, läuft man in Gefahr, daß einzelne Elemente übersprugen werden, da sie mit ihrem Index auf die Position eines schon gelöschten Elements verschoben werden. Daher ist es eine gängige Methode, Löschoperationen vorzunehmen, in dem man die Liste rückwärts durchläuft, denn dann stehen alle gelöschten Elemente oberhalb des aktuellen Indizes. Python besitzt dafür einen genialen Shortcut,
+
+~~~python
+  for emoji in reversed(emojis):
+    if emoji.done:
+      emojis.remove(emoji)
+~~~
+
+der mit `reversed(liste)` die Elemente der Liste rückwärts durchläuft und mit `remove(element)` die gewünschten Listenelemente aus der Liste entfernt.
+
+Zu guter Letzt wird dann nur noch für jedes Emoji aus der (schon gekürzten) Emojis-Liste die `update()`-Methode aufgerufen. (Die auskommentierten Zeilen dienten nur der Anfertigung des Screenshots.)
+
+Die `draw()`-Funktion ist wieder simpel: Bei jedem Durchlauf wird der Bildschirm gelöscht, dann über die ganze Größe des Bildschirms ein gefülltes Rechteck mit der Hintergrundfarbe gezogen und letztendlich jedes noch verbliebene Emoji in der aktuellen Größe an der aktuellen Position gezeichnet.
+
+Das war es dann auch schon. Dieses ist das zehnte Tutorial meiner kleinen Reihe zu microStudio mit Python. Alle bisher erschienenen Tutorien sind hier aufgelistet:
+
+- MicroStudio und Python (Teil 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): [Bouncing Birds](https://kantel.github.io/posts/2024040401_bouncing_birds/)
+- MicroStudio und Python (Teil 9): [Kollisionserkennung mit Rechtecken](https://kantel.github.io/posts/2024040701_rect_collision/)
+- MicroStudio und Python (Teil 10): Bubbly Emojis 
+
+Und natürlich habe ich auch dieses Tutorial wieder auf meinem [microStudio-Account hochgeladen](https://microstudio.dev/i/kantel/pythontutorial10/).
+
+*Patt Vira*, die die Inspration zu diesem Tutorial gab, hat noch weitere, interessante Videos auf ihrem [YouTube-Account](https://www.youtube.com/@pattvira) veröffentlicht, die geradezu nach einem Port nach microStudio schreien. Spontan fallen mir diese ein:
+
+- [💖 Exploding Hearts 💖](https://www.youtube.com/watch?v=YgDY7l2W9eE) – [Quellcode](https://editor.p5js.org/pattvira/sketches/B7jG_ZOl0)
+- [Interactive Floating Typography](https://www.youtube.com/watch?v=-6v_AYyn49k) – [Quellcode](https://editor.p5js.org/pattvira/sketches/Rs498E8W3)
+- [Interactive Falling Text Rain](https://www.youtube.com/watch?v=vVXizarOnrU) – [Quellcode](https://editor.p5js.org/pattvira/sketches/I6nhJ_Ffq)
+
+Sie alle sind Teil der Playlist [Interactivity](https://www.youtube.com/playlist?list=PL0beHPVMklwgEn3BSVCMssJOD165ZQiw7), die zur Zeit aus dreizehn Videos mit witzigen Projekten besteht. Da das jüngste Update erst wenige Stunden alt ist, rechne ich noch mit weiteren Tutorials. Schaun wir doch mal, was ich damit alles anstellen kann. *Still digging!*
