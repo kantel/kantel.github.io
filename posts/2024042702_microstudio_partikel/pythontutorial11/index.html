@@ -1,0 +1,230 @@
+<!DOCTYPE html><html><head><title>Python Tutorial 11</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"background.png","version":1,"size":130048,"properties":{}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":203104,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+from random import random, choice, uniform
+
+colors = ["rgb(8, 247, 254)", "rgb(254, 83, 187)",
+          "rgb(245, 211, 0)", "rgb(0, 255, 65)",
+          "rgb(250, 25, 25)", "rgb(148, 103, 89)"]
+          
+START_X, START_Y = -50, 70
+
+particles = []
+
+def init():
+  pass
+
+def update():
+  particle = Particle(START_X, START_Y)
+  particles.append(particle)
+  for particle in reversed(particles):
+    if particle.done:
+      particles.remove(particle)
+  for particle in particles:
+    particle.update()
+
+def draw():
+  screen.clear()
+  # screen.fillRect(0, 0, screen.width, screen.height, "rgb(33, 41, 70)")
+  screen.drawSprite("background", 0, 0, screen.width, screen.height)
+  for particle in particles:
+    particle.display()
+  # print(len(particles))
+
+class Particle():
+  
+  def __init__(self, _x, _y):
+    self.loc = PVector2(_x, _y)
+    self.acc = PVector2(0, 0.005)
+    self.vel = PVector2(uniform(-1.0, 1.0), uniform(-2.0, 0.0))
+    self.col = choice(colors)
+    self.lifespan = 255.0
+    self.d = uniform(3, 10)
+    self.done = False
+    
+  def update(self):
+    self.vel += self.acc
+    self.loc += self.vel
+    self.lifespan -= uniform(0.5, 1.0)*3
+    if self.lifespan <= 10:
+      self.done = True
+      
+  def display(self):
+    screen.setAlpha(self.lifespan/255)
+    screen.fillRound(self.loc.x, self.loc.y, self.d, self.d, self.col)
+    screen.drawRound(self.loc.x, self.loc.y, self.d, self.d, "rgb(33, 41, 70)")
+    screen.setAlpha(1.0)
+
+
+
+import math
+import random
+
+class PVector2():
+    
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+
+  def set(self, v):
+    self.x = v.x
+    self.y = v.y
+    
+  def get(self):
+    v = PVector2(self.x, self.y)
+    return v
+
+  def add(self, v):
+    self.x += v.x
+    self.y += v.y
+        
+  def sub(self, v):
+    self.x -= v.x
+    self.y -= v.y
+    
+  # Multiplikation mit einem Skalar
+  def mult(self, n):
+    self.x *= n
+    self.y *= n
+    
+  # Division durch einen Skalar
+  def div(self, n):
+    self.x /= n
+    self.y /= n
+
+  # Elementweise Multiplikation eines Vektor mit einem anderen Vektor
+  def mult2(self, v):
+    self.x *= v.x
+    self.y *= v.y
+
+  # Elementweise Division eines Vektor mit einem anderen Vektor
+  def div2(self, v):
+    self.x /= v.x
+    self.y /= v.y
+
+  # Magnitude
+  def mag(self):
+    return math.sqrt(self.x*self.x + self.y*self.y)
+    
+  # Normalisierung
+  def normalize(self):
+    m = self.mag()
+    if (m != 0):
+      self.div(m)
+
+# Berechnung der euklidischen Distanz zwischen zwei Vektoren
+  def dist(self, v):
+    dx = self.x - v.x
+    dy = self.y - v.y
+    return math.sqrt(dx*dx + dy+dy)
+    
+  # Berechnung des Skalarprodukts (inneren Produkts) eines Vektors
+  def dot(self, v):
+    return self.x*v.x + self.y*v.y
+    
+  # Begrenzt die Magnitude eines Vektors auf max
+  def limit(self, max):
+    if self.mag() > max:
+      self.normalize()
+      self.mult(max)
+    
+  # Berechnet den Winkel der Rotation eines Vektors
+  def heading(self):
+    angle = math.atan2(-self.y, self.x)
+    return -1*angle
+
+  def __add__(self, other):
+    x = self.x + other.x
+    y = self.y + other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __sub__(self, other):
+    x = self.x - other.x
+    y = self.y - other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __str__(self):
+    return "[" + str(self.x) + ", " + str(self.y) + "]"
+        
+  @classmethod
+  def random2D(cls):
+    x = random.uniform(-1, 1)
+    y = random.uniform(-1, 1)
+    v = cls(x, y)
+    v.normalize()
+    return v
+
+  # Klassenmethoden: Skalare Multiplikation und Division
+    
+  # Multiplikation mit einem Skalar
+  def smult(v, n):
+    x = v.x*n
+    y = v.y*n
+    result = PVector2(x, y)
+    return result
+
+  # Division mit einem Skalar
+  def sdiv(v, n):
+    if n != 0:
+      x = v.x/n
+      y = v.y/n
+      result = PVector2(x, y)
+      return result
+    else:
+      print("Error. Divison durch Null!")
+
+</script></html>

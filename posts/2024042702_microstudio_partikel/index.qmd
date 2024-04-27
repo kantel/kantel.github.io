@@ -1,0 +1,100 @@
+---
+title: "MicroStudio und Python: Ein Partikelsystem"
+author: "Jörg Kantel"
+date: "2024-04-27 17:30:00"
+categories: [microStudio, Python, Brython, Nature of Code, Creative Coding]
+image: "images/pythontut11.jpg"
+---
+
+[![](images/pythontut11-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53681074464/)
+
+Da spülte doch dieses wunderschöne Video »[Basics of Particle Systems](https://www.youtube.com/watch?v=QlpadcXok8U)« in meinen Feedreader, in dem *Patt Vira* in Anlehnung an *Daniel Shiffmans* wunderbarem Buch »[The Nature of Code](https://natureofcode.com/)« ein [Partikelsystem](https://natureofcode.com/particles/) in [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) programmiert. Und da fiel mir doch wieder ein, daß ich erst [jüngst die Idee hatte](https://kantel.github.io/posts/2024032801_microstudio_noc_1/), wenigstens Teile aus dem Buch auch mal in [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) (in der Python/[Brython](https://brython.info/)-Variante) zu implementieren.
+
+<iframe src="pythontutorial11/index.html" class="if16_9" name="Ein Partikelsystem"></iframe>
+
+Dafür brauchte ich natürlich wieder meine Klasse `PVector2`. Da sie sehr lang ist, verzichte ich [auch dieses Mal](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/) auf einen erneuten Abdruck, Ihr könnt sie von [dieser Seite kopieren](https://kantel.github.io/posts/2024032801_microstudio_noc_1/) und in Eure Projekte einfügen.
+
+Ansonsten gibt es die Klasse `Particle`, die die Grundlage für das Skript legt:
+
+~~~python
+class Particle():
+  
+  def __init__(self, _x, _y):
+    self.loc = PVector2(_x, _y)
+    self.acc = PVector2(0, 0.005)
+    self.vel = PVector2(uniform(-1.0, 1.0), uniform(-2.0, 0.0))
+    self.col = choice(colors)
+    self.lifespan = 255.0
+    self.d = uniform(3, 10)
+    self.done = False
+    
+  def update(self):
+    self.vel += self.acc
+    self.loc += self.vel
+    self.lifespan -= uniform(0.5, 1.0)*3
+    if self.lifespan <= 10:
+      self.done = True
+      
+  def display(self):
+    screen.setAlpha(self.lifespan/255)
+    screen.fillRound(self.loc.x, self.loc.y, self.d, self.d, self.col)
+    screen.drawRound(self.loc.x, self.loc.y, self.d, self.d, "rgb(33, 41, 70)")
+    screen.setAlpha(1.0)
+~~~
+
+Den meisten von Euch wird auffallen, daß diese Klasse kaum Besonderheiten der microStudio-API nutzt. Lediglich die Methode `display()` macht naturgemäß davon Gebrauch.
+
+Das gilt auch für das Hauptprogramm `main`, in dem lediglich die `draw()`-Funktion Befehle aus der microStudio-API benötigt. Alles andere ist Python pur:
+
+~~~python
+from random import random, choice, uniform
+
+colors = ["rgb(8, 247, 254)", "rgb(254, 83, 187)",
+          "rgb(245, 211, 0)", "rgb(0, 255, 65)",
+          "rgb(250, 25, 25)", "rgb(148, 103, 89)"]
+          
+START_X, START_Y = -50, 70
+
+particles = []
+
+def init():
+  pass
+
+def update():
+  particle = Particle(START_X, START_Y)
+  particles.append(particle)
+  for particle in reversed(particles):
+    if particle.done:
+      particles.remove(particle)
+  for particle in particles:
+    particle.update()
+
+def draw():
+  screen.clear()
+  # screen.fillRect(0, 0, screen.width, screen.height, "rgb(33, 41, 70)")
+  screen.drawSprite("background", 0, 0, screen.width, screen.height)
+  for particle in particles:
+    particle.display()
+~~~
+
+Um ein wenig Abwechslung in die Farben zu bringen, habe ich die [kürzlich vorgestellte](https://kantel.github.io/posts/2024041201_neonbunt/), neonbunte Palette [MPL Cyberpunk](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/mplcyberpunk.html) benutzt. Und um die Angelegenheit ein wenig spielerischer zu gestalten, habe ich das Hintergrundbild, in dem ein Junge auf einem fernen Planeten das Partikelsystem bestaunt, von der [gekünstelten Intelligenzia meines Vertrauens](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html) erstellen lassen (siehe unten).
+
+Das ist das elfte Tutorial meiner »microStudio mit Python«-Reihe. Alle bisher im *Schockwellenreiter* erschienenen Beiträge habe ich hier aufgeführt, um Euch eine Suche zu ersparen:
+
+- MicroStudio und Python (Teil 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): [Bouncing Birds](https://kantel.github.io/posts/2024040401_bouncing_birds/)
+- MicroStudio und Python (Teil 9): [Kollisionserkennung mit Rechtecken](https://kantel.github.io/posts/2024040701_rect_collision/)
+- MicroStudio und Python (Teil 10): [Bubbly Emojis](https://kantel.github.io/posts/2024042301_bubbling_emojis/)
+- MicroStudio und Python (Teil 11): Ein Partikelsystem
+
+Und natürlich habe ich dieses Programm auch wieder auf meinen [microStudio-Account hochgeladen](https://microstudio.dev/i/kantel/pythontutorial11/), damit Ihr es anschauen und damit weiter experimentieren könnt. Je länger ich damit Spiele, desto mehr Spaß habe ich mit der Python-Variante von microStudio (auch wenn ich hin und wieder über Beschränkungen der API stolpere). Habt also auch Spaß mit Eurer Version der bunten Kreise!
+
+---
+
+**(Hintergrund-) Bild**: *[Space Opera (Belgian Comic Style)](https://www.flickr.com/photos/schockwellenreiter/53619313480/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*Full moon with a human face smiles at a nightly sky with stars and a few clouds. colored french comic style*«. Modell: Stable Diffusion XL, Style: Scifi Magic + Belgian School.
