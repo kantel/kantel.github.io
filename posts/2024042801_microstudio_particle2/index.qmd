@@ -1,0 +1,77 @@
+---
+title: "MicroStudio und Python: Ein Partikelsystem (Part 2)"
+author: "Jörg Kantel"
+date: "2024-04-28 19:30:00"
+categories: [microStudio, Python, Brython, Nature of Code, Creative Coding]
+image: "images/pythontutorial12.jpg"
+---
+
+[![](images/pythontutorial12-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53684873703/)
+
+Meinen [Beitrag von gestern](https://kantel.github.io/posts/2024042702_microstudio_partikel/) über ein Partikelsystem mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) und Python/[Brython](https://brython.info/) wollte ich noch ein wenig aufmotzen. Die Partikel sollten nicht nur einfach durch den Raum schweben, sondern dabei auch noch rotieren. Da man Kreisen aber eine Rotation schwer ansehen kann, habe ich dem System auch noch rechteckige (genauer quadratische) Partikel spendiert, die fröhlich drehend durch das Weltall schweben, bis sie -- wie die Kreise -- verblassen.
+
+<iframe src="pythontutorial12/index.html" class="if16_9" name="Ein Partikelsystem (2)"></iframe>
+
+Dafür waren eigentlich nur wenige Änderungen im Code notwendig. Die größte Schwierigkeit war, die richtige Funktion in der [microStudio-API](https://microstudio.dev/documentation/API/) für die Rotation einzelner Shapes (und Sprites) zu finden. Nachdem ich endlich den Unterschied zwischen `screen.setRotation()` (dreht den kompletten Bildschirm) und `screen.drawRotation()` (dreht einzelne Shapes und Sprites) begriffen hatte, war die Klasse `RectParticle`, die eine Unterklasse von `Particle` ist, schnell implementiert:
+
+~~~python
+class RectParticle(Particle):
+  
+  def __init__(self, _x, _y):
+    Particle.__init__(self, _x, _y)
+    self.angle = randint(0, 360)
+    
+  def update(self):
+    self.vel += self.acc
+    self.loc += self.vel
+    self.angle += 10
+    self.angle %= 360
+    self.lifespan -= uniform(0.5, 1.0)*3
+    if self.lifespan <= 10:
+      self.done = True
+      
+  def display(self):
+    screen.setAlpha(self.lifespan/255)
+    screen.setDrawRotation(self.angle)
+    screen.fillRect(self.loc.x, self.loc.y, self.d, self.d, self.col)
+    screen.drawRect(self.loc.x, self.loc.y, self.d, self.d, "rgb(33, 41, 70)")
+    screen.setDrawRotation(0)
+    screen.setAlpha(1.0)
+~~~
+
+Die `update()`-Methode erhielt zusätzliche Befehle, die für die Rotation zuständig waren und in `display()` wurde mit `screen.setDrawRotation(self.angle)` das rotierende Quadrat gezeichnet. Wie bei `screen.setAlpha()` darf nicht vergessen werden, den Wert anschließend wieder auf seinen Default zurückzusetzen.
+
+In der Hauptroutine `main` war lediglich in `update()` eine zusätzliche Abfrage nötig, um den Zufallszahlengenerator zu befragen, ob man ein Quadrat oder einen Kreis erzeugt:
+
+~~~python
+def update():
+  choice = randint(0, 10)
+  if choice <= 5:
+    particle = Particle(START_X, START_Y)
+  else:
+    particle = RectParticle(START_X, START_Y)
+  particles.append(particle)
+~~~
+
+Alles andere blieb wie in der letzten Version des Skriptes, das ich auch dieses Mal wieder auf meinem microStudio-Account [hochgeladen](https://microstudio.dev/i/kantel/pythontutorial12/)habe. Und das Hintergrundbild habe ich wieder von der [gekünstelten Intelligenzia meines Vertrauens](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html) erstellen lassen (siehe unten). Um ein wenig Abwechslung in die Sache zu bringen, bestaunen dieses Mal zwei Jungen das Partikelsystem.
+
+Das ist das zwöfte Tutorial meiner »microStudio mit Python«-Reihe. Alle bisher im Schockwellenreiter erschienenen Beiträge habe ich wieder hier aufgeführt, um Euch eine Suche zu ersparen:
+
+- MicroStudio und Python (Teil 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): [Bouncing Birds](https://kantel.github.io/posts/2024040401_bouncing_birds/)
+- MicroStudio und Python (Teil 9): [Kollisionserkennung mit Rechtecken](https://kantel.github.io/posts/2024040701_rect_collision/)
+- MicroStudio und Python (Teil 10): [Bubbly Emojis](https://kantel.github.io/posts/2024042301_bubbling_emojis/)
+- MicroStudio und Python (Teil 11): [Ein Partikelsystem](https://kantel.github.io/posts/2024042702_microstudio_partikel/)
+- MicroStudio und Python (Teil 12): Ein Partikelsystem (2)
+
+Damit ist das Dutzend erst einmal voll. Ich werde die Reihe mindestens für ein paar Tage pausieren lassen, denn der hier auf diesen Seiten schon mehrfach erwähnte Freund aus Bremen hat mich auf die Idee gebracht, ein [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Tutorial für absolute Beginner zu schreiben. Er wünschte sich das. Schaun wir mal, ob ich das hinbekomme. Ich habe jedenfalls Lust darauf. *Still digging!*
+
+---
+
+**(Hintergrund-) Bild**: *[Space Opera (Belgian Comic Style)](https://www.flickr.com/photos/schockwellenreiter/53619207904/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*Full moon with a human face smiles at a nightly sky with stars and a few clouds. colored french comic style*«. Modell: Stable Diffusion XL, Style: Scifi Magic + Belgian School.
