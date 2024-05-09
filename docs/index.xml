@@ -10,7 +10,46 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 08 May 2024 14:45:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 09 May 2024 12:45:00 GMT</lastBuildDate>
+<item>
+  <title>Monogatari und RenJS: Zwei Engines für Visual Novels (und mehr)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024050901_monogatari_renjs/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53708372012/"><img src="https://kantel.github.io/posts/2024050901_monogatari_renjs/images/monogatari-b.jpg" class="img-fluid"></a></p>
+<p>Mein in schöner Regelmäßigkeit auf diesen Seiten auftauchender Freund und Diskussionspartner <em>Kalle aus Bremen</em> wollte mich für diesen automatischen <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>/Java nach <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>/JavaScript-<a href="https://dkessner.github.io/processing-p5-convert/">Konverter</a> begeistern und war – glaube ich – ein wenig enttäuscht, weil sich meine Begeisterung in Grenzen hielt<sup>1</sup>. Aber mich begeisterte etwas ganz anderes. Denn auf den <a href="https://dkessner.github.io/project_current/">Seiten von <em>Darren Kessner</em></a> fand ich einen <a href="https://dkessner.github.io/alice/">Link zu einer Visual Novel über Alice im Wunderland</a> und dort wieder einen Link zu der Engine <a href="https://monogatari.io/">Monogatari</a>, mit der er diese interaktive Geschichte gebastelt hatte, und dort wiederum – über einige Umwege – einen Link zu <a href="https://renjs.net/index.html">RenJS</a>, eine weitere interessante <em>Visual Novel Engine</em>.</p>
+<p>Beide Engines berufen sich auf <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> und folgen einer ähnlichen, Skript-orientierten Vorgehensweise, haben aber ihren Fokus auf Webtechniken (HTML5, JavaScript, CSS).</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/byObSXXFAnM?si=3Y0ZdypeRMLPqcku" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Die <strong>Monogatari Visual Novel Engine</strong> (MIT-Lizenz)<sup>2</sup> verlangt einen Texteditor, einen lokalen Webserver (zum Beispiel <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a> oder <a href="http://cognitiones.kantel-chaos-team.de/webworking/xampp.html">XAMPP</a>) und einen einigermaßen modernen Browser als Entwicklungsumgebung. Die Software besitzt eine <a href="https://developers.monogatari.io/documentation">ausführliche Dokumentation</a> und ist auch auf <a href="https://developers.monogatari.io/documentation">GitHub zu finden</a>. Zusätzlich führt eine <a href="https://monogatari.io/demo/">nett gemachte Demo</a> (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/53708372012/">Screenshot</a> im Bannerbild oben) in die vielfältigen Möglichkeiten des Programms ein.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/Es1nmMqUDHg?si=l774lUNqm6Cpqr4E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Die Voraussetzungen, um mit <strong>RenJS V2</strong> (CC-BY-SA-4.0) eine interaktive Geschichte entwickeln zu können, sind genau dieselben wie bei Monogatari (Texteditor, Browser und lokaler Entwicklungsserver). Hier zeigt schon der Name die Nähe zu Ren’Py, doch ist <a href="https://phaser.io/">Phaser</a> die (JavaScript-) Engine, die im Hintergrund werkelt. Auch RenJS besitzt eine <a href="https://renjs.net/docs-page.html">umfangreiche Dokumentation</a> und ein <a href="https://github.com/lunafromthemoon/RenJS-V2">GitHub-Repositorium</a>. Zusätzlich ist das Teil auch noch auf <a href="https://lunafromthemoon.itch.io/renjs">Itch.io zu finden</a>, wo auch eine kleine Demo gestartet werden kann.</p>
+<p>Für beide Engines gilt, daß sie neben einer browserbasierten Version auch – vermutlich via <a href="http://cognitiones.kantel-chaos-team.de/webworking/frameworks/electron.html">Electron</a> – Desktop-Applikationen für Windows, macOS und Linux erzeugen können.</p>
+<p>Monogatari wie auch RenJS klingen sehr vielversprechend und scheinen sehr ähnlich zu sein. Um sie besser beurteilen zu können, müßte ich sie anscheinend wirklich auf Herz und Nieren testen. Und wißt Ihr was? Ich glaube, ich habe Lust darauf!</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich bin kein Berufs-, sondern ein Hobby-Programmierer. Folgerichtig ist Programmieren für mich in erster Linie eine kreative Tätigkeit. Daher lasse ich mir die Freude an der Kreativität doch nicht von solch einem Automatisierungstool verderben. (Wohlgemerkt, wäre ich ein Profi-Programmierer und müßte mich mit so langweiligen Aufgaben wie zum Beispiel der Programmierung eines Warenwirtschaftssystems herumschlagen, dann sähe meiner Einschätzung solch eines Automatisierungs-Werkzeiges vermutlich anders aus.)↩︎</p></li>
+<li id="fn2"><p>Der Name <a href="https://de.wikipedia.org/wiki/Monogatari_Series">Monogatari</a> leitet sich von einer in Japan populären, gleichnamigen <a href="https://de.wikipedia.org/wiki/Light_Novel">Light-Novel</a>-Reihe ab, die auch als Anime und in diversen Fernsehserien umgesetzt wurde.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Monogatari</category>
+  <category>RenJS</category>
+  <category>Interacitive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024050901_monogatari_renjs/</guid>
+  <pubDate>Thu, 09 May 2024 12:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024050901_monogatari_renjs/images/monogatari.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Foam und Dendron: Freie Alternativen zu Obsidian</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1009,35 +1048,6 @@ font-style: inherit;">in</span> particles:</span>
   <guid>https://kantel.github.io/posts/2024042701_cursorpack/</guid>
   <pubDate>Sat, 27 Apr 2024 13:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024042701_cursorpack/images/cursorpack.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Bitsy Update auf Version 8.11</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024042502_bitsy_8_11/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53575356544/"><img src="https://kantel.github.io/posts/2024042502_bitsy_8_11/images/waldnymphen-b.jpg" class="img-fluid"></a></p>
-<p>Gestern hat <em>Adam le Doux</em> die Version 8.11 von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/bitsy.html">Bitsy</a>, der bewußt minimalistisch gehaltenen Engine für narrative 2D-Spiele, <a href="https://ledoux.itch.io/bitsy/devlog/719979/v811-game-tool-combined-tool-for-download-settings-game-data">freigegeben</a>.</p>
-<p>Es ist ein größeres Update, das unter der Haube vor allem ein neues »Game Tool« mitbringt. Das soll die bisherigen Tools <em>Download</em>, <em>Settings</em> und <em>Game Data</em> ersetzen und dadurch, daß es diese an einem Ort vereint, für mehr Übersichtlichkeit sorgen.</p>
-<p><a href="https://img.itch.zone/aW1nLzE1ODg4MzE5LnBuZw==/original/CJow6p.png"><img src="https://kantel.github.io/posts/2024042502_bitsy_8_11/images/gametool.png" class="img-fluid"></a>&nbsp;<a href="https://img.itch.zone/aW1nLzE1ODg4MzI0LnBuZw==/original/QPk9T%2F.png"><img src="https://kantel.github.io/posts/2024042502_bitsy_8_11/images/oldtools.png" class="img-fluid"></a></p>
-<p><em>Das neue »Game Tool« (links) ersetzt diese drei bisherigen Tools (rechts).</em></p>
-<p>Eine genaue <a href="https://make.bitsy.org/docs/tools/game/">Beschreibung des Tools</a> findet Ihr in der <a href="https://make.bitsy.org/docs/">Dokumentation</a>, die ebenfalls ein Update erfahren hat.</p>
-<p>Ich sollte auch mal wieder etwas mit Bitsy anstellen, denn in der Beschränkung liegt ja bekanntlich die Kraft!</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53575356544/">Zwei Waldnymphen</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: <em>«three naked nymphs, reddish-brown hair, green eyes, big boobs, nice butt, red lips, dance in a sunny clearing, in an enchanted garden with many colorful flowers, A Pan+, with beard, with goat legs, sits on a pedestal, and accompanies her on his flute+, Fox and hare watch the scenario in amazement</em>«. Negative Prompt: <em>»ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Storybook + 3D.</p>
-
-
-
- ]]></description>
-  <category>Bitsy</category>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2024042502_bitsy_8_11/</guid>
-  <pubDate>Thu, 25 Apr 2024 13:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024042502_bitsy_8_11/images/waldnymphen.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
