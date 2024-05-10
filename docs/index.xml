@@ -10,7 +10,33 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Fri, 10 May 2024 14:20:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 10 May 2024 17:35:00 GMT</lastBuildDate>
+<item>
+  <title>Retrogaming vom Feinsten: Decker 1.42 goes Sokoban</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024051004_decker_1_42/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53712330790/"><img src="https://kantel.github.io/posts/2024051004_decker_1_42/images/deckersokoban-b.jpg" class="img-fluid"></a></p>
+<p>Das letzte Update für heute: Vom freien (MIT-Lizenz), nostalgischen und plattformübergreifenden (Linux, macOS, Windows) <a href="http://cognitiones.kantel-chaos-team.de/programmierung/hypercard.html">HyperCard</a>-Nachbau <a href="http://cognitiones.kantel-chaos-team.de/programmierung/decker.html">Decker</a> wurde die <a href="https://internet-janitor.itch.io/decker/devlog/729065/decker-142">Version 1.42 freigegeben</a>. Es ist wieder ein größeres Update mit vielen Fehlerbereinigungen, Verbesserungen der Usability – und an der Skriptsprache unter der Haube wurde auch geschraubt.</p>
+<p>Das Schönste ist allerdings: Im Beispielverzeichnis findet Ihr nun auch den <a href="https://de.wikipedia.org/wiki/Sokoban">Sokoban</a>-Nachbau <a href="http://beyondloom.com/decker/goofs/sokoban.html">Decker-Sokoban</a> als Beispiel dafür, wie Ihr in Decker Tile-basierte Knobelspiele realisieren könnt.</p>
+<p>Nach <a href="https://kantel.github.io/posts/2024021902_decker_goes_vn/">Decker für interaktive Geschichten und Visual Novels</a> im Retrolook mit Ditherpunk-Ästhetik nun auch Decker als <a href="https://kantel.github.io/posts/2023112603_decker_revisited/">Game Engine für Ditherpunk-Retrospiele</a>. Nostalgie vom Feinsten, ich hatte vor vielen, vielen Jahren (ach was: Jahrzehnten) <a href="https://kantel.github.io/posts/2023112603_decker_revisited/">HyperCard für genau dieses genutzt</a> (und sogar ebenfalls einen Sokoban-Klon verbrochen). Ich sollte also Decker wirklich auch einmal eine Chance geben. <em>So viel zu spielen, so wenig Zeit!</em></p>
+
+
+
+ ]]></description>
+  <category>Decker</category>
+  <category>Retrocmputing</category>
+  <category>Retrogaming</category>
+  <category>Hypermedia</category>
+  <category>Interactive Fiction</category>
+  <guid>https://kantel.github.io/posts/2024051004_decker_1_42/</guid>
+  <pubDate>Fri, 10 May 2024 17:35:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024051004_decker_1_42/images/deckersokoban.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Version 0.81 des SSH-Klienten PuTTY behebt Sicherheitslücken</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -562,213 +588,6 @@
   <guid>https://kantel.github.io/posts/2024042901_foxit_update/</guid>
   <pubDate>Mon, 29 Apr 2024 13:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024042901_foxit_update/images/foxit2.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>MicroStudio und Python: Ein Partikelsystem (Part 2)</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024042801_microstudio_particle2/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53684873703/"><img src="https://kantel.github.io/posts/2024042801_microstudio_particle2/images/pythontutorial12-b.jpg" class="img-fluid"></a></p>
-<p>Meinen <a href="https://kantel.github.io/posts/2024042702_microstudio_partikel/">Beitrag von gestern</a> über ein Partikelsystem mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> und Python/<a href="https://brython.info/">Brython</a> wollte ich noch ein wenig aufmotzen. Die Partikel sollten nicht nur einfach durch den Raum schweben, sondern dabei auch noch rotieren. Da man Kreisen aber eine Rotation schwer ansehen kann, habe ich dem System auch noch rechteckige (genauer quadratische) Partikel spendiert, die fröhlich drehend durch das Weltall schweben, bis sie – wie die Kreise – verblassen.</p>
-<iframe src="pythontutorial12/index.html" class="if16_9" name="Ein Partikelsystem (2)">
-</iframe>
-<p>Dafür waren eigentlich nur wenige Änderungen im Code notwendig. Die größte Schwierigkeit war, die richtige Funktion in der <a href="https://microstudio.dev/documentation/API/">microStudio-API</a> für die Rotation einzelner Shapes (und Sprites) zu finden. Nachdem ich endlich den Unterschied zwischen <code>screen.setRotation()</code> (dreht den kompletten Bildschirm) und <code>screen.drawRotation()</code> (dreht einzelne Shapes und Sprites) begriffen hatte, war die Klasse <code>RectParticle</code>, die eine Unterklasse von <code>Particle</code> ist, schnell implementiert:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">class</span> RectParticle(Particle):</span>
-<span id="cb1-2">  </span>
-<span id="cb1-3">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>, _x, _y):</span>
-<span id="cb1-4">    Particle.<span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>, _x, _y)</span>
-<span id="cb1-5">    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.angle <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">360</span>)</span>
-<span id="cb1-6">    </span>
-<span id="cb1-7">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>):</span>
-<span id="cb1-8">    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.acc</span>
-<span id="cb1-9">    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.vel</span>
-<span id="cb1-10">    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.angle <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span></span>
-<span id="cb1-11">    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.angle <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">360</span></span>
-<span id="cb1-12">    <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-=</span> uniform(<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span></span>
-<span id="cb1-13">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.lifespan <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>:</span>
-<span id="cb1-14">      <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.done <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb1-15">      </span>
-<span id="cb1-16">  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> display(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>):</span>
-<span id="cb1-17">    screen.setAlpha(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.lifespan<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">255</span>)</span>
-<span id="cb1-18">    screen.setDrawRotation(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.angle)</span>
-<span id="cb1-19">    screen.fillRect(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.d, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.d, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.col)</span>
-<span id="cb1-20">    screen.drawRect(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.d, <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">self</span>.d, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rgb(33, 41, 70)"</span>)</span>
-<span id="cb1-21">    screen.setDrawRotation(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb1-22">    screen.setAlpha(<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span>)</span></code></pre></div>
-<p>Die <code>update()</code>-Methode erhielt zusätzliche Befehle, die für die Rotation zuständig waren und in <code>display()</code> wurde mit <code>screen.setDrawRotation(self.angle)</code> das rotierende Quadrat gezeichnet. Wie bei <code>screen.setAlpha()</code> darf nicht vergessen werden, den Wert anschließend wieder auf seinen Default zurückzusetzen.</p>
-<p>In der Hauptroutine <code>main</code> war lediglich in <code>update()</code> eine zusätzliche Abfrage nötig, um den Zufallszahlengenerator zu befragen, ob man ein Quadrat oder einen Kreis erzeugt:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">def</span> update():</span>
-<span id="cb2-2">  choice <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>)</span>
-<span id="cb2-3">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">if</span> choice <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>:</span>
-<span id="cb2-4">    particle <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Particle(START_X, START_Y)</span>
-<span id="cb2-5">  <span class="cf" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">else</span>:</span>
-<span id="cb2-6">    particle <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> RectParticle(START_X, START_Y)</span>
-<span id="cb2-7">  particles.append(particle)</span></code></pre></div>
-<p>Alles andere blieb wie in der letzten Version des Skriptes, das ich auch dieses Mal wieder auf meinem microStudio-Account <a href="https://microstudio.dev/i/kantel/pythontutorial12/">hochgeladen</a>habe. Und das Hintergrundbild habe ich wieder von der <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">gekünstelten Intelligenzia meines Vertrauens</a> erstellen lassen (siehe unten). Um ein wenig Abwechslung in die Sache zu bringen, bestaunen dieses Mal zwei Jungen das Partikelsystem.</p>
-<p>Das ist das zwöfte Tutorial meiner »microStudio mit Python«-Reihe. Alle bisher im Schockwellenreiter erschienenen Beiträge habe ich wieder hier aufgeführt, um Euch eine Suche zu ersparen:</p>
-<ul>
-<li>MicroStudio und Python (Teil 1): <a href="https://kantel.github.io/posts/2024032201_microstudio_python_1/">Hallo Brython</a>!</li>
-<li>MicroStudio und Python (Teil 2): <a href="https://kantel.github.io/posts/2024032401_microstudio_python_2/">Zombie Apokalypse</a></li>
-<li>MicroStudio und Python (Teil 3): <a href="https://kantel.github.io/posts/2024032502_microstudio_python_3/">Dancing Crab</a></li>
-<li>MicroStudio und Python (Teil 4): <a href="https://kantel.github.io/posts/2024032703_flying_badger_python/">Flying Badger</a></li>
-<li>MicroStudio und Python (Teil 5): <a href="https://kantel.github.io/posts/2024032801_microstudio_noc_1/">PVector2 und »The Nature of Code«</a></li>
-<li>MicroStudio und Python (Teil 6): <a href="https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/">Bouncing Balls</a></li>
-<li>MicroStudio und Python (Teil 7): <a href="https://kantel.github.io/posts/2024040201_collision_detection_1/">Kollisionserkennung mit Kreisen</a></li>
-<li>MicroStudio und Python (Teil 8): <a href="https://kantel.github.io/posts/2024040401_bouncing_birds/">Bouncing Birds</a></li>
-<li>MicroStudio und Python (Teil 9): <a href="https://kantel.github.io/posts/2024040701_rect_collision/">Kollisionserkennung mit Rechtecken</a></li>
-<li>MicroStudio und Python (Teil 10): <a href="https://kantel.github.io/posts/2024042301_bubbling_emojis/">Bubbly Emojis</a></li>
-<li>MicroStudio und Python (Teil 11): <a href="https://kantel.github.io/posts/2024042702_microstudio_partikel/">Ein Partikelsystem</a></li>
-<li>MicroStudio und Python (Teil 12): Ein Partikelsystem (2)</li>
-</ul>
-<p>Damit ist das Dutzend erst einmal voll. Ich werde die Reihe mindestens für ein paar Tage pausieren lassen, denn der hier auf diesen Seiten schon mehrfach erwähnte Freund aus Bremen hat mich auf die Idee gebracht, ein <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Tutorial für absolute Beginner zu schreiben. Er wünschte sich das. Schaun wir mal, ob ich das hinbekomme. Ich habe jedenfalls Lust darauf. <em>Still digging!</em></p>
-<hr>
-<p><strong>(Hintergrund-) Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53619207904/">Space Opera (Belgian Comic Style)</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>Full moon with a human face smiles at a nightly sky with stars and a few clouds. colored french comic style</em>«. Modell: Stable Diffusion XL, Style: Scifi Magic + Belgian School.</p>
-
-
-
- ]]></description>
-  <category>microStudio</category>
-  <category>Python</category>
-  <category>Brython</category>
-  <category>Nature of Code</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2024042801_microstudio_particle2/</guid>
-  <pubDate>Sun, 28 Apr 2024 17:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024042801_microstudio_particle2/images/pythontutorial12.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
