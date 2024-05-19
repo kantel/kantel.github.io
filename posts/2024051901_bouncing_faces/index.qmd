@@ -1,0 +1,171 @@
+---
+title: "Bouncing Faces: Drei Wege, mit P5.js zu spielen"
+author: "Jörg Kantel"
+date: "2024-05-19 16:40:00"
+categories: [Creative Coding, P5.js, Processing, Visual Studio Code]
+image: "images/bouncingfaceswebeditor.jpg"
+---
+
+[![](images/bouncingfaceswebeditor-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53702749653/)
+
+Es ist an der Zeit, daß ich [mein Versprechen](https://kantel.github.io/posts/2024042801_microstudio_particle2/) einlöse, ein [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Tutorial für Anfänger zu schreiben. Und das bedeutet, ein P5.js-Tutorial, das als Entwicklungsumgebung den [P5.js-Webeditor](https://editor.p5js.org/) nutzt.
+
+Warum ist dieser Unterschied überhaupt notwendig? P5.js ist nicht einfach eine weitere [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Variante, sondern eine unabhängige JavaScript-Bibliothek, die sich in ihren Methoden an die Processing-Befehle anlehnt. Das bedeutet, P5.js läuft überall dort, wo JavaScript implementiert werden kann und -- das ist in diesem Zusammenhang wichtig -- P5.js-Sketche können in (nahezu) jeder Entwicklungsumgebung geschrieben werden. In der Hauptsache sind es drei Wege, auf die ich im Folgenden eingehen möchte[^1]:
+
+[^1]: Dieser Beitrag fußt auf *Tim Rodenbrökers* Blog-Aufsatz »[Three ways to work with p5.js](https://timrodenbroeker.de/three-ways-to-work-with-p5-js/)« vom 1. September 2022, letzte Bearbeitung am 25. Januar 2024.
+
+### Weg 1: Der P5.js-Webeditor
+
+Seit seiner Einführung vor etwa sieben Jahren ist der **[P5.js-Webeditor](https://editor.p5js.org/)** so etwas wie die Standard-Umgebung der P5.js-Entwicklergemeinde geworden. Das hat nicht nur damit zu tun, daß die P5.js-Gurus *Patt Vira* und *Daniel Shiffman* ihn in ihren Video-Tutorials mittlerweile ausschließlich nutzen, sondern vor allem damit, daß man mit ihm einfach und ohne irgendetwas installieren zu müssen, loslegen kann. Nicht einmal eine Registrierung ist erforderlich[^2]. Entwickelt wurde der Editor urspünglich von *Cassie Tarakajian*, mittlerweile wirken aber sehr viele Mitstreiterinnen und Mitstreiter an Weiterentwicklung des Editors mit.
+
+[^2]: Zumindest im Prinzip -- ohne Registrierung kann man seine Sketche allerdings nicht abspeichern.
+
+Ein Ziel war es, eine P5.js-Entwicklungsumgebung zu schaffen, die möglichst barrierefrei ist und überall funktioniert.
+
+Der Webeditor bringt erst einmal alles mit, was man für einen P5.js-Sketch braucht: Eine `index.html`, die den Sketch ausführt, die Datei `sketch.js` für den eigentlichen Sketch und eine minimale `style.css`, mit der die Ausgabe verschönert werden kann. Im einfachsten Fall muß der Entwickler nur die `sketch.js` anfassen, falls er jedoch weiß, was er tut, kann er auch die `index.html`[^3] und die `style.css` editieren.
+
+[^3]: Das ist spätestens dann notwendig, wenn zusätzlich zur `sketch.js` noch weitere JavaScript-Dateien (zum Beispiel für eigene Klassen) eingebunden werden müssen.
+
+Selbstverständlich kann der Nutzer über die linke Seitenspalte noch weitere Dateien oder auch Verzeichnisse anlegen, um zum Beispiel Assets (Bilder oder Töne) in seine Sketche einzubinden. Registrierte Nutzer können außerdem (in Maßen) das Aussehen der Entwicklungsumgebung vom schlichten Tageslichtmode mit weißem Hintergrund zum beliebten `Dark Mode` verändern. Mein [Screenshot im Bannerbild oben](https://www.flickr.com/photos/schockwellenreiter/53702749653/) ist im dunlen Mode mit hohem Kontrast gehalten. Außerdem kann der Entwickler seine Sprache (in meinem Fall *deutsch*) wählen.
+
+Natürlich hat der Webeditor auch ein paar Schattenseiten. Die dunkelste ist, daß er seine P5.js-Bibliotheken `p5.js` und `p5.sound.min.js` von einem [Cloud Delivery Network](https://de.wikipedia.org/wiki/Content_Delivery_Network) (CDN) holt (in diesem Fall: *Cloudflare*). Für Anfänger ist das sicher hinnehmbar, aber man gibt damit auch ein wenig seine Unabhängigkeit auf.
+
+Die Vorteile des P5.js-Webeditors liegen auf der Hand:
+
+- Er ist extrem einfach und überall zu nutzen, wo man Zugriff auf einen (einigermaßen aktuellen) Webbrowser hat.
+- Es ist keine Installation nötig.
+
+Dem stehen einige wenige Nachteile gegenüber, die aber eigentlich nur den Power-Nutzer betreffen:
+
+- Die gesamte Entwicklung inklusive der graphischen Ausgabe des Canvas findet in *einem* Browserfenster statt. Das kann manchmal etwas eng werden.
+- Die Speicherung erfolgt in der Cloud (man kann seine Sketche aber auch herunterladen und auf seinem Rechner und/oder in der Versionsverwaltung seines Vertrauens -- zusätzlich -- abspeichern).
+- Die P5.js-Bibliotheken werden von einem CDN *(Cloudflare)* geladen.
+
+*Tim Rodenbröker* vermutet zusätzlich noch, daß es bei größeren Projekten Probleme mit der Skalierung geben könnte. Ich hatte allerdings schon einige sehr große Projekte im Webeditor ausgeführt und keine Probleme gefunden.
+
+### Weg 2: Die Processing-Entwicklungsumgebung (PDE)
+
+[![](images/bouncingfacespde.jpg)](https://www.flickr.com/photos/schockwellenreiter/53702790684/)
+
+Dieser Weg ist vielen unbekannt, sie sind völlig erstaunt darüber, daß die normal Processing-Entwicklungsumgebung (PDE) auch einen P5.js-Mode besitzt. Man muß ihn -- wie alle Modes -- über `Tools - Tools verwalten` und dann über den Reiter `Modes` installieren. Danach steht er in dem Klappmenü recht oben zur Verfügung.
+
+Die PDE legt für jedes neue Projekt ein Verzeichnis an, daß die Sketch-Datei und eine `index.html` besitzt. Beide Dateien sind in der PDE editierbar (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53702790684/)). Daneben wird ein Verzeichnis `libraries` mit der Datei `p5.min.js` erzeugt, so daß im einfachten Fall für den Nutzer auch keine zusätzlichen Installationen erforderlich sind[^4].
+
+[^4]: Als Besonderheit gibt es noch die Datei `sketch.properties`: Sie teilt der PDE mit, daß es sich um ein P5.js-Projekt handelt. Diese Datei wird nur von der PDE angefaßt, sie stört also nicht, wenn man zwischen der PDE und einem Texteditor (siehe weiter unten) als Entwicklungsumgebung wechselt.
+
+Wenn der Nutzer in der PDE entwickelt, bekommt er aussagekräftige Fehlermeldungen, wie er es auch von Processing gewohnt ist. Sie ist also für viele eine ideale Entwicklungsumgebung, wenn man -- wie mit Processing -- »nur« einen Sketch entwickeln will und keine »Schweinereien« 🐷 mit dem DOM der den Sketch umgebenden HTML-Datei vorhat.
+
+Wenn einen Sketch aus der PDE heraus startet, ruft diese den Standard-Browser mit `localhost` auf Port 8734 auf. Je nach Fähigkeiten des installierten Standard-Browsers stehen einem alle Tools der Entwicklungsumgebung des Browsers (zum Beispiel die JavaScript-Konsole) zur Verfügung (noch einmal: Siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53702790684/)).
+
+Die Nutzung der PDE als P5.js IDE ist eine großartige Möglichkeit für alle, die aus der Processing/Java-Welt kommen und mit der PDE sowieso schon vertraut sind. Es ist schade, daß diese Möglichkeit anscheinend weitestgehend unbekannt ist.
+
+### Weg 3: Der Stino-Texteditor für Programmierer
+
+[![](images/bouncingfacesvscode.jpg)](https://www.flickr.com/photos/schockwellenreiter/53702913734/)
+
+Die Tatsache, daß P5.js eine JavaScript-Bibliothek ist, die sich von keiner anderen JavaScript-Bibliothek unterscheidet, hat zur Folge, daß die »natürliche« Entwicklungsumgebung für P5.js-Projekte die gleiche ist, wie für jedes andere Webprojekt auch: Ein stinknormaler (stino) Texteditor und ein ganz gewöhnlicher Browser. Mehr ist nicht notwendig -- im Zweifelsfalle geht es (auf dem Mac) auch mit den Bordmitteln TextEdit und Safari (was ich allerdings nicht unbedingt empfhehle, dafür muß man schon eine sehr hohe Leidensfähigkeit oder Askese besitzen). Aber Nerds können zum Beispiel auf den Emacs oder Vim zurückgreifen und ich bin mir sicher, daß es dafür auch entsprechende Erweiterungen gibt, die die Entwicklung unterstützen.
+
+Ich selber habe es aus reiner Neugier auch einmal mit der bezaubernden [Geany](http://cognitiones.kantel-chaos-team.de/produktivitaet/geany.html) ausprobiert und es lief tadellos. Wer in die Mac-only-Falle tappsen will (ich sicher nicht (mehr)), der hat mit [BBEdit](http://cognitiones.kantel-chaos-team.de/produktivitaet/bbedit.html) (kommerziell, aber eingeschränkt kostenlos nutzbar) oder [TextMate](http://cognitiones.kantel-chaos-team.de/produktivitaet/textmate.html) (Open Source) zwei ausgezeichnete Entwicklungsumgebungen zur Auswahl. Ich möchte hier jedoch [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) (ebenfalls Open Soruce) mit zwei Plugins als Entwicklungsumgebung vorstellen[^5].
+
+[^5]: Wer bei Visual Studio Code erschreckt zusammenzuckt: Beide Plugins funzen auch mit [VSCodium](https://vscodium.com/), der ebenfalls freien, aber weniger geschwätzigen Visual-Studio-Code-Alternative.
+
+Wie bei jedem anderen Webprojekt muß man sich seine Entwicklungsumgebung erst einmal zusammenstellen. Als Minimum gehören dazu die HTML-Datei (meist `index.html`), dann die Datei mit dem JavaScript-Sketch (meist -- aber nicht zwingend `sketch.js`), eine CSS-Datei für das Aussehen und *last but not least* ein Verzeichnis mit den benötigten Bibliotheken (ich nenne dieses Verzeichnis meistens `js`), und darin muß mindestens eine `p5.min.js` enthalten sein.
+
+Das kann man sich natürlich jedesmal händisch zusammenklauben (ich mache das oft sogar so, weil ich fast immer noch irgendwelche Besonderheiten habe, die ich zusätzlich installieren will), aber es gibt auch das wunderbare Plugin (im Visual-Studio-Code-Jargon *Extension* genannt) [p5.vscode](https://marketplace.visualstudio.com/items?itemName=samplavigne.p5-vscode) von *Sam Lavigne*. Einmal installiert kann man über die Command Palette sich ein leeres Projekt mit allen notwendigen HTML-, CSS- und JavaScript-Dateien installieren lassen oder auch weitere P5.js-Bibliotheken suchen und installieren. Außerdem kommt es mit einer automatischen (und manchmal geschwätzigen) Code-Vervollständigung und einer Dokumentation aller P5.js-Schlüsselwörter und -Funktionen. Zusätzlich bringt es noch die VSCode-[Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)-Extension mit, das zweite der oben erwähnten Plugins, das sich nicht nur für P5.js-Projekte als unverzichtbares Werkzeug für mich herausgestellt hat.
+
+All das wird natürlich lokal installiert, so daß man sich nicht in Abhängigkeiten von irgendwelchen CDNs begibt.
+
+Aus dem oben beschriebenen dürfte der kundigen Leserin oder dem kindigen Leser klar geworden sein, daß meine Präferenzen eindeutig bei dem Weg über einen stinknormalen Texteditor liegen (um genau zu sein: Ich nutze Visual Studio Code -- wie man auch an dem [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53702913734/) sieht). Denn das ist der flexibelste Weg (notfalls kann ich ihn auch ohne die erwähnten Plugins nutzen), er ist unbegrenzt skalierbar und ich kann bei der Programmierung bei Bedarf auch problemlos zwischen meinem Texteditor und der Processing PDE wechseln.
+
+Aber da dieser Weg nicht unbedingt einfach ist und Anfänger durchaus überfordern kann, werde ich meine nächsten P5.js-Tutorials im P5.js-Webeditor entwickeln. Aber ehrlich gesagt: Wenn man sich seine Entwicklungsumgebung erst einmal zusammengeschustert hat, macht es eigentlich keinen Unterschied, welchen Weg man geht.
+
+### Das Code-Beispiel
+
+Für die verwendeten Screenshots habe ich einen Sketch beutzt, den ich geschrieben hatte, um die [kürzlich vorgestellten](https://kantel.github.io/posts/2024042902_openmoji/) freien [OpenMojis](https://openmoji.org/) zu testen. Es ist ein weiteres simples Partikelsystem, nur daß die Partikel in diesem Falle Emojis sind, die  über den Bildschirm huschen. Dafür hatte ich erst einmal eine Klasse `Face` geschrieben:
+
+~~~javascript
+class Face {
+
+  constructor () {
+    this.r = random(12, 24);
+    let x = random(this.r, width - this.r);
+    let y = random(this.r, height - this.r);
+    this.loc = createVector(x, y);
+    let velx = random(-3, 3);
+    let vely = random(-3, 3);
+    this.vel = createVector(velx, vely);
+    const faceImages = [face01, face02, face03, face04, face05, face06,
+                        face07, face08, face09, face10, face11, face12];
+    this.im = random(faceImages);
+  }
+
+  move() {
+    this.loc.add(this.vel);
+  }
+
+  checkEdges() {
+    if (this.loc.y >= height - this.r) {
+      this.vel.y *= -1;
+      this.loc.y = (height - this.r);
+    } else if (this.loc.y <= this.r) {
+      this.vel.y *= -1;
+      this.loc.y = this.r;
+    }
+    if (this.loc.x >= width - this.r) {
+      this.vel.x *= -1;
+      // this.dx = random(-3, 3);
+      this.loc.x = (width - this.r);
+    } else if (this.loc.x <= this.r) {
+      this.vel.x *= -1;
+      this.loc.x = this.r;
+    }
+  }
+
+  show() {
+    image(this.im, this.loc.x, this.loc.y, 2*this.r, 2*this.r);
+  }
+}
+~~~
+
+Diese Klasse leistet die Hauptarbeit, daher ist das eigentliche Skript -- sieht man von der etwas aufgeblasenen `preload()`-Funktion ab (ich weiß, das ginge auch noch kürzer) -- wieder recht kompakt geraten:
+
+~~~javascript
+function preload() {
+  face01 = loadImage("data/face01.png");
+  face02 = loadImage("data/face02.png");
+  face03 = loadImage("data/face03.png");
+  face04 = loadImage("data/face04.png");
+  face05 = loadImage("data/face05.png");
+  face06 = loadImage("data/face06.png");
+  face07 = loadImage("data/face07.png");
+  face08 = loadImage("data/face08.png");
+  face09 = loadImage("data/face09.png");
+  face10 = loadImage("data/face10.png");
+  face11 = loadImage("data/face11.png");
+  face12 = loadImage("data/face12.png");
+}
+
+let faces = [];
+const numFaces = 30;
+
+function setup() {
+  createCanvas(800, 480);
+  imageMode(CENTER);
+  background("#2b3e50");
+  for (let i = 0; i < numFaces; i++) {
+    faces.push(new Face());
+  }
+  print(faces.length);
+}
+
+function draw() {
+  background("#2b3e50");
+  for (let face of faces) {
+    face.checkEdges();
+    face.move();
+    face.show();
+  }
+}
+~~~
+
+Ich hoffe, ich habe Euch hiermit neugierig gemacht auf die Tutorials, die noch kommen werden. Ich bin selber ebenfalls gespannt darauf, speziell wie [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) sich schlägt (ich bin schließlich ein Spielkalb und ich stehe dazu). *Still digging!*
