@@ -1,0 +1,119 @@
+---
+title: "Luftballons im Wunderland: Erstes Abenteuer mit P5.js"
+author: "Jörg Kantel"
+date: "2024-05-23 18:30:00"
+categories: [P5.js, Processing, Creative Coding]
+image: "images/balloonsv2.jpg"
+---
+
+[![](images/balloonsv2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53741443378/)
+
+>*Ein roter Luftballon am Himmel -- 
+ich habe nie einen gekriegt  
+Ich bin das Kind reeller Leute,  
+bei denen alles etwas wiegt.*   
+*(Yves Gilbert, Serge Lama, Michael Heltau)*
+
+Nach dem [Rundumschlag von Sonntag](https://kantel.github.io/posts/2024051901_bouncing_faces/), mit dem ich meine Reihe zu Tutorials mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) und dem [P5.js-Webeditor](https://editor.p5js.org/) eingeführt hatte, möchte ich nun an einem ersten Beispiel zeigen, was man damit alles anstellen kann.
+
+Wer den *Schockwellenreiter* regelmäßig liest, die oder den wird es nicht wundern, daß diese Reihe mit einer Reise ins Wunderland beginnt. Alice steht auf einem Hügel und schaut bunten Luftballons hinterher, die vor ihr aufsteigen und mehr oder weniger schnell über ein sanftes Tal im Wunderland nach oben entschweben.
+
+<iframe src="balloons/index.html" width="800" height="450" name="Luftballons im Wunderland"></iframe>
+
+Dafür braucht es natürlich erst einmal eine Klasse `Balloon`:
+
+~~~javascript
+class Balloon {
+  constructor() {
+    this.reset();
+  }
+
+  reset() {
+    this.w = random(60, 120);
+    let x = random(width - this.w);
+    let y = random(height + 100, height + 400);
+    this.loc = createVector(x, y);
+    let velx = random(-0.5, 0.5);
+    let vely = random(-4, -1);
+    this.vel = createVector(velx, vely);
+    this.im = random(balloonImages);
+  }
+  
+  move() {
+    this.loc.add(this.vel);
+    if (this.loc.y < -2 * this.w) {
+      this.reset();
+    }
+  }
+  
+  show() {
+    image(this.im, this.loc.x, this.loc.y, this.w, this.w);
+  }
+}
+~~~
+
+Da ich es mir einfach gemacht habe, und die Ballons, nachdem sie am oberen Bildrand entschwebt sind, unten an neuer Position, in neuer Größe und in neuer Farbe wieder auftauchen sollen, habe ich eine Methode `reset()` implementiert, die genau dies erledigt. Sie wird einmal vom Konstruktor aufgerufen, dann aber überprüft die Methode `move()`, ob der Ballon aus dem Bild geschwebt ist, und ruft in diesem Fall die Methode `reset()` ebenfalls auf.
+
+Der Hauptsketch ist wieder recht kompakt geraten:
+
+~~~javascript
+let bg;
+let alice;
+let balloonImages = [];
+let balloons = [];
+const numBalloons = 20;
+
+function preload() {
+  for (let i = 0; i < 8; i++) {
+    let balloonName = "data/balloon" + i + ".png";
+    balloonImages[i] = loadImage(balloonName);
+  }
+  bg = loadImage("data/landscape.png");
+  alice = loadImage("data/alice.png");
+}
+
+function setup() {
+  createCanvas(800, 450);
+  for (let i = 0; i < numBalloons; i++) {
+    balloons.push(new Balloon());
+  }
+}
+
+function draw() {
+  image(bg, 0, 0);
+  for (let balloon of balloons) {
+    balloon.move();
+    balloon.show();
+  }
+
+  image(alice, 30, 70);
+}
+~~~
+
+Im Gegensatz zum [einführenden Beispiel](https://kantel.github.io/posts/2024051901_bouncing_faces/) habe ich dieses Mal in der Funktion `preload()` die Bilder der Ballons nicht einzeln geladen. sondern eine Schleide konstruiert:
+
+~~~javascript
+  for (let i = 0; i < 8; i++) {
+    let balloonName = "data/balloon" + i + ".png";
+    balloonImages[i] = loadImage(balloonName);
+  }
+~~~
+
+JavaScript erlaubt solche Schweinereien: Das `i` wird, obwohl es eine numerische Variable ist, automatisch zu einem String konvertiert und mit dem Dateinamen verknüpft. Für Menschen wie mich, die aus Programmiersprachen kommen, die in solchen Fällen eine explizite Typumwandlung verlangen, ist das ziemlich ungewohnt, aber irgendwie hat es was.
+
+Um eine gewisse räumliche Illusion zu erzeugen, wird zuerst der Hintergrund gezeichnet, dann die Ballons und erst zum Schluß Alice. Dadurch entsteht der Eindruck, daß Alice im Vordergrund steht und die Ballons hinter ihr nach oben schweben.
+
+Das Bild von Alice habe ich von [DreamStudio](https://beta.dreamstudio.ai/generate) zeichnen lassen und mit [Rembg](https://github.com/danielgatis/rembg) in Python freigestellt. Das Luftballonbild ist aus den [Twemoji](https://github.com/twitter/twemoji) entnommen und mit der [Bildverarbeitung meines Vertrauens](http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/gc.html) knallbunt eingefärbt. Das Hintergrundbild habe ich dann wieder mit DreamStudio erstellt.
+
+### Anmerkung
+
+Die Einbindung des Sketches in diese Seite habe ich per `IFrame` vorgenommen. Das ist leider nicht wirklich responsiv. Ich bin nicht der große CSS-Guru, falls daher jemand von Euch da draußen eine Idee (oder eine Quelle) hat, wie man P5.js-Skripte responsiv in Webseiten einbindet, bitte ich um Nachricht in meinen Kommentaren.
+
+### Literatur
+
+JavaScript und P5.js sind neu für mich. Die folgenden beiden Bücher haben mir geholfen, mich in die Sprache einzupfriemeln:
+
+- Lauren McCarthy, Casey Reas & Bin Fry: *Getting Started with P5.js*, San Francisco (Maker Media) 2016. Der »Klassiker«, geschrieben von der Haupt-Entwicklerin von P5.js und den Erfindern von Processing. Kompakt auf 225 Seiten erfahrt Ihr hier alles, was Ihr wissen müßt, um erfolgreich Eure eigenen P5.js-Skripte zu schreiben.
+- Cay Horstmann: *JavaScript für Ungeduldige. Der schnelle Einstieg in modernes JavaScript*, Heidelberg (dpunkt.verlag) 2021. Das ist das Buch für alle, die schon (mindestens) eine Programmiersprache beherrschen und nun JavaScript lernen wollen. Die 350 Seiten lassen keine Fragen mehr offen, was (modernes) JavaScript von anderen Programmiersprachen unterscheidet, aber auch, was sie mit anderen Sprachen gemein hat.
+
+Positiv anzumerken ist noch, daß der Autor des letztgenannten Buches auch ein großer Fan von *Alice im Wunderland* ist. Ich bin also nicht alleine.
