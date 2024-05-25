@@ -1,0 +1,105 @@
+---
+title: "Der fliegende Dachs im Wunderland: Das Abenteuer P5.js geht weiter"
+author: "Jörg Kantel"
+date: "2024-05-25 20:55:00"
+categories: [P5.js, Processing, Creative Coding, Spieleprogrammierung]
+image: "images/flyingbadger.jpg"
+---
+
+[![](images/flyingbadger-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53746094754/)
+
+Da ich schon [gezeigt hatte](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/), wie man mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) Ballons von unten nach oben aufsteigen lassen kann, möchte ich nun zeigen, daß in meinem Wunderland die Ballons auch von links nach rechts fliegen können -- und das vor einem schier endlos scrollenden Hintergrund.
+
+Dafür habe ich einen alten Freund, den [fliegenden Dachs](https://kantel.github.io/posts/2024032703_flying_badger_python/) wieder reaktiviert. Majestätisch schwebt er über die Eiswüsten des Wunderlands, warm eingemummelt in seinem roten Morgenmangel. (Ich weiß, ich habe nicht nur zu viele Alice-Bücher gelesen, sondern auch zu oft den *Wind in den Weiden* flüstern gehört.)
+
+<iframe src="flyingbadger/index.html" width="720" height="400" name="Flying Badger"></iframe>
+
+Da das Neue in diesem Tutorial der endlos gleitende Hintergrund sein soll, habe ich als erstes die Klasse `Background` konstruiert:
+
+~~~javaScript
+class Background {
+  constructor(_x, _y, _im) {
+    this.x = _x;
+    this.y = _y;
+    this.startx = _x;
+    this.im = _im;
+    this.speed = 0.5;
+  }
+  
+  update() {
+    this.x -= this.speed;
+    if (this.x <= -bgWidth) {
+      this.x = bgWidth;
+    }
+  }
+  
+  display() {
+    image(this.im, this.x, this.y);
+  }
+}
+~~~
+
+Die kundige Leserin und der kundige Leser vermuten natürlich sofort und mit Recht, daß das in Wirklichkeit gar kein endlos scrollender Hintergrund sein kann. Die Bilder sind nur so gezeichnet und geschnitten, daß sie nahtlos ineinander übergehen. Wenn eines der beiden Hintergrundbilder den Bildschirm links verläßt, wird es rechts an das zweite Hintergrundbild wieder »angeklebt«. Dieser einfache Trick erzeugt die Illusion, daß der Dachs in seinem Ballon endlos über die unendlichen Weiten eines schneebedeckten Wunderlands schwebt.
+
+Die beiden verwendeten Hintergrundbilder hat der User *RubberDuck* auf [OpenGameArt.org](https://opengameart.org/content/another-background-made-from-glitch-assets) hochgeladen und in die *Public Domain* ([CC0](http://creativecommons.org/publicdomain/zero/1.0/)) entlassen.
+
+Der Ordnung halber und der besseren Übersicht wegen habe ich dem Dachs -- auch wenn er gar nichts tut, die Illusion der Bewegung wird nur durch den gleitenden Hintergrund erzeugt -- ebenfalls eine eigene Klasse spendiert:
+
+~~~javascript
+class Badger {
+  constructor() {
+    this.x = 100;
+    this.y = 140;
+    this.w = 70;
+    this.h = 125;
+    this.im = badim;
+  }
+  
+  display() {
+    image(this.im, this.x, this.y, this.w, this.h);
+  }
+}
+~~~
+
+Natürlich hätten diese paar Zeilen auch einfach (und kürzer) im Hauptsketch stehen können, aber ich mag es nun mal strukturiert und übersichtlich.
+
+Der Hauptsketch ist auch so und trotzdem wieder recht kompakt geraten:
+
+~~~javascript
+const windowWidth = 720;
+const windowHeight = 400;
+const bgWidth = 2024;
+let bg1, bg2;
+let backs = [];
+let badim;
+let badger;
+
+function preload() {
+  bg1 = loadImage("data/bgim1.png");
+  bg2 = loadImage("data/bgim2.png");
+  badim = loadImage("data/badgerim.png");
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  backs[0] = new Background(0, 0, bg1);
+  backs[1] = new Background(bgWidth, 0, bg2);
+  badger = new Badger();
+}
+
+function draw() {
+  for (let back of backs) {
+    back.update();
+    back.display()
+  }
+  badger.display();
+}
+~~~
+
+Da diese Tutorialreihe zu P5.js doch langsam ein ambitioniertes Projekt von mir zu werden droht, habe ich den [Quellcode mit allen Assets](https://github.com/kantel/p5js/tree/master/flyingbadger) wieder auf meinen GitHub-Account hochgeladen. Bisher sind folgende Teile erschienen:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. Der fliegende Dachs im Wunderland: Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+
+Mir schwirren noch viele Ideen durch meinen Kopf, wie es mit dieser Reihe weitergehen kann. Ich bin selber neugierig auf mich, was ich davon realisieren werde. *Still digging!*
