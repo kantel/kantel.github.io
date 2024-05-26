@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der Schockwellenreiter - Abenteuer P5.js (Teil 4): Hallo Hörnchen!</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Abenteuer P5.js (Teil 4): Hallo Hörnchen!</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">P5.js</div>
+    <div class="quarto-category">Processing</div>
+    <div class="quarto-category">Creative Coding</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">26. Mai 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53747993248/"><img src="images/hoernchen2-b.jpg" class="img-fluid"></a></p>
+<p>Im vierten Teil meiner kleinen Tutorialreihe zu <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> möchte ich die grundlegende Struktur eines P5.js-Sketches vorstellen und darauf eingehen, was ihn von »einfachen« JavaScript-Anwendungen unterscheidet.</p>
+<p>Was zuerst ins Auge fällt, wenn man den <a href="https://editor.p5js.org/">P5.js-Webeditor</a> aufruft, sind die beiden schon voreingestellten Funktionen <code>setup()</code> und <code>draw()</code>. Wer schon einmal irgendetwas mit JavaScript angestellt hatte, der erwartet, daß diese beiden Funktionen irgendwo im Sketch aufgerufen werden müssen. Dem ist aber nicht so, <code>setup()</code> und <code>draw()</code> werden von der P5.js-Bibliothek verdeckt (oder sollte ich schreiben »versteckt«?) im Hintergrund »automatisch« aufgerufen. Dabei hat es mit diesen beiden »besonderen« Funktionen folgende Bewandtnis:</p>
+<p><code>setup()</code> wird exakt einmal zu Beginn des Sketches aufgerufen. Hier gehören daher alle Initialisierungen hinein, mit denen das Programm gestartet werden soll. Es wird also zum Beispiel die Größe des Canvasses festgelegt, hier werden Variablen und Objekte initialisiert und so weiter …</p>
+<p><code>draw()</code> hingegen ist die Funktion, die in einer Endlosschleife läuft. Dabei versucht sie – wenn der Entwickler nichts anderes festgelegt hat – per Default so schnell wie möglich, aber nicht schneller als sechzig Mal in der Sekunde, durchzulaufen. In der Regel – und wenn man nicht sehr viele rechenintensive Operationen in die <code>draw()</code>-Schleife gepackt hat – sind moderne Computer damit nicht ausgelastet und idlen fröhlich vor sich hin und warten auf die Interaktion der Benutzerin oder des Benutzers (zum Beispiel auf Tastatureingaben oder Mausklicks).</p>
+<p>Hat man eine Anwendung, die sowieso nur linear einmal von vorne nach hinten ausgeführt werden soll (zum Beispiel das Zeichnen eines Fraktals), dann kann man entweder alle Befehle in die <code>setup()</code>-Funktion packen, oder mit Hilfe des Befehls <code>noLoop()</code> bestimmen, daß auch die <code>draw()</code>-Schleife nur einmal durchlaufen wird<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Aufmerksamen Leserinnen und Lesern ist sicher nicht entgangen, daß viele meiner Sketche auch noch eine <code>preload()</code>-Funktion besitzen und sich gefragt, was es damit auf sich hat. Nun, JavaScript ist aus guten Gründen eine asynchrone Sprache. Das heißt, Befehle, die zum Beispiel Dateien laden, halten das Skript nicht auf, bis die Datei geladen ist. Sondern JavaScript macht einfach fröhlich weiter und kümmert sich nicht darum, ob das Laden geklappt hat oder nicht. Grund dafür ist, daß JavaScript den Browser nicht anhalten will, nur weil es irgendeine Datei vom Rande der Welt nicht laden kann. Dafür, daß die Nutzung der Datei durch das Skript erst passiert, wenn sie vollständig geladen wurde, ist die Entwickerin oder der Entwickler zuständig. JavaScript bietet hierfür eine Reihe von Funktionen, wie zum Beispiel den <code>callback</code>-Mechanismus. All diesen Mechanismen ist gemein, daß sie von der Entwicklerin oder dem Entwickler ein wenig Gehirnschmalz abverlangen. P5.js möchte es uns aber so einfach wie moglich machen. Daher stellt es zusätzlich die <code>preload()</code>-Funktion zur Verfügung. Sie ist ausschließlich dafür da, Dateien zu laden, die das Skript benötigt und hält den weiteren Ablauf des Sketches an, bis alle Dateien vollständig geladen sind. Erst danach wird von P5.js <code>setup()</code> aufgerufen.</p>
+<p>Um diesen Mechanismus zu demonstrieren, habe ich folgenden, kleinen Sketch geschrieben:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">let</span> horngirl<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">function</span> <span class="fu">preload</span>() {</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  horngirl <span class="op">=</span> <span class="fu">loadImage</span>(<span class="st">"data/horngirl.png"</span>)<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>}</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">function</span> <span class="fu">setup</span>() {</span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="fu">createCanvas</span>(<span class="dv">600</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">imageMode</span>(CENTER)<span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="co">// horngirl = loadImage("data/horngirl.png");</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">noLoop</span>()<span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">function</span> <span class="fu">draw</span>() {</span>
+<span id="cb1-15"><a href="#cb1-15"></a>  <span class="fu">background</span>(<span class="dv">92</span><span class="op">,</span> <span class="dv">132</span><span class="op">,</span> <span class="dv">168</span>)<span class="op">;</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>  <span class="fu">image</span>(horngirl<span class="op">,</span> width<span class="op">/</span><span class="dv">2</span><span class="op">,</span> height<span class="op">/</span><span class="dv">2</span><span class="op">,</span> <span class="dv">100</span><span class="op">,</span> <span class="dv">100</span>)<span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Er macht nichts anderes, als ein (recht kleines – 37 KB) Bildchen zu laden und dieses in der Mitte des Canvasses anzuzeigen. Dabei wird mit <code>noLoop()</code> auch die <code>draw()</code>-Schleife nur genau einmal aufgerufen und durchlaufen. So wie es oben steht, findet die Durchführung wie gewünscht statt: Das »Hörnchen« wird geladen und angezeigt. Löscht man allerdings die Funktion <code>preload()</code> und lädt das Bild über die auskommentierte Zeile in <code>setup()</code>, dann sieht der Nutzer in der Regel nur einen blauen Hintergrund und kein Hörnchen mehr.</p>
+<p>Denn die <code>draw()</code>-Funktion ist meistens schon fertig durchgelaufen, bevor das Bild geladen ist. Und JavaScript sagt einfach: Was ich nicht habe, kann ich auch nicht anzeigen. Und so muß der Nutzer ohne Hörnchen auskommen<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>Wenn keine Assets geladen werden müssen, kann <code>prelaod()</code> natürlich entfallen.</p>
+<p>P5.js hat noch weitere Funktionen, die »automatisch« ausgeführt werden, und zwar alle die, die auf Ereignisse lauschen, die von der Nutzerin oder dem Nutzer ausgelöst werden. In der Regel sind das Tastatur- oder Mausabfragen. Auch dies habe ich in einem kleinen Sketch demonstriert. Dieses Mal wird das kleine Hörnchen mit Hilfe der Pfeiltasten über den Bildschirm bewegt.</p>
+<iframe src="horngirl02/index.html" width="720" height="400" name="Hallo Hörnchen">
+</iframe>
+<p>Da ich es nicht nur mag, daß Applikationen sauber gegliedert sind, sondern – wie ich oben schon einmal erwähnte – auch mit einer schönen Struktur daherkommen, habe ich dem Hörnchen erst einmal eine eigene Klasse spendiert:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">class</span> Horngirl {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">constructor</span>(_x<span class="op">,</span> _y) {</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">pos</span> <span class="op">=</span> <span class="fu">createVector</span>(_x<span class="op">,</span> _y)<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">vel</span> <span class="op">=</span> <span class="fu">createVector</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">speed</span> <span class="op">=</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">w</span> <span class="op">=</span> <span class="dv">100</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">h</span> <span class="op">=</span> <span class="dv">100</span><span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">im</span> <span class="op">=</span> horngirl<span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  }</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">update</span>() {</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="fu">add</span>(<span class="kw">this</span><span class="op">.</span><span class="at">vel</span>)<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="co">// Check borders</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span> <span class="op">&lt;</span> <span class="kw">this</span><span class="op">.</span><span class="at">w</span> <span class="op">/</span> <span class="dv">2</span>) {</span>
+<span id="cb2-15"><a href="#cb2-15"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">w</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    }</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span> <span class="op">&gt;</span> width <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">w</span> <span class="op">/</span> <span class="dv">2</span>) {</span>
+<span id="cb2-19"><a href="#cb2-19"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span> <span class="op">=</span> width <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">w</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>    }</span>
+<span id="cb2-22"><a href="#cb2-22"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span> <span class="op">&lt;</span> <span class="kw">this</span><span class="op">.</span><span class="at">h</span> <span class="op">/</span> <span class="dv">2</span>) {</span>
+<span id="cb2-23"><a href="#cb2-23"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span> <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">h</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>    }</span>
+<span id="cb2-26"><a href="#cb2-26"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span> <span class="op">&gt;</span> height <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">h</span> <span class="op">/</span> <span class="dv">2</span>) {</span>
+<span id="cb2-27"><a href="#cb2-27"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span> <span class="op">=</span> height <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">h</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>    }</span>
+<span id="cb2-30"><a href="#cb2-30"></a>  }</span>
+<span id="cb2-31"><a href="#cb2-31"></a></span>
+<span id="cb2-32"><a href="#cb2-32"></a>  <span class="fu">display</span>() {</span>
+<span id="cb2-33"><a href="#cb2-33"></a>    <span class="fu">image</span>(<span class="kw">this</span><span class="op">.</span><span class="at">im</span><span class="op">,</span> <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span><span class="op">,</span> <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span><span class="op">,</span> <span class="kw">this</span><span class="op">.</span><span class="at">w</span><span class="op">,</span> <span class="kw">this</span><span class="op">.</span><span class="at">h</span>)<span class="op">;</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>  }</span>
+<span id="cb2-35"><a href="#cb2-35"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der Konstruktor macht das, was sein Name sagt: Er initialisiert die Werte für die Klasse. Das einzig Besondere dabei ist, daß Position und Bewegung als Vektoren erzeugt werden.</p>
+<p>In der <code>update()</code>-Methode wird der Bewegungsvektor auf den Positionsvektor addiert und dann die Randbedinungen überprüft. Will die Nutzerin oder der Nutzer Hörnchen über den Bildschirmrand hinausschicken, wird der Bewegungsvektor auf Null gesetzt und Hörnchen verharrt trotzig auf seiner letzten Position.</p>
+<p>Die einzeilige <code>display()</code>-Methode zeichnet einfach nur den Sprite an seiner aktuellen Position.</p>
+<p>In Hauptsketch <code>sketch.js</code> habe ich vieles von dem oben gesagten hineingepackt und demonstriert. Er besteht ausschließlich aus Funktionen, die von P5.js »automatisch« ausgeführt werden. Neben <code>preload()</code>, <code>setup()</code> und <code>draw()</code> sind das <code>keyPressed()</code> und <code>keyReleased()</code>, die darauf reagieren, ob die Anwenderin oder der Anwender eine Taste gerdückt oder losgelassen hat:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">let</span> horngirl<span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">function</span> <span class="fu">preload</span>() {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  horngirl <span class="op">=</span> <span class="fu">loadImage</span>(<span class="st">"data/horngirl.png"</span>)<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">function</span> <span class="fu">setup</span>() {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">createCanvas</span>(<span class="dv">600</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>  <span class="fu">imageMode</span>(CENTER)<span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>  horngirl <span class="op">=</span> <span class="kw">new</span> <span class="fu">Horngirl</span>(width <span class="op">/</span> <span class="dv">2</span><span class="op">,</span> height <span class="op">/</span> <span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>}</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="kw">function</span> <span class="fu">draw</span>() {</span>
+<span id="cb3-14"><a href="#cb3-14"></a>  <span class="fu">background</span>(<span class="dv">92</span><span class="op">,</span> <span class="dv">132</span><span class="op">,</span> <span class="dv">168</span>)<span class="op">;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>  horngirl<span class="op">.</span><span class="fu">update</span>()<span class="op">;</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>  horngirl<span class="op">.</span><span class="fu">display</span>()<span class="op">;</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>}</span>
+<span id="cb3-18"><a href="#cb3-18"></a></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="kw">function</span> <span class="fu">keyPressed</span>() {</span>
+<span id="cb3-20"><a href="#cb3-20"></a>  <span class="cf">if</span> (keyCode <span class="op">===</span> UP_ARROW) {</span>
+<span id="cb3-21"><a href="#cb3-21"></a>    horngirl<span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">-</span>horngirl<span class="op">.</span><span class="at">speed</span>)<span class="op">;</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a>  } <span class="cf">else</span> <span class="cf">if</span> (keyCode <span class="op">===</span> DOWN_ARROW) {</span>
+<span id="cb3-23"><a href="#cb3-23"></a>    horngirl<span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> horngirl<span class="op">.</span><span class="at">speed</span>)<span class="op">;</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>  } <span class="cf">else</span> <span class="cf">if</span> (keyCode <span class="op">===</span> LEFT_ARROW) {</span>
+<span id="cb3-25"><a href="#cb3-25"></a>    horngirl<span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="op">-</span>horngirl<span class="op">.</span><span class="at">speed</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a>  } <span class="cf">else</span> <span class="cf">if</span> (keyCode <span class="op">===</span> RIGHT_ARROW) {</span>
+<span id="cb3-27"><a href="#cb3-27"></a>    horngirl<span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(horngirl<span class="op">.</span><span class="at">speed</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a>  }</span>
+<span id="cb3-29"><a href="#cb3-29"></a>  <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a>}</span>
+<span id="cb3-31"><a href="#cb3-31"></a></span>
+<span id="cb3-32"><a href="#cb3-32"></a><span class="kw">function</span> <span class="fu">keyReleased</span>() {</span>
+<span id="cb3-33"><a href="#cb3-33"></a>  horngirl<span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="fu">set</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Da viele Browser recht gierig auf Tasteneingaben reagieren, ist es sinnvoll, <code>keyPressed()</code> – nachdem man die gewünschten Tastenbefehle konsumiert hat – mit einem <code>return false</code> abzuschließen. Damit sollen diese Befehle nicht mehr an die Browser durchgereicht werden. Eine Garantie gibt es natürlich nicht, aber die Browser der großen Hesteller verhalten sich in der Regel kooperativ. Aber wer kann, sollte es mit möglichst vielen Browsern testen.</p>
+<p>Das ist das vierte Tutorial meiner Reihe zu P5.js und dem Webeditor. Bisher erschienen sind:</p>
+<ol type="1">
+<li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052301_balloons_in_wonderland/">Luftballons im Wunderland</a>: Erstes Abenteuer mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/balloons">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/">Der fliegende Dachs im Wunderland</a>: Das Abenteuer P5.js geht weiter (<a href="https://github.com/kantel/p5js/tree/master/flyingbadger">GitHub</a>)</li>
+<li>Abenteuer P5.js : Hallo Hörnchen! (<a href="https://github.com/kantel/p5js/tree/master/hoernchen">GitHub</a>)</li>
+</ol>
+<p>Zum Schluß noch die <em>Credits</em> an den Schöpfer des Hörnchens. Ich habe es von <em>Silvera Neito</em> aus seiner <a href="https://github.com/silveira/openpixels">Open Pixels Sammlung</a> entnommen, der es dort unter der <a href="https://github.com/silveira/openpixels?tab=CC-BY-SA-4.0-1-ov-file#readme">CC-BY-SA-4.0</a> veröffentlicht hat. Die Lizenz verlangt ausdrücklich die Nennung des Urhebers. Dem bin ich hiermit nachgekommen.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich bevorzuge in der Regel diese zweite Alternative: In <code>setup()</code> kommen tatsächlich nur die Initialisierungen und in <code>draw()</code> werden alle Befehle zur Berechnung und Darstellung des gewünschten ausgeführt. Ich mag es halt, wenn eine Applikation sauber gegliedert und strukturiert ist – aber das ist in den meisten Fällen nur eine Frage des persönlichen Geschmacks. Alles in <code>setup()</code> zu packen, ist auch nicht falsch.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Da JavaScript – aus Sicht der Entwickler einer asynchronen Programmierumgebung zu Recht – davon ausgeht, daß die Entwicklerin oder der Entwickler dafür zu sorgen hat, ob auch alles geladen ist, was man nutzen möchte, gibt es auch keine Fehlermeldung.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

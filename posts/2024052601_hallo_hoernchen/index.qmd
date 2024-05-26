@@ -1,0 +1,153 @@
+---
+title: "Abenteuer P5.js (Teil 4): Hallo Hörnchen!"
+author: "Jörg Kantel"
+date: "2024-05-26 19:30:00"
+categories: [P5.js, Processing, Creative Coding, Spieleprogrammierung]
+image: "images/hoernchen2.jpg"
+---
+
+[![](images/hoernchen2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53747993248/)
+
+Im vierten Teil meiner kleinen Tutorialreihe zu [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) möchte ich die grundlegende Struktur eines P5.js-Sketches vorstellen und darauf eingehen, was ihn von »einfachen« JavaScript-Anwendungen unterscheidet.
+
+Was zuerst ins Auge fällt, wenn man den [P5.js-Webeditor](https://editor.p5js.org/) aufruft, sind die beiden schon voreingestellten Funktionen `setup()` und `draw()`. Wer schon einmal irgendetwas mit JavaScript angestellt hatte, der erwartet, daß diese beiden Funktionen irgendwo im Sketch aufgerufen werden müssen. Dem ist aber nicht so, `setup()` und `draw()` werden von der P5.js-Bibliothek verdeckt (oder sollte ich schreiben »versteckt«?) im Hintergrund »automatisch« aufgerufen. Dabei hat es mit diesen beiden »besonderen« Funktionen folgende Bewandtnis:
+
+`setup()` wird exakt einmal zu Beginn des Sketches aufgerufen. Hier gehören daher alle Initialisierungen hinein, mit denen das Programm gestartet werden soll. Es wird also zum Beispiel die Größe des Canvasses festgelegt, hier werden Variablen und Objekte initialisiert und so weiter …
+
+`draw()` hingegen ist die Funktion, die in einer Endlosschleife läuft. Dabei versucht sie -- wenn der Entwickler nichts anderes festgelegt hat -- per Default so schnell wie möglich, aber nicht schneller als sechzig Mal in der Sekunde, durchzulaufen. In der Regel -- und wenn man nicht sehr viele rechenintensive Operationen in die `draw()`-Schleife gepackt hat -- sind moderne Computer damit nicht ausgelastet und idlen fröhlich vor sich hin und warten auf die Interaktion der Benutzerin oder des Benutzers (zum Beispiel auf Tastatureingaben oder Mausklicks).
+
+Hat man eine Anwendung, die sowieso nur linear einmal von vorne nach hinten ausgeführt werden soll (zum Beispiel das Zeichnen eines Fraktals), dann kann man entweder alle Befehle in die `setup()`-Funktion packen, oder mit Hilfe des Befehls `noLoop()` bestimmen, daß auch die `draw()`-Schleife nur einmal durchlaufen wird[^1].
+
+[^1]: Ich bevorzuge in der Regel diese zweite Alternative: In `setup()` kommen tatsächlich nur die Initialisierungen und in `draw()` werden alle Befehle zur Berechnung und Darstellung des gewünschten ausgeführt. Ich mag es halt, wenn eine Applikation sauber gegliedert und strukturiert ist -- aber das ist in den meisten Fällen nur eine Frage des persönlichen Geschmacks. Alles in `setup()` zu packen, ist auch nicht falsch.
+
+Aufmerksamen Leserinnen und Lesern ist sicher nicht entgangen, daß viele meiner Sketche auch noch eine `preload()`-Funktion besitzen und sich gefragt, was es damit auf sich hat. Nun, JavaScript ist aus guten Gründen eine asynchrone Sprache. Das heißt, Befehle, die zum Beispiel Dateien laden, halten das Skript nicht auf, bis die Datei geladen ist. Sondern JavaScript macht einfach fröhlich weiter und kümmert sich nicht darum, ob das Laden geklappt hat oder nicht. Grund dafür ist, daß JavaScript den Browser nicht anhalten will, nur weil es irgendeine Datei vom Rande der Welt nicht laden kann. Dafür, daß die Nutzung der Datei durch das Skript erst passiert, wenn sie vollständig geladen wurde, ist die Entwickerin oder der Entwickler zuständig. JavaScript bietet hierfür eine Reihe von Funktionen, wie zum Beispiel den `callback`-Mechanismus. All diesen Mechanismen ist gemein, daß sie von der Entwicklerin oder dem Entwickler ein wenig Gehirnschmalz abverlangen. P5.js möchte es uns aber so einfach wie moglich machen. Daher stellt es zusätzlich die `preload()`-Funktion zur Verfügung. Sie ist ausschließlich dafür da, Dateien zu laden, die das Skript benötigt und hält den weiteren Ablauf des Sketches an, bis alle Dateien vollständig geladen sind. Erst danach wird von P5.js `setup()` aufgerufen.
+
+Um diesen Mechanismus zu demonstrieren, habe ich folgenden, kleinen Sketch geschrieben:
+
+~~~javascript
+let horngirl;
+
+function preload() {
+  horngirl = loadImage("data/horngirl.png");
+}
+
+function setup() {
+  createCanvas(600, 400);
+  imageMode(CENTER);
+  // horngirl = loadImage("data/horngirl.png");
+  noLoop();
+}
+
+function draw() {
+  background(92, 132, 168);
+  image(horngirl, width/2, height/2, 100, 100);
+}
+~~~
+
+Er macht nichts anderes, als ein (recht kleines -- 37 KB) Bildchen zu laden und dieses in der Mitte des Canvasses anzuzeigen. Dabei wird mit `noLoop()` auch die `draw()`-Schleife nur genau einmal aufgerufen und durchlaufen. So wie es oben steht, findet die Durchführung wie gewünscht statt: Das »Hörnchen« wird geladen und angezeigt. Löscht man allerdings die Funktion `preload()` und lädt das Bild über die auskommentierte Zeile in `setup()`, dann sieht der Nutzer in der Regel nur einen blauen Hintergrund und kein Hörnchen mehr.
+
+Denn die `draw()`-Funktion ist meistens schon fertig durchgelaufen, bevor das Bild geladen ist. Und JavaScript sagt einfach: Was ich nicht habe, kann ich auch nicht anzeigen. Und so muß der Nutzer ohne Hörnchen auskommen[^2].
+
+[^2]: Da JavaScript -- aus Sicht der Entwickler einer asynchronen Programmierumgebung zu Recht -- davon ausgeht, daß die Entwicklerin oder der Entwickler dafür zu sorgen hat, ob auch alles geladen ist, was man nutzen möchte, gibt es auch keine Fehlermeldung.
+
+Wenn keine Assets geladen werden müssen, kann `prelaod()` natürlich entfallen.
+
+P5.js hat noch weitere Funktionen, die »automatisch« ausgeführt werden, und zwar alle die, die auf Ereignisse lauschen, die von der Nutzerin oder dem Nutzer ausgelöst werden. In der Regel sind das Tastatur- oder Mausabfragen. Auch dies habe ich in einem kleinen Sketch demonstriert. Dieses Mal wird das kleine Hörnchen mit Hilfe der Pfeiltasten über den Bildschirm bewegt.
+
+<iframe src="horngirl02/index.html" width="720" height="400" name="Hallo Hörnchen"></iframe>
+
+Da ich es nicht nur mag, daß Applikationen sauber gegliedert sind, sondern -- wie ich oben schon einmal erwähnte -- auch mit einer schönen Struktur daherkommen, habe ich dem Hörnchen erst einmal eine eigene Klasse spendiert:
+
+~~~javascript
+class Horngirl {
+  constructor(_x, _y) {
+    this.pos = createVector(_x, _y);
+    this.vel = createVector(0, 0);
+    this.speed = 2;
+    this.w = 100;
+    this.h = 100;
+    this.im = horngirl;
+  }
+
+  update() {
+    this.pos.add(this.vel);
+    // Check borders
+    if (this.pos.x < this.w / 2) {
+      this.pos.x = this.w / 2;
+      this.vel.set(0, 0);
+    }
+    if (this.pos.x > width - this.w / 2) {
+      this.pos.x = width - this.w / 2;
+      this.vel.set(0, 0);
+    }
+    if (this.pos.y < this.h / 2) {
+      this.pos.y = this.h / 2;
+      this.vel.set(0, 0);
+    }
+    if (this.pos.y > height - this.h / 2) {
+      this.pos.y = height - this.h / 2;
+      this.vel.set(0, 0);
+    }
+  }
+
+  display() {
+    image(this.im, this.pos.x, this.pos.y, this.w, this.h);
+  }
+}
+~~~
+
+Der Konstruktor macht das, was sein Name sagt: Er initialisiert die Werte für die Klasse. Das einzig Besondere dabei ist, daß Position und Bewegung als Vektoren erzeugt werden.
+
+In der `update()`-Methode wird der Bewegungsvektor auf den Positionsvektor addiert und dann die Randbedinungen überprüft. Will die Nutzerin oder der Nutzer Hörnchen über den Bildschirmrand hinausschicken, wird der Bewegungsvektor auf Null gesetzt und Hörnchen verharrt trotzig auf seiner letzten Position.
+
+Die einzeilige `display()`-Methode zeichnet einfach nur den Sprite an seiner aktuellen Position.
+
+In Hauptsketch `sketch.js` habe ich vieles von dem oben gesagten hineingepackt und demonstriert. Er besteht ausschließlich aus Funktionen, die von P5.js »automatisch« ausgeführt werden. Neben `preload()`, `setup()` und `draw()` sind das `keyPressed()` und `keyReleased()`, die darauf reagieren, ob die Anwenderin oder der Anwender eine Taste gerdückt oder losgelassen hat:
+
+~~~javascript
+let horngirl;
+
+function preload() {
+  horngirl = loadImage("data/horngirl.png");
+}
+
+function setup() {
+  createCanvas(600, 400);
+  imageMode(CENTER);
+  horngirl = new Horngirl(width / 2, height / 2);
+}
+
+function draw() {
+  background(92, 132, 168);
+  horngirl.update();
+  horngirl.display();
+}
+
+function keyPressed() {
+  if (keyCode === UP_ARROW) {
+    horngirl.vel.set(0, -horngirl.speed);
+  } else if (keyCode === DOWN_ARROW) {
+    horngirl.vel.set(0, horngirl.speed);
+  } else if (keyCode === LEFT_ARROW) {
+    horngirl.vel.set(-horngirl.speed, 0);
+  } else if (keyCode === RIGHT_ARROW) {
+    horngirl.vel.set(horngirl.speed, 0);
+  }
+  return false;
+}
+
+function keyReleased() {
+  horngirl.vel.set(0, 0);
+}
+~~~
+
+Da viele Browser recht gierig auf Tasteneingaben reagieren, ist es sinnvoll, `keyPressed()` -- nachdem man die gewünschten Tastenbefehle konsumiert hat -- mit einem `return false` abzuschließen. Damit sollen diese Befehle nicht mehr an die Browser durchgereicht werden. Eine Garantie gibt es natürlich nicht, aber die Browser der großen Hesteller verhalten sich in der Regel kooperativ. Aber wer kann, sollte es mit möglichst vielen Browsern testen.
+
+Das ist das vierte Tutorial meiner Reihe zu P5.js und dem Webeditor. Bisher erschienen sind:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : Hallo Hörnchen! ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+
+Zum Schluß noch die *Credits* an den Schöpfer des Hörnchens. Ich habe es von *Silvera Neito* aus seiner [Open Pixels Sammlung](https://github.com/silveira/openpixels) entnommen, der es dort unter der [CC-BY-SA-4.0](https://github.com/silveira/openpixels?tab=CC-BY-SA-4.0-1-ov-file#readme) veröffentlicht hat. Die Lizenz verlangt ausdrücklich die Nennung des Urhebers. Dem bin ich hiermit nachgekommen.
