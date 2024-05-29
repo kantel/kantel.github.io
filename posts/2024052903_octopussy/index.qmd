@@ -1,0 +1,182 @@
+---
+title: "Abenteuer P5.js (Teil 5): Octopussy"
+author: "Jörg Kantel"
+date: "2024-05-29 19:20:00"
+categories: [P5.js, Processing, Creative Coding, Spieleprogrammierung]
+image: "images/octopussyp5js.jpg"
+---
+
+[![](images/octopussyp5js-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53755303684/)
+
+Heute möchte ich die ersten Schritte, die ich in den bisherigen Tutorials zu [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) und dem [P5.js-Webeditor](https://editor.p5js.org/) mit einer kleinen Fingerübung abrunden, die das bisher behandelte zusammenfasst.
+
+Es geht um *Octopussy*, einer Freundin von [Hörnchen](https://kantel.github.io/posts/2024052601_hallo_hoernchen/), die mit ihrem Raumfisch von einer wichtigen Mission den Rückflug zu ihrem Heimatplaneten angetreten hat. Leider ist ihr Raumfisch ein wenig reparaturbedürftig und nur noch schwer zu steuern. Octopussy möchte aber auf keinen Fall die netten Käferpiloten, die ihr immer wieder entgegenkommen, rammen.
+
+<iframe src="octopussy/index.html" width="640" height="400" name="Octopussy"></iframe>
+
+Deshalb muß ihr die Spielerin oder der Spieler helfen. Mit einem Mausklick wird Octopussys Raumfisch ein wenig angeliftet, während die Gravitationskraft es immer wieder nach unten sinken läßt[^1].
+
+[^1]: Wer jetzt fragt »Gravitation« und »unten« im Weltraum? Dem sei gesagt: Das ist **mein** Spiel und hier bestimme ich die Gesetze der Physik.
+
+Der »endlos scrollende« Bildhintergrund ist genau wie beim [ballonfliegenden Dachs](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/) in einer eigenen Klasse implementiert:
+
+~~~javascript
+class Background {
+  constructor(_x, _y) {
+    this.x = _x;
+    this.y = _y;
+    this.im = bg;
+    this.speed = 0.5;
+  }
+
+  update() {
+    this.x -= this.speed;
+    if (this.x <= -bgWidth) {
+      this.x = bgWidth;
+    }
+  }
+
+  display() {
+    image(this.im, this.x, this.y);
+  }
+}
+~~~
+
+Der einzige Unterschied ist, daß dieses Mal zweimal das gleiche Bild aneinandergeklebt wird:
+
+~~~javascript
+  backs[0] = new Background(0, 0);
+  backs[1] = new Background(bgWidth, 0);
+~~~
+
+Ähnlich einfach ist die Klasse `Beetle` geraten, denn der Pilot in seinem Marienkäferraumschiff muß ja nur stur geradeaus von rechts nach links über den Bildschirm fliegen:
+
+~~~javascript
+class Beetle {
+  constructor() {
+    this.w = 100;
+    this.h = 110;
+    this.im = beetleIm;
+    this.reset();
+  }
+
+  reset() {
+    this.x = random(width + 100, width + 400);
+    this.y = random(150, height - 150);
+    this.speed = random(0.5, 2);
+  }
+
+  update() {
+    this.x -= this.speed;
+    if (this.x <= -150) {
+      this.reset();
+    }
+  }
+
+  display() {
+    image(this.im, this.x, this.y, this.w, this.h);
+  }
+}
+~~~
+
+Kaum mehr Gehirnschmalz verlangt auch die Klasse `Octopussy`, nur daß sie zusätzlich noch die Eigenschaften `gravity` und `lift` besitzt. Deren Werte habe ich durch Experimentieren herausgefunden[^2].
+
+[^2]: Und das die Schubkraft, die Octopussys Raumfisch anhebt, negativ ist, liegt schlicht und einfach daran, daß die y-Achse auch bei JavaScript von Null (oben) nach `height` (unten) reicht.
+
+Neu ist die Methode `up()`. Sie wird aufgerufen, wenn die Spielerin oder der Spieler mit der Maus ins Fenster klicken, und sie hebt einfach den Raumfisch ein wenig an:
+
+~~~javascript
+class Octopussy {
+  constructor() {
+    this.x = 30;
+    this.y = 140;
+    this.w = 120;
+    this.h = 100;
+    this.im = octoIm;
+
+    this.gravity = 0.05;
+    this.lift = -12;
+    this.vel = 0;
+  }
+
+  up() {
+    this.vel += this.lift;
+  }
+
+  update() {
+    this.vel += this.gravity;
+    this.vel *= 0.9;
+    this.y += this.vel;
+    // Check border
+    if (this.y >= height - this.h) {
+      this.y = height - this.h;
+      this.vel = 0;
+    } else if (this.y <= 0) {
+      this.y = 0;
+      this.vel = 0;
+    }
+  }
+
+  display() {
+    image(this.im, this.x, this.y, this.w, this.h);
+  }
+}
+~~~
+
+Außerdem achtet die `update()`-Methode noch darauf, daß Octopussy nicht oben oder unten aus dem Fenster verschwindet. Sie wird an den Bildrändern brutal abgestoppt.
+
+Ich hätte ja gerne geschrieben, daß die Hauptdatei `sketch.js` wieder von erfrischender Kürze ist, und das ist sie eigentlich auch, oder?
+
+~~~javascript
+const windowWidth = 640;
+const windowHeight = 400;
+const bgWidth = 2048;
+let octopussy;
+let octoIm;
+let beetle;
+let beetleIm;
+let bg;
+let backs = [];
+
+function preload() {
+  octoIm = loadImage("data/octopus.png");
+  beetleIm = loadImage("data/beetleship.png");
+  bg = loadImage("data/background.png");
+}
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  backs[0] = new Background(0, 0);
+  backs[1] = new Background(bgWidth, 0);
+  octopussy = new Octopussy();
+  beetle = new Beetle();
+}
+
+function draw() {
+  background(220);
+  for (let back of backs) {
+    back.update();
+    back.display();
+    beetle.update();
+    octopussy.update();
+    beetle.display();
+    octopussy.display();
+  }
+}
+
+function mousePressed() {
+  octopussy.up();
+}
+~~~
+
+Es ist eigentlich kein richtiges Spiel, weil es ohne Konsequenzen bleibt, wenn Octopussy den Beetle-Piloten rammt. Ich habe bewußt keine Kollisionserkennung implementiert, weil ich erst erkunden wollte, welche Methoden mir dafür die Bibliothek [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) bereitstellt. Doch wer will, kann sich ja mal selber daran versuchen. Bei der Form der beiden Sprites bietet sich die Kollisionserkennung zwischen zwei Kreisen an, wie ich sie hier auch für P5.js [schon einmal vorgestellt](http://blog.schockwellenreiter.de/2019/11/2019111103.html) hatte. Bei einem Radius von etwa 40 Pixeln je Sprite dürfte eine einigermaßen realistisch wirkende Kollisionserkennung zustandekommen.
+
+Wie immer gibt es zum Abschluß eine Übersicht aller bisher in dieser Reihe erschienenen Tutorials, damit Ihr nicht die Datenkrake bemühen müßt:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : [Hallo Hörnchen!](https://kantel.github.io/posts/2024052601_hallo_hoernchen/) ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+5. Abenteuer P5.js (Teil 5): Octopussy ([GitHub](https://github.com/kantel/p5js/tree/master/octopussy))
+
+Und *last but not least* die **Credits**: Das Hintergrundbild ist wieder von *RubberDuck*, der auch dieses auf [OpenGameArt hochgeladen](https://opengameart.org/content/background-from-glitch-assets) und in die Public Domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/)) entlassen hat. Die beiden Akteure wiederum entstammen der Sammlung [SpaceCute](https://lostgarden.com/2007/04/07/spacecute-first-round-of-prototypes-and-new-graphics/) von *Daniel Cook* ([Lost Garden](https://lostgarden.com/)). Seine [Lizenz](https://lostgarden.com/2007/03/15/lost-garden-license/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/us/)) verlangt ausdrücklich die Namensnennung des Urhebers. Dem bin ich hiermit gerne nachgekommen.

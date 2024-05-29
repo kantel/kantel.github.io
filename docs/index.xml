@@ -10,7 +10,1008 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 29 May 2024 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 29 May 2024 17:20:00 GMT</lastBuildDate>
+<item>
+  <title>Abenteuer P5.js (Teil 5): Octopussy</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024052903_octopussy/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53755303684/"><img src="https://kantel.github.io/posts/2024052903_octopussy/images/octopussyp5js-b.jpg" class="img-fluid"></a></p>
+<p>Heute möchte ich die ersten Schritte, die ich in den bisherigen Tutorials zu <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> und dem <a href="https://editor.p5js.org/">P5.js-Webeditor</a> mit einer kleinen Fingerübung abrunden, die das bisher behandelte zusammenfasst.</p>
+<p>Es geht um <em>Octopussy</em>, einer Freundin von <a href="https://kantel.github.io/posts/2024052601_hallo_hoernchen/">Hörnchen</a>, die mit ihrem Raumfisch von einer wichtigen Mission den Rückflug zu ihrem Heimatplaneten angetreten hat. Leider ist ihr Raumfisch ein wenig reparaturbedürftig und nur noch schwer zu steuern. Octopussy möchte aber auf keinen Fall die netten Käferpiloten, die ihr immer wieder entgegenkommen, rammen.</p>
+<iframe src="octopussy/index.html" width="640" height="400" name="Octopussy">
+</iframe>
+<p>Deshalb muß ihr die Spielerin oder der Spieler helfen. Mit einem Mausklick wird Octopussys Raumfisch ein wenig angeliftet, während die Gravitationskraft es immer wieder nach unten sinken läßt<sup>1</sup>.</p>
+<p>Der »endlos scrollende« Bildhintergrund ist genau wie beim <a href="https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/">ballonfliegenden Dachs</a> in einer eigenen Klasse implementiert:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Background {</span>
+<span id="cb1-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>(_x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> _y) {</span>
+<span id="cb1-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">im</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-6">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-7">  }</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb1-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-11">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>bgWidth) {</span>
+<span id="cb1-12">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> bgWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-13">    }</span>
+<span id="cb1-14">  }</span>
+<span id="cb1-15"></span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb1-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">im</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-18">  }</span>
+<span id="cb1-19">}</span></code></pre></div>
+<p>Der einzige Unterschied ist, daß dieses Mal zweimal das gleiche Bild aneinandergeklebt wird:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1">  backs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Background</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-2">  backs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Background</span>(bgWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Ähnlich einfach ist die Klasse <code>Beetle</code> geraten, denn der Pilot in seinem Marienkäferraumschiff muß ja nur stur geradeaus von rechts nach links über den Bildschirm fliegen:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Beetle {</span>
+<span id="cb3-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>() {</span>
+<span id="cb3-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">110</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">im</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> beetleIm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-6">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-7">  }</span>
+<span id="cb3-8"></span>
+<span id="cb3-9">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>() {</span>
+<span id="cb3-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-11">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-12">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-13">  }</span>
+<span id="cb3-14"></span>
+<span id="cb3-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb3-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">speed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>) {</span>
+<span id="cb3-18">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-19">    }</span>
+<span id="cb3-20">  }</span>
+<span id="cb3-21"></span>
+<span id="cb3-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb3-23">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">im</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-24">  }</span>
+<span id="cb3-25">}</span></code></pre></div>
+<p>Kaum mehr Gehirnschmalz verlangt auch die Klasse <code>Octopussy</code>, nur daß sie zusätzlich noch die Eigenschaften <code>gravity</code> und <code>lift</code> besitzt. Deren Werte habe ich durch Experimentieren herausgefunden<sup>2</sup>.</p>
+<p>Neu ist die Methode <code>up()</code>. Sie wird aufgerufen, wenn die Spielerin oder der Spieler mit der Maus ins Fenster klicken, und sie hebt einfach den Raumfisch ein wenig an:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">class</span> Octopussy {</span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>() {</span>
+<span id="cb4-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-6">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-7">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">im</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> octoIm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-8"></span>
+<span id="cb4-9">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gravity</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-10">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lift</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-11">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-12">  }</span>
+<span id="cb4-13"></span>
+<span id="cb4-14">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">up</span>() {</span>
+<span id="cb4-15">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lift</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-16">  }</span>
+<span id="cb4-17"></span>
+<span id="cb4-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb4-19">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">gravity</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-20">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-21">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-22">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Check border</span></span>
+<span id="cb4-23">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>) {</span>
+<span id="cb4-24">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-25">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-26">    } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) {</span>
+<span id="cb4-27">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-28">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-29">    }</span>
+<span id="cb4-30">  }</span>
+<span id="cb4-31"></span>
+<span id="cb4-32">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb4-33">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">im</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-34">  }</span>
+<span id="cb4-35">}</span></code></pre></div>
+<p>Außerdem achtet die <code>update()</code>-Methode noch darauf, daß Octopussy nicht oben oder unten aus dem Fenster verschwindet. Sie wird an den Bildrändern brutal abgestoppt.</p>
+<p>Ich hätte ja gerne geschrieben, daß die Hauptdatei <code>sketch.js</code> wieder von erfrischender Kürze ist, und das ist sie eigentlich auch, oder?</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> windowWidth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> windowHeight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> bgWidth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2048</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> octopussy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> octoIm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> beetle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> beetleIm<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> backs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-10"></span>
+<span id="cb5-11"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">preload</span>() {</span>
+<span id="cb5-12">  octoIm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/octopus.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-13">  beetleIm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/beetleship.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-14">  bg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/background.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-15">}</span>
+<span id="cb5-16"></span>
+<span id="cb5-17"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb5-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(windowWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> windowHeight)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-19">  backs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Background</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-20">  backs[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Background</span>(bgWidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-21">  octopussy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Octopussy</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-22">  beetle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Beetle</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-23">}</span>
+<span id="cb5-24"></span>
+<span id="cb5-25"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw</span>() {</span>
+<span id="cb5-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">background</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-27">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> back <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">of</span> backs) {</span>
+<span id="cb5-28">    back<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-29">    back<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-30">    beetle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-31">    octopussy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-32">    beetle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-33">    octopussy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-34">  }</span>
+<span id="cb5-35">}</span>
+<span id="cb5-36"></span>
+<span id="cb5-37"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mousePressed</span>() {</span>
+<span id="cb5-38">  octopussy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">up</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-39">}</span></code></pre></div>
+<p>Es ist eigentlich kein richtiges Spiel, weil es ohne Konsequenzen bleibt, wenn Octopussy den Beetle-Piloten rammt. Ich habe bewußt keine Kollisionserkennung implementiert, weil ich erst erkunden wollte, welche Methoden mir dafür die Bibliothek <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html">P5.play</a> bereitstellt. Doch wer will, kann sich ja mal selber daran versuchen. Bei der Form der beiden Sprites bietet sich die Kollisionserkennung zwischen zwei Kreisen an, wie ich sie hier auch für P5.js <a href="http://blog.schockwellenreiter.de/2019/11/2019111103.html">schon einmal vorgestellt</a> hatte. Bei einem Radius von etwa 40 Pixeln je Sprite dürfte eine einigermaßen realistisch wirkende Kollisionserkennung zustandekommen.</p>
+<p>Wie immer gibt es zum Abschluß eine Übersicht aller bisher in dieser Reihe erschienenen Tutorials, damit Ihr nicht die Datenkrake bemühen müßt:</p>
+<ol type="1">
+<li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052301_balloons_in_wonderland/">Luftballons im Wunderland</a>: Erstes Abenteuer mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/balloons">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/">Der fliegende Dachs im Wunderland</a>: Das Abenteuer P5.js geht weiter (<a href="https://github.com/kantel/p5js/tree/master/flyingbadger">GitHub</a>)</li>
+<li>Abenteuer P5.js : <a href="https://kantel.github.io/posts/2024052601_hallo_hoernchen/">Hallo Hörnchen!</a> (<a href="https://github.com/kantel/p5js/tree/master/hoernchen">GitHub</a>)</li>
+<li>Abenteuer P5.js (Teil 5): Octopussy (<a href="https://github.com/kantel/p5js/tree/master/octopussy">GitHub</a>)</li>
+</ol>
+<p>Und <em>last but not least</em> die <strong>Credits</strong>: Das Hintergrundbild ist wieder von <em>RubberDuck</em>, der auch dieses auf <a href="https://opengameart.org/content/background-from-glitch-assets">OpenGameArt hochgeladen</a> und in die Public Domain (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) entlassen hat. Die beiden Akteure wiederum entstammen der Sammlung <a href="https://lostgarden.com/2007/04/07/spacecute-first-round-of-prototypes-and-new-graphics/">SpaceCute</a> von <em>Daniel Cook</em> (<a href="https://lostgarden.com/">Lost Garden</a>). Seine <a href="https://lostgarden.com/2007/03/15/lost-garden-license/">Lizenz</a> (<a href="https://creativecommons.org/licenses/by/3.0/us/">CC BY 3.0</a>) verlangt ausdrücklich die Namensnennung des Urhebers. Dem bin ich hiermit gerne nachgekommen.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Wer jetzt fragt »Gravitation« und »unten« im Weltraum? Dem sei gesagt: Das ist <strong>mein</strong> Spiel und hier bestimme ich die Gesetze der Physik.↩︎</p></li>
+<li id="fn2"><p>Und das die Schubkraft, die Octopussys Raumfisch anhebt, negativ ist, liegt schlicht und einfach daran, daß die y-Achse auch bei JavaScript von Null (oben) nach <code>height</code> (unten) reicht.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>P5.js</category>
+  <category>Processing</category>
+  <category>Creative Coding</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2024052903_octopussy/</guid>
+  <pubDate>Wed, 29 May 2024 17:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024052903_octopussy/images/octopussyp5js.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus der Nachbarschaft: Update zum Kulturbunker</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3162,56 +4163,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2024051402_chrome_security_alert/</guid>
   <pubDate>Tue, 14 May 2024 16:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024051402_chrome_security_alert/images/sexyoctopussy.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Apple Patchday im Mai</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024051401_apple_patchday/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53571432123/"><img src="https://kantel.github.io/posts/2024051401_apple_patchday/images/applemai-b.jpg" class="img-fluid"></a></p>
-<p>In Cupertino war gestern wieder regulärer Flickentag. Zu diesem Anlaß hat die Firma mit dem angebissenen Apfel im Logo wieder so viele Updates herausgehauen, daß ich sie wie üblich nur <em>en bloc</em> abhandeln kann:</p>
-<section id="apple-veröffentlicht-macos-sonoma-14.5" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-macos-sonoma-14.5">Apple veröffentlicht macOS Sonoma 14.5</h3>
-<p>Apple hat das Update auf die neue Betriebssystemversion macOS Sonoma 14.5 freigegeben, bietet Leistungsverbesserungen und <a href="https://support.apple.com/de-de/HT214106">korrigiert damit auch wieder Sicherheitsprobleme</a>.</p>
-<p>Das Update steht über die Systemeinstellungen zur Verfügung.</p>
-</section>
-<section id="apple-veröffentlicht-sicherheitsupdate-für-macos-ventura-und-monterey" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-sicherheitsupdate-für-macos-ventura-und-monterey">Apple veröffentlicht Sicherheitsupdate für macOS Ventura und Monterey</h3>
-<p>Apple hat auch das Sicherheitsupdate auf <a href="https://support.apple.com/de-de/HT214107">macOS Ventura 13.6.7</a> und <a href="https://support.apple.com/de-de/HT214105">macOS Monterey 12.7.5</a> freigegeben.</p>
-<p>Die Updates stehen wie üblich über die Softwareaktualisierung bereit.</p>
-</section>
-<section id="apple-veröffentlicht-ios-17.5-und-ipados-17.5" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-ios-17.5-und-ipados-17.5">Apple veröffentlicht iOS 17.5 und iPadOS 17.5</h3>
-<p>Wie angekündigt hat Apple das Update auf iOS 17.5 und iPadOS 17.5 bereitgestellt. Die Updates bieten neue Funktionen und Fehlerbehebungen und korrigieren <a href="https://support.apple.com/de-de/HT214101">kritische Sicherheitslücken</a>.</p>
-<p>Das Update auf auf iOS 17.5 und iPadOS 17.5 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code>, an ausreichender Akku-Kapazität und freien Speicherplatz sollte gedacht werden) oder über iTunes erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-</section>
-<section id="apple-veröffentlicht-iosipados-16.7.8-für-ältere-systeme" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-iosipados-16.7.8-für-ältere-systeme">Apple veröffentlicht iOS/iPadOS 16.7.8 für ältere Systeme</h3>
-<p>Apple hat nun das Update auf iOS 16.7.8 für ältere iPhones und iPadOS 16.7.8 für ältere iPads bereitgestellt. Das Update behebt <a href="https://support.apple.com/de-de/HT214100">kritische Sicherheitslücken</a>, die vermutlich bereits ausgenutzt wurden.</p>
-<p>Auch hier kann das Update auf iOS/iPadOS 16.7.8 über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code>, an ausreichender Akku-Kapazität und freien Speicherplatz sollte gedacht werden) oder über iTunes erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-</section>
-<section id="apple-veröffentlicht-watchos-10.5" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-watchos-10.5">Apple veröffentlicht watchOS 10.5</h3>
-<p>Und zum Schluß wurde auch noch an der Uhr gedreht: Apple hat für die Apple Watch watchOS 10.5 bereitgestellt und behebt damit auch wieder <a href="https://support.apple.com/de-de/HT214104">Sicherheitsprobleme</a>.</p>
-<p>Die Aktualisierung wird über die Apple-Watch-App auf dem iPhone gestartet unter <code>Allgemein &gt; Softwareupdate</code>. Dabei sollte sich die Uhr in Reichweite des iPhones befinden, mit dem Ladekabel verbunden und mindestens zu 50 Prozent geladen sein.</p>
-<p><em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53571432123/">Die Hexe mit den Äpfeln</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>The evil witch gives Snow White a half-eaten apple in the fairytale forest</em>«. Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Stable Diffusion XL, Style: Hyper-Realistic Digital Watercolor + Vibrant Storybook.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024051401_apple_patchday/</guid>
-  <pubDate>Tue, 14 May 2024 15:35:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024051401_apple_patchday/images/applemai.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
