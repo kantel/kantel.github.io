@@ -294,7 +294,7 @@ function draw() {
   earthAngle += 0.01;
 }
 </script>
-<p>Jetzt wird noch der Mond angehängt. Er braaucht ebenfalls ein paar Konstanten und Variablen:</p>
+<p>Jetzt wird noch der Mond angehängt. Er braucht ebenfalls ein paar Konstanten und Variablen:</p>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> moonDiam <span class="op" style="color: #5E5E5E;
@@ -561,8 +561,8 @@ function draw() {
   moonAngle += 0.01;
 }
 </script>
-<p>Doch was ist, wenn ein zweiter Mond – nennen wir ihn Nemesis – um die Erde kreisen soll? Das Koordinantensystem der Erde ist ja schon vom Koordinatensystem des Mondes ersetzt worden. Ihr braucht also eine Funktion, die das Koordinatensystem nur temporär verschiebt, so daß man auf das alte Koordinatensystem wieder zrückgreifen kann, wenn es benötigt wird. Genau dafür gibt es in P5.js das Funktionenpaar <code>push()</code> und <code>pop()</code>. Mit <code>push()</code> wird das bisherige Koordinatensystem auf einen Stack gelegt und mit <code>pop()</code> wird es wieder zurückgeholt.</p>
-<p>Mit diesn Informationen im Hinterkopf braucht natürlich Nemesis seinen eigenen Satz Variablen</p>
+<p>Doch was ist, wenn ein zweiter Mond – nennen wir ihn Nemesis – die Erde umkreisen soll? Das Koordinantensystem der Erde ist ja schon vom Koordinatensystem des Mondes ersetzt worden. Ihr braucht also eine Funktion, die das Koordinatensystem nur temporär verschiebt, so daß man auf das alte Koordinatensystem wieder zrückgreifen kann, wenn es benötigt wird. Genau dafür gibt es in P5.js das Funktionenpaar <code>push()</code> und <code>pop()</code>. Mit <code>push()</code> wird das bisherige Koordinatensystem auf einen Stack gelegt und mit <code>pop()</code> wird es wieder zurückgeholt.</p>
+<p>Mit diesen Informationen im Hinterkopf braucht natürlich Nemesis ihren eigenen Satz Variablen</p>
 <div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb10-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> nemDiam <span class="op" style="color: #5E5E5E;
@@ -794,7 +794,7 @@ function draw() {
   nemAngle += 0.015;
 }
 </script>
-<p>Natürlich hätte man die Nemesis betreffenden Zeilen nicht in eine eigene <code>push()</code> – <code>pop()</code> Anweisung klammern müssen, aber so ist es auberer und Ihr könnt der Erde noch einen dritten oder einen vierten Trabanten spendieren, ohne mit den Koordinatensystemen durcheinander zu geraten.</p>
+<p>Natürlich hätte man die Nemesis betreffenden Zeilen nicht in eine eigene <code>push()</code> – <code>pop()</code> Anweisung klammern müssen, aber so ist es sauberer und Ihr könnt der Erde noch einen dritten oder einen vierten Trabanten spendieren, ohne mit den Koordinatensystemen durcheinander zu geraten.</p>
 <p>Wenn Ihr das Programm laufen lasst, werden Ihr sehen, warum ich für die Erde und ihre Trabanten Rechtecke gewählt habe. So ist zu erkennen, daß die Erde mit genau einer Seite immer zur Sonne zeigt und die beiden Trabanten ebenfalls mit genau einer Seite immer zur Erde. Das ist, weil sie sich jeweils in ihrem eigenen Koordinatensystem bewegen, dessen eine Achse immer das Zentrum des darüberliegenden Koordinatensystems schneidet.</p>
 <p>Für die Monde ist das okay, wenn Ihr der Erde noch Tag und Nacht spendieren wollt, müßt Ihr ihr aber noch ein zweites <code>rotate()</code> nach der Koordinatentransformation spendieren.</p>
 <p>Natürlich ist das Progrämmchen ausbaubar. Ihr könnt zum Beispiel mehrere Planeten jeweils mit ihren eigenen Koordinatensystemen um den Fixstern kreisen lassen. Alle diese Planeten könntet Ihr mit Monden umgeben, die wiederum ihr eigenes Koordinatensystem besitzen. Und wenn Ihr wirkliche Helden sein wollt: Schnappt Euch ein Buch mit den Keplerschen Gesetzen zur Planetenbewegung und simuliert damit ein realistischeres Planetensystem.</p>
