@@ -1,0 +1,386 @@
+---
+title: "Das Abenteuer P5.js geht weiter: Ein kleines Planetensystem"
+author: "Jörg Kantel"
+date: "2024-05-30 18:10:00"
+include-in-header:
+  - text: <script src="//toolness.github.io/p5.js-widget/p5-widget.js"></script>
+categories: [P5.js, P5.js-Widget, Processing, Creative Coding, Simulation]
+image: "images/grandville-un-autre-monde.jpg"
+---
+
+[![](images/grandville-un-autre-monde-b.jpg)](https://www.solarsystemheritage.com/images/granville-un-autre-monde.jpg)
+
+Als nächstes Projekt meiner kleinen Tutorialreihe zu [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) und dem [P5.js-Webeditor](https://editor.p5js.org/) möchte ich eine kleine Animation eines Planetensystems aus Kreisen und Rechtecken entwickeln. Ich weiß, Planeten sind eher kugelförmig und keine Kisten, aber mein Freund und regelmäßiger Leser aus Bremen hatte mich gebeten, zu zeigen, wie man Shapes in P5.js rotieren kann -- und das ist an Kreisen oder Kugeln nahezu unmöglich zu demonstrieren. Außerdem probiere ich auf diesen Seiten erstmalig aus, wie man das [P5 Widget](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html) für solche Tutorials mehr oder weniger sinnvoll einsetzen kann[^1]. Es ist also auch für mich ein völlig neues Experiment und ich bin gespannt, wie es ausfällt.
+
+[^1]: Ich weiß, das Widget wird via eines CDN *(toolness)* eingebunden, aber da auch die P5.js-Bibliotheken im Webeditor über ein CDN *(Cloudflare)* eingebunden werden, nehme ich das erst einmal als gegeben hin. Glaubt mir, ich habe versucht eine selbstgehostete Version des Widgets zu implementieren, aber ich bin grandios gescheitert. Also, wenn jemand von Euch da draußen eine Alternative weiß … meine Kommentare stehen ihr oder ihm offen.
+
+Das Tutorial soll also in der Hauptsache  zeigen, wie man `translate()` und `rotate()` sinnvoll einsetzt, und dazu brauchte ich eben Rechtecke zu Verdeutlichung.
+
+Ich beginne mit einem einfachem System eines Planeten, der seinen Fixstern umkreist, und dieser besitzt einen Trabanten, der wiederum den Planeten umrundet. Der Einfachheit halber habe ich die Akteure Sonne, Erde und Mond genannt.
+
+Zu Beginn des Sketches lege ich erst einmal ein paar Zahlen fest:
+
+~~~javascript
+const sunDiam = 40;
+const earthDiam = 15;
+const earthOrbitRadius = 65;
+
+let earthAngle = 0;
+~~~
+
+Diese Zahlen sind durch keine physikalische Wirklichkeit gedeckt, sondern einfach so lange durch Experimente herausgesucht worden, bis sich eine ansprechende Animation ergab.
+
+Die `setup()`-Funktion legt einfach nur die Größe des Ausgabefensters fest:
+
+~~~javascript
+function setup() {
+  createCanvas(300, 200);
+}
+~~~
+
+In `draw()` setze ich den Hintergrund auf schwarz und dann zeichne ich die Sonne in die Mitte des Ausgabefensters:
+
+~~~javascript
+function draw() {
+  background(0, 0, 0);
+  
+  // Sonne im Zentrum
+  translate(width/2, height/2);
+  fill(255, 200, 64);
+  circle(0, 0, sunDiam);
+~~~
+
+Die Zeile `translate(width/2, height/2)` sorgt dafür, daß der Nullpunkt des Koordinatensystem vom linken oberen Rand der Zeichenfläche in die Mitte des Ausgabefensters gelegt wird und so die Sonne mit `circle(0, 0, sunDiam)` auch genau dort gezeichnet wird. Probiert es aus, der Sketch ist so lauffähig:
+
+<script type="text/p5" data-autoplay data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+const sunDiam = 40;
+
+function setup() {
+  createCanvas(300, 200);
+}
+
+function draw() {
+  background(0, 0, 0);
+  
+  // Sonne im Zentrum
+  translate(width/2, height/2);
+  fill(255, 200, 64);
+  circle(0, 0, sunDiam);
+}
+</script>
+
+Nun zur Erde, die die Sonne umkreist: Zuerst müssen dafür ein paar weitere Variablen im globalen Context definert werden:
+
+~~~javascript
+const earthDiam = 15;
+const earthOrbitRadius = 65;
+
+let earthAngle = 0;
+~~~
+
+Und dann müssen sie in der `draw()`-Funktion des Sripts mit Leben gefüllt werden:
+
+~~~javascript
+// Erde dreht sich um die Sonne
+  rotate(earthAngle);
+  translate(earthOrbitRadius, 0);
+  fill(64, 64, 255);
+  circle(0, 0, earthDiam);
+  rect(0, 0, earthDiam, earthDiam);
+
+  earthAngle += 0.01;
+~~~
+
+Wenn Ihr diese Zeilen Code in die `draw()`-Funktion unterhalb der Sonne einfügt, bekommt Ihr eine blaue Erde, die sich langsam um die Sonne bewegt. Denn mit `translate(earthOrbitRadius, 0)` wurde das Koordinatensystem erneut verschoben, 180 Pixel von der Sonne entfernt, aber auf der gleichen y-Achse wie das Koordinatensystem der Sonne. Da `rotate()` vor der Koordinatentransformation aufgerufen wird, dreht sich die Erde noch um die Sonne und das Koordinatensystem der Sonne rotiert. Ein `rotate()` hinter der Koordinatentransformation würde bewirken, daß sich die Erde um sich selbst dreht – das heißt, daß das Koordinatensystem der Erde um sich selbst rotieren würde.
+
+Das ergibt dann folgendes Bild:
+
+<script type="text/p5" data-autoplay data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+const sunDiam = 40;
+const earthDiam = 15;
+const earthOrbitRadius = 65;
+
+let earthAngle = 0;
+
+function setup() {
+  createCanvas(300, 200);
+}
+
+function draw() {
+  background(0, 0, 0);
+  
+  // Sonne im Zentrum
+  translate(width/2, height/2);
+  fill(255, 200, 64);
+  circle(0, 0, sunDiam);
+  
+  // Erde dreht sich um die Sonne
+  rotate(earthAngle);
+  translate(earthOrbitRadius, 0);
+  fill(64, 64, 255);
+  circle(0, 0, earthDiam);
+
+  earthAngle += 0.01;
+}
+</script>
+
+Jetzt wird noch der Mond angehängt. Er braaucht ebenfalls ein paar Konstanten und Variablen:
+
+~~~javascript
+const moonDiam = 5;
+const moonOrbitRadius = 25;
+
+let moonAngle = 0;
+~~~
+
+Und dann kommt innerhalb der `draw()`-Funktion sein Auftritt:
+
+~~~javascript
+// Mond dreht sich um die Erde
+  rotate(moonAngle);
+  translate(moonOrbitRadius, 0);
+  fill(192, 192, 80);
+  circle(0, 0, moonDiam);
+~~~
+
+Das Ergebnis könnt Ihr in diesem Skript-Fragment bewundern:
+
+<script type="text/p5" data-autoplay data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+const sunDiam = 40;
+const earthDiam = 15;
+const earthOrbitRadius = 65;
+const moonDiam = 5;
+const moonOrbitRadius = 25;
+
+let earthAngle = 0;
+let moonAngle = 0;
+
+function setup() {
+  createCanvas(300, 200);
+}
+
+function draw() {
+  background(0, 0, 0);
+  
+  // Sonne im Zentrum
+  translate(width/2, height/2);
+  fill(255, 200, 64);
+  circle(0, 0, sunDiam);
+  
+  // Erde dreht sich um die Sonne
+  rotate(earthAngle);
+  translate(earthOrbitRadius, 0);
+  fill(64, 64, 255);
+  circle(0, 0, earthDiam);
+  
+  // Mond dreht sich um die Erde
+  rotate(moonAngle);
+  translate(moonOrbitRadius, 0);
+  fill(192, 192, 80);
+  circle(0, 0, moonDiam);
+    
+  earthAngle += 0.01;
+  moonAngle += 0.01;
+}
+</script>
+
+Durch diese Koordinatentransformation steht der Mond im gleichen Verhältnis zur Erde wie die Erde zur Sonne, der Ursprung des Koordinatensystems liegt nun 25 Pixel vom Erdmittelpunkt entfernt. Natürlich rotiert in diesen Zeilen das Koordinatensystem der Erde, damit der Eindruck entsteht, daß der Mond um die Erde kreist.
+
+Das alles funktioniert natürlich nur, weil bei jedem erneuten Durchlauf der `draw()`-Funktion das Koordinatensystem jeweils neu zurückgesetzt wird, also alle bisherigen Transformationen »vergessen« (neu überschrieben) werden.
+
+Nun kann man bei Kreisen schwer erkennen, ob sie wirklich rotieren, daher habe ich in einer zweiten Fassung, die Kreise von Erde und Mond durch Quadrate ersetzt (ich habe – damit Ihr die Position der Codezeilen findet, die ersetzte Kreisfunktion jeweils auskommentiert stehen lassen, die entsprechende Rechteckfunktion wird jeweils direkt unter der auskommentierten Zeile eingefügt):
+
+~~~javascript
+// Erde dreht sich um die Sonne
+  rotate(earthAngle);
+  translate(earthOrbitRadius, 0);
+  fill(64, 64, 255);
+  // circle(0, 0, earthDiam);
+  rect(0, 0, earthDiam, earthDiam);
+  
+  // Mond dreht sich um die Erde
+  rotate(moonAngle);
+  translate(moonOrbitRadius, 0);
+  fill(192, 192, 80);
+  // circle(0, 0, moonDiam);
+  rect(0, 0, moonDiam, moonDiam);
+~~~
+
+Da ein Rechteck in P5.js seinen Ursprung in der linken. obenren Ecke besitzt, eine Rotation aber immer um den Urprung/Mittelpunkt des Shapes stattfindet, mußte in `setup()` mit
+
+~~~javascript
+rectMode(CENTER);
+~~~
+
+der Ursprung eines jeden Rechtecks und/oder Quadrats auf seinen Mittelpunkt gesetzt werden.
+
+Wenn Ihr das Programm jetzt startet, dreht sich eine große blaue Kiste um die Sonne mit einer kleinen grauen Kiste, die ebenfalls drehend um die Erde kreist und Ihr könnt die Rotation der beiden Kisten genau beobachten.
+
+<script type="text/p5" data-autoplay data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+const sunDiam = 40;
+const earthDiam = 15;
+const earthOrbitRadius = 65;
+const moonDiam = 5;
+const moonOrbitRadius = 25;
+
+let earthAngle = 0;
+let moonAngle = 0;
+
+function setup() {
+  createCanvas(300, 200);
+  rectMode(CENTER);
+}
+
+function draw() {
+  background(0, 0, 0);
+  
+  // Sonne im Zentrum
+  translate(width/2, height/2);
+  fill(255, 200, 64);
+  circle(0, 0, sunDiam);
+  
+  // Erde dreht sich um die Sonne
+  rotate(earthAngle);
+  translate(earthOrbitRadius, 0);
+  fill(64, 64, 255);
+  // circle(0, 0, earthDiam);
+  rect(0, 0, earthDiam, earthDiam);
+  
+  // Mond dreht sich um die Erde
+  rotate(moonAngle);
+  translate(moonOrbitRadius, 0);
+  fill(192, 192, 80);
+  // circle(0, 0, moonDiam);
+  rect(0, 0, moonDiam, moonDiam);
+    
+  earthAngle += 0.01;
+  moonAngle += 0.01;
+}
+</script>
+
+Doch was ist, wenn ein zweiter Mond – nennen wir ihn Nemesis – um die Erde kreisen soll? Das Koordinantensystem der Erde ist ja schon vom Koordinatensystem des Mondes ersetzt worden. Ihr braucht also eine Funktion, die das Koordinatensystem nur temporär verschiebt, so daß man auf das alte Koordinatensystem wieder zrückgreifen kann, wenn es benötigt wird. Genau dafür gibt es in P5.js das Funktionenpaar `push()` und `pop()`. Mit `push()` wird das bisherige Koordinatensystem auf einen Stack gelegt und mit `pop()` wird es wieder zurückgeholt.
+
+Mit diesn Informationen im Hinterkopf braucht natürlich Nemesis seinen eigenen Satz Variablen
+
+~~~javascript
+const nemDiam = 6;
+const nemOrbitRadius = 19;
+
+let nemAngle = 0;
+~~~
+
+und ich habe sie -- damit Ihr seht, daß das alles nicht nur mit Quadraten funktioniert -- als »echtes« Rechteck implementiert:
+
+~~~javascript
+rect(0, 0, nemDiam, 1.5*nemDiam);
+~~~
+
+Und nun müssen Nemesis und der Mond jeweils eine eigene Koordinaten-Matrix spendiert bekommen:
+
+~~~javascript
+// Mond dreht sich um die Erde
+  push();
+  rotate(moonAngle);
+  translate(moonOrbitRadius, 0);
+  fill(192, 192, 80);
+  rect(0, 0, moonDiam, moonDiam);
+  pop();
+  
+  // Nemesis dreht sich um die Erde
+  push();
+  rotate(nemAngle);
+  translate(nemOrbitRadius, 0);
+  fill(220, 75, 75);
+  rect(0, 0, nemDiam, 1.5*nemDiam);
+  pop();
+~~~
+
+Damit die Rotationen von Nemesis und Mond auch noch mit unterschiedlichen Geschwindigkeiten ablaufen, hat Nemesis mit
+
+~~~javascript
+nemAngle += 0.015;
+~~~
+
+einen abweichenden Rotationswinkel verpasst bekommen.
+
+Mein endgültiges Skript sieht daher so aus:
+
+<script type="text/p5" data-autoplay data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+const sunDiam = 40;
+const earthDiam = 15;
+const earthOrbitRadius = 65;
+const moonDiam = 5;
+const moonOrbitRadius = 25;
+const nemDiam = 6;
+const nemOrbitRadius = 19;
+
+let earthAngle = 0;
+let moonAngle = 0;
+let nemAngle = 0;
+
+function setup() {
+  createCanvas(300, 200);
+  rectMode(CENTER);
+}
+
+function draw() {
+  background(0, 0, 0);
+  
+  // Sonne im Zentrum
+  translate(width/2, height/2);
+  fill(255, 200, 64);
+  circle(0, 0, sunDiam);
+  
+  // Erde dreht sich um die Sonne
+  rotate(earthAngle);
+  translate(earthOrbitRadius, 0);
+  fill(64, 64, 255);
+  rect(0, 0, earthDiam, earthDiam);
+  
+  // Mond dreht sich um die Erde
+  push();
+  rotate(moonAngle);
+  translate(moonOrbitRadius, 0);
+  fill(192, 192, 80);
+  rect(0, 0, moonDiam, moonDiam);
+  pop();
+  
+  // Nemesis dreht sich um die Erde
+  push();
+  rotate(nemAngle);
+  translate(nemOrbitRadius, 0);
+  fill(220, 75, 75);
+  rect(0, 0, nemDiam, 1.5*nemDiam);
+  pop();
+  
+  earthAngle += 0.01;
+  moonAngle += 0.01;
+  nemAngle += 0.015;
+}
+</script>
+
+Natürlich hätte man die Nemesis betreffenden Zeilen nicht in eine eigene `push()` -- `pop()` Anweisung klammern müssen, aber so ist es auberer und Ihr könnt der Erde noch einen dritten oder einen vierten Trabanten spendieren, ohne mit den Koordinatensystemen durcheinander zu geraten.
+
+Wenn Ihr das Programm laufen lasst, werden Ihr sehen, warum ich für die Erde und ihre Trabanten Rechtecke gewählt habe. So ist zu erkennen, daß die Erde mit genau einer Seite immer zur Sonne zeigt und die beiden Trabanten ebenfalls mit genau einer Seite immer zur Erde. Das ist, weil sie sich jeweils in ihrem eigenen Koordinatensystem bewegen, dessen eine Achse immer das Zentrum des darüberliegenden Koordinatensystems schneidet.
+
+Für die Monde ist das okay, wenn Ihr der Erde noch Tag und Nacht spendieren wollt, müßt Ihr ihr aber noch ein zweites `rotate()` nach der Koordinatentransformation spendieren.
+
+Natürlich ist das Progrämmchen ausbaubar. Ihr könnt zum Beispiel mehrere Planeten jeweils mit ihren eigenen Koordinatensystemen um den Fixstern kreisen lassen. Alle diese Planeten könntet Ihr mit Monden umgeben, die wiederum ihr eigenes Koordinatensystem besitzen. Und wenn Ihr wirkliche Helden sein wollt: Schnappt Euch ein Buch mit den Keplerschen Gesetzen zur Planetenbewegung und simuliert damit ein realistischeres Planetensystem.
+
+Das ist der sechste Beitrag meiner Reihe von P5.js-Tutorials. Bisher erschienen sind:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : [Hallo Hörnchen!](https://kantel.github.io/posts/2024052601_hallo_hoernchen/) ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+5. Abenteuer P5.js (Teil 5): [Octopussy](https://kantel.github.io/posts/2024052903_octopussy/) ([GitHub](https://github.com/kantel/p5js/tree/master/octopussy))
+6. Das Abenteuer P5.js geht weiter: Ein kleines Planetensystem ([GitHub](https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system))
+
+
+### Literatur
+
+Die Idee zu diesem Sketch und einige der Parameter habe ich dem wunderbaren Buch »Processing for Visual Artists – How to Create Expressive Images and Interactive Art« von *Andrew Glassner* (Natick, MA, 2010), Seiten 192-200 entnommen und von Java nach JavaScript (alleine und ohne die Hilfe von ChatGPT&nbsp;🤓) portiert.
+
+---
+
+**Bild**: Grandville: *[Un Autre Monde](http://blog.schockwellenreiter.de/2013/07/20130719photo01.html)*, 1844
