@@ -105,6 +105,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 <script src="//toolness.github.io/p5.js-widget/p5-widget.js"></script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -185,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">30. Mai 2024</p>
+      <p class="date">31. Mai 2024</p>
     </div>
   </div>
   
@@ -243,6 +272,7 @@ function draw() {
   image(python, 0, 0, 200, 200);
 }
 </script>
+<p>In obigem kleinen Demo-Skript könnt Ihr in <code>rotate(xx)</code> mal ein paar andere Werte als <span class="math inline">\(90\)</span> eingeben, um verschiedene Rotationswinkel zu testen.</p>
 <p>Wie immer gibt es zum Abschluß eine Übersicht aller bisher in dieser Reihe erschienenen Tutorials, damit Ihr nicht die Datenkrake bemühen müßt:</p>
 <ol type="1">
 <li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
