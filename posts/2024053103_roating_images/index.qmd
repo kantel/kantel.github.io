@@ -1,0 +1,76 @@
+---
+title: "Rotating Images: Nachtrag zum Planetensystem mit P5.js"
+author: "Jörg Kantel"
+date: "2024-05-30 18:10:00"
+include-in-header:
+  - text: <script src="//toolness.github.io/p5.js-widget/p5-widget.js"></script>
+categories: [P5.js, P5.js-Widget, Processing, Creative Coding]
+image: "images/pythonp5js.jpg"
+---
+
+[![](images/pythonp5js-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53760170616/)
+
+So wie es aussieht, hatte ich bei meinem [letzten Tutorial](https://kantel.github.io/posts/2024053001_planetensystem_p5js/), in dem ich ein kleines Planetensystem mit [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) gebastelt hatte, zu viel vorausgesetzt. Es war wohl nicht jedem Leser (und vielleicht auch jeder Leserin) klar, daß Bilder ebenfalls nur Rechtecke sind und sie daher bei Rotationen genau wie Rechtecke behandelt werden können.
+
+Daher habe ich noch einmal ein kleines Skriptchen geschrieben, das exakt ein Bild einer Brillenschlange (einer Python?) mit `translate()` und `rotate()` um 90° dreht:
+
+~~~javascript
+let python;
+
+function preload() {
+  python = loadImage("data/python.jpg");
+}
+
+function setup() {
+  createCanvas(450, 450);
+  imageMode(CENTER);
+  angleMode(DEGREES);
+  noLoop();
+}
+
+function draw() {
+  background(220);
+  translate(width/2, height/2);
+  rotate(90);
+  image(python, 0, 0, 450, 450);
+  print("I did it, Babe!")
+}
+~~~
+
+Da die Rotateion um den Mittelpunkt des Bildes stattfinden soll, muß mit `imageMode(CENTER)` der Ankerpunkt des Bildes in die Mitte gelegt werden. Und da es für mich -- wie vermutlich auch den meisten von Euch -- einfacher ist, bei Rotationen in Grad und nicht in Radians zu denken, wird dies mit `angleMode(DEGREES)` ebenfalls festgelegt.
+
+In `draw()` wird dann mit `translate(width/2, height/2)` der Ursprung des Koordinatensystems genau in die Mitte des Canvas gelegt. Denn dann kann mit `image(python, 0, 0, 450, 450)` auch das rotierte Bild zentriert ausgegeben werden.
+
+<script type="text/p5" data-autoplay data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+let python;
+
+function preload() {
+  python = loadImage("images/python.jpg");
+}
+
+function setup() {
+  createCanvas(200, 200);
+  imageMode(CENTER);
+  angleMode(DEGREES);
+  noLoop();
+}
+
+function draw() {
+  background(220);
+  translate(width/2, height/2);
+  rotate(90);
+  image(python, 0, 0, 200, 200);
+}
+</script>
+
+Wie immer gibt es zum Abschluß eine Übersicht aller bisher in dieser Reihe erschienenen Tutorials, damit Ihr nicht die Datenkrake bemühen müßt:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : [Hallo Hörnchen!](https://kantel.github.io/posts/2024052601_hallo_hoernchen/) ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+5. Abenteuer P5.js (Teil 5): [Octopussy](https://kantel.github.io/posts/2024052903_octopussy/) ([GitHub](https://github.com/kantel/p5js/tree/master/octopussy))
+6. Das Abenteuer P5.js geht weiter: [Ein kleines Planetensystem](https://kantel.github.io/posts/2024053001_planetensystem_p5js/) ([GitHub](https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system))
+7. Rotating Images: Nachtrag zum Planetensystem mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/rotating_image))
+
+Das [Bild von der Schlange](https://www.flickr.com/photos/schockwellenreiter/53501579722/) hatte ich mit einer [gekünstelten Intelligenzia meines Vertrauens](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html) generieren lassen.
