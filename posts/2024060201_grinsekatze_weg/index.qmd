@@ -1,0 +1,80 @@
+---
+title: "Alice, die Grinsekatze und die Suche nach dem richtigen Weg"
+author: "Jörg Kantel"
+date: "2024-06-02 18:20:00"
+categories: [P5.js, Processing, Creative Coding]
+image: "images/grinsekatze2.jpg"
+---
+
+[![](images/grinsekatze2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53764618955/)
+
+>»Grinse-Mieze,« fragte Alice die plötzlich erscheinende Grinsekatze, »willst du mir wohl sagen, wenn ich bitten darf, welchen Weg ich hier nehmen muß?«   
+»Das hängt zum guten Teil davon ab, wohin du gehen willst,« sagte die Katze.   
+»Es kommt mir nicht darauf an, wohin —« sagte Alice.   
+»Dann kommt es auch nicht darauf an, welchen Weg du nimmst,« sagte die Katze.   
+»— wenn ich nur *irgendwo* hinkomme,« fügte Alice als Erklärung hinzu.   
+»O, das wirst du ganz gewiß,« sagte die Katze, »wenn du nur lange genug gehst.«   
+(Lewis Caroll: [Alice im Wunderland](https://www.gutenberg.org/files/19778/19778-h/19778-h.htm#Sechstes_Kapitel), Leipzig 1869)
+
+Bei ihren Besuchen im Wunderland konnte sich Alice oft nicht entscheiden, ob sie die Teeparty des verrückten Hutmachers, das Haus der Herzogin oder die bekiffte Raupe auf ihrem Pilz besuchen solle. Alle drei Ziele lagen auf den Ecken eines Dreiecks. Doch wenn sie sich zum Beispiel entschloß, die Teeparty aufzusuchen, wurde sie genau auf der Hälfte des Weges unsicher. Sie ließ einen bunten Stein fallen und überdachte ihre Entscheidung noch einmal. Sie suchte also aus den drei möglichen Zielen zufällig eines aus (es konnte durchaus auch wieder die Party des verrückten Hutmachers sein). Doch es war wie verhext: Jedesmal, wenn sie genau den halben Weg zurückgelegt hatte, wurde sie wieder unschlüssig, ließ wieder einen bunten Stein fallen und überlegte neu, welches der drei möglichen Ziele (Hutmacher, Raupe oder Herzogin). sie aufsuchen sollte … möglicherweise das gleiche, möglicherweise ein anderes. Und das wieder, und wieder, und wieder …
+
+[![](images/sierp1.jpg)](https://www.flickr.com/photos/schockwellenreiter/53764532524/)
+
+Schaut man sich Alices Irrweg anhand der zurückgelassenen, bunten Steine an, entdeckt man eine Figur, genauer ein Fraktal, das in der Literatur als [Sierpinski-Dreieck](https://de.wikipedia.org/wiki/Sierpinski-Dreieck) bekannt ist, benannt nach dem polnischen Mathematiker *Wacław Sierpiński*, der das Fraktal schon 1915 als erster beschrieb. Normalerweise wird dieses Fraktal mit einem rekursiven Algorithmus erzeugt, aber es geht eben auch mithilfe dieses »Chaos-Spiels«, das ich hier einmal in [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) implementiert habe.
+
+~~~javascript
+let i = 0;
+let x = y = 0;
+
+function setup() {
+  createCanvas(600, 400);
+  background(234, 218, 184);
+  colorMode(HSB, 360, 100, 100);
+  frameRate(120);
+}
+
+function draw() {
+  let p = floor(random(0, 3));
+  if (p == 0) {
+    x /= 2;
+    y = (y + height)/2;
+  } else if (p == 1) {
+    x = (x + width/2)/2;
+    y /= 2;
+  } else if (p == 2) {
+    x = (x + width)/2;
+    y = (y + height)/2
+  }
+  stroke(i%360, 100, 100);
+  strokeWeight(2);
+  point(x, y);
+  i += 1;
+  if (i > 24000) {
+    print("I did it, Babe!");
+    noLoop();
+  }
+}
+~~~
+
+Die `draw()`-Schleife wird 24.000 Mal durchlaufen und obwohl ich die Framerate auf 120 FPS hochgetunt habe, müßt Ihr schon ein wenig Geduld aufbringen, bevor das erlösende »I did it, Babe!« in der Konsole erscheint. Aber man sieht sehr schön, wie sich das Dreieck zufällig, aber dennoch erkennbar, zusammensetzt. Je nach zufälligem Startwert liegen die ersten drei bis vier Punkte noch außerhalb des Fraktals, danach geht aber alles seinen geordneten Gang. Und an den Farben erkennt man, daß auch die Reihenfolge, in der die einzelnen Punkte des Fraktals von Rotkäppchen angelaufen werden, ebenfalls zufällig sind.
+
+Dieser Beitrag ist ein weiteres Puzzleteilchen für meine Tutorialreihe zu P5.js und läutet einen Abschnitt ein, der unter der Überschrift »Punkte und Pixel« steht. Und wie gewohnt, sind hier zum Schluß alle bisher erschienenen Tutorials aufgeührt, damit Ihr keine ~~Suchmaschine~~ Datenkrake bemühen müßt:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : [Hallo Hörnchen!](https://kantel.github.io/posts/2024052601_hallo_hoernchen/) ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+5. Abenteuer P5.js (Teil 5): [Octopussy](https://kantel.github.io/posts/2024052903_octopussy/) ([GitHub](https://github.com/kantel/p5js/tree/master/octopussy))
+6. Das Abenteuer P5.js geht weiter: [Ein kleines Planetensystem](https://kantel.github.io/posts/2024053001_planetensystem_p5js/) ([GitHub](https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system))
+7. [Rotating Images](https://kantel.github.io/posts/2024053103_roating_images/): Nachtrag zum Planetensystem mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/rotating_image))
+8. Punkte und Pixel 1: Alice, die Grinsekatze und die Suche nach dem richtigen Weg ([GitHub](https://github.com/kantel/p5js/tree/master/sierp01))
+
+
+### Literatur
+
+- William P. Beaumont: *Conquering the Math Bogeyman*, in Clifford A. Pickover (Ed.): *Fractal Horizons – The Future Use of Fractals*, New York (St. Martin's Press) 1996, Seiten 3-15
+- Dietmar Herrmann: *Algorithmen für Chaos und Fraktale*, Bonn (Addison-Wesley) 1994, Seiten 132ff.
+
+---
+
+**Bild**: *[Alice und die Grinesekatze](https://www.flickr.com/photos/schockwellenreiter/53764618955/)*, Collage aus mehreren, KI-generierten Bildern.
