@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-30"><a href="#cb1-30"></a>  }</span>
 <span id="cb1-31"><a href="#cb1-31"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Die <code>draw()</code>-Schleife wird 24.000 Mal durchlaufen und obwohl ich die Framerate auf 120 FPS hochgetunt habe, müßt Ihr schon ein wenig Geduld aufbringen, bevor das erlösende »I did it, Babe!« in der Konsole erscheint. Aber man sieht sehr schön, wie sich das Dreieck zufällig, aber dennoch erkennbar, zusammensetzt. Je nach zufälligem Startwert liegen die ersten drei bis vier Punkte noch außerhalb des Fraktals, danach geht aber alles seinen geordneten Gang. Und an den Farben erkennt man, daß auch die Reihenfolge, in der die einzelnen Punkte des Fraktals von Alice angelaufen werden, ebenfalls zufällig sind.</p>
-<p>Dieser Beitrag ist ein weiteres Puzzleteilchen für meine Tutorialreihe zu P5.js und läutet einen Abschnitt ein, der unter der Überschrift »Punkte und Pixel« steht. Und wie gewohnt, sind hier zum Schluß alle bisher erschienenen Tutorials aufgeührt, damit Ihr keine <del>Suchmaschine</del> Datenkrake bemühen müßt:</p>
+<p>Dieser Beitrag ist ein weiteres Puzzleteilchen für meine Tutorialreihe zu P5.js und läutet einen Abschnitt ein, der unter der Überschrift »Punkte und Pixel« steht. Und wie gewohnt, sind hier zum Schluß alle bisher erschienenen Tutorials aufgeführt, damit Ihr keine <del>Suchmaschine</del> Datenkrake bemühen müßt:</p>
 <ol type="1">
 <li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
 <li><a href="https://kantel.github.io/posts/2024052301_balloons_in_wonderland/">Luftballons im Wunderland</a>: Erstes Abenteuer mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/balloons">GitHub</a>)</li>
@@ -288,13 +288,12 @@ function draw() {
   strokeWeight(2);
   point(x, y);
   i += 1;
-  if (i > 24000) {
-    print("I did it, Babe!");
+  if (i > 12000) {
     noLoop();
   }
 }
 </script>
-<p>Ich habe noch eine leicht modifizierte Version des Skriptes als <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5.js-Widget</a> eingebaut, damit Ihr da draußen etwas zum Spielen habt.</p>
+<p>Ich habe noch eine leicht modifizierte Version des Skriptes als <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5.js-Widget</a> eingebaut (ich habe die Canvasgröße und die Anzahl der Iterationen halbiert), damit Ihr da draußen etwas zum Spielen habt.</p>
 <hr>
 <p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53764618955/">Alice und die Grinsekatze</a></em>, Collage aus mehreren, KI-generierten Bildern.</p>
 
