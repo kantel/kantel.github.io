@@ -1,0 +1,33 @@
+---
+title: "Auf ein Neues? Braucht der Schockwellenreiter Hugo?"
+author: "Jörg Kantel"
+date: "2024-06-03 17:25:00"
+categories: [Interna, Quarto, Statische Seiten, Hugo, AsciiDoc]
+image: "images/schockwellenreiterneu.jpg"
+---
+
+[![](images/schockwellenreiterneu-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53672121375/)
+
+Ich weiß, es hört niemand gerne, aber so wie es aussieht, bin ich mit meinem *Static Site Generater* (SSG) [Quarto](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html) an die Grenzen dessen gestoßen, was dieser leisten kann. Mit den momentan über 800 Seiten dieses ~~Blogs~~ Kritzelhefts ist das Teil völlig überfordert, das Herausrendern eines neuen Beitrags benötigt mittlerweile etwa eine Viertelstunde[^1]. Und das frustriert und behindert mich doch gewaltig in meinem kreativen Output.
+
+[^1]: Zumindest auf meinem betagten MacBook Pro. Aber meine Tests auf meinem [zukünftigen Desktop Rechner](https://kantel.github.io/posts/2024051201_71_jahre/) (einen halbwegs aktuellen Mac Mini von 2018) zeigten, daß darauf das Problem nur geringfügig nach hinten verschoben wird -- Quarto ist auch dort nicht signifikant schneller.
+
+Was ist also zu tun? Ein schnellerer und leichtgewichtiger *Static Site Generator* muß offensichtlich her. Und der schnellste, den ich kenne, ist zur Zeit [Hugo](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/hugo.html), der in Go geschriebene und als *Single Binary* laufende, compilierte SSG, der nach eigenen Angaben tausende von Seiten auf einen Rutsch ohne nennenswerte Verzögerung herausschreiben kann.
+
+Ich glaube natürlich nicht alles, was mir an Werbetexten unterkommt, und so werde ich Huge erst einmal ausführlich testen. Ich schreibe das daher erst einmal auch nur, damit Ihr Euch nicht wundert, wenn auf diesen Seiten völlig unvremittelt auf einmal Beiträge zu Hugo auftauchen sollten.
+
+Schaun wir also mal, was daraus wird. *Still digging!*
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/0IfzATRf_T8?si=Gi_0y_HK5prYoE0Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**War sonst noch was?** Ach ja, Hugo kann nicht nur mit Markdown umgehen, sondern zum Beispiel auch mit [AsciiDoc](http://cognitiones.kantel-chaos-team.de/produktivitaet/asciidoc.html), [reStructuredText](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/restructuredtext.html) oder den [Ort-mode](http://cognitiones.kantel-chaos-team.de/produktivitaet/orgmode.html) des [Emacs](http://cognitiones.kantel-chaos-team.de/produktivitaet/emacs.html). Mit AsciiDoc und [AsciiDoctor](http://cognitiones.kantel-chaos-team.de/produktivitaet/asciidoctor.html) hatte ich [vor einigen Jahren](http://blog.schockwellenreiter.de/2020/01/2020012301.html) schon einmal [ein](http://blog.schockwellenreiter.de/2020/01/2020012501.html) [wenig](http://blog.schockwellenreiter.de/2020/01/2020012902.html) [experimentiert](http://blog.schockwellenreiter.de/2020/01/2020013002.html), daher klingt das interessant. Nicht unbedingt für den *Schockwellenreiter*, da der Renderer ein externes Modul für Hugo verlangt und dies das Herausschreiben langsamer macht, aber als Teil einer zukünftigen Publikationsstrategie? Denn die Möglichkeiten von AsciiDoc gehen weit über die Möglichkeiten von Markdown hinaus. Also auch hier: *Still digging!*
+
+### Literatur
+
+- Brian P. Hogan: *Build Websites with Hugo. Fast Web Development with Markdown*, Raleigh NC (The Pragmatic Bookshelf) 2020
+- der.hans: *[AsciiDoc - Plainish text for fancy output](https://www.youtube.com/watch?v=0IfzATRf_T8)*, YouTube vom 8. August 2017
+- Develpreneur: *Ascii Doc Tutorial ([Part 1](https://www.youtube.com/watch?v=GL1SEYOhEiQ), [Part 2](https://www.youtube.com/watch?v=wca5m7JpS_U) und [Part 3](https://www.youtube.com/watch?v=cQ-IfqLTw8w))*, YouTube 2021
+
+---
+
+**Bild**: *[Rabbit rides the Shockwave](https://www.flickr.com/photos/schockwellenreiter/53672121375/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*The Mad Hatter surfs on a board in the air between houses and trees in a futuristic city. A planet with a ring can be seen in the sky. Little white rabbits with vests and watches scurry about on the streets. colored french comic style*«. Negative Prompt: »*ugly, beard, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers*«. Modell: Stable Diffusion XL, Style: Illustrated Anime + Ethereal Realism.
