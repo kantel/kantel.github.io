@@ -103,6 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+<script src="//toolness.github.io/p5.js-widget/p5-widget.js"></script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -239,7 +240,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-29"><a href="#cb1-29"></a>    <span class="fu">noLoop</span>()<span class="op">;</span></span>
 <span id="cb1-30"><a href="#cb1-30"></a>  }</span>
 <span id="cb1-31"><a href="#cb1-31"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Die <code>draw()</code>-Schleife wird 24.000 Mal durchlaufen und obwohl ich die Framerate auf 120 FPS hochgetunt habe, müßt Ihr schon ein wenig Geduld aufbringen, bevor das erlösende »I did it, Babe!« in der Konsole erscheint. Aber man sieht sehr schön, wie sich das Dreieck zufällig, aber dennoch erkennbar, zusammensetzt. Je nach zufälligem Startwert liegen die ersten drei bis vier Punkte noch außerhalb des Fraktals, danach geht aber alles seinen geordneten Gang. Und an den Farben erkennt man, daß auch die Reihenfolge, in der die einzelnen Punkte des Fraktals von Rotkäppchen angelaufen werden, ebenfalls zufällig sind.</p>
+<p>Die <code>draw()</code>-Schleife wird 24.000 Mal durchlaufen und obwohl ich die Framerate auf 120 FPS hochgetunt habe, müßt Ihr schon ein wenig Geduld aufbringen, bevor das erlösende »I did it, Babe!« in der Konsole erscheint. Aber man sieht sehr schön, wie sich das Dreieck zufällig, aber dennoch erkennbar, zusammensetzt. Je nach zufälligem Startwert liegen die ersten drei bis vier Punkte noch außerhalb des Fraktals, danach geht aber alles seinen geordneten Gang. Und an den Farben erkennt man, daß auch die Reihenfolge, in der die einzelnen Punkte des Fraktals von Alice angelaufen werden, ebenfalls zufällig sind.</p>
 <p>Dieser Beitrag ist ein weiteres Puzzleteilchen für meine Tutorialreihe zu P5.js und läutet einen Abschnitt ein, der unter der Überschrift »Punkte und Pixel« steht. Und wie gewohnt, sind hier zum Schluß alle bisher erschienenen Tutorials aufgeührt, damit Ihr keine <del>Suchmaschine</del> Datenkrake bemühen müßt:</p>
 <ol type="1">
 <li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
@@ -257,8 +258,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>William P. Beaumont: <em>Conquering the Math Bogeyman</em>, in Clifford A. Pickover (Ed.): <em>Fractal Horizons – The Future Use of Fractals</em>, New York (St.&nbsp;Martin’s Press) 1996, Seiten 3-15</li>
 <li>Dietmar Herrmann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, Seiten 132ff.</li>
 </ul>
+</section>
+<section id="update-3.-juni-2024" class="level3">
+<h3 class="anchored" data-anchor-id="update-3.-juni-2024">Update (3. Juni 2024)</h3>
+<script type="text/p5" data-autoplay="" data-preview-width="400" data-height="300" data-p5-version="1.9.4">
+let i = 0;
+let x = y = 0;
+
+function setup() {
+  createCanvas(300, 200);
+  background(234, 218, 184);
+  colorMode(HSB, 360, 100, 100);
+  frameRate(120);
+}
+
+function draw() {
+  let p = floor(random(0, 3));
+  if (p == 0) {
+    x /= 2;
+    y = (y + height)/2;
+  } else if (p == 1) {
+    x = (x + width/2)/2;
+    y /= 2;
+  } else if (p == 2) {
+    x = (x + width)/2;
+    y = (y + height)/2
+  }
+  stroke(i%360, 100, 100);
+  strokeWeight(2);
+  point(x, y);
+  i += 1;
+  if (i > 24000) {
+    print("I did it, Babe!");
+    noLoop();
+  }
+}
+</script>
+<p>Ich habe noch eine leicht modifizierte Version des Skriptes als <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5.js-Widget</a> eingebaut, damit Ihr da draußen etwas zum Spielen habt.</p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53764618955/">Alice und die Grinesekatze</a></em>, Collage aus mehreren, KI-generierten Bildern.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53764618955/">Alice und die Grinsekatze</a></em>, Collage aus mehreren, KI-generierten Bildern.</p>
 
 
 </section>
