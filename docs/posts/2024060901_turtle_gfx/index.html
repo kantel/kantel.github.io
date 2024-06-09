@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Der Schockwellenreiter - P5.play und Matter.js: Video-Tutorials am Freitag</title>
+<title>Der Schockwellenreiter - Es lebe die Schildkröte: TurtleGFX und P5.js</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,14 +127,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">P5.play und Matter.js: Video-Tutorials am Freitag</h1>
+<h1 class="title">Es lebe die Schildkröte: TurtleGFX und P5.js</h1>
   <div class="quarto-categories">
     <div class="quarto-category">P5.js</div>
-    <div class="quarto-category">P5.play</div>
-    <div class="quarto-category">Matter.js</div>
-    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Turtle</div>
     <div class="quarto-category">JavaScript</div>
     <div class="quarto-category">Creative Coding</div>
+    <div class="quarto-category">CodeGuppy</div>
   </div>
   </div>
 
@@ -152,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">7. Juni 2024</p>
+      <p class="date">9. Juni 2024</p>
     </div>
   </div>
   
@@ -164,22 +163,27 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53412937770/"><img src="images/matterjsp5play-b.jpg" class="img-fluid"></a></p>
-<p>Das Abenteuer JavaScript mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> geht weiter. Und wie ich hier schon einmal <a href="https://kantel.github.io/posts/2024052903_octopussy/">angedeutet hatte</a>, würde ich dabei gerne auch Bibliotheken wie <a href="https://brm.io/matter-js/">Matter.js</a>, vor allem aber <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html">P5.play</a> berücksichtigen. Zur Vorbereitung habe ich daher meine kleine Reihe »Video-Tutorials am Freitag« wiederbelebt, die heute Tutorials zu diesen beiden Bibliotheken vorstellt.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/TDQzoe9nslY?si=qIBqS83iPN7QULye" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53412499596/"><img src="images/turtlegfx1-b.jpg" class="img-fluid"></a></p>
+<p>Da habe ich mir <a href="https://kantel.github.io/posts/2024060701_p5play_matterjs/">am Freitag etwas eingebrockt</a>: Die beiläufig in einem Nebenabsatz eingefügte Bemerkung, daß mir in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> so etwas wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Turtle</a> fehlen würde, hat mir keine Ruhe gelassen und mich zum Sammeln von Material animiert, das mir helfen soll, <a href="https://codeguppy.com/index.html">CodeGuppys</a> Bibliothek <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a>, die Pythons Schildkröte in P5.js (und in <a href="https://codeguppy.com/">CodeGuppy</a> selber) implementieren will (und die auch in <a href="https://github.com/nickmcintyre/numero">Numero</a> Einzug gehalten hat), zu verstehen und in P5.js anzuwenden.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/_OG4YTs8h3c?si=VghcYUvZcDi1iN6P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
 </iframe>
-<p>Ich beginne mal mit <strong>Matter.js</strong>, eine freie (MIT-Lizenz) <em>Rigid Body Physik Engine</em> für JavaScript. <em>Daniel Shiffman</em> hatte sie schon vor sieben Jahren mit P5.js vermählt und unter dem Titel »<a href="https://www.youtube.com/playlist?list=PLRqwX-V7Uu6bLh3T_4wtrmVHOrOEM1ig_">Matter.js Physics</a> eine neun Videos umfassende Playlist dazu veröffentlicht. Aber auch in seiner (P5.js/JavaScript) Neuauflage von »The Nature of Code« spielt Matter.js eine Rolle, daher hat er auch im <em>Coding Train</em> einen aktualisierten, <a href="https://thecodingtrain.com/tracks/lang/all/topic/matter-js">kompletten Track zu Matter.js</a> veröffentlicht.</p>
-<p>Auch der YouTuber <em>flanniganable</em> (von dem auch die Playlist »<a href="https://www.youtube.com/playlist?list=PLuywqn95st9S2ciAgQw32ID3xBmxZBYQl">P5.js JavaScript for Beginners</a>« (22 kurze Videos) erwähnenswert ist) hat eine Playlist »<a href="https://www.youtube.com/playlist?list=PLuywqn95st9THjyjehRn3epVUdjbcYIAT">Matter.js on P5.js</a>« (18 ebenfalls recht kurze Videos) online gestellt.</p>
-<p>Matter.js verdient zusätzlich eine Erwähnung, weil die Engine auch mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> – zumindest in der JavaScript-Version – <a href="https://microstudio.dev/community/questions/matterjs-and-microstudio-javascript/682/">zusammenspielt</a>. Und wenn man der <a href="https://microstudio.dev/documentation/Matter/">Dokumentation</a> glaubt, soll es auch mit Python/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a> funktionieren. Das sollte ich unbedingt im Hinterkopf behalten.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/6E8hJOuGOkE?si=_pfFOx61XEF9fZiK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Doch nun zu <strong>P5.play</strong>, das ich ja <a href="http://blog.schockwellenreiter.de/2022/10/2022100401.html">schon einmal</a> auf diesen Seiten besprochen hatte: Seit der Version 3 hat diese direkt auf P5.js aufsetzende Game-Enginge von Matter.js zu <a href="https://piqnt.com/planck.js/docs">Planck.js</a> als zugrundeliegende Physik-Engine gewechselt. Das ist ein JavaScript-Port von <a href="https://box2d.org/">Box2D</a>, einer populären C++ Engine.</p>
-<p>Es gibt dazu von <em>Teach Head Online</em> – von dem es unter dem Namen »<a href="https://www.youtube.com/playlist?list=PLoHS9P-kC-26y6dOZnv2sM0Cz0_8ean4N">P5.js Programming</a>« eine Monsterplaylist von 29 Videos zu P5.js gibt – eine Playlist »<a href="https://www.youtube.com/playlist?list=PLoHS9P-kC-252Pd9MJD_ItfaVuYV2kTCE">JavaScript Games Development</a>«, die mit 38 Video-Tutorials noch monstermäßiger daherkommt. Zwischen diesen beiden Playlists gibt es aber Überschneidungen.</p>
-<p>Und dann hat auch noch der oben schon erwähnte <em>flanniganable</em> mit »<a href="https://www.youtube.com/playlist?list=PLuywqn95st9SA2Ka1misPHt84WxqRX3Uj">P5.play on P5.js</a>« eine Playlist mit zwanzig wieder eher kurzen Videos hochgeladen.</p>
-<p>Wer lieber liest statt schaut: Von <em>Allison Parrish</em> gibt es den ausführlichen Beitrag »<a href="https://creative-coding.decontextualize.com/making-games-with-p5-play/">Making Games with P5.play</a>« und <em>brifetterley</em> hat auf Medium.com den zwar kürzeren, aber nett zu lesenden Artikel »<a href="https://medium.com/@brifetterley/using-the-p5-play-library-for-a-js-game-4df01708dd81">Using the P5.play Library for a JS Game</a>« veröffentlicht, der sich aber eventuell hinter einer Bezahlschranke versteckt.</p>
-<p>Das dürfte mich und Euch mindestens über das Wochenende – vermutlich auch darüber hinaus – beschäftigen. Wenn dann noch Luft bleibt: P5.js fehlt es meiner Meinung nach an einer Turtle-Bibliothek. <a href="https://github.com/CodeGuppyPrograms/TurtleGFX">TurtleGFX</a> und darauf aufbauend <a href="https://github.com/nickmcintyre/numero">Numero</a> wollen dem abhelfen. Sollte ich mir daher auch mal genauer anschauen. <em>Still digging!</em></p>
+<p>Die Beispielanwendungen, die ich gefunden habe, sind alle von Mr.&nbsp;CodeGuppy itselfs, <em>Marian Veteanu</em>, und in CodeGuppy implementiert. Da diese IDE doch in Teilen sehr stark von P5.js abweicht, ist erst einmal die Lektüre des Beitrags »<a href="https://codeguppy.com/code.html?t=_p5">Getting started with CodeGuppy.com for P5.js Developers</a>« zu empfehlen. Danach kann man sich die übrigen Beiträge zu TurtleGFX eigentlich (mit einer Ausnahme) in beliebiger Reihenfolge reinziehen. Ich empfehle diese Abfolge:</p>
+<ol type="1">
+<li><a href="https://codeguppy.com/code.html?t=turtle_lines">Turtle Lines</a>: A simple line rotated using the turtle graphics library creates amazing patterns.</li>
+<li><a href="https://codeguppy.com/code.html?t=hilbert_curve">Hilbert Curve</a>: Generate Hilbert curve using turtle graphics.</li>
+<li><a href="https://codeguppy.com/code.html?t=turtle_polygons">Turtle Polygons</a>. Generate polygons using turtle graphics.</li>
+<li><a href="https://codeguppy.com/code.html?t=turtle_sierpinski">Sierpinsky Triangle</a>. Draw Sierpinski triangle using turtle graphics.</li>
+<li><a href="https://codeguppy.com/code.html?t=turtle_etch">Etch with Turtle</a>. This is an implementation with Turtle Gfx of the famous Etch a Sketch.</li>
+<li><a href="https://codeguppy.com/code.html?t=fractal_tree">Fractal Tree</a>. This program will show you how to generate a fractal tree using turtle graphics.</li>
+<li><a href="https://codeguppy.com/code.html?t=forest_walk">Forest Walk</a>. Explore a virtual forest of fractal trees generated using turtle graphics. (Dieser Beitrag ist die oben erwähnte Ausnahme, er setzt die Lektüre von »Fraktal Tree« voraus.)</li>
+</ol>
+<p>Danach solltet Ihr und auch ich in der Lage sein, TurtleGFX in Eure (und ich in meine) P5.js-Sketche einzubauen. Wer dann Blut geleckt hat und wissen will, wie man eine eigene Turtle-Bibliothek implementiert, dem oder ihr sei noch dieser Beitrag empfohlen:</p>
+<ol start="8" type="1">
+<li><a href="https://codeguppy.com/code.html?t=turtle_graphics">Turtle Graphics</a>: Turtle graphics is the flagship feature of Logo programming language. See how easy is to add Logo like commands to your favorite JavaScript language.</li>
+</ol>
+<p>Jetzt fehlt mir eigentlich nur noch eine Bibliothek für die Mathematik mit komplexen Zahlen. Hier <a href="https://forum.processing.org/two/discussion/22883/complex-numbers-in-p5.html">empfiehlt das Processing-Forum</a> die JavaScript-Library <a href="https://mathjs.org/index.html">Math.js</a> mit dem Modul <a href="https://mathjs.org/docs/datatypes/complex_numbers.html">Complex Numbers</a>, das man via NPM auch <a href="https://mathjs.org/download.html">lokal installieren</a> kann. Das sollte ich auch noch testen. Aber erst einmal ist die Schildkröte an der Reihe. <em>Still digging!</em></p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53412937770/">Steampunk Reptils</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A turtle and a python paint together at an easel, colored steampunk style</em>«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53412499596/">Two Turtles drawing together</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A turtle and a python paint together at an easel, colored steampunk style</em>«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
 
 
 
