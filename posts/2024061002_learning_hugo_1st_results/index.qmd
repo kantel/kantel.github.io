@@ -1,0 +1,25 @@
+---
+title: "Hugo für den Schockwellenreiter: Erste (Zwischen-) Ergebnisse"
+author: "Jörg Kantel"
+date: "2024-06-10 21:30:00"
+categories: [Interna, Hugo, Statische Seite, Digital Garden]
+image: "images/digigardenhugo.jpg"
+---
+
+[![](images/digigardenhugo-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53774572712/)
+
+Mit meinen Bemühungen, [Hugo](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/hugo.html) zu lernen, weil dieser schnelle, in Go geschriebene Generator für statische Seiten (SSG) irgendwann vielleicht einmal [den *Schockwellenreiter* antreiben](https://kantel.github.io/posts/2024060301_auf_ein_neues/) soll, komme ich langsam, aber sicher voran. Ähnlich wie [RubyFrontier](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/rubyfrontier.html) -- das über zehn Jahre diese Seiten herausgeschrieben hat[^1] -- [ERB oder ERuby](https://de.wikipedia.org/wiki/ERuby) als Template-Mechanismus nutzt, basiert vieles in Hugo auf [Go's Template Library](https://pkg.go.dev/html/template). Man muß also einiges erst einmal lernen, damit man ein vorzeigbares Resultat bekommt.
+
+[^1]: Und mit dem [mein Wiki](http://cognitiones.kantel-chaos-team.de/index.html) immer noch erstellt wird.
+
+Ich quäle mich daher durch das Büchlein »[Build Websites with Hugo](https://pragprog.com/titles/bhhugo/build-websites-with-hugo/)« von *Brian P. Hogan* und an dem [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53774572712/) oben kann man erkennen, das ich jetzt ungefähr bei Seite 45 angekommen bin. Aber ich habe Spaß an so etwas und freue mich über meine Fortschritte. Schaun wir mal, wie es weitergeht. *Still digging!*
+
+In meinem Hinterkopf lauert ja auch die Überlegung, mit Hugo aus dem *Schockwellenreiter* eine Art [digitalen Wundergarten](https://kantel.github.io/posts/2024050701_digital_garden/) zu basteln. Dafür sind aber [WikiLinks](https://python-markdown.github.io/extensions/wikilinks/) zu internen Seiten eigentlich eine Grundvoraussetzung. Doch leider unterstützt Hugo diesen Linkmechanismus nicht von Haus aus. Daher war ich froh, als mich ein Leser des *Schockwellenreiter* auf den Artikel »[Wiki Links in Hugo](https://www.radicaledward101.com/blag/2023/08/14/blag-article-wiki-links-in-hugo.html)« hinwies, der eine Lösung aufzeigt[^2].
+
+[^2]: Das oben erwähnte RubyFrontier konnte so etwas wie WikiLinks (dort wurde es [Glossary](https://www.apeth.com/RubyFrontierDocs/defaultfolder/techfolder/howsapagefolder/glossary.html) genannt). Dieser Mechanismus war so etwas wie Fluch und Segen bei RubyFrontier: Segen, weil es so etwas wie mein Wiki überhaupt erst ermöglicht hatte, Fluch, weil bei großen Seitenzahlen der Glossary-Mechanismus das Herausrendern der Seiten extrem verlangsamte.
+
+Auch die vorgestellte Hugo-Lösung scheint ein wenig Bastelei und Pfriemelei zu erfordern. Und mir ist auch nicht klar, wie sich das auf die Geschwindigkeit beim Herausschreiben der einzelnen Seiten auswirkt. Bevor es also tatsächlich diese Seiten als mit Hugo erstellten *Digital Garden* gibt, werde ich wohl noch viele Tests und Experimente durchführen müssen. Aber wie jemand [in meinen Kommentaren](https://github.com/kantel/kantel.github.io/discussions/199#discussioncomment-9658236) schrieb:
+
+>Ein Blog ist eine Spielwiese per Definition, nicht? Also: ran an die Tastatur und spielen! :)
+
+Das ist übrigens auch noch eine offene Frage: [Giscus](https://giscus.app/de) als quelloffenes Kommentarsystem hat sich als [überaus nützlich für den *Schockwellenreiter*](https://kantel.github.io/posts/2022120901_giscus/) herausgestellt, denn im Gegensatz zu anderen Systemen kommt es ohne Tracking und ohne Werbung aus. Außerdem speichert es die Kommentare nicht irgendwo fremd, sondern in meinem GitHub-Repositotium zu diesen Seiten. Ob ich aber Giscus mit Hugo verheiraten kann, habe ich auch noch nicht herausgefunden. Also noch einmal: *Still digging!*
