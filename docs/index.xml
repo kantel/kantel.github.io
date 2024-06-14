@@ -10,7 +10,265 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 12 Jun 2024 14:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 14 Jun 2024 16:50:00 GMT</lastBuildDate>
+<item>
+  <title>TurtleGFX: Erste Schritte mit der Schildkröte in P5.js</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782478099/"><img src="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/images/turtlegfx6-b.jpg" class="img-fluid"></a></p>
+<p>Eigentlich ist eine Vorstellung der ersten Schritte, die ich mit <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a>, einem <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Nachbau einer Turtle-Implementierung, wie sie von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Python</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/logo.html">Logo</a> bekannt ist, unternehmen wollte, nach meiner <a href="https://kantel.github.io/posts/2024060901_turtle_gfx/">jüngsten Ankündigung</a> längst überfällig. Aber ich habe es nicht geschafft, TurtleGFX mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5.js Widget</a> zu verheiraten, daher gibt es jetzt einfach die Ergebnisse als Screenshots<sup>1</sup>.</p>
+<p>Damit P5.js die Turtle auch findet, muß die Datei <code>turtlegfx.js</code> irgendwo abgelegt werden, wo sie gefunden werden kann (am Einfachsten im gleichen Verzeichnis wie die <code>sketch.js</code>). Und dann nicht vergessen, der <code>index.html</code> auch mitzuteilen, daß sie die <code>turtlegfx.js</code> auch laden muß:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb1-1">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sketch.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-2">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"turtlegfx.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>Für den ersten Einstieg habe ich mir <a href="https://kantel.github.io/posts/2023122201_turtle_spirale/">zwei</a> <a href="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/">Beiträge</a> vom Dezember letzten Jahres vorgeknöpft, die bunte Vielecke mit Hilfe von Pythons Turtle erzeugten und diese nach P5.js und TurtleGFX portiert. Das Grundgerüst der Sketche war schnell erstellt:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> hugo<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> pal <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">background</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">21</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">31</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-7">  pal <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [</span>
+<span id="cb2-8">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e65046"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e26b43"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#415096"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-9">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#90a6d7"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f0c044"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">color</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#019bb7"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-10">  ]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-11">  hugo <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createTurtle</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-12">  hugo<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pensize</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-13">}</span>
+<span id="cb2-14"></span>
+<span id="cb2-15"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw</span>() {</span>
+<span id="cb2-16">  hugo<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pencolor</span>(pal[frameCount<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>])<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-17">  hugo<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">forward</span>(frameCount<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-18">  hugo<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">right</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">181</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-19">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (frameCount <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">300</span>) {</span>
+<span id="cb2-20">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it Babe!"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-21">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">noLoop</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-22">  }</span>
+<span id="cb2-23">}</span></code></pre></div>
+<p>In <code>setup()</code> wurden erst einmal sechs Farben festgelegt, die ich mir aus <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/briley.html">diesen Farbpaletten nach Bridget Riley</a> zusammengeschustert hatte. Dann habe ich eine Schildkröte erzeugt, die ich – weil mir danach war – <code>hugo</code> genannt habe und ihr das anderthalbfache der Detault-Stiftdicke spendiert.</p>
+<p>Der eigentliche Zauber passiert in <code>draw()</code>: Der Turtle wird reihum mpudulo sechs je eine Farbe zugewiesen. Dann muß sie eine Strecke vorwärts zeichnen. Die Länge habe ich jeweils durch einfaches Ausprobieren so ausgesucht, daß das Ergebnis in etwa den <em>Canvas</em> füllt. Danach muß die Turtle eine Rechtsdrehung vollziehen, die knapp(jeweils um 1 Grad) von einem 360°-Teiler abweicht, damit eine leichte Rotation erzeugt wird<sup>2</sup>. Bei einer Drehung von 181 Grad und einer Strecke von <code>frameCount*2</code> entsteht eine Spirale:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576350/"><img src="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/images/turtlegfx2.jpg" class="img-fluid"></a></p>
+<p>Nach 300 Schritte wird <code>draw()</code> mit <code>noLoop()</code> angehalten. Durch dieses Konstrukt baut sich die Figur successive auf und man kann der Schildkröte beim Zeichnen zusehen<sup>3</sup>.</p>
+<p>Legt man den Winkel auf 121 Grad fest und setzt die Strecke auf <code>frameCount*1.4</code> erhält man eine Dreieck-Spirale:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576340/"><img src="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/images/turtlegfx3.jpg" class="img-fluid"></a></p>
+<p>In diesem Beispiel habe ich mit <code>hugo.pencolor(pal[frameCount%3 + 3])</code> erreicht, daß nur die letzten drei Farben der Farbpalette verwendet werden.</p>
+<p>Weicht Ihr mit 91 Grad nur leicht vom rechten Winkel ab und setzt die Länge auf <code>frameCount*1.1</code>, ist das Ergebnis eine quadratische Spirale:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576335/"><img src="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/images/turtlegfx4.jpg" class="img-fluid"></a></p>
+<p>Auch hier habe ich wieder mit der Palette gespielt und mit <code>hugo.pencolor(pal[frameCount%4 + 2])</code> die letzten vier Farben erwendet.</p>
+<p>Auf eine Viereck-Spirale kann nur eine Fünfeck-Spirale folgen. Hier brachte ein Winkel von 73 Grad <em>(360/5 + 1)</em> bei einer Länge von <code>frameCount*0.9</code> das gewünschte Ergebnis:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576365/"><img src="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/images/turtlegfx5.jpg" class="img-fluid"></a></p>
+<p>Die finale Sechseck-Spirale könnt Ihr im Bannerbild oben bewundern. Die Parameter hier waren ein Winkel von 61 Grad und eine Länge von <code>frameCount*0.8</code>.</p>
+<p>Zusammenfassend kann ich sagen, daß <em>CodeGuppys</em> TurtleGFX-Modul eine recht nützliche Bibliothek für P5.js ist. Sie reicht zwar von Umfang und Finesse nicht an Pythons Schildkröte heran, aber sie kann alles, was man von einer Schildkröte erwartet. Daher ist es gut zu wissen, daß es sie gibt.</p>
+<p>Das ist die neunte Lieferung meiner kleinen Reihe zu P5.js. Wie immer gibt es zum Schluß eine Auflistung aller bisher erschienenen Beiträge, um Euch die Nutzung einer Datenkrake zu ersparen:</p>
+<ol type="1">
+<li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052301_balloons_in_wonderland/">Luftballons im Wunderland</a>: Erstes Abenteuer mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/balloons">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/">Der fliegende Dachs im Wunderland</a>: Das Abenteuer P5.js geht weiter (<a href="https://github.com/kantel/p5js/tree/master/flyingbadger">GitHub</a>)</li>
+<li>Abenteuer P5.js : <a href="https://kantel.github.io/posts/2024052601_hallo_hoernchen/">Hallo Hörnchen!</a> (<a href="https://github.com/kantel/p5js/tree/master/hoernchen">GitHub</a>)</li>
+<li>Abenteuer P5.js (Teil 5): <a href="https://kantel.github.io/posts/2024052903_octopussy/">Octopussy</a> (<a href="https://github.com/kantel/p5js/tree/master/octopussy">GitHub</a>)</li>
+<li>Das Abenteuer P5.js geht weiter: <a href="https://kantel.github.io/posts/2024053001_planetensystem_p5js/">Ein kleines Planetensystem</a> (<a href="https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024053103_roating_images/">Rotating Images</a>: Nachtrag zum Planetensystem mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/rotating_image">GitHub</a>)</li>
+<li>Punkte und Pixel 1: <a href="https://kantel.github.io/posts/2024060201_grinsekatze_weg/">Alice, die Grinsekatze und die Suche nach dem richtigen Weg</a> (<a href="https://github.com/kantel/p5js/tree/master/sierp01">GitHub</a>)</li>
+<li>TurtleGFX: Erste Schritte mit der Schildkröte in P5.js (<a href="https://github.com/kantel/p5js/tree/master/turtlegfxtest1">GitHub</a>)</li>
+</ol>
+<p>Und natürlich habe ich den <a href="https://github.com/kantel/p5js/tree/master/turtlegfxtest1">Sketch mit allen Dateien</a> auch in mein GitHub-Repositorium hochgeladen.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Diese unbefriedigende Situation war Anlaß für mich, noch einmal über Online-Code-Editore für JavaScript und P5.js nachzudenken, die auch in diese Seiten eingebunden werden können. Darüber in einem separaten Beitrag mehr.↩︎</p></li>
+<li id="fn2"><p>An den Zahlen kann man erkennen, daß TurtleGFX mit Grad und nicht mit Radians arbeitet. Darum muß sich der Programmierer aber nicht kümmern, TurtleGFX legt den aktuelle <code>angleMode</code> auf einen Stack und holt ihn sich anschließend wieder zurück.↩︎</p></li>
+<li id="fn3"><p>Wem das noch zu schnell ist, der kann ja in <code>setup()</code> noch die <code>frameRate</code> heruntersetzen. Bei einer <code>frameRate(1)</code> braucht man schon viel Geduld, da die Schildkröte dann erst nach 300 Sekunden (= 5 Minuten) ihre Arbeit erledigt hat.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>P5.js</category>
+  <category>Turtle</category>
+  <category>TurtleGFX</category>
+  <category>JavaScript</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/</guid>
+  <pubDate>Fri, 14 Jun 2024 16:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/images/turtlegfx6.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google korrigiert wieder kritische Sicherheitslücken in Chrome</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -21,7 +279,7 @@
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/53771829635/"><img src="https://kantel.github.io/posts/2024061201_chrome_update/images/octopussy0602-b.jpg" class="img-fluid"></a></p>
-<p>Nachdem ich letzte Woche mal wieder zwei Dutzend Datenkrakenbilder auf Vorrat produziert hatte, viel das eigentlich jeden Mittwoch fällige Chrome-Update plötzlich aus. Doch heute ist es wieder da: Google veröffentlicht das Update der Version 126 (126.0.6478.56/57) seines Browsers Chrome und schließt damit <a href="https://chromereleases.googleblog.com/2024/06/stable-channel-update-for-desktop.html">kritische Sicherheitslücken</a>.</p>
+<p>Nachdem ich letzte Woche mal wieder zwei Dutzend Datenkrakenbilder auf Vorrat produziert hatte, fiel das eigentlich jeden Mittwoch fällige Chrome-Update plötzlich aus. Doch heute ist es wieder da: Google veröffentlicht das Update der Version 126 (126.0.6478.56/57) seines Browsers Chrome und schließt damit <a href="https://chromereleases.googleblog.com/2024/06/stable-channel-update-for-desktop.html">kritische Sicherheitslücken</a>.</p>
 <p>Chrome aktualisiert sich (außer bei Linux) über die integrierte Update-Funktion, kann aber – wenn es pressiert – auch <a href="https://www.google.com/intl/de/chrome/browser/">hier geladen</a> werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
 <hr>
 <p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53771829635/">Octopussy</a></em>, erstellt mit <a href="https://ideogram.ai/">Ideogram</a>. Prompt: »<em>A sexy female robot flees from a gigantic data octopus, colored french comic style</em>«. Modell: Ideogram 1.0, Style: Illustration.</p>
@@ -189,6 +447,7 @@
  ]]></description>
   <category>P5.js</category>
   <category>Turtle</category>
+  <category>TurtleGFX</category>
   <category>JavaScript</category>
   <category>Creative Coding</category>
   <category>CodeGuppy</category>
@@ -2803,30 +3062,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2024052902_kulturbunker_update/</guid>
   <pubDate>Wed, 29 May 2024 16:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024052902_kulturbunker_update/images/kulturbunkerkleidertausch.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>JupyterLab (Desktop) 4.2 und Jupyter Notebook 7.2 freigegeben</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024052901_jupyterlab_4_2_1/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53753950307/"><img src="https://kantel.github.io/posts/2024052901_jupyterlab_4_2_1/images/jupyterlab_4_2_1-b.jpg" class="img-fluid"></a></p>
-<p>Die Programmierer der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html">Jupyter</a>-Distributionen haben von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JupyterLab</a> (und damit auch von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JuypterLab Desktop</a>) die <a href="https://github.com/jupyterlab/jupyterlab/releases/tag/v4.2.1">Version 4.2.1</a> freigegeben. Parallel dazu wurde von <a href="https://github.com/jupyter/notebook">Jupyter Notebook</a> die <a href="https://github.com/jupyter/notebook/releases/tag/v7.2.0">Version 7.2.0</a> veröffentlicht.</p>
-<p>Die Updates besitzen nur wenige neue Features, die in der Hauptsache die Nutzererfahrung betreffen, dafür aber etliche Fehlerbehebungen und Verbesserungen. Einen Überblick gibt es <a href="https://blog.jupyter.org/jupyterlab-4-2-and-notebook-7-2-are-available-b5e6b3c753de">in diesem Beitrag</a>. Bemerkenswert für mich war, daß auch JupyterLab (Desktop) nun ein dunkles <em>High Contrast Theme</em> besitzt, ein Feature, das ich aktuell bei meiner Beschäftigung mit dem <a href="https://editor.p5js.org/">P5.js-Webeditor</a> zu schätzen gelernt habe.</p>
-<p>Nattürlich erinnert mich das Update auch wieder daran, daß ich schon lange wieder mehr mit JupyterLab (Desktop) anstellen wollte. Und das nicht nur – aber auch – im Zusammenhang mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> (vergleiche zum Beispiel <a href="https://kantel.github.io/posts/2024040102_py5_v010_1a1/">hier</a>). Irgendwann und irgendwie muß ich mit wohl dafür auch noch ein paar Stunden freischaufeln. <em>So viel zu spielen, so wenig Zeit!</em></p>
-
-
-
- ]]></description>
-  <category>Jupyter</category>
-  <category>JupyterLab Desktop</category>
-  <category>Python</category>
-  <guid>https://kantel.github.io/posts/2024052901_jupyterlab_4_2_1/</guid>
-  <pubDate>Wed, 29 May 2024 14:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024052901_jupyterlab_4_2_1/images/jupyterlab_4_2_1.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

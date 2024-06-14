@@ -1,0 +1,94 @@
+---
+title: "TurtleGFX: Erste Schritte mit der Schildkröte in P5.js"
+author: "Jörg Kantel"
+date: "2024-06-14 18:50:00"
+categories: [P5.js, Turtle, TurtleGFX, JavaScript, Creative Coding]
+image: "images/turtlegfx6.jpg"
+---
+
+[![](images/turtlegfx6-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53782478099/)
+
+Eigentlich ist eine Vorstellung der ersten Schritte, die ich mit [TurtleGFX](https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master), einem [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Nachbau einer Turtle-Implementierung, wie sie von [Python](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) oder [Logo](http://cognitiones.kantel-chaos-team.de/programmierung/logo.html) bekannt ist, unternehmen wollte, nach meiner [jüngsten Ankündigung](https://kantel.github.io/posts/2024060901_turtle_gfx/) längst überfällig. Aber ich habe es nicht geschafft, TurtleGFX mit [P5.js Widget](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html) zu verheiraten, daher gibt es jetzt einfach die Ergebnisse als Screenshots[^1].
+
+[^1]: Diese unbefriedigende Situation war Anlaß für mich, noch einmal über Online-Code-Editoren für JavaScript und P5.js nachzudenken, die auch in diese Seiten eingebunden werden können. Darüber in einem separaten Beitrag mehr.
+
+Damit P5.js die Turtle auch findet, muß die Datei `turtlegfx.js` irgendwo abgelegt werden, wo sie gefunden werden kann (am Einfachsten im gleichen Verzeichnis wie die `sketch.js`). Und dann nicht vergessen, der `index.html` auch mitzuteilen, daß sie die `turtlegfx.js` auch laden muß:
+
+~~~html
+    <script src="sketch.js"></script>
+    <script src="turtlegfx.js"></script>
+~~~
+
+Für den ersten Einstieg habe ich mir [zwei](https://kantel.github.io/posts/2023122201_turtle_spirale/) [Beiträge](https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/) vom Dezember letzten Jahres vorgeknöpft, die bunte Vielecke mit Hilfe von Pythons Turtle erzeugten und diese nach P5.js und TurtleGFX portiert. Das Grundgerüst der Sketche war schnell erstellt:
+
+~~~javascript
+let hugo;
+let pal = [];
+
+function setup() {
+  createCanvas(640, 480);
+  background(4, 21, 31);
+  pal = [
+    color("#e65046"), color("#e26b43"), color("#415096"),
+    color("#90a6d7"), color("#f0c044"), color("#019bb7"),
+  ];
+  hugo = createTurtle();
+  hugo.pensize(1.5);
+}
+
+function draw() {
+  hugo.pencolor(pal[frameCount%6]);
+  hugo.forward(frameCount*2);
+  hugo.right(181);
+  if (frameCount > 300) {
+    print("I did it Babe!");
+    noLoop();
+  }
+}
+~~~
+
+In `setup()` wurden erst einmal sechs Farben festgelegt, die ich mir aus [diesen Farbpaletten nach Bridget Riley](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/briley.html) zusammengeschustert hatte. Dann habe ich eine Schildkröte erzeugt, die ich -- weil mir danach war -- `hugo` genannt habe und ihr das anderthalbfache der Detault-Stiftdicke spendiert.
+
+Der eigentliche Zauber passiert in `draw()`: Der Turtle wird reihum mpudulo sechs je eine Farbe zugewiesen. Dann muß sie eine Strecke vorwärts zeichnen. Die Länge habe ich jeweils durch einfaches Ausprobieren so ausgesucht, daß das Ergebnis in etwa den *Canvas* füllt. Danach muß die Turtle eine Rechtsdrehung vollziehen, die knapp(jeweils um 1 Grad) von einem 360°-Teiler abweicht, damit eine leichte Rotation erzeugt wird[^2]. Bei einer Drehung von 181 Grad und einer Strecke von `frameCount*2` entsteht eine Spirale:
+
+[^2]: An den Zahlen kann man erkennen, daß TurtleGFX mit Grad und nicht mit Radians arbeitet. Darum muß sich der Programmierer aber nicht kümmern, TurtleGFX legt den aktuelle `angleMode` auf einen Stack und holt ihn sich anschließend wieder zurück.
+
+[![](images/turtlegfx2.jpg)](https://www.flickr.com/photos/schockwellenreiter/53782576350/)
+
+Nach 300 Schritte wird `draw()` mit `noLoop()` angehalten. Durch dieses Konstrukt baut sich die Figur successive auf und man kann der Schildkröte beim Zeichnen zusehen[^3].
+
+[^3]: Wem das noch zu schnell ist, der kann ja in `setup()` noch die `frameRate` heruntersetzen. Bei einer `frameRate(1)` braucht man schon viel Geduld, da die Schildkröte dann erst nach 300 Sekunden (= 5 Minuten) ihre Arbeit erledigt hat.
+
+Legt man den Winkel auf 121 Grad fest und setzt die Strecke auf `frameCount*1.4` erhält man eine Dreieck-Spirale:
+
+[![](images/turtlegfx3.jpg)](https://www.flickr.com/photos/schockwellenreiter/53782576340/)
+
+In diesem Beispiel habe ich mit `hugo.pencolor(pal[frameCount%3 + 3])` erreicht, daß nur die letzten drei Farben der Farbpalette verwendet werden.
+
+Weicht Ihr mit 91 Grad nur leicht vom rechten Winkel ab und setzt die Länge auf `frameCount*1.1`, ist das Ergebnis eine quadratische Spirale:
+
+[![](images/turtlegfx4.jpg)](https://www.flickr.com/photos/schockwellenreiter/53782576335/)
+
+Auch hier habe ich wieder mit der Palette gespielt und mit `hugo.pencolor(pal[frameCount%4 + 2])` die letzten vier Farben erwendet.
+
+Auf eine Viereck-Spirale kann nur eine Fünfeck-Spirale folgen. Hier brachte ein Winkel von 73 Grad *(360/5 + 1)* bei einer Länge von `frameCount*0.9` das gewünschte Ergebnis:
+
+[![](images/turtlegfx5.jpg)](https://www.flickr.com/photos/schockwellenreiter/53782576365/)
+
+Die finale Sechseck-Spirale könnt Ihr im Bannerbild oben bewundern. Die Parameter hier waren ein Winkel von 61 Grad und eine Länge von `frameCount*0.8`.
+
+Zusammenfassend kann ich sagen, daß *CodeGuppys* TurtleGFX-Modul eine recht nützliche Bibliothek für P5.js ist. Sie reicht zwar von Umfang und Finesse nicht an Pythons Schildkröte heran, aber sie kann alles, was man von einer Schildkröte erwartet. Daher ist es gut zu wissen, daß es sie gibt.
+
+Das ist die neunte Lieferung meiner kleinen Reihe zu P5.js. Wie immer gibt es zum Schluß eine Auflistung aller bisher erschienenen Beiträge, um Euch die Nutzung einer Datenkrake zu ersparen:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : [Hallo Hörnchen!](https://kantel.github.io/posts/2024052601_hallo_hoernchen/) ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+5. Abenteuer P5.js (Teil 5): [Octopussy](https://kantel.github.io/posts/2024052903_octopussy/) ([GitHub](https://github.com/kantel/p5js/tree/master/octopussy))
+6. Das Abenteuer P5.js geht weiter: [Ein kleines Planetensystem](https://kantel.github.io/posts/2024053001_planetensystem_p5js/) ([GitHub](https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system))
+7. [Rotating Images](https://kantel.github.io/posts/2024053103_roating_images/): Nachtrag zum Planetensystem mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/rotating_image))
+8. Punkte und Pixel 1: [Alice, die Grinsekatze und die Suche nach dem richtigen Weg](https://kantel.github.io/posts/2024060201_grinsekatze_weg/) ([GitHub](https://github.com/kantel/p5js/tree/master/sierp01))
+9. TurtleGFX: Erste Schritte mit der Schildkröte in P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/turtlegfxtest1))
+
+Und natürlich habe ich den [Sketch mit allen Dateien](https://github.com/kantel/p5js/tree/master/turtlegfxtest1) auch in mein GitHub-Repositorium hochgeladen.

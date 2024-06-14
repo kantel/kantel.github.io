@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Der Schockwellenreiter - Es lebe die Schildkröte: TurtleGFX und P5.js</title>
+<title>Der Schockwellenreiter - TurtleGFX: Erste Schritte mit der Schildkröte in P5.js</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -127,14 +161,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Es lebe die Schildkröte: TurtleGFX und P5.js</h1>
+<h1 class="title">TurtleGFX: Erste Schritte mit der Schildkröte in P5.js</h1>
   <div class="quarto-categories">
     <div class="quarto-category">P5.js</div>
     <div class="quarto-category">Turtle</div>
     <div class="quarto-category">TurtleGFX</div>
     <div class="quarto-category">JavaScript</div>
     <div class="quarto-category">Creative Coding</div>
-    <div class="quarto-category">CodeGuppy</div>
   </div>
   </div>
 
@@ -152,7 +185,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">9. Juni 2024</p>
+      <p class="date">14. Juni 2024</p>
     </div>
   </div>
   
@@ -164,31 +197,74 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53412499596/"><img src="images/turtlegfx1-b.jpg" class="img-fluid"></a></p>
-<p>Da habe ich mir <a href="https://kantel.github.io/posts/2024060701_p5play_matterjs/">am Freitag etwas eingebrockt</a>: Die beiläufig in einem Nebenabsatz eingefügte Bemerkung, daß mir in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> so etwas wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Turtle</a> fehlen würde, hat mir keine Ruhe gelassen und mich zum Sammeln von Material animiert, das mir helfen soll, <a href="https://codeguppy.com/index.html">CodeGuppys</a> Bibliothek <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a>, die Pythons Schildkröte in P5.js (und in <a href="https://codeguppy.com/">CodeGuppy</a> selber) implementieren will (und die auch in <a href="https://github.com/nickmcintyre/numero">Numero</a> Einzug gehalten hat), zu verstehen und in P5.js anzuwenden.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/_OG4YTs8h3c?si=VghcYUvZcDi1iN6P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Die Beispielanwendungen, die ich gefunden habe, sind alle von Mr.&nbsp;CodeGuppy itselfs, <em>Marian Veteanu</em>, und in CodeGuppy implementiert. Da diese IDE doch in Teilen sehr stark von P5.js abweicht, ist erst einmal die Lektüre des Beitrags »<a href="https://codeguppy.com/code.html?t=_p5">Getting started with CodeGuppy.com for P5.js Developers</a>« zu empfehlen. Danach kann man sich die übrigen Beiträge zu TurtleGFX eigentlich (mit einer Ausnahme) in beliebiger Reihenfolge reinziehen. Ich empfehle diese Abfolge:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782478099/"><img src="images/turtlegfx6-b.jpg" class="img-fluid"></a></p>
+<p>Eigentlich ist eine Vorstellung der ersten Schritte, die ich mit <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a>, einem <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Nachbau einer Turtle-Implementierung, wie sie von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Python</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/logo.html">Logo</a> bekannt ist, unternehmen wollte, nach meiner <a href="https://kantel.github.io/posts/2024060901_turtle_gfx/">jüngsten Ankündigung</a> längst überfällig. Aber ich habe es nicht geschafft, TurtleGFX mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5.js Widget</a> zu verheiraten, daher gibt es jetzt einfach die Ergebnisse als Screenshots<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Damit P5.js die Turtle auch findet, muß die Datei <code>turtlegfx.js</code> irgendwo abgelegt werden, wo sie gefunden werden kann (am Einfachsten im gleichen Verzeichnis wie die <code>sketch.js</code>). Und dann nicht vergessen, der <code>index.html</code> auch mitzuteilen, daß sie die <code>turtlegfx.js</code> auch laden muß:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"sketch.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"turtlegfx.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Für den ersten Einstieg habe ich mir <a href="https://kantel.github.io/posts/2023122201_turtle_spirale/">zwei</a> <a href="https://kantel.github.io/posts/2023122802_mehr_farben_mehr_ecken/">Beiträge</a> vom Dezember letzten Jahres vorgeknöpft, die bunte Vielecke mit Hilfe von Pythons Turtle erzeugten und diese nach P5.js und TurtleGFX portiert. Das Grundgerüst der Sketche war schnell erstellt:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">let</span> hugo<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">let</span> pal <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">function</span> <span class="fu">setup</span>() {</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">createCanvas</span>(<span class="dv">640</span><span class="op">,</span> <span class="dv">480</span>)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">background</span>(<span class="dv">4</span><span class="op">,</span> <span class="dv">21</span><span class="op">,</span> <span class="dv">31</span>)<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>  pal <span class="op">=</span> [</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="fu">color</span>(<span class="st">"#e65046"</span>)<span class="op">,</span> <span class="fu">color</span>(<span class="st">"#e26b43"</span>)<span class="op">,</span> <span class="fu">color</span>(<span class="st">"#415096"</span>)<span class="op">,</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="fu">color</span>(<span class="st">"#90a6d7"</span>)<span class="op">,</span> <span class="fu">color</span>(<span class="st">"#f0c044"</span>)<span class="op">,</span> <span class="fu">color</span>(<span class="st">"#019bb7"</span>)<span class="op">,</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>  ]<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  hugo <span class="op">=</span> <span class="fu">createTurtle</span>()<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  hugo<span class="op">.</span><span class="fu">pensize</span>(<span class="fl">1.5</span>)<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>}</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="kw">function</span> <span class="fu">draw</span>() {</span>
+<span id="cb2-16"><a href="#cb2-16"></a>  hugo<span class="op">.</span><span class="fu">pencolor</span>(pal[frameCount<span class="op">%</span><span class="dv">6</span>])<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  hugo<span class="op">.</span><span class="fu">forward</span>(frameCount<span class="op">*</span><span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>  hugo<span class="op">.</span><span class="fu">right</span>(<span class="dv">181</span>)<span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>  <span class="cf">if</span> (frameCount <span class="op">&gt;</span> <span class="dv">300</span>) {</span>
+<span id="cb2-20"><a href="#cb2-20"></a>    <span class="fu">print</span>(<span class="st">"I did it Babe!"</span>)<span class="op">;</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>    <span class="fu">noLoop</span>()<span class="op">;</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>  }</span>
+<span id="cb2-23"><a href="#cb2-23"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In <code>setup()</code> wurden erst einmal sechs Farben festgelegt, die ich mir aus <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/briley.html">diesen Farbpaletten nach Bridget Riley</a> zusammengeschustert hatte. Dann habe ich eine Schildkröte erzeugt, die ich – weil mir danach war – <code>hugo</code> genannt habe und ihr das anderthalbfache der Detault-Stiftdicke spendiert.</p>
+<p>Der eigentliche Zauber passiert in <code>draw()</code>: Der Turtle wird reihum mpudulo sechs je eine Farbe zugewiesen. Dann muß sie eine Strecke vorwärts zeichnen. Die Länge habe ich jeweils durch einfaches Ausprobieren so ausgesucht, daß das Ergebnis in etwa den <em>Canvas</em> füllt. Danach muß die Turtle eine Rechtsdrehung vollziehen, die knapp(jeweils um 1 Grad) von einem 360°-Teiler abweicht, damit eine leichte Rotation erzeugt wird<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Bei einer Drehung von 181 Grad und einer Strecke von <code>frameCount*2</code> entsteht eine Spirale:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576350/"><img src="images/turtlegfx2.jpg" class="img-fluid"></a></p>
+<p>Nach 300 Schritte wird <code>draw()</code> mit <code>noLoop()</code> angehalten. Durch dieses Konstrukt baut sich die Figur successive auf und man kann der Schildkröte beim Zeichnen zusehen<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>Legt man den Winkel auf 121 Grad fest und setzt die Strecke auf <code>frameCount*1.4</code> erhält man eine Dreieck-Spirale:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576340/"><img src="images/turtlegfx3.jpg" class="img-fluid"></a></p>
+<p>In diesem Beispiel habe ich mit <code>hugo.pencolor(pal[frameCount%3 + 3])</code> erreicht, daß nur die letzten drei Farben der Farbpalette verwendet werden.</p>
+<p>Weicht Ihr mit 91 Grad nur leicht vom rechten Winkel ab und setzt die Länge auf <code>frameCount*1.1</code>, ist das Ergebnis eine quadratische Spirale:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576335/"><img src="images/turtlegfx4.jpg" class="img-fluid"></a></p>
+<p>Auch hier habe ich wieder mit der Palette gespielt und mit <code>hugo.pencolor(pal[frameCount%4 + 2])</code> die letzten vier Farben erwendet.</p>
+<p>Auf eine Viereck-Spirale kann nur eine Fünfeck-Spirale folgen. Hier brachte ein Winkel von 73 Grad <em>(360/5 + 1)</em> bei einer Länge von <code>frameCount*0.9</code> das gewünschte Ergebnis:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53782576365/"><img src="images/turtlegfx5.jpg" class="img-fluid"></a></p>
+<p>Die finale Sechseck-Spirale könnt Ihr im Bannerbild oben bewundern. Die Parameter hier waren ein Winkel von 61 Grad und eine Länge von <code>frameCount*0.8</code>.</p>
+<p>Zusammenfassend kann ich sagen, daß <em>CodeGuppys</em> TurtleGFX-Modul eine recht nützliche Bibliothek für P5.js ist. Sie reicht zwar von Umfang und Finesse nicht an Pythons Schildkröte heran, aber sie kann alles, was man von einer Schildkröte erwartet. Daher ist es gut zu wissen, daß es sie gibt.</p>
+<p>Das ist die neunte Lieferung meiner kleinen Reihe zu P5.js. Wie immer gibt es zum Schluß eine Auflistung aller bisher erschienenen Beiträge, um Euch die Nutzung einer Datenkrake zu ersparen:</p>
 <ol type="1">
-<li><a href="https://codeguppy.com/code.html?t=turtle_lines">Turtle Lines</a>: A simple line rotated using the turtle graphics library creates amazing patterns.</li>
-<li><a href="https://codeguppy.com/code.html?t=hilbert_curve">Hilbert Curve</a>: Generate Hilbert curve using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=turtle_polygons">Turtle Polygons</a>. Generate polygons using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=turtle_sierpinski">Sierpinsky Triangle</a>. Draw Sierpinski triangle using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=turtle_etch">Etch with Turtle</a>. This is an implementation with Turtle Gfx of the famous Etch a Sketch.</li>
-<li><a href="https://codeguppy.com/code.html?t=fractal_tree">Fractal Tree</a>. This program will show you how to generate a fractal tree using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=forest_walk">Forest Walk</a>. Explore a virtual forest of fractal trees generated using turtle graphics. (Dieser Beitrag ist die oben erwähnte Ausnahme, er setzt die Lektüre von »Fraktal Tree« voraus.)</li>
+<li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052301_balloons_in_wonderland/">Luftballons im Wunderland</a>: Erstes Abenteuer mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/balloons">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/">Der fliegende Dachs im Wunderland</a>: Das Abenteuer P5.js geht weiter (<a href="https://github.com/kantel/p5js/tree/master/flyingbadger">GitHub</a>)</li>
+<li>Abenteuer P5.js : <a href="https://kantel.github.io/posts/2024052601_hallo_hoernchen/">Hallo Hörnchen!</a> (<a href="https://github.com/kantel/p5js/tree/master/hoernchen">GitHub</a>)</li>
+<li>Abenteuer P5.js (Teil 5): <a href="https://kantel.github.io/posts/2024052903_octopussy/">Octopussy</a> (<a href="https://github.com/kantel/p5js/tree/master/octopussy">GitHub</a>)</li>
+<li>Das Abenteuer P5.js geht weiter: <a href="https://kantel.github.io/posts/2024053001_planetensystem_p5js/">Ein kleines Planetensystem</a> (<a href="https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024053103_roating_images/">Rotating Images</a>: Nachtrag zum Planetensystem mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/rotating_image">GitHub</a>)</li>
+<li>Punkte und Pixel 1: <a href="https://kantel.github.io/posts/2024060201_grinsekatze_weg/">Alice, die Grinsekatze und die Suche nach dem richtigen Weg</a> (<a href="https://github.com/kantel/p5js/tree/master/sierp01">GitHub</a>)</li>
+<li>TurtleGFX: Erste Schritte mit der Schildkröte in P5.js (<a href="https://github.com/kantel/p5js/tree/master/turtlegfxtest1">GitHub</a>)</li>
 </ol>
-<p>Danach solltet Ihr und auch ich in der Lage sein, TurtleGFX in Eure (und ich in meine) P5.js-Sketche einzubauen. Wer dann Blut geleckt hat und wissen will, wie man eine eigene Turtle-Bibliothek implementiert, dem oder ihr sei noch dieser Beitrag empfohlen:</p>
-<ol start="8" type="1">
-<li><a href="https://codeguppy.com/code.html?t=turtle_graphics">Turtle Graphics</a>: Turtle graphics is the flagship feature of Logo programming language. See how easy is to add Logo like commands to your favorite JavaScript language.</li>
+<p>Und natürlich habe ich den <a href="https://github.com/kantel/p5js/tree/master/turtlegfxtest1">Sketch mit allen Dateien</a> auch in mein GitHub-Repositorium hochgeladen.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Diese unbefriedigende Situation war Anlaß für mich, noch einmal über Online-Code-Editoren für JavaScript und P5.js nachzudenken, die auch in diese Seiten eingebunden werden können. Darüber in einem separaten Beitrag mehr.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>An den Zahlen kann man erkennen, daß TurtleGFX mit Grad und nicht mit Radians arbeitet. Darum muß sich der Programmierer aber nicht kümmern, TurtleGFX legt den aktuelle <code>angleMode</code> auf einen Stack und holt ihn sich anschließend wieder zurück.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Wem das noch zu schnell ist, der kann ja in <code>setup()</code> noch die <code>frameRate</code> heruntersetzen. Bei einer <code>frameRate(1)</code> braucht man schon viel Geduld, da die Schildkröte dann erst nach 300 Sekunden (= 5 Minuten) ihre Arbeit erledigt hat.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-<p>Jetzt fehlt mir eigentlich nur noch eine Bibliothek für die Mathematik mit komplexen Zahlen. Hier <a href="https://forum.processing.org/two/discussion/22883/complex-numbers-in-p5.html">empfiehlt das Processing-Forum</a> die JavaScript-Library <a href="https://mathjs.org/index.html">Math.js</a> mit dem Modul <a href="https://mathjs.org/docs/datatypes/complex_numbers.html">Complex Numbers</a>, das man via NPM auch <a href="https://mathjs.org/download.html">lokal installieren</a> kann. Das sollte ich auch noch testen. Aber erst einmal ist die Schildkröte an der Reihe. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53412499596/">Two Turtles drawing together</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A turtle and a python paint together at an easel, colored steampunk style</em>«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
-
-
-
-</main> <!-- /main -->
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
