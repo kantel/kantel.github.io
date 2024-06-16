@@ -1,0 +1,35 @@
+---
+title: "P5.js Online: OpenProcessing statt P5.js-Webeditor und P5.js-Widget"
+author: "Jörg Kantel"
+date: "2024-06-16 17:30:00"
+categories: [P5.js, Creative Coding, OpenProcessing]
+image: "images/openprocessing.jpg"
+---
+
+[![](images/openprocessing-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53795083048/)
+
+Da hatte ich mir doch alles so einfach vorgestellt: Ich wollte [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Skripte im [P5.js-Webeditor](https://editor.p5js.org/) entwickeln und die fertigen Sketche dann mit Hilfe des [P5.js-Widget](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html) in diese Seiten einbinden, so daß sie auch editierbar sind. Aber die Welt ist leider oft nicht so einfach, wie man es sich wünscht.
+
+Es begann, als ich die [TurtleGFX](https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master)-Bibliothek [erkunden wollte](https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/): Ich fand keinen Weg, diese Bibliothek mit dem P5.js-Widget zu verbinden. Dann las ich auch noch in dem von [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) zur [Verfügung gestellten Template](https://editor.p5js.org/quinton-ashley/sketches/szN_XdV5O), daß von der Nutzung des P5.js-Webeditors abgeraten werde. Zwar sind die dort erwähnten Bugs eher für Spezialisten von Bedeutung, aber wer weiß, was sich dahinter noch verbirgt.
+
+Also habe ich nach Alternativen gesucht. Als erste Antwort wird einem da meistens [CodePen](https://de.wikipedia.org/wiki/CodePen) vorgeschlagen, aber es sieht so aus, als ob man Assets und zusätzliche JavaScript-Dateien -- wie `turtlegfx.js` eine ist -- nur per CDN oder `npm` einbinden kann (zumindest in der kostenlosen Version). Damit ist das Teil für mich erst einmal sinnlos[^1].
+
+[^1]: Ich schließe nicht aus, das ich zum einen etwas übersehen habe, und CodePen es doch erlaubt, eigene JavaScript-Dateien hochzuladen und einzubinden. Zum anderen hat CodePen den Vorteil, daß sich die Sketche nicht nur einfach in die eigenen Seiten, sondern auch in Services wie zum Beispiel [Notion](https://de.wikipedia.org/wiki/Notion_(Produktivit%C3%A4tssoftware)) einbinden lassen. Daher verlinke ich hier auch noch auf die [CodePen Homepage](https://codepen.io/) und *Daniel Shiffmans* Tutorial »[CodePen in p5.js](https://www.youtube.com/watch?v=5gfUgNpS6kY)«. Wer lieber liest statt schaut, dem sei auch noch der Artikel »[Using p5.js on CodePen](https://medium.com/@engineerwithoutfear/using-p5-js-on-codepen-efd443fc661)« empfohlen (*Medium.com*, daher eventuell hinter einer Bezahlschranke). Ich habe mir jedenfalls einen (kostenlosen) CodePen-Account zugelegt. Wer weiß, wozu der noch gut sein kann.
+
+Dann wurde mir auf der [P5.play-Startseite](https://p5play.org/) auch noch [Aijs](https://aijs.io/home) empfohlen. Das Teil scheint alles zu können, was ich von einem Online-Editor erwarte (und mehr[^2]). Aber es scheint zwar kostenlos zu nutzen (im Sinne von »frei wie Freibier«), aber proprietär zu sein. Ich habe jedenfalls nirgendwo eine Lizenz gefunden. Und über solch eine wankende Brücke will ich nicht gehen.
+
+[^2]: Das Teil verspricht auch eine umfangreiche KI-Unterstützung.
+
+Blieb also nur noch [OpenProcessing](https://openprocessing.org/) übrig. Zwar steht auch hier die Lizenz auf etwas wackeligen Füßen (ich habe keine gefunden), aber die Umgebung basiert zum größten Teil auf Open-Source-Komponenten und sie erlaubt, die eigenen Sketche unter einer CC-Lizenz zu veröffentlichen.
+
+Zudem ist OpenProcessing nicht nur ein Online-Editor für P5.js-Sketche (und -- das ist historisch gewachsen, aber nicht mehr zu empfehlen -- auch für [Processing (Java)](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Applets), sondern auch eine Online-Community. Und OpenProcessing erlaubt das Einbinden der Sketche per `Iframe` in die eigenen Webseiten[^3]:
+
+[^3]: Wegen der Titelzeile muß jedoch an der Größe geschraubt werden. Während `width` der Breite des Canvas entspricht, müssen bei `height` noch 60 Pixel hinzuaddiert werden. Also `createCanvas(640, 480)` wird zu `<iframe src="…" width="640" height="540"></iframe>`.
+
+<iframe src="https://openprocessing.org/sketch/2301132/embed/" width="640" height="540"></iframe>
+
+Ein Wermutstropfen ist, daß der Quellcode zwar angezeigt wird (auf `</>` in der Mitte der Kopfzeile klicken), aber nicht wie beim P5.js-Widget editiert werden kann. Hier muß mir noch eine Lösung einfallen, wie ich P5.js-Widget wenigstens mit P5.play verheiraten kann[^4]. Und noch immer offen ist die Frage, wie ich die IFrames responsiv in meine Seiten einbinde. *Still digging!*
+
+[^4]: Das muß gehen, denn die Tutorialseiten von P5.play machen massiv davon Gebrauch.
+
+Aber all diese Erfahrungen haben in mir die Überzeugung wachsen lassen, daß es -- wenn man nicht gerade auf einem Chromebook oder mit einem Tablet entwickelt -- wohl doch sinnvoller ist, seine P5.js-Sketche lokal im Texteditor seines Vertrauens zu programmieren. Zwar versprechen die Online-Editoren einen installationsfreien Zugang zu P5.js, aber das stimmt nur, wenn man keine zusätzlichen Komponenten oder Bibliotheken benötigt. Daher werde ich ein Tutorial entwerfen, wie man sich eine Umgebung in einem Texteditor zurechtbastelt. Sie soll mit jedem beliebigen Texteditor und einem (einigermaßen aktuellen) Webbrowser funktionieren (zur Not also auch mit TextEdit und Safari -- obwohl das eigentlich nur Masochisten empfohlen werden kann), aber ich werde auch auf einige Plugins für spezielle Editoren eingehen, die die Programmierung erleichtern. Also noch einmal: *Still digging!*
