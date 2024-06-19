@@ -10,7 +10,37 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 19 Jun 2024 07:05:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 19 Jun 2024 07:45:00 GMT</lastBuildDate>
+<item>
+  <title>Q5.js: The Sequel to P5.js is here</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024061902_q5js/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53801829670/"><img src="https://kantel.github.io/posts/2024061902_q5js/images/q5jsdemo-b.jpg" class="img-fluid"></a></p>
+<p>Ein neues Spielzeug? Oder nur ein wenig Rumoren in der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>-Community? Jedenfalls scheint <em><a href="https://github.com/quinton-ashley/p5play/wiki/Developer-Log">Quinton Ashley</a></em>, der Schöpfer von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html">P5.play</a> mit der Entwicklung von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> unzufrieden zu sein (vergleiche auch <a href="https://kantel.github.io/posts/2024061601_openprocessing/">hier</a>). Daher hat er mit einer Handvoll Mitstreiter das Projekt <a href="https://q5js.org/home/">Q5.js</a> ins Leben gerufen, das so etwas – wie der Name schon erahnen läßt – wie ein legitimer Nachfolger von P5.js sein will.</p>
+<p>Ich weiß noch nicht, was ich wirklich davon halten soll. Doch Ashley und seine Mitstreiter scheinen keine Fehler gemacht zu haben: Q5.js ist rückwärtskompatibel zu P5.js, das heißt bestehende P5.js-Skripte laufen ohne Änderung auch in Q5.js. Und auch externe Bibliotheken wie P5.sound oder (das wundert aber niemanden&nbsp;🤓) P5.play werden unterstützt, da Q5.js intern einen Alias zu P5.js besitzt.</p>
+<p>Und – wichtig für mich – auch wenn auf der Website nrgendwo darauf hingeweisen wird (hier wird nur auf die Einbindung via CDN (GitHub) oder <code>npm</code> verwiesen), man kann mit Q5.js auch lokal im Texteditor seines Vertrauens entwickeln und die Bibliotheken selbst hosten. Denn auf den <a href="https://github.com/q5js/q5.js">GitHub-Seiten des Projekts</a> kann man wahlweise eine <code>Q5.js</code> oder eine <code>Q5.min.js</code> herunterladen und sie genau so wie die <code>P5.js</code> oder die <code>P5.min.js</code> in seinen Projekten nutzen.</p>
+<p>Was ist denn nun anders und will besser sein? Q5.js ist klein. Während P5.js nicht minifiziert 5&nbsp;MB fett ist, bringt Q5.js (ebenfalls nicht minifiziert) gerade einmal 74&nbsp;KB auf die Waage. Bei den minifizierten Versionen sind es 1&nbsp;MB (P5.min.js) versus 48&nbsp;KB (Q5.min.js). Und Q5.js verspricht, mindestens doppelt so schnell, im Extremfall sogar um den Faktor Zehn schneller als P5.js zu sein (das war wohl dem P5.play-Entwickler wichtig).</p>
+<p>Daneben gibt es eine Handvoll zusätzlicher, exklusiver Features wie <code>inFill</code> (das prüft, ob ein Punkt innerhalb des zuletzt gefüllten Shapes liegt) oder <code>ctx</code>, einen Alias vür den <code>drawingContext</code>. Außerdem ist die Erstellung mehrerer Sketche auf einer Webseite mit der Einführung von <code>namespace</code> einfacher geworden und es gibt einen <em>Top-Level Global Mode</em>, der es erlaubt, P5-Funktionen auch außerhalb von <code>setup()</code> oder <code>draw()</code> aufzurufen. Und noch vieles mehr&nbsp;…</p>
+<p>Das Projekt ist noch jung (erst vor wenigen Monaten – im Februar letzten Jahres – veröffentlicht) und hat dennoch vor wenigen Stunden die Version 2.0 erreicht, die mit einer besseren Modularisierung Q5.js noch schneller und schlanker machen will. <a href="https://github.com/orgs/q5js/projects/1/views/1">Und es hat noch viel vor</a>.</p>
+<p>Ich wollte – wie <a href="https://kantel.github.io/posts/2024060901_turtle_gfx/">hier angemerkt</a> – bei meinen P5.js-Experimenten in der nächsten Zeit sowieso etwas mit dem Modul <a href="https://mathjs.org/docs/datatypes/complex_numbers.html">Complex Numbers</a> aus der Library <a href="https://mathjs.org/">Math.js</a> anstellen und mal Mandelbrot- und Julia-Mengen implementieren. Das wäre doch die Gelegenheit für einen Geschwindigkeitsvergleich zwischen P5.js und Q5.js. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Q5.js</category>
+  <category>P5.js</category>
+  <category>Processing</category>
+  <category>JavaScript</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2024061902_q5js/</guid>
+  <pubDate>Wed, 19 Jun 2024 07:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024061902_q5js/images/q5jsdemo.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google korrigiert wieder kritische Sicherheitslücken in Chrome</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1275,29 +1305,6 @@ function draw() {
   <guid>https://kantel.github.io/posts/2024053102_chrome_update/</guid>
   <pubDate>Fri, 31 May 2024 15:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024053102_chrome_update/images/datenkrakegelb.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Security Alert: Sicherheitslücke im Linux-Kernel</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024053101_security_alert_linux/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53759920013/"><img src="https://kantel.github.io/posts/2024053101_security_alert_linux/images/dragon03-b.jpg" class="img-fluid"></a></p>
-<p>Die US-amerikanische Cybersicherheitsbehörde CISA warnt vor einer Sicherheitslücke im Linux-Kernel, die bereits aktiv ausgenutzt wird. Bösartige Akteure könnten sich dadurch root-Rechte auf verwundbaren Systemen verschaffen.</p>
-<p>Mehr dazu bei <a href="https://www.heise.de/news/Linux-Luecke-Angreifer-verschaffen-sich-root-Rechte-9742699.html">Tante Heise</a>. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53759920013/">Blauzahn</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>dragon with big blue teeth in an ancient city</em>«. Modell: Stable Diffusion XL, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024053101_security_alert_linux/</guid>
-  <pubDate>Fri, 31 May 2024 14:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024053101_security_alert_linux/images/dragon03.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

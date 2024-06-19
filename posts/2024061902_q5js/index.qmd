@@ -1,0 +1,23 @@
+---
+title: "Q5.js: The Sequel to P5.js is here"
+author: "Jörg Kantel"
+date: "2024-06-19 9:45:00"
+categories: [Q5.js, P5.js, Processing, JavaScript, Creative Coding]
+image: "images/q5jsdemo.jpg"
+---
+
+[![](images/q5jsdemo-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53801829670/)
+
+Ein neues Spielzeug? Oder nur ein wenig Rumoren in der [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Community? Jedenfalls scheint *[Quinton Ashley](https://github.com/quinton-ashley/p5play/wiki/Developer-Log)*, der Schöpfer von [P5.play](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html) mit der Entwicklung von [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) unzufrieden zu sein (vergleiche auch [hier](https://kantel.github.io/posts/2024061601_openprocessing/)). Daher hat er mit einer Handvoll Mitstreiter das Projekt [Q5.js](https://q5js.org/home/) ins Leben gerufen, das so etwas -- wie der Name schon erahnen läßt -- wie ein legitimer Nachfolger von P5.js sein will.
+
+Ich weiß noch nicht, was ich wirklich davon halten soll. Doch Ashley und seine Mitstreiter scheinen keine Fehler gemacht zu haben: Q5.js ist rückwärtskompatibel zu P5.js, das heißt bestehende P5.js-Skripte laufen ohne Änderung auch in Q5.js. Und auch externe Bibliotheken wie P5.sound oder (das wundert aber niemanden&nbsp;🤓) P5.play werden unterstützt, da Q5.js intern einen Alias zu P5.js besitzt.
+
+Und -- wichtig für mich -- auch wenn auf der Website nrgendwo darauf hingeweisen wird (hier wird nur auf die Einbindung via CDN (GitHub) oder `npm` verwiesen), man kann mit Q5.js auch lokal im Texteditor seines Vertrauens entwickeln und die Bibliotheken selbst hosten. Denn auf den [GitHub-Seiten des Projekts](https://github.com/q5js/q5.js) kann man wahlweise eine `Q5.js` oder eine `Q5.min.js` herunterladen und sie genau so wie die `P5.js` oder die `P5.min.js` in seinen Projekten nutzen.
+
+Was ist denn nun anders und will besser sein? Q5.js ist klein. Während P5.js nicht minifiziert 5&nbsp;MB fett ist, bringt Q5.js (ebenfalls nicht minifiziert) gerade einmal 74&nbsp;KB auf die Waage. Bei den minifizierten Versionen sind es 1&nbsp;MB (P5.min.js) versus 48&nbsp;KB (Q5.min.js). Und Q5.js verspricht, mindestens doppelt so schnell, im Extremfall sogar um den Faktor Zehn schneller als P5.js zu sein (das war wohl dem P5.play-Entwickler wichtig).
+
+Daneben gibt es eine Handvoll zusätzlicher, exklusiver Features wie `inFill` (das prüft, ob ein Punkt innerhalb des zuletzt gefüllten Shapes liegt) oder `ctx`, einen Alias vür den `drawingContext`. Außerdem ist die Erstellung mehrerer Sketche auf einer Webseite mit der Einführung von `namespace` einfacher geworden und es gibt einen *Top-Level Global Mode*, der es erlaubt, P5-Funktionen auch außerhalb von `setup()` oder `draw()` aufzurufen. Und noch vieles mehr&nbsp;…
+
+Das Projekt ist noch jung (erst vor wenigen Monaten -- im Februar letzten Jahres -- veröffentlicht) und hat dennoch vor wenigen Stunden die Version 2.0 erreicht, die mit einer besseren Modularisierung Q5.js noch schneller und schlanker machen will. [Und es hat noch viel vor](https://github.com/orgs/q5js/projects/1/views/1).
+
+Ich wollte -- wie [hier angemerkt](https://kantel.github.io/posts/2024060901_turtle_gfx/) -- bei meinen P5.js-Experimenten in der nächsten Zeit sowieso etwas mit dem Modul [Complex Numbers](https://mathjs.org/docs/datatypes/complex_numbers.html) aus der Library [Math.js](https://mathjs.org/) anstellen und mal Mandelbrot- und Julia-Mengen implementieren. Das wäre doch die Gelegenheit für einen Geschwindigkeitsvergleich zwischen P5.js und Q5.js. *Still digging!*
