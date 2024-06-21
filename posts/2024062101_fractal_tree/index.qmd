@@ -1,0 +1,136 @@
+---
+title: "Fractal Tree: Ein fraktaler Baum mit P5.js und TurtleGFX"
+author: "Jörg Kantel"
+date: "2024-06-21 16:30:00"
+categories: [P5.js, JavaScript, TurtleGFX, CodePen, Creative Coding]
+image: "images/fraktaltree2.jpg"
+---
+
+[![](images/fraktaltree2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53803552757/)
+
+Nach meinen ersten Gehversuchen wollte und mußte ich natürlich in den letzten Tagen weiter mit [TurtleGFX](https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master) und [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) spielen. Also habe ich den Rechner angewiesen, ein paar fraktale Bäume zu generieren, Ähnlich wie sie *Al Sweigart* in seinem »The Recursive Book of Recursion« (S. 187ff.) mit Pythons Turtle implementiert hatte.
+
+Über den Port nach JavaScript mußte ich mir keine Gedanken machen, denn den hatte Mr. CodeGuppy itself, *Marian Veteanu*, in seinen Beispielskripten für TurtleGFX [schon programmiert](https://codeguppy.com/code.html?t=fractal_tree), ich habe ihn nur noch ein wenig aufgehübscht:
+
+~~~javascript
+let bg;
+const imwidth = 1600;
+const imheight = 667
+
+function preload() {
+  bg = loadImage("data/bg.jpg")
+}
+
+function setup() {
+  createCanvas(640, 480);
+  t = createTurtle();
+  frameRate(0.5);
+}
+
+function draw() {
+  clear();
+  image(bg, -370, 0, imwidth-370, height);
+  // background("#ffffff");
+
+  t.setposition(width / 2, height - 75);
+  plant(150);
+}
+
+function plant(size) {
+  if (size < 1) return;
+
+  t.pensize(map(size, 120, 1, 10, 0.5));
+  t.pencolor(size > 10 ? "brown" : "green");
+
+  t.forward(size*0.9);
+
+  var [x, y] = t.position();
+  var h = t.heading();
+
+  var nextSign = 1;
+
+  repeat(random([2, 3]), () => {
+    var angle = nextSign * random(10, 45);
+    nextSign *= -1;
+
+    t.right(angle);
+    plant(size * random(0.5, 0.7));
+
+    t.setposition(x, y);
+    t.setheading(h);
+  });
+}
+
+function repeat(n, fn) {
+  for (var i = 0; i < n; i++) {
+    fn(i);
+  }
+}
+~~~
+
+Für diejenigen unter Euch, die -- wie ich -- von Python kommen, ist die Pfeilfunktion *(Arrow Operator)* `=>` sicher erst einmal ungewohnt. Sie sagt aber eigentlich nichts anderes, als daß die Funktion »hinter« dem Pfeil (also alles, was dort innerhalb des geschweiften Klammerpaars steht) zusammen mit den Parametern *vor* dem Pfeil der aufgerufenen Funktion übergeben wird. In diesem Falle also wird die Funktion `repeat(n, fn) => {}` wie folgt aufgerufen:
+
+Zuerst wird `random([2, 3])`[^1] ausgewertet und als Parameter `n` übergeben, Und die Funktion `fn` ist all das, was hinter dem Pfeil in dem geschweiften Klammernpaar eingeschlossen ist. Das heißt, `repeat()` führt `fn()` bei jedem Aufruf `n`-mal (dem Ergebnis von `random([2, 3])`) aus. Mutige können `n` ja mal höher setzen (zum Beispiel `random([3, 5])`). Das Ergebnis sind bedeutend buschigere Bäume, aber die Rechenzeit steigt auch enorm (auf meinem betagten MacBook Pro fragt mich das Betriebssystem bei jeder Iteration dann, ob ich wirklich warten will, bis der Rechner alle Rekursionen durchlaufen hat).
+
+[^1]: Zur Erinnerung: `random([array])` gibt *ein* zufälliges Element aus diesem Array zurück, also `random([2, 3])` entweder $2$ oder $3$, während `random([3, 5])` entweder $3$ oder $5$ zurückgibt (vergleiche [P5.js-Referenz](https://p5js.org/reference/#/p5/random)).
+
+Die Pfeilfunktion ist ein mächtiges, funtionales JavaScript-Konstrukt. Wer mehr darüber erfahren will, dem sei das Kaptitel 3 (Funtionen und funktionale Programmierung) aus »JavaScript für Ungeduldige« (S. 57ff.) von *Cay Horstmann* empfohlen.
+
+Ein weiteres Konstrukt, das für Python-Coder unbekannt ist, ist das kompakte `if … else`, wie zum Beispiel in der Zeile:
+
+~~~javascript
+t.pencolor(size > 10 ? "brown" : "green");
+~~~
+
+Das bedeutet ausgeschrieben:
+
+~~~javascript
+if (size > 10) {
+    t.pencolor("brown");
+} else {
+    t.pencolor("green");
+}
+~~~
+
+Mir ist dieser *Bedingungsoperator* vor Jahren (oder waren es Jahrzehnte?) zum ersten Mal bei PHP-Programmierern untergekommen, die ihn liebten und ganz entäuscht waren, daß es ihn in Python nicht gibt. Ich selber hatte ihn jedoch nie vermißt (er kann auch Verwirrung stiften), aber in solchen Fällen wie dem obigen macht er den Code tatsächlich kompakter.
+
+Zu guter Letzt ist noch anzumerken, daß ich dem Sketch ein 1.600 Pixel weites Hintergrundbild untergeschoben habe, das ich mit
+
+~~~javascript
+  image(bg, -<startwert>, 0, imwidth-<startwert>, height);
+~~~
+
+so lange experimentell hin- und hergeschoben hatte, bis mir der Ausschnitt gefiel.
+
+<p class="codepen" data-height="300" data-default-tab="js,result" data-slug-hash="OJYvbgK" data-pen-title="Fraktal Tree" data-preview="true" data-editable="true" data-user="kantel" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+  <span>See the Pen <a href="https://codepen.io/kantel/pen/OJYvbgK">
+  Fraktal Tree</a> by Jörg Kantel (<a href="https://codepen.io/kantel">@kantel</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+Und dann habe ich noch herausgefunden, daß entgegen meiner Vermutung in [diesem Beitrag](https://kantel.github.io/posts/2024061601_openprocessing/) es doch möglich ist, mit der kostenlosen Version von [CodePen](https://de.wikipedia.org/wiki/CodePen) -- wenn auch nur über Umwege -- TurtleGFX in einem Sketch einzubinden. Man muß nur die Datei `turtlegfx.js` in einem separaten *Pen* ablegen und ihn dann im JS-Tools-Menü (das ist das mit dem Rädchen) unter dem Reiter *Add External Scripts/Pens* einbinden.
+
+Natürlich mußte ich das gleich einmal testen. Dabei bin ich über ein weiteres Problem gestolpert. Die kostenlose Version von CodePen erlaubt auch keine (internen) Assets (wie zum Beispiel Bilder), man kann sie nur von externen Quellen/Servern via HTTP(S) einbinden. Also habe ich das Hintergrundbild kurzerhand direkt von meinem [Flickr-Account](https://www.flickr.com/photos/schockwellenreiter/53733027587/) übernommen (was natürlich *Hotlinking* und damit eine (Tod-) Sünde ist). 
+
+Damit kann man aber nur zeigen, daß es irgendwie mit CodePen geht, eine vernünftige und praktikable Lösung ist es allerdings nicht[^2]. Was aber interessant ist: Das eingebundene CodePen ist -- für meine Bedürfnisse -- ausreichend responsiv. Hier sollte ich mir das CSS der Pens einmal genauer anschauen, vielleicht kann ich das sinnvoll für meine eigenen Experimente übernehmen.
+
+[^2]: Damit ist CodePen immer noch draußen.
+
+Dieser Beitrag ist jetzt Lieferung Nummer zehn meiner etwas unstrukturrierten und leicht chaotischen Reihe zu P5.js. Bisher erschienen sind:
+
+1. [Bouncing Faces](https://kantel.github.io/posts/2024051901_bouncing_faces/): Drei Wege, mit P5.js zu spielen ([GitHub](https://github.com/kantel/p5js/tree/master/bouncingfaces2))
+2. [Luftballons im Wunderland](https://kantel.github.io/posts/2024052301_balloons_in_wonderland/): Erstes Abenteuer mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/balloons))
+3. [Der fliegende Dachs im Wunderland](https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/): Das Abenteuer P5.js geht weiter ([GitHub](https://github.com/kantel/p5js/tree/master/flyingbadger))
+4. Abenteuer P5.js : [Hallo Hörnchen!](https://kantel.github.io/posts/2024052601_hallo_hoernchen/) ([GitHub](https://github.com/kantel/p5js/tree/master/hoernchen))
+5. Abenteuer P5.js (Teil 5): [Octopussy](https://kantel.github.io/posts/2024052903_octopussy/) ([GitHub](https://github.com/kantel/p5js/tree/master/octopussy))
+6. Das Abenteuer P5.js geht weiter: [Ein kleines Planetensystem](https://kantel.github.io/posts/2024053001_planetensystem_p5js/) ([GitHub](https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system))
+7. [Rotating Images](https://kantel.github.io/posts/2024053103_roating_images/): Nachtrag zum Planetensystem mit P5.js ([GitHub](https://github.com/kantel/p5js/tree/master/rotating_image))
+8. Punkte und Pixel 1: [Alice, die Grinsekatze und die Suche nach dem richtigen Weg](https://kantel.github.io/posts/2024060201_grinsekatze_weg/) ([GitHub](https://github.com/kantel/p5js/tree/master/sierp01))
+9. TurtleGFX (1): [Erste Schritte mit der Schildkröte in P5.js](https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/) ([GitHub](https://github.com/kantel/p5js/tree/master/turtlegfxtest1))
+10. Fractal Tree: Ein fraktaler Baum mit P5.js und TurtleGFX ([GitHub](https://github.com/kantel/p5js/tree/master/fractaltree))
+
+### Literatur
+
+- Cay Horstmann: *[JavaScript für Ungeduldige](https://dpunkt.de/produkt/javascript-fuer-ungeduldige/). Der schnelle Einstieg in modernes JavaScript*, Heidelberg (dpunkt) 2021
+- Al Sweigart: *[The Recursive Book of Recursion](https://inventwithpython.com/recursion/). Ace the Coding Interview with Python and Javascript*, San Francisco (no starch press) 2022 (kann unter dem Link auch für umme gelesen werden)

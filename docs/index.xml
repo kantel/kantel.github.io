@@ -10,7 +10,498 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 19 Jun 2024 07:45:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 21 Jun 2024 14:30:00 GMT</lastBuildDate>
+<item>
+  <title>Fractal Tree: Ein fraktaler Baum mit P5.js und TurtleGFX</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024062101_fractal_tree/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53803552757/"><img src="https://kantel.github.io/posts/2024062101_fractal_tree/images/fraktaltree2-b.jpg" class="img-fluid"></a></p>
+<p>Nach meinen ersten Gehversuchen wollte und mußte ich natürlich in den letzten Tagen weiter mit <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> spielen. Also habe ich den Rechner angewiesen, ein paar fraktale Bäume zu generieren, Ähnlich wie sie <em>Al Sweigart</em> in seinem »The Recursive Book of Recursion« (S. 187ff.) mit Pythons Turtle implementiert hatte.</p>
+<p>Über den Port nach JavaScript mußte ich mir keine Gedanken machen, denn den hatte Mr.&nbsp;CodeGuppy itself, <em>Marian Veteanu</em>, in seinen Beispielskripten für TurtleGFX <a href="https://codeguppy.com/code.html?t=fractal_tree">schon programmiert</a>, ich habe ihn nur noch ein wenig aufgehübscht:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">let</span> bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> imwidth <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1600</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">const</span> imheight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">667</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">preload</span>() {</span>
+<span id="cb1-6">  bg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/bg.jpg"</span>)</span>
+<span id="cb1-7">}</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-11">  t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createTurtle</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">frameRate</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-13">}</span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw</span>() {</span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clear</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-17">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">370</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> imwidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">370</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> height)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-18">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// background("#ffffff");</span></span>
+<span id="cb1-19"></span>
+<span id="cb1-20">  t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setposition</span>(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plant</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-22">}</span>
+<span id="cb1-23"></span>
+<span id="cb1-24"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plant</span>(size) {</span>
+<span id="cb1-25">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">return</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-26"></span>
+<span id="cb1-27">  t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pensize</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">map</span>(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-28">  t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pencolor</span>(size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">?</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"brown"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"green"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-29"></span>
+<span id="cb1-30">  t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">forward</span>(size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-31"></span>
+<span id="cb1-32">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">var</span> [x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> y] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">position</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-33">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">var</span> h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">heading</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-34"></span>
+<span id="cb1-35">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">var</span> nextSign <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-36"></span>
+<span id="cb1-37">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">repeat</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>([<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>])<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> () <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=&gt;</span> {</span>
+<span id="cb1-38">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">var</span> angle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nextSign <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-39">    nextSign <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-40"></span>
+<span id="cb1-41">    t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">right</span>(angle)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-42">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plant</span>(size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.7</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-43"></span>
+<span id="cb1-44">    t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setposition</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-45">    t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setheading</span>(h)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-46">  })<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-47">}</span>
+<span id="cb1-48"></span>
+<span id="cb1-49"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">repeat</span>(n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> fn) {</span>
+<span id="cb1-50">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">var</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> n<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb1-51">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fn</span>(i)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-52">  }</span>
+<span id="cb1-53">}</span></code></pre></div>
+<p>Für diejenigen unter Euch, die – wie ich – von Python kommen, ist die Pfeilfunktion <em>(Arrow Operator)</em> <code>=&gt;</code> sicher erst einmal ungewohnt. Sie sagt aber eigentlich nichts anderes, als daß die Funktion »hinter« dem Pfeil (also alles, was dort innerhalb des geschweiften Klammerpaars steht) zusammen mit den Parametern <em>vor</em> dem Pfeil der aufgerufenen Funktion übergeben wird. In diesem Falle also wird die Funktion <code>repeat(n, fn) =&gt; {}</code> wie folgt aufgerufen:</p>
+<p>Zuerst wird <code>random([2, 3])</code><sup>1</sup> ausgewertet und als Parameter <code>n</code> übergeben, Und die Funktion <code>fn</code> ist all das, was hinter dem Pfeil in dem geschweiften Klammernpaar eingeschlossen ist. Das heißt, <code>repeat()</code> führt <code>fn()</code> bei jedem Aufruf <code>n</code>-mal (dem Ergebnis von <code>random([2, 3])</code>) aus. Mutige können <code>n</code> ja mal höher setzen (zum Beispiel <code>random([3, 5])</code>). Das Ergebnis sind bedeutend buschigere Bäume, aber die Rechenzeit steigt auch enorm (auf meinem betagten MacBook Pro fragt mich das Betriebssystem bei jeder Iteration dann, ob ich wirklich warten will, bis der Rechner alle Rekursionen durchlaufen hat).</p>
+<p>Die Pfeilfunktion ist ein mächtiges, funtionales JavaScript-Konstrukt. Wer mehr darüber erfahren will, dem sei das Kaptitel 3 (Funtionen und funktionale Programmierung) aus »JavaScript für Ungeduldige« (S. 57ff.) von <em>Cay Horstmann</em> empfohlen.</p>
+<p>Ein weiteres Konstrukt, das für Python-Coder unbekannt ist, ist das kompakte <code>if … else</code>, wie zum Beispiel in der Zeile:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1">t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pencolor</span>(size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">?</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"brown"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"green"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Das bedeutet ausgeschrieben:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">if</span> (size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>) {</span>
+<span id="cb3-2">    t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pencolor</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"brown"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-3">} <span class="cf" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">else</span> {</span>
+<span id="cb3-4">    t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pencolor</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"green"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-5">}</span></code></pre></div>
+<p>Mir ist dieser <em>Bedingungsoperator</em> vor Jahren (oder waren es Jahrzehnte?) zum ersten Mal bei PHP-Programmierern untergekommen, die ihn liebten und ganz entäuscht waren, daß es ihn in Python nicht gibt. Ich selber hatte ihn jedoch nie vermißt (er kann auch Verwirrung stiften), aber in solchen Fällen wie dem obigen macht er den Code tatsächlich kompakter.</p>
+<p>Zu guter Letzt ist noch anzumerken, daß ich dem Sketch ein 1.600 Pixel weites Hintergrundbild untergeschoben habe, das ich mit</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&lt;</span>startwert<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> imwidth<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-&lt;</span>startwert<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;,</span> height)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>so lange experimentell hin- und hergeschoben hatte, bis mir der Ausschnitt gefiel.</p>
+<p class="codepen" data-height="300" data-default-tab="js,result" data-slug-hash="OJYvbgK" data-pen-title="Fraktal Tree" data-preview="true" data-editable="true" data-user="kantel" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+<span>See the Pen <a href="https://codepen.io/kantel/pen/OJYvbgK"> Fraktal Tree</a> by Jörg Kantel (<a href="https://codepen.io/kantel"><span class="citation" data-cites="kantel">@kantel</span></a>) on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async="" src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+<p>Und dann habe ich noch herausgefunden, daß entgegen meiner Vermutung in <a href="https://kantel.github.io/posts/2024061601_openprocessing/">diesem Beitrag</a> es doch möglich ist, mit der kostenlosen Version von <a href="https://de.wikipedia.org/wiki/CodePen">CodePen</a> – wenn auch nur über Umwege – TurtleGFX in einem Sketch einzubinden. Man muß nur die Datei <code>turtlegfx.js</code> in einem separaten <em>Pen</em> ablegen und ihn dann im JS-Tools-Menü (das ist das mit dem Rädchen) unter dem Reiter <em>Add External Scripts/Pens</em> einbinden.</p>
+<p>Natürlich mußte ich das gleich einmal testen. Dabei bin ich über ein weiteres Problem gestolpert. Die kostenlose Version von CodePen erlaubt auch keine (internen) Assets (wie zum Beispiel Bilder), man kann sie nur von externen Quellen/Servern via HTTP(S) einbinden. Also habe ich das Hintergrundbild kurzerhand direkt von meinem <a href="https://www.flickr.com/photos/schockwellenreiter/53733027587/">Flickr-Account</a> übernommen (was natürlich <em>Hotlinking</em> und damit eine (Tod-) Sünde ist).</p>
+<p>Damit kann man aber nur zeigen, daß es irgendwie mit CodePen geht, eine vernünftige und praktikable Lösung ist es allerdings nicht<sup>2</sup>. Was aber interessant ist: Das eingebundene CodePen ist – für meine Bedürfnisse – ausreichend responsiv. Hier sollte ich mir das CSS der Pens einmal genauer anschauen, vielleicht kann ich das sinnvoll für meine eigenen Experimente übernehmen.</p>
+<p>Dieser Beitrag ist jetzt Lieferung Nummer zehn meiner etwas unstrukturrierten und leicht chaotischen Reihe zu P5.js. Bisher erschienen sind:</p>
+<ol type="1">
+<li><a href="https://kantel.github.io/posts/2024051901_bouncing_faces/">Bouncing Faces</a>: Drei Wege, mit P5.js zu spielen (<a href="https://github.com/kantel/p5js/tree/master/bouncingfaces2">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052301_balloons_in_wonderland/">Luftballons im Wunderland</a>: Erstes Abenteuer mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/balloons">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024052501_dachs_im_eis_p5js/">Der fliegende Dachs im Wunderland</a>: Das Abenteuer P5.js geht weiter (<a href="https://github.com/kantel/p5js/tree/master/flyingbadger">GitHub</a>)</li>
+<li>Abenteuer P5.js : <a href="https://kantel.github.io/posts/2024052601_hallo_hoernchen/">Hallo Hörnchen!</a> (<a href="https://github.com/kantel/p5js/tree/master/hoernchen">GitHub</a>)</li>
+<li>Abenteuer P5.js (Teil 5): <a href="https://kantel.github.io/posts/2024052903_octopussy/">Octopussy</a> (<a href="https://github.com/kantel/p5js/tree/master/octopussy">GitHub</a>)</li>
+<li>Das Abenteuer P5.js geht weiter: <a href="https://kantel.github.io/posts/2024053001_planetensystem_p5js/">Ein kleines Planetensystem</a> (<a href="https://github.com/kantel/p5js/tree/master/planetensystem/small_planetary_system">GitHub</a>)</li>
+<li><a href="https://kantel.github.io/posts/2024053103_roating_images/">Rotating Images</a>: Nachtrag zum Planetensystem mit P5.js (<a href="https://github.com/kantel/p5js/tree/master/rotating_image">GitHub</a>)</li>
+<li>Punkte und Pixel 1: <a href="https://kantel.github.io/posts/2024060201_grinsekatze_weg/">Alice, die Grinsekatze und die Suche nach dem richtigen Weg</a> (<a href="https://github.com/kantel/p5js/tree/master/sierp01">GitHub</a>)</li>
+<li>TurtleGFX (1): <a href="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/">Erste Schritte mit der Schildkröte in P5.js</a> (<a href="https://github.com/kantel/p5js/tree/master/turtlegfxtest1">GitHub</a>)</li>
+<li>Fractal Tree: Ein fraktaler Baum mit P5.js und TurtleGFX (<a href="https://github.com/kantel/p5js/tree/master/fractaltree">GitHub</a>)</li>
+</ol>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Cay Horstmann: <em><a href="https://dpunkt.de/produkt/javascript-fuer-ungeduldige/">JavaScript für Ungeduldige</a>. Der schnelle Einstieg in modernes JavaScript</em>, Heidelberg (dpunkt) 2021</li>
+<li>Al Sweigart: <em><a href="https://inventwithpython.com/recursion/">The Recursive Book of Recursion</a>. Ace the Coding Interview with Python and Javascript</em>, San Francisco (no starch press) 2022 (kann unter dem Link auch für umme gelesen werden)</li>
+</ul>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Zur Erinnerung: <code>random([array])</code> gibt <em>ein</em> zufälliges Element aus diesem Array zurück, also <code>random([2, 3])</code> entweder <img src="https://latex.codecogs.com/png.latex?2"> oder <img src="https://latex.codecogs.com/png.latex?3">, während <code>random([3, 5])</code> entweder <img src="https://latex.codecogs.com/png.latex?3"> oder <img src="https://latex.codecogs.com/png.latex?5"> zurückgibt (vergleiche <a href="https://p5js.org/reference/#/p5/random">P5.js-Referenz</a>).↩︎</p></li>
+<li id="fn2"><p>Damit ist CodePen immer noch draußen.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>P5.js</category>
+  <category>JavaScript</category>
+  <category>TurtleGFX</category>
+  <category>CodePen</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2024062101_fractal_tree/</guid>
+  <pubDate>Fri, 21 Jun 2024 14:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024062101_fractal_tree/images/fraktaltree2.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Q5.js: The Sequel to P5.js is here</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1282,29 +1773,6 @@ function draw() {
   <guid>https://kantel.github.io/posts/2024053103_roating_images/</guid>
   <pubDate>Fri, 31 May 2024 19:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024053103_roating_images/images/pythonp5js.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Google korrigiert mit neuer Version seines Browsers Chrome kritische Sicherheitslücken</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024053102_chrome_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53559883743/"><img src="https://kantel.github.io/posts/2024053102_chrome_update/images/datenkrakegelb-b.jpg" class="img-fluid"></a></p>
-<p>Es ist heute kein Mittwoch, aber dennoch muß unser aller Datenkrake ein eiliges Sicherheits-Update unters Volk bringen: Google veröffentlicht ein weiteres Update der Version 125 (125.0.6422.141/142) seines Browsers Chrome und schließt damit <a href="https://chromereleases.googleblog.com/2024/05/stable-channel-update-for-desktop_30.html">kritische Sicherheitslücken</a>.</p>
-<p>Chrome aktualisiert sich (außer bei Linux) über die integrierte Update-Funktion, kann aber – wenn es pressiert – auch <a href="https://www.google.com/intl/de/chrome/browser/">hier geladen</a> werden. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53559883743/">Octopussy</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A sexy female robot flees from a gigantic data octopus, colored french comic style</em>«. Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024053102_chrome_update/</guid>
-  <pubDate>Fri, 31 May 2024 15:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024053102_chrome_update/images/datenkrakegelb.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
