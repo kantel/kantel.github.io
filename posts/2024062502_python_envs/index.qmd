@@ -1,0 +1,36 @@
+---
+title: "Python Environments in Jupyter (-Lab (Desktop))"
+author: "Jörg Kantel"
+date: "2024-06-25 19:00:00"
+categories: [Python, Jupyter, JupyterLab Desktop, Spyder]
+image: "images/environments.jpg"
+---
+
+[![](images/environments-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53784792029/)
+
+Um Pythons »virtuelle Umgebungen« -- neudeutsch auch *[Virtual Environments](https://docs.python.org/3/library/venv.html)* (kurz `venv` genannt) -- hatte ich bisher immer einen großen Bogen gemacht. Weniger, weil ich befürchtete, daß ich mir mit Mehrfach-Installationen meine Festplatte zumüllen würde, sondern mehr, weil ich bei meinem Chaos davon ausging (und das vermutlich zu Recht), daß ich die Übersicht über all die virtuellen Umgebungen verliere und nicht mehr weiß, welche ich schon angelegt hatte und welche ich noch anlegen wollte.
+
+<div style="float: right; margin-left: 12px; margin-top: 6px;">[![](images/pythontoolscover.webp)](https://nostarch.com/python-tools-scientists)</div>
+
+Nun ist mir aber vor kurzem das wunderbare Buch »[Python Tools vor Scientists](https://nostarch.com/python-tools-scientists)« von *Lee Vaughan* in die Hände gefallen, und das hat zu Beginn ein ganzes Kapitel (Chapter 2, p. 21-48) den *Conda Environments* gewidmet. Dort las ich, daß der von mir bisher sträflich vernachlässigte [Anaconda Navigator](https://docs.anaconda.com/navigator/) Buch über alle angelegten virtuellen Umgebungen führt (egal ob mit `conda create` oder `venv` angelegt) und diese auch anzeigt, so daß keine verlorengeht und selbst Chaoten wie ich den Überblick behalten.
+
+Zudem wurde bestätigt, daß zumindest die mit `conda create` angelegten virtuellen Umgebungen -- wie ich schon vorher vermutet hatte -- nicht die Festplatte zumüllen, sondern jedes Paket nur einmal installiert wird (per Default im `pkgs`-Verzeichnis der [Anaconda](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html)-Distribution) und in der virtuellen Umgebung nur ein *alias* zu diesem Paket angelegt wird.
+
+Nun ist das alles ja schön und gut, aber die Frage, die sich mir stellte: Funktioniert das alles auch mit [JupyterLab Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html), meiner bevorzugten Python-IDE? Einmal die Suchmaschine meines Vertrauens angeworfen und die Bestätigung erhalten. Alles, mit dem mir *Lee Vaughan* die virtuellen Umgebungen schmackhaft machte, funktioniert ähnlich komfortabel auch in der Desktop-Applikation von [JupyterLab](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) und damit unabhängig vom Browser -- nachzulesen in der Doumentation unter [Python environment management](https://github.com/jupyterlab/jupyterlab-desktop/blob/master/python-env-management.md).
+
+Das ist natürlich ein echter *Game Changer*. Denn in der Vergangenheit war ich hin und wieder schon darauf gestoßen, daß sich (Python-) Pakete/Module/Bibliotheken in die Quere kamen und nicht miteinander spielen wollten. Bisher hatte ich dies mit komplett separaten Python-Installationen gelöst. Das ist natürlich *brute force*, da sind virtuelle Umgebungen viel eleganter.
+
+Zudem kann ich damit auch [mein Sypder-Problem](https://kantel.github.io/posts/2023042001_pillow_tutorial/) mit der Installation zusätzlicher Pakete angehen, denn die in der [Spyder-FAQ dafür empfohlene Lösung](https://docs.spyder-ide.org/5/faq.html#using-packages-installer) verlangt explizit das Anlegen virtueller Umgebungen.
+
+Damit hätte ich dann -- neben JupyterLab Desktop -- eine weitere, von [RStudio](http://cognitiones.kantel-chaos-team.de/mathematik/rstudio.html) inspirierte freie (MIT-Lizenz) Python-IDE im Portfolio. Denn [Spyder](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html) ist ebenfalls eine großartige Alternative für alle, die aus [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) herausgewachsen sind. Und glaube ich dem Raunen meines Feedreaders, steht [Spyder 6](https://www.spyder-ide.org/blog/cbi-installers/) schon in den Startlöchern und scharrt mit den Hufen. Schaun wir mal, was mir da noch bevorsteht. *Still digging!*
+
+### Literatur
+
+- Martin Breuss: *[Python Virtual Environments: A Primer](https://realpython.com/python-virtual-environments-a-primer/)*, Real Python, ohne Jahr
+- Conda Docs: *[Managing environments](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html)*, 2017
+- Lee Vaughan: *[Python Tools for Scientists](https://nostarch.com/python-tools-scientists).An Introduction to Using Anaconda, JupyterLab, and Python's Scientific Libraries*, San Francisco CA (No Starch Press) 2022
+- Visual Studio Code Docs: *[Python environments in VS Code](https://code.visualstudio.com/docs/python/environments)*, 6. Dezember 2023
+
+---
+
+**Bild**: *[Der alte Oberförster in seiner gewohnten Umgebung](https://www.flickr.com/photos/schockwellenreiter/53784792029/)*, erstellt mit [DreamStudio](https://beta.dreamstudio.ai/generate). Prompt: »*Hugo, der alte Oberförster, im Zeitungsblätterwald. colored french comic style*«. Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.

@@ -10,7 +10,50 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Tue, 25 Jun 2024 14:20:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 25 Jun 2024 17:00:00 GMT</lastBuildDate>
+<item>
+  <title>Python Environments in Jupyter (-Lab (Desktop))</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024062502_python_envs/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53784792029/"><img src="https://kantel.github.io/posts/2024062502_python_envs/images/environments-b.jpg" class="img-fluid"></a></p>
+<p>Um Pythons »virtuelle Umgebungen« – neudeutsch auch <em><a href="https://docs.python.org/3/library/venv.html">Virtual Environments</a></em> (kurz <code>venv</code> genannt) – hatte ich bisher immer einen großen Bogen gemacht. Weniger, weil ich befürchtete, daß ich mir mit Mehrfach-Installationen meine Festplatte zumüllen würde, sondern mehr, weil ich bei meinem Chaos davon ausging (und das vermutlich zu Recht), daß ich die Übersicht über all die virtuellen Umgebungen verliere und nicht mehr weiß, welche ich schon angelegt hatte und welche ich noch anlegen wollte.</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://nostarch.com/python-tools-scientists"><img src="https://kantel.github.io/posts/2024062502_python_envs/images/pythontoolscover.webp" class="img-fluid"></a>
+</div>
+<p>Nun ist mir aber vor kurzem das wunderbare Buch »<a href="https://nostarch.com/python-tools-scientists">Python Tools vor Scientists</a>« von <em>Lee Vaughan</em> in die Hände gefallen, und das hat zu Beginn ein ganzes Kapitel (Chapter 2, p.&nbsp;21-48) den <em>Conda Environments</em> gewidmet. Dort las ich, daß der von mir bisher sträflich vernachlässigte <a href="https://docs.anaconda.com/navigator/">Anaconda Navigator</a> Buch über alle angelegten virtuellen Umgebungen führt (egal ob mit <code>conda create</code> oder <code>venv</code> angelegt) und diese auch anzeigt, so daß keine verlorengeht und selbst Chaoten wie ich den Überblick behalten.</p>
+<p>Zudem wurde bestätigt, daß zumindest die mit <code>conda create</code> angelegten virtuellen Umgebungen – wie ich schon vorher vermutet hatte – nicht die Festplatte zumüllen, sondern jedes Paket nur einmal installiert wird (per Default im <code>pkgs</code>-Verzeichnis der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html">Anaconda</a>-Distribution) und in der virtuellen Umgebung nur ein <em>alias</em> zu diesem Paket angelegt wird.</p>
+<p>Nun ist das alles ja schön und gut, aber die Frage, die sich mir stellte: Funktioniert das alles auch mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">JupyterLab Desktop</a>, meiner bevorzugten Python-IDE? Einmal die Suchmaschine meines Vertrauens angeworfen und die Bestätigung erhalten. Alles, mit dem mir <em>Lee Vaughan</em> die virtuellen Umgebungen schmackhaft machte, funktioniert ähnlich komfortabel auch in der Desktop-Applikation von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JupyterLab</a> und damit unabhängig vom Browser – nachzulesen in der Doumentation unter <a href="https://github.com/jupyterlab/jupyterlab-desktop/blob/master/python-env-management.md">Python environment management</a>.</p>
+<p>Das ist natürlich ein echter <em>Game Changer</em>. Denn in der Vergangenheit war ich hin und wieder schon darauf gestoßen, daß sich (Python-) Pakete/Module/Bibliotheken in die Quere kamen und nicht miteinander spielen wollten. Bisher hatte ich dies mit komplett separaten Python-Installationen gelöst. Das ist natürlich <em>brute force</em>, da sind virtuelle Umgebungen viel eleganter.</p>
+<p>Zudem kann ich damit auch <a href="https://kantel.github.io/posts/2023042001_pillow_tutorial/">mein Sypder-Problem</a> mit der Installation zusätzlicher Pakete angehen, denn die in der <a href="https://docs.spyder-ide.org/5/faq.html#using-packages-installer">Spyder-FAQ dafür empfohlene Lösung</a> verlangt explizit das Anlegen virtueller Umgebungen.</p>
+<p>Damit hätte ich dann – neben JupyterLab Desktop – eine weitere, von <a href="http://cognitiones.kantel-chaos-team.de/mathematik/rstudio.html">RStudio</a> inspirierte freie (MIT-Lizenz) Python-IDE im Portfolio. Denn <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html">Spyder</a> ist ebenfalls eine großartige Alternative für alle, die aus <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> herausgewachsen sind. Und glaube ich dem Raunen meines Feedreaders, steht <a href="https://www.spyder-ide.org/blog/cbi-installers/">Spyder 6</a> schon in den Startlöchern und scharrt mit den Hufen. Schaun wir mal, was mir da noch bevorsteht. <em>Still digging!</em></p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Martin Breuss: <em><a href="https://realpython.com/python-virtual-environments-a-primer/">Python Virtual Environments: A Primer</a></em>, Real Python, ohne Jahr</li>
+<li>Conda Docs: <em><a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">Managing environments</a></em>, 2017</li>
+<li>Lee Vaughan: <em><a href="https://nostarch.com/python-tools-scientists">Python Tools for Scientists</a>.An Introduction to Using Anaconda, JupyterLab, and Python’s Scientific Libraries</em>, San Francisco CA (No Starch Press) 2022</li>
+<li>Visual Studio Code Docs: <em><a href="https://code.visualstudio.com/docs/python/environments">Python environments in VS Code</a></em>, 6. Dezember 2023</li>
+</ul>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53784792029/">Der alte Oberförster in seiner gewohnten Umgebung</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>Hugo, der alte Oberförster, im Zeitungsblätterwald. colored french comic style</em>«. Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>Jupyter</category>
+  <category>JupyterLab Desktop</category>
+  <category>Spyder</category>
+  <guid>https://kantel.github.io/posts/2024062502_python_envs/</guid>
+  <pubDate>Tue, 25 Jun 2024 17:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024062502_python_envs/images/environments.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Google korrigiert wieder kritische Sicherheitslücken in Chrome</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1294,52 +1337,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2024060401_kulturbunker3/</guid>
   <pubDate>Tue, 04 Jun 2024 14:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024060401_kulturbunker3/images/kulturdach.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Auf ein Neues? Braucht der Schockwellenreiter Hugo?</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024060301_auf_ein_neues/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53672121375/"><img src="https://kantel.github.io/posts/2024060301_auf_ein_neues/images/schockwellenreiterneu-b.jpg" class="img-fluid"></a></p>
-<p>Ich weiß, es hört niemand gerne, aber so wie es aussieht, bin ich mit meinem <em>Static Site Generater</em> (SSG) <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> an die Grenzen dessen gestoßen, was dieser leisten kann. Mit den momentan über 800 Seiten dieses <del>Blogs</del> Kritzelhefts ist das Teil völlig überfordert, das Herausrendern eines neuen Beitrags benötigt mittlerweile etwa eine Viertelstunde<sup>1</sup>. Und das frustriert und behindert mich doch gewaltig in meinem kreativen Output.</p>
-<p>Was ist also zu tun? Ein schnellerer und leichtgewichtiger <em>Static Site Generator</em> muß offensichtlich her. Und der schnellste, den ich kenne, ist zur Zeit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/hugo.html">Hugo</a>, der in Go geschriebene und als <em>Single Binary</em> laufende, kompilierte SSG, der nach eigenen Angaben tausende von Seiten auf einen Rutsch ohne nennenswerte Verzögerung herausschreiben kann.</p>
-<p>Ich glaube natürlich nicht alles, was mir an Werbetexten unterkommt, und so werde ich Hugo erst einmal ausführlich testen. Ich schreibe das daher auch nur, damit Ihr Euch nicht wundert, wenn auf diesen Seiten völlig unvermittelt auf einmal Beiträge zu Hugo auftauchen sollten.</p>
-<p>Schaun wir also mal, was daraus wird. <em>Still digging!</em></p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/0IfzATRf_T8?si=Gi_0y_HK5prYoE0Z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p><strong>War sonst noch was?</strong> Ach ja, Hugo kann nicht nur mit Markdown umgehen, sondern zum Beispiel auch mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/asciidoc.html">AsciiDoc</a>, <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/restructuredtext.html">reStructuredText</a> oder den <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/orgmode.html">Org-mode</a> des <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/emacs.html">Emacs</a>. Mit AsciiDoc und <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/asciidoctor.html">AsciiDoctor</a> hatte ich <a href="http://blog.schockwellenreiter.de/2020/01/2020012301.html">vor einigen Jahren</a> schon einmal <a href="http://blog.schockwellenreiter.de/2020/01/2020012501.html">ein</a> <a href="http://blog.schockwellenreiter.de/2020/01/2020012902.html">wenig</a> <a href="http://blog.schockwellenreiter.de/2020/01/2020013002.html">experimentiert</a>, daher klingt das interessant. Nicht unbedingt für den <em>Schockwellenreiter</em>, da der Renderer ein externes Modul für Hugo verlangt und dies das Herausschreiben langsamer macht, aber als Teil einer zukünftigen Publikationsstrategie? Denn die Möglichkeiten von AsciiDoc gehen weit über die Möglichkeiten von Markdown hinaus. Also auch hier: <em>Still digging!</em></p>
-<section id="literatur" class="level3">
-<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
-<ul>
-<li>Brian P. Hogan: <em>Build Websites with Hugo. Fast Web Development with Markdown</em>, Raleigh NC (The Pragmatic Bookshelf) 2020</li>
-<li>der.hans: <em><a href="https://www.youtube.com/watch?v=0IfzATRf_T8">AsciiDoc - Plainish text for fancy output</a></em>, YouTube vom 8. August 2017</li>
-<li>Develpreneur: <em>Ascii Doc Tutorial (<a href="https://www.youtube.com/watch?v=GL1SEYOhEiQ">Part 1</a>, <a href="https://www.youtube.com/watch?v=wca5m7JpS_U">Part 2</a> und <a href="https://www.youtube.com/watch?v=cQ-IfqLTw8w">Part 3</a>)</em>, YouTube 2021</li>
-</ul>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53672121375/">Rabbit rides the Shockwave</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>The Mad Hatter surfs on a board in the air between houses and trees in a futuristic city. A planet with a ring can be seen in the sky. Little white rabbits with vests and watches scurry about on the streets. colored french comic style</em>«. Negative Prompt: »<em>ugly, beard, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Stable Diffusion XL, Style: Illustrated Anime + Ethereal Realism.</p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Zumindest auf meinem betagten MacBook Pro. Aber meine Tests auf meinem <a href="https://kantel.github.io/posts/2024051201_71_jahre/">zukünftigen Desktop Rechner</a> (einen halbwegs aktuellen Mac Mini von 2018) zeigten, daß darauf das Problem nur geringfügig nach hinten verschoben wird – Quarto ist auch dort nicht signifikant schneller.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Interna</category>
-  <category>Quarto</category>
-  <category>Statische Seiten</category>
-  <category>Hugo</category>
-  <category>AsciiDoc</category>
-  <guid>https://kantel.github.io/posts/2024060301_auf_ein_neues/</guid>
-  <pubDate>Mon, 03 Jun 2024 15:25:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024060301_auf_ein_neues/images/schockwellenreiterneu.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
