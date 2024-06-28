@@ -1,0 +1,60 @@
+---
+title: "Virtuelle Umgebungen für P5 (Python) und Py5"
+author: "Jörg Kantel"
+date: "2024-06-28 18:40:00"
+categories: [Python, JupyterLab Desktop, Visual Studio Code, P5, Py5]
+image: "images/pythonenv.jpg"
+---
+
+[![](images/pythonenv-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53501582607/)
+
+Natürlich mußte ich die [vor wenigen Tagen gemachte Entdeckung](https://kantel.github.io/posts/2024062502_python_envs/), daß man mit *Conda Environments* sich nicht in einem unübersichtlichen Dschungel verirrt, sondern einen aufgeräumten Garten mit wiederauffindbaren Beeten anlegt, sofort testen. Was lag näher, als je eine Umgebung für [P5 (Python)](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5py.html) und [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) anzulegen, denn diese beiden Processing-ähnlichen Python-Umgebungen sind sich so ähnlich, daß man schon Überschneidungen befürchten kann. (Es gibt meines Wissens zwar keine, aber sicher ist sicher&nbsp;…)
+
+### P5 (Python)
+
+P5 (Python) hatte ich das erste Mal 2018 [auf](http://blog.schockwellenreiter.de/2018/10/2018103103.html) [dem](http://blog.schockwellenreiter.de/2018/11/2018110103.html) [Schirm](http://blog.schockwellenreiter.de/2018/11/2018112401.html) und dann 2021 noch einmal [angefaßt](http://blog.schockwellenreiter.de/2021/01/2021011001.html). Doch das Teil schien mir damals -- trotz einiger Fortschritte -- noch nicht wirklich ausgereift. Erst als es mir im letzten Jahr (im Zusammenhang mit [Python Online-Editoren](https://kantel.github.io/posts/2023040802_another_python_online_editor/) ([nicht nur](https://kantel.github.io/posts/2023050402_p5_jupyter_und_mehr_online/)) für den Raspberry Pi, sondern auch für mein Chromebook) wieder unterkam, zeigten erste Tests, daß das Teil nun langsam erwachsen wird.
+
+[![](images/p51.jpg)](https://www.flickr.com/photos/schockwellenreiter/53818971972/)&nbsp;[![](images/p52.jpg)](https://www.flickr.com/photos/schockwellenreiter/53819002242/)
+
+Also habe ich P5 (Python) eine Conda-Umgebung spendiert, die ich sinnvollerweise auch `p5` genannt habe. Das war nicht ganz so einfach wie ich gedacht hatte, da P5 (Python) einige Abhängigkeiten besitzt, die leider von `pip` und `conda` nicht automatisch aufgelöst werden. Daher habe ich mehrere Schritte benötigt:
+
+1. Im *Anaconda-Navigator* mit `create` eine Umgebung `p5` angelegt.
+2. Da P5 (Python) intern [GLFW](https://www.glfw.org/) benötigt, um mit OpenGL zu kommunizieren, mit `brew install glfw` dieses installert.
+3. Dann nmußte ich mit `conda` separat [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) hinzufügen, da `pip` in der Umgebung Pillow nicht installieren konnte.
+4. *Last but not least* konnte ich dann mit `pip install p5` auch P5 (Python) mit den restlichen Abhängigkeiten installeren.
+
+Wie die Bilder oben zeigen (ein Klick darauf führt je auf eine Seite mit Vergrößerungen), lief danach P5 (Python) in [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) in der neuen Umgebung, nachdem ich diese über die *Command Palette* (`⇧⌘P`) mit `Python: Select Interpreter` ausgewählt hatte. Im VSCode Terminal wie auch in der Statuszeile rechts unten wird der aktive Interpreter/die aktive Umgebung angezeigt.
+
+### Py5
+
+Das Anlegen einer virtuellen Umgebung für Py5 verlief dagegen bedeutend unkomplizierter. Die einzige, unvorhergesehene Schwierigkeit war, daß mein frisch installiertes, aktuelles macOS Sonoma von Hause aus kein Java mehr mitbringt. (Meine bisherigen (älteren) macOS hatte alle noch ein per Default mitgeliefertes Java installiert.) Hier habe ich es mir allerdings einfach gemacht und -- wie auf *Stack Overflow* [empfohlen](https://stackoverflow.com/questions/65601196/how-to-brew-install-java) -- ein aktuelles Java mit Homebrew installiert:
+
+~~~bash
+brew install Java
+~~~
+
+Danach darf man aber nicht vergessen, mit
+
+~~~bash
+sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
+~~~
+
+auch noch den `symlink` zu setzen, damit das Betriebssystem das Java auch findet.
+
+Der Rest war dann -- dank der hervorratenden [Py5-Dokumentation](https://py5coding.org/content/install.html#anaconda-or-miniconda-setup), die explizit behandelt, wie man Py5 in einer Anaconda- oder Miniconda-Umgebung installiert -- ein Kinderspiel. Analog zur P5 (Python)-Umgebung `p5` oben wollte ich, daß diese `py5` heißt, und 
+
+~~~bash
+conda env create -n py5 -f http://py5coding.org/files/install/py5_environment.yml
+~~~
+
+legte diese dann zuverlässig an.
+
+[![](images/py51.jpg)](https://www.flickr.com/photos/schockwellenreiter/53820259886/)&nbsp;[![](images/py52.jpg)](https://www.flickr.com/photos/schockwellenreiter/53820597929/)
+
+Die Bilder zeigen (auch hier führt ein Klick wieder auf eine Seite mit Vergrößerungen), daß diese Umgebung nicht nur in Visual Studio Code, sondern auch mit Notebooks in [JupyterLab Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html) funzt. In JupyterLab Desktop wählt man die Umgebung in dem Menü rechts oben aus (neben dem »Hamburger-Menü« rechts außen).
+
+Ich sehe auch keinen Grund, warum die virtuellen Umgebungen nicht auch mit [Spyder](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html) spielen sollten. Das steht als nächstes auf meiner Testliste. Ihr merkt also: Ich habe zu tun. *Still digging!*
+
+---
+
+**Bild**: *[Python in neuer Umgebung](https://www.flickr.com/photos/schockwellenreiter/53501582607/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*A python with ((glasses)) and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It's a sunny morning*«, Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook.

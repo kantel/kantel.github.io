@@ -10,7 +10,72 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 26 Jun 2024 14:30:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 28 Jun 2024 16:40:00 GMT</lastBuildDate>
+<item>
+  <title>Virtuelle Umgebungen für P5 (Python) und Py5</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024062801_conda_env_python/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53501582607/"><img src="https://kantel.github.io/posts/2024062801_conda_env_python/images/pythonenv-b.jpg" class="img-fluid"></a></p>
+<p>Natürlich mußte ich die <a href="https://kantel.github.io/posts/2024062502_python_envs/">vor wenigen Tagen gemachte Entdeckung</a>, daß man mit <em>Conda Environments</em> sich nicht in einem unübersichtlichen Dschungel verirrt, sondern einen aufgeräumten Garten mit wiederauffindbaren Beeten anlegt, sofort testen. Was lag näher, als je eine Umgebung für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5py.html">P5 (Python)</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> anzulegen, denn diese beiden Processing-ähnlichen Python-Umgebungen sind sich so ähnlich, daß man schon Überschneidungen befürchten kann. (Es gibt meines Wissens zwar keine, aber sicher ist sicher&nbsp;…)</p>
+<section id="p5-python" class="level3">
+<h3 class="anchored" data-anchor-id="p5-python">P5 (Python)</h3>
+<p>P5 (Python) hatte ich das erste Mal 2018 <a href="http://blog.schockwellenreiter.de/2018/10/2018103103.html">auf</a> <a href="http://blog.schockwellenreiter.de/2018/11/2018110103.html">dem</a> <a href="http://blog.schockwellenreiter.de/2018/11/2018112401.html">Schirm</a> und dann 2021 noch einmal <a href="http://blog.schockwellenreiter.de/2021/01/2021011001.html">angefaßt</a>. Doch das Teil schien mir damals – trotz einiger Fortschritte – noch nicht wirklich ausgereift. Erst als es mir im letzten Jahr (im Zusammenhang mit <a href="https://kantel.github.io/posts/2023040802_another_python_online_editor/">Python Online-Editoren</a> (<a href="https://kantel.github.io/posts/2023050402_p5_jupyter_und_mehr_online/">nicht nur</a>) für den Raspberry Pi, sondern auch für mein Chromebook) wieder unterkam, zeigten erste Tests, daß das Teil nun langsam erwachsen wird.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53818971972/"><img src="https://kantel.github.io/posts/2024062801_conda_env_python/images/p51.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53819002242/"><img src="https://kantel.github.io/posts/2024062801_conda_env_python/images/p52.jpg" class="img-fluid"></a></p>
+<p>Also habe ich P5 (Python) eine Conda-Umgebung spendiert, die ich sinnvollerweise auch <code>p5</code> genannt habe. Das war nicht ganz so einfach wie ich gedacht hatte, da P5 (Python) einige Abhängigkeiten besitzt, die leider von <code>pip</code> und <code>conda</code> nicht automatisch aufgelöst werden. Daher habe ich mehrere Schritte benötigt:</p>
+<ol type="1">
+<li>Im <em>Anaconda-Navigator</em> mit <code>create</code> eine Umgebung <code>p5</code> angelegt.</li>
+<li>Da P5 (Python) intern <a href="https://www.glfw.org/">GLFW</a> benötigt, um mit OpenGL zu kommunizieren, mit <code>brew install glfw</code> dieses installert.</li>
+<li>Dann nmußte ich mit <code>conda</code> separat <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html">Pillow</a> hinzufügen, da <code>pip</code> in der Umgebung Pillow nicht installieren konnte.</li>
+<li><em>Last but not least</em> konnte ich dann mit <code>pip install p5</code> auch P5 (Python) mit den restlichen Abhängigkeiten installeren.</li>
+</ol>
+<p>Wie die Bilder oben zeigen (ein Klick darauf führt je auf eine Seite mit Vergrößerungen), lief danach P5 (Python) in <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> in der neuen Umgebung, nachdem ich diese über die <em>Command Palette</em> (<code>⇧⌘P</code>) mit <code>Python: Select Interpreter</code> ausgewählt hatte. Im VSCode Terminal wie auch in der Statuszeile rechts unten wird der aktive Interpreter/die aktive Umgebung angezeigt.</p>
+</section>
+<section id="py5" class="level3">
+<h3 class="anchored" data-anchor-id="py5">Py5</h3>
+<p>Das Anlegen einer virtuellen Umgebung für Py5 verlief dagegen bedeutend unkomplizierter. Die einzige, unvorhergesehene Schwierigkeit war, daß mein frisch installiertes, aktuelles macOS Sonoma von Hause aus kein Java mehr mitbringt. (Meine bisherigen (älteren) macOS hatte alle noch ein per Default mitgeliefertes Java installiert.) Hier habe ich es mir allerdings einfach gemacht und – wie auf <em>Stack Overflow</em> <a href="https://stackoverflow.com/questions/65601196/how-to-brew-install-java">empfohlen</a> – ein aktuelles Java mit Homebrew installiert:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">brew</span> install Java</span></code></pre></div>
+<p>Danach darf man aber nicht vergessen, mit</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sudo</span> ln <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-sfn</span> /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk</span></code></pre></div>
+<p>auch noch den <code>symlink</code> zu setzen, damit das Betriebssystem das Java auch findet.</p>
+<p>Der Rest war dann – dank der hervorratenden <a href="https://py5coding.org/content/install.html#anaconda-or-miniconda-setup">Py5-Dokumentation</a>, die explizit behandelt, wie man Py5 in einer Anaconda- oder Miniconda-Umgebung installiert – ein Kinderspiel. Analog zur P5 (Python)-Umgebung <code>p5</code> oben wollte ich, daß diese <code>py5</code> heißt, und</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> env create <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-n</span> py5 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-f</span> http://py5coding.org/files/install/py5_environment.yml</span></code></pre></div>
+<p>legte diese dann zuverlässig an.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53820259886/"><img src="https://kantel.github.io/posts/2024062801_conda_env_python/images/py51.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/53820597929/"><img src="https://kantel.github.io/posts/2024062801_conda_env_python/images/py52.jpg" class="img-fluid"></a></p>
+<p>Die Bilder zeigen (auch hier führt ein Klick wieder auf eine Seite mit Vergrößerungen), daß diese Umgebung nicht nur in Visual Studio Code, sondern auch mit Notebooks in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">JupyterLab Desktop</a> funzt. In JupyterLab Desktop wählt man die Umgebung in dem Menü rechts oben aus (neben dem »Hamburger-Menü« rechts außen).</p>
+<p>Ich sehe auch keinen Grund, warum die virtuellen Umgebungen nicht auch mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html">Spyder</a> spielen sollten. Das steht als nächstes auf meiner Testliste. Ihr merkt also: Ich habe zu tun. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53501582607/">Python in neuer Umgebung</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A python with ((glasses)) and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning</em>«, Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>JupyterLab Desktop</category>
+  <category>Visual Studio Code</category>
+  <category>P5</category>
+  <category>Py5</category>
+  <guid>https://kantel.github.io/posts/2024062801_conda_env_python/</guid>
+  <pubDate>Fri, 28 Jun 2024 16:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024062801_conda_env_python/images/pythonenv.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Ich habe fertig: Zwei Monitore an meinem »neuen« Mac Mini</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1314,30 +1379,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2024060601_ctjs_catnip/</guid>
   <pubDate>Thu, 06 Jun 2024 13:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024060601_ctjs_catnip/images/badgerctjs.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Google schließt am »Juni-Patchday« wieder Sicherheitslücken in Android</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024060501_android_patchday/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53561635081/"><img src="https://kantel.github.io/posts/2024060501_android_patchday/images/androidjuni-b.jpg" class="img-fluid"></a></p>
-<p>Google hat mit seinem monatlichen Sicherheitsupdate für Android (und damit auch auf seinen <a href="https://source.android.com/docs/security/bulletin/pixel/2024-06-01">Pixel-Geräten</a>) wieder <a href="https://source.android.com/docs/security/bulletin/2024-06-01">Sicherheitslücken</a> geschlossen.</p>
-<p>Die Updates werden so nach und nach per OTA <em>(over the air)</em> auf Pixel 8/8 pro, Pixel Tablet, Pixel Fold, Pixel 7a, Pixel 7/7 pro, Pixel 6a, Pixel 6/6 pro verteilt.</p>
-<p>Die anderen Hersteller werden wie üblich in Bälde nachziehen, sofern sie überhaupt noch entsprechenden Support leisten. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53561635081/">Drei tanzende Androiden</a></em>, erstellt mit <a href="https://ideogram.ai/">Ideogram</a>. Prompt: »<em>Three little green robots dance on a colorful meadow in front of a small garden house, two goats in checkered vests watch them, the sun shines on the scenery, colored french comic style</em>«. Modell: Ideogram 1.0, Style: Illustration.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024060501_android_patchday/</guid>
-  <pubDate>Wed, 05 Jun 2024 15:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024060501_android_patchday/images/androidjuni.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
