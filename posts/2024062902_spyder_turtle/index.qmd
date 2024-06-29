@@ -1,0 +1,39 @@
+---
+title: "Weiter mit der Spynne: Spyder und Pythons Turtle"
+author: "Jörg Kantel"
+date: "2024-06-29 18:40:00"
+categories: [Python, Py5, Turtle, Pillow]
+image: "images/pythagorasbunt.jpg"
+---
+
+[![](images/pythagorasbunt-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53824041384/)
+
+Die Wiederentdeckung der »[Spynne](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html)« hat mir keine Ruhe gelassen. Eine der Hauptgründe, warum ich sie [seinerzeit aus den Augen verloren](https://kantel.github.io/posts/2023042001_pillow_tutorial/) hatte, war, daß sie die Zusammenarbeit mit [Pythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) verweigerte. Neugierig und ohne viel Hoffnung auf Erfolg wollte ich herausfinden, wie das Spynnentier mit der Schildkröte verträgt, wenn sie aus dem [Anaconda-Navigator](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html) heraus gestartet wird.
+
+Dafür hatte ich ein [altes Skript](https://kantel.github.io/posts/2023072901_save_turtle_as_eps/) von mir hervorgekramt und es mit Spyder aus der Base-Umgebung (`root`) angeworfen. Wider Erwarten lief das Programm (beinahe -- dazu weiter unten mehr) problemlos durch. Da die Turtle Teil des `root environment` von Anaconda ist, scheint Spyder im Gegensatz zur Standalone-Version mit ihr zu spielen.
+
+Das auftretende Problem war [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) geschuldet. Zwar ist diese freundliche PIL-Fork Teil der Anaconda-Standard-Distribution, aber ohne [Ghostscript](https://www.ghostscript.com/), das aber in meinem Skript für die Erzeugung der Postscript-Datei benötigt wird. (Auf meinem alten Rechner hatte ich das irgendwann einmal installiert und vergessen.) Und Ghostscript ist auch auf dem Default-Conda-Server nicht vorhanden. Hier half mir -- wie so oft -- [Stack Overflow weiter](https://stackoverflow.com/questions/6848903/python-ghostscript-runtimeerror-can-not-find-ghostscript-library-libgs?rq=3): Dort fand ich den Hinweis, daß es auf `conda-forge` zu finden sei. Ein
+
+~~~bash
+conda install -c conda-forge ghostscript
+~~~
+
+leistete dann die erwartete Installation und mein kleines Skript schrieb dann auch die EPS-Datei ohne Fehlermeldung heraus.
+
+Spyder gefällt mir immer mehr. Das Teil ist als Python-IDE nicht so überfrachtet wie [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html), aber leistungsfähiger als [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html). Ich werde damit noch ein wenig spielen müssen, aber das Teil könnte zu meinem Leib-und-Magen-Python-Editor avancieren. *Still digging!*
+
+**War sonst noch was?** Ach ja, beim Erstellen der Screenshots für diesen Beitrag fiel mir noch ein weiterer Umstand auf, den ich auf meinem alten Rechner schon vor Jahren abgestellt hatte: Die mit den macOS-Bordmitteln hergestellten Screenshots besitzen zum ersten einen breiten, weißen Rand mit Schlagschatten und zum zweiten werden sie als `.png` abgespeichert. Das erste kann man im Terminal mit
+
+~~~bash
+defaults write com.apple.screencapture disable-shadow true
+~~~
+
+abstellen (wenn man das wieder rückgängig machen will, das `true` im Befehl durch `false` ersetzen), das zweite benötigt -- ebenfalls im Terminal -- die Zeile 
+
+~~~bash
+defaults write com.apple.screencapture type JPG 
+~~~
+
+um die Screenshots als `.jpg` herauszuschreiben. Hier muß, wenn Ihr wieder auf den Default zurücksetzen wollt, das `JPG` durch `PNG` ersetzt werden.
+
+Das alles steht hier nur, damit bei einem erneuten Rechnerwechsel ich das alles wiederfinde. *(Ich bin Optimist, ich hoffe, daß ich dann noch meine Seiten durchsuchen kann.)*
