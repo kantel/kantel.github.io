@@ -10,7 +10,49 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Sat, 29 Jun 2024 16:40:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 30 Jun 2024 16:15:00 GMT</lastBuildDate>
+<item>
+  <title>Abenteuer Spynne: Spyder, Conda Environment und Pygame</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024063001_spyder_pygame/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53825996374/"><img src="https://kantel.github.io/posts/2024063001_spyder_pygame/images/pygamespyder-b.jpg" class="img-fluid"></a></p>
+<p>Jetzt habe ich endgültig fertig, denn es ist mir gelungen, auch <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> in einer eigenen, separaten <a href="https://kantel.github.io/posts/2024062502_python_envs/">Conda-Umgebung</a> zu installieren und dann in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html">Spyder</a> zu editieren und zum Laufen zu bringen. Damit habe ich auf <a href="https://kantel.github.io/posts/2024062301_mac_mini/">meinem »neuen« Mac Mini</a> – jetzt auch <a href="https://kantel.github.io/posts/2024062601_2_monitore/">mit zwei Monitoren</a> – in sauber aufgeräumten, virtuellen Umgebungen eigentlich alles, was ich mir für die Programmierung mit Python wünsche.</p>
+<p>Nachdem ich dank der Hilfe von <em>Lee Vaughans</em> Buch »<a href="https://nostarch.com/python-tools-scientists">Python Tools for Scientists</a>« (ich wiederhole mich, aber Ehre, wem Ehre gebührt) endlich begriffen hatte, wie die virtuellen <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html">Anaconda</a>-Umgebungen eigentlich funktionieren, war es recht einfach. Zuerst habe ich im Anaconda-Navigator eine neue Umgebung angelegt, die ich naheliegend <code>pygame</code> genannt habe. Da Pygame in den mir bekannten Anaconda-Channels nicht vorhanden war, mußte ich diese Installation mit <code>pip</code> erledigen. Also erst einmal im Terminal mit</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> activate pygame</span></code></pre></div>
+<p>die virituelle Umgebung aktiviert und dann in dieser Umgebung mit</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install pygame</span></code></pre></div>
+<p>Pygame installiert. <code>pip</code> schlug mir ein Pygame 2.6.0 vor. Da dies meines Wissens die <a href="https://www.pygame.org/news/2024/6/pygame-2-6-0">aktuellste Version</a> (vom 25. Juni 2024) war, war ich damit einverstanden.</p>
+<p>Da schon lange die Idee in meinem Hinterkopf schmort, nicht nur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, sondern auch Pygame mit der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> zu verbandeln, um interaktive Simulationen mit Charts aufzuhübschen, habe ich mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> install matplotlib</span></code></pre></div>
+<p>diese in dieser Umgebung gleich mitinstalliert. Das hatte als Seiteneffekt den Vorteil, daß auch <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">NumPy</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html">Pillow</a> mitinstalliert wurden, da es Abhängigkeiten zwischen diesen beiden Paketen und der Matplotlib gibt.</p>
+<p>Zu guter letzt habe ich dann – wie auch <a href="https://kantel.github.io/posts/2024062901_conda_py5_spyder/">gestern</a> schon – den Anaconda-Navigator gebeten, mir ein Spyder für diese Umgebung (mit dem »naiven Zugang«) zu installieren. Das war alles, Spyder konnte nun Pygame, wie der <a href="https://www.flickr.com/photos/schockwellenreiter/53825996374/">Screenshot im Banner oben</a> beweist.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53826046554/"><img src="https://kantel.github.io/posts/2024063001_spyder_pygame/images/pygamevscode.jpg" class="img-fluid"></a></p>
+<p>Doch wartet, da war doch noch mehr: Jede im Navigator angelegte virtuelle Conda-Umgebung bekommt (im »modularen Zugang« – also ohne zusätzlichen Plattenspeicher zu belegen) ein <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> mitgegeben. Wird dieses von dort aus dem Navigator heraus gestartet, ist es gleich in der virtuellen Umgebung zu Hause (und kann dann ohne Klimmzüge natürlich auch Pygame-Skripte editieren und starten).</p>
+<p>Wenn man nun zusätzlich auch noch ein <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JupyterLab</a> aus dem Navigator heraus installiert, kann sogar <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">JupyterLab Desktop</a> mit Pygame umgehen. Das macht natürlich nur Sinn, wenn man die eigentlich wahnsinnige Idee hat, Pygame aus einem Jupyter-Notebook heraus aufzurufen. Aber wer weiß, vielleicht bin ich im Rahmen meiner Idee, mit Pygame interaktive Simulationen zu realisieren, tatsächlich so wahnsinnig. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>Spyder</category>
+  <category>Pygame</category>
+  <category>Spieleprogrammierung</category>
+  <category>JupyterLab</category>
+  <guid>https://kantel.github.io/posts/2024063001_spyder_pygame/</guid>
+  <pubDate>Sun, 30 Jun 2024 16:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024063001_spyder_pygame/images/pygamespyder.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Weiter mit der Spynne: Spyder und Pythons Turtle</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1340,50 +1382,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2024061001_firefox_update/</guid>
   <pubDate>Mon, 10 Jun 2024 18:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024061001_firefox_update/images/firefoxesta01.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Es lebe die Schildkröte: TurtleGFX und P5.js</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024060901_turtle_gfx/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53412499596/"><img src="https://kantel.github.io/posts/2024060901_turtle_gfx/images/turtlegfx1-b.jpg" class="img-fluid"></a></p>
-<p>Da habe ich mir <a href="https://kantel.github.io/posts/2024060701_p5play_matterjs/">am Freitag etwas eingebrockt</a>: Die beiläufig in einem Nebenabsatz eingefügte Bemerkung, daß mir in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> so etwas wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Turtle</a> fehlen würde, hat mir keine Ruhe gelassen und mich zum Sammeln von Material animiert, das mir helfen soll, <a href="https://codeguppy.com/index.html">CodeGuppys</a> Bibliothek <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a>, die Pythons Schildkröte in P5.js (und in <a href="https://codeguppy.com/">CodeGuppy</a> selber) implementieren will (und die auch in <a href="https://github.com/nickmcintyre/numero">Numero</a> Einzug gehalten hat), zu verstehen und in P5.js anzuwenden.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/_OG4YTs8h3c?si=VghcYUvZcDi1iN6P" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Die Beispielanwendungen, die ich gefunden habe, sind alle von Mr.&nbsp;CodeGuppy itselfs, <em>Marian Veteanu</em>, und in CodeGuppy implementiert. Da diese IDE doch in Teilen sehr stark von P5.js abweicht, ist erst einmal die Lektüre des Beitrags »<a href="https://codeguppy.com/code.html?t=_p5">Getting started with CodeGuppy.com for P5.js Developers</a>« zu empfehlen. Danach kann man sich die übrigen Beiträge zu TurtleGFX eigentlich (mit einer Ausnahme) in beliebiger Reihenfolge reinziehen. Ich empfehle diese Abfolge:</p>
-<ol type="1">
-<li><a href="https://codeguppy.com/code.html?t=turtle_lines">Turtle Lines</a>: A simple line rotated using the turtle graphics library creates amazing patterns.</li>
-<li><a href="https://codeguppy.com/code.html?t=hilbert_curve">Hilbert Curve</a>: Generate Hilbert curve using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=turtle_polygons">Turtle Polygons</a>. Generate polygons using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=turtle_sierpinski">Sierpinsky Triangle</a>. Draw Sierpinski triangle using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=turtle_etch">Etch with Turtle</a>. This is an implementation with Turtle Gfx of the famous Etch a Sketch.</li>
-<li><a href="https://codeguppy.com/code.html?t=fractal_tree">Fractal Tree</a>. This program will show you how to generate a fractal tree using turtle graphics.</li>
-<li><a href="https://codeguppy.com/code.html?t=forest_walk">Forest Walk</a>. Explore a virtual forest of fractal trees generated using turtle graphics. (Dieser Beitrag ist die oben erwähnte Ausnahme, er setzt die Lektüre von »Fraktal Tree« voraus.)</li>
-</ol>
-<p>Danach solltet Ihr und auch ich in der Lage sein, TurtleGFX in Eure (und ich in meine) P5.js-Sketche einzubauen. Wer dann Blut geleckt hat und wissen will, wie man eine eigene Turtle-Bibliothek implementiert, dem oder ihr sei noch dieser Beitrag empfohlen:</p>
-<ol start="8" type="1">
-<li><a href="https://codeguppy.com/code.html?t=turtle_graphics">Turtle Graphics</a>: Turtle graphics is the flagship feature of Logo programming language. See how easy is to add Logo like commands to your favorite JavaScript language.</li>
-</ol>
-<p>Jetzt fehlt mir eigentlich nur noch eine Bibliothek für die Mathematik mit komplexen Zahlen. Hier <a href="https://forum.processing.org/two/discussion/22883/complex-numbers-in-p5.html">empfiehlt das Processing-Forum</a> die JavaScript-Library <a href="https://mathjs.org/index.html">Math.js</a> mit dem Modul <a href="https://mathjs.org/docs/datatypes/complex_numbers.html">Complex Numbers</a>, das man via NPM auch <a href="https://mathjs.org/download.html">lokal installieren</a> kann. Das sollte ich auch noch testen. Aber erst einmal ist die Schildkröte an der Reihe. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53412499596/">Two Turtles drawing together</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A turtle and a python paint together at an easel, colored steampunk style</em>«, Modell: stable-diffusion-xl-1024-v1-0, Style: Comic Book.</p>
-
-
-
- ]]></description>
-  <category>P5.js</category>
-  <category>Turtle</category>
-  <category>TurtleGFX</category>
-  <category>JavaScript</category>
-  <category>Creative Coding</category>
-  <category>CodeGuppy</category>
-  <guid>https://kantel.github.io/posts/2024060901_turtle_gfx/</guid>
-  <pubDate>Sun, 09 Jun 2024 16:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024060901_turtle_gfx/images/turtlegfx1.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

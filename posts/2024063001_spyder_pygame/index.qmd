@@ -1,0 +1,41 @@
+---
+title: "Abenteuer Spynne: Spyder, Conda Environment und Pygame"
+author: "Jörg Kantel"
+date: "2024-06-30 18:15:00"
+categories: [Python, Spyder, Pygame, Spieleprogrammierung, JupyterLab]
+image: "images/pygamespyder.jpg"
+---
+
+[![](images/pygamespyder-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53825996374/)
+
+Jetzt habe ich endgültig fertig, denn es ist mir gelungen, auch [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) in einer eigenen, separaten [Conda-Umgebung](https://kantel.github.io/posts/2024062502_python_envs/) zu installieren und dann in [Spyder](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html) zu editieren und zum Laufen zu bringen. Damit habe ich auf [meinem »neuen« Mac Mini](https://kantel.github.io/posts/2024062301_mac_mini/) -- jetzt auch [mit zwei Monitoren](https://kantel.github.io/posts/2024062601_2_monitore/) -- in sauber aufgeräumten, virtuellen Umgebungen eigentlich alles, was ich mir für die Programmierung mit Python wünsche.
+
+Nachdem ich dank der Hilfe von *Lee Vaughans* Buch »[Python Tools for Scientists](https://nostarch.com/python-tools-scientists)« (ich wiederhole mich, aber Ehre, wem Ehre gebührt) endlich begriffen hatte, wie die virtuellen [Anaconda](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html)-Umgebungen eigentlich funktionieren, war es recht einfach. Zuerst habe ich im Anaconda-Navigator eine neue Umgebung angelegt, die ich naheliegend `pygame` genannt habe. Da Pygame in den mir bekannten Anaconda-Channels nicht vorhanden war, mußte ich diese Installation mit `pip` erledigen. Also erst einmal im Terminal mit
+
+~~~bash
+conda activate pygame
+~~~
+
+die virituelle Umgebung aktiviert und dann in dieser Umgebung mit
+
+~~~bash
+pip install pygame
+~~~
+
+Pygame installiert. `pip` schlug mir ein Pygame 2.6.0 vor. Da dies meines Wissens die [aktuellste Version](https://www.pygame.org/news/2024/6/pygame-2-6-0) (vom 25. Juni 2024) war, war ich damit einverstanden.
+
+Da schon lange die Idee in meinem Hinterkopf schmort, nicht nur [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), sondern auch Pygame mit der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) zu verbandeln, um interaktive Simulationen mit Charts aufzuhübschen, habe ich mit
+
+~~~bash
+conda install matplotlib
+~~~
+
+diese in dieser Umgebung gleich mitinstalliert. Das hatte als Seiteneffekt den Vorteil, daß auch [NumPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) und [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) mitinstalliert wurden, da es Abhängigkeiten zwischen diesen beiden Paketen und der Matplotlib gibt.
+
+Zu guter letzt habe ich dann -- wie auch [gestern](https://kantel.github.io/posts/2024062901_conda_py5_spyder/) schon -- den Anaconda-Navigator gebeten, mir ein Spyder für diese Umgebung (mit dem »naiven Zugang«) zu installieren. Das war alles, Spyder konnte nun Pygame, wie der [Screenshot im Banner oben](https://www.flickr.com/photos/schockwellenreiter/53825996374/) beweist.
+
+[![](images/pygamevscode.jpg)](https://www.flickr.com/photos/schockwellenreiter/53826046554/)
+
+Doch wartet, da war doch noch mehr: Jede im Navigator angelegte virtuelle Conda-Umgebung bekommt (im »modularen Zugang« -- also ohne zusätzlichen Plattenspeicher zu belegen) ein [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) mitgegeben. Wird dieses von dort aus dem Navigator heraus gestartet, ist es gleich in der virtuellen Umgebung zu Hause (und kann dann ohne Klimmzüge natürlich auch Pygame-Skripte editieren und starten).
+
+Wenn man nun zusätzlich auch noch ein [JupyterLab](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) aus dem Navigator heraus installiert, kann sogar [JupyterLab Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html) mit Pygame umgehen. Das macht natürlich nur Sinn, wenn man die eigentlich wahnsinnige Idee hat, Pygame aus einem Jupyter-Notebook heraus aufzurufen. Aber wer weiß, vielleicht bin ich im Rahmen meiner Idee, mit Pygame interaktive Simulationen zu realisieren, tatsächlich so wahnsinnig. *Still digging!*
