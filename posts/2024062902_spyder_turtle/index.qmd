@@ -14,7 +14,7 @@ Dafür hatte ich ein [altes Skript](https://kantel.github.io/posts/2023072901_sa
 
 Das auftretende Problem war [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) geschuldet. Zwar ist diese freundliche PIL-Fork Teil der Anaconda-Standard-Distribution, aber ohne [Ghostscript](https://www.ghostscript.com/), das aber in meinem Skript für die Erzeugung der Postscript-Datei benötigt wird. (Auf meinem alten Rechner hatte ich das irgendwann einmal installiert und vergessen.) Und Ghostscript ist auch auf dem Default-Conda-Server nicht vorhanden. Hier half mir -- wie so oft -- [Stack Overflow weiter](https://stackoverflow.com/questions/6848903/python-ghostscript-runtimeerror-can-not-find-ghostscript-library-libgs?rq=3): Dort fand ich den Hinweis, daß es auf `conda-forge` zu finden sei. Ein
 
-~~~bash
+~~~shell
 conda install -c conda-forge ghostscript
 ~~~
 
@@ -24,13 +24,13 @@ Spyder gefällt mir immer mehr. Das Teil ist als Python-IDE nicht so überfracht
 
 **War sonst noch was?** Ach ja, beim Erstellen der Screenshots für diesen Beitrag fiel mir noch ein weiterer Umstand auf, den ich auf meinem alten Rechner schon vor Jahren abgestellt hatte: Die mit den macOS-Bordmitteln hergestellten Screenshots besitzen zum ersten einen breiten, weißen Rand mit Schlagschatten und zum zweiten werden sie als `.png` abgespeichert. Das erste kann man im Terminal mit
 
-~~~bash
-defaults write com.apple.screencapture disable-shadow true
+~~~shell
+defaults write com.apple.screencapture "disable-shadow" -bool "true”
 ~~~
 
 abstellen (wenn man das wieder rückgängig machen will, das `true` im Befehl durch `false` ersetzen), das zweite benötigt -- ebenfalls im Terminal -- die Zeile 
 
-~~~bash
+~~~shell
 defaults write com.apple.screencapture type JPG 
 ~~~
 
