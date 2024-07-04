@@ -1,0 +1,25 @@
+---
+title: "P5.js und Glitch: Die Wiederentdeckung (m)eines Spielplatzes"
+author: "Jörg Kantel"
+date: "2024-07-04 15:45:00"
+categories: [Glitch 🎏, P5.js, Creative Coding, Webworking]
+image: "images/glitchp5templ.jpg"
+---
+
+[![](images/glitchp5templ-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53834971614/)
+
+Da hatte ich mir doch [vor über zwei Jahren](http://blog.schockwellenreiter.de/2022/04/2022040601.html) mit [relativ großem Tam-Tam](http://blog.schockwellenreiter.de/2022/04/2022040602.html) einen [Spielplatz](https://schockwellenreiter.glitch.me/) auf [Glitch 🎏](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/glitch.html) zugelegt, dem freundlichen (und in der Grundversion kostenlosen) Community-Webhoster -- und ihn dann [relativ](https://kantel.github.io/posts/2023111701_more_glitch/) [schnell](https://kantel.github.io/posts/2023111801_smashing_pumpkins_v03/) wieder vergessen. Doch während meiner Recherchen zu [P5.js-Online-Editoren](https://kantel.github.io/posts/2024061601_openprocessing/) rückte der Dienst wieder in meinen Fokus.
+
+<iframe  class="if16_9" src="https://www.youtube.com/embed/dEdpmbtgznU?si=rxjG1hGNmmbZRdHs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Ich stolperte nämlich über das [Einführungsvideo](https://www.youtube.com/watch?v=dEdpmbtgznU) zur Playlist »[Data as Material](https://www.youtube.com/playlist?list=PLLx7jIm38p9mATGvW9sUT3Gjk0kGX9sot)«, in dem *David Bouchard* erläutert, warum er für diesen/seinen [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Kurs Glitch gegenüber dem P5.js-Webeditor den Vorzug gibt. Mich überzeugten drei Gründe:
+
+1. Glitch zeigt den Code *und* den Canvas nicht unbedingt in *einem* Browserfenster an (wie im [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53834971614/) im Bannerbild oben), sondern man kann das Ergebis (die fertige Website) auch in einem separaten Browserfenster anzeigen lassen.
+2. Die umgebende `index.html` kann aus einer beliebig komplexen Website bestehen. Daher kann man zum Beispiel auch Experimente mit der [DOM-Bibliothek](https://p5js.org/reference/#DOM) durchführen oder mehrere Sketche auf *einer* Website implementieren.
+3. Und das gab bei *David Bouchard* wohl den Ausschlag: Glitch bietet von Haus aus einen Zugriff auf einen [Node.js](http://cognitiones.kantel-chaos-team.de/webworking/frameworks/nodejs.html)-Server an. Damit kann man, wie er in seiner oben verlinkten Playlist zeigt, auf diverse APIs zugreifen und mit diversen Webservices kommunizieren, ohne einen eigenen Node.js-Server betreiben zu müssen.
+
+Allerdings bekommt man den Komfort nicht völlig geschenkt: Glitch kennt von Hause aus P5.js **nicht** und zeigt daher im Editor viele hässliche Warnungen an. Um diese abzuschalten, bietet *David Bouchard* auf Glitch in [seinem Blanko-P5.js-Template](https://glitch.com/~rta842-blank) eine `.eslintrc.json` an. Mir ist selber nicht ganz klar, was diese bewerkstelligt, aber es funktioniert -- die Warnungen sind weg.
+
+Ich habe für Euch und für mich eine [eigene P5.js-Blanko-Template-Version](https://p5jsblankotemplate.glitch.me) inklusive der `.eslintrc.json` auf Glitch erstellt, die Ihr (und die ich) für Eure/meine P5.js-Projekte nur remixen müßt und dann könnt Ihr loslegen. Meine Version ist fast genau so schlank wie die von *David Bouchard* (ich habe aus seinem Video gelernt, was man alles von dem Default-Website-Template von Glitch nicht braucht und wegwerfen kann), aber ich wollte, daß die Webseite auch nach einem Download auf Euren/meinen Rechnern ohne Internetverbindung lauffähig ist. Daher habe ich eine `p5.min.js` in das Template hochgeladen und sie nicht via eines CDN eingebunden. Habt viel Spaß damit, ich denke, ich werde das auch haben.
+
+Für die Zukunft plane ich noch je ein Template mit P5.play (wahlweise mit P5.js oder [Q5.js](https://q5js.org/home/) als darunterliegender Engine) und eventuell -- je nachdem wie Q5.js sich bewährt -- auch noch ein Template mit Q5.js pur. Aber erst einmal habe ich zu tun!
