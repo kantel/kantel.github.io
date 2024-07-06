@@ -10,7 +10,47 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Sat, 06 Jul 2024 14:55:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 06 Jul 2024 16:10:00 GMT</lastBuildDate>
+<item>
+  <title>Neues von meinem Rechnerumzug: MkDocs reloaded</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024070602_mkdocs_reloaded/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53835364968/"><img src="https://kantel.github.io/posts/2024070602_mkdocs_reloaded/images/mkdocsreloaded-b.jpg" class="img-fluid"></a></p>
+<p>Wenn man – wie ich – bei der <a href="https://kantel.github.io/posts/2024062301_mac_mini/">Einrichtung eines neuen Rechners</a> sich entschlossen hat, <a href="https://kantel.github.io/posts/2024062401_neustart_updates/">jedes Stück Software einzeln neu zu installieren</a>, um das über die Jahre gewachsene Chaos auf der Festplatte ein wenig aufzuräumen, dann stößt man zwangsläufig auf Programme, bei denen man sich fragt, warum man sie vergessen und lange nicht genutzt hat. So ist es mir mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/mkdocs.html">MkDocs</a> ergangen.</p>
+<p><strong>MkDocs</strong> ist ein schneller, in Python geschriebener und freier (BSD-Lizenz), Markdown-basierter Generator für statische Seiten, der vor allem für die <a href="https://realpython.com/python-project-documentation-with-mkdocs/">Dokumentation von Software-Projekten</a> entwickelt und von all denen geliebt wurde, für die <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/sphinx.html">Sphinx</a> ein Overkill war. Ich hatte seinerzeit viel mit dem Teil gearbeitet und dies unter anderem auch auf diesen Seiten im <em>Schockwellenreiter</em> dokumentiert:</p>
+<ul>
+<li>MkDocs: <a href="http://blog.schockwellenreiter.de/2016/12/2016120601.html">Dokumentationen mit Markdown</a>, 6. Dezember 2016</li>
+<li><a href="http://blog.schockwellenreiter.de/2016/12/2016121601.html">Nevernote</a>, 16. Dezember 2016</li>
+<li>Worknote: <a href="http://blog.schockwellenreiter.de/2017/01/2017011304.html">MkDocs und die Admonition Extension</a>, 13. Januar 2017</li>
+<li>Worknote: <a href="http://blog.schockwellenreiter.de/2017/01/2017011905.html">MkDocs und MathJax</a>, 19. Januar 2017</li>
+<li>Worknote: <a href="http://blog.schockwellenreiter.de/2022/06/2022061601.html">Software-Dokumentation mit Markdown</a>, 16. Juni 2022</li>
+<li><a href="http://blog.schockwellenreiter.de/2022/10/2022101301.html">Statische (Dokumentations-) Seiten mit MkDocs und Markdown</a>. 13. Oktober 2022</li>
+</ul>
+<p>Sichtbares Ergebnis dieser Bemühungen sind meine Seiten »<a href="http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/">Processing.py in Beispielen</a>«, eine Sammlung meiner <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a>-Tutorial, die ich von 2015 bis 2018 geschrieben und hochgeladen hatte. Danach hatte ich – etwa 2022 – noch die Idee, etwas ähnliches für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> zu realisieren, bin aber über einen frühen Prototypen (sie <a href="https://www.flickr.com/photos/schockwellenreiter/53835364968/">Screenshot</a> im Bannerbild oben) nicht hinausgekommen.</p>
+<p>Als ich nun bei der (Neu-) Einrichtung meines Rechners wieder über MkDocs stolperte, war mir erst einmal ein wenig wehmütig zumute. Doch dann dachte ich: Warum nicht ein <em>Reload</em> versuchen? Mein wiedererwachtes Interess an P5.js hat ja schon zu einer Reihe von neuen Tutorials im <em>Schockwellenreiter</em> geführt, so daß ein »P5.js in Beispielen« Sinn machen würde. Also habe ich mir erst einmal mit Conda eine virtuelle Umgebung für MkDocs geschaffen und die Software darin installiert und dann damit unverändert meine alten P5.js-Seiten herausrendern lassen. Ich erhielt zwar viele Warnungen (in der Hauptsache wegen veralteter Aufrufe, die durch neue Funktionen ersetzt wurden), aber es funktionierte und die Seiten wurden anstandslos herausgeschrieben.</p>
+<p>Dadurch angefixt habe ich einen ganzen Abend an den Seiten gebastelt, bis keine Warnungen mehr im Terminal angezeigt wurden. Und dann war mein Entschluß gefasst: Es wird einen Neuanfang für (m)ein »P5.js in Beispielen« geben. Ich bin mir nur noch nicht sicher, ob ich diese Seiten dann auf <a href="http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html">GitHub Pages</a> oder auf <a href="https://about.readthedocs.com/">Read the Docs</a> veröffentliche soll. Es gibt beim Letztgenannten einen <a href="https://about.readthedocs.com/pricing/#/community">Community Plan</a>, auf dem man – wenn man »ethisch korrekte« und nicht störende Anzeigen zuläßt (es ist <em>eine</em> kleine Anhzeige pro Seite) – seine Seiten kostenlos veröffentlichen kann. Und <em>Read the Docs</em> <a href="https://docs.readthedocs.io/en/stable/intro/getting-started-with-mkdocs.html">unterstützt MkDocs</a> <em>out of the Box</em>.</p>
+<p>Und – wie fast immer – hat mich bei meinen Überlegungen gleich der Größenwahn gepackt: Was ist mit »Py5 in Beispielen« oder »Pygame in Beispielen«. Aber angefangene Projekte tummeln sich ja schon zu Hauf auf meinen Festplatten. Daher wäre ich froh, wenn ich zumindest erst einmal das »P5.js in Beispielen« zum Abschluß bringen würde.</p>
+<p>Ein weiteres Problem scheint mittlerweile auch gelöst: Hatte ich <a href="http://blog.schockwellenreiter.de/2017/01/2017011905.html">hier noch beklagt</a>, daß MkDocs <a href="http://cognitiones.kantel-chaos-team.de/mathematik/mathjax.html">MathJax</a> nur via eines CDN einbinden kann, verspricht der Beitrag »<a href="https://docs.mathjax.org/en/v3.2-latest/web/hosting.html">Hosting Your Own Copy of MathJax</a>«, daß eine selbstgehostete Lösung möglich sei.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53835177836/"><img src="https://kantel.github.io/posts/2024070602_mkdocs_reloaded/images/nevernotereloaded.jpg" class="img-fluid"></a></p>
+<p>Ein weiters altes (MkDocs-) Projekt habe ich aber dennoch – wenn auch vielleicht nur kurzfristig – wiederbelebt: Während meiner damaligen Flucht aus den Datensilos hatte ich mit <a href="http://blog.schockwellenreiter.de/2016/12/2016121601.html">Nevernote</a> meine eigene, private Version von Evernote mit MkDocs realisiert. Es war so etwas wie der Vorgänger meines zweiten Gehirns. Doch von <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html">Logseq</a> trudeln momentan <a href="https://kantel.github.io/posts/2024050402_logseq_oder_zettlr/">beunruhigende Nachrichten</a> bei mir ein, die mich über einen Wechsel der Software für mein zweites Gehirn nachdenken lassen (bisher dachte ich an <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/zettlr.html">Zettlr</a> oder <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/obsidian.html">Obsidian</a>). Als chronischer Bastler aber frage ich mich nun: Warum nicht (weiter) an etwas eigenes, selbstgeschraubtes bauen? Einen <a href="https://kantel.github.io/posts/2024050701_digital_garden/">digitalen Garten</a> kann ich unter Umständen auch mit MkDocs realisieren – wenn ich die <a href="https://stackoverflow.com/questions/48173267/mkdocs-how-to-enable-hyperlinks-based-on-keywords-found-in-the-content">Sache mit den Wikilinks</a> in den Griff bekomme. Doch dafür soll es in den neueren Releases von MkDocs zumindest Ansätze von Lösungen geben. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Interna</category>
+  <category>Webworking</category>
+  <category>Statische Seite</category>
+  <category>MkDocs</category>
+  <category>Markdown</category>
+  <guid>https://kantel.github.io/posts/2024070602_mkdocs_reloaded/</guid>
+  <pubDate>Sat, 06 Jul 2024 16:10:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024070602_mkdocs_reloaded/images/mkdocsreloaded.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus der Nachbarschaft: Neukölln’de futbol coşkusu</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1121,46 +1161,6 @@ font-style: inherit;">;</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024061901_chrome_update/</guid>
   <pubDate>Wed, 19 Jun 2024 07:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024061901_chrome_update/images/octopussy20240619.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>P5.js Online: OpenProcessing statt P5.js-Webeditor und P5.js-Widget</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024061601_openprocessing/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53795083048/"><img src="https://kantel.github.io/posts/2024061601_openprocessing/images/openprocessing-b.jpg" class="img-fluid"></a></p>
-<p>Da hatte ich mir doch alles so einfach vorgestellt: Ich wollte <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Skripte im <a href="https://editor.p5js.org/">P5.js-Webeditor</a> entwickeln und die fertigen Sketche dann mit Hilfe des <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5xjswidget.html">P5.js-Widget</a> in diese Seiten einbinden, so daß sie auch editierbar sind. Aber die Welt ist leider oft nicht so einfach, wie man es sich wünscht.</p>
-<p>Es begann, als ich die <a href="https://github.com/CodeGuppyPrograms/TurtleGFX/tree/master">TurtleGFX</a>-Bibliothek <a href="https://kantel.github.io/posts/2024061202_turtlegfx_1st_step/">erkunden wollte</a>: Ich fand keinen Weg, diese Bibliothek mit dem P5.js-Widget zu verbinden. Dann las ich auch noch in dem von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/p5play.html">P5.play</a> zur <a href="https://editor.p5js.org/quinton-ashley/sketches/szN_XdV5O">Verfügung gestellten Template</a>, daß von der Nutzung des P5.js-Webeditors abgeraten werde. Zwar sind die dort erwähnten Bugs eher für Spezialisten von Bedeutung, aber wer weiß, was sich dahinter noch verbirgt.</p>
-<p>Also habe ich nach Alternativen gesucht. Als erste Antwort wird einem da meistens <a href="https://de.wikipedia.org/wiki/CodePen">CodePen</a> vorgeschlagen, aber es sieht so aus, als ob man Assets und zusätzliche JavaScript-Dateien – wie <code>turtlegfx.js</code> eine ist – nur per CDN oder <code>npm</code> einbinden kann (zumindest in der kostenlosen Version). Damit ist das Teil für mich erst einmal sinnlos<sup>1</sup>.</p>
-<p>Dann wurde mir auf der <a href="https://p5play.org/">P5.play-Startseite</a> auch noch <a href="https://aijs.io/home">Aijs</a> empfohlen. Das Teil scheint alles zu können, was ich von einem Online-Editor erwarte (und mehr<sup>2</sup>). Aber es scheint zwar kostenlos zu nutzen (im Sinne von »frei wie Freibier«), aber proprietär zu sein. Ich habe jedenfalls nirgendwo eine Lizenz gefunden. Und über solch eine wankende Brücke will ich nicht gehen.</p>
-<p>Blieb also nur noch <a href="https://openprocessing.org/">OpenProcessing</a> übrig. Zwar steht auch hier die Lizenz auf etwas wackeligen Füßen (ich habe keine gefunden), aber die Umgebung basiert zum größten Teil auf Open-Source-Komponenten und sie erlaubt, die eigenen Sketche unter einer CC-Lizenz zu veröffentlichen.</p>
-<p>Zudem ist OpenProcessing nicht nur ein Online-Editor für P5.js-Sketche (und – das ist historisch gewachsen, aber nicht mehr zu empfehlen – auch für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>-Applets), sondern auch eine Online-Community. Und OpenProcessing erlaubt das Einbinden der Sketche per <code>Iframe</code> in die eigenen Webseiten<sup>3</sup>:</p>
-<iframe src="https://openprocessing.org/sketch/2301132/embed/" width="640" height="540">
-</iframe>
-<p>Ein Wermutstropfen ist, daß der Quellcode zwar angezeigt wird (auf <code>&lt;/&gt;</code> in der Mitte der Kopfzeile klicken), aber nicht wie beim P5.js-Widget editiert werden kann. Hier muß mir noch eine Lösung einfallen, wie ich P5.js-Widget wenigstens mit P5.play verheiraten kann<sup>4</sup>. Und noch immer offen ist die Frage, wie ich die IFrames responsiv in meine Seiten einbinde. <em>Still digging!</em></p>
-<p>Aber all diese Erfahrungen haben in mir die Überzeugung wachsen lassen, daß es – wenn man nicht gerade auf einem Chromebook oder mit einem Tablet entwickelt – wohl doch sinnvoller ist, seine P5.js-Sketche lokal im Texteditor seines Vertrauens zu programmieren. Zwar versprechen die Online-Editoren einen installationsfreien Zugang zu P5.js, aber das stimmt nur, wenn man keine zusätzlichen Komponenten oder Bibliotheken benötigt. Daher werde ich ein Tutorial entwerfen, wie man sich eine Umgebung in einem Texteditor zurechtbastelt. Sie soll mit jedem beliebigen Texteditor und einem (einigermaßen aktuellen) Webbrowser funktionieren (zur Not also auch mit TextEdit und Safari – obwohl das eigentlich nur Masochisten empfohlen werden kann), aber ich werde auch auf einige Plugins für spezielle Editoren eingehen, die die Programmierung erleichtern. Also noch einmal: <em>Still digging!</em></p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Ich schließe nicht aus, das ich zum einen etwas übersehen habe, und CodePen es doch erlaubt, eigene JavaScript-Dateien hochzuladen und einzubinden. Zum anderen hat CodePen den Vorteil, daß sich die Sketche nicht nur einfach in die eigenen Seiten, sondern auch in Services wie zum Beispiel <a href="https://de.wikipedia.org/wiki/Notion_(Produktivit%C3%A4tssoftware)">Notion</a> einbinden lassen. Daher verlinke ich hier auch noch auf die <a href="https://codepen.io/">CodePen Homepage</a> und <em>Daniel Shiffmans</em> Tutorial »<a href="https://www.youtube.com/watch?v=5gfUgNpS6kY">CodePen in p5.js</a>«. Wer lieber liest statt schaut, dem sei auch noch der Artikel »<a href="https://medium.com/@engineerwithoutfear/using-p5-js-on-codepen-efd443fc661">Using p5.js on CodePen</a>« empfohlen (<em>Medium.com</em>, daher eventuell hinter einer Bezahlschranke). Ich habe mir jedenfalls einen (kostenlosen) CodePen-Account zugelegt. Wer weiß, wozu der noch gut sein kann.↩︎</p></li>
-<li id="fn2"><p>Das Teil verspricht auch eine umfangreiche KI-Unterstützung.↩︎</p></li>
-<li id="fn3"><p>Wegen der Titelzeile muß jedoch an der Größe geschraubt werden. Während <code>width</code> der Breite des Canvas entspricht, müssen bei <code>height</code> noch 60 Pixel hinzuaddiert werden. Also <code>createCanvas(640, 480)</code> wird zu <code>&lt;iframe src="…" width="640" height="540"&gt;&lt;/iframe&gt;</code>.↩︎</p></li>
-<li id="fn4"><p>Das muß gehen, denn die Tutorialseiten von P5.play machen massiv davon Gebrauch.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>P5.js</category>
-  <category>Creative Coding</category>
-  <category>OpenProcessing</category>
-  <guid>https://kantel.github.io/posts/2024061601_openprocessing/</guid>
-  <pubDate>Sun, 16 Jun 2024 15:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024061601_openprocessing/images/openprocessing.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

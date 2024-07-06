@@ -1,0 +1,34 @@
+---
+title: "Neues von meinem Rechnerumzug: MkDocs reloaded"
+author: "Jörg Kantel"
+date: "2024-07-06 18:10:00"
+categories: [Interna, Webworking, Statische Seite, MkDocs, Markdown]
+image: "images/mkdocsreloaded.jpg"
+---
+
+[![](images/mkdocsreloaded-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53835364968/)
+
+Wenn man -- wie ich -- bei der [Einrichtung eines neuen Rechners](https://kantel.github.io/posts/2024062301_mac_mini/) sich entschlossen hat, [jedes Stück Software einzeln neu zu installieren](https://kantel.github.io/posts/2024062401_neustart_updates/), um das über die Jahre gewachsene Chaos auf der Festplatte ein wenig aufzuräumen, dann stößt man zwangsläufig auf Programme, bei denen man sich fragt, warum man sie vergessen und lange nicht genutzt hat. So ist es mir mit [MkDocs](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/mkdocs.html) ergangen.
+
+**MkDocs** ist ein schneller, in Python geschriebener und freier (BSD-Lizenz), Markdown-basierter Generator für statische Seiten, der vor allem für die [Dokumentation von Software-Projekten](https://realpython.com/python-project-documentation-with-mkdocs/) entwickelt und von all denen geliebt wurde, für die [Sphinx](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/sphinx.html) ein Overkill war. Ich hatte seinerzeit viel mit dem Teil gearbeitet und dies unter anderem auch auf diesen Seiten im *Schockwellenreiter* dokumentiert:
+
+- MkDocs: [Dokumentationen mit Markdown](http://blog.schockwellenreiter.de/2016/12/2016120601.html), 6. Dezember 2016
+- [Nevernote](http://blog.schockwellenreiter.de/2016/12/2016121601.html), 16. Dezember 2016
+- Worknote: [MkDocs und die Admonition Extension](http://blog.schockwellenreiter.de/2017/01/2017011304.html), 13. Januar 2017
+- Worknote: [MkDocs und MathJax](http://blog.schockwellenreiter.de/2017/01/2017011905.html), 19. Januar 2017
+- Worknote: [Software-Dokumentation mit Markdown](http://blog.schockwellenreiter.de/2022/06/2022061601.html), 16. Juni 2022
+- [Statische (Dokumentations-) Seiten mit MkDocs und Markdown](http://blog.schockwellenreiter.de/2022/10/2022101301.html). 13. Oktober 2022
+
+Sichtbares Ergebnis dieser Bemühungen sind meine Seiten »[Processing.py in Beispielen](http://py.kantel-chaos-team.de.s3-website-us-east-1.amazonaws.com/)«, eine Sammlung meiner [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html)-Tutorial, die ich von 2015 bis 2018 geschrieben und hochgeladen hatte. Danach hatte ich -- etwa 2022 -- noch die Idee, etwas ähnliches für [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) zu realisieren, bin aber über einen frühen Prototypen (sie [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53835364968/) im Bannerbild oben) nicht hinausgekommen.
+
+Als ich nun bei der (Neu-) Einrichtung meines Rechners wieder über MkDocs stolperte, war mir erst einmal ein wenig wehmütig zumute. Doch dann dachte ich: Warum nicht ein *Reload* versuchen? Mein wiedererwachtes Interess an P5.js hat ja schon zu einer Reihe von neuen Tutorials im *Schockwellenreiter* geführt, so daß ein »P5.js in Beispielen« Sinn machen würde. Also habe ich mir erst einmal mit Conda eine virtuelle Umgebung für MkDocs geschaffen und die Software darin installiert und dann damit unverändert meine alten P5.js-Seiten herausrendern lassen. Ich erhielt zwar viele Warnungen (in der Hauptsache wegen veralteter Aufrufe, die durch neue Funktionen ersetzt wurden), aber es funktionierte und die Seiten wurden anstandslos herausgeschrieben.
+
+Dadurch angefixt habe ich einen ganzen Abend an den Seiten gebastelt, bis keine Warnungen mehr im Terminal angezeigt wurden. Und dann war mein Entschluß gefasst: Es wird einen Neuanfang für (m)ein »P5.js in Beispielen« geben. Ich bin mir nur noch nicht sicher, ob ich diese Seiten dann auf [GitHub Pages](http://cognitiones.kantel-chaos-team.de/webworking/webservices/githubpages.html) oder auf [Read the Docs](https://about.readthedocs.com/) veröffentliche soll. Es gibt beim Letztgenannten einen [Community Plan](https://about.readthedocs.com/pricing/#/community), auf dem man -- wenn man »ethisch korrekte« und nicht störende Anzeigen zuläßt (es ist *eine* kleine Anhzeige pro Seite) -- seine Seiten kostenlos veröffentlichen kann. Und *Read the Docs* [unterstützt MkDocs](https://docs.readthedocs.io/en/stable/intro/getting-started-with-mkdocs.html) *out of the Box*.
+
+Und -- wie fast immer -- hat mich bei meinen Überlegungen gleich der Größenwahn gepackt: Was ist mit »Py5 in Beispielen« oder »Pygame in Beispielen«. Aber angefangene Projekte tummeln sich ja schon zu Hauf auf meinen Festplatten. Daher wäre ich froh, wenn ich zumindest erst einmal das »P5.js in Beispielen« zum Abschluß bringen würde.
+
+Ein weiteres Problem scheint mittlerweile auch gelöst: Hatte ich [hier noch beklagt](http://blog.schockwellenreiter.de/2017/01/2017011905.html), daß MkDocs [MathJax](http://cognitiones.kantel-chaos-team.de/mathematik/mathjax.html) nur via eines CDN einbinden kann, verspricht der Beitrag »[Hosting Your Own Copy of MathJax](https://docs.mathjax.org/en/v3.2-latest/web/hosting.html)«, daß eine selbstgehostete Lösung möglich sei.
+
+[![](images/nevernotereloaded.jpg)](https://www.flickr.com/photos/schockwellenreiter/53835177836/)
+
+Ein weiters altes (MkDocs-) Projekt habe ich aber dennoch -- wenn auch vielleicht nur kurzfristig -- wiederbelebt: Während meiner damaligen Flucht aus den Datensilos hatte ich mit [Nevernote](http://blog.schockwellenreiter.de/2016/12/2016121601.html) meine eigene, private Version von Evernote mit MkDocs realisiert. Es war so etwas wie der Vorgänger meines zweiten Gehirns. Doch von [Logseq](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html)  trudeln momentan [beunruhigende Nachrichten](https://kantel.github.io/posts/2024050402_logseq_oder_zettlr/) bei mir ein, die mich über einen Wechsel der Software für mein zweites Gehirn nachdenken lassen (bisher dachte ich an [Zettlr](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/zettlr.html) oder [Obsidian](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/obsidian.html)). Als chronischer Bastler aber frage ich mich nun: Warum nicht (weiter) an etwas eigenes, selbstgeschraubtes bauen? Einen [digitalen Garten](https://kantel.github.io/posts/2024050701_digital_garden/) kann ich unter Umständen auch mit MkDocs realisieren -- wenn ich die [Sache mit den Wikilinks](https://stackoverflow.com/questions/48173267/mkdocs-how-to-enable-hyperlinks-based-on-keywords-found-in-the-content) in den Griff bekomme. Doch dafür soll es in den neueren Releases von MkDocs zumindest Ansätze von Lösungen geben. *Still digging!*
