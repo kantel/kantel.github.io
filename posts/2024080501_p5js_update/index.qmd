@@ -1,0 +1,29 @@
+---
+title: "Neues aus der P5-Welt: P5.js Update, P5.teach und mehr"
+author: "Jörg Kantel"
+date: "2024-08-04 18:05:00"
+categories: [P5.js, Creative Coding, Spieleprogrammierung, Tiled]
+image: "images/badgerartist.jpg"
+---
+
+[![](images/badgerartist-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53900920317/)
+
+Eine kurze Meldung in der -- trotz seiner penetranten Ausflüge in die Welt der NFTs (dort *Web3 News* genannt) -- sehr lesenswerten [Gorilla Newsletter](https://www.gorillasun.de/blog/gorilla-newsletter-67/) erinnerte mich daran, daß ich -- [PyScript hin](https://kantel.github.io/posts/2024072701_py5_pyscript/), [Pyxel her](https://kantel.github.io/posts/2024080401_pyxel_tut_1/) -- meine Ausflüge in die Welt von [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) nicht vernachlässigen sollte. Aber der Reihe nach:
+
+**P5.js Update**: Vor wenigen Tagen ist die Version [P5.js v1.10.0](https://github.com/processing/p5.js/releases/tag/v1.10.0) mit vielen kleineren und größeren Verbesserungen und etlichen Bugfixes freigegeben worden. Alle Änderungen findet Ihr im [Changelog](https://github.com/processing/p5.js/compare/v1.9.4...v1.10.0).
+
+Im [P5.js Webeditor](https://editor.p5js.org/) ist das Update Stand heute noch nicht angekommen (dort werkelt aktuell noch die Version v1.9.4) und der P5.js-Mode der Processing-PDE nutzt sogar noch die uralte Version v.1.5.0 vom Oktober 2022. (Das kann man aber vermutlich fixen, indem man (auf dem Mac) unter `~/Dokumente/Processing/modes/p5jsMode/template/libraries/` die `p5.min.js` gegen eine aktuelle austauscht. Habe ich aber nicht getestet.)
+
+Auf der sicheren Seite ist man hier nur, wenn man im Editor seiner Wahl P5.js-Sketche lokal entwickelt, da man nur hier die volle Kontrolle über die verwendeten Bibliotheken hat. Daher eine Notiz an mich: Ein Tutorial über (m)eine lokale P5.js-Installation schreiben.
+
+[![](images/p5-astrik-teach.png)](https://two-ticks.github.io/p5.teach.js/)
+
+**P5.teach**: Über [Umwege](https://medium.com/@ProcessingOrg) wurde ich auf den Beitrag »[P5.teach: Teaching Math through Animations and Simulations](https://medium.com/processing-foundation/p5-teach-teaching-math-through-animations-and-simulations-64b6159fef85)« aufmerksam. [P5.teach](https://two-ticks.github.io/p5.teach.js/) ist eine von [Manim](https://github.com/3b1b/manim) und [Reanimate](https://github.com/reanimate/reanimate) inspirierte Bibliothek für mathematische Simulationen, Visualisierungen und Animationen (mit TeX-Support via [KaTeX](https://katex.org/)), die *Aditya Siddheshwar* im Rahmen des [Google Summer of Code 2021](https://gist.github.com/two-ticks/4dda385f078abe5ac63cba98eac30e5d) entwickelt hatte.
+
+Auch wenn ich über den aktuellen Stand des Projektes nichts weiß, die [Beispiele auf diesen Seiten](https://discourse.processing.org/t/animating-maths-in-p5-js/31583) machen Lust darauf, P5.teach auch einmal selber auszuprobieren.
+
+**War sonst noch was?** Ach ja, die Tilemap-Funktionen sowohl in [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html) wie auch in [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) machen das Mapping von Tile-Koordinaten auf Sprite-Koordinaten irgendwie unnötig kompliziert (ich verstehe die Gründe, aber ich mag es dennoch nicht). Daher habe ich überlegt, ob man die `.tmx`- oder `.json`-Dateien von [Tiled](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tiled.html) nicht direkt in P5.js nutzen kann. [Diese Seite](https://github.com/mapeditor/tiled/blob/master/docs/reference/support-for-tmx-maps.rst) listet viele Bibliotheken auf, die Tiled mit Sprachen oder Frameworks verheiraten, darunter auch [P5.tiledmap](https://github.com/linux-man/p5.tiledmap), ein P5.js-Port der Processing-(Java)-Bibliothek [Ptmx](https://github.com/linux-man/ptmx). Sollte ich ebenfalls auf meine Testliste setzen. *Still digging!*
+
+---
+
+**Bild**: *[A Badger as Artist](https://www.flickr.com/photos/schockwellenreiter/53900920317/)*, erstellt mit [DreamStudio](https://beta.dreamstudio.ai/generate). Prompt: »*A female and a male badger in dressing gowns stand in front an easel, hold palettes and brushes in her hands and paint together at a colorful picture. It's a sunny summer morning, in the background you can see a quiet river surrounded by willows. colored french comic style*«. Modell: Stable Diffusion XL, Style: Comic Book.
