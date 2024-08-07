@@ -10,7 +10,539 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 07 Aug 2024 14:40:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 07 Aug 2024 17:45:00 GMT</lastBuildDate>
+<item>
+  <title>Minimaze: Retrogaming mit der Retrokonsole TIC-80</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024080703_smallmaze1_tic80/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53908631964/"><img src="https://kantel.github.io/posts/2024080703_smallmaze1_tic80/images/smallmazev02-b.jpg" class="img-fluid"></a></p>
+<p>Die kleinen (Retro-) Game-Engines <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a> wie auch <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> machen es dem Programmierer oder der Programmiererin erstaunlich schwer, eine Kollisionserkennung mit Map-Elementen zu realisieren. Ständig muß man zwischen Map- und Sprite-Koordinaten umrechnen. Zwar verstehe ich die Motivation dahinter (man will eine Auflösungsunabhängigkeit erzwinngen), aber ich <a href="http://blog.schockwellenreiter.de/2022/07/2022071002.html">erinnerte mich</a>, daß dies in der Retrokonsole <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> einfacher und ziemlich genial gelöst war.</p>
+<p>Also habe ich das Teil angeworfen und in kleines Mini-RPG oder Minimaze realisiert. Schon der (<a href="http://cognitiones.kantel-chaos-team.de/programmierung/lua.html">Lua</a>-) Quellcode ist erstaunlich kompakt geraten:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb1-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- Player x,y position</span></span>
+<span id="cb1-2"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir_x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-5"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir_y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{[</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> TIC<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-8">    cls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-9">    map<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb1-10">    spr<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">257</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- Player</span></span>
+<span id="cb1-11"></span>
+<span id="cb1-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> btnp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span></span>
+<span id="cb1-13">     fget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>mget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">),</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- UP</span></span>
+<span id="cb1-14">         <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elseif</span> btnp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span></span>
+<span id="cb1-16">     fget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>mget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">),</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- DOWN </span></span>
+<span id="cb1-17">         <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elseif</span> btnp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> </span>
+<span id="cb1-19">     fget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>mget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">),</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- LEFT</span></span>
+<span id="cb1-20">         <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elseif</span> btnp<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> </span>
+<span id="cb1-22">     fget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>mget<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">),</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- RIGHT</span></span>
+<span id="cb1-23">         <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb1-24">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">end</span></span>
+<span id="cb1-25"></span>
+<span id="cb1-26">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span></span>
+<span id="cb1-27">     <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir_x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-28">     <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir_y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-29">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">end</span></span>
+<span id="cb1-30"> </span>
+<span id="cb1-31">   <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-32"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">end</span></span></code></pre></div>
+<p>Das ganze Geheimnis dieser kompakten Realisierung liegt in dem <a href="https://itch.io/t/3076553/how-mget-and-fget-work-in-lua-please-tips-for-idiots">Zusammenspiel</a> von <code>mget()</code> und <code>fget()</code>: <code>mget(x, y)</code> gibt die ID des Tiles an der Position (x, y) (in <em>Map-Koordinaten</em>) zurück, während <code>fget(id, flag)</code> einen Boolean-Wert (<code>true</code> oder <code>false</code>) in Abhängigkeit davon, ob der Flag gesetzt ist, zurückgibt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2024080703_smallmaze1_tic80/images/tic80flags.jpg" class="img-fluid figure-img"></p>
+<figcaption>Sprite-Editor</figcaption>
+</figure>
+</div>
+<p>Den Flag setzt man im Sprite Editor im erweiterten Mode (den Schieberegler links oben aktivieren). Je Sprite/Tile können acht verschiedene Flags gesetzt werden. In meinen kleinen Skriptchen habe ich den Flag 0 bei den Tiles und Sprites gesetzt, mit denen der Spieler kollidieren kann. Nur wenn die Abfrage <code>false</code> ergibt, kann der Spieler auf diese Position gesetzt werden.</p>
+<p>Natürlich besteht auch hier das Problem, daß der Spieler Sprite-Koordinaten (also »echte« Pixdelkoordinaten) nutzt und die Tiles Map-Koordinaten. Da in TIC-80 die Map-Koordinaten aber entweder je 8x8, 16x16 oder 32x32 Pixel groß sind, kann das (in meinem Spiel sind es 8x8 Pixel) mit einer einzigen Zeile</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb2-1">spr<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">257</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-- Player</span></span></code></pre></div>
+<p>aufgelöst werden (wobei das Spieler-Sprite in diesem Fall die ID <img src="https://latex.codecogs.com/png.latex?257"> besitzt).</p>
+<p>Ziemlich genial ist auch der Trick, die möglichen Bewegungsrichtungen für die Horizontale wie für die Vertikale je in einer Tabelle (dem Lua-Äquivalent für Pythons Listen) abzulegen. So kann die nächste Bewegung einfach mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource lua number-lines code-with-copy"><code class="sourceCode lua"><span id="cb3-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span></span>
+<span id="cb3-2">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">px</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir_x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb3-3">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">py</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir_y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb3-4"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">end</span></span></code></pre></div>
+<p>zugewiesen werden (diesen Trick habe ich <a href="https://www.youtube.com/watch?v=npqKlAzfIvw">beim <em>Potato Imaginator</em> geklaut</a>).</p>
+<p>Mit <code>export html &lt;dateiname&gt;</code> wird ein Zip-Archiv <code>dateiname.zip</code> erzeugt, das alle Dateien enthält, die für eine Webversion des Spieles notwendig sind. Entpackt kann man diese zum Beispiel wie hier in seine Seiten einbinden:</p>
+<iframe src="smallmaze/index.html" class="if16_9" name="Small Maze Game">
+</iframe>
+<p>Allerdings hat man unter Umständen mit dem Problem gieriger Browser zu kämpfen, die die Pfeiltasten an sich reißen wollen. Mein Chrome-Browser auf dem Mac verhielt sich aber anständig, er betrachtete die von TIC-80 benutzten Tastatureingaben als »konsumiert«.</p>
+<p>Das Zip-Archiv als Ganzes läßt sich auch problemlos auf Itch.io hochladen, so daß Ihr dort Eure TIC-80-Spiele der staunenden Öffentlichkeit präsentieren könnt. Testweise habe ich auch <a href="https://kantel.itch.io/maze-game-tic-80-test">diesen Prototypen auf meinem Itch.io-Account</a> veröffentlicht.</p>
+<p>Aber es kommt noch besser: Mit <code>export mac &lt;dateiname&gt;</code> wird das Spiel als Mac-Unis-Datei exportiert, die per Doppelklick via Terminal startet. Wenn man an den Dateinamen nach dem Export ein <code>.app</code> anhängt, kann es direkt – ohne Terminal – per Doppelklick gestartet werden. Linux- oder Windows-Exporte sollten analog funktionieren, das konnte ich aber mangels Geräten nicht testen.</p>
+<p>Ich hatte – nachdem ich sie so lange vernachlässigt hatte – jedenfalls mal wieder viel Spaß mit der kleinen Retrokonsole und auch schon eine Idee, was ich mit ihr anstellen könnte: Mein <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/bitsy.html">Bitsy</a>-Spiel »Nachts im Park«, das ich ja schon einmal <a href="https://kantel.github.io/posts/2023072301_night_in_the_park/">nach Pygame portieren wollte</a>, müßte sich doch prima mit TIC-80 realisieren lassen. Denn wie bei Bitsy liegt auch bei der kleinen Fantasy-Konsole in der Beschränkung die Kraft. Und vor Lua habe ich keine Angst. 🤖 <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Retrogaming</category>
+  <category>Spieleprogrammierung</category>
+  <category>TIC-80</category>
+  <guid>https://kantel.github.io/posts/2024080703_smallmaze1_tic80/</guid>
+  <pubDate>Wed, 07 Aug 2024 17:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024080703_smallmaze1_tic80/images/smallmazev02.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Mozilla Thunderbird Version 115.14 freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -850,43 +1382,6 @@ font-style: inherit;">0</span>)</span>
   <guid>https://kantel.github.io/posts/2024071201_vollgas_volltrunken/</guid>
   <pubDate>Fri, 12 Jul 2024 13:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024071201_vollgas_volltrunken/images/vollgas.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Positron IDE: Noch ein potentieller Visual Studio Code Nachfolger?</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024071002_positron_ide/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53848342723/"><img src="https://kantel.github.io/posts/2024071002_positron_ide/images/positrontest-b.jpg" class="img-fluid"></a></p>
-<p>Nachdem ich <a href="https://kantel.github.io/posts/2024070701_litexl/">vor wenigen Tagen</a> den kleinen, aber schnellen und leistungsstarken Texteditor <a href="https://lite-xl.com/de/">LiteXL</a> vorgestellt hatte, schneite nun ein weiterer Kandidat in meinen Feedreader, der angetreten ist, in die Fußstapfen von <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> zu treten: Denn Posit, die Schöpfer von <a href="http://cognitiones.kantel-chaos-team.de/mathematik/rstudio.html">RStudio</a> und <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a>, haben mit <a href="https://github.com/posit-dev/positron">Positron</a> eine neue Software (noch im Beta-Stadium) unter das Volk gebracht, die angetreten ist, die Vorzüge von RStudio mit den Möglichkeiten (und möglichen Erweiterungen) von Visual Studio Code zu vereinigen.</p>
-<p>Dabei nutzt Positron die Codebasis von Visual Studio Code und bohrt sie zu einer RStudio-ähnlichen IDE für <a href="http://cognitiones.kantel-chaos-team.de/mathematik/r.html">R</a> und Python auf. Momentan könnt Ihr die Software für macOS und Windows <a href="https://github.com/posit-dev/positron/releases">herunterladen</a> (sie steht unter der quelloffenen <a href="https://github.com/posit-dev/positron?tab=License-1-ov-file#readme">Elastic Licence 2.0</a>), eine Version für Linux soll folgen.</p>
-<p>Bei meinen ersten, kurzen Tests hakte es noch an einigen Stellen, aber die Anmutung der RStudio-IDE in die VSCode-Umgebung scheint gut gelungen (der Rest wird sich sicher bis zum endgültigen Release einer Produktiv-Version auswachsen). Weitere erste Tests und Eindrücke aus dem Netz könnt Ihr hinter diesen Links finden:</p>
-<ul>
-<li>Pierre DeBois: <em><a href="https://medium.com/codex/getting-started-with-posit-positron-the-new-ide-for-r-and-python-de1beab9c70d">Getting Started With Posit Positron, the new IDE for R and Python</a></em> Medium.com (Bezahlschranke!) vom 1. Juli 2024</li>
-<li>Dario Radečić: <em><a href="https://www.appsilon.com/post/introducing-positron">Introducing Positron: A New, Yet Familiar IDE For R And Python</a></em>, Appsilon vom 4. Juli 2024</li>
-<li>Dimitry Kolokolov: <em><a href="https://leadforyou.de/blog/neue-next-generation-ide-positron-fur-r-und-python-veroffentlicht/">Neue »Next-Generation« IDE Positron für R und Python veröffentlicht</a></em>, Lead4You vom 4. Juli 2024</li>
-<li>Andrew Heiss: <em><a href="https://www.andrewheiss.com/blog/2024/07/08/fun-with-positron/">Fun with Positron</a>. Combine the best of RStudio and Visual Studio Code in Posit’s new Positron IDE</em>, Andrew Heiss Blog vom 8. Juli 2024</li>
-</ul>
-<p>Mir ist allerdings nicht ganz klar, wer – außer den armen <em>Data Scientists</em>, die gezwungen sind, R <strong>und</strong> Python zu nutzen – von Positron profitieren kann? RStudio war und ist das Vorbild für viele IDEs und mein Favorit für eine RStudio-ähnliche Python-IDE ist <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html">Spyder</a>.</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53848342838/"><img src="https://kantel.github.io/posts/2024071002_positron_ide/images/spydertest.jpg" class="img-fluid"></a></p>
-<p>Im obigen Screenshot habe ich das Default-Layout von Positron (vergleiche <a href="https://www.flickr.com/photos/schockwellenreiter/53848342723/">Bannerbild oben</a>) mal in Spyder nachgebaut. Und ehrlich gesagt … Spyder gefällt mir besser. Und arbeitet <a href="https://kantel.github.io/posts/2024062801_conda_env_python/">geschmeidiger</a> <a href="https://kantel.github.io/posts/2024062901_conda_py5_spyder/">mit</a> <a href="https://kantel.github.io/posts/2024062902_spyder_turtle/">meinen</a> Conda-Environments <a href="https://kantel.github.io/posts/2024063001_spyder_pygame/">zusammen</a>. Aber ich muß ja auch nicht in R programmieren (das kann schon einen Unterschied machen).</p>
-<p>Dennoch werde ich Positron eine Chance geben. Glaubt man nämlich einigen Screenshots in obigen Artikeln, arbeitet die IDE gut mit Quarto zusammen (die entsprechenden VSCode-Erweiterungen werden (wie einige Python-Erweiterungen) gleich mitinstalliert), der Software, die ja bekanntlich (noch) dieses <del>Blog</del> Kritzelheft herausschreibt. Und mein Visual Studio Code ist durch Quarto doch recht fett und behäbig geworden. Vielleicht bringt hier das Auslagern in ein separates, anderes Programm doch Vorteile. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Texteditor</category>
-  <category>Python</category>
-  <category>R und RStudio</category>
-  <category>Quarto</category>
-  <category>Positron</category>
-  <category>Spyder</category>
-  <guid>https://kantel.github.io/posts/2024071002_positron_ide/</guid>
-  <pubDate>Wed, 10 Jul 2024 17:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024071002_positron_ide/images/positrontest.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
