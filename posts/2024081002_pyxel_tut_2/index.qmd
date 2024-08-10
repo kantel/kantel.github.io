@@ -1,0 +1,136 @@
+---
+title: "Retrogaming mit Python: Pyxel-Tutorial Stage 2"
+author: "Jörg Kantel"
+date: "2024-08-10 19:15:00"
+categories: [Pyxel, Python, Retrogaming. Spieleprogrammierung, Spyder]
+image: "images/pyxeltut2.jpg"
+---
+
+[![](images/pyxeltut2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53912110447/)
+
+Mein [Ausflug vor drei Tagen](https://kantel.github.io/posts/2024080703_smallmaze1_tic80/) zu der Retrokonsole [TIC-80](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html) hatte meinen Ehrgeiz angestachelt. Ich wollte herausfinden, ob ich die Integration von Maps (Karten) mit [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html) und Python nicht ähnlich einfach wie mit TIC-80 und [Lua](http://cognitiones.kantel-chaos-team.de/programmierung/lua.html) hinbekomme. Und ich glaube, das ist mir gelungen.
+
+Doch zuerst einmal den Quellcode, der nur geringfügig umfangreicher und etwas weniger kompakt als die Lua-Vorlage geraten ist:
+
+~~~python
+import pyxel
+
+# Ein paar nützliche Konstanten
+TS = 8       # Tilesize
+COLKEY = 0   # Color Key
+WALL = 2     # Mauer Tile No.
+
+def get_tile(tile_x, tile_y):
+    # pyxel.tilemaps() gibt ein Tupel mit den x- und y-Koordinaten
+    # aus der Tilemap des mit pget() identifizierten Tiles zurück
+    return pyxel.tilemaps[0].pget(tile_x, tile_y)
+
+class Player:
+    
+    def __init__(self, _x, _y):
+        self.x = _x*TS
+        self.y = _y*TS
+        self.w = self.h = TS
+        self.u = 0   
+        self.v = 0
+        self.imagebank = 0
+        
+    def move(self):
+        if (pyxel.btnp(pyxel.KEY_LEFT) 
+        and get_tile((self.x - TS)//TS, self.y//TS)[0] != WALL):            
+            self.x -= TS
+        elif (pyxel.btnp(pyxel.KEY_RIGHT)
+        and get_tile((self.x + TS)//TS, self.y//TS)[0] != WALL):
+            self.x += TS
+        elif (pyxel.btnp(pyxel.KEY_UP)
+        and get_tile(self.x//TS, (self.y - TS)//TS)[0] != WALL):
+            self.y -= TS
+        elif (pyxel.btnp(pyxel.KEY_DOWN)
+        and get_tile(self.x//TS, (self.y + TS)//TS)[0] != WALL):
+            self.y += TS
+
+class App:
+    
+    def __init__ (self):
+        pyxel.init(16*TS, 16*TS, "Pyxel Tutorial Stage 2", display_scale = 4)
+        pyxel.load("assets/mazegame01.pyxres")
+        
+        # Initialisiere den Spieler
+        # Position in Map-Koordinaten
+        self.player = Player(1, 1)
+        
+    def run(self):
+        pyxel.run(self.update, self.draw)
+        
+    def update(self):
+        self.player.move()
+        
+    
+    def draw(self):
+        pyxel.cls(0)
+        
+        # Zeichen die Map
+        pyxel.bltm(0, 0, 0, 0, 0, 16*TS, 16*TS, 0)
+        
+        # Zeichne den Player
+        pyxel.blt(self.player.x, self.player.y, self.player.imagebank,
+                  self.player.u, self.player.v, self.player.w, self.player.h,
+                  COLKEY)
+                
+App().run()
+~~~
+
+Der Trick ist, daß ich die Klasse `Player` mit den Map-Koordinaten initialisiere und aufrufe und alle Umrechnungen zu den Sprite-Koordinaten nur in dieser Klasse vornehme. Die einzigen Ausnahmen sind die Fenster- und Kartengrößen, die -- in diesem Fall -- je mit (`16*TS, 16*TS`) aufgerufen werden. Doch das ist nur Kosmetik, die eine spätere Änderung der Kartengröße (siehe weiter unten) vereinfachen soll. Ich hätte genauso an dieser Stelle das Konstantenpaar (`128, 128`) einsetzen können.
+
+Die Methoden `pyxel.blit()` für die Sprites und `pyxel.blitm()` für die Karten sind zwar nicht gerade parameterarm, aber gerade dadurch mächtig. Damit ich mich im Dickicht der Ziffern nicht verhaspele, habe ich den Aufruf von `pyxel.blit()` mit (hoffentlich) für sich sprechenden Parametermamen einsichtiger gemacht:
+
+~~~python
+player.x           # Die x-Koordinate in Sprite-Koordinaten
+player.y           # Die y-Koordinate in Sprite-Koordinaten
+player.imagebank   # Die Bank des Sprites in der Ressourcendatei
+player.u           # Die x-Position des Sprites in der Imagebank
+player.v           # Die y-Position des Sprites in der Imagebank
+player.w           # Die Breite des Sprites (in Pixeln)
+player.h           # Die Höhe des Sprites (in Pixeln)
+COLKEY             # Die Position der transparenten Farbe in der Farbpalette
+~~~
+
+Ähnlich sieht es bei der Methode `pyxel.blitm()` aus. Da ich hier bisher nur eine Karte verwende und daher fast alle Parameter bis auf die Höhe und Weite der Karte `0` sind, habe ich sie einfach mit den entsprechenden Zahlenwerten aufgerufen. In umfangreicheren Programmen empfiehlt sich natürlich, die Karten auch in einer Klasse (zum Beispiel `Map`) zu kapseln und ebenfalls sprechende Variablennamen zu verwenden.
+
+[![Der Pyxel Map-Editor](images/pyxeltut2map.jpg)](https://www.flickr.com/photos/schockwellenreiter/53913356059/)
+
+Wie Ihr im obigen [Screenshot des Map-Editors](https://www.flickr.com/photos/schockwellenreiter/53913356059/) sehen könnt, habe ich ihn testweise mit einer weiteren, lindgrünen Seite vergrößert. Wenn Ihr nun die Zeile für die Fenstergröße mit
+
+~~~python
+pyxel.init(32*TS, 16*TS, "Pyxel Tutorial Stage 2", display_scale = 4)
+~~~
+
+und die Zeile, mit der Ihr die Karte zeichnet, mit
+
+~~~python
+pyxel.bltm(0, 0, 0, 0, 0, 32*TS, 16*TS, 0)
+~~~
+
+aufruft, bekommt Ihr ein doppelt so breites Fenster mit einer doppelt so breiten Karte angezeigt:
+
+[![Die doppelt so breite Testkarte](images/pyxeltut2map2.jpg)](https://www.flickr.com/photos/schockwellenreiter/53914774339/)
+
+Damit läßt sich schon eine [ähnliche Karte](https://www.flickr.com/photos/schockwellenreiter/53906907263/) wie bei meinen TIC-80-Experimenten erzeugen.
+
+Der zweite Trick, der dafür verantwortlich ist, daß das Pyxel-Skript ähnlich kompakt wie mein TIC-80-Versuch geraten ist, hängt mit der Hilfsfunktion `get_tile(tyle_x, tile_y)` zusammen. Zwar kann Pyxel keine Flags setzen, wenn man jedoch die Methode `pyxel.tilemaps.pget(x, y)` mit `x` und `y` als Pixelkoordinaten aufruft, bekommt man ein Tupel mit der x- und y-Koordinate der Tilemap zurück. Und da in meinem Fall die Mauer in der dritten Spalte (`x = 2`) der ersten (und einzigen) Zeile (`y = 0`) liegt, gibt der Aufruf von
+
+~~~python
+pyxel.tilemaps[0].pget(tile_x, tile_y)
+~~~
+
+dann und nur dann eine `2` zurück, wenn das Tile eine Mauer ist. Das ist doch fast so gut, wie ein Flag.&nbsp;🤓
+
+Daher frage ich in in der Methode `player.move()` jedesmal ab, ob das gewünschte Zielfeld (in Map-Koordinaten) **keine** Mauer ist. Nur dann wird der Spieler auf das Zielfeld bewegt.
+
+<iframe src="pyxel/index.html" class="if16_9" name="Pyxel Maze Game Stage 2"></iframe>
+
+Wie Ihr selber sehen und ausprobieren könnt, kann der Spieler mit den Pfeiltasten bewegt werden, aber die Mauern sind für ihn unüberwindbare Hindernisse.
+
+Auch diese Version meiner hoffentlich wachsenden Pyxel-Tutorials habe ich -- wie das [Bannerbild oben](https://www.flickr.com/photos/schockwellenreiter/53912110447/) zeigt -- wieder mit [Spyder](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html) zusammengeschraubt. Je länger ich damit arbeite, um so mehr gefällt mir die Spynne und sie hat das Zeug dazu, [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) als meine Python-IDE zu ersetzen. Sie ist wegen ihrer Konzentration auf Python nicht so überfrachtet wie die eierlegende Wollmilchsau VS Code und dadurch bedeutend übersichtlicher und schlanker. Und da sie sich ja auch mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) wunderbar verträgt, sehe ich keine Hindernisse mehr für einen Wechsel (für Spezialfälle habe ich ja immer noch [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) und [JupyterLab](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) ([Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html))).
+
+Pyxel hat gegenüber TIC-80 und [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) den Vorteil, daß ich auf das gesamte Python-Ökosystem zurückgreifen kann. Dadurch sollte diese Retrokonsole hervorragend dafür geeignet sein, mein lange eingeschlafenes Projekt »**[Retrogaming und Künstliche Intelligenz](http://blog.schockwellenreiter.de/2022/04/2022041401.html)**« ([Nachschlag](http://blog.schockwellenreiter.de/2022/04/2022041502.html)) wieder zum Leben zu erwecken. Ich werde dafür allerdings noch einige Tests und Tutorials durchführen müssen. Freut Euch also auf mehr. *Still digging!*
