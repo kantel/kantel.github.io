@@ -1,0 +1,140 @@
+---
+title: "Retrogaming und KI: Pygame-CE statt Pygame?"
+author: "Jörg Kantel"
+date: "2024-08-15 21:20:00"
+categories: [Retrogaming, Spieleprogrammierung, Künstliche Intelligenz, Python, Pygame, Thonny, Spyder]
+image: "images/pygamece.jpg"
+---
+
+[![](images/pygamece-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53922387767/)
+
+Von [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) gibt es seit etwa einem Jahr eine Fork, die sich [Pygame-CE](https://pyga.me/) *(Pygame Community Edition)* nennt. Grund für diese Abspaltung war wohl, daß sich ein nennenswerter Teil der Kernentwickler von der »Pygame-Führung« [nicht mehr ausreichend ernst genommen fühlte](https://www.deusinmachina.net/p/what-is-happening-in-the-pygame-community). Normalerweise sitze ich solche Abspaltungen ja aus und hoffe auf Versöhung oder einen eindeutigen Sieger.
+
+In diesem Fall jedoch gibt es ein Problem, nämlich meine Entscheidung, mein leider lange eingeschlafenes Projekt »**[Retrogaming und Künstliche Intelligenz](https://kantel.github.io/posts/2023120301_retrogaming_ki/)**« nicht -- wie ursprünglich vorgesehen -- in [Pygame Zero](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html), sondern direkt in Pygame zu realisieren. Dafür gab es verschiedene Gründe -- so hat Pygame Zero seit Februar 2018 [kein Update mehr erfahren](https://pygame-zero.readthedocs.io/en/stable/changelog.html) und es ist leider nicht wirklich klar, ob es überhaupt noch lebt. Der Hauptgrund war aber, daß ich mein Projekt mit [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) auch für das Web fit machen wollte. Und da las ich doch im [GitHub-Readme von Pygbag](https://github.com/pygame-web/pygbag/blob/main/README.md):
+
+>pygbag only provides support for pygame-ce ( pygame community edition )
+
+Boing, das saß! Also war Aussitzen keine Alternative mehr, sondern ich mußte mich mit Pygame-CE anfreunden, auch wenn es »nur« 80 aktive Entwickler (statt der 313 von Pygame) besitzt. Also habe ich damit einen Test gefahren und erst einmal ein objektorientiertes *Boilerplate* geschrieben, das auch mit Pygbag laufen sollte (also die Hauptschleife des Programms **nicht** in eine Klasse gekapselt ist):
+
+~~~python
+import pygame
+import os, sys
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+# Konstanten deklarieren
+WIDTH, HEIGHT = 640, 480
+TITLE = "🐍 Pygame-CE Boilerplate (OOP) 🐍"
+FPS = 60
+
+# Farben
+BG_COLOR = (0, 80, 125)    # Mittelblau
+
+# Klassen
+# ---------------------------------------------------------------------- #
+## Class GameWorld
+class GameWorld:
+    
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pygame.init()
+        # Ein übler Hack, um die Position des Fensters
+        # auf meinen zweiten Bildschirm zu setzen
+        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (1940, 70)
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption(TITLE)
+        
+        self.clock = pygame.time.Clock()
+        self.keep_going = True
+        self.playing = False
+        
+        # Load Assets
+        self.player_im = pygame.image.load(os.path.join(DATAPATH, "pygame_ce_tiny.png")).convert_alpha()
+        
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pygame.sprite.Group()
+        self.player = Player(self)
+        self.all_sprites.add(self.player)
+        self.playing = True
+    
+    def events(self):
+        # Poll for events
+        for event in pygame.event.get():
+            if ((event.type == pygame.QUIT) or
+                (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
+                if self.playing:
+                    self.playing = False
+                self.keep_going = False
+    
+    def update(self):
+        self.all_sprites.update()
+    
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        
+        # Game drawings go here
+        self.all_sprites.draw(self.screen)
+        
+        # Alle Änderungen auf den Bildschirm
+        pygame.display.flip()
+        
+    def start_screen(self):
+        pass
+    
+    def end_screen(self):
+        pass
+ 
+# ---------------------------------------------------------------------- #
+## Class Player
+class Player(pygame.sprite.Sprite):
+     
+    def __init__(self, _world):
+        super().__init__()
+        self.game_world = _world
+        self.image = self.game_world.player_im
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = WIDTH/2, HEIGHT/2 - 80
+        self.speed = 2
+         
+    def update(self):
+        self.rect.x += self.speed
+        # print("update")
+        if self.rect.x >= WIDTH:
+            self.rect.x = -214           
+
+# ---------------------------------------------------------------------- #
+# ## Hauptprogramm
+world = GameWorld()
+world.start_screen()
+world.reset()
+
+# Hauptschleife
+while world.keep_going:
+    world.events()
+    world.update()
+    world.draw()
+    
+    # Framerate festsetzen
+    world.clock.tick(FPS)
+    
+pygame.quit()
+sys.exit(0)
+~~~
+
+Dann habe ich Pygame-CE ([wie zuvor bereits Pygame](https://kantel.github.io/posts/2024063001_spyder_pygame/)) eine eigene virtuelle Umgebung spendiert. Dabei zeigte sich, daß zwar Pygame wie auch Pygame-CE gut in ihrer virtuellen Umgebung mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) zusammenspielen, es aber mit [Spyder](http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html) ein Problem gibt. Werden die Skripte aus der Spynne heraus aufgerufen, lassen sie sich nur beenden, wenn man den Python-Interpreter killt.
+
+Daher habe ich -- sozusagen als zweite Alternative -- meiner [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html)-Umgebung ebenfalls ein Pygame-CE spendiert, das problemlos lief (vergleiche [Screenshot](https://www.flickr.com/photos/schockwellenreiter/53922387767/) im Bannerbild oben).
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/pYq9edSUaOw?si=sqaCgkRr5cFXHr8_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Jetzt werde ich meiner im März 2022 begonnenen, in Pygame Zero realisierten »Blaupause« für ein Mazegame ([Stage 1](http://blog.schockwellenreiter.de/2022/04/2022041701.html), [Stage 2](http://blog.schockwellenreiter.de/2022/04/2022041701.html), [Stage 2a](http://blog.schockwellenreiter.de/2022/04/2022042101.html) und [Stage 3](http://blog.schockwellenreiter.de/2022/04/2022042501.html), [Nachschlag](http://blog.schockwellenreiter.de/2022/08/2022081601.html) vom August 2022) eine neue, modifizierte Version spendieren müssen, die mit Pygame-CE läuft. Dafür habe ich erst einmal alle Pygame-CE-Ressourcen zusammengesucht:
+
+- [Pygame-CE Home](https://pyga.me/)
+- [Pygame-CE Dokumentation](https://pyga.me/docs/)
+- [Pygame-CE Tutorials](https://pyga.me/docs/#tutorials)
+- [Pygame-CE @ GitHub](https://github.com/pygame-community/pygame-ce)
+
+Noch sind -- für den normalen Entwickler -- die [Unterschiede zwischen Pygame und Pygame-CE](https://gist.github.com/davidpendergast/77e49f8028ce611ac478c38f77f9f72f) kaum von Belang. Auch wenn ich hoffe, daß dies so bleibt, habe ich dennoch wieder zu tun und ich freue mich darauf. *Still digging!*

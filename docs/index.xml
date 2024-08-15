@@ -10,7 +10,482 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Thu, 15 Aug 2024 18:05:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 15 Aug 2024 19:20:00 GMT</lastBuildDate>
+<item>
+  <title>Retrogaming und KI: Pygame-CE statt Pygame?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024081502_pygame_ce/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53922387767/"><img src="https://kantel.github.io/posts/2024081502_pygame_ce/images/pygamece-b.jpg" class="img-fluid"></a></p>
+<p>Von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> gibt es seit etwa einem Jahr eine Fork, die sich <a href="https://pyga.me/">Pygame-CE</a> <em>(Pygame Community Edition)</em> nennt. Grund für diese Abspaltung war wohl, daß sich ein nennenswerter Teil der Kernentwickler von der »Pygame-Führung« <a href="https://www.deusinmachina.net/p/what-is-happening-in-the-pygame-community">nicht mehr ausreichend ernst genommen fühlte</a>. Normalerweise sitze ich solche Abspaltungen ja aus und hoffe auf Versöhung oder einen eindeutigen Sieger.</p>
+<p>In diesem Fall jedoch gibt es ein Problem, nämlich meine Entscheidung, mein leider lange eingeschlafenes Projekt »<strong><a href="https://kantel.github.io/posts/2023120301_retrogaming_ki/">Retrogaming und Künstliche Intelligenz</a></strong>« nicht – wie ursprünglich vorgesehen – in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html">Pygame Zero</a>, sondern direkt in Pygame zu realisieren. Dafür gab es verschiedene Gründe – so hat Pygame Zero seit Februar 2018 <a href="https://pygame-zero.readthedocs.io/en/stable/changelog.html">kein Update mehr erfahren</a> und es ist leider nicht wirklich klar, ob es überhaupt noch lebt. Der Hauptgrund war aber, daß ich mein Projekt mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> auch für das Web fit machen wollte. Und da las ich doch im <a href="https://github.com/pygame-web/pygbag/blob/main/README.md">GitHub-Readme von Pygbag</a>:</p>
+<blockquote class="blockquote">
+<p>pygbag only provides support for pygame-ce ( pygame community edition )</p>
+</blockquote>
+<p>Boing, das saß! Also war Aussitzen keine Alternative mehr, sondern ich mußte mich mit Pygame-CE anfreunden, auch wenn es »nur« 80 aktive Entwickler (statt der 313 von Pygame) besitzt. Also habe ich damit einen Test gefahren und erst einmal ein objektorientiertes <em>Boilerplate</em> geschrieben, das auch mit Pygbag laufen sollte (also die Hauptschleife des Programms <strong>nicht</strong> in eine Klasse gekapselt ist):</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pygame</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os, sys</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
+<span id="cb1-5">DATAPATH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__file__</span>)), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>)</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Konstanten deklarieren</span></span>
+<span id="cb1-8">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb1-9">TITLE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"🐍 Pygame-CE Boilerplate (OOP) 🐍"</span></span>
+<span id="cb1-10">FPS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Farben</span></span>
+<span id="cb1-13">BG_COLOR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">125</span>)    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Mittelblau</span></span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Klassen</span></span>
+<span id="cb1-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ---------------------------------------------------------------------- #</span></span>
+<span id="cb1-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class GameWorld</span></span>
+<span id="cb1-18"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> GameWorld:</span>
+<span id="cb1-19">    </span>
+<span id="cb1-20">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-21">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Pygame und das Fenster initialisieren</span></span>
+<span id="cb1-22">        pygame.init()</span>
+<span id="cb1-23">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ein übler Hack, um die Position des Fensters</span></span>
+<span id="cb1-24">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf meinen zweiten Bildschirm zu setzen</span></span>
+<span id="cb1-25">        os.environ[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'SDL_VIDEO_WINDOW_POS'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%d</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">,</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%d</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1940</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>)</span>
+<span id="cb1-26">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pygame.display.set_mode((WIDTH, HEIGHT))</span>
+<span id="cb1-27">        pygame.display.set_caption(TITLE)</span>
+<span id="cb1-28">        </span>
+<span id="cb1-29">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.clock <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pygame.time.Clock()</span>
+<span id="cb1-30">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-31">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-32">        </span>
+<span id="cb1-33">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load Assets</span></span>
+<span id="cb1-34">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player_im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pygame.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pygame_ce_tiny.png"</span>)).convert_alpha()</span>
+<span id="cb1-35">        </span>
+<span id="cb1-36">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> reset(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-37">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Neustart oder Status zurücksetzen</span></span>
+<span id="cb1-38">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hier werden alle Elemente der GameWorld initialisiert</span></span>
+<span id="cb1-39">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pygame.sprite.Group()</span>
+<span id="cb1-40">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Player(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb1-41">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player)</span>
+<span id="cb1-42">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb1-43">    </span>
+<span id="cb1-44">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> events(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-45">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Poll for events</span></span>
+<span id="cb1-46">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> event <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> pygame.event.get():</span>
+<span id="cb1-47">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> ((event.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pygame.QUIT) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span></span>
+<span id="cb1-48">                (event.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pygame.KEYDOWN <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> event.key <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pygame.K_ESCAPE)):</span>
+<span id="cb1-49">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing:</span>
+<span id="cb1-50">                    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-51">                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb1-52">    </span>
+<span id="cb1-53">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-54">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.update()</span>
+<span id="cb1-55">    </span>
+<span id="cb1-56">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-57">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen.fill(BG_COLOR)</span>
+<span id="cb1-58">        </span>
+<span id="cb1-59">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Game drawings go here</span></span>
+<span id="cb1-60">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen)</span>
+<span id="cb1-61">        </span>
+<span id="cb1-62">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Alle Änderungen auf den Bildschirm</span></span>
+<span id="cb1-63">        pygame.display.flip()</span>
+<span id="cb1-64">        </span>
+<span id="cb1-65">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> start_screen(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-66">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">pass</span></span>
+<span id="cb1-67">    </span>
+<span id="cb1-68">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> end_screen(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-69">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">pass</span></span>
+<span id="cb1-70"> </span>
+<span id="cb1-71"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ---------------------------------------------------------------------- #</span></span>
+<span id="cb1-72"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class Player</span></span>
+<span id="cb1-73"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Player(pygame.sprite.Sprite):</span>
+<span id="cb1-74">     </span>
+<span id="cb1-75">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _world):</span>
+<span id="cb1-76">        <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">super</span>().<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>()</span>
+<span id="cb1-77">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _world</span>
+<span id="cb1-78">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.game_world.player_im</span>
+<span id="cb1-79">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image.get_rect()</span>
+<span id="cb1-80">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span></span>
+<span id="cb1-81">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-82">         </span>
+<span id="cb1-83">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-84">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb1-85">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># print("update")</span></span>
+<span id="cb1-86">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> WIDTH:</span>
+<span id="cb1-87">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">214</span>           </span>
+<span id="cb1-88"></span>
+<span id="cb1-89"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ---------------------------------------------------------------------- #</span></span>
+<span id="cb1-90"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># ## Hauptprogramm</span></span>
+<span id="cb1-91">world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> GameWorld()</span>
+<span id="cb1-92">world.start_screen()</span>
+<span id="cb1-93">world.reset()</span>
+<span id="cb1-94"></span>
+<span id="cb1-95"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hauptschleife</span></span>
+<span id="cb1-96"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> world.keep_going:</span>
+<span id="cb1-97">    world.events()</span>
+<span id="cb1-98">    world.update()</span>
+<span id="cb1-99">    world.draw()</span>
+<span id="cb1-100">    </span>
+<span id="cb1-101">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Framerate festsetzen</span></span>
+<span id="cb1-102">    world.clock.tick(FPS)</span>
+<span id="cb1-103">    </span>
+<span id="cb1-104">pygame.quit()</span>
+<span id="cb1-105">sys.exit(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div>
+<p>Dann habe ich Pygame-CE (<a href="https://kantel.github.io/posts/2024063001_spyder_pygame/">wie zuvor bereits Pygame</a>) eine eigene virtuelle Umgebung spendiert. Dabei zeigte sich, daß zwar Pygame wie auch Pygame-CE gut in ihrer virtuellen Umgebung mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> zusammenspielen, es aber mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/spyder.html">Spyder</a> ein Problem gibt. Werden die Skripte aus der Spynne heraus aufgerufen, lassen sie sich nur beenden, wenn man den Python-Interpreter killt.</p>
+<p>Daher habe ich – sozusagen als zweite Alternative – meiner <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a>-Umgebung ebenfalls ein Pygame-CE spendiert, das problemlos lief (vergleiche <a href="https://www.flickr.com/photos/schockwellenreiter/53922387767/">Screenshot</a> im Bannerbild oben).</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/pYq9edSUaOw?si=sqaCgkRr5cFXHr8_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Jetzt werde ich meiner im März 2022 begonnenen, in Pygame Zero realisierten »Blaupause« für ein Mazegame (<a href="http://blog.schockwellenreiter.de/2022/04/2022041701.html">Stage 1</a>, <a href="http://blog.schockwellenreiter.de/2022/04/2022041701.html">Stage 2</a>, <a href="http://blog.schockwellenreiter.de/2022/04/2022042101.html">Stage 2a</a> und <a href="http://blog.schockwellenreiter.de/2022/04/2022042501.html">Stage 3</a>, <a href="http://blog.schockwellenreiter.de/2022/08/2022081601.html">Nachschlag</a> vom August 2022) eine neue, modifizierte Version spendieren müssen, die mit Pygame-CE läuft. Dafür habe ich erst einmal alle Pygame-CE-Ressourcen zusammengesucht:</p>
+<ul>
+<li><a href="https://pyga.me/">Pygame-CE Home</a></li>
+<li><a href="https://pyga.me/docs/">Pygame-CE Dokumentation</a></li>
+<li><a href="https://pyga.me/docs/#tutorials">Pygame-CE Tutorials</a></li>
+<li><a href="https://github.com/pygame-community/pygame-ce">Pygame-CE @ GitHub</a></li>
+</ul>
+<p>Noch sind – für den normalen Entwickler – die <a href="https://gist.github.com/davidpendergast/77e49f8028ce611ac478c38f77f9f72f">Unterschiede zwischen Pygame und Pygame-CE</a> kaum von Belang. Auch wenn ich hoffe, daß dies so bleibt, habe ich dennoch wieder zu tun und ich freue mich darauf. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Retrogaming</category>
+  <category>Spieleprogrammierung</category>
+  <category>Künstliche Intelligenz</category>
+  <category>Python</category>
+  <category>Pygame</category>
+  <category>Thonny</category>
+  <category>Spyder</category>
+  <guid>https://kantel.github.io/posts/2024081502_pygame_ce/</guid>
+  <pubDate>Thu, 15 Aug 2024 19:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024081502_pygame_ce/images/pygamece.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Microsoft veröffentlicht für Office for Mac</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1776,45 +2251,6 @@ font-style: inherit;">0</span>)</span>
   <guid>https://kantel.github.io/posts/2024073102_chrome_update/</guid>
   <pubDate>Wed, 31 Jul 2024 13:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024073102_chrome_update/images/octopussy.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Apple Updates</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024073101_apple_updates/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53892123414/"><img src="https://kantel.github.io/posts/2024073101_apple_updates/images/madhattress-b.jpg" class="img-fluid"></a></p>
-<p>Zum Monatsende haut die Firma aus Cupertino mit dem angebissenen Apfel im Logo noch einmal ein paar Updates heraus. Obwohl ich nicht sicher bin, ob sie vollzählig sind, sind es doch so viele, daß ich sie wie gewohnt <em>en bloc</em> abhandeln kann:</p>
-<section id="apple-veröffentlicht-macos-sonoma-14.6" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-macos-sonoma-14.6">Apple veröffentlicht macOS Sonoma 14.6</h3>
-<p>Apple hat das Update auf die neue Betriebssystemversion macOS Sonoma 14.6 freigegeben, bietet Leistungsverbesserungen und korrigiert damit auch wieder <a href="https://www.mactechnews.de/news/article/macOS-Sonoma-14-6-erschienen-185298.html">Sicherheitsprobleme</a>.</p>
-<p>Es handelt sich aller Wahrscheinlichkeit nach bei macOS 14.6 um die letzte maßgebliche Aktualisierung für macOS 14, bevor im September oder Oktober die finale Version von macOS 15.0 Sequoia für alle Nutzer das Licht der Welt erblickt. Das Update steht über die Systemeinstellungen zur Verfügung.</p>
-</section>
-<section id="ventura-13.6.8-and-monterey-12.7.6-ebenfalls-verfügbar" class="level3">
-<h3 class="anchored" data-anchor-id="ventura-13.6.8-and-monterey-12.7.6-ebenfalls-verfügbar">Ventura 13.6.8 and Monterey 12.7.6 ebenfalls verfügbar</h3>
-<p><a href="https://www.mactechnews.de/news/article/macOS-Sonoma-14-6-erschienen-185298.html">Apple veröffentlichte soeben Sicherheitsupdates</a> für die beiden vorherigen macOS-Generationen: macOS Monterey erhält ein Update auf Version 12.7.6, Ventura auf Version 13.6.8. Auch hier finden sich keine neuen Features wieder, sondern Apple konzentriert sich auf die Behebung von Sicherheitslücken. Noch ist die Liste mit der Dokumentation, welche konkreten Lücken Apple ausbesserte, nicht verfügbar. Diese erscheint normalerweise einige Stunden nach Veröffentlichung der entsprechenden Sicherheitsupdates.</p>
-<p>Es könnte sich um das letzte Sicherheitsupdate für macOS Monterey handeln, denn nach Erscheinen von macOS Sequoia im Herbst wird Apple nur noch dringendste Sicherheitsupdates für macOS Monterey freigeben. Es empfiehlt sich – wenn möglich –, ab Herbst auf eine modernere macOS-Version umzusteigen.</p>
-</section>
-<section id="apple-veröffentlicht-ios-17.6-und-ipados-17.6" class="level3">
-<h3 class="anchored" data-anchor-id="apple-veröffentlicht-ios-17.6-und-ipados-17.6">Apple veröffentlicht iOS 17.6 und iPadOS 17.6</h3>
-<p>Wie angekündigt hat Apple das Update auf iOS 17.6 und iPadOS 17.6 bereitgestellt. Die Updates bieten neue Funktionen und Fehlerbehebungen.</p>
-<p>Das Update auf auf iOS 17.6 und iPadOS 17.6 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code>, an ausreichender Akku-Kapazität und freien Speicherplatz sollte gedacht werden) oder über iTunes erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-<p><em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53892123414/">Sexy Mad Hattress with Apples</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>the mad hatter gives a sexy naked++ woman with big boops and a nice butt a apple in the summer magic forest. colored french comic style</em>«. Negative Prompt: »<em>ugly, beard, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers, extra legs</em>«. Modell: Stable Diffusion XL, Style: Creepy Nordic + Belgian + Semi-Realistic.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024073101_apple_updates/</guid>
-  <pubDate>Wed, 31 Jul 2024 12:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024073101_apple_updates/images/madhattress.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
