@@ -1,0 +1,19 @@
+---
+title: "Security Alert: AMD Sicherheitslücke Sinkclose"
+author: "Jörg Kantel"
+date: "2024-08-20 16:20:00"
+categories: [Security]
+image: "images/horrorclownson.jpg"
+---
+
+[![](images/horrorclownson-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53851434577/)
+
+**Aus einer Security-Mailing-Liste**: Es wurde eine sehr schwerwiegende, wenn auch nur schwierig auszunutzende [Sicherheitslücke](https://www.heise.de/news/CPU-Sicherheitsluecke-in-AMD-Prozessoren-ermoeglicht-Malware-Infektionen-9831278.html) (setzt Kernel-Zugriff voraus) in AMD-CPUs gefunden. Die Lücke betrifft praktisch alle CPUs der [letzten 18 Jahre](https://www.zdnet.com/article/sinkclose-amd-cpu-vulnerability-explained-how-dangerous-is-it-really/).
+
+AMD hat bereits Updates für seinen Mikrocode veröffentlicht, die auch bereits in einigen Linux-Distros (zum Beispiel [Debian](https://security-tracker.debian.org/tracker/CVE-2023-31315), [Ubuntu](https://ubuntu.com/security/CVE-2023-31315), [RedHat](https://access.redhat.com/security/cve/cve-2023-31315)) verfügbar sind.
+
+Wer also insbesondere Server mit AMD CPUs betreibt, der sollte alsbald sein Betriebssystem updaten oder, wenn noch nicht geschehen, die AMD Mikrocode Pakete installieren, zum Beispiel mit `apt install amd64-microcode`.
+
+---
+
+**Bild**: *[Der Clown und sein Sohn](https://www.flickr.com/photos/schockwellenreiter/53851434577/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*Horror clown in a nighttime suburban street*«. Negative Prompt: »*ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers*«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook. 
