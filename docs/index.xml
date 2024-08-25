@@ -10,7 +10,67 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Fri, 23 Aug 2024 18:45:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 25 Aug 2024 16:00:00 GMT</lastBuildDate>
+<item>
+  <title>Böse Schlange: Lizenzgebühren für Anaconda-Software?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024082501_boeses_anaconda/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53432093827/"><img src="https://kantel.github.io/posts/2024082501_boeses_anaconda/images/anaconda-b.jpg" class="img-fluid"></a></p>
+<p>Die <a href="https://www.theregister.com/2024/08/08/anaconda_puts_the_squeeze_on/">Geier von Register berichten</a>, das <a href="https://www.theregister.com/2024/08/08/anaconda_puts_the_squeeze_on/">Anaconda</a>, die auch von mir geliebte und genutzte Python-Distribution, die Daumenschrauben anzieht und kommerzielle und institutionelle Nutzer zur Kasse bittet. Und das gilt auch für Nutzer aus dem Forschungs- und Bildungsbereich. <a href="https://legal.anaconda.com/policies/en?name=terms-of-service#terms-of-service">Jede Institution mit 200 0der mehr Nutzern muß von Anaconda eine Lizenz erwerben</a>.</p>
+<p>Dem können Nutzerinnen und Nutzer von <code>conda</code> oder <code>miniconda</code> nur entgehen, indem sie auf die <a href="https://docs.anaconda.com/working-with-conda/reference/default-repositories/">Default-Kanäle</a> verzichten und auf Alternativen (zum Beispiel <code>conda-forge</code>) ausweichen. Auf den <a href="https://confluence.desy.de/display/MXW/Python_258343673.html">Seiten des DESY</a> gibt es eine Anleitung, wie man die Default-Kanäle entfernt und stattdessen <code>conda-forge</code> als Kanal implementiert:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check what is currently set</span></span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--show</span> channels</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># remove all channels other than conda-forge </span></span>
+<span id="cb1-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--remove</span> channels defaults</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># add conda-forge if not already present</span></span>
+<span id="cb1-8"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--add</span> channels conda-forge</span></code></pre></div>
+<p>Außerdem sollte man eine Datei <code>condarc</code> im Wurzelverzeichnis seiner Conda-Installation ablegen, die dieses minimale Setup enthält:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">channels:</span></span>
+<span id="cb2-2">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> conda-forge</span>
+<span id="cb2-3">  <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> nodefaults</span></code></pre></div>
+<p>Auch wenn ich als Einzelnutzer (momentan noch) nicht betroffen bin, bin ich doch über die Vorgehensweise von Anaconda verärgert und überlege, mein Conda durch einen anderen, freien Paketmanager (zum Beispiel <a href="https://mamba.readthedocs.io/en/latest/index.html">Mamba</a>, BSD-3-Lizenz) zu ersetzen. <em>(Danke an Donald B. für den Hinweis.)</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53432093827/">Steampunk Anaconda</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A python stands in front of an easel in a laboratory with strange technical devices and paints colorful pictures. colored steampunk style</em>«. Modell: Stable Diffusion XL, Style: Comic Book.</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <guid>https://kantel.github.io/posts/2024082501_boeses_anaconda/</guid>
+  <pubDate>Sun, 25 Aug 2024 16:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024082501_boeses_anaconda/images/anaconda.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Am zweiten Stern rechts abbiegen: Ren’Py 8.3.0 und Ren’Py 7.8.0 freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1940,30 +2000,6 @@ font-style: inherit;">end</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024080701_chrome_update/</guid>
   <pubDate>Wed, 07 Aug 2024 14:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024080701_chrome_update/images/octopussy.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Google schließt am »August-Patchday« wieder Sicherheitslücken in Android</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024080601_android_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53832749916/"><img src="https://kantel.github.io/posts/2024080601_android_update/images/androidsgoats-b.jpg" class="img-fluid"></a></p>
-<p>Google hat mit seinem monatlichen <a href="https://source.android.com/docs/security/bulletin/2024-08-01?hl=de">Sicherheitsupdate für Android</a> (und damit auch auf seinen <a href="https://source.android.com/docs/security/bulletin/pixel/2024-08-01?hl=de">Pixel-Geräten</a>) wieder Sicherheitslücken geschlossen.</p>
-<p>Die Updates werden so nach und nach per OTA <em>(over the air)</em> auf Pixel 8a, Pixel 8/8 pro, Pixel Tablet, Pixel Fold, Pixel 7a, Pixel 7/7 pro, Pixel 6a, Pixel 6/6 pro verteilt.</p>
-<p>Die anderen Hersteller werden wie üblich in Bälde nachziehen, sofern sie überhaupt noch entsprechenden Support leisten. <em>(Mein <a href="http://www.gwdg.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53832749916/">Drei kleine Roboter</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>Three little green robots dance on a colorful meadow in front of a small garden house, two goats in checkered vests watch them, the sun shines on the scenery, colored french comic style</em>«. Modell: Stable Diffusion XL, Style: Casual Environments.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2024080601_android_update/</guid>
-  <pubDate>Tue, 06 Aug 2024 16:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024080601_android_update/images/androidsgoats.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
