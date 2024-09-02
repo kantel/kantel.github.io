@@ -10,7 +10,57 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Mon, 02 Sep 2024 15:15:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 02 Sep 2024 16:40:00 GMT</lastBuildDate>
+<item>
+  <title>My Second Brain: Not Janis, not Scott, just Joplin?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024090202_second_brain_joplin/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53966399504/"><img src="https://kantel.github.io/posts/2024090202_second_brain_joplin/images/joplin-b.jpg" class="img-fluid"></a></p>
+<p>Wegen der <a href="https://kantel.github.io/posts/2024050402_logseq_oder_zettlr/">Androhung der Macher</a> von <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html">Logseq</a>, meinem bisherigen zweiten Gehirn, von der <a href="https://discuss.logseq.com/t/why-the-database-version-and-how-its-going/26744">Version mit flachen Markdown-Dateien zu einer Datenbank-basierten Version</a> zu wechseln, bin ich ja immer noch auf der Suche nach einer Alternative. Als Open-Source-Evangelist kommt <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/obsidian.html">Obsidian</a> für mich nicht in Frage, da proprietär. Und die von mir <a href="https://kantel.github.io/posts/2024050802_foam_dendron/">in Erwägung gezogenen</a> freien Obsidian-Alternativen <a href="https://foambubble.github.io/foam/">Foam</a> und <a href="https://wiki.dendron.so/">Dendron</a> hatten als <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual-Studio-Code</a>-Plugins leider meinen Editor zerschossen.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/1SKaz1txeKA?si=0IQq_DQ5mGC78uBB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Doch gestern stolperte ich über <a href="https://www.youtube.com/watch?v=1SKaz1txeKA">dieses Video</a>, das mich an <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/joplin.html">Joplin</a> erinnerte, eine freie (MIT-Lizenz), plattformübergreifende (Linux, Windwos, macOS, iOS und Android) Notiz-App, die ich vor Jahren schon einmal getestet (damals als <a href="http://cognitiones.kantel-chaos-team.de/webworking/webservices/evernote.html">Evernote</a>-Ersatz) und für gut befunden hatte. Daher fragte ich mich, ob das Teil nicht auch als Logseq-Alternative in Frage käme? Gedacht, getan und das Teil heruntergeladen.</p>
+<p>Doch nach der Installation stürzte Joplin leider mit der Fehlermeldung</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Fatal</span> error</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">EACCES:</span> permission denied, mkdir <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/Users/myname/.config/joplin-desktop'</span></span>
+<span id="cb1-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">Error:</span> EACCES: permission denied, mkdir <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/Users/myname/.config/joplin-desktop'</span></span></code></pre></div>
+<p>gnadenlos ab. Ich vermute mal, da ich meinen aktuellen Rechner ja <a href="https://kantel.github.io/posts/2024062301_mac_mini/">von Gabi »geerbt« hatte</a> und sie daher als Besitzer des Rechners eingetragen ist (das ist beim Mac – wenn einmal festgelegt –, mehr oder weniger nicht mehr zu ändern), sie auch der Eigentümer der Datei <code>.config/joplin-desktop</code> sei. Eine Nachfrage bei unser aller Datenkrake bestätigte die Vermutung und gab auch gleich eine <a href="https://discourse.joplinapp.org/t/error-eacces-permission-denied/24436/2">Lösung</a> preis:</p>
+<p><img src="https://kantel.github.io/posts/2024090202_second_brain_joplin/images/joplinerror.jpg" class="img-fluid"></p>
+<p>Also in das Verzeichnis gewechselt und mit <code>sudo chown kantel /Users/kantel/.config</code> mich zum Eigentümer des Verzeichnisses gemacht. Danach ließ sich Joplin anstandslos starten. Dann habe ich mir neben dem obigen Video noch weitere Tutorials und Workshops herausgesucht:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=9QVS9P5PPnI">Your New Note-Taking App: Joplin</a> ist ein fünfzehnminütiges Einführungsvideo</li>
+<li>Andreas Weber: <em><a href="https://www.andysblog.de/joplin-eine-open-source-notizen-app">Joplin – Eine Open Source Notizen-App</a></em>, Andys Blog vom 30. September 2023</li>
+<li>Ann-Kathrin Watolla: <em><a href="https://www.tub.tuhh.de/tubtorials/tag/joplin/">Ein System – drei Tools</a></em>, tub.torials vom 18. Dezember 2020</li>
+<li>Clément Hardy: <em><a href="https://klemet.github.io/Workshop-Organization-EN/">Open-source and organization workshop</a></em></li>
+</ul>
+<p>Die letzten beiden Beiträge sind auch deswegen interessant, weil sie nicht auf die <strong>eine</strong> eierlegende Wollmilchsau setzen, sondern ein zweites Gehirn aus der Kombination mehrerer Werkzeuge schaffen wollen. Das deckt sich auch mit meiner Philosophie. Bei ihnen kommt neben Joplin auch <a href="https://de.wikipedia.org/wiki/Zotero">Zotero</a> zum Einsatz, danben finden unter anderem <a href="https://vscodium.com/">VSCodium</a>, <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/zettlr.html">Zettlr</a> und <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/pandoc.html">Pandoc</a> Erwähnung. Alles Tools, die auch schon von mir entweder genutzt oder getestet werden. Schaun wir mal, was aus meinen Experimenten mit Joplin herauskommt. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53966399504/">Ein Elephant am Schreibtisch</a></em>, erstellt mit <a href="https://beta.dreamstudio.ai/generate">DreamStudio</a>. Prompt: »<em>A grey elephant in a green dressing gown sits at a desk in front of a big computer. Next to it is a huge cup of steaming coffee. All around are shelves with lots of books and files. The autumn sun shines through a window</em>«. Negative Prompt: »<em>Additional tusks, second elephant</em>«. Modell: Stable Diffusion XL, Style: None.</p>
+
+
+
+ ]]></description>
+  <category>Joplin</category>
+  <category>Zettelkasten</category>
+  <guid>https://kantel.github.io/posts/2024090202_second_brain_joplin/</guid>
+  <pubDate>Mon, 02 Sep 2024 16:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024090202_second_brain_joplin/images/joplin.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Mozilla veröffentlicht neue Firefox-Versionen</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1019,49 +1069,6 @@ font-style: inherit;">0</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024081301_donata_bodo_ramelow/</guid>
   <pubDate>Tue, 13 Aug 2024 15:10:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024081301_donata_bodo_ramelow/images/dadadada01.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>All about Anytype – meine neue, digitale Rumpelkammer?</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024081201_anytype/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/53919241040/"><img src="https://kantel.github.io/posts/2024081201_anytype/images/anytype-b.jpg" class="img-fluid"></a></p>
-<p>Im <a href="https://kantel.github.io/posts/2024021301_notion/">Februar dieses Jahres</a> hatte ich testweise die Notiz- und Produktivitätssoftware <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/notion.html">Notion</a> auf meinem Rechner installiert. Sie war nicht nur deswegen interessant, weil sie die Lücke zwischen Zettelkasten und Publikationswerkzeug ausfüllte, sondern auch, weil sie optisch und ästhetisch einen guten Eindruck machte – das Auge will bei der Arbeit ja auch seinen Spaß haben.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/P8accXNcwjs?si=GFWlCCySQEJQaSXB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Leider ist Notion zwar für den Privatanwender kostenlos zu nutzen, ab proprietär. Daher kam sie für mich für eine produktive Nutzung nicht in Frage, was ich sehr bedauerte. Nun spülte aber kürzlich das Video »<a href="https://www.youtube.com/watch?v=P8accXNcwjs">Open Source alternatives to the Most popular productivity apps</a>!« in meine Timeline und darin wurde <a href="https://anytype.io/">Anytype</a> nicht nur als Alternative für Notion, sondern auch noch als Alternative zu <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/obsidian.html">Obsidian</a> empfohlen. Da mich die <a href="https://kantel.github.io/posts/2024050402_logseq_oder_zettlr/">jüngsten Nachrichten</a> über die Hinwendung von <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html">Logseq</a> von flachen Markdown-Dateien zu einer Datenbank-basierten Version beunruhigen, wurde ich gleich doppelt aufmerksam.</p>
-<p><a href="https://www.visualmakers.de/tool/anytype">Anytype.io will eine innovative und vielseitige Anwendung sein</a>, die als persönliches Daten- und Wissensmanagement-Tool dient. Sie kombiniert Elemente eines Notizbuches, eines Organizers und einer Datenbank, um Nutzern eine Plattform für die Organisation von Informationen, Ideen und Projekten zu bieten. Das Besondere an Anytype ist, daß es auf einem dezentralen Netzwerk basiert, wodurch die Privatsphäre und Sicherheit der Benutzerdaten gestärkt wird. Die Software ist Open Source <em>(Any Source Available License 1.0)</em> und die Firma sitzt in der Schweiz.</p>
-<p>Ich habe folgende Links zur Software zusammengeklaubt</p>
-<ul>
-<li><a href="https://anytype.io/">Anytype Home</a></li>
-<li><a href="https://doc.anytype.io/anytype-docs">Anytype Docs</a></li>
-<li><a href="https://github.com/anyproto/anytype-ts">Anytype (Desktop) @ GitHub</a></li>
-<li><a href="https://blog.anytype.io/">Anytype Blog</a></li>
-</ul>
-<p>und die Desktop-Version auf meinem Mac installiert und heute den ganzen Tag damit herumgespielt. Mein erster Eindruck ist, daß Anytype auch von der Ästhetik her eine vollwertige Notion-Alternative ist, die zusätzlich eine Ende-zu-Ende-Verschlüsselung bietet, so daß auch bei der Synchronisation niemand mitlesen kann. Und da – wie oben schon einmal erwähnt – die Hersteller in der Schweiz sitzen, glaube ich ihnen auch, <a href="https://gnulinux.ch/anytype-die-anwendung-fuer-alles">daß ihre Server keine Hintertürchen für die NSA oder andere (nicht nur) amerikanische Geheimdienste eingebaut haben</a>.</p>
-<p>Eine (freie!) Notion-Alternative ist also Anytype auf jeden Fall, ob sie aber als Logseq- oder Obsidian-Alternative für mein zweites Gehirn taugt, müssen erst noch weitere Tests zeigen. Zur Vorbereitung darauf habe ich zwei Playlists gefunden:</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/Cuyh2IJDnmI?si=eev6h2r81YHn6v9_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<ol type="1">
-<li>»<a href="https://www.youtube.com/playlist?list=PLfibVUP3crbVx5sssO0nzaG-rIIWBXeJH">Anytype Videos</a>« mit neunzehn Filmchen zwischen etwa fünf und fünfundzwanzig Minuten.</li>
-<li>»<a href="https://www.youtube.com/playlist?list=PLP4EJ6PbE99hnThgYnf-8M15l9oY625EW">Anytype Tutorials</a>«, bestehend aus sechs Videos mit einer Spieldauer zwischen fünf Minuten und einer Viertelstunde.</li>
-</ol>
-<p>Anytype kann seine Inhalte nach Markdown exportieren, ist also weder ein Datensilo noch eine Sackgasse. Und die Synchonisation mit meinem Android-Smartphone funzte ebenfalls – nachdem ich bei der Eingabe meiner Schlüsselphrase erst noch Autokorrektur überlisten mußte. Ich habe also mal wieder zu tun. <em>Still digging!</em></p>
-
-
-
- ]]></description>
-  <category>Anytype</category>
-  <category>Logseq</category>
-  <category>Notion</category>
-  <category>Zettelkasten</category>
-  <guid>https://kantel.github.io/posts/2024081201_anytype/</guid>
-  <pubDate>Mon, 12 Aug 2024 18:15:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024081201_anytype/images/anytype.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,40 @@
+---
+title: "My Second Brain: Not Janis, not Scott, just Joplin?"
+author: "Jörg Kantel"
+date: "2024-09-02 18:40:00"
+categories: [Joplin, Zettelkasten]
+image: "images/joplin.jpg"
+---
+
+[![](images/joplin-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53966399504/)
+
+Wegen der [Androhung der Macher](https://kantel.github.io/posts/2024050402_logseq_oder_zettlr/) von [Logseq](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/logseq.html), meinem bisherigen zweiten Gehirn, von der [Version mit flachen Markdown-Dateien zu einer Datenbank-basierten Version](https://discuss.logseq.com/t/why-the-database-version-and-how-its-going/26744) zu wechseln, bin ich ja immer noch auf der Suche nach einer Alternative. Als Open-Source-Evangelist kommt [Obsidian](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/obsidian.html) für mich nicht in Frage, da proprietär. Und die von mir [in Erwägung gezogenen](https://kantel.github.io/posts/2024050802_foam_dendron/) freien Obsidian-Alternativen [Foam](https://foambubble.github.io/foam/) und [Dendron](https://wiki.dendron.so/) hatten als [Visual-Studio-Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html)-Plugins leider meinen Editor zerschossen.
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/1SKaz1txeKA?si=0IQq_DQ5mGC78uBB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Doch gestern stolperte ich über [dieses Video](https://www.youtube.com/watch?v=1SKaz1txeKA), das mich an [Joplin](http://cognitiones.kantel-chaos-team.de/webworking/staticsites/joplin.html) erinnerte, eine freie (MIT-Lizenz), plattformübergreifende (Linux, Windwos, macOS, iOS und Android) Notiz-App, die ich vor Jahren schon einmal getestet (damals als [Evernote](http://cognitiones.kantel-chaos-team.de/webworking/webservices/evernote.html)-Ersatz) und für gut befunden hatte. Daher fragte ich mich, ob das Teil nicht auch als Logseq-Alternative in Frage käme? Gedacht, getan und das Teil heruntergeladen.
+
+Doch nach der Installation stürzte Joplin leider mit der Fehlermeldung
+
+~~~bash
+Fatal error
+EACCES: permission denied, mkdir '/Users/myname/.config/joplin-desktop'
+Error: EACCES: permission denied, mkdir '/Users/myname/.config/joplin-desktop'
+~~~
+
+gnadenlos ab. Ich vermute mal, da ich meinen aktuellen Rechner ja [von Gabi »geerbt« hatte](https://kantel.github.io/posts/2024062301_mac_mini/) und sie daher als Besitzer des Rechners eingetragen ist (das ist beim Mac -- wenn einmal festgelegt --, mehr oder weniger nicht mehr zu ändern), sie auch der Eigentümer der Datei `.config/joplin-desktop` sei. Eine Nachfrage bei unser aller Datenkrake bestätigte die Vermutung und gab auch gleich eine [Lösung](https://discourse.joplinapp.org/t/error-eacces-permission-denied/24436/2) preis:
+
+![](images/joplinerror.jpg)
+
+Also in das Verzeichnis gewechselt und mit `sudo chown kantel /Users/kantel/.config` mich zum Eigentümer des Verzeichnisses gemacht. Danach ließ sich Joplin anstandslos starten. Dann habe ich mir neben dem obigen Video noch weitere Tutorials und Workshops herausgesucht:
+
+- [Your New Note-Taking App: Joplin](https://www.youtube.com/watch?v=9QVS9P5PPnI) ist ein fünfzehnminütiges Einführungsvideo
+- Andreas Weber: *[Joplin – Eine Open Source Notizen-App](https://www.andysblog.de/joplin-eine-open-source-notizen-app)*, Andys Blog vom 30. September 2023
+- Ann-Kathrin Watolla: *[Ein System – drei Tools](https://www.tub.tuhh.de/tubtorials/tag/joplin/)*, tub.torials vom 18. Dezember 2020
+- Clément Hardy: *[Open-source and organization workshop](https://klemet.github.io/Workshop-Organization-EN/)*
+
+Die letzten beiden Beiträge sind auch deswegen interessant, weil sie nicht auf die **eine** eierlegende Wollmilchsau setzen, sondern ein zweites Gehirn aus der Kombination mehrerer Werkzeuge schaffen wollen. Das deckt sich auch mit meiner Philosophie. Bei ihnen kommt neben Joplin auch [Zotero](https://de.wikipedia.org/wiki/Zotero) zum Einsatz, danben finden unter anderem [VSCodium](https://vscodium.com/), [Zettlr](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/zettlr.html) und [Pandoc](http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/pandoc.html) Erwähnung. Alles Tools, die auch schon von mir entweder genutzt oder getestet werden. Schaun wir mal, was aus meinen Experimenten mit Joplin herauskommt. *Still digging!*
+
+---
+
+**Bild**: *[Ein Elephant am Schreibtisch](https://www.flickr.com/photos/schockwellenreiter/53966399504/)*, erstellt mit [DreamStudio](https://beta.dreamstudio.ai/generate). Prompt: »*A grey elephant in a green dressing gown sits at a desk in front of a big computer. Next to it is a huge cup of steaming coffee. All around are shelves with lots of books and files. The autumn sun shines through a window*«. Negative Prompt: »*Additional tusks, second elephant*«. Modell: Stable Diffusion XL, Style: None.
