@@ -10,7 +10,47 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 13 Nov 2024 20:35:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 14 Nov 2024 14:30:00 GMT</lastBuildDate>
+<item>
+  <title>Creative Coding mit Py5 und Python: Alles andere als »Tote Hose«!</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2024111401_py5_updates/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53828474299/"><img src="https://kantel.github.io/posts/2024111401_py5_updates/images/ccpython-b.jpg" class="img-fluid"></a></p>
+<p>Gestern trudelte per Email eine Anfrage des hier schon mehrfach erwähnten Freundes aus Bremen ein, ob ich wisse, was mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> aktuell los sei, der Python-3-Variante von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>, die mit allen CPython-Modulen zusammenspielt (darunter auch den Scientific Stack mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">NumPy</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html">SciPy</a> und der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a>, aber auch mit anderen, wichtigen Bibliotheken, wie zum Beispiel <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html">Pillow</a> oder <a href="http://cognitiones.kantel-chaos-team.de/mathematik/sympy.html">SymPy</a>). Er hätte schon länger darüber nichts mehr im <em>Schockwellenreiter</em> gelesen und vermute deshalb, daß das Projekt zu einer toten Hose geworden ist.</p>
+<p>Das konnte ich natürlich nicht auf sich beruhen lassen. Wahr ist, daß Py5 das letzte Mal im <a href="https://kantel.github.io/posts/2024072701_py5_pyscript/">Juli dieses Jahres</a> auf diesen Seiten erwähnt wurde. Aber das hing in der Hauptsache damit zusammem, daß andere Interessen in meinen Fokus gerückt waren. Denn Py5 lebt und ist alles andere als »Tote Hose«! Neben dem noch im <em>Schockwellenreiter</em> erwähnten <a href="https://kantel.github.io/posts/2024040102_py5_v010_1a1/">Update auf Py5 v0.10.1a1</a> vom 1.&nbsp;April&nbsp;2024 gab es am 29.&nbsp;Juli&nbsp;2024 ein <a href="https://ixora.io/blog/new-release-0102a0/">Update auf py5 0.10.2a0 und py5jupyter 0.2.1a0</a> und vor vier Tagen am 10.&nbsp;November&nbsp;2024 ein <a href="https://ixora.io/blog/new-release-0103a1/">Update auf py5 version 0.10.3a1</a>. Während die Updates vom Juli eher kleinere Updates mit ein paar Bugfixes und wenigen Neuerungen waren, führte das letzte Update mit <a href="https://py5coding.org/content/live_coding.html">Live Coding</a> ein mächtiges neues Feature ein (alle Neuerungen sind im <a href="https://github.com/py5coding/py5/releases">Release-Log</a> dokumentiert).</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54138514602/"><img src="https://kantel.github.io/posts/2024111401_py5_updates/images/py5jupyterlab.jpg" class="img-fluid"></a></p>
+<p>Wichtig für mich war die Mitteilung, daß mit dem Juli-Update nicht nur Py5, sondern auch Py5Jupyter aktualisiert wurde. Denn seitdem ich für Py5 mit <code>conda</code> eine <a href="https://kantel.github.io/posts/2024062801_conda_env_python/">eigene virtuelle Umgebung</a> angelegt hatte, hatte ich mich mehr und mehr von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> und seinem Py5-Mode <a href="https://kantel.github.io/posts/2024022002_jupyterlabdesktop_thonny/">emanzipert</a> und stattdessen auf <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">JupyterLab Desktop</a> als Entwicklungsumgebung gesetzt. Also habe ich mit</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> activate py5</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--upgrade</span> py5 py5jupyter</span></code></pre></div>
+<p>das aktuelle Py5 und Py5 Jupyter installiert. Dann wollte mein JupyterLab Desktop noch ein Update auf die Version&nbsp;4.2.5-1 und danach arbeitete die Entwicklungsumgebung anstandslos mit meinem Py5 zusammen (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/54138514602/">Screenshot</a>).</p>
+<p>Da ich jedoch weiß, daß nicht nur mein Freund aus Bremen, sondern noch etliche andere Leserinnen und Leser weiter gerne mit Thonny arbeiten möchten, habe ich auch hier ein wenig recherchiert: Das aktuelle Thonny ist die <a href="https://github.com/thonny/thonny/releases/tag/v4.1.6">Version&nbsp;4.1.6 vom 11.&nbsp;September&nbsp;2024</a>. Die aktuelle Py5-Version könnt Ihr wie gewohnt über das Menü <code>Werkzeuge -&gt; Verwalte Plugins…</code> einspielen. Und nicht vergessen: Auch das Plugin <a href="https://github.com/tabreturn/thonny-py5mode">thonny-py5mode</a> hat ein Update auf die Version&nbsp;0.4.7a0 erfahren, die Ihr ebenfalls über <code>Verwalte Plugins…</code> aktualisieren solltet.</p>
+<p>Jetzt warte ich nur noch darauf, daß <em>James Schmitz</em> seine <a href="https://kantel.github.io/posts/2024072701_py5_pyscript/">Spekulationen über einen Port von Py5 nach PyScript</a> wahr macht. Das wäre dann wieder ein neuer, echter <em>Game Changer!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53828474299/">Python with Glasses</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning</em>«, Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook.</p>
+
+
+
+ ]]></description>
+  <category>Py5</category>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <category>JuypterLab Desktop</category>
+  <category>Thonny</category>
+  <guid>https://kantel.github.io/posts/2024111401_py5_updates/</guid>
+  <pubDate>Thu, 14 Nov 2024 14:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2024111401_py5_updates/images/ccpython.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>KI Surfer: Scenarios Skybox, P5.js und Glitch</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -596,64 +636,6 @@ font-style: inherit;">pysheets</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024102801_apple_flickentag/</guid>
   <pubDate>Mon, 28 Oct 2024 19:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024102801_apple_flickentag/images/madhatterapple.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Zurück ins Wunderland (2): Video-Tutorials zum Wochenende</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024102501_wunderland2_videotuts/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54088870549/"><img src="https://kantel.github.io/posts/2024102501_wunderland2_videotuts/images/aliceluftschiff-b.jpg" class="img-fluid"></a></p>
-<p>Auch wenn ich mich momentan ein wenig in dem Dickicht von <a href="https://de.wikipedia.org/wiki/FLUX.1">Flux.1</a>, <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> und der Frage, wie man mit diesen Tools <a href="https://kantel.github.io/posts/2024100301_kons_char_scenario/">konsistente Charaktere realisieren</a> kann, verirre, darf und will ich nicht vergessen, daß das Ziel dieser ganzen Bemühungen ist, interaktive Geschichten zu erzählen und damit meine <a href="https://kantel.github.io/#category=Alice">Ausflüge ins Wunderland</a> fortzusetzen. Daher habe ich heute eine Reihe von Tutorials herausgesucht, die mir und Euch helfen sollen, diese Ausflüge zu planen und die notwendigen Werkzeuge dafür kennenzulernen.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/2b5MLZ6xXLY?si=IuNfQu0nMkCV0gxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Ich fange einfach mal mit Scenario an: Die beiden Videos »Master AI Image Editing with this Inpainting Tool« (<a href="https://www.youtube.com/watch?v=2b5MLZ6xXLY">Part 1</a> und <a href="https://www.youtube.com/watch?v=HQlecv4jFio">Part 2</a>) sind eine gute Einführung in das, was mensch mit den <a href="https://de.wikipedia.org/wiki/Inpainting">Inpainting</a>-Tools von Scenario anstellen kann. Da der Kanal <a href="https://www.youtube.com/@EndangeredAI">Endangered AI</a> noch etliche, aktuelle Tutorials zu Scenario (zum Beispiel »<a href="https://www.youtube.com/watch?v=zCxyw3ncmAo">You Won’t Believe the POWER of Scenario in AI Upscaling</a>)«, aber auch zu Flux enthält, habe ich ihn kurzerhand abonniert.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/q67pPZzkdZg?si=wIrs7WsyuQ7uF-hs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Aber auch auf dem Kanal von Scenario hat sich wieder einiges getan. Jüngst wurden dort diese beiden Tutorials veröffentlicht:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=tqabZMOCu7E">Assess and Refine Your Custom-Trained Models</a></li>
-<li><a href="https://www.youtube.com/watch?v=QfLV3keTvMc">Introducing the Scenario Canvas</a></li>
-</ul>
-<p>Doch auch das oben gezeigte, schon vor elf Monaten veröffentlichte »<a href="https://www.youtube.com/watch?v=q67pPZzkdZg">Craft Game Backgrounds (Scenario Canvas)</a> fand ich hoch interessant, nicht nur wegen des aktuellen Halloween-Bezugs, sondern auch weil – glaubt man den <a href="https://www.youtube.com/watch?v=q67pPZzkdZg">Gerüchten</a> auf Twitter – mit <a href="https://x.com/emmanuel_2m/status/1849453551350682068?t=FDC-twif43KdIMJQzwpDKw">Skybox v2</a> ein Upgrade des Tools zur Erzeugung nahtlos ineinander übergehender Hintergrundbilder in der Pipeline der Veröffentlichung harrt. Ich habe bisher noch nicht einmal Skybox v1 getestet, was ich dringend nachholen muß.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/jkYeJTMjbT4?si=EpjdYifHxFs0-OBF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Doch nun weiter zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, dem Werkzeug, mit dem ich bisher die meisten meiner Ausflüge ins Wunderland unternommen hatte. Den Kanal »<a href="https://www.youtube.com/@lets-make-a-game">Let’s Make A Game!</a>« hatte ich ja <a href="https://kantel.github.io/posts/2024082801_if_news/">hier schon einmal erwähnt</a>. Sein DevLog, das mehrmals die Woche aktualisiert wird, ist mittlerweile auf über 180 im Schnitt halbstündige Videos angewachsen, so daß es nahezu unmöglich ist, das Feld von hinten aufzurollen. Daher habe ich beschlossen, wie bei einer Fernsehserie einfach bei den aktuellen Videos einzusteigen. Und diese sind:</p>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=jkYeJTMjbT4">179: Terrain</a></li>
-<li><a href="https://www.youtube.com/watch?v=G9Y6CxGaCYc">180: Wilderness travel</a></li>
-<li><a href="https://www.youtube.com/watch?v=2qZ6bUEEQ84">181: A new system for movement</a></li>
-<li><a href="https://www.youtube.com/watch?v=sUwd3DgvCQk">182: Hunting</a></li>
-</ul>
-<p>Auch wenn ich den Kanal abonniert habe, ob ich bei dieser hohen Update-Frequenz jede Aktualisierung hier im <del>Blog</del> Kritzelheft erwähnen kann, wage ich zu bezweifeln.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/2vLJLG6YrMI?si=K8zCbyACsLg5wh0S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Jetzt zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>. Das obige Tutorial »<a href="https://www.youtube.com/watch?v=2vLJLG6YrMI">Twine to Ren’py Tool</a>« ist doch eine geniale Überleitung, oder? Es gehört zu der Playlist »<a href="https://www.youtube.com/playlist?list=PLMdFGlfdL57MpcrOd1OBFSEWRU8aHpKp-">Ren’Py Cookbook</a>« (acht eher kurze Videos) des Kanals <a href="https://www.youtube.com/@vimi">Visual Novel Design</a>, der auch schon mehrfach im <em>Schockwellenreiter</em> Erwähnung fand. Ebenfalls erwähnenswert ist die Playlist »<a href="https://www.youtube.com/playlist?list=PLMdFGlfdL57NjT5XEda42Zu4hkiGA1cy3">Visual Novel Development Skills</a>« des gleichen Kanals (zehn im Schnitt halbstündige Videos).</p>
-<p>Weiterhin ist da noch das Vater-/Tochter-Team <a href="https://www.youtube.com/@LearningWithBandE">Coding With B and E</a>, das ebenfalls viele Tutorials zu Ren’Py veröffentlicht. Die letzten waren »Unlock the Power of Python Dictionaries in Ren’Py« (<a href="https://www.youtube.com/watch?v=6wWz8wGlsFc">Teil 1</a> und <a href="https://www.youtube.com/watch?v=vLfZelNH_ho">Teil 2</a>) und »<a href="https://www.youtube.com/watch?v=TEK4q2xicG0">Easily Make Comic Book Style Speech Bubbles in Ren’Py</a>«.</p>
-<p><em>Last but not least</em> habe ich noch auf <em>Zeil Learnings</em> ein nützliches, kurzes Tutorial gefunden, das ich Euch nicht vorenthalten möchte: »<a href="https://www.youtube.com/watch?v=D-mmehAAQgY">Splash screen customization in Ren’Py</a>«.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/2hxy7AG4oTQ?si=xYAffIO-aGDjhWbJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p><strong>War sonst noch was?</strong> Ach ja, irgendwann müssen diese interaktiven Geschichten ja auch geschrieben werden und irgendjemand muß diese schreiben. Das Video »<a href="https://www.youtube.com/watch?v=2hxy7AG4oTQ">Writing for Visual Novels: Methods and Madness</a>« geht diesem Thema nach.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/PdCPWT7tJog?si=-H0UOPQkf9aw1wA9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Und ganz aktuell, aber dennoch historisch geht <em>Dr.&nbsp;Torsten Roeder</em> den narrativen Charakter <a href="https://www.youtube.com/watch?v=PdCPWT7tJog">hybrider Computer Rollenspiele der 1980er Jahre</a> auf den Grund. Den <a href="https://media.ccc.de/v/vcfb2024_-_201_-_de_-_202410191300_-_pixels_and_paper_-_torsten_roeder">Vortrag</a> hatte er am 19. Oktober dieses Jahres auf dem <em>Vintage Computing Festival Berlin</em> gehalten.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54088870549/">Alice und das Luftschiff</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>Little Girl Alice with blonde hair and pigtails, big blue eyes, she wears a blue dress and a white apron, alice looks from a hill at a wide landscape with a dreamy village and a small stream, a colorful airship floats in the sky</em>«. Modell: Flux LoRA, Style: Little Girl Alice.</p>
-
-
-
- ]]></description>
-  <category>Scenario</category>
-  <category>Interactive Fiction</category>
-  <category>Twine</category>
-  <category>RenPy</category>
-  <category>Alice</category>
-  <guid>https://kantel.github.io/posts/2024102501_wunderland2_videotuts/</guid>
-  <pubDate>Fri, 25 Oct 2024 18:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024102501_wunderland2_videotuts/images/aliceluftschiff.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
