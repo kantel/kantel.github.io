@@ -10,7 +10,50 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 08 Jan 2025 18:10:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 10 Jan 2025 14:50:00 GMT</lastBuildDate>
+<item>
+  <title>Neues Py5-Release: 0.10.4a2 (und ein Thonny-Update)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025011001_py5_update/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/53828565515/"><img src="https://kantel.github.io/posts/2025011001_py5_update/images/pythonglasses-b.jpg" class="img-fluid"></a></p>
+<p>In der letzten Woche des vergangenen Jahres verkündet <em>James Schmitz</em> stolz, daß mit dem <a href="https://ixora.io/blog/new-release-0104a2/">Py5-Release 0.10.4a2</a> er die vierte und letzte Version für 2024 von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>-Python3-Modul, das Processings Original-Bibliotheken (via JPype) nutzt, freigegeben hat. Der Hauptgrund für dieses Release ist, daß er das lange ausstehende <a href="https://py5coding.org/content/macos_users.html">macOS-Problem</a> durch einen neuen Ansatz zur Fensterfokussierung, der nicht nur das macOS-Problem behebt, sondern auch die Codequalität unter macOS und Windows verbessert, gelöst hat.</p>
+<p>Es existieren aber immer noch kleine Probleme:</p>
+<ol type="1">
+<li>Leider wird auch das Fenster (also Terminal, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html">JupyterLab</a> (-<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">Desktop</a>)), das Ihr zum Importieren von Py5 verwendet habt, defokussiert. Das kann zur Folge haben, daß der Ausgabefenster mit dem Canvas <strong>hinter</strong> dem Fenster zum Beispiel von JuypterLab-Desktop oder Thonny versteckt wird.</li>
+<li>Auf alten Macs mit Intel-Prozessoren und macOS 12.7.6 (Monterey), die nicht mehr auf eine aktuellere macOS-Version aktualisiert werden können (Somona oder neuer), stürzt der IPython-Kernel unter Jupyter gnadenlos ab, wenn der erste auszuführende Sketch den Standard-Renderer (JAVA2D), und die spätere Ausführung eines Sketches einen OpenGL-Renderer verwendet. Es ist nicht klar, ob dies an der Intel-CPU liegt oder an der alten (und nicht mehr unterstützten) macOS-Version 12.7.6. Auch wenn dieses Problem vermutlich nur wenige Py5-Nutzer betrifft, hofft <em>James Schmitz</em> auf ein Feedback aus der Community, um das Problem zu verstehen und zu lösen.</li>
+</ol>
+<p>Da ich ja momentan für Py5-Projekte mehr auf Jupyterlab-Desktop (in einer <a href="https://kantel.github.io/posts/2024062801_conda_env_python/">eigenen, virtuellen Py5-Umgebung</a>), denn auf Thonny setze, habe ich diese mit</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> activate py5</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--upgrade</span> py5 py5jupyter</span></code></pre></div>
+<p>aktualisiert. Dabei sagte mir <code>pip</code> daß Py5Jupyter noch aktuell sei und führte nur das Update auf das neue Py5 durch. Ein kurzer Test bestätigte mir, daß die Aktualisierung problemlos gelungen war.</p>
+<p>Da ich aber weiß, daß einige meiner Leserinnen und Leser (speziell mein Freund aus Bremen), gerne mit Thonny arbeiten, habe ich auch dieses aktualisiert. Es gibt eine <a href="https://github.com/thonny/thonny/releases/tag/v4.1.7">neue Version 4.17</a> von Thonny, die Ihr wie gewohnt über das Menü <code>Werkzeuge -&gt; Verwalte Plugins…</code> einspielen könnt. Das Plugin <a href="https://github.com/tabreturn/thonny-py5mode">thonny-py5mode</a> ist seit <a href="https://kantel.github.io/posts/2024111401_py5_updates/">meinem letzten Update</a> unverändert geblieben. Das könnt Ihr ebenfalls über <code>Verwalte Plugins…</code> überprüfen und gegebenenfalls aktualisieren.</p>
+<p>Da ja <em>Daniel Shiffmans</em> neues »<a href="https://natureofcode.com/">The Nature of Code</a>« mit den JavaScript/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Sketchen endlich auch <a href="https://kantel.github.io/posts/2024121701_drei_p5js_buecher/">in meiner Bibliothek eingetroffen</a> ist, scharrt ja mein Projekt, wenigstens Teile daraus nach Python/Py5 zu portieren, wieder mit den Hufen. Die neue Py5-Version ist dabei für die Motivation sicher sehr hilfreich. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/53828565515/">Python with Glasses</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning</em>«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook.</p>
+
+
+
+ ]]></description>
+  <category>Py5</category>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <category>Jupyterlab Desktop</category>
+  <category>Thonny</category>
+  <guid>https://kantel.github.io/posts/2025011001_py5_update/</guid>
+  <pubDate>Fri, 10 Jan 2025 14:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025011001_py5_update/images/pythonglasses.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Mozilla Thunderbird Version 134.0 freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -541,34 +584,6 @@
   <guid>https://kantel.github.io/posts/2024121101_chrome_update/</guid>
   <pubDate>Wed, 11 Dec 2024 18:25:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024121101_chrome_update/images/octopussy.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Twine 2.10.0 freigegeben (schon vor zwei Wochen)</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024121001_twine_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54039846912/"><img src="https://kantel.github.io/posts/2024121001_twine_update/images/milkman-b.jpg" class="img-fluid"></a></p>
-<p>Es muß vor vierzehn Tagen ein dunkle und stürmische Nacht gewesen sein, denn anders kann ich es mir nicht erklären, daß das <a href="https://twinery.org/">Update auf die Version 2.10.0</a> von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der von mir geliebten Engine, um interaktive Geschichten (und mehr) zu erzählen, an mir unbemerkt vorbeigegangen ist.</p>
-<p>Aber egal, jetzt ist es da und Ihr könnt es <a href="https://github.com/klembot/twinejs/releases">hier herunterladen</a>. Alle Änderungen findet Ihr in den <a href="https://twinery.org/reference/en/release-notes/2-10.html#2100">Release Notes</a>. Die für mich wichtigste Neuerung ist, daß das Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> ein Update auf die <a href="https://klembot.github.io/chapbook/guide/references/version-history.html#230-24-november-24">Version 2.3.0</a> erfahren hat, denn Chapbook ist für mich – zusammen mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> – eine wichtige Brücke, um Twine mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a> zu <a href="https://kantel.github.io/posts/2023091801_berlin_attack_twine/">verheiraten</a>.</p>
-<p>Außerdem plane ich ein Reboot meiner <a href="https://kantel.github.io/index.html#category=Twine">Twine-Tutorials</a>. Dabei sollen nicht nur das Standard-Storyformat <a href="https://twine2.neocities.org/">Harlowe</a>, sondern auch die Formate <a href="https://www.motoslave.net/sugarcube/2/docs/">SugarCube</a> und natürlich Chapbook berücksichtigt werden. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54039846912/">Milkman at Night</a></em> erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A milkman with a cart full of milk bottles in a small suburban town at a rainy night, only a few street lamps illuminate the scenery, colored french comic style</em>«. Negative Prompt: »<em>ugly, deformed, noisy, blurry, distorted, out of focus, bad anatomy, extra limbs, poorly drawn face, poorly drawn hands, missing fingers</em>«. Modell: Stable Diffusion XL, Style: Creepy Nordic + Belgian + Semi-Realistic.</p>
-
-
-
- ]]></description>
-  <category>Twine</category>
-  <category>RenPy</category>
-  <category>Chapbook</category>
-  <category>Spieleprogrammierung</category>
-  <category>Interactive Fiction</category>
-  <guid>https://kantel.github.io/posts/2024121001_twine_update/</guid>
-  <pubDate>Tue, 10 Dec 2024 12:55:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024121001_twine_update/images/milkman.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

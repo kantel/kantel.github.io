@@ -1,0 +1,33 @@
+---
+title: "Neues Py5-Release: 0.10.4a2 (und ein Thonny-Update)"
+author: "Jörg Kantel"
+date: "2025-01-10 15:50:00"
+categories: [Py5, Python, Creative Coding, Jupyterlab Desktop, Thonny]
+image: "images/pythonglasses.jpg"
+---
+
+[![](images/pythonglasses-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/53828565515/)
+
+In der letzten Woche des vergangenen Jahres verkündet *James Schmitz* stolz, daß mit dem [Py5-Release 0.10.4a2](https://ixora.io/blog/new-release-0104a2/) er die vierte und letzte Version für 2024 von [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Python3-Modul, das Processings Original-Bibliotheken (via JPype) nutzt, freigegeben hat. Der Hauptgrund für dieses Release ist, daß er das lange ausstehende [macOS-Problem](https://py5coding.org/content/macos_users.html) durch einen neuen Ansatz zur Fensterfokussierung, der nicht nur das macOS-Problem behebt, sondern auch die Codequalität unter macOS und Windows verbessert, gelöst hat.
+
+Es existieren aber immer noch kleine Probleme:
+
+1. Leider wird auch das Fenster (also Terminal, [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html), [JupyterLab](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlab.html) (-[Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html))), das Ihr zum Importieren von Py5 verwendet habt, defokussiert. Das kann zur Folge haben, daß der Ausgabefenster mit dem Canvas **hinter** dem Fenster zum Beispiel von JuypterLab-Desktop oder Thonny versteckt wird.
+2. Auf alten Macs mit Intel-Prozessoren und macOS 12.7.6 (Monterey), die nicht mehr auf eine aktuellere macOS-Version aktualisiert werden können (Somona oder neuer), stürzt der IPython-Kernel unter Jupyter gnadenlos ab, wenn der erste auszuführende Sketch den Standard-Renderer (JAVA2D), und die spätere Ausführung eines Sketches einen OpenGL-Renderer verwendet. Es ist nicht klar, ob dies an der Intel-CPU liegt oder an der alten (und nicht mehr unterstützten) macOS-Version 12.7.6. Auch wenn dieses Problem vermutlich nur wenige Py5-Nutzer betrifft, hofft *James Schmitz* auf ein Feedback aus der Community, um das Problem zu verstehen und zu lösen.
+
+Da ich ja momentan für Py5-Projekte mehr auf Jupyterlab-Desktop (in einer [eigenen, virtuellen Py5-Umgebung](https://kantel.github.io/posts/2024062801_conda_env_python/)), denn auf Thonny setze, habe ich diese mit
+
+~~~bash
+conda activate py5
+pip install --upgrade py5 py5jupyter
+~~~
+
+aktualisiert. Dabei sagte mir `pip` daß Py5Jupyter noch aktuell sei und führte nur das Update auf das neue Py5 durch. Ein kurzer Test bestätigte mir, daß die Aktualisierung problemlos gelungen war.
+
+Da ich aber weiß, daß einige meiner Leserinnen und Leser (speziell mein Freund aus Bremen), gerne mit Thonny arbeiten, habe ich auch dieses aktualisiert. Es gibt eine [neue Version 4.17](https://github.com/thonny/thonny/releases/tag/v4.1.7) von Thonny, die Ihr wie gewohnt über das Menü `Werkzeuge -> Verwalte Plugins…` einspielen könnt. Das Plugin [thonny-py5mode](https://github.com/tabreturn/thonny-py5mode) ist seit [meinem letzten Update](https://kantel.github.io/posts/2024111401_py5_updates/) unverändert geblieben. Das könnt Ihr ebenfalls über `Verwalte Plugins…` überprüfen und gegebenenfalls aktualisieren.
+
+Da ja *Daniel Shiffmans* neues »[The Nature of Code](https://natureofcode.com/)« mit den JavaScript/[P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Sketchen endlich auch [ in meiner Bibliothek eingetroffen](https://kantel.github.io/posts/2024121701_drei_p5js_buecher/) ist, scharrt ja mein Projekt, wenigstens Teile daraus nach Python/Py5 zu portieren, wieder mit den Hufen. Die neue Py5-Version ist dabei für die Motivation sicher sehr hilfreich. *Still digging!*
+
+---
+
+**Bild**: *[Python with Glasses](https://www.flickr.com/photos/schockwellenreiter/53828565515/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It's a sunny morning*«. Modell: Stable Diffusion XL, Style: Stylized Fantasy + Whimsical Storybook.
