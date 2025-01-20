@@ -10,7 +10,471 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Fri, 17 Jan 2025 22:15:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 20 Jan 2025 17:45:00 GMT</lastBuildDate>
+<item>
+  <title>Pygame und Pygbag revisited</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025012001_pygbag_revisited/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54277764208/"><img src="https://kantel.github.io/posts/2025012001_pygbag_revisited/images/pygbag-b.jpg" class="img-fluid"></a></p>
+<p>Auch für mich bringt das neue Jahr neue Herausforderungen. Ich habe mir nämlich <strong><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a></strong> wieder <a href="https://kantel.github.io/posts/2023060501_pygame_im_browser/">vorgeknöpft</a>, den Übersetzer, der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a>-Spiele, aber auch andere Python-Programme, nach WebAssembly (WASM) übersetzt und sie so im Browser spielbar macht. Und gegenüber meinem <a href="https://kantel.github.io/posts/2024042101_pygbag_standalone/">letzten Versuch vom April vergangenen Jahres</a> habe ich einige Unklarheiten ausräumen können.</p>
+<p>Als Basis habe ich wieder mein <a href="https://kantel.github.io/posts/2023060804_pygbag_oop/">objektorientiertes Template</a> genommen, das sich auf (m)ein an <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/greenfoot.html">Greenfoot</a> angelehntes <a href="https://kantel.github.io/posts/2023010701_pygame_oop/">Pygame Framework</a> orientiert. Und mittlerweile weiß ich, daß der Kommandozeilenbefehl</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pygbag</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>your.app.folder<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>der Befehl ist, der aus dem Python-Programm die webtaugliche Web-Applikation erstellt und diese im Verzeichnis <code>web/build</code> des Projekts ablegt. Er muß also jedesmal, bevor ein Projekt im Web publiziert werden soll, aufgerufen werden. Und auch für das Problem der Datenverzeichnisse habe ich eine Lösung gefunden. Statt mich an dem <code>current working directory</code> oder <code>cwd</code> zu orientieren, wo jede Entwicklungsumgebung eine andere Meinung hat, wo das <code>cwd</code> eigentlich liegt, orientiere ich mich mit</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">DATAPATH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__file__</span>)), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>)</span></code></pre></div>
+<p>an dem Pfad, in dem die Datei <code>main.py</code> liegt.</p>
+<p>Während meiner Experimente war noch ein weiteres Problem aufgetaucht: Hat man einmal mit <code>pygbag</code> den lokalen Server gestartet, ist dieser belegt und daher lässt sich nach einer Änderung dieser auf dem gleichen Port (per default <code>8000</code>) nicht erneut aufrufen. Ich habe für dieses Problem bisher nur eine radikale Lösung gefunden. Mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sudo</span> lsof <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i:8000</span></span></code></pre></div>
+<p>lasse ich mir im Terminal die <code>PID</code> des Prozesses ausgeben, der den Port 8000 blockiert, um diesen dann mit</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">kill</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$PID</span></span></code></pre></div>
+<p>oder in hartnäckigen Fällen mit</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">kill</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-9</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$PID</span>  //to forcefully kill the port</span></code></pre></div>
+<p>brutal abzuwürgen. Den Wert für die <code>$PID</code> gibt mir der erste Befehl aus.</p>
+<p>Ich habe erst einmal zur Vorbereitung ein einfaches Boilerplate angelegt, das das im <a href="https://www.flickr.com/photos/schockwellenreiter/54277764208/">obigen Bannerbild</a> gezeigte Progrämmchen ausgibt. Der Quellcode ist dieser:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Pygbag Boilerplate</span></span>
+<span id="cb6-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> asyncio</span>
+<span id="cb6-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pygame <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pg</span>
+<span id="cb6-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> pygame.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">locals</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb6-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> os, sys</span>
+<span id="cb6-6"></span>
+<span id="cb6-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Settings</span></span>
+<span id="cb6-8">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">800</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">450</span></span>
+<span id="cb6-9">TITLE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pygbag Boilerplate"</span></span>
+<span id="cb6-10">FPS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>                   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Frames per second</span></span>
+<span id="cb6-11"></span>
+<span id="cb6-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Hier wird der Pfad zum Verzeichnis der Assets gesetzt</span></span>
+<span id="cb6-13">DATAPATH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">__file__</span>)), <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data"</span>)</span>
+<span id="cb6-14"></span>
+<span id="cb6-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Farben</span></span>
+<span id="cb6-16">BG_COLOR <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dunkelgrau</span></span>
+<span id="cb6-17"></span>
+<span id="cb6-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Klassen</span></span>
+<span id="cb6-19"></span>
+<span id="cb6-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class GameWorld</span></span>
+<span id="cb6-21"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> GameWorld:</span>
+<span id="cb6-22"></span>
+<span id="cb6-23">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-24">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Pygame und das Fenster initialisieren</span></span>
+<span id="cb6-25">        pg.init()</span>
+<span id="cb6-26">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.display.set_mode((WIDTH, HEIGHT))</span>
+<span id="cb6-27">        pg.display.set_caption(TITLE)</span>
+<span id="cb6-28"></span>
+<span id="cb6-29">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.clock <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.time.Clock()</span>
+<span id="cb6-30">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb6-31"></span>
+<span id="cb6-32">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> reset(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-33">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Neustart oder Status zurücksetzen</span></span>
+<span id="cb6-34">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hier werden alle Elemente der GameWorld initialisiert</span></span>
+<span id="cb6-35">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.sprite.Group()</span>
+<span id="cb6-36">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Player()</span>
+<span id="cb6-37">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player)</span>
+<span id="cb6-38">    </span>
+<span id="cb6-39">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-40">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Game Loop</span></span>
+<span id="cb6-41">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">pass</span></span>
+<span id="cb6-42">  </span>
+<span id="cb6-43">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> events(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-44">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> event <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> pg.event.get():</span>
+<span id="cb6-45">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> ((event.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pg.QUIT)</span>
+<span id="cb6-46">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">or</span> (event.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">type</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pg.KEYDOWN</span>
+<span id="cb6-47">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> event.key <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> pg.K_ESCAPE)):</span>
+<span id="cb6-48">                <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing:</span>
+<span id="cb6-49">                    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb6-50">                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.keep_going <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span></span>
+<span id="cb6-51"> </span>
+<span id="cb6-52">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-53">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.update()</span>
+<span id="cb6-54"></span>
+<span id="cb6-55">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-56">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen.fill(BG_COLOR)</span>
+<span id="cb6-57">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.all_sprites.draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.screen)</span>
+<span id="cb6-58">        pg.display.flip()</span>
+<span id="cb6-59"></span>
+<span id="cb6-60">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> start_screen(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-61">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">pass</span></span>
+<span id="cb6-62">    </span>
+<span id="cb6-63">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> game_over_screen(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-64">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># print("Game Over")</span></span>
+<span id="cb6-65">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">pass</span>    </span>
+<span id="cb6-66"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Ende Class GameWorld</span></span>
+<span id="cb6-67">    </span>
+<span id="cb6-68"></span>
+<span id="cb6-69"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## Class Player</span></span>
+<span id="cb6-70"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Player(pg.sprite.Sprite):</span>
+<span id="cb6-71"></span>
+<span id="cb6-72">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-73">        pg.sprite.Sprite.<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>)</span>
+<span id="cb6-74">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Load Image</span></span>
+<span id="cb6-75">        img <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pg.image.load(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pygbag_logo.png"</span>)).convert_alpha()</span>
+<span id="cb6-76">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> img</span>
+<span id="cb6-77">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.image.get_rect()</span>
+<span id="cb6-78">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb6-79">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.rect.center <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb6-80">    </span>
+<span id="cb6-81">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb6-82">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">pass</span></span>
+<span id="cb6-83"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">## End Class Player</span></span>
+<span id="cb6-84"></span>
+<span id="cb6-85"></span>
+<span id="cb6-86"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># --------------------------- Hauptprgramm --------------------------- #</span></span>
+<span id="cb6-87">world <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> GameWorld()</span>
+<span id="cb6-88">world.start_screen()</span>
+<span id="cb6-89"></span>
+<span id="cb6-90"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hauptschleife</span></span>
+<span id="cb6-91"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">async</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> main():</span>
+<span id="cb6-92">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> world.keep_going:</span>
+<span id="cb6-93">        world.reset()</span>
+<span id="cb6-94">        world.playing <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span></span>
+<span id="cb6-95">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> world.playing:</span>
+<span id="cb6-96">            world.clock.tick(FPS)</span>
+<span id="cb6-97">            world.events()</span>
+<span id="cb6-98">            world.update()</span>
+<span id="cb6-99">            world.draw()</span>
+<span id="cb6-100">            <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> asyncio.sleep(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Very important, and keep it 0</span></span>
+<span id="cb6-101">        world.game_over_screen()</span>
+<span id="cb6-102">    pg.quit()</span>
+<span id="cb6-103">    sys.exit()</span>
+<span id="cb6-104"></span>
+<span id="cb6-105">asyncio.run(main())</span></code></pre></div>
+<p>Dieser Boilerplate kann sowohl in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> wie auch in jeder anderen IDE genutzt werden (ich habe dies auch mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> getestet). Und da ich im Sommer ja schon <a href="https://kantel.github.io/posts/2024081502_pygame_ce/">feststellen mußte</a>, daß Pygbag nur noch die Pygame-Fork <a href="https://pyga.me/">Pygame-CE</a> <em>(Pygame Community Edition)</em> unterstützt, habe ich mir mit <code>conda</code> eine virtuelle Umgebung für Pygame-CE erstellt, in der ich meine Versuche mit Pygbag durchführen möchte. Und auch Thonny habe ich ein eigenes Pygame-CE spendiert. Da sich hier Pygame und Pygame-CE in die Quere kamen, habe ich in Thonny Pygame deinstallieren müssen.</p>
+<p>Wer damit rumspielen will, das Pygbag-Boilerplate findet Ihr nicht nur auf dieser Seite, sondern auch (mit den Assets) in <a href="https://github.com/kantel/pygameprojects/tree/master/pygbag/pygbag_boilerplate">meinem GitHub-Repositorium</a>. Auch ich habe vor, in der nächsten Zeit einiges mit Pygame-CE und Pygbag anzustellen. Denn Pygame im Browser, das hat schon was. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Pygame</category>
+  <category>Pygbag</category>
+  <category>Python</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2025012001_pygbag_revisited/</guid>
+  <pubDate>Mon, 20 Jan 2025 17:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025012001_pygbag_revisited/images/pygbag.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neuanfänge: Videos zum Wochenende</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -541,57 +1005,6 @@ font-style: inherit;">--upgrade</span> py5 py5jupyter</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2024121702_foxit_update/</guid>
   <pubDate>Tue, 17 Dec 2024 16:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2024121702_foxit_update/images/foxit.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Neu in meiner Bibliothek: Drei Bücher zu P5.js</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2024121701_drei_p5js_buecher/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54210585155/"><img src="https://kantel.github.io/posts/2024121701_drei_p5js_buecher/images/readingbadger-b.jpg" class="img-fluid"></a></p>
-<p>Der Titel dieses Beitrags ist eigentlich leicht übertrieben, denn lediglich die Neuauflage von »The Nature of Code« ist wirklich neu in meiner Bibliothek, während »Aesthetic Programming« und »Generative Gestaltung« schon seit ein paar Monaten meine Regalwand schmücken. Ich wollte diese drei Bücher zu <em>Creative Coding</em> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> aber gemeinsam besprechen.</p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://nostarch.com/nature-code"><img src="https://kantel.github.io/posts/2024121701_drei_p5js_buecher/images/noccover.jpg" class="img-fluid"></a>
-</div>
-<p>Ich beginne mit dem Buch, auf das ich am längsten und ungeduldig gewartet hatte: <em>Daniel Shiffmans</em> Neuauflage von »<a href="https://natureofcode.com/">The Nature of Code</a>«<sup>1</sup>, in dem er seinen Klassiker von 2012 nicht nur von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a> nach P5.js portiert, sondern auch um wesentliche Teile ergänzt und erweitert hatte, sollte nach <a href="https://nostarch.com/nature-code">Angaben seines Verlages</a> eigentlich schon im Juli 2024 erscheinen. Ich hatte es daher im Oktober dieses Jahres bestellt. Warum Amazon (oder No Starch Press) es dann erst geschafft hatten, das Buch Anfang Dezember auszuliefern, wird wohl ein Geheimnis des Verlages bleiben. Aber egal, die Schwarte ist jetzt da und hat mit ihren 11 Kapiteln auf über 600 Seiten alle meine Erwartungen übertroffen. Nach den Grundlagen physikalischer Systeme (wie zum Beispiel Vektoren, Kräfte und Bewegungen) werden in den darauffolgenden Kapiteln Themen wie Partikelsysteme, Autonome Agenten, Physik-Bibliotheken, Zelluläre Automaten, Fraktale, Evolutionäre Algorithmen, Neuronale Netze und Neuroevolution behandelt. Das Themenspektrum ist also breit und wird mich über Wochen, ach was … über Monate an meine Rechner fesseln.</p>
-<p>Wie von <em>Shiffman</em> gewohnt, behandelt er die Themen zwar in einer lockeren Sprache, ohne jedoch die Gründlichkeit zu vernachlässigen. Daher – das gilt aber auch für die beiden folgenden Bücher – ist es sicher sinnvoll, die einzelnen Beispiele selber am Rechner nachzuprogrammieren. Lediglich bei den Quellen hätte ich es begrüßt, wenn sie etwas besser kenntlich gemacht wären (zum Beispiel als Fußnoten oder in einem separaten Apparat). So sind sie verstreut im Fließtext eingefügt und manchmal schwer zu finden. Aber »The Nature of Code« ist kein wissenschaftliches Werk und so ist <em>Shiffmans</em> Quellenbehandlung legitim.</p>
-<p>»The Nature of Code« kann man auch für umme <a href="https://natureofcode.com/">online lesen</a>!</p>
-<div style="float: left; margin-right: 12px; margin-top: 12px;">
-<a href="https://www.openhumanitiespress.org/books/titles/aesthetic-programming/"><img src="https://kantel.github.io/posts/2024121701_drei_p5js_buecher/images/aesthetic-programming_cover.png" class="img-fluid"></a>
-</div>
-<p>Das zweite Buch »<a href="https://www.openhumanitiespress.org/books/titles/aesthetic-programming/">Aesthetic Programming. A Handbook of Software Studies</a>«<sup>2</sup> von <em>Winnie Soon</em> und <em>Geoff Cox</em> hat mich ein wenig überrascht. Es verbindet einen kulturtheoretischen Ansatz mit einer Einführung in P5.js und behandelt daher (auch) Themen, die sonst in Programmierbüchern nicht vorkommen: Software Design in einer kapitalistischen Gesellschaft, Software und Marxismus, Software und Zugänglichkeit, Software und rassistische und sexuelle Diskriminierung. Und das ohne die Zielgruppe, also Programmiererinnen und Programmierer (und solche, die es werden wollen) aus den Augen zu verlieren. Es verzichtet daher dankenswerterweise über weite Strecken auf den vielfach üblichen sozialwissenschaftlichen Jargon – an einigen Stellen mussten die Verfasser aber dennoch darauf zurückgreifen.</p>
-<p>Die Autorin und der Autor haben P5.js als Programmierumgebung gewählt, weil sie ihrer Meinung nach weitestgehend auch für »nichttechnische« Menschen – also Menschen ohne Informatik-Hintergrund – zugänglich ist. Und sie haben zu den manchmal sperrigen Themen interessante Beispielprogramme und Aufgaben entwickelt, die eine Anfängerin oder einen Anfänger nicht überfordern, fortgeschrittenen Programmiererinnen und Programmierern aber auch Raum für eigene Experimente lässt.</p>
-<p>Den Punktabzug aber gibt es für die Kapitelüberschriften. Der verwendete Font ist nahezu unlesbar, ich habe oft Minuten gebraucht, um eine Überschrift zu entziffern. Das steht der propagierten, diskriminierungsfreien Zugänglichkeit doch weit entgegen.</p>
-<p>Ansonsten bin ich ein begeisterter Leser von <em>Aestetic Programming</em> und habe bisher die ersten neun Kapitel (von zehn Kapiteln und einem Nachwort) durchgearbeitet. Zwar haben einige der dort verbreiteten Thesen ein leichtes Stirnrunzeln bei mir hervorgerufen, aber sie sind legitim und können (mindestens) als Diskussionsgrundlage für sonst in der Regel in der Informatik nicht behandelte Fragen dienen. Und der Apparat entspricht allen Anforderungen eines wissenschaftlichen Werkes, kann aber auch überflogen werden, ohne daß die Verständlichkeit leidet.</p>
-<p>Das Buch steht unter einer Creative Commons Licence (CC-BY-SA) und kann hier <a href="https://aesthetic-programming.net/">kostenlos online gelesen</a> werden. Aber auch der Download als PDF ist möglich, <a href="https://openhumanitiespress.org/books/download/Soon-Cox_2020_Aesthetic-Programming.pdf">zum Beispiel hier</a>. Und natürlich hat <a href="https://www.amazon.de/-/en/Aesthetic-Programming-Handbook-Software-Studies/dp/1785420941">Amazon auch ein Paperback</a> für (aktuell) 20,20&nbsp;€.</p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://typografie.de/produkt/generative-gestaltung-creative-coding-im-web/"><img src="https://kantel.github.io/posts/2024121701_drei_p5js_buecher/images/gengestcover.png" class="img-fluid"></a>
-</div>
-<p>Das letzte, heute vorgestellte Buch »<a href="http://www.generative-gestaltung.de/2/">Generative Gestaltung</a>«<sup>3</sup> hat – ähnlich wie »The Nature of Code« – eine lange Geschichte hinter sich: Es erschien in der Erstauflage 2009 ebenfalls mit Processing (Java) als Programmiergrundlage und wurde so auch ins Englische übersetzt. 2018 erschien dann eine gründlich überarbeitete Neufassung, die – wie der erweiterte Titel »Creative Coding im Web. Entwerfen, Programmieren und Visualisieren mit Javascript in p5.js« andeutet – mit P5.js als Grundlage. Wie schon die Erstauflage ist es auch ästthetisch ein wunderschönes Buch geworden, das mit seinen über 250 durchgehend farbigen Seiten die Leserin oder den Leser in seinen Bann zieht.</p>
-<p>Das Buch unterscheidet sich teilweise stark von der Erstauflage. Es sind viele neue Beispiele hinzugekommen und es wurde Wert darauf gelegt, daß alle Programme webtauglich sind. Der Schwerpunkt liegt eindeutig auf Gestaltung, Design und Ästetik, daher ist der wuchtige, großformatige Band eine wunderbare Ergänzung zu den mehr technisch orientierten, beiden anderen, oben besprochenen Büchern und ist – trotz seines Preises von 40&nbsp;€ – ebenfalls eine Empfehlung von mir. Denn wer diese drei Bücher besitzt, braucht kein anderes Buch zu P5.js mehr.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54210585155/">Der belesene und kreative Dachs</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A badger in a red dressing gown sits in a wing chair and reads a book. Next to him is another stack of thick books. In the background is a large easel with a colorful, unfinished picture. The badger lives in a cave; the spring sun shines through holes in the cave walls</em>«. Modell: Flux LoRA, Style: Luminous Depths.</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Daniel Shiffman: <em>The Nature of Code. Simulating Natural Systems with JavaScript</em>, San Francisco (no starch press) 2024↩︎</p></li>
-<li id="fn2"><p>Winnie Soon, Beoff Cox: <em>Aesthetic Programming. A Handbook of Software Studies</em>, London (Open Humanities Press) 2020↩︎</p></li>
-<li id="fn3"><p>Benedikt Groß, Hartmut Bohnacker, Julia Laub, Claudius Lazzeroni: <em>Creative Coding im Web. Generative Gestaltung. Entwerfen, Programmieren und Visualisieren mit Javascript in P5.js</em>, Mainz (Verlag Hermann Schmidt) 2018↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Bücher</category>
-  <category>P5.js</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2024121701_drei_p5js_buecher/</guid>
-  <pubDate>Tue, 17 Dec 2024 13:10:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2024121701_drei_p5js_buecher/images/readingbadger.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

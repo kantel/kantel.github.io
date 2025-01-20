@@ -1,0 +1,159 @@
+---
+title: "Pygame und Pygbag revisited"
+author: "Jörg Kantel"
+date: "2025-01-20 18:45:00"
+categories: [Pygame, Pygbag, Python, Spieleprogrammierung]
+image: "images/pygbag.jpg"
+---
+
+[![](images/pygbag-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54277764208/)
+
+Auch für mich bringt das neue Jahr neue Herausforderungen. Ich habe mir nämlich **[Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html)** wieder [vorgeknöpft](https://kantel.github.io/posts/2023060501_pygame_im_browser/), den Übersetzer, der [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Spiele, aber auch andere Python-Programme, nach WebAssembly (WASM) übersetzt und sie so im Browser spielbar macht. Und gegenüber meinem [letzten Versuch vom April vergangenen Jahres](https://kantel.github.io/posts/2024042101_pygbag_standalone/) habe ich einige Unklarheiten ausräumen können.
+
+Als Basis habe ich wieder mein [objektorientiertes Template](https://kantel.github.io/posts/2023060804_pygbag_oop/) genommen, das sich auf (m)ein an [Greenfoot](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/greenfoot.html) angelehntes [Pygame Framework](https://kantel.github.io/posts/2023010701_pygame_oop/) orientiert. Und mittlerweile weiß ich, daß der Kommandozeilenbefehl
+
+~~~bash
+pygbag <your.app.folder>
+~~~
+
+der Befehl ist, der aus dem Python-Programm die webtaugliche Web-Applikation erstellt und diese im Verzeichnis `web/build` des Projekts ablegt. Er muß also jedesmal, bevor ein Projekt im Web publiziert werden soll, aufgerufen werden. Und auch für das Problem der Datenverzeichnisse habe ich eine Lösung gefunden. Statt mich an dem `current working directory` oder `cwd` zu orientieren, wo jede Entwicklungsumgebung eine andere Meinung hat, wo das `cwd` eigentlich liegt, orientiere ich mich mit
+
+~~~python
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+~~~
+
+an dem Pfad, in dem die Datei `main.py` liegt.
+
+Während meiner Experimente war noch ein weiteres Problem aufgetaucht: Hat man einmal mit `pygbag` den lokalen Server gestartet, ist dieser belegt und daher lässt sich nach einer Änderung dieser auf dem gleichen Port (per default `8000`) nicht erneut aufrufen. Ich habe für dieses Problem bisher nur eine radikale Lösung gefunden. Mit
+
+~~~bash
+sudo lsof -i:8000
+~~~
+
+lasse ich mir im Terminal die `PID` des Prozesses ausgeben, der den Port 8000 blockiert, um diesen dann mit
+
+~~~bash
+kill $PID
+~~~
+
+oder in hartnäckigen Fällen mit
+
+~~~bash
+kill -9 $PID  //to forcefully kill the port
+~~~
+
+brutal abzuwürgen. Den Wert für die `$PID` gibt mir der erste Befehl aus.
+
+Ich habe erst einmal zur Vorbereitung ein einfaches Boilerplate angelegt, das das im [obigen Bannerbild](https://www.flickr.com/photos/schockwellenreiter/54277764208/) gezeigte Progrämmchen ausgibt. Der Quellcode ist dieser:
+
+~~~python
+# Pygbag Boilerplate
+import asyncio
+import pygame as pg
+from pygame.locals import *
+import os, sys
+
+## Settings
+WIDTH, HEIGHT =  800, 450
+TITLE = "Pygbag Boilerplate"
+FPS = 60                   # Frames per second
+
+## Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+## Farben
+BG_COLOR = (40, 40, 40)  # Dunkelgrau
+
+# Klassen
+
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pg.init()
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption(TITLE)
+
+        self.clock = pg.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pg.sprite.Group()
+        self.player = Player()
+        self.all_sprites.add(self.player)
+    
+    def run(self):
+        # Game Loop
+        pass
+  
+    def events(self):
+        for event in pg.event.get():
+            if ((event.type == pg.QUIT)
+                or (event.type == pg.KEYDOWN
+                and event.key == pg.K_ESCAPE)):
+                if self.playing:
+                    self.playing = False
+                self.keep_going = False
+ 
+    def update(self):
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        self.all_sprites.draw(self.screen)
+        pg.display.flip()
+
+    def start_screen(self):
+        pass
+    
+    def game_over_screen(self):
+        # print("Game Over")
+        pass    
+## Ende Class GameWorld
+    
+
+## Class Player
+class Player(pg.sprite.Sprite):
+
+    def __init__(self):
+        pg.sprite.Sprite.__init__(self)
+        # Load Image
+        img = pg.image.load(os.path.join(DATAPATH, "pygbag_logo.png")).convert_alpha()
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.x, self.y = WIDTH/2, HEIGHT/2
+        self.rect.center = (self.x, self.y)
+    
+    def update(self):
+        pass
+## End Class Player
+
+
+# --------------------------- Hauptprgramm --------------------------- #
+world = GameWorld()
+world.start_screen()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        world.reset()
+        world.playing = True
+        while world.playing:
+            world.clock.tick(FPS)
+            world.events()
+            world.update()
+            world.draw()
+            await asyncio.sleep(0)  # Very important, and keep it 0
+        world.game_over_screen()
+    pg.quit()
+    sys.exit()
+
+asyncio.run(main())
+~~~
+
+Dieser Boilerplate kann sowohl in [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) wie auch in jeder anderen IDE genutzt werden (ich habe dies auch mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) getestet). Und da ich im Sommer ja schon [feststellen mußte](https://kantel.github.io/posts/2024081502_pygame_ce/), daß Pygbag nur noch die Pygame-Fork [Pygame-CE](https://pyga.me/) *(Pygame Community Edition)* unterstützt, habe ich mir mit `conda` eine virtuelle Umgebung für Pygame-CE erstellt, in der ich meine Versuche mit Pygbag durchführen möchte. Und auch Thonny habe ich ein eigenes Pygame-CE spendiert. Da sich hier Pygame und Pygame-CE in die Quere kamen, habe ich in Thonny Pygame deinstallieren müssen.
+
+Wer damit rumspielen will, das Pygbag-Boilerplate findet Ihr nicht nur auf dieser Seite, sondern auch (mit den Assets) in [meinem GitHub-Repositorium](https://github.com/kantel/pygameprojects/tree/master/pygbag/pygbag_boilerplate). Auch ich habe vor, in der nächsten Zeit einiges mit Pygame-CE und Pygbag anzustellen. Denn Pygame im Browser, das hat schon was. *Still digging!*
