@@ -2,7 +2,7 @@
 title: "Wie geil ist das denn? Pygame im Browser!"
 author: "Jörg Kantel"
 date: "2023-06-05 18:30:00"
-categories: [Pygame, Spieleprogrammierung]
+categories: [Pygame, Spieleprogrammierung, Pygbag]
 image: "images/pizzaplaneitchio.jpg"
 ---
 
@@ -10,7 +10,7 @@ image: "images/pizzaplaneitchio.jpg"
 
 Da experimentiere ich doch schon so lange mit [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) herum, um Python-Skripte im Browser ablaufen zu lassen, und dann macht mich der [Python-Enthusiast](https://www.youtube.com/watch?v=HDClvz3h4Xc) auf [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) aufmerksam, ein Programm, das [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Spiele, aber auch andere aber auch andere Python-Programme nach WebAssembly (WASM) übersetzt und sie so im Browser spielbar macht. Momentan (Stand Juni&nbsp;2023) kann Pygbag außer Pygame nur Module aus der Python-Standard-Bibliothek übersetzen, aber die Einbindung weiterer Pakete ist geplant.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/6PhDmpBcezQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe class="if16_9" src="https://www.youtube.com/embed/6PhDmpBcezQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 Pygbag ist eine freie (MIT-Lizenz) Anwendung und der [Quellcode](https://github.com/pygame-web/pygbag) ist auf GitHub zu finden. Das Programm ist noch jung (das erste Release ist vom Juni 2022, also gerade einmal ein Jahr alt) und wird ständig weiterentwickelt (das [aktuelle Release](https://github.com/pygame-web/pygbag/releases) ist die Version 0.6.7). Pygbag ist auch auf [PyPI zu finden](https://pypi.org/project/pygbag/0.1.5/), eine Installation ist also mit
 
@@ -42,7 +42,7 @@ Nach der ersten Übersetzung dauert es eine gewisse Zeit, bis das Programm start
 
 Aprops Geschwindigkeit: WebAssembly ist schnell, aber natürlich kann es keine Wunder vollbringen. Das obige Video spricht davon, daß die pure Python-Version im Extremfall um den Faktor fünf schneller ist als die Webversion. Das dürfte bei den meisten (2D-) Anwendungen keine Rolle spielen (die »idlen« sowieso die meiste Zeit, weil sie auf die Eingaben der Nutzer warten), aber bei extrem komplexen Spielen sollte man schon testen, ob sie noch spielbar sind (außerdem haben die Macher versprochen, daß sie an der *Performance* noch arbeiten).
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/q25i2CCNvis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe class="if16_9" src="https://www.youtube.com/embed/q25i2CCNvis" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 Das alles zwingt mich natürlich dazu, meine Strategie zu überdenken. Ich halte Pygame für ein Spieleframework, das -- alleine auf Grund seines Alters und seiner Verbreitung -- so ausgereift ist, wie kaum ein zweites. Lediglich die Tatsache, daß es keine vernünftige *Deployment*-Möglichkeit gab, hatte es ausgebremst. Sollte Pygbag das halten, was es verspricht (meine ersten Tests sind sehr positiv) und es auch noch weiterentwickelt werden (zum Beispiel ähnlich wie das auf [Pyodide](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html) aufsetzende [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) auch den *Scientific Stack*, insbesondere [SciPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html), [NumPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) oder die [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html) einbinden können), wäre das ein echter *Game Changer*.
 
