@@ -1,0 +1,164 @@
+---
+title: "Bouncing Faces mit Pygame und Pygbag"
+author: "Jörg Kantel"
+date: "2025-01-21 14:55:00"
+categories: [Pygame, Pygbag, Python, Creative Coding]
+image: "images/bouncingfaces.jpg"
+---
+
+[![](images/bouncingfaces-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54279409693/)
+
+Der [großspurigen Ankündigung von gestern](https://kantel.github.io/posts/2025012001_pygbag_revisited/), daß ich etwas mit [Pygame (CE)](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) und [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) anstellen und die Ergebnisse auch auf diesen Seiten einbinden möchte, müssen ja auch Taten folgen. Daher habe ich mein [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Experiment vom [Mai letzten Jahres](https://kantel.github.io/posts/2024051901_bouncing_faces/) wieder ausgegraben und das Ganze nach Pygame portiert.
+
+Auch wenn ich doch gemerkt hatte, daß ich, weil ich schon ewig nichts mehr mit Pygame angestellt hatte, etliches nachschlagen mußte, war es einfacher, als ich dachte. Und das Ergebnis könnt Ihr hier bewundern (auf »Ready to start!« klicken):
+
+<iframe src="pygbag/web/index.html" class="if16_9" name="Bouncing Faces"></iframe>
+
+Fünfzig Emojis mit zufällig ausgewählten Bildern und in unterschiedlichen Größen wuseln über den Bildschirm und prallen von den Bildschirmrändern wieder ab.
+
+Zwar hat der Pygame-Quellcode wegen des notwendigen *Boilerplates* nicht die Kürze eines vergleichbaren Processing- oder P5.js-Sketches, dennoch ist er eigentlich vergleichsweise kurz und übersichtlich geraten:
+
+~~~python
+# Bouncing Faces
+import asyncio
+import pygame as pg
+from pygame.locals import *
+import os, sys
+from random import randint
+
+## Settings
+WIDTH, HEIGHT =  800, 450
+TITLE = "Bouncing Faces"
+FPS = 60                   # Frames per second
+N_FACES = 50               # Number of Faces
+
+## Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+## Array mit den Bildern
+face_images = ["face01.png", "face02.png", "face03.png", "face04.png",
+               "face05.png", "face06.png", "face07.png", "face08.png",
+               "face09.png", "face10.png", "face11.png", "face12.png"]
+
+## Farben
+BG_COLOR = ("#2b3e50")
+
+# Klassen
+
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pg.init()
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption(TITLE)
+
+        self.clock = pg.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pg.sprite.Group()
+        self.faces = []
+        for i in range(N_FACES):
+            face = Face(face_images[randint(0, len(face_images) - 1)])
+            self.faces.append(face)
+            self.all_sprites.add(face)
+    
+    def events(self):
+        for event in pg.event.get():
+            if ((event.type == pg.QUIT)
+                or (event.type == pg.KEYDOWN
+                and event.key == pg.K_ESCAPE)):
+                if self.playing:
+                    self.playing = False
+                self.keep_going = False
+ 
+    def update(self):
+        # self.face.check_edges()
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        self.all_sprites.draw(self.screen)
+        pg.display.flip()
+
+    def start_screen(self):
+        pass
+    
+    def game_over_screen(self):
+        # print("Game Over")
+        pass    
+## Ende Class GameWorld
+    
+
+## Class Face
+class Face(pg.sprite.Sprite):
+
+    def __init__(self, img):
+        pg.sprite.Sprite.__init__(self)
+        # Load Image
+        img = pg.image.load(os.path.join(DATAPATH, img)).convert_alpha()
+        self.r = randint(12, 24)
+        self.image = pg.transform.scale(img, (self.r*2, self.r*2))
+        self.rect = self.image.get_rect()
+        self.x = randint(self.r, WIDTH - self.r);
+        self.y = randint(self.r, HEIGHT - self.r);
+        self.rect.center = (self.x, self.y)
+        self.loc = pg.math.Vector2(self.x, self.y)
+        self.vel = pg.math.Vector2(randint(-3, 3), randint(-3, 3))
+        if self.vel.x == 0:
+            self.vel.x = 1
+        if self.vel.y == 0:
+            self.vel.y = -1
+    
+    def update(self):
+        self.check_edges()
+        self.loc += self.vel
+        self.x = self.loc.x
+        self.y = self.loc.y
+        self.rect.center = (self.x, self.y)
+        
+    def check_edges(self):
+        if (self.loc.y >= HEIGHT - self.r):
+            self.vel.y *= -1
+            self.loc.y = (HEIGHT - self.r)
+        elif (self.loc.y <= self.r):
+            self.vel.y *= -1
+            self.loc.y = self.r
+            
+        if (self.loc.x >= WIDTH - self.r):
+            self.vel.x *= -1
+            self.loc.x = (WIDTH - self.r)
+        elif (self.loc.x <= self.r):
+            self.vel.x *= -1
+            self.loc.x = self.r
+## End Class Face
+
+
+# --------------------------- Hauptprgramm --------------------------- #
+world = GameWorld()
+world.start_screen()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        world.reset()
+        world.playing = True
+        while world.playing:
+            world.clock.tick(FPS)
+            world.events()
+            world.update()
+            world.draw()
+            await asyncio.sleep(0)  # Very important, and keep it 0
+        world.game_over_screen()
+    pg.quit()
+    sys.exit()
+
+asyncio.run(main())
+~~~
+
+Die Bildchen habe ich den [hier schon einmal vorgestellten](https://kantel.github.io/posts/2024042902_openmoji/), freien [OpenMojis](https://kantel.github.io/posts/2024042902_openmoji/) entnommen, mit denen ich schon lange einmal etwas anstellen wollte. Und den [Quellcode mit allen Assets](https://github.com/kantel/pygameprojects/tree/master/bouncingfaces) findet Ihr natürlich auch wieder in meinem GitHub-Repositorium. Habt also Spaß damit!
+
+In meinem Kopf brodeln auch schon wieder etliche Ideen, was ich mit Pygame und Pygbag noch anstellen könnte. Denn Pygame im Browser ist einfach geil. *Still digging!*
