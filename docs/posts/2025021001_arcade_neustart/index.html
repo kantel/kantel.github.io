@@ -208,16 +208,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(<span class="dv">640</span>, <span class="dv">480</span>, <span class="st">"Arcade Herdplatte"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7"></a>        <span class="va">self</span>.background_color <span class="op">=</span> (<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">255</span>)</span>
 <span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a>    <span class="kw">def</span> on_draw(<span class="va">self</span>):</span>
-<span id="cb1-10"><a href="#cb1-10"></a>        <span class="va">self</span>.clear()</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    <span class="kw">def</span> setup(<span class="va">self</span>):</span>
+<span id="cb1-10"><a href="#cb1-10"></a>        <span class="cf">pass</span></span>
 <span id="cb1-11"><a href="#cb1-11"></a></span>
-<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">def</span> main():</span>
-<span id="cb1-13"><a href="#cb1-13"></a>    window <span class="op">=</span> GameWorld()</span>
-<span id="cb1-14"><a href="#cb1-14"></a>    window.setup()</span>
-<span id="cb1-15"><a href="#cb1-15"></a>    arcade.run()</span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
-<span id="cb1-18"><a href="#cb1-18"></a>    main()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-12"><a href="#cb1-12"></a>    <span class="kw">def</span> on_draw(<span class="va">self</span>):</span>
+<span id="cb1-13"><a href="#cb1-13"></a>        <span class="va">self</span>.clear()</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">def</span> main():</span>
+<span id="cb1-16"><a href="#cb1-16"></a>    window <span class="op">=</span> GameWorld()</span>
+<span id="cb1-17"><a href="#cb1-17"></a>    window.setup()</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    arcade.run()</span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb1-21"><a href="#cb1-21"></a>    main()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Das ist ein vollständiges Arcade-Programm und öffnet ein Fenster mit einem grauen Hintergrund. Es ist zwar noch nicht ganz der Minimalismus von Pygame Zero, aber gegenüber dem <em>Overhead</em>, den Pygame verlangt, doch schon eine Vereinfachung. Und nach einer ersten Durchsicht der Arcade-Dokumentation ist die Bibliothek bedeutend leistungsfähiger als Pygame Zero. Und Pygame Zero hat seit 2018 kein echtes Update mehr erfahren, während die Python Arcade Bbliothek aktuell 149 Kontributoren besitzt, die an der Weiterentwicklung arbeiten.</p>
 <p>Das hat mich natürlich angefixt und ich mußte – in Anlehnung an das <a href="https://api.arcade.academy/en/latest/tutorials/platform_tutorial/index.html">»offizielle« Beginner-Tutorial</a> – mit Arcade spielen. Meine (noch nicht fertige – ich bin gestern bis <a href="https://api.arcade.academy/en/latest/tutorials/platform_tutorial/step_06.html">Step&nbsp;6</a> gekommen) Version sieht so aus (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/54316831851/">Screenshot</a> im Bannerbild oben):</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">"""</span></span>
