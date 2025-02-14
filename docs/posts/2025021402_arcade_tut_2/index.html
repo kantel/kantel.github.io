@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.47">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Weiter mit der Python Arcade Bibliothek? – Der Schockwellenreiter</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Weiter mit der Python Arcade Bibliothek?</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Arcade</div>
+    <div class="quarto-category">Pyglet</div>
+    <div class="quarto-category">Pymunk</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">14. Februar 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54326868476/"><img src="images/arcade2-b.jpg" class="img-fluid"></a></p>
+<p>Die <a href="https://kantel.github.io/posts/2025021001_arcade_neustart/">jüngste (Wieder-) Entdeckung</a> der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html">Python Arcade Spielebibliothek</a> hat mich ziemkich gefesselt und die letzten Tage nicht in Ruhe gelassen. Und so habe ich weiter mit ihr experimentiert und dabei einiges gelernt:</p>
+<p>Als erstes habe ich das Template geändert. Aus der <code>GameWorld</code>-Klasse wurde eine <code>GameView</code>-Klasse, und diese erbt auch nicht mehr von <code>aracade.Window()</code>, sondern von <code>arcade.View()</code>. So kann ein Fenster mehrere, unterschiedliche <em>Views</em> aufnehmen. Dazu muß zu Beginn eines Programmes natürlich immer ein Fenster initialisiert werden. In meinem Template habe ich das so implementiert:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> arcade</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># Constants</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>WINDOW_WIDTH <span class="op">=</span> <span class="dv">840</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>WINDOW_HEIGHT <span class="op">=</span> <span class="dv">360</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>WINDOW_TITLE <span class="op">=</span> <span class="st">"Arcade Herdplatte v2"</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Create a window class. This is what actually shows up on screen</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>window <span class="op">=</span> arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)</span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># Position of the window (optional)</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>window.set_location(<span class="dv">1980</span>, <span class="dv">80</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="kw">class</span> GameView(arcade.View):</span>
+<span id="cb1-14"><a href="#cb1-14"></a>    <span class="co">"""</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">    Main application class.</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">    """</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-19"><a href="#cb1-19"></a>        <span class="co">""" Call the parent class to set up the window """</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb1-21"><a href="#cb1-21"></a>        <span class="va">self</span>.background_color <span class="op">=</span> arcade.color.AMAZON</span>
+<span id="cb1-22"><a href="#cb1-22"></a>        </span>
+<span id="cb1-23"><a href="#cb1-23"></a>    <span class="kw">def</span> setup(<span class="va">self</span>):</span>
+<span id="cb1-24"><a href="#cb1-24"></a>        <span class="co">"""Set up the game here. Call this function to restart the game."""</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>        <span class="cf">pass</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>    </span>
+<span id="cb1-27"><a href="#cb1-27"></a>    <span class="kw">def</span> on_draw(<span class="va">self</span>):</span>
+<span id="cb1-28"><a href="#cb1-28"></a>        <span class="co">"""Render the screen."""</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>        <span class="va">self</span>.clear()</span>
+<span id="cb1-30"><a href="#cb1-30"></a>    </span>
+<span id="cb1-31"><a href="#cb1-31"></a>    <span class="kw">def</span> on_update(<span class="va">self</span>, delta_time):</span>
+<span id="cb1-32"><a href="#cb1-32"></a>        <span class="co">"""Movement and Game Logic"""</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>        <span class="cf">pass</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>    </span>
+<span id="cb1-35"><a href="#cb1-35"></a><span class="kw">def</span> main():</span>
+<span id="cb1-36"><a href="#cb1-36"></a>    game <span class="op">=</span> GameView()</span>
+<span id="cb1-37"><a href="#cb1-37"></a>    window.show_view(game)</span>
+<span id="cb1-38"><a href="#cb1-38"></a>    game.setup()</span>
+<span id="cb1-39"><a href="#cb1-39"></a>    arcade.run()</span>
+<span id="cb1-40"><a href="#cb1-40"></a></span>
+<span id="cb1-41"><a href="#cb1-41"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    main()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In der <code>main()</code>-Funktion muß dann zusätzlich noch die Methode <code>window.show_view(game)</code> aufgerufen werden, ansonsten hat sich im Template kaum etwas geändert.</p>
+<p>Auch mein Testprogramm – in der unten abgedruckten, aktuellen Version&nbsp;2 – wäre auch ohne diese Template-Änderungen lauffähig gewesen, aber ich wollte das Template einfach allgemeiner und vielseitig verwendbarer halten. Und so ist dieses nun dabei herausgekommen:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">"""</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">Simple Platformer Game with Arcade, Stage 2</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">"""</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="im">import</span> arcade</span>
+<span id="cb2-5"><a href="#cb2-5"></a></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co"># Constants</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>WINDOW_WIDTH <span class="op">=</span> <span class="dv">944</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>WINDOW_HEIGHT <span class="op">=</span> <span class="dv">360</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>WINDOW_TITLE <span class="op">=</span> <span class="st">"Erste Schritte mit Arcade 3.0, Stage 2"</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a>TILE_SCALING <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>TILE_SIZE <span class="op">=</span> <span class="dv">32</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>BL <span class="op">=</span> <span class="op">-</span>TILE_SIZE<span class="op">/</span><span class="dv">2</span>                  <span class="co"># Border left</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>BR <span class="op">=</span> WINDOW_WIDTH <span class="op">+</span> TILE_SIZE<span class="op">/</span><span class="dv">2</span>    <span class="co"># Border right</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>DIAMOND_SCALING <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a>PLAYER_SPEED <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>GRAVITY <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>PLAYER_JUMP <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co"># Create a window class. This is what actually shows up on screen</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>window <span class="op">=</span> arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)</span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="co"># Position of the window (optional)</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>window.set_location(<span class="dv">1980</span>, <span class="dv">80</span>)</span>
+<span id="cb2-25"><a href="#cb2-25"></a></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="kw">class</span> GameView(arcade.View):</span>
+<span id="cb2-27"><a href="#cb2-27"></a>    <span class="co">"""</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="co">    Main application class.</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="co">    """</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a></span>
+<span id="cb2-31"><a href="#cb2-31"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb2-32"><a href="#cb2-32"></a></span>
+<span id="cb2-33"><a href="#cb2-33"></a>        <span class="co"># Call the parent class to set up the window</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb2-35"><a href="#cb2-35"></a>        <span class="va">self</span>.background_color <span class="op">=</span> arcade.color.AMAZON</span>
+<span id="cb2-36"><a href="#cb2-36"></a>        </span>
+<span id="cb2-37"><a href="#cb2-37"></a>        <span class="co"># Variable to hold our texture for our player</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>        <span class="va">self</span>.player_texture <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a>        </span>
+<span id="cb2-40"><a href="#cb2-40"></a>        <span class="co"># Separate variable that holds the player sprite</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>        <span class="va">self</span>.player_sprite <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a>        </span>
+<span id="cb2-43"><a href="#cb2-43"></a>        <span class="co"># SpriteList for our player</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a>        <span class="va">self</span>.player_list <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a>        </span>
+<span id="cb2-46"><a href="#cb2-46"></a>        <span class="co"># SpriteList for our boxes and ground</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a>        <span class="va">self</span>.wall_list <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>        </span>
+<span id="cb2-49"><a href="#cb2-49"></a>        <span class="co"># SpriteList for diamonds the player can collect</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a>        <span class="va">self</span>.diamond_list <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-51"><a href="#cb2-51"></a>        </span>
+<span id="cb2-52"><a href="#cb2-52"></a>        <span class="co"># This variable will store our score as an integer.</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a>        <span class="va">self</span>.score <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-54"><a href="#cb2-54"></a>        </span>
+<span id="cb2-55"><a href="#cb2-55"></a>        <span class="co"># This variable will store the text for score that we will draw to the screen.</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a>        <span class="va">self</span>.score_text <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a>        </span>
+<span id="cb2-58"><a href="#cb2-58"></a>        <span class="va">self</span>.collect_coin_sound <span class="op">=</span> arcade.load_sound(<span class="st">":resources:sounds/coin1.wav"</span>)</span>
+<span id="cb2-59"><a href="#cb2-59"></a>        <span class="va">self</span>.jump_sound <span class="op">=</span> arcade.load_sound(<span class="st">":resources:sounds/jump1.wav"</span>)</span>
+<span id="cb2-60"><a href="#cb2-60"></a></span>
+<span id="cb2-61"><a href="#cb2-61"></a>    <span class="kw">def</span> setup(<span class="va">self</span>):</span>
+<span id="cb2-62"><a href="#cb2-62"></a>        <span class="co">"""Set up the game here. Call this function to restart the game."""</span></span>
+<span id="cb2-63"><a href="#cb2-63"></a>        </span>
+<span id="cb2-64"><a href="#cb2-64"></a>        <span class="va">self</span>.player_texture <span class="op">=</span> arcade.load_texture(<span class="st">"data/gameboy_idle.png"</span>)</span>
+<span id="cb2-65"><a href="#cb2-65"></a>        </span>
+<span id="cb2-66"><a href="#cb2-66"></a>        <span class="va">self</span>.player_sprite <span class="op">=</span> arcade.Sprite(<span class="va">self</span>.player_texture, scale <span class="op">=</span> <span class="fl">0.65</span>)</span>
+<span id="cb2-67"><a href="#cb2-67"></a>        <span class="va">self</span>.player_sprite.center_x <span class="op">=</span> <span class="dv">64</span></span>
+<span id="cb2-68"><a href="#cb2-68"></a>        <span class="va">self</span>.player_sprite.center_y <span class="op">=</span> WINDOW_HEIGHT <span class="op">+</span> <span class="dv">100</span></span>
+<span id="cb2-69"><a href="#cb2-69"></a>        </span>
+<span id="cb2-70"><a href="#cb2-70"></a>        <span class="co"># SpriteList for our player</span></span>
+<span id="cb2-71"><a href="#cb2-71"></a>        <span class="va">self</span>.player_list <span class="op">=</span> arcade.SpriteList()</span>
+<span id="cb2-72"><a href="#cb2-72"></a>        <span class="va">self</span>.player_list.append(<span class="va">self</span>.player_sprite)</span>
+<span id="cb2-73"><a href="#cb2-73"></a>        </span>
+<span id="cb2-74"><a href="#cb2-74"></a>        <span class="va">self</span>.wall_list <span class="op">=</span> arcade.SpriteList(use_spatial_hash <span class="op">=</span> <span class="va">True</span>)</span>
+<span id="cb2-75"><a href="#cb2-75"></a>        <span class="va">self</span>.diamond_list <span class="op">=</span> arcade.SpriteList(use_spatial_hash<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-76"><a href="#cb2-76"></a>        </span>
+<span id="cb2-77"><a href="#cb2-77"></a>        <span class="co"># Create the ground</span></span>
+<span id="cb2-78"><a href="#cb2-78"></a>        <span class="co"># This shows using a loop to place multiple sprites horizontally</span></span>
+<span id="cb2-79"><a href="#cb2-79"></a>        <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, WINDOW_WIDTH, TILE_SIZE):</span>
+<span id="cb2-80"><a href="#cb2-80"></a>            wall <span class="op">=</span> arcade.Sprite(<span class="st">"data/grass001.png"</span>, scale <span class="op">=</span> TILE_SCALING)</span>
+<span id="cb2-81"><a href="#cb2-81"></a>            wall.center_x <span class="op">=</span> x</span>
+<span id="cb2-82"><a href="#cb2-82"></a>            wall.center_y <span class="op">=</span> TILE_SIZE<span class="op">/</span><span class="dv">2</span></span>
+<span id="cb2-83"><a href="#cb2-83"></a>            <span class="va">self</span>.wall_list.append(wall)</span>
+<span id="cb2-84"><a href="#cb2-84"></a>        </span>
+<span id="cb2-85"><a href="#cb2-85"></a>        <span class="co"># Put some crates on the ground</span></span>
+<span id="cb2-86"><a href="#cb2-86"></a>        <span class="co"># This shows using a coordinate list to place sprites</span></span>
+<span id="cb2-87"><a href="#cb2-87"></a>        coordinate_list <span class="op">=</span> [[<span class="dv">480</span>, <span class="dv">48</span>], [<span class="dv">240</span>, <span class="dv">48</span>], [<span class="dv">720</span>, <span class="dv">48</span>]]</span>
+<span id="cb2-88"><a href="#cb2-88"></a>        </span>
+<span id="cb2-89"><a href="#cb2-89"></a>        <span class="cf">for</span> coordinate <span class="kw">in</span> coordinate_list:</span>
+<span id="cb2-90"><a href="#cb2-90"></a>            <span class="co"># Add a crate on the ground</span></span>
+<span id="cb2-91"><a href="#cb2-91"></a>            wall <span class="op">=</span> arcade.Sprite(<span class="st">"data/box01.png"</span>, scale <span class="op">=</span> TILE_SCALING)</span>
+<span id="cb2-92"><a href="#cb2-92"></a>            wall.position <span class="op">=</span> coordinate</span>
+<span id="cb2-93"><a href="#cb2-93"></a>            <span class="va">self</span>.wall_list.append(wall)</span>
+<span id="cb2-94"><a href="#cb2-94"></a>            </span>
+<span id="cb2-95"><a href="#cb2-95"></a>        <span class="co"># Level border</span></span>
+<span id="cb2-96"><a href="#cb2-96"></a>        border_list <span class="op">=</span> [[BL, <span class="dv">48</span>], [BL, <span class="dv">80</span>], [BL, <span class="dv">112</span>], [BL, <span class="dv">144</span>], [BL, <span class="dv">176</span>],</span>
+<span id="cb2-97"><a href="#cb2-97"></a>                       [BL, <span class="dv">208</span>], [BL, <span class="dv">240</span>], [BL, <span class="dv">272</span>], [BL, <span class="dv">304</span>], [BL, <span class="dv">336</span>], [BL, <span class="dv">368</span>],</span>
+<span id="cb2-98"><a href="#cb2-98"></a>                       [BR, <span class="dv">48</span>], [BR, <span class="dv">80</span>], [BR, <span class="dv">112</span>], [BR, <span class="dv">144</span>], [BR, <span class="dv">176</span>],</span>
+<span id="cb2-99"><a href="#cb2-99"></a>                       [BR, <span class="dv">208</span>], [BR, <span class="dv">240</span>], [BR, <span class="dv">272</span>], [BR, <span class="dv">304</span>], [BR, <span class="dv">336</span>], [BR, <span class="dv">368</span>]]</span>
+<span id="cb2-100"><a href="#cb2-100"></a>        <span class="cf">for</span> border <span class="kw">in</span> border_list:</span>
+<span id="cb2-101"><a href="#cb2-101"></a>            wall <span class="op">=</span> arcade.Sprite(<span class="st">"data/box01.png"</span>, scale <span class="op">=</span> TILE_SCALING)</span>
+<span id="cb2-102"><a href="#cb2-102"></a>            wall.position <span class="op">=</span> border</span>
+<span id="cb2-103"><a href="#cb2-103"></a>            <span class="va">self</span>.wall_list.append(wall)</span>
+<span id="cb2-104"><a href="#cb2-104"></a>            </span>
+<span id="cb2-105"><a href="#cb2-105"></a>        <span class="co"># Add diamonds to the world</span></span>
+<span id="cb2-106"><a href="#cb2-106"></a>        <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">120</span>, WINDOW_WIDTH, <span class="dv">240</span>):</span>
+<span id="cb2-107"><a href="#cb2-107"></a>            diamond <span class="op">=</span> arcade.Sprite(<span class="st">"data/diamond01.png"</span>, scale <span class="op">=</span> DIAMOND_SCALING)</span>
+<span id="cb2-108"><a href="#cb2-108"></a>            diamond.center_x <span class="op">=</span> x</span>
+<span id="cb2-109"><a href="#cb2-109"></a>            diamond.center_y <span class="op">=</span> <span class="dv">192</span></span>
+<span id="cb2-110"><a href="#cb2-110"></a>            <span class="va">self</span>.diamond_list.append(diamond)</span>
+<span id="cb2-111"><a href="#cb2-111"></a>        </span>
+<span id="cb2-112"><a href="#cb2-112"></a>        <span class="co"># Create a Platformer Physics Engine.</span></span>
+<span id="cb2-113"><a href="#cb2-113"></a>        <span class="va">self</span>.physics_engine <span class="op">=</span> arcade.PhysicsEnginePlatformer(</span>
+<span id="cb2-114"><a href="#cb2-114"></a>            <span class="va">self</span>.player_sprite, walls<span class="op">=</span><span class="va">self</span>.wall_list, gravity_constant<span class="op">=</span>GRAVITY</span>
+<span id="cb2-115"><a href="#cb2-115"></a>        )</span>
+<span id="cb2-116"><a href="#cb2-116"></a>        </span>
+<span id="cb2-117"><a href="#cb2-117"></a>        <span class="co"># Reset our score to 0</span></span>
+<span id="cb2-118"><a href="#cb2-118"></a>        <span class="va">self</span>.score <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-119"><a href="#cb2-119"></a></span>
+<span id="cb2-120"><a href="#cb2-120"></a>        <span class="co"># Initialize our arcade.Text object for score</span></span>
+<span id="cb2-121"><a href="#cb2-121"></a>        <span class="va">self</span>.score_text <span class="op">=</span> arcade.Text(<span class="ss">f"Score: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>score<span class="sc">}</span><span class="ss">"</span>, x <span class="op">=</span> <span class="dv">10</span>, y <span class="op">=</span> <span class="dv">5</span>)</span>
+<span id="cb2-122"><a href="#cb2-122"></a></span>
+<span id="cb2-123"><a href="#cb2-123"></a>        <span class="va">self</span>.background_color <span class="op">=</span> (<span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">128</span>, <span class="dv">255</span>)</span>
+<span id="cb2-124"><a href="#cb2-124"></a></span>
+<span id="cb2-125"><a href="#cb2-125"></a>    <span class="kw">def</span> on_draw(<span class="va">self</span>):</span>
+<span id="cb2-126"><a href="#cb2-126"></a>        <span class="co">"""Render the screen."""</span></span>
+<span id="cb2-127"><a href="#cb2-127"></a></span>
+<span id="cb2-128"><a href="#cb2-128"></a>        <span class="co"># The clear method should always be called at the start of on_draw.</span></span>
+<span id="cb2-129"><a href="#cb2-129"></a>        <span class="va">self</span>.clear()</span>
+<span id="cb2-130"><a href="#cb2-130"></a>        </span>
+<span id="cb2-131"><a href="#cb2-131"></a>        <span class="co"># Code to draw other things will go here</span></span>
+<span id="cb2-132"><a href="#cb2-132"></a>        <span class="va">self</span>.wall_list.draw()</span>
+<span id="cb2-133"><a href="#cb2-133"></a>        <span class="va">self</span>.diamond_list.draw()</span>
+<span id="cb2-134"><a href="#cb2-134"></a>        <span class="va">self</span>.player_list.draw()</span>
+<span id="cb2-135"><a href="#cb2-135"></a>        </span>
+<span id="cb2-136"><a href="#cb2-136"></a>        <span class="co"># Draw our Score</span></span>
+<span id="cb2-137"><a href="#cb2-137"></a>        <span class="va">self</span>.score_text.draw()</span>
+<span id="cb2-138"><a href="#cb2-138"></a>    </span>
+<span id="cb2-139"><a href="#cb2-139"></a>    <span class="kw">def</span> on_update(<span class="va">self</span>, delta_time):</span>
+<span id="cb2-140"><a href="#cb2-140"></a>        <span class="co">"""Movement and Game Logic"""</span></span>
+<span id="cb2-141"><a href="#cb2-141"></a></span>
+<span id="cb2-142"><a href="#cb2-142"></a>        <span class="co"># Move the player using our physics engine</span></span>
+<span id="cb2-143"><a href="#cb2-143"></a>        <span class="va">self</span>.physics_engine.update()</span>
+<span id="cb2-144"><a href="#cb2-144"></a>        </span>
+<span id="cb2-145"><a href="#cb2-145"></a>        <span class="co"># See if we hit any diamonds</span></span>
+<span id="cb2-146"><a href="#cb2-146"></a>        diamond_hit_list <span class="op">=</span> arcade.check_for_collision_with_list(</span>
+<span id="cb2-147"><a href="#cb2-147"></a>            <span class="va">self</span>.player_sprite, <span class="va">self</span>.diamond_list</span>
+<span id="cb2-148"><a href="#cb2-148"></a>        )</span>
+<span id="cb2-149"><a href="#cb2-149"></a></span>
+<span id="cb2-150"><a href="#cb2-150"></a>        <span class="co"># Loop through each coin we hit (if any) and remove it</span></span>
+<span id="cb2-151"><a href="#cb2-151"></a>        <span class="cf">for</span> diamond <span class="kw">in</span> diamond_hit_list:</span>
+<span id="cb2-152"><a href="#cb2-152"></a>            <span class="co"># Remove the coin</span></span>
+<span id="cb2-153"><a href="#cb2-153"></a>            diamond.remove_from_sprite_lists()</span>
+<span id="cb2-154"><a href="#cb2-154"></a>            arcade.play_sound(<span class="va">self</span>.collect_coin_sound)</span>
+<span id="cb2-155"><a href="#cb2-155"></a>            <span class="va">self</span>.score <span class="op">+=</span> <span class="dv">75</span></span>
+<span id="cb2-156"><a href="#cb2-156"></a>            <span class="va">self</span>.score_text.text <span class="op">=</span> <span class="ss">f"Score: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>score<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb2-157"><a href="#cb2-157"></a>        </span>
+<span id="cb2-158"><a href="#cb2-158"></a>    </span>
+<span id="cb2-159"><a href="#cb2-159"></a>    <span class="kw">def</span> on_key_press(<span class="va">self</span>, key, modifiers):</span>
+<span id="cb2-160"><a href="#cb2-160"></a>        <span class="co">"""Called whenever a key is pressed."""</span></span>
+<span id="cb2-161"><a href="#cb2-161"></a>                 </span>
+<span id="cb2-162"><a href="#cb2-162"></a>        <span class="cf">if</span> key <span class="op">==</span> arcade.key.ESCAPE:</span>
+<span id="cb2-163"><a href="#cb2-163"></a>            <span class="va">self</span>.setup()</span>
+<span id="cb2-164"><a href="#cb2-164"></a>        </span>
+<span id="cb2-165"><a href="#cb2-165"></a>        <span class="cf">if</span> key <span class="op">==</span> arcade.key.UP <span class="kw">or</span> key <span class="op">==</span> arcade.key.W:</span>
+<span id="cb2-166"><a href="#cb2-166"></a>            <span class="cf">if</span> <span class="va">self</span>.physics_engine.can_jump():</span>
+<span id="cb2-167"><a href="#cb2-167"></a>                <span class="va">self</span>.player_sprite.change_y <span class="op">=</span> PLAYER_JUMP</span>
+<span id="cb2-168"><a href="#cb2-168"></a>                arcade.play_sound(<span class="va">self</span>.jump_sound)</span>
+<span id="cb2-169"><a href="#cb2-169"></a></span>
+<span id="cb2-170"><a href="#cb2-170"></a>        <span class="cf">if</span> key <span class="op">==</span> arcade.key.LEFT <span class="kw">or</span> key <span class="op">==</span> arcade.key.A:</span>
+<span id="cb2-171"><a href="#cb2-171"></a>            <span class="va">self</span>.player_sprite.change_x <span class="op">=</span> <span class="op">-</span>PLAYER_SPEED</span>
+<span id="cb2-172"><a href="#cb2-172"></a>        <span class="cf">elif</span> key <span class="op">==</span> arcade.key.RIGHT <span class="kw">or</span> key <span class="op">==</span> arcade.key.D:</span>
+<span id="cb2-173"><a href="#cb2-173"></a>            <span class="va">self</span>.player_sprite.change_x <span class="op">=</span> PLAYER_SPEED</span>
+<span id="cb2-174"><a href="#cb2-174"></a></span>
+<span id="cb2-175"><a href="#cb2-175"></a>    <span class="kw">def</span> on_key_release(<span class="va">self</span>, key, modifiers):</span>
+<span id="cb2-176"><a href="#cb2-176"></a>        <span class="co">"""Called whenever a key is released."""</span></span>
+<span id="cb2-177"><a href="#cb2-177"></a>        </span>
+<span id="cb2-178"><a href="#cb2-178"></a>        <span class="cf">if</span> key <span class="op">==</span> arcade.key.LEFT <span class="kw">or</span> key <span class="op">==</span> arcade.key.A:</span>
+<span id="cb2-179"><a href="#cb2-179"></a>            <span class="va">self</span>.player_sprite.change_x <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-180"><a href="#cb2-180"></a>        <span class="cf">elif</span> key <span class="op">==</span> arcade.key.RIGHT <span class="kw">or</span> key <span class="op">==</span> arcade.key.D:</span>
+<span id="cb2-181"><a href="#cb2-181"></a>            <span class="va">self</span>.player_sprite.change_x <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-182"><a href="#cb2-182"></a></span>
+<span id="cb2-183"><a href="#cb2-183"></a><span class="kw">def</span> main():</span>
+<span id="cb2-184"><a href="#cb2-184"></a>    <span class="co">"""Main function"""</span></span>
+<span id="cb2-185"><a href="#cb2-185"></a>    game <span class="op">=</span> GameView()</span>
+<span id="cb2-186"><a href="#cb2-186"></a>    window.show_view(game)</span>
+<span id="cb2-187"><a href="#cb2-187"></a>    game.setup()</span>
+<span id="cb2-188"><a href="#cb2-188"></a>    arcade.run()</span>
+<span id="cb2-189"><a href="#cb2-189"></a></span>
+<span id="cb2-190"><a href="#cb2-190"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb2-191"><a href="#cb2-191"></a>    main()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Gegenüber der <a href="https://kantel.github.io/posts/2025021001_arcade_neustart/">vor vier Tagen veröffentlichten, ersten Version</a> habe ich noch Töne implemeniert und ein paar Diamanten auf dem Spielfeld verteilt, die der Spieler einsammeln soll und für die er dann Punkte kassiert. Die Punkte werden unten angezeigt. Und damit die Spielfigur rechts und links außerhalb des Bildschirms (und auch außerhalb der Plattform) nicht ins Bodenlose fällt, habe ich einfach rechts und links (gerade außerhalb des Fensters und damit für den Spieler nicht sichtbar) ein paar Kisten bis zur Fensterhöhe aufgestapelt. Die verwendete Physik-Engine sorgt dann dafür, daß der Spieler an den Fensterrändern stoppt. Das geht bestimmt eleganter, aber mir fiel gerade keine »elegante Lösung« ein.</p>
+<p>Natürlich gibt es den Quellcode (<code>getting_started_02.py</code>) mit allen Assets wieder in <a href="https://github.com/kantel/learningarcade/tree/master/getting_started">meinem GitHub-Repositorium</a>. Die derzeige Version ist eine Abwandlung des <a href="https://api.arcade.academy/en/latest/tutorials/platform_tutorial/index.html">Simple Platformer Tutorials</a> (bis etwa <em>Step 10</em>) von den Arcade-Dokumentationsseiten und die Assets sind dem <a href="https://kenney.nl/assets/simplified-platformer-pack">Simplified Platformer Pack</a> aus dem schier unerschöpflichen, freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) Fundus von Kenney.nl entnommen.</p>
+<p><strong>Wie weiter?</strong> Der <a href="https://github.com/kantel/kantel.github.io/discussions/239#discussioncomment-12164768">Diskussionsbeitrag</a> von <em>Gravitar</em> (dem wir so viele, nette <a href="https://www.youtube.com/@Gravitar">Python-Tutorials auf YouTube</a> verdanken) hat mich auf die Idee gebracht, um die (auf <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyglet.html">Pyglet</a> beruhende) Vektor-Implementiierung von Arcade zu verstehen und zu testen, mal das <a href="https://natureofcode.com/vectors/">Kapitel über Vektoren</a> aus <em>Daniel Shiffmans</em> »The Nature of Code« von JavaScript (P5.js) nach Python (Arcade) zu portieren.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/GMUhXMw1zZE?si=AaTWHU5askSPZuvv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Dabei soll mir die (noch unvollständige) Playlist »<a href="https://www.youtube.com/playlist?list=PL1P11yPQAo7qgk8uk_A5UxiTrMt6obCc5">Python Arcade Tutorials</a>« (aktuell – Stand heute – sieben, etwa zehnminütige Videos) von <em>AtiByte</em>, aber auch die beiden YouTube-Videos »<a href="https://www.youtube.com/watch?v=GMUhXMw1zZE">Pyglet Crash Course</a>« (zweieinhalb Stunden Spieldauer) und – als Grundlage für weitere Experimente – »<a href="https://www.youtube.com/watch?v=rT6_uBalljQ">Pymunk physics simulations in Python and Pyglet</a>« (45 Minuten Spieldauer) des gleichen Autors helfen.</p>
+<p>Und so könnte dieser Beitrag mit Fug und Recht auch unter dem Titel »Video-Tutorials für das Wochenende« laufen. Ich habe also zu tun. <em>Still digging!</em></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>
