@@ -1,0 +1,450 @@
+---
+title: "Wo ist unser Vektor, Viktor? (Vektoren in der Python Arcade Bibliothek)"
+author: "Jörg Kantel"
+date: "2025-02-16 14:40:00"
+categories: [Spieleprogrammierung, Python, Arcade, Numpy, Pygame, Nature of Code]
+image: "images/bouncingchicken.jpg"
+---
+
+[![](images/bouncingchicken-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54329782999/)
+
+Mit meiner [vorgestrigen Einschätzung](https://kantel.github.io/posts/2025021402_arcade_tut_2/), daß ich mit der [Python Arcade Bibliothek](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html) relativ einfach die Beispiele aus dem [Vektorenkapitel](https://natureofcode.com/vectors/) von *Daniel Shiffmans* »The Nature of Code« von JavaScript nach Python portieren könne, war ich etwas zu optimistisch, denn die Arcade zugrundeliegende [Vec2-Implementierung](https://pyglet.readthedocs.io/en/latest/modules/math.html#pyglet.math.Vec2) von [Pyglet](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyglet.html) erwies sich widerspenstiger, als ursprünglich angeommen. Zwar geht es, aber nicht mit `Vec2()`. Doch der Reihe nach:
+
+## Beispiel 1: Bouncing Ball ohne Vektoren
+
+[![](images/bb_novectors.jpg)](https://www.flickr.com/photos/schockwellenreiter/54329336819/)
+
+Der Anfang war noch recht einfach, denn das erste Beispiel aus *Shiffmans* Buch hieß »Bouncing Ball with No Vectors«. Daher war das Programm ([example1_1.py](https://github.com/kantel/learningarcade/blob/master/noc/example1_1.py)) schnell geschrieben:
+
+~~~python
+"""
+Example 1.1: Bouncing Ball with No Vectors
+"""
+import arcade
+
+# Constants
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 240
+WINDOW_TITLE = "Bouncing Ball with No Vectors"
+
+window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+window.set_location(1980, 80)
+
+class GameView(arcade.View):
+
+    def __init__(self):
+        super().__init__()
+        self.circle_x = 100
+        self.circle_y = 100
+        self.radius = 24
+        self.x_speed = 2.5
+        self.y_speed = 2
+        self.background_color = 59, 122, 87, 255
+            
+    def on_draw(self):
+        self.clear()
+        arcade.draw_circle_filled(self.circle_x, self.circle_y,
+        self.radius, (255, 239, 0, 255))
+        arcade.draw_circle_outline(self.circle_x, self.circle_y,
+        self.radius, (0, 0, 0, 255), 2)
+    
+    def on_update(self, delta_time):
+        self.circle_x += self.x_speed
+        self.circle_y += self.y_speed
+        
+        if self.circle_x > self.width - self.radius or self.circle_x < self.radius:
+            self.x_speed *= -1
+            
+        if self.circle_y > self.height - self.radius or self.circle_y < self.radius:
+            self.y_speed *= -1    
+
+game = GameView()
+window.show_view(game)
+arcade.run()
+~~~
+
+Und fröhlich hüpfte der kleine, gelbe Ball über den Bildschirm.
+
+## Beispiel 2: Bouncing Ball mit Vektoren (PVector-Version)
+
+Doch dann kam die Enttäuschung. Ich hatte in meiner Euphorie die [Dokumentation zu Vec2](https://pyglet.readthedocs.io/en/latest/modules/math.html#pyglet.math.Vec2) nicht sorgfältig genug gelesen. Denn dort stand, daß `Vec2` eine **immutable** (unveränderliche) Klasse sei. Und so ließ sich zwar die gewünschten Vektoren mit
+
+~~~python
+self.position = Vec2(100, 100)
+self.velocity = Vec2(2.5, 2)
+~~~
+
+problemlos initialisieren, doch bei dem Versuch, mit
+
+~~~python
+self.position += self.velocity
+~~~
+
+dem Vektor einen neuen Wert zuzuweisen, stieg das Programm gnadenlos aus. Was nun? Ich erinnerte mich, daß ich [vor sieben Jahren](http://blog.schockwellenreiter.de/2018/01/2018012001.html) Processings [PVektor-Klasse](https://www.processing.org/reference/PVector.html) nach Python portiert hatte. Ursprünglich war sie für *Karsten Wolfs* Fork von der [Nodebox&nbsp;1](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodebox.html) gedacht, aber sie war in *pure Python* ohne Abhängigkeiten geschrieben, und so hatte ich sie im Laufe der Jahre weiterentwickelt und in diversen Umgebungen eingesetzt (zuletzt in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) ([Beispiel](http://blog.schockwellenreiter.de/2021/02/2021020801.html)) und in der Python/[Brython](https://brython.info/)-Variante von [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) (noch ein [Beispiel](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)), aber auch schon einmal in Arcade (letztes [Beispiel](http://blog.schockwellenreiter.de/2020/06/2020062801.html))). Was lag also näher, als diese Bibliothek wieder zu verwenden (Programm [example1_2.py](https://github.com/kantel/learningarcade/blob/master/noc/example1_2.py))?
+
+[![](images/bbpvector.jpg)](https://www.flickr.com/photos/schockwellenreiter/54329613680/)
+
+~~~python
+"""
+Example 1.2: Bouncing Ball with Vectors
+"""
+import arcade
+from pvector import PVector
+
+# Constants
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 240
+WINDOW_TITLE = "Bouncing Ball with Vectors"
+
+window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+window.set_location(1980, 80)
+
+class GameView(arcade.View):
+
+    def __init__(self):
+        super().__init__()
+        self.position = PVector(100, 100)
+        self.velocity = PVector(2.5, 2)
+        self.radius = 24
+        self.background_color = 59, 122, 87, 255
+            
+    def on_draw(self):
+        self.clear()
+        arcade.draw_circle_filled(self.position.x, self.position.y,
+        self.radius, (255, 239, 0, 255))
+        arcade.draw_circle_outline(self.position.x, self.position.y,
+        self.radius, (0, 0, 0, 255), 2)
+    
+    def on_update(self, delta_time):
+        self.position += self.velocity
+        
+        if self.position.x > self.width - self.radius or self.position.x < self.radius:
+            self.velocity.x *= -1
+            
+        if self.position.y > self.height - self.radius or self.position.y < self.radius:
+            self.velocity.y *= -1    
+
+game = GameView()
+window.show_view(game)
+arcade.run()
+~~~
+
+Die nur geringfügig aktualiiserte Version von [pvector.py](https://github.com/kantel/learningarcade/blob/master/noc/pvector.py) sieht so aus:
+
+~~~python
+import math
+import random
+
+class PVector():
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def set(self, v):
+        self.x = v.x
+        self.y = v.y
+    
+    def get(self):
+        v = PVector(self.x, self.y)
+        return(v)
+    
+    def add(self, v):
+        self.x += v.x
+        self.y += v.y
+        
+    def sub(self, v):
+        self.x -= v.x
+        self.y -= v.y
+    
+    # Multiplikation mit einem Skalar
+    def mult(self, n):
+        self.x *= n
+        self.y *= n
+    
+    # Division durch einen Skalar
+    def div(self, n):
+        self.x /= n
+        self.y /= n
+
+    # Elementweise Multiplikation eines Vektor mit einem anderen Vektor
+    def mult2(self, v):
+        self.x *= v.x
+        self.y *= v.y
+
+    # Elementweise Division eines Vektor mit einem anderen Vektor
+    def div2(self, v):
+        self.x /= v.x
+        self.y /= v.y
+
+    # Magnitude
+    def mag(self):
+        return (math.sqrt(self.x*self.x + self.y*self.y))
+    
+    # Normalisierung
+    def normalize(self):
+        m = self.mag()
+        if (m != 0):
+            self.div(m)
+
+    # Berechnung der euklidischen Distanz zwischen zwei Vektoren
+    def dist(self, v):
+        dx = self.x - v.x
+        dy = self.y - v.y
+        return (math.sqrt(dx*dx + dy+dy))
+    
+    # Berechnung des Skalarprodukts (inneren Produkts) eines Vektors
+    def dot(self, v):
+        return self.x*v.x + self.y*v.y
+    
+    # Begrenzt die Magnitude eines Vektors auf max
+    def limit(self, max):
+        if self.mag() > max:
+            self.normalize()
+            self.mult(max)
+    
+    # Berechnet den Winkel der Rotation eines Vektors
+    def heading(self):
+        angle = math.atan2(-self.y, self.x)
+        return -1*angle
+
+    # Überlagerung der +/- Operatoren
+    def __add__(self, other):
+        x = self.x + other.x
+        y = self.y + other.y
+        result = PVector(x, y)
+        return(result)
+    
+    def __sub__(self, other):
+        x = self.x - other.x
+        y = self.y - other.y
+        result = PVector(x, y)
+        return(result)
+    
+    def __str__(self):
+        return("[" + str(self.x) + ", " + str(self.y) + "]")
+        
+    @classmethod
+    def random2D(cls):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+        v = cls(x, y)
+        v.normalize()
+        return(v)
+
+# Klassenmethoden: Skalare Multiplikation und Division
+    
+    # Multiplikation mit einem Skalar
+    def smult(v, n):
+        x = v.x*n
+        y = v.y*n
+        result = PVector(x, y)
+        return(result)
+
+    # Division mit einem Skalar
+    def sdiv(v, n):
+        if n != 0:
+            x = v.x/n
+            y = v.y/n
+            result = PVector(x, y)
+            return(result)
+        else:
+            print("Error. Divison durch Null!")
+~~~
+
+Die `arcade.draw_circle()`-Implementierung erlauben leider keine Vektor-Zuweisung, daher müssen diese komponentenweise angegeben werden:
+
+~~~python
+arcade.draw_circle_filled(self.position.x, self.position.y,
+self.radius, (255, 239, 0, 255))
+arcade.draw_circle_outline(self.position.x, self.position.y,
+sself.radius, (0, 0, 0, 255), 2)
+~~~
+
+Ansonsten ist das schon ein nettes Progrämmchen.
+
+## Beispiel 3: Bouncing Ball mit Vektoren (numpy.arry-Version)
+
+Doch dies ist natürlich nicht die einzige Möglichkeit, in Arcade mit Vektoren umzugehen. Wer numerische Lösungen in Python erstellt, greift oft auf [Numpy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) und -- im Falle von Matrizen und Vektoren -- auf [numpy.array()](https://numpy.org/doc/stable/reference/generated/numpy.array.html) zurück. Das ist eine stabile, weit verbreitete und ausgetestete Version, die auch ich allen empfehlen kann, die meiner PVector-Implementierung nicht trauen[^1].
+
+[^1]: Das kann ich auch niemandem Übel nehmen. Zwar habe ich alle Methoden getestet, aber bei den weniger gängigen Methoden bin ich mir selber nicht immer sicher. Wer mir einen Gefallen tun will, kann sie ja ebenfalls auf Herz und Nieren testen. Über ein Feedback bin ich dankbar.
+
+Mit `numpy.array()` sieht das Progrämmchen ([example1_2_b.py](https://github.com/kantel/learningarcade/blob/master/noc/example1_2_b.py)) so aus:
+
+~~~python
+"""
+Example 1.2: Bouncing Ball with Vectors (Numpy Version)
+"""
+import arcade
+import numpy as np
+
+# Constants
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 240
+WINDOW_TITLE = "Bouncing Ball with Vectors (Numpy Version)"
+
+window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+window.set_location(1980, 80)
+
+class GameView(arcade.View):
+
+    def __init__(self):
+        super().__init__()
+        self.position = np.array([100, 100], dtype=np.float64)
+        self.velocity = np.array([2.5, 2], dtype=np.float64) 
+        self.radius = 24
+        self.background_color = 59, 122, 87, 255
+            
+    def on_draw(self):
+        self.clear()
+        arcade.draw_circle_filled(self.position[0], self.position[1],
+        self.radius, (255, 239, 0, 255))
+        arcade.draw_circle_outline(self.position[0], self.position[1],
+        self.radius, (0, 0, 0, 255), 2)
+    
+    def on_update(self, delta_time):
+        self.position += self.velocity
+        
+        if self.position[0] > self.width - self.radius or self.position[0] < self.radius:
+            self.velocity[0] *= -1
+            
+        if self.position[1] > self.height - self.radius or self.position[1] < self.radius:
+            self.velocity[1] *= -1    
+
+game = GameView()
+window.show_view(game)
+arcade.run()
+~~~
+
+Zu beachten ist eigentlich nur, daß man bei `numpy.array()` auf die einzelnen Komponenten eines Vektors nur über die Indizes zugreifen kann.
+
+## Beispiel 4: Bouncing Ball mit Vektoren (pygame.Vector2-Version)
+
+Des weiteren ist mir noch etwas ganz Gemeines eingefallen. (Ich hoffe, daß *Paul Vincent Craven*, der Schöpfer der Python Arcade Bibliothek, keinen Herzinfarkt bekommt, sollte er diese Zeilen jemals lesen.) Denn auch [Pygames Vector2-Bibliothek](https://pyga.me/docs/ref/math.html#pygame.math.Vector2) kann eigentlich überall eingesetzt werden, da sie unabhängig von Pygame ist und selber keine graphischen Ausgaben vornimmt. Daher habe ich einfach mal im Bouncing-Ball-Programm Arcade mit `pygame.math.Vector2` verheiratet ([example1_2_c.py](https://github.com/kantel/learningarcade/blob/master/noc/example1_2_c.py)):
+
+~~~python
+"""
+Example 1.2: Bouncing Ball with Vectors (Pygame Vector2)
+"""
+import arcade
+import pygame.math as math
+
+# Constants
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 240
+WINDOW_TITLE = "Bouncing Ball with Vectors (Pygame Vector2)"
+
+window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+window.set_location(1980, 80)
+
+class GameView(arcade.View):
+
+    def __init__(self):
+        super().__init__()
+        self.position = math.Vector2(100, 100)
+        self.velocity = math.Vector2(2.5, 2) 
+        self.radius = 24
+        self.background_color = 59, 122, 87, 255
+            
+    def on_draw(self):
+        self.clear()
+        arcade.draw_circle_filled(self.position.x, self.position.y,
+        self.radius, (255, 239, 0, 255))
+        arcade.draw_circle_outline(self.position.x, self.position.y,
+        self.radius, (0, 0, 0, 255), 2)
+    
+    def on_update(self, delta_time):
+        self.position += self.velocity
+        
+        if self.position.x > self.width - self.radius or self.position.x < self.radius:
+            self.velocity.x *= -1
+            
+        if self.position.y > self.height - self.radius or self.position.y < self.radius:
+            self.velocity.y *= -1    
+
+game = GameView()
+window.show_view(game)
+arcade.run()
+~~~
+
+Auch wenn hier zwei Welten aufeinandertreffen, sie vertragen sich recht gut. Und die Vektorenklassen (Vector2 und Vector3) von Pygame sind extrem umfangreich und decken eigentlich alles ab, was an Methoden benötigt wird[^2].
+
+[^2]: Natürlich kann man/frau sich dabei zu Recht fragen, warum dann noch Arcade und nicht von vorneherein alles in Pygame entwickeln? Vielleicht, weil es geht?
+
+Auf Screenshots habe ich bei den letzten beiden Beispielen verzichtet. Sie sehen einfach gleich aus, bei allen Beispielen hüpft ein gelber Kreis über den Bildschirm.
+
+## Zugabe: Bouncing Chicken
+
+Da ich ja bekanntlich ein Spielkalb bin, habe ich noch eine Zugabe geschrieben. Schließlich ist Arcade eine Spielebibliothek, und daher wollte ich statt eines *Shapes* (einen Kreis) auch mal ein *Sprite* über den Bildschirm hüpfen lassen (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/54329782999/) im Bannerbild oben). Den passenden kreisrunden Kükenkopf habe ich in Kenneys freiem ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) [Animal Pack Redux](https://kenney.nl/assets/animal-pack-redux) gefunden.
+
+Das Programm ([bouncingchicken.py](https://github.com/kantel/learningarcade/blob/master/noc/bouncingchicken.py)) unterscheidet sich nur unwesentlich von den Bouncing-Ball-Programmen:
+
+~~~python
+"""
+Bouncing Chicken
+"""
+import arcade
+from pvector import PVector
+
+# Constants
+WINDOW_WIDTH = 640
+WINDOW_HEIGHT = 240
+WINDOW_TITLE = "Bouncing Chicken"
+
+# Create a window class. This is what actually shows up on screen
+window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
+# Position of the window (optional)
+window.set_location(1980, 80)
+
+class GameView(arcade.View):
+    """
+    Main application class.
+    """
+
+    def __init__(self):
+        """ Call the parent class to set up the window """
+        super().__init__()
+        self.player_texture = None
+        self.player_sprite = None
+                
+    def setup(self):
+        """Set up the game here. Call this function to restart the game."""
+        self.player_texture = arcade.load_texture("data/chick.png")
+        self.player_sprite = arcade.Sprite(self.player_texture, scale = 0.3)
+        self.position = PVector(100, 100)
+        self.player_sprite.position = self.position.x, self.position.y
+        self.velocity = PVector(2.5, 2)
+        self.radius = 20    # ≈ 136 * 0.3 / 2
+        
+        # SpriteList for our player
+        self.player_list = arcade.SpriteList()
+        self.player_list.append(self.player_sprite)
+        
+        self.background_color = 59, 122, 87, 255
+
+    def on_draw(self):
+        """Render the screen."""
+        self.clear()        
+        self.player_list.draw()
+    
+    def on_update(self, delta_time):
+        """Movement and Game Logic"""
+        self.position += self.velocity
+        
+        if self.position.x > self.width - self.radius or self.position.x < self.radius:
+            self.velocity.x *= -1
+            
+        if self.position.y > self.height - self.radius or self.position.y < self.radius:
+            self.velocity.y *= -1
+        
+        self.player_sprite.position = self.position.x, self.position.y
+        
+game = GameView()
+window.show_view(game)
+game.setup()
+arcade.run()
+~~~
+
+Hier fällt auf, daß auch `self.player_sprite.position` auch nur mit einem Tupel und nicht mit einem Vektor belegt werden kann.
+
+Das ist ein sehr langer Beitrag geworden. Aber die Beschäftigung mit der Python Arcade Bibliothek hat mir auch Spaß gemacht. Was mir allerdings fehlt, ist, daß es (noch?) keine Möglichkeit gibt, die Ergebnisse im Web zu präsentieren (wie es [Pygame (CE)](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) mit [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) heute schon kann). Aber das hat Arcade zum Beispiel auch mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) gemein. Hier warte ich einfach die weitere Entwicklung bezüglich [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html), [WebGPU](https://developer.mozilla.org/en-US/docs/Web/API/WebGPU_API) und [WASM](https://developer.mozilla.org/en-US/docs/WebAssembly) ab, denn moderne Creative-Coding-Experimente sollten eigentlich auch im Browser präsentiert werden können. Und für die (Übergangs-) Zeit bis dahin habe ich auch schon einige Ideen. *Still digging!*
