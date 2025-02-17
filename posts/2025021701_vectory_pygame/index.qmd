@@ -1,0 +1,236 @@
+---
+title: "Wo ist unser Vektor, Viktor? Teil2: Vektoren in Pygame"
+author: "Jörg Kantel"
+date: "2025-02-16 14:40:00"
+categories: [Spieleprogrammierung, Python, Pygame, Nature of Code, PyCharm, Pygbag]
+image: "images/bchicken1.jpg"
+---
+
+[![](images/bchicken1-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54333962761/)
+
+Der *Gravitar* hat mich [angefixt](https://github.com/kantel/kantel.github.io/discussions/240#discussioncomment-12221394). Nachdem ich gestern (mehr oder weniger) erfolgreich die [Python Arcade Bibliothek](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html) mit [Vektoren verheiratet](https://kantel.github.io/posts/2025021601_arcade_tut_3/) hatte, mußte ich heute auf seine Anregung hin unbedingt noch testen, wie das denn mit [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) (genauer: [Pygame CE](https://pyga.me/)) funktioniert.
+
+Nicht, daß ich mit Arcade unzufrieden wäre, aber mir fehlte einfach die Möglichkeit, die Ergebnisse auch im Web und damit auf diesen Seiten zu präsentieren, wie es eben recht einfach mit Pygame CE und [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) geht. Also habe ich erst einmal eine Version des sich den Kopf an den Fensterrändern anschlagenden Kükens in Pygame ohne Vektorunterstützung implementiert ([bouncingball_no_vector.py](https://github.com/kantel/pythoncuriosa/blob/main/noc/bouncingball_no_vector.py)):
+
+~~~python
+# Bouncing Chicken with No Vectors
+import asyncio
+import pygame
+import os, sys
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+# Einige nützliche Konstanten
+WIDTH = 800
+HEIGHT = 450
+CHICKEN_SIZE = 48
+TITLE = "Bouncing Chicken with No Vectors (Pygame Version)"
+FPS = 60  # Framerate
+
+# Farben
+BG_COLOR = 59, 122, 87, 255  # Billardtisch-Grün
+
+# Klassen
+# ---------------------------------------------------------------------- #
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption(TITLE)
+
+        self.clock = pygame.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pygame.sprite.Group()
+        # Load Assets
+        self.chicken_im = pygame.image.load(os.path.join(DATAPATH, "chick.png")).convert_alpha()
+        self.chicken_im = pygame.transform.scale(self.chicken_im, (CHICKEN_SIZE, CHICKEN_SIZE))
+        chicken = Chicken(self)
+        self.all_sprites.add(chicken)
+
+    def events(self):
+        # Poll for events
+        for event in pygame.event.get():
+            if ((event.type == pygame.QUIT) or
+                (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
+                self.keep_going = False
+
+    def update(self):
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        # Game drawings go here
+        self.all_sprites.draw(self.screen)
+        # Alle Änderungen auf den Bildschirm
+        pygame.display.flip()
+
+# ---------------------------------------------------------------------- #
+## Class Chicken
+class Chicken(pygame.sprite.Sprite):
+
+    def __init__(self, _world):
+        super().__init__()
+        self.game_world = _world
+        self.image = self.game_world.chicken_im
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = WIDTH / 2, HEIGHT / 2
+        self.radius = CHICKEN_SIZE
+        self.x_speed = 2.5
+        self.y_speed = 2
+
+    def update(self):
+        self.rect.x += self.x_speed
+        self.rect.y += self.y_speed
+        if self.rect.x > WIDTH - self.radius  or self.rect.x < 0:
+            self.x_speed *= -1
+        if (self.rect.y > HEIGHT - self.radius or self.rect.y < 0):
+            self.y_speed *= -1
+
+# ---------------------------------------------------------------------- #
+# ## Hauptprogramm
+world = GameWorld()
+world.reset()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        # Framerate festsetzen
+        world.clock.tick(FPS)
+
+        world.events()
+        world.update()
+        world.draw()
+        await asyncio.sleep(0)  # Very important, and keep it 0
+
+    pygame.quit()
+    sys.exit(0)
+
+asyncio.run(main())
+~~~
+
+Ich wollte damit mich selber an mein Vorhaben »[Pygame objektorientiert](https://kantel.github.io/posts/2023010701_pygame_oop/) erinnern und eine Blaupause schaffen, mit der ich zukünftig objektorientierte Pygame-Programme schreiben kann, die sowohl *standaone* als auch mit Pygbag im Web funktionieren. Also so eine Art *»write once, run everywhere«*&nbsp;🥸
+
+Nachdem mir dies gelungen war, war die Erweiterung um eine Vektorenunterstützung nur noch eine Frage von wenigen Änderungen ([bouncingball_vectors.py](https://github.com/kantel/pythoncuriosa/blob/main/noc/bouncingball_vectors.py)):
+
+~~~python
+# Bouncing Chicken with Vectors
+import asyncio
+import pygame
+import pygame.math as math
+import os, sys
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+# Einige nützliche Konstanten
+WIDTH = 800
+HEIGHT = 450
+CHICKEN_SIZE = 48
+TITLE = "Bouncing Chicken with Vectors (Pygame Version)"
+FPS = 60  # Framerate
+
+# Farben
+BG_COLOR = 59, 122, 87, 255  # Billardtisch-Grün
+
+# Klassen
+# ---------------------------------------------------------------------- #
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption(TITLE)
+
+        self.clock = pygame.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pygame.sprite.Group()
+        # Load Assets
+        self.chicken_im = pygame.image.load(os.path.join(DATAPATH, "chick.png")).convert_alpha()
+        self.chicken_im = pygame.transform.scale(self.chicken_im, (CHICKEN_SIZE, CHICKEN_SIZE))
+        chicken = Chicken(self)
+        self.all_sprites.add(chicken)
+
+    def events(self):
+        # Poll for events
+        for event in pygame.event.get():
+            if ((event.type == pygame.QUIT) or
+                (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
+                self.keep_going = False
+
+    def update(self):
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        # Game drawings go here
+        self.all_sprites.draw(self.screen)
+        # Alle Änderungen auf den Bildschirm
+        pygame.display.flip()
+
+# ---------------------------------------------------------------------- #
+## Class Chicken
+class Chicken(pygame.sprite.Sprite):
+
+    def __init__(self, _world):
+        super().__init__()
+        self.game_world = _world
+        self.image = self.game_world.chicken_im
+        self.rect = self.image.get_rect()
+        self.position = math.Vector2(100, 100)
+        self.rect.x, self.rect.y = self.position
+        self.radius = CHICKEN_SIZE
+        self.velocity = math.Vector2(2.5, 2)
+
+    def update(self):
+        self.rect.x += self.velocity.x
+        self.rect.y += self.velocity.y
+        if self.rect.x > WIDTH - self.radius  or self.rect.x < 0:
+            self.velocity.x *= -1
+        if self.rect.y > HEIGHT - self.radius or self.rect.y < 0:
+            self.velocity.y *= -1
+
+# ---------------------------------------------------------------------- #
+# ## Hauptprogramm
+world = GameWorld()
+world.reset()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        # Framerate festsetzen
+        world.clock.tick(FPS)
+
+        world.events()
+        world.update()
+        world.draw()
+        await asyncio.sleep(0)  # Very important, and keep it 0
+
+    pygame.quit()
+    sys.exit(0)
+
+asyncio.run(main())
+~~~
+
+Nach dem Import von `pygame.math` mußten die Änderungen nur noch in der Klasse `Chicken()` vorgenommen werden (ein Vorteil des strikt objektorientierten Designs).
+
+Natürlich mußte ich dieses Ergebnis meiner heutigen Versuche auch gleich in dieses Seiten einbinden. Mittlerweile weiß ich ja, [wie dies geht](https://kantel.github.io/posts/2025012001_pygbag_revisited/).
+
+<iframe src="pygbag/web/index.html" class="if16_9" name="Bouncing Chicken"></iframe>
+
+Und jetzt stehe ich wieder vor der Frage, ob ich meine derzeitige Lektüre von *Daniel Shiffmans* neuer, verbesserter und erweiterter Auflage von »[The Nature of Code](https://natureofcode.com/)« nicht mit Pygame-Programmen begleiten soll. Denn das schöne an der Online-Version des Buches ist ja, daß *Shiffmans* [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Skripte auf den Seiten leben. Und das könnte ich mit Pygame und Pygbag ebenfalls erreichen. Pygame im Browser ist einfach geil!
+
+**Eine Bemerkung zum Schluß noch**: Am [Screenshot](https://www.flickr.com/photos/schockwellenreiter/54333962761/) im Bannerbild oben können aufmerksame Leserinnen und Leser erkennen, daß ich seit heute eine neue Python-IDE benutze: Ich bin zu [PyCharm CE](https://www.jetbrains.com/de-de/pycharm/), der freien (Apache-Lizenz) Version von JetBrains Python-Entwicklungsumgebung, gewechselt. Ich hatte langsam Angst, daß ich mein [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) mit all den Erweiterungen, die ich mittlerweile im Einsatz habe, einfach überfrachte und wollte daher etwas nutzen, was **nur** für Python im Einsatz ist und VS Code entlastet. Und [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) ist zwar ein schönes Spielzeug für Anfänger und Gelegenheitscoder, genügt aber meinen Ansprüchen nicht (mehr). Bisher hat sich PyCharm trotz seines Funktionsumfangs als wenig störrisch gezeigt. Schauen wir mal, was daraus noch wird. *Still digging!*
