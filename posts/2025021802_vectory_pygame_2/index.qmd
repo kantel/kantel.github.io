@@ -1,0 +1,155 @@
+---
+title: "Wo ist unser Vektor, Viktor? Nachschlag zu Teil 2"
+author: "Jörg Kantel"
+date: "2025-02-18 13:40:00"
+categories: [Spieleprogrammierung, Pygame, Python, Nature of Code]
+image: "images/bchicken2.jpg"
+---
+
+[![](images/bchicken2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54335639209/)
+
+Zu meinem gestrigen Versuch, ein von der Hühnerhauswand abprallendes Küken mithilfe von [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) ([CE](https://pyga.me/)) und [Pygames Vektorklasse](https://pyga.me/docs/ref/math.html) zu programmieren, hatte der *Gravitar* in [meinen Kommentaren](https://github.com/kantel/kantel.github.io/discussions/241#discussioncomment-12235025) noch ein paar äußerst hilfreiche Anmerkungen, die ich *stante pede* in meinem Programm ([bouncingball_vectors.py](https://github.com/kantel/pythoncuriosa/blob/main/noc/bouncingball_vectors.py)) umgesetzt habe:
+
+So sei der separate import von `pygame.math` nicht mehr notwendig, weil Pygame die Bibliothek gleich mitimportiert. Außerdem könne man den Aufruf der Methode noch mehr verkürzen, wenn man zum Beispiel zu Beginn des Programms
+
+~~~python
+vec2 = pygame.Vector2
+~~~
+
+vereinbare. Denn da könne man die initiale Zuweisung mit
+
+~~~python
+self.position = vec2(100, 100)
+self.velocity = vec2(2.5, 2)
+~~~
+
+erledigen. Außerdem könne man bei `self.rect.topleft`(oder *center*, *bottom*, *midbottom* etc.) eine Zuweisung mit einem Vektor vornehmen, zum Beispiel:
+
+~~~python
+self.rect.topleft = self.position
+...
+self.rect.topleft += self.velocity
+~~~
+
+Und *last but not least* wies er darauf hin, daß ich mir mit `self.rect.right` (oder *left* oder *top* oder *bottom*) die Addition (oder Subtraktion) des Radios sparen könne:
+
+~~~python
+if self.rect.right > WIDTH  or self.rect.left < 0:
+    self.velocity.x *= -1
+if self.rect.bottom > HEIGHT or self.rect.top < 0:
+    self.velocity.y *= -1
+~~~
+
+Der Vollständigkeit halber hier noch einmal das gesamte Programm mit den vorgeschlagenen Änderungen:
+
+~~~python
+# Bouncing Chicken with Vectors
+import asyncio
+import pygame
+import os, sys
+
+# Hier wird der Pfad zum Verzeichnis der Assets gesetzt
+DATAPATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+# Einige nützliche Konstanten
+WIDTH = 800
+HEIGHT = 450
+CHICKEN_SIZE = 48
+TITLE = "Bouncing Chicken with Vectors (Pygame Version)"
+FPS = 60  # Framerate
+
+# Farben
+BG_COLOR = 59, 122, 87, 255  # Billardtisch-Grün
+
+vec2 = pygame.Vector2
+
+# Klassen
+# ---------------------------------------------------------------------- #
+## Class GameWorld
+class GameWorld:
+
+    def __init__(self):
+        # Pygame und das Fenster initialisieren
+        pygame.init()
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        pygame.display.set_caption(TITLE)
+
+        self.clock = pygame.time.Clock()
+        self.keep_going = True
+
+    def reset(self):
+        # Neustart oder Status zurücksetzen
+        # Hier werden alle Elemente der GameWorld initialisiert
+        self.all_sprites = pygame.sprite.Group()
+        # Load Assets
+        self.chicken_im = pygame.image.load(os.path.join(DATAPATH, "chick.png")).convert_alpha()
+        self.chicken_im = pygame.transform.scale(self.chicken_im, (CHICKEN_SIZE, CHICKEN_SIZE))
+        chicken = Chicken(self)
+        self.all_sprites.add(chicken)
+
+    def events(self):
+        # Poll for events
+        for event in pygame.event.get():
+            if ((event.type == pygame.QUIT) or
+                (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
+                self.keep_going = False
+
+    def update(self):
+        self.all_sprites.update()
+
+    def draw(self):
+        self.screen.fill(BG_COLOR)
+        # Game drawings go here
+        self.all_sprites.draw(self.screen)
+        # Alle Änderungen auf den Bildschirm
+        pygame.display.flip()
+
+# ---------------------------------------------------------------------- #
+## Class Chicken
+class Chicken(pygame.sprite.Sprite):
+
+    def __init__(self, _world):
+        super().__init__()
+        self.game_world = _world
+        self.image = self.game_world.chicken_im
+        self.rect = self.image.get_rect()
+        self.position = vec2(100, 100)
+        self.rect.topleft = self.position
+        self.velocity = vec2(2.5, 2)
+
+    def update(self):
+        self.rect.topleft += self.velocity
+        if self.rect.right > WIDTH  or self.rect.left < 0:
+            self.velocity.x *= -1
+        if self.rect.bottom > HEIGHT or self.rect.top < 0:
+            self.velocity.y *= -1
+
+# ---------------------------------------------------------------------- #
+# ## Hauptprogramm
+world = GameWorld()
+world.reset()
+
+# Hauptschleife
+async def main():
+    while world.keep_going:
+        # Framerate festsetzen
+        world.clock.tick(FPS)
+
+        world.events()
+        world.update()
+        world.draw()
+        await asyncio.sleep(0)  # Very important, and keep it 0
+
+    pygame.quit()
+    sys.exit(0)
+
+asyncio.run(main())
+~~~
+
+Jetzt habe ich aber Blut geleckt. Ich werde zumindest die Beispiele aus dem Vektoren-Kapitel *(Chapter&nbsp;1)* und aus dem Kapitel über Kraft *(Chapter&nbsp;2)* aus *Daniel Shiffmans* »[The Nature of Code](https://natureofcode.com/)« nach Pygame portieren und um einige eigene Beispiele ergänzen. Und dann lacht mich das Kapitel über Physik-Bibliotheken *(Chapter&nbsp;6)* an. Was spricht dagegen, [Matter.js](https://brm.io/matter-js/) durch [Pymunk](https://www.pymunk.org/en/latest/) zu ersetzen? Zumal ich schon lange mal etwas mit dieser Python-Physik-Engine anstellen wollte.
+
+Ich habe in den nächsten Tagen (oder Wochen… oder Monaten…&nbsp;?) also wieder einiges zu tun und ich freue mich darauf. *Still digging!*
+
+---
+
+**Bild**: *[Bouncing Chicken](https://www.flickr.com/photos/schockwellenreiter/54335639209/)*, erstellt mit [Scenario](http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html). Prompt: »*A yellow chick flutters against a green painted wall in the henhouse*«. Modell: Flux Composition, Style: Expressive Comic Characters.
