@@ -1,0 +1,33 @@
+---
+title: "Voilà et Voici – Jupyter Notebooks im Web"
+author: "Jörg Kantel"
+date: "2025-03-13 17:20:00"
+categories: [Jupyter, JupyterLite, WASM, Python, Py5]
+image: "images/voilavoici.jpg"
+---
+
+[![](images/voilavoici-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54384293866/)
+
+Nicht nur das Publizieren von mit Python entwickelten Spielen (sei es mit [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) (-[Zero](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygamezero.html)) oder [Arcade](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html)), sondern auch das Teilen von Juypter Notebooks im Web ist meistens eine Qual, zumindest wenn der Empfänger kein Python installiert hat und/oder nicht weiß, wie man ein Python-Skript startet. Um dem abzuhelfen, wurde Voilà entwickelt:
+
+**[Voilà](https://voila.readthedocs.io/en/stable/)** ist eine (freie) Anwendung ([Quellcode](https://github.com/voila-dashboards/voila) auf GitHub), um [Jupyter](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyter.html) Notebooks in Standalone-Webapplikationen zu konvertieren. Aus einem Jupyter Notebook lassen sich beispielsweise Slideshows oder interaktive Dashboards erzeugen. Die Voilà-Webapplikationen vereinfachen das Teilen mit nicht-technischen Zielgruppen und verhindern, daß Anwender beliebigen Code ausführen. Voilà ist ein Unterprojekt des Jupyter-Projekts. Die [Voilà Gallery](https://voila-gallery.org/) stellt ist eine Sammlung von frei zugänglichen Beispielen zur Verfügung.
+
+Doch das ist nicht alles, wenn Ihr Euer Voilá-Dashboard als statische Webseite veröffentlichen wollt, bietet das [JupyterLite](https://jupyterlite.readthedocs.io/)-Projekt auch noch Voici an:
+
+**[Voici](https://voici.readthedocs.io/en/latest/)** ist ein Tool zum Generieren statischer Dashboards aus Jupyter Notebooks. Es kann als direkter Ersatz für Voilà verwendet werden, verfügt über dieselben Befehle und unterstützt die meisten Konfigurationsoptionen von Voila.
+
+Im Gegensatz zu Voila, das interaktive Dashboards serverseitig herausschreibt, verwendet Voici einen [WebAssembly](https://developer.mozilla.org/en-US/docs/WebAssembly) (WASM)-Kernel, um Notebooks im Browser zu rendern. Dadurch ist das resultierende Dashboard vollständig eigenständig und ohne serverseitige Abängigkeiten verteilbar.
+
+Auch von Voici gibt es eine [Galerie mit Beispielprojekten](https://voila-dashboards.github.io/voici-gallery/) und der [Quellcode](https://github.com/voila-dashboards/voici) ist ebenfalls auf GitHub zu finden.
+
+## Literatur
+
+- Maika Möbus: *[Voilà – Live-Dashboards aus Jupyter Notebooks sind da](https://entwickler.de/programmierung/voila-live-dashboards-aus-jupyter-notebooks-sind-da)*, Entwickler.de vom 12. Juli 2019
+- Stefan Luber/Nico Litzel: *[Was ist Voilà](https://www.bigdata-insider.de/was-ist-voila-a-997206/)?* BigData Insider vom 12. Februar 2021
+- Duc Trung Le: *[And Voici! Scaling Jupyter dashboards up to the millions](https://blog.jupyter.org/and-voici-e02367197ba2)*, Jupyter Blog vom 6. Dezember 2023
+
+Voilà und Voici unterstützen nicht nur den Python-Kernel, sondern auch Julia und R (und auch Java und C(++)). Daher sollte ich unbedingt einmal testen, ob nicht auch [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html)-Skripte damit ins Netz gestellt werden können. *Still digging!*
+
+---
+
+**Bild**: *[Voilà et Voici](https://www.flickr.com/photos/schockwellenreiter/54384293866/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored French Comic Style. Two pretty young ladies, one blonde with blue eyes, the other with long red hair and green eyes, both with wide necklines, are sitting on a cafe terrace in front of a laptop with data visualizations. It's spring, the sun is shining, and the Eiffel Tower is visible in the background*«. Modell: Flux (Pro), Style: None.
