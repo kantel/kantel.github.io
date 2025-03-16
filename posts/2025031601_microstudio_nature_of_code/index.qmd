@@ -1,0 +1,315 @@
+---
+title: "MicroStudio und Python: Bouncing Duck (mit Vektoren)"
+author: "Jörg Kantel"
+date: "2025-03-16 17:30:00"
+categories: [microStudio, Python, Brython, Nature of Code, Creative Coding]
+image: "images/bouncingduck.jpg"
+---
+
+[![](images/bouncingduck-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54390641943/)
+
+Die bedauerliche Tatsache, daß es Apple auch mit dem [letzten Update von Sequoia](https://kantel.github.io/posts/2025031201_apple_updates/) immer noch nicht gelungen ist, den [ärgerlichen Fehler](https://kantel.github.io/posts/2025022501_noc_python/) zu beheben, der mich daran hindert, meine [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html)-Skripte mit Hilfe von [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) webtauglich zu machen, hat mich bei [meinem Vorhaben](https://kantel.github.io/posts/2025021701_vectory_pygame/) ziemlich ausgebremst, wenigstens die ersten Kapitel aus *Daniel Shiffmans* neuer, verbesserter und erweiterter Auflage von »[The Nature of Code](https://natureofcode.com/)« von [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html) nach [Pygame CE](https://pyga.me/) zu portieren. Denn das, was *Daniel Shiffman* in der Online-Version seines Buches mit den Skripten angestellt hat, möchte ich auch mit Python anstellen können: Skripte präsentieren, die im Browser laufen -- denn statische Screenshots sind langweilig.
+
+Daher hatte ich die letzten Tage mit der Suche nach Alternativen verplempert. Als erstes fiel mir [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) ein. Denn dies besitzt neben der Turtle-Bibliothek auch eine Art [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html)-Mode. Allerdings ist die [Impementierung ziemlich picky](https://kantel.github.io/posts/2023042502_malewitsch_trinket/) und ich konnte einfach nicht herausbekommen, welcher Transpiler (Python nach JavaScript) hinter den Kulissen werkelt.
+
+Dann fiel mir ein, daß ich vor fast genau einem Jahr schon einmal ein [ähnliches Projekt](https://kantel.github.io/posts/2024032801_microstudio_noc_1/) mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) in Angriff genommen hatte, das ich aber damals wegen [Gabis Tod](https://kantel.github.io/posts/2024041901_rip_gabi/) aus den Augen verloren hatte. Die Python-Implementierung in microStudio beruht auf [Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html), das ist zumindest [gut dokumentiert](https://brython.info/static_doc/3.13/en/intro.html), wird aktuell noch weitergepflegt (das [letzte Release](https://github.com/brython-dev/brython/releases) ist vom Januar dieses Jahres) und steht mit [über 100 Kontributoren](https://github.com/brython-dev/brython/graphs/contributors) auf einer breiten Basis. Ein wichtiger Wermutstropfen ist allerdings, daß mit Brython kein Zugriff auf Pythons *Scientific Stack* (das betrifft in diesem Zusammenhang vor allen Dingen [NumPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) und [SciPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html)) möglich ist. Auf der positiven Seite steht dagegen, daß auch Brython in microStudio Zugriff auf die Physik Engine [Matter.js](https://brm.io/matter-js/) besitzt, auf die auch *Shiffman* im sechsten Kapitel von »The Nature of Code« zugreift.
+
+Auch wenn ich mir immer noch nicht sicher bin, ob ich dies bereuen werde, habe ich meine [bisherigen](https://kantel.github.io/posts/2025021701_vectory_pygame/) [Pygame](https://kantel.github.io/posts/2025021802_vectory_pygame_2/)-[Versuche](https://kantel.github.io/posts/2025022501_noc_python/) testweise nach micoStudio/Brython portiert. Als Vektoren-Bibliothek habe ich dafür wieder meine eigene [PVector.py](https://github.com/kantel/learningarcade/blob/master/noc/pvector.py)-Klasse verwendet (hier geringfügig modifiziert als `pvector2.py`). Doch zuerst einmal die Version »[Bouncing Ball ohne Vektoren](https://microstudio.dev/i/kantel/bouncingballwithnovectors/)«.
+
+Alle microStudio/Brython-Skripte benötigen -- um eventuelle Glitches bei der Tastatur- oder Mausabfrage auszuschließen -- eine Funktion `check_input(obj, val)` die ich im Reiter `util` abgelegt habe:
+
+~~~python
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Dann folgt die Klasse des Actors, die ich in Anlehnung an *Shiffman* `Mover` genannt und im Reiter `mover` untergebracht habe:
+
+~~~python
+from random import randint
+
+class Mover:
+  
+  def __init__(self):
+    self.d = 10
+    self.w, self.h = self.d*2, self.d*2
+    self.x = randint(-150, 150)
+    self.y = randint(-80, 80)
+    self.x_speed = 2.5
+    self.y_speed = 2
+    self.c = "rgba(17, 42, 106, 200)"
+    self.stroke = "rgb(0, 0, 0)"
+    
+  def update(self):
+    self.x += self.x_speed
+    self.y += self.y_speed
+    # Check borders
+    if self.x <= -screen.width//2 + self.d or self.x >= screen.width//2 - self.d:
+      self.x_speed *= -1
+    if self.y <= -screen.height//2 + self.d or self.y >= screen.height//2 - self.d:
+      self.y_speed *= -1
+      
+  def draw(self):
+    screen.fillRound(self.x, self.y, self.w, self.h, self.c)
+    screen.setLineWidth(2)
+    screen.drawRound(self.x, self.y, self.w, self.h, self.stroke)
+    screen.setLineWidth(1)
+~~~
+
+Da in dieser Klasse eigentlich alles abgehandelt wird, ist das Hauptprogramm `main` erfrischend kurz geraten:
+
+~~~python
+# Bouncing Ball with No Vectors
+
+def init():
+  global mover
+  mover = Mover()
+
+def update():
+  mover.update()
+  # Restart
+  if check_input(keyboard.press, "SPACE"):
+    print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(234, 218, 184)")
+  mover.draw()
+~~~
+
+Die Version »[Bouncing Ball mit Vektoren](https://microstudio.dev/i/kantel/bouncingballwithvectors/)« benötigt natürlich meine PVektor2 implementierung, die ich hier wegen der Vollständigkeit noch einmal abdrucke:
+
+~~~python
+import math
+import random
+
+class PVector2():
+    
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+
+  def set(self, v):
+    self.x = v.x
+    self.y = v.y
+    
+  def get(self):
+    v = PVector2(self.x, self.y)
+    return v
+
+  def add(self, v):
+    self.x += v.x
+    self.y += v.y
+        
+  def sub(self, v):
+    self.x -= v.x
+    self.y -= v.y
+    
+  # Multiplikation mit einem Skalar
+  def mult(self, n):
+    self.x *= n
+    self.y *= n
+    
+  # Division durch einen Skalar
+  def div(self, n):
+    self.x /= n
+    self.y /= n
+
+  # Elementweise Multiplikation eines Vektor mit einem anderen Vektor
+  def mult2(self, v):
+    self.x *= v.x
+    self.y *= v.y
+
+  # Elementweise Division eines Vektor mit einem anderen Vektor
+  def div2(self, v):
+    self.x /= v.x
+    self.y /= v.y
+
+  # Magnitude
+  def mag(self):
+    return math.sqrt(self.x*self.x + self.y*self.y)
+    
+  # Normalisierung
+  def normalize(self):
+    m = self.mag()
+    if (m != 0):
+      self.div(m)
+
+# Berechnung der euklidischen Distanz zwischen zwei Vektoren
+  def dist(self, v):
+    dx = self.x - v.x
+    dy = self.y - v.y
+    return math.sqrt(dx*dx + dy+dy)
+    
+  # Berechnung des Skalarprodukts (inneren Produkts) eines Vektors
+  def dot(self, v):
+    return self.x*v.x + self.y*v.y
+    
+  # Begrenzt die Magnitude eines Vektors auf max
+  def limit(self, max):
+    if self.mag() > max:
+      self.normalize()
+      self.mult(max)
+    
+  # Berechnet den Winkel der Rotation eines Vektors
+  def heading(self):
+    angle = math.atan2(-self.y, self.x)
+    return -1*angle
+
+  def __add__(self, other):
+    x = self.x + other.x
+    y = self.y + other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __sub__(self, other):
+    x = self.x - other.x
+    y = self.y - other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __str__(self):
+    return "[" + str(self.x) + ", " + str(self.y) + "]"
+        
+  @classmethod
+  def random2D(cls):
+    x = random.uniform(-1, 1)
+    y = random.uniform(-1, 1)
+    v = cls(x, y)
+    v.normalize()
+    return v
+
+  # Klassenmethoden: Skalare Multiplikation und Division
+    
+  # Multiplikation mit einem Skalar
+  def smult(v, n):
+    x = v.x*n
+    y = v.y*n
+    result = PVector2(x, y)
+    return result
+
+  # Division mit einem Skalar
+  def sdiv(v, n):
+    if n != 0:
+      x = v.x/n
+      y = v.y/n
+      result = PVector2(x, y)
+      return result
+    else:
+      print("Error. Divison durch Null!")
+~~~
+
+Ansonsten unterscheidet sich nur die Klasse `Mover` von der ersten, naiven Implemetierung:
+
+~~~python
+from random import randint
+
+class Mover:
+  
+  def __init__(self):
+    self.d = 10
+    self.w, self.h = self.d*2, self.d*2
+    x = randint(-150, 150)
+    y = randint(-80, 80)
+    self.loc = PVector2(x, y)
+    self.vel = PVector2(2.5, 2)
+    self.c = "rgba(230, 96, 55, 200)"
+    self.stroke = "rgb(0, 0, 0)"
+    
+  def update(self):
+    self.loc.add(self.vel)
+    # check border
+    if (self.loc.x <= -screen.width//2 + self.d
+    or self.loc.x >= screen.width//2 - self.d):
+      self.vel.x *=-1
+    if (self.loc.y <= -screen.height//2 + self.d or
+    self.loc.y >= screen.height//2 - self.d):
+      self.vel.y *=-1
+      
+  def draw(self):
+    screen.fillRound(self.loc.x, self.loc.y, self.w, self.h, self.c)
+    screen.setLineWidth(2)
+    screen.drawRound(self.loc.x, self.loc.y, self.w, self.h, self.stroke)
+    screen.setLineWidth(1)
+~~~
+
+Die beiden anderen Programmteile `util` und `main` sind identisch.
+
+Natürlich wollte ich auch in microStudio auf meine Zugabe nicht verzichten. Während in der [Arcade](https://kantel.github.io/posts/2025021601_arcade_tut_3/)- und in der [Pygame-Version](https://kantel.github.io/posts/2025021701_vectory_pygame/) ([Nachschlag](https://kantel.github.io/posts/2025021802_vectory_pygame_2/)) ein Küken über den Bildschirm schwebt und von den Wänden abprallt, habe ich dieses Mal eine Ente dafür auserkoren (das Bild stammt ebenfalls wieder aus der freien ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) [Animal Pack Redux](https://kenney.nl/assets/animal-pack-redux) von Kenney). Der [Quellcode](https://microstudio.dev/i/kantel/bouncingduckwithvectors/) ist ebenfalls auf meinem microStudio-Account zu finden.
+
+<iframe src="bouncingduckwithvectors/index.html" class="if16_9" name="Bouncing Duck"></iframe>
+
+Auch in diesem Skript liegen die eigentlichen Unterschiede zu den beiden Skripten oben nur in der Klasse `Duck`,
+
+~~~python
+from random import randint
+
+class Duck:
+  
+  def __init__(self):
+    self.d = 10
+    self.w, self.h = self.d*2, self.d*2
+    x = randint(-150, 150)
+    y = randint(-80, 80)
+    self.loc = PVector2(x, y)
+    self.vel = PVector2(2.5, 2)
+    self.im = "duck"
+    self.stroke = "rgb(0, 0, 0)"
+    
+  def update(self):
+    self.loc.add(self.vel)
+    # check border
+    if (self.loc.x <= -screen.width//2 + self.d
+    or self.loc.x >= screen.width//2 - self.d):
+      self.vel.x *=-1
+    if (self.loc.y <= -screen.height//2 + self.d or
+    self.loc.y >= screen.height//2 - self.d):
+      self.vel.y *=-1
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.loc.x, self.loc.y, self.w, self.h)
+    screen.drawRound(self.loc.x, self.loc.y, self.w, self.h, self.stroke)
+~~~
+
+während im Hauptprogramm `main` der Unterschied nur darin besteht, daß ich die Instanz der Klasse `Duck()` aus naheliegenden Gründen `donald` genannt habe:
+
+~~~python
+# Bouncing Duck
+
+def init():
+  global donald
+  donald = Duck()
+
+def update():
+  donald.update()
+  # Restart
+  if check_input(keyboard.press, "SPACE"):
+    print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(234, 218, 184)")
+  donald.draw()
+~~~
+
+Nun bin ich hin- und hergerissen. Soll ich mit microStudio weitermachen? Wie schon vor eonem Jahr hatte ich heute viel Spaß damit und Skripte, die im Browser laufen, sind einfach geiler als statische Screenshots. Und die in diese Seiten eingebetteten microStudio-Apps laufen auch noch viel geschmeidiger als die Pygbag-Skripte. Ich werde daher erst einmal weitermachen und hoffe, daß ich mich damit nicht in eine Sackgasse manövriere.
+
+Um den Überblick zu behalten hier -- wie schon bei den Beispielen aus dem letzten Jahr -- eine Auflistung aller bisher im *Schockwellenreiter* erschienenen microScript/Brython-Tutorials:
+
+- MicroStudio und Python (Teil 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): [Bouncing Birds](https://kantel.github.io/posts/2024040401_bouncing_birds/)
+- MicroStudio und Python (Teil 9): [Kollisionserkennung mit Rechtecken](https://kantel.github.io/posts/2024040701_rect_collision/)
+- MicroStudio und Python (Teil 10): [Bubbly Emojis](https://kantel.github.io/posts/2024042301_bubbling_emojis/)
+- MicroStudio und Python (Teil 11): [Ein Partikelsystem](https://kantel.github.io/posts/2024042702_microstudio_partikel/)
+- MicroStudio und Python (Teil 12): [Ein Partikelsystem (2)](https://kantel.github.io/posts/2024042801_microstudio_particle2/)
+- MicroStudio und Python (Teil 13): Bouncing Duck (mit Vektoren)
+
+Wenn ich das mal überblicke, ist da eigentlich schon eine ganze Menge zusammengekommen. Daraus muß sich doch etwas machen lassen. *Still digging!*
