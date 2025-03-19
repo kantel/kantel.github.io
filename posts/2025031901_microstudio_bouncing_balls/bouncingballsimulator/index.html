@@ -1,0 +1,268 @@
+<!DOCTYPE html><html><head><title>Bouncing Ball Simulator</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":15418,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+from random import randint, choice
+
+colors = ["rgba(230, 96, 55, 200)", "rgba(17, 42, 106, 200)",
+          "rgba(183, 116, 64, 200)", "rgba(212, 251, 69, 200)",
+          "rgba(252, 75, 200, 200)", "rgba(159, 53, 233, 200)",
+          "rgba(57, 218, 56, 200)", "rgba(67, 253, 133, 200)",
+          "rgba(78, 148, 42, 200)", "rgba(67, 254, 211, 200)",
+          "rgba(74, 143, 186, 200)", "rgba(52, 99, 234, 200)"]
+          
+class Ball:
+  
+  def __init__(self):
+    self.d = randint(4, 7)   # randint(4, 10)
+    self.w, self.h = self.d*2, self.d*2
+    x = randint(int(-screen.width//2 + self.d),
+                int(screen.width//2 - self.d))
+    y = randint(50, 100)
+    self.loc = PVector2(x, y)
+    dx = randint(-3, 3)
+    dy = 0
+    self.vel = PVector2(dx, dy)
+    self.gravity = 0.01
+    self.c = choice(colors)
+    self.stroke = "rgb(0, 0, 0)"
+
+  def update(self):
+    self.vel.y -= self.gravity
+    self.loc.add(self.vel)
+    # check border
+    if self.loc.y <= -screen.height//2 + self.d:
+      self.loc.y = -screen.height//2 + self.d
+      self.vel.y *=-1
+    if self.loc.x <= -screen.width//2 + self.d:
+      self.loc.x = -screen.width//2 + self.d
+      self.vel.x *= -1
+    if self.loc.x >= screen.width//2 - self.d:
+      self.loc.x = screen.width//2 - self.d
+      self.vel.x *= -1
+      
+  def draw(self):
+    screen.fillRound(self.loc.x, self.loc.y, self.w, self.h, self.c)
+    # screen.setLineWidth(2)
+    screen.drawRound(self.loc.x, self.loc.y, self.w, self.h, self.stroke)
+    # screen.setLineWidth(1)
+
+import math
+NUM_BALLS = 30
+balls = []
+
+def init():
+  for _ in range(NUM_BALLS):
+    balls.append(Ball())
+
+def update():
+  for ball in balls:
+    ball.update()
+  # Check for collision between balls
+  for i in range(0, len(balls)):
+    for j in range(i + 1, len(balls)):
+      impact_vector = balls[j].loc - balls[i].loc
+      d = impact_vector.mag()
+      if is_circle_collision(balls[i], balls[j]):
+        # Make sure that the balls don't overlap
+        overlap = (d - (balls[i].d + balls[j].d))
+        diff = impact_vector
+        diff.limit(overlap*0.5)
+        balls[i].loc += diff 
+        balls[j].loc -= diff 
+        # Swap the velocity of the colliding balls
+        balls[i].vel.x, balls[j].vel.x = balls[j].vel.x, balls[i].vel.x
+        balls[i].vel.y, balls[j].vel.y = balls[j].vel.y, balls[i].vel.y
+  if check_input(keyboard.press, "SPACE"):
+    balls.clear()
+    # print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(234, 218, 184)")
+  for ball in balls:
+    ball.draw()
+    
+ 
+
+import math
+import random
+
+class PVector2():
+    
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+
+  def set(self, v):
+    self.x = v.x
+    self.y = v.y
+    
+  def get(self):
+    v = PVector2(self.x, self.y)
+    return v
+
+  def add(self, v):
+    self.x += v.x
+    self.y += v.y
+        
+  def sub(self, v):
+    self.x -= v.x
+    self.y -= v.y
+    
+  # Multiplikation mit einem Skalar
+  def mult(self, n):
+    self.x *= n
+    self.y *= n
+    
+  # Division durch einen Skalar
+  def div(self, n):
+    self.x /= n
+    self.y /= n
+
+  # Elementweise Multiplikation eines Vektor mit einem anderen Vektor
+  def mult2(self, v):
+    self.x *= v.x
+    self.y *= v.y
+
+  # Elementweise Division eines Vektor mit einem anderen Vektor
+  def div2(self, v):
+    self.x /= v.x
+    self.y /= v.y
+
+  # Magnitude
+  def mag(self):
+    return math.sqrt(self.x*self.x + self.y*self.y)
+    
+  # Normalisierung
+  def normalize(self):
+    m = self.mag()
+    if (m != 0):
+      self.div(m)
+
+# Berechnung der euklidischen Distanz zwischen zwei Vektoren
+  def dist(self, v):
+    dx = self.x - v.x
+    dy = self.y - v.y
+    return math.sqrt(dx*dx + dy*dy)
+    
+  # Berechnung des Skalarprodukts (inneren Produkts) eines Vektors
+  def dot(self, v):
+    return self.x*v.x + self.y*v.y
+    
+  # Begrenzt die Magnitude eines Vektors auf max
+  def limit(self, max):
+    if self.mag() > max:
+      self.normalize()
+      self.mult(max)
+    
+  # Berechnet den Winkel der Rotation eines Vektors
+  def heading(self):
+    angle = math.atan2(-self.y, self.x)
+    return -1*angle
+
+  def __add__(self, other):
+    x = self.x + other.x
+    y = self.y + other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __sub__(self, other):
+    x = self.x - other.x
+    y = self.y - other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __str__(self):
+    return "[" + str(self.x) + ", " + str(self.y) + "]"
+        
+  @classmethod
+  def random2D(cls):
+    x = random.uniform(-1, 1)
+    y = random.uniform(-1, 1)
+    v = cls(x, y)
+    v.normalize()
+    return v
+
+  # Klassenmethoden: Skalare Multiplikation und Division
+    
+  # Multiplikation mit einem Skalar
+  def smult(v, n):
+    x = v.x*n
+    y = v.y*n
+    result = PVector2(x, y)
+    return result
+
+  # Division mit einem Skalar
+  def sdiv(v, n):
+    if n != 0:
+      x = v.x/n
+      y = v.y/n
+      result = PVector2(x, y)
+      return result
+    else:
+      print("Error. Divison durch Null!")
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+def is_circle_collision(obj1, obj2):
+  distance = math.dist([obj1.loc.x, obj1.loc.y], [obj2.loc.x, obj2.loc.y])
+  if distance < obj1.d + obj2.d:
+    return True
+  return False
+
+</script></html>
