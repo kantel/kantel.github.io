@@ -1,0 +1,142 @@
+---
+title: "MicroStudio und Python: Bouncing Heads"
+author: "Jörg Kantel"
+date: "2025-03-21 18:20:00"
+categories: [microStudio, Python, Brython, Nature of Code, Creative Coding]
+image: "images/jugglingpython.jpg"
+---
+
+[![](images/jugglingpython-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54401021036/)
+
+Natürlich konnte ich meine [verbesserte Version der kollidierend Bälle](https://kantel.github.io/posts/2025031901_microstudio_bouncing_balls/) von vorgestern nicht einfach so stehen lassen, ohne nicht noch ein paar Spielereien damit anzustellen. Also habe ich mir wieder das freie ([CC0](https://kenney.nl/assets/animal-pack-redux)) [Animal Pack Redux](https://kenney.nl/assets/animal-pack-redux) aus dem schier unerschöpflichen Fundus von Kenney geschnappt und statt der Bälle ein paar Tierköpfe sich gegenseitig die Schädel an- und wieder abstoßen lassen:
+
+<iframe src="bouncingheads/index.html" class="if16_9" name="Bouncing Heads"></iframe>
+
+Als Entwicklungsumgebung habe ich wieder [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) mit Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) benutzt und der Quellcode unterscheidet sich nur unwesentlich von der Version von Mittwoch: Zuerst die Klasse `Head`:
+
+~~~python
+from random import randint, choice
+
+heads_im = ["bear", "buffalo", "chick", "chicken",
+            "cow", "crocodile", "dog", "duck",
+            "elephant", "frog", "giraffe", "goat",
+            "gorilla", "hippo", "horse", "monkey",
+            "moose", "narwhal", "owl", "panda",
+            "parrot", "penguin", "pig", "rabbit",
+            "rhino", "sloth", "snake", "walrus",
+            "whale", "zebra"]
+
+class Head:
+  
+  def __init__(self):
+    self.d = randint(8, 12)
+    self.w, self.h = self.d*2, self.d*2
+    x = randint(int(-screen.width//2 + self.d),
+                int(screen.width//2 - self.d))
+    y = randint(50, 100)
+    self.loc = PVector2(x, y)
+    self.vel = PVector2(2.5, 2)
+    dx = randint(-3, 3)
+    dy = 0
+    self.vel = PVector2(dx, dy)
+    self.gravity = 0.01
+    self.im = choice(heads_im)
+    self.stroke = "rgb(0, 0, 0)"
+    
+  def update(self):
+    self.vel.y -= self.gravity
+    self.loc.add(self.vel)
+    # check border
+    if self.loc.y <= -screen.height//2 + self.d:
+      self.loc.y = -screen.height//2 + self.d
+      self.vel.y *=-1
+    if self.loc.x <= -screen.width//2 + self.d:
+      self.loc.x = -screen.width//2 + self.d
+      self.vel.x *= -1
+    if self.loc.x >= screen.width//2 - self.d:
+      self.loc.x = screen.width//2 - self.d
+      self.vel.x *= -1
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.loc.x, self.loc.y, self.w, self.h)
+    screen.drawRound(self.loc.x, self.loc.y, self.w, self.h, self.stroke)
+~~~
+
+Hier wurden lediglich die Kreis der Vorgängerversion durch zufällig ausgewählte Sprites aus dem Kenney-Pack ersetzt. Und auch das Hauptprogramm unterscheidet sich ebenfalls nur dadurch, daß die Kreise durch Köpfe ausgetauscht wurden:
+
+~~~python
+from random import randint, choice
+
+heads = []
+NUM_HEADS = 20
+
+def init():
+  for _ in range(NUM_HEADS):
+    heads.append(Head())
+
+def update():
+  for head in heads:
+    head.update()
+  for i in range(0, len(heads)):
+    for j in range(i + 1, len(heads)):
+      impact_vector = heads[j].loc - heads[i].loc
+      d = impact_vector.mag()
+      if is_circle_collision(heads[i], heads[j]):
+        # Make sure that the balls don't overlap
+        overlap = (d - (heads[i].d + heads[j].d))
+        diff = impact_vector
+        diff.limit(overlap*0.5)
+        heads[i].loc += diff 
+        heads[j].loc -= diff 
+        # Swap the velocity of the colliding balls
+        heads[i].vel.x, heads[j].vel.x = heads[j].vel.x, heads[i].vel.x
+        heads[i].vel.y, heads[j].vel.y = heads[j].vel.y, heads[i].vel.y
+  if check_input(keyboard.press, "SPACE"):
+    heads.clear()
+    # print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(234, 218, 184)")
+  for head in heads:
+    head.draw()
+~~~
+
+Dazu muß natürlich auch noch meine [PVector2](https://github.com/kantel/learningarcade/blob/master/noc/pvector.py)-Bibliothek eingebunden werden (dich hier hier -- um Platz zu sparen -- nicht noch einmal abdrucke) und der Reiter `util` mit den zwei Hilfsfunktionen `check_input(obj, val)` und `is_circle_collision(obj1, obj2)`:
+
+~~~python
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+def is_circle_collision(obj1, obj2):
+  distance = math.dist([obj1.loc.x, obj1.loc.y], [obj2.loc.x, obj2.loc.y])
+  if distance < obj1.d + obj2.d:
+    return True
+  return False
+~~~
+
+Das [komplette Skript inklusive aller verwendeten Sprites](https://microstudio.io/i/kantel/bouncingheads/) auf meinem microStudio-Account finden. Meine kleine »microStudio mit Python/Brython«-Reihe ist damit auf 15&nbsp;Beiträge angewachsen:
+
+- MicroStudio und Python (Teil 1): [Hallo Brython](https://kantel.github.io/posts/2024032201_microstudio_python_1/)!
+- MicroStudio und Python (Teil 2): [Zombie Apokalypse](https://kantel.github.io/posts/2024032401_microstudio_python_2/)
+- MicroStudio und Python (Teil 3): [Dancing Crab](https://kantel.github.io/posts/2024032502_microstudio_python_3/)
+- MicroStudio und Python (Teil 4): [Flying Badger](https://kantel.github.io/posts/2024032703_flying_badger_python/)
+- MicroStudio und Python (Teil 5): [PVector2 und »The Nature of Code«](https://kantel.github.io/posts/2024032801_microstudio_noc_1/)
+- MicroStudio und Python (Teil 6): [Bouncing Balls](https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/)
+- MicroStudio und Python (Teil 7): [Kollisionserkennung mit Kreisen](https://kantel.github.io/posts/2024040201_collision_detection_1/)
+- MicroStudio und Python (Teil 8): [Bouncing Birds](https://kantel.github.io/posts/2024040401_bouncing_birds/)
+- MicroStudio und Python (Teil 9): [Kollisionserkennung mit Rechtecken](https://kantel.github.io/posts/2024040701_rect_collision/)
+- MicroStudio und Python (Teil 10): [Bubbly Emojis](https://kantel.github.io/posts/2024042301_bubbling_emojis/)
+- MicroStudio und Python (Teil 11): [Ein Partikelsystem](https://kantel.github.io/posts/2024042702_microstudio_partikel/)
+- MicroStudio und Python (Teil 12): [Ein Partikelsystem (2)](https://kantel.github.io/posts/2024042801_microstudio_particle2/)
+- MicroStudio und Python (Teil 13): [Bouncing Duck](https://kantel.github.io/posts/2025031601_microstudio_nature_of_code/) (mit Vektoren)
+- MicroStudio und Python (Teil 14): [Bouncing Balls](https://kantel.github.io/posts/2025031901_microstudio_bouncing_balls/) (ohne Überlappungen)
+- MicroStudio und Python (Teil 15): Bouncing Heads
+
+Und ich habe immer noch neue Ideen, was ich mit microStudio alles so anstellen könnte. *Still digging!*
+
+---
+
+**Bild**: *[Juggling Python](https://www.flickr.com/photos/schockwellenreiter/54401021036/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored DC Comic Style. A python with horn-rimmed glasses juggles a few balls with painted animal heads in a circus tent in front of an animal audience*«. Modell: Flux (Pro), Style: None.

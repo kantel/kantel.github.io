@@ -1,0 +1,267 @@
+<!DOCTYPE html><html><head><title>Bouncing Heads</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"bear.png","version":1,"size":3730,"properties":{}},{"file":"buffalo.png","version":1,"size":4232,"properties":{}},{"file":"chick.png","version":1,"size":3673,"properties":{}},{"file":"chicken.png","version":1,"size":3891,"properties":{}},{"file":"cow.png","version":1,"size":3766,"properties":{}},{"file":"crocodile.png","version":1,"size":3971,"properties":{}},{"file":"dog.png","version":1,"size":3529,"properties":{}},{"file":"duck.png","version":1,"size":4060,"properties":{}},{"file":"elephant.png","version":1,"size":3853,"properties":{}},{"file":"frog.png","version":1,"size":3450,"properties":{}},{"file":"giraffe.png","version":1,"size":3637,"properties":{}},{"file":"goat.png","version":1,"size":4560,"properties":{}},{"file":"gorilla.png","version":1,"size":3729,"properties":{}},{"file":"hippo.png","version":1,"size":3005,"properties":{}},{"file":"horse.png","version":1,"size":4125,"properties":{}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"monkey.png","version":1,"size":3525,"properties":{}},{"file":"moose.png","version":1,"size":3659,"properties":{}},{"file":"narwhal.png","version":1,"size":4153,"properties":{}},{"file":"owl.png","version":1,"size":4469,"properties":{}},{"file":"panda.png","version":1,"size":3369,"properties":{}},{"file":"parrot.png","version":1,"size":4053,"properties":{}},{"file":"penguin.png","version":1,"size":3496,"properties":{}},{"file":"pig.png","version":1,"size":3365,"properties":{}},{"file":"poster.png","version":1,"size":39278,"properties":{"frames":1,"fps":5}},{"file":"rabbit.png","version":1,"size":3419,"properties":{}},{"file":"rhino.png","version":1,"size":3390,"properties":{}},{"file":"sloth.png","version":1,"size":3974,"properties":{}},{"file":"snake.png","version":1,"size":3788,"properties":{}},{"file":"walrus.png","version":1,"size":4168,"properties":{}},{"file":"whale.png","version":1,"size":3349,"properties":{}},{"file":"zebra.png","version":1,"size":4000,"properties":{}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+from random import randint, choice
+
+heads_im = ["bear", "buffalo", "chick", "chicken",
+            "cow", "crocodile", "dog", "duck",
+            "elephant", "frog", "giraffe", "goat",
+            "gorilla", "hippo", "horse", "monkey",
+            "moose", "narwhal", "owl", "panda",
+            "parrot", "penguin", "pig", "rabbit",
+            "rhino", "sloth", "snake", "walrus",
+            "whale", "zebra"]
+
+class Head:
+  
+  def __init__(self):
+    self.d = randint(8, 12)
+    self.w, self.h = self.d*2, self.d*2
+    x = randint(int(-screen.width//2 + self.d),
+                int(screen.width//2 - self.d))
+    y = randint(50, 100)
+    self.loc = PVector2(x, y)
+    self.vel = PVector2(2.5, 2)
+    dx = randint(-3, 3)
+    dy = 0
+    self.vel = PVector2(dx, dy)
+    self.gravity = 0.01
+    self.im = choice(heads_im)
+    self.stroke = "rgb(0, 0, 0)"
+    
+  def update(self):
+    self.vel.y -= self.gravity
+    self.loc.add(self.vel)
+    # check border
+    if self.loc.y <= -screen.height//2 + self.d:
+      self.loc.y = -screen.height//2 + self.d
+      self.vel.y *=-1
+    if self.loc.x <= -screen.width//2 + self.d:
+      self.loc.x = -screen.width//2 + self.d
+      self.vel.x *= -1
+    if self.loc.x >= screen.width//2 - self.d:
+      self.loc.x = screen.width//2 - self.d
+      self.vel.x *= -1
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.loc.x, self.loc.y, self.w, self.h)
+    screen.drawRound(self.loc.x, self.loc.y, self.w, self.h, self.stroke)
+
+from random import randint, choice
+
+heads = []
+NUM_HEADS = 20
+
+def init():
+  for _ in range(NUM_HEADS):
+    heads.append(Head())
+
+def update():
+  for head in heads:
+    head.update()
+  for i in range(0, len(heads)):
+    for j in range(i + 1, len(heads)):
+      impact_vector = heads[j].loc - heads[i].loc
+      d = impact_vector.mag()
+      if is_circle_collision(heads[i], heads[j]):
+        # Make sure that the balls don't overlap
+        overlap = (d - (heads[i].d + heads[j].d))
+        diff = impact_vector
+        diff.limit(overlap*0.5)
+        heads[i].loc += diff 
+        heads[j].loc -= diff 
+        # Swap the velocity of the colliding balls
+        heads[i].vel.x, heads[j].vel.x = heads[j].vel.x, heads[i].vel.x
+        heads[i].vel.y, heads[j].vel.y = heads[j].vel.y, heads[i].vel.y
+  if check_input(keyboard.press, "SPACE"):
+    heads.clear()
+    # print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(234, 218, 184)")
+  for head in heads:
+    head.draw()
+
+import math
+import random
+
+class PVector2():
+    
+  def __init__(self, x, y):
+    self.x = x
+    self.y = y
+
+  def set(self, v):
+    self.x = v.x
+    self.y = v.y
+    
+  def get(self):
+    v = PVector2(self.x, self.y)
+    return v
+
+  def add(self, v):
+    self.x += v.x
+    self.y += v.y
+        
+  def sub(self, v):
+    self.x -= v.x
+    self.y -= v.y
+    
+  # Multiplikation mit einem Skalar
+  def mult(self, n):
+    self.x *= n
+    self.y *= n
+    
+  # Division durch einen Skalar
+  def div(self, n):
+    self.x /= n
+    self.y /= n
+
+  # Elementweise Multiplikation eines Vektor mit einem anderen Vektor
+  def mult2(self, v):
+    self.x *= v.x
+    self.y *= v.y
+
+  # Elementweise Division eines Vektor mit einem anderen Vektor
+  def div2(self, v):
+    self.x /= v.x
+    self.y /= v.y
+
+  # Magnitude
+  def mag(self):
+    return math.sqrt(self.x*self.x + self.y*self.y)
+    
+  # Normalisierung
+  def normalize(self):
+    m = self.mag()
+    if (m != 0):
+      self.div(m)
+
+# Berechnung der euklidischen Distanz zwischen zwei Vektoren
+  def dist(self, v):
+    dx = self.x - v.x
+    dy = self.y - v.y
+    return math.sqrt(dx*dx + dy*dy)
+    
+  # Berechnung des Skalarprodukts (inneren Produkts) eines Vektors
+  def dot(self, v):
+    return self.x*v.x + self.y*v.y
+    
+  # Begrenzt die Magnitude eines Vektors auf max
+  def limit(self, max):
+    if self.mag() > max:
+      self.normalize()
+      self.mult(max)
+    
+  # Berechnet den Winkel der Rotation eines Vektors
+  def heading(self):
+    angle = math.atan2(-self.y, self.x)
+    return -1*angle
+
+  def __add__(self, other):
+    x = self.x + other.x
+    y = self.y + other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __sub__(self, other):
+    x = self.x - other.x
+    y = self.y - other.y
+    result = PVector2(x, y)
+    return result
+    
+  def __str__(self):
+    return "[" + str(self.x) + ", " + str(self.y) + "]"
+        
+  @classmethod
+  def random2D(cls):
+    x = random.uniform(-1, 1)
+    y = random.uniform(-1, 1)
+    v = cls(x, y)
+    v.normalize()
+    return v
+
+  # Klassenmethoden: Skalare Multiplikation und Division
+    
+  # Multiplikation mit einem Skalar
+  def smult(v, n):
+    x = v.x*n
+    y = v.y*n
+    result = PVector2(x, y)
+    return result
+
+  # Division mit einem Skalar
+  def sdiv(v, n):
+    if n != 0:
+      x = v.x/n
+      y = v.y/n
+      result = PVector2(x, y)
+      return result
+    else:
+      print("Error. Divison durch Null!")
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+def is_circle_collision(obj1, obj2):
+  distance = math.dist([obj1.loc.x, obj1.loc.y], [obj2.loc.x, obj2.loc.y])
+  if distance < obj1.d + obj2.d:
+    return True
+  return False
+
+</script></html>
