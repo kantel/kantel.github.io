@@ -14,9 +14,9 @@ Doch zuerst etwas anderes. Ich bemühe mich ja immer für meine Beiträge neue u
 
 [![](images/3GoyIU.png)](https://img.itch.zone/aW1hZ2UvNjY0NjUxLzM1OTM5NjMucG5n/original/3GoyIU.png)&nbsp;[![](images/k2WT1Y.png)](https://img.itch.zone/aW1hZ2UvNDM2ODI5LzIxOTIxMjEucG5n/original/k2WT1Y.png)&nbsp;[![](images/F+gnw1.png)](https://img.itch.zone/aW1hZ2UvMTA3MjQ0OC82MTQ3OTUxLnBuZw==/original/F%2Bgnw1.png)
 
-1. [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack), [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
-2. [Top-Down Adventure Pack](https://o-lobster.itch.io/adventure-pack), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-3. [Platformer/Metroidvania Asset Pack](https://o-lobster.itch.io/platformmetroidvania-pixel-art-asset-pack), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+1. [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack), ([CC0](https://creativecommons.org/publicdomain/zero/1.0/))
+2. [Top-Down Adventure Pack](https://o-lobster.itch.io/adventure-pack), ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))
+3. [Platformer/Metroidvania Asset Pack](https://o-lobster.itch.io/platformmetroidvania-pixel-art-asset-pack), ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/))
 
 Diese 16x16 Pixel großen Bildchen im Retro-Style sehen nicht nur gut aus, sondern lassen sich auch gut miteinander kombinieren, so daß Ihr mit diesen drei Packs schon ein nettes Roguelike oder einen Retro-Platformer zusammenstricken könnt. Ich habe sie jedenfalls heruntergeladen und werde sie in meinen nächsten Experimenten mit microStudio verwenden.
 
@@ -28,7 +28,7 @@ Dafür habe ich aus dem oben schon erwähnten [Top-Down Adventure Pack](https://
 
 [![Screenshot 1: Strip zur Animation](images/rogue1.jpg)](https://www.flickr.com/photos/schockwellenreiter/54405330686/)
 
-Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button Strip zur Animation die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.
+Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button »Strip zur Animation« die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.
 
 [![Screenshot 2: Animationsgeschwindigkeit einstellen](images/rogue2.jpg)](https://www.flickr.com/photos/schockwellenreiter/54405565818/)
 
@@ -85,9 +85,9 @@ Jetzt gilt es nur noch, in der `update()`-Methode die korrekten Richtungen abhä
       if self.dir == "down": self.im = "hero_idle_down"
 ~~~
 
-Da ich wollte, daß der Rogue auch stehen bleibt und nicht auf der Stelle zappelt, wenn die Taste wieder losgelassen wird, lasse ich im letzten else die einzelnen idle-Sprite-Animationen für die jeweilige Richtung anzeigen[^2].
+Da ich wollte, daß der Rogue auch stehen bleibt und nicht auf der Stelle zappelt, wenn die Taste wieder losgelassen wird, lasse ich im letzten `else` die einzelnen idle-Sprite-Animationen für die jeweilige Richtung anzeigen[^2].
 
-[^2]: Das passiert momentan in den mit `# Check Border` kommentierten Code-Teilen, wo mein Held gestoppt und auf die exakte Randposition gesetzt wird.
+[^2]: Das passiert momentan bei gedrückter Taste in den mit `# Check Border` kommentierten Code-Teilen, wo mein Held gestoppt und auf die exakte Randposition gesetzt wird.
 
 Die Klasse `Hero` leistet im großen und ganzen die Hauptarbeit und sieht so aus:
 

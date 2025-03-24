@@ -25,9 +25,9 @@
 <p>Doch zuerst etwas anderes. Ich bemühe mich ja immer für meine Beiträge neue und gutaussehende (und frei zu nutzende) Tiles und Sprites zu entdecken. Und bei der Vorbereitung zu diesem Artikel bin ich über die <a href="https://o-lobster.itch.io/">Seiten von O_Lobster auf Itch.io</a> gestolpert und fand diese drei Asset-Packs bemerkenswert:</p>
 <p><a href="https://img.itch.zone/aW1hZ2UvNjY0NjUxLzM1OTM5NjMucG5n/original/3GoyIU.png"><img src="https://kantel.github.io/posts/2025032401_microstudio_anim_sprites/images/3GoyIU.png" class="img-fluid"></a>&nbsp;<a href="https://img.itch.zone/aW1hZ2UvNDM2ODI5LzIxOTIxMjEucG5n/original/k2WT1Y.png"><img src="https://kantel.github.io/posts/2025032401_microstudio_anim_sprites/images/k2WT1Y.png" class="img-fluid"></a>&nbsp;<a href="https://img.itch.zone/aW1hZ2UvMTA3MjQ0OC82MTQ3OTUxLnBuZw==/original/F%2Bgnw1.png"><img src="https://kantel.github.io/posts/2025032401_microstudio_anim_sprites/images/F+gnw1.png" class="img-fluid"></a></p>
 <ol type="1">
-<li><a href="https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack">Simple Dungeon Crawler 16x16 Pixel Art Asset Pack</a>, <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a></li>
-<li><a href="https://o-lobster.itch.io/adventure-pack">Top-Down Adventure Pack</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
-<li><a href="https://o-lobster.itch.io/platformmetroidvania-pixel-art-asset-pack">Platformer/Metroidvania Asset Pack</a>, <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></li>
+<li><a href="https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack">Simple Dungeon Crawler 16x16 Pixel Art Asset Pack</a>, (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>)</li>
+<li><a href="https://o-lobster.itch.io/adventure-pack">Top-Down Adventure Pack</a>, (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>)</li>
+<li><a href="https://o-lobster.itch.io/platformmetroidvania-pixel-art-asset-pack">Platformer/Metroidvania Asset Pack</a>, (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>)</li>
 </ol>
 <p>Diese 16x16 Pixel großen Bildchen im Retro-Style sehen nicht nur gut aus, sondern lassen sich auch gut miteinander kombinieren, so daß Ihr mit diesen drei Packs schon ein nettes Roguelike oder einen Retro-Platformer zusammenstricken könnt. Ich habe sie jedenfalls heruntergeladen und werde sie in meinen nächsten Experimenten mit microStudio verwenden.</p>
 <p>Und nun zu dem versprochenen Tutorial, in dem ein kleiner, animierter Rogue mithilfe der Pfeiltasten (alternativ sind auch die Tasten <code>a</code>, <code>s</code>, <code>d</code> und <code>w</code> möglich) über den Monitor bewegt werden kann:</p>
@@ -40,7 +40,7 @@
 <figcaption>Screenshot 1: Strip zur Animation</figcaption>
 </figure>
 </div>
-<p>Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button Strip zur Animation die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.</p>
+<p>Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button »Strip zur Animation« die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54405565818/"><img src="https://kantel.github.io/posts/2025032401_microstudio_anim_sprites/images/rogue2.jpg" class="img-fluid figure-img" alt="Screenshot 2: Animationsgeschwindigkeit einstellen"></a></p>
@@ -447,7 +447,7 @@ background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"hero_idle_down"</span></span></code></pre></div>
-<p>Da ich wollte, daß der Rogue auch stehen bleibt und nicht auf der Stelle zappelt, wenn die Taste wieder losgelassen wird, lasse ich im letzten else die einzelnen idle-Sprite-Animationen für die jeweilige Richtung anzeigen<sup>2</sup>.</p>
+<p>Da ich wollte, daß der Rogue auch stehen bleibt und nicht auf der Stelle zappelt, wenn die Taste wieder losgelassen wird, lasse ich im letzten <code>else</code> die einzelnen idle-Sprite-Animationen für die jeweilige Richtung anzeigen<sup>2</sup>.</p>
 <p>Die Klasse <code>Hero</code> leistet im großen und ganzen die Hauptarbeit und sieht so aus:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -615,7 +615,7 @@ font-style: inherit;">0</span></span></code></pre></div>
 
 <ol>
 <li id="fn1"><p>Ihr seht, mein Held ist in seiner eigenen Klasse gekapselt.↩︎</p></li>
-<li id="fn2"><p>Das passiert momentan in den mit <code># Check Border</code> kommentierten Code-Teilen, wo mein Held gestoppt und auf die exakte Randposition gesetzt wird.↩︎</p></li>
+<li id="fn2"><p>Das passiert momentan bei gedrückter Taste in den mit <code># Check Border</code> kommentierten Code-Teilen, wo mein Held gestoppt und auf die exakte Randposition gesetzt wird.↩︎</p></li>
 </ol>
 </section></div> ]]></description>
   <category>microStudio</category>
