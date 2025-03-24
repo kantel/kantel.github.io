@@ -1,0 +1,137 @@
+---
+title: "Animierte Sprites mit microStudio und Python"
+author: "Jörg Kantel"
+date: "2025-03-24 20:05:00"
+categories: [microStudio, Python, Brython, Spieleprogrammierung, Tiles und Sprites, Creative Coding]
+image: "images/rogue0.jpg"
+---
+
+[![](images/rogue0-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54408082434/)
+
+Bei der Durchsicht meiner Beiträge zu [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) hier in [diesem ~~Blog~~ Kritzelheft](https://kantel.github.io/index.html#category=microStudio) fiel mir auf, daß ich noch nicht alle Tutorials, die ich zu Beginn noch in microScript (der *nativen* Scriptsprache von microStudio) entwickelt hatte, nach Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html). Das werde ich -- beginnend mit [diesem Tutorial über Sprite-Animationen](https://kantel.github.io/posts/2024031201_microstudio_tut_01/) -- in den nächsten Tagen sukzessive nachholen.
+
+Doch zuerst etwas anderes. Ich bemühe mich ja immer für meine Beiträge neue und gutaussehende (und frei zu nutzende) Tiles und Sprites zu entdecken. Und bei der Vorbereitung zu diesem Artikel bin ich über die [Seiten von O_Lobster auf Itch.io](https://o-lobster.itch.io/) gestolpert und fand diese drei Asset-Packs bemerkenswert:
+
+[![](images/3GoyIU.png)](https://img.itch.zone/aW1hZ2UvNjY0NjUxLzM1OTM5NjMucG5n/original/3GoyIU.png)&nbsp;[![](images/k2WT1Y.png)](https://img.itch.zone/aW1hZ2UvNDM2ODI5LzIxOTIxMjEucG5n/original/k2WT1Y.png)&nbsp;[![](images/F+gnw1.png)](https://img.itch.zone/aW1hZ2UvMTA3MjQ0OC82MTQ3OTUxLnBuZw==/original/F%2Bgnw1.png)
+
+1. [Simple Dungeon Crawler 16x16 Pixel Art Asset Pack](https://o-lobster.itch.io/simple-dungeon-crawler-16x16-pixel-pack), [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
+2. [Top-Down Adventure Pack](https://o-lobster.itch.io/adventure-pack), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+3. [Platformer/Metroidvania Asset Pack](https://o-lobster.itch.io/platformmetroidvania-pixel-art-asset-pack), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+Diese 16x16 Pixel großen Bildchen im Retro-Style sehen nicht nur gut aus, sondern lassen sich auch gut miteinander kombinieren, so daß Ihr mit diesen drei Packs schon ein nettes Roguelike oder einen Retro-Platformer zusammenstricken könnt. Ich habe sie jedenfalls heruntergeladen und werde sie in meinen nächsten Experimenten mit microStudio verwenden.
+
+Und nun zu dem versprochenen Tutorial, in dem ein kleiner, animierter Rogue mithilfe der Pfeiltasten (alternativ sind auch die Tasten `a`, `s`, `d` und `w` möglich) über den Monitor bewegt werden kann:
+
+<iframe src="roguelike01python/index.html" class="if16_9" name="Roguelike 01 (Python)"></iframe>
+
+Dafür habe ich aus dem oben schon erwähnten [Top-Down Adventure Pack](https://o-lobster.itch.io/adventure-pack) von [O_Lobster](https://o-lobster.itch.io/) den Helden mit je vier Streifen mit je vier Einzelbildern heruntergeladen. Einmal für die Idle-Animationen in den Richtungen oben, unten, rechts, links und dann für die Run-Animationen ebenfalls in den vier Himmelsrichtungen. Diese Streifen habe ich dann in microStudio importiert.
+
+[![Screenshot 1: Strip zur Animation](images/rogue1.jpg)](https://www.flickr.com/photos/schockwellenreiter/54405330686/)
+
+Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button Strip zur Animation die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.
+
+[![Screenshot 2: Animationsgeschwindigkeit einstellen](images/rogue2.jpg)](https://www.flickr.com/photos/schockwellenreiter/54405565818/)
+
+Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekeit auf `8 FPS` eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion `draw()` zum Beispiel die Zeile
+
+~~~python
+screen.drawSprite("hero_idle_right", hero.x, hero.y, hero.w, hero.h)
+~~~
+
+eingibt, zeigt microStudio den komplette Animationszyklus an, ohne daß man ihn zusätzlich programmieren muß. Interessant ist auch, daß man mit `w` und `h` die Sprites skalieren kann. Ich habe zum Beispiel die im Original 16x16&nbsp;Pixel großen Bildchen des Helden mit `self.w = 32` und `self.h = 32`[^1] auf die doppelte Größe aufgeblasen, was den Retro-Effekt noch einmal betont.
+
+[^1]: Ihr seht, mein Held ist in seiner eigenen Klasse gekapselt.
+
+Jetzt gilt es nur noch, in der `update()`-Methode die korrekten Richtungen abhängig davon, welche Taste gedrückt ist, zu implementieren:
+
+~~~python
+  def update(self):
+    if check_input(keyboard, "RIGHT"):
+      self.x += self.speed
+      self.dir = "right"
+      self.im = "hero_run_right"
+      # Check Border
+      if self.x >= screen.width//2 - self.w//2:
+        self.x = screen.width//2 - self.w//2
+        self.im = "hero_idle_right"
+    elif check_input(keyboard, "LEFT"):
+      self.x -= self.speed
+      self.dir = "left"
+      self.im = "hero_run_left"
+      # Check Border
+      if self.x <= -screen.width//2 + self.w//2:
+        self.x = -screen.width//2 + self.w//2
+        self.im = "hero_idle_left"
+    elif check_input(keyboard, "UP"):
+      self.y += self.speed
+      self.dir = "up"
+      self.im = "hero_run_up"
+      # Check Border
+      if self.y >= screen.height//2 - self.h//2:
+        self.y = screen.height//2 - self.h//2
+        self.im = "hero_idle_up"
+    elif check_input(keyboard, "DOWN"):
+      self.y -= self.speed
+      self.dir = "down"
+      self.im = "hero_run_down"
+      # Check Border
+      if self.y <= -screen.height//2 + self.h//2:
+        self.y = -screen.height//2 + self.h//2
+        self.im = "hero_idle_down"
+    else:
+      if self.dir == "right": self.im = "hero_idle_right"
+      if self.dir == "left": self.im = "hero_idle_left"
+      if self.dir == "up": self.im = "hero_idle_up"
+      if self.dir == "down": self.im = "hero_idle_down"
+~~~
+
+Da ich wollte, daß der Rogue auch stehen bleibt und nicht auf der Stelle zappelt, wenn die Taste wieder losgelassen wird, lasse ich im letzten else die einzelnen idle-Sprite-Animationen für die jeweilige Richtung anzeigen[^2].
+
+[^2]: Das passiert momentan in den mit `# Check Border` kommentierten Code-Teilen, wo mein Held gestoppt und auf die exakte Randposition gesetzt wird.
+
+Die Klasse `Hero` leistet im großen und ganzen die Hauptarbeit und sieht so aus:
+
+~~~python
+class Hero:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 32
+    self.h = 32
+    self.im = "hero_idle_down"
+    self.dir = "down"
+    self.speed = 1
+    
+  def update(self):
+    # siehe oben
+  
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Dadurch ist der Hauptteil des Sketches wieder recht kurz geraten:
+
+~~~python
+def init():
+  global hero
+  hero = Hero()
+  # print(screen.width//4)
+
+def update():
+  hero.update()
+  if check_input(keyboard.press, "SPACE"):
+    # print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(89, 127, 30")
+  hero.draw()
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Das war es auch schon, das komplette Tutorial inklusive Quellcode und aller verwendeten Assets habe ich wieder auf den [Seiten von microStudio veröffentlicht](https://microstudio.io/i/kantel/roguelike01python/). Ihr könnt es Euch dort anschauen, klonen, herunterladen und/oder damit eigene Varianten erstellen.

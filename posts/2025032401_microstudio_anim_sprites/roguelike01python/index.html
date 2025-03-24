@@ -1,0 +1,129 @@
+<!DOCTYPE html><html><head><title>Roguelike 01 (Python)</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"hero_idle_down.png","version":4,"size":544,"properties":{"frames":6,"fps":8}},{"file":"hero_idle_left.png","version":7,"size":576,"properties":{"frames":6,"fps":8}},{"file":"hero_idle_right.png","version":11,"size":555,"properties":{"frames":6,"fps":8}},{"file":"hero_idle_up.png","version":6,"size":473,"properties":{"frames":6,"fps":8}},{"file":"hero_run_down.png","version":4,"size":719,"properties":{"frames":6,"fps":8}},{"file":"hero_run_left.png","version":5,"size":721,"properties":{"frames":6,"fps":8}},{"file":"hero_run_right.png","version":4,"size":699,"properties":{"frames":6,"fps":8}},{"file":"hero_run_up.png","version":3,"size":668,"properties":{"frames":6,"fps":8}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":4,"size":5462,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+class Hero:
+  
+  def __init__(self):
+    self.x = 0
+    self.y = 0
+    self.w = 32
+    self.h = 32
+    self.im = "hero_idle_down"
+    self.dir = "down"
+    self.speed = 1
+    
+  def update(self):
+    if check_input(keyboard, "RIGHT"):
+      self.x += self.speed
+      self.dir = "right"
+      self.im = "hero_run_right"
+      # Check Border
+      if self.x >= screen.width//2 - self.w//2:
+        self.x = screen.width//2 - self.w//2
+        self.im = "hero_idle_right"
+    elif check_input(keyboard, "LEFT"):
+      self.x -= self.speed
+      self.dir = "left"
+      self.im = "hero_run_left"
+      # Check Border
+      if self.x <= -screen.width//2 + self.w//2:
+        self.x = -screen.width//2 + self.w//2
+        self.im = "hero_idle_left"
+    elif check_input(keyboard, "UP"):
+      self.y += self.speed
+      self.dir = "up"
+      self.im = "hero_run_up"
+      # Check Border
+      if self.y >= screen.height//2 - self.h//2:
+        self.y = screen.height//2 - self.h//2
+        self.im = "hero_idle_up"
+    elif check_input(keyboard, "DOWN"):
+      self.y -= self.speed
+      self.dir = "down"
+      self.im = "hero_run_down"
+      # Check Border
+      if self.y <= -screen.height//2 + self.h//2:
+        self.y = -screen.height//2 + self.h//2
+        self.im = "hero_idle_down"
+    else:
+      if self.dir == "right": self.im = "hero_idle_right"
+      if self.dir == "left": self.im = "hero_idle_left"
+      if self.dir == "up": self.im = "hero_idle_up"
+      if self.dir == "down": self.im = "hero_idle_down"
+  
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+def init():
+  global hero
+  hero = Hero()
+  # print(screen.width//4)
+
+def update():
+  hero.update()
+  if check_input(keyboard.press, "SPACE"):
+    # print("RESTART")
+    init()
+
+def draw():
+  screen.clear("rgb(89, 127, 30")
+  hero.draw()
+
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+</script></html>
