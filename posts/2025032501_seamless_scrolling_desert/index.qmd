@@ -1,0 +1,83 @@
+---
+title: "MicroStudio: Endlos schwebt der Dachs (jetzt auch in Python)"
+author: "Jörg Kantel"
+date: "2025-03-25 15:00:00"
+categories: [microStudio, Python, Brython, Spieleprogrammierung, Creative Coding]
+image: "images/desert01.jpg"
+---
+
+[![](images/desert01-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54409670008/)
+
+So viele [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html)-Tutorials wie ich befürchtet hatte, waren es nun doch nicht, die der Portierung von microScript nach Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) harrten. Neben der [gestern fertiggestellten Sprite-Animation](https://kantel.github.io/posts/2025032401_microstudio_anim_sprites/) war es egentlich nur noch der vor einem [scheinbar endlosen Hintergrund schwebende Dachs](https://kantel.github.io/posts/2024031702_scrolling_badger/), der noch nicht nach Python portiert war.
+
+<iframe src="seamlessscrollingdesert/index.html" class="if16_9" name="Seamless Scrolling Desert (Python)"></iframe>
+
+Das hatte ich dann heute in Angriff genommen. Das [Hintergrundbild der scheinbar endlos scheinenden Wüstenlandschaft](https://www.flickr.com/photos/schockwellenreiter/54409610490/) hatte ich von [Scenarios](https://www.flickr.com/photos/schockwellenreiter/53537297945/) Skybox generieren lassen, denn diese Bilder gehen an den Enden wieder nahtlos ineinander über. Also mußte ich das Bild nur, wenn es am linken Bildschirmrand verschwunden war, am rechten Bildschirmrand wieder »ankleben«. Dafür habe ich eine Klasse `Background` geschrieben:
+
+~~~python
+class Background:
+  
+  def __init__(self, _x, _y):
+    self.x = _x
+    self.y = _y
+    self.w = 1024
+    self.h = 285
+    self.speed = 0.25
+    self.im = "desert02"
+    
+  def update(self):
+    self.x -= self.speed
+    if self.x <= -self.w:
+      self.x = self.w
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Auch das [Bild des fliegenden Dachses](https://www.flickr.com/photos/schockwellenreiter/53539184633/) hatte ich von Scenario erstellen lassen und dann mit einer Bildverarbeitung freigestellt. Eigentlich verharrt der Dachs an einer festen Stelle auf dem Bildschirm (daher bnötigt die Klasse `Badger` auch keine `update()`-Methode), die Illusion, daß er über einer Landschaft schwebt, wird durch das nach links gleitende Hintergrundbild erzeugt:
+
+~~~python
+class Badger:
+  
+  def __init__(self):
+    self.x = -120
+    self.y = 50
+    self.w = 44
+    self.h = 65
+    self.im = "badger"
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Im Hauptscript wird dann alles zusammengefügt:
+
+~~~python
+bgs = []
+
+def init():
+  global badger
+  badger = Badger()
+  bgs.append(Background(334, -30))
+  bgs.append(Background(1358, -30))
+
+
+def update():
+  for bg in bgs:
+    bg.update()
+    
+
+def draw():
+  screen.clear("rgb(100, 160, 160)")
+  for bg in bgs:
+    bg.draw()
+  badger.draw()
+~~~
+
+Ich muß gestehen, die Startposition der x-Achse der ersten Instanz des Backgrounds (`x = 334`) habe ich durch Experimente ermittelt. Das Bild ist 1024 Pixel weit, die x-Achse der Fensterkordinaten (beim (Quer-) Format 16:9) reicht von $-178$ bis $178$ und die Startkoordinaten des Bildes liegen im Nullpunkt des Koordinatensystems in der Mitte des Bildes. Wie ich von diesen Zahlen auf $334$ kommen kann, hat sich mir bisher noch nicht erschlossen, aber mit diesem Wert liegt der linke Rand des Bildes exakt auf $-178$ der Bildschirmkoordinaten. Für die zweite Instanz des Bildes war es dann einfacher: Ich habe auf die Bildbreite (1024 Pixel) einfach den Wert $334$ aufaddiert.
+
+Auch die y-Koordinaten (`y = -30`) hatte ich experimentell herausgefunden. Hier war der Grund aber ein ästhetischer: Ich wollte, daß der Dachs über einen scheinbar im Vordergrund wachsenden Kaktus schwebt, dadurch entsteht die Illusion, daß er *hinter* dem Kaktus vorbeigleitet. Da das Bild mit 285 Pixeln Höhe etwas größer ist als die Bildschirmhöhe von 200 Pixeln, hatte ich hier Spielraum, um einen passenden Ausschnitt zu finden.
+
+Auch dieses Tutorial habe ich wieder auf den [Seiten von microStudio veröffentlicht](https://microstudio.io/i/kantel/seamlessscrollingdesert/), damit Ihr es klonen, erweitern oder einfach nur damit herumspielen könnt. Denn das Ziel dieser kleinen Tutorial-Reihe ist ja, daß nicht nur ich, sondern auch Ihr microStudio (mit Python/Brython) lernt.
+
+Und unter diesem Link könnt Ihr Euch alle bisher im *Schockwellenreiter* erschienenen [Beiträge zu microStudio](https://kantel.github.io/index.html#category=microStudio) anzeigen lassen. Und auch später alle noch neu erscheinenden, von denen sicher noch viele folgen werden. *Still digging!*

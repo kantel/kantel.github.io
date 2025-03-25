@@ -1,0 +1,107 @@
+<!DOCTYPE html><html><head><title>Seamless Scrolling Desert</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"badger.png","version":1,"size":19470,"properties":{}},{"file":"desert02.png","version":1,"size":416865,"properties":{}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"poster.png","version":1,"size":308586,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+class Background:
+  
+  def __init__(self, _x, _y):
+    self.x = _x
+    self.y = _y
+    self.w = 1024
+    self.h = 285
+    self.speed = 0.25
+    self.im = "desert02"
+    
+  def update(self):
+    self.x -= self.speed
+    if self.x <= -self.w:
+      self.x = self.w
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+      
+
+class Badger:
+  
+  def __init__(self):
+    self.x = -120
+    self.y = 50
+    self.w = 44
+    self.h = 65
+    self.im = "badger"
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+bgs = []
+
+def init():
+  global badger
+  badger = Badger()
+  bgs.append(Background(334, -30))
+  bgs.append(Background(1358, -30))
+
+
+def update():
+  for bg in bgs:
+    bg.update()
+    
+
+def draw():
+  screen.clear("rgb(100, 160, 160)")
+  for bg in bgs:
+    bg.draw()
+  badger.draw()
+
+</script></html>
