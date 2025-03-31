@@ -1,0 +1,155 @@
+<!DOCTYPE html><html><head><title>Pizza Plane v1</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"desert_bg.png","version":1,"size":345545,"properties":{}},{"file":"icon.png","version":0,"size":0,"properties":{}},{"file":"pizza.png","version":1,"size":3014,"properties":{}},{"file":"planefly.png","version":2,"size":141907,"properties":{"frames":2,"fps":5}},{"file":"poster.png","version":1,"size":203300,"properties":{"frames":1,"fps":5}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+class Background:
+  
+  def __init__(self, _x, _y):
+    self.x = _x
+    self.y = _y
+    self.w = 1024
+    self.h = 285
+    self.speed = 0.25
+    self.im = "desert_bg"
+    
+  def update(self):
+    self.x -= self.speed
+    if self.x <= -self.w:
+      self.x = self.w
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+from random import randint
+
+class Enemy:
+  
+  def __init__(self):
+    self.w, self.h = 18, 18
+    self.im = "pizza"
+    self.reset()
+    
+  def reset(self):
+    self.x = randint(200, 500)
+    self.y = randint(-70, 80)
+    self.speed = randint(2, 4)
+    
+  def update(self):
+    self.x -= self.speed
+    # Check Border
+    if self.x <= -screen.width//2 - 2*self.w:
+      self.reset()
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+NUM_ENEMIES = 5
+
+bgs = []
+enemies = []
+
+def init():
+  global plane
+  plane = Plane()
+  for _ in range(NUM_ENEMIES):
+    enemies.append(Enemy())
+  bgs.append(Background(128, -40))
+  bgs.append(Background(1152, -40))
+
+def update():
+  for bg in bgs:
+    bg.update()
+  for enemy in enemies:
+    enemy.update()
+  plane.update()
+
+def draw():
+  screen.clear()
+  for bg in bgs:
+    bg.draw()
+  for enemy in enemies:
+    enemy.draw()
+  plane.draw()
+  
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+class Plane:
+  
+  def __init__(self):
+    self.x = -140
+    self.y = 50
+    self.w = 40
+    self.h = 27
+    self.im = "planefly"
+    self.updown = 2
+    
+  def update(self):
+    if check_input(keyboard, "UP"):
+      self.y += self.updown
+      # Check border
+      if self.y >= screen.height//2 - self.h//2:
+        self.y = screen.height//2 - self.h//2
+    if check_input(keyboard, "DOWN"):
+      self.y -= self.updown
+      # Check Border
+      if self.y <= -screen.height//2 + self.h//2:
+        self.y = -screen.height//2 + self.h//2
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+</script></html>

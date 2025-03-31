@@ -1,0 +1,140 @@
+---
+title: "Pizza Plane – jetzt in MicroStudio (Stage 1)"
+author: "Jörg Kantel"
+date: "2025-03-31 17:10:00"
+categories: [microStudio, Python, Brython, Spieleprogrammierung]
+image: "images/pizzaplanev1.jpg"
+---
+
+[![](images/pizzaplanev1-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54412341755/)
+
+Wer meinen Beiträgen hier im *Schockwellenreiter* schon länger folgt, hat sicher geahnt, daß der vor einem [»endlos« scrollenden Hintergrund durch die Luft schwebende Dachs](https://kantel.github.io/posts/2025032501_seamless_scrolling_desert/) nicht grundlos den Weg auf diese Seiten fand. Ich möchte nämlich herausfinden, ob mein Projekt »[Pizza Plane](http://blog.schockwellenreiter.de/2022/10/2022101502.html)«, das ich ursprünglich einmal in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) begonnen, dann aber -- nach meiner [Abkehr von TigerJython](http://blog.schockwellenreiter.de/2022/10/2022103001.html) -- in [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) wieder [aufgenommen](https://kantel.github.io/posts/2023010102_pizzaplane4/) hatte, nicht auch in [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) mit Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) realisieren kann.[^1] Spoiler: Die ersten Experimente verliefen recht vielversprechend.
+
+[^1]: Das Projekt liegt mir wirlich am Herzen. Zwischenzeitlich hatte ich mich auch schon einmal an eine [Version](https://kantel.github.io/posts/2023032602_pizza_plane_with_pizzas/) in [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) (in der [Processing.py-Variante](https://kantel.github.io/posts/2023021601_my_first_trinket/)) und an eine [Version in JavaScript](https://kantel.github.io/posts/2024012902_pizzaplane_3/) ([P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)) versucht.
+
+<iframe src="pizzaplanev1/index.html" class="if16_9" name="Pzza Plane (v1)"></iframe>
+
+Ich erinnere an die Spielidee: Die pöse Meloni möchte mit Hilfe mutierter, tödlicher und angriffslustiger Pizzen halb Europa unterdrücken. Nur ein kleiner grüner[^2] Flieger leistet Widerstand und stellt sich den Pizzen über einer Kulturwüste entgegen. In einer ersten Version habe ich den Hintergrund, den Flieger und die Pizzen implementiert.
+
+[^2]: Das »Grün« ist nicht politisch gemeint, aber den ursprünglich verwendeten **roten** Doppeldecker habe ich wegen einer möglichen Assoziation mir dem »Roten Baron« [Manfred von Richthofen](https://de.wikipedia.org/wiki/Manfred_von_Richthofen) suspendiert.
+
+Zuerst einmal die Klasse `Background`, die sich kaum von der gleichnamigen Klasse im Dachsbeispiel unterscheidet:
+
+~~~python
+class Background:
+  
+  def __init__(self, _x, _y):
+    self.x = _x
+    self.y = _y
+    self.w = 1024
+    self.h = 285
+    self.speed = 0.25
+    self.im = "desert_bg"
+    
+  def update(self):
+    self.x -= self.speed
+    if self.x <= -self.w:
+      self.x = self.w
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Dann die Klasse `Plane`, bei der ich dem Flieger im Sprite-Editor eine kleine Animation (wie [hier beschrieben](https://kantel.github.io/posts/2025032401_microstudio_anim_sprites/)) spendiert habe. Diese läuft, ohne daß man etwas programmieren muß, automatisch ab:
+
+~~~python
+class Plane:
+  
+  def __init__(self):
+    self.x = -140
+    self.y = 50
+    self.w = 40
+    self.h = 27
+    self.im = "planefly"
+    self.updown = 2
+    
+  def update(self):
+    if check_input(keyboard, "UP"):
+      self.y += self.updown
+      # Check border
+      if self.y >= screen.height//2 - self.h//2:
+        self.y = screen.height//2 - self.h//2
+    if check_input(keyboard, "DOWN"):
+      self.y -= self.updown
+      # Check Border
+      if self.y <= -screen.height//2 + self.h//2:
+        self.y = -screen.height//2 + self.h//2
+    
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Die Klasse, die momentan nur die Pizzen beherbergt, habe ich `Enemy` genannt, weil sie eventuell später auch noch feindliche Tomaten, Pepperoni, Auberginen oder sonstiges, gefährliches Gemüse aufnehmen soll:
+
+~~~python
+from random import randint
+
+class Enemy:
+  
+  def __init__(self):
+    self.w, self.h = 18, 18
+    self.im = "pizza"
+    self.reset()
+    
+  def reset(self):
+    self.x = randint(200, 500)
+    self.y = randint(-70, 80)
+    self.speed = randint(2, 4)
+    
+  def update(self):
+    self.x -= self.speed
+    # Check Border
+    if self.x <= -screen.width//2 - 2*self.w:
+      self.reset()
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Die Methode `reset()` setzt die Pizzen auf eine zufällige Position rechts außerhalb des Bildschirmausschnitts zurück, so daß es -- obwohl nur eine endliche Anzahl von Sprites im Spiel ist -- so aussieht, als würden ständig neue Gegner den armen kleinen Flieger angreifen. Die Methode wird daher sowohl im Constructor als auch in `update()` (wenn eine Pizza das Fenster links verlassen hat) aufgerufen.
+
+Der Vorteil der Objektorientierung ist ja, daß dadurch das Hauptprogramm relativ kurz und übersichtlich gehalten wird:
+
+~~~python
+NUM_ENEMIES = 5
+
+bgs = []
+enemies = []
+
+def init():
+  global plane
+  plane = Plane()
+  for _ in range(NUM_ENEMIES):
+    enemies.append(Enemy())
+  bgs.append(Background(128, -40))
+  bgs.append(Background(1152, -40))
+
+def update():
+  for bg in bgs:
+    bg.update()
+  for enemy in enemies:
+    enemy.update()
+  plane.update()
+
+def draw():
+  screen.clear()
+  for bg in bgs:
+    bg.draw()
+  for enemy in enemies:
+    enemy.draw()
+  plane.draw()
+  
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Wie immer habe ich auch dieses Skript auf den [Seiten von microStudio veröffentlicht](https://microstudio.io/i/kantel/pizzaplanev1/), damit Ihr es klonen, erweitern oder einfach nur damit herumspielen könnt.
+
+Und unter [diesem Link](https://kantel.github.io/#category=microStudio) könnt Ihr Euch alle bisher im *Schockwellenreiter* erschienenen Beiträge zu microStudio anzeigen lassen.
