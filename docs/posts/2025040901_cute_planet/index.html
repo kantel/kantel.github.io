@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.47">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Cute Planet mit microStudio – Der Schockwellenreiter</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Cute Planet mit microStudio</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">microStudio</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Brython</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">9. April 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54440578971/"><img src="images/octopussy-b.jpg" class="img-fluid"></a></p>
+<p>Ich scheine besessen von den scheinbar endlos scrollenden Hintergründen in Spielen zu sein. So besessen, daß ich mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> (und Python/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a> als Programmiersprache) noch ein neues Experiment gestartet habe – dieses Mal mit einem »echten« endlos scrollenden Hintergrund.</p>
+<p>Denn dieses Mal lasse ich den Hintergrund (einen Sternenhimmel) ebenfalls von microStudio erzeugen und der Zufallszahlengenerator setzt die Sterne jedesmal an eine andere Position, so daß es keine Wiederholungen gibt.</p>
+<p>Doch zuerst einmal braucht jedes Spiel eine Geschichte: Octopussy hat auf einer entlegenen Raumstation monatelang Forschungsarbeiten betrieben und ist nun auf dem Rückflug nach Hause. Leider hat Ihr Raumschiff einen Defekt (der Motor stottert) und lässt sich nur noch schwer steuern. Das haben die bösen Space-Beetles und Rocket-Boys mitbekommen und wollen Octopussys Raumkrake zerstören. Octopussy muß also auf ihrem Heimflug den feindlichen Raumschiffen ausweichen.</p>
+<iframe src="cuteplanet/index.html" class="if16_9" name="Cute Planet (v1)">
+</iframe>
+<p><em>Mit der [SPACE]-Taste kann das Rumschiff »gesteuert« werden.</em></p>
+<p>Das ist die Geschichte, nun der Code für den endlos scrollenden Sternenhimmel, mit dem alles angefangen hat. Dafür habe ich die Klasse <code>Star</code> geschrieben:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> random <span class="im">import</span> randint</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">class</span> Star:</span>
+<span id="cb1-4"><a href="#cb1-4"></a>  </span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="va">self</span>.x <span class="op">=</span> randint(<span class="bu">int</span>(<span class="op">-</span>screen.width<span class="op">//</span><span class="dv">2</span>), <span class="bu">int</span>(screen.width<span class="op">//</span><span class="dv">2</span>))</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    <span class="va">self</span>.y <span class="op">=</span> randint(<span class="op">-</span><span class="bu">int</span>(screen.height<span class="op">//</span><span class="dv">2</span>), <span class="bu">int</span>(screen.height<span class="op">//</span><span class="dv">2</span>))</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    size <span class="op">=</span> randint(<span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    <span class="va">self</span>.w, <span class="va">self</span>.h <span class="op">=</span> size, size</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="va">self</span>.dx <span class="op">=</span> <span class="op">-</span><span class="fl">0.05</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>    </span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="kw">def</span> reset(<span class="va">self</span>):</span>
+<span id="cb1-13"><a href="#cb1-13"></a>    <span class="va">self</span>.x <span class="op">=</span> screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span><span class="va">self</span>.w</span>
+<span id="cb1-14"><a href="#cb1-14"></a>    <span class="va">self</span>.y <span class="op">=</span> randint(<span class="op">-</span><span class="bu">int</span>(screen.height<span class="op">//</span><span class="dv">2</span>), <span class="bu">int</span>(screen.height<span class="op">//</span><span class="dv">2</span>))</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    </span>
+<span id="cb1-16"><a href="#cb1-16"></a>  <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb1-17"><a href="#cb1-17"></a>    <span class="va">self</span>.x <span class="op">+=</span> <span class="va">self</span>.dx</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    <span class="cf">if</span> <span class="va">self</span>.x <span class="op">&lt;=</span> <span class="op">-</span> screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span><span class="va">self</span>.w:</span>
+<span id="cb1-19"><a href="#cb1-19"></a>      <span class="va">self</span>.reset()</span>
+<span id="cb1-20"><a href="#cb1-20"></a>  </span>
+<span id="cb1-21"><a href="#cb1-21"></a>  <span class="kw">def</span> draw(<span class="va">self</span>):</span>
+<span id="cb1-22"><a href="#cb1-22"></a>    screen.fillRound(<span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.w, <span class="va">self</span>.h, <span class="st">"rgb(255, 239, 0)"</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Jeder Stern wird mit einer zufälligen Größe an eine zufällig ausgewählte Position innerhalb des Fensters gesetzt und bewegt sich langsam nach links. Hat er links das Fenster wieder verlassen, wird er rechts außerhalb des Fensters erneut positioniert. Dabei wird seine vertikale Position wieder neu vom Zufallszahlengenerator gesetzt, so daß keine Wiederholung erkennbar ist.</p>
+<p>Etwas seltsam ist das Casting auf <code>int()</code> innerhalb des Constructors. Denn eigentlich sollte die Integer-Division (<code>//</code>) einen Integerwert herausschreiben, aber in microStudio ergibt <code>screen.width//2</code> den Float-Wert <span class="math inline">\(178.0\)</span> und damit kommt <code>randint()</code> natürlich nicht klar. <code>screen.height//2</code> gibt mir hingegen ein korrektes <span class="math inline">\(100\)</span> heraus, aber sicherheitshalber habe ich auch dieses mit <code>int()</code> gecastet.</p>
+<p>Ansonsten ist das Spiel dem <a href="https://kantel.github.io/posts/2025033102_pizzaplane_v1_microstudio/">Pizza-Flieger</a> sehr ähnlich, nur daß Octopussys Raumkrake einer <a href="https://de.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> ähnlichen Mechanik folgt: Die Raumkrake schwebt aufgrund ihres Defektes langsam nach unten und nur wenn der Spieler die [SPACE]-Taste drückt, hüpft sie wieder ein wenig nach oben. Dies wird in der Klasse <code>Octopussy</code> realisiert:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">class</span> Octopussy:</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  </span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="va">self</span>.x <span class="op">=</span> <span class="op">-</span><span class="dv">140</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="va">self</span>.y <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="va">self</span>.w, <span class="va">self</span>.h <span class="op">=</span> <span class="dv">40</span>, <span class="dv">40</span> </span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="va">self</span>.im <span class="op">=</span> <span class="st">"octopussy"</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="va">self</span>.velocity <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="va">self</span>.gravity <span class="op">=</span> <span class="op">-</span><span class="fl">0.1</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    <span class="va">self</span>.lift <span class="op">=</span> <span class="dv">6</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="va">self</span>.velocity <span class="op">+=</span> <span class="va">self</span>.gravity</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="va">self</span>.velocity <span class="op">*=</span> <span class="fl">0.85</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>    <span class="va">self</span>.y <span class="op">+=</span> <span class="va">self</span>.velocity</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    <span class="cf">if</span> check_input(keyboard.press, <span class="st">"SPACE"</span>):</span>
+<span id="cb2-17"><a href="#cb2-17"></a>      <span class="va">self</span>.velocity <span class="op">+=</span> <span class="va">self</span>.lift</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="co"># Check border</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="cf">if</span> <span class="va">self</span>.y <span class="op">&gt;=</span> screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span>:</span>
+<span id="cb2-20"><a href="#cb2-20"></a>      <span class="va">self</span>.y <span class="op">=</span> screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>    <span class="cf">if</span> <span class="va">self</span>.y <span class="op">&lt;=</span> <span class="op">-</span>screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span>:</span>
+<span id="cb2-22"><a href="#cb2-22"></a>      <span class="va">self</span>.y <span class="op">=</span> <span class="op">-</span>screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a>  <span class="kw">def</span> draw(<span class="va">self</span>):</span>
+<span id="cb2-25"><a href="#cb2-25"></a>    screen.drawSprite(<span class="va">self</span>.im, <span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.w, <span class="va">self</span>.h)</span>
+<span id="cb2-26"><a href="#cb2-26"></a>    </span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="kw">def</span> check_input(obj, val):</span>
+<span id="cb2-28"><a href="#cb2-28"></a>  <span class="cf">if</span> <span class="bu">hasattr</span>(obj, val):</span>
+<span id="cb2-29"><a href="#cb2-29"></a>    <span class="cf">return</span> obj[val] <span class="op">!=</span> <span class="dv">0</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a>  <span class="cf">return</span> <span class="dv">0</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die Kraft, die die Raumkrake nach unten zieht, habe ich <code>gravity</code> genannt<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Und damit das Schiff, wenn es durch die Betätigung der [SPACE]-Taste nach oben geschleudert wird, nicht im Nirwana verschwindet, wird die <em>velocity</em> durch die Multiplikation mit einem Reibungsfaktor (in meinem Fall <span class="math inline">\(0.85\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>) abgebremst, bis sie die Raumkrake wieder nach unten zieht.</p>
+<p>Die Klasse <code>Spaceship</code> für die bösen Buben ist nahezu identisch mit der Klasse <code>Enemy</code> (für die gefährlichen Pizzen) des <a href="https://kantel.github.io/posts/2025033102_pizzaplane_v1_microstudio/">Pizza-Fliegers</a>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> random <span class="im">import</span> uniform, randint, choice</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a>ship_images <span class="op">=</span> [<span class="st">"beetleship"</span>, <span class="st">"beetleship"</span>,<span class="st">"rocketship"</span>, <span class="st">"planet"</span>]</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">class</span> Spaceship():</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="va">self</span>.w, <span class="va">self</span>.h <span class="op">=</span> <span class="dv">30</span>, <span class="dv">30</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>    </span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="va">self</span>.reset()</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    </span>
+<span id="cb3-12"><a href="#cb3-12"></a>  <span class="kw">def</span> reset(<span class="va">self</span>):</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="va">self</span>.x <span class="op">=</span> randint(<span class="dv">200</span>, <span class="dv">500</span>)</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    <span class="va">self</span>.y <span class="op">=</span> randint(<span class="op">-</span><span class="dv">70</span>, <span class="dv">80</span>)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>    <span class="va">self</span>.im <span class="op">=</span> choice(ship_images)</span>
+<span id="cb3-16"><a href="#cb3-16"></a>    <span class="va">self</span>.speed <span class="op">=</span> uniform(<span class="fl">0.5</span>, <span class="fl">1.5</span>)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>    </span>
+<span id="cb3-18"><a href="#cb3-18"></a>  <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb3-19"><a href="#cb3-19"></a>    <span class="va">self</span>.x <span class="op">-=</span> <span class="va">self</span>.speed</span>
+<span id="cb3-20"><a href="#cb3-20"></a>    <span class="co"># Check Border</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>    <span class="cf">if</span> <span class="va">self</span>.x <span class="op">&lt;=</span> <span class="op">-</span>screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">2</span><span class="op">*</span><span class="va">self</span>.w:</span>
+<span id="cb3-22"><a href="#cb3-22"></a>      <span class="va">self</span>.reset()</span>
+<span id="cb3-23"><a href="#cb3-23"></a>      </span>
+<span id="cb3-24"><a href="#cb3-24"></a>  <span class="kw">def</span> draw(<span class="va">self</span>):</span>
+<span id="cb3-25"><a href="#cb3-25"></a>    screen.drawSprite(<span class="va">self</span>.im, <span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.w, <span class="va">self</span>.h)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nur, daß mit <code>random.choice()</code> unterschiedliche Gegner aus der Liste <code>ship_images[]</code> ausgewählt werden<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Daß <code>beetleship</code> zweimal in der Liste auftaucht, ist kein Fehler – ich wollte dadurch erreichen, daß der Marienkäfer-Bubbi häufiger im Spiel erscheint, als die anderen Figuren.</p>
+<p>Das Hauptprogramm ist durch die Nutzung von Klassen wieder erfreulich kurz geraten:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>NUM_STARS <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>NUM_ENEMIES <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a>stars <span class="op">=</span> []</span>
+<span id="cb4-5"><a href="#cb4-5"></a>spaceships <span class="op">=</span> []</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">def</span> init():</span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(NUM_STARS):</span>
+<span id="cb4-9"><a href="#cb4-9"></a>    stars.append(Star())</span>
+<span id="cb4-10"><a href="#cb4-10"></a>  <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(NUM_ENEMIES):</span>
+<span id="cb4-11"><a href="#cb4-11"></a>    spaceships.append(Spaceship())</span>
+<span id="cb4-12"><a href="#cb4-12"></a>  octopussy <span class="op">=</span> Octopussy()</span>
+<span id="cb4-13"><a href="#cb4-13"></a>  spaceships.append(octopussy)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>  </span>
+<span id="cb4-15"><a href="#cb4-15"></a></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="kw">def</span> update():</span>
+<span id="cb4-17"><a href="#cb4-17"></a>  <span class="cf">for</span> star <span class="kw">in</span> stars:</span>
+<span id="cb4-18"><a href="#cb4-18"></a>    star.update()</span>
+<span id="cb4-19"><a href="#cb4-19"></a>  <span class="cf">for</span> ship <span class="kw">in</span> spaceships:</span>
+<span id="cb4-20"><a href="#cb4-20"></a>    ship.update()</span>
+<span id="cb4-21"><a href="#cb4-21"></a></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="kw">def</span> draw():</span>
+<span id="cb4-23"><a href="#cb4-23"></a>  screen.clear(<span class="st">"rgb(0, 80, 125"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24"></a>  <span class="cf">for</span> star <span class="kw">in</span> stars:</span>
+<span id="cb4-25"><a href="#cb4-25"></a>    star.draw()</span>
+<span id="cb4-26"><a href="#cb4-26"></a>  <span class="cf">for</span> ship <span class="kw">in</span> spaceships:</span>
+<span id="cb4-27"><a href="#cb4-27"></a>    ship.draw()</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dadurch, daß ich <code>octopussy</code> auch mit in die Liste <code>spaceships[]</code> aufgenommen habe, konnte ich vermeiden, die Variable <code>octopussy</code> als <code>global</code> deklarieren zu müssen.</p>
+<p>Die verwendeten Sprites sind nicht von mir (mir wurde leider kein Zeichenstift mit in die Wiege gelegt), sondern stammen aus der Sammlung »<a href="https://lostgarden.com/2007/04/07/spacecute-first-round-of-prototypes-and-new-graphics/">Space Cute</a>« von <em><a href="https://lostgarden.home.blog/">Daniel Cook</a></em>, die er unter einer <em>Creative Commons Licence</em> (<a href="https://creativecommons.org/licenses/by/3.0/us/">CC BY 3.0 US</a>) freigegeben hat. <a href="https://lostgarden.com/2007/03/15/lost-garden-license/">Diese Lizenz</a> (und der Anstand) verlangen die Namensnennung des Urhebers. Dem bin ich hiermit nachgekommen.</p>
+<p>Wie immer habe ich auch dieses Skript auf den <a href="https://microstudio.io/i/kantel/cuteplanet/">Seiten von microStudio veröffentlicht</a>, damit Ihr es klonen, erweitern oder einfach nur damit herumspielen könnt.</p>
+<p>Und unter <a href="https://kantel.github.io/#category=microStudio">diesem</a> Link könnt Ihr Euch alle bisher im <em>Schockwellenreiter</em> erschienenen Beiträge zu microStudio anzeigen lassen.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ja, ich weiß, daß es im Weltall keine Gravitation gibt, aber hey, das ist mein Spiel und da bestimme ich die Regeln!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Mit diesem Wert, genau wie mit den Werten für <code>gravity</code> und <code>lift</code>, könnt Ihr spielen.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Der kleine grüne Planet ist eigentlich kein Gegner. In einer späteren Version des Spieles soll er als <em>Power Up</em> fungieren, der Octopussy wieder neue Lebenspunkte gibt.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>

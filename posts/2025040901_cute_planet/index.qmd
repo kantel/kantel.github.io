@@ -1,0 +1,168 @@
+---
+title: "Cute Planet mit microStudio"
+author: "Jörg Kantel"
+date: "2025-04-09 13:30:00"
+categories: [microStudio, Python, Brython, Spieleprogrammierung]
+image: "images/octopussy.jpg"
+---
+
+[![](images/octopussy-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54440578971/)
+
+Ich scheine besessen von den scheinbar endlos scrollenden Hintergründen in Spielen zu sein. So besessen, daß ich mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) (und Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) als Programmiersprache) noch ein neues Experiment gestartet habe – dieses Mal mit einem »echten« endlos scrollenden Hintergrund.
+
+Denn dieses Mal lasse ich den Hintergrund (einen Sternenhimmel) ebenfalls von microStudio erzeugen und der Zufallszahlengenerator setzt die Sterne jedesmal an eine andere Position, so daß es keine Wiederholungen gibt.
+
+Doch zuerst einmal braucht jedes Spiel eine Geschichte: Octopussy hat auf einer entlegenen Raumstation monatelang Forschungsarbeiten betrieben und ist nun auf dem Rückflug nach Hause. Leider hat Ihr Raumschiff einen Defekt (der Motor stottert) und lässt sich nur noch schwer steuern. Das haben die bösen Space-Beetles und Rocket-Boys mitbekommen und wollen Octopussys Raumkrake zerstören. Octopussy muß also auf ihrem Heimflug den feindlichen Raumschiffen ausweichen.
+
+<iframe src="cuteplanet/index.html" class="if16_9" name="Cute Planet (v1)"></iframe>
+
+*Mit der [SPACE]-Taste kann das Rumschiff »gesteuert« werden.*
+
+Das ist die Geschichte, nun der Code für den endlos scrollenden Sternenhimmel, mit dem alles angefangen hat. Dafür habe ich die Klasse `Star` geschrieben:
+
+~~~python
+from random import randint
+
+class Star:
+  
+  def __init__(self):
+    self.x = randint(int(-screen.width//2), int(screen.width//2))
+    self.y = randint(-int(screen.height//2), int(screen.height//2))
+    size = randint(1, 3)
+    self.w, self.h = size, size
+    self.dx = -0.05
+    
+  def reset(self):
+    self.x = screen.width//2 + 2*self.w
+    self.y = randint(-int(screen.height//2), int(screen.height//2))
+    
+  def update(self):
+    self.x += self.dx
+    if self.x <= - screen.width//2 - 2*self.w:
+      self.reset()
+  
+  def draw(self):
+    screen.fillRound(self.x, self.y, self.w, self.h, "rgb(255, 239, 0)")
+~~~
+
+Jeder Stern wird mit einer zufälligen Größe an eine zufällig ausgewählte Position innerhalb des Fensters gesetzt und bewegt sich langsam nach links. Hat er links das Fenster wieder verlassen, wird er rechts außerhalb des Fensters erneut positioniert. Dabei wird seine vertikale Position wieder neu vom Zufallszahlengenerator gesetzt, so daß keine Wiederholung erkennbar ist.
+
+Etwas seltsam ist das Casting auf `int()` innerhalb des Constructors. Denn eigentlich sollte die Integer-Division (`//`) einen Integerwert herausschreiben, aber in microStudio ergibt `screen.width//2` den Float-Wert $178.0$ und damit kommt `randint()` natürlich nicht klar. `screen.height//2` gibt mir hingegen ein korrektes $100$ heraus, aber sicherheitshalber habe ich auch dieses mit `int()` gecastet.
+
+Ansonsten ist das Spiel dem [Pizza-Flieger](https://kantel.github.io/posts/2025033102_pizzaplane_v1_microstudio/) sehr ähnlich, nur daß Octopussys Raumkrake einer [Flappy Bird](https://de.wikipedia.org/wiki/Flappy_Bird) ähnlichen Mechanik folgt: Die Raumkrake schwebt aufgrund ihres Defektes langsam nach unten und nur wenn der Spieler die [SPACE]-Taste drückt, hüpft sie wieder ein wenig nach oben. Dies wird in der Klasse `Octopussy` realisiert:
+
+~~~python
+class Octopussy:
+  
+  def __init__(self):
+    self.x = -140
+    self.y = 50
+    self.w, self.h = 40, 40 
+    self.im = "octopussy"
+    self.velocity = 0
+    self.gravity = -0.1
+    self.lift = 6
+
+  def update(self):
+    self.velocity += self.gravity
+    self.velocity *= 0.85
+    self.y += self.velocity
+    if check_input(keyboard.press, "SPACE"):
+      self.velocity += self.lift
+    # Check border
+    if self.y >= screen.height//2 - self.h//2:
+      self.y = screen.height//2 - self.h//2
+    if self.y <= -screen.height//2 + self.h//2:
+      self.y = -screen.height//2 + self.h//2
+
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+    
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+~~~
+
+Die Kraft, die die Raumkrake nach unten zieht, habe ich `gravity` genannt[^1]. Und damit das Schiff, wenn es durch die Betätigung der [SPACE]-Taste nach oben geschleudert wird, nicht im Nirwana verschwindet, wird die *velocity* durch die Multiplikation mit einem Reibungsfaktor (in meinem Fall $0.85$[^2]) abgebremst, bis sie die Raumkrake wieder nach unten zieht.
+
+[^1]: Ja, ich weiß, daß es im Weltall keine Gravitation gibt, aber hey, das ist mein Spiel und da bestimme ich die Regeln!
+[^2]: Mit diesem Wert, genau wie mit den Werten für `gravity` und `lift`, könnt Ihr spielen.
+
+Die Klasse `Spaceship` für die bösen Buben ist nahezu identisch mit der Klasse `Enemy` (für die gefährlichen Pizzen) des [Pizza-Fliegers](https://kantel.github.io/posts/2025033102_pizzaplane_v1_microstudio/):
+
+~~~python
+from random import uniform, randint, choice
+
+ship_images = ["beetleship", "beetleship","rocketship", "planet"]
+
+class Spaceship():
+  
+  def __init__(self):
+    self.w, self.h = 30, 30
+    
+    self.reset()
+    
+  def reset(self):
+    self.x = randint(200, 500)
+    self.y = randint(-70, 80)
+    self.im = choice(ship_images)
+    self.speed = uniform(0.5, 1.5)
+    
+  def update(self):
+    self.x -= self.speed
+    # Check Border
+    if self.x <= -screen.width//2 - 2*self.w:
+      self.reset()
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+~~~
+
+Nur, daß mit `random.choice()` unterschiedliche Gegner aus der Liste `ship_images[]` ausgewählt werden[^3]. Daß `beetleship` zweimal in der Liste auftaucht, ist kein Fehler – ich wollte dadurch erreichen, daß der Marienkäfer-Bubbi häufiger im Spiel erscheint, als die anderen Figuren.
+
+[^3]: Der kleine grüne Planet ist eigentlich kein Gegner. In einer späteren Version des Spieles soll er als *Power Up* fungieren, der Octopussy wieder neue Lebenspunkte gibt.
+
+Das Hauptprogramm ist durch die Nutzung von Klassen wieder erfreulich kurz geraten:
+
+~~~python
+NUM_STARS = 100
+NUM_ENEMIES = 4
+
+stars = []
+spaceships = []
+
+def init():
+  for _ in range(NUM_STARS):
+    stars.append(Star())
+  for _ in range(NUM_ENEMIES):
+    spaceships.append(Spaceship())
+  octopussy = Octopussy()
+  spaceships.append(octopussy)
+  
+
+def update():
+  for star in stars:
+    star.update()
+  for ship in spaceships:
+    ship.update()
+
+def draw():
+  screen.clear("rgb(0, 80, 125")
+  for star in stars:
+    star.draw()
+  for ship in spaceships:
+    ship.draw()
+~~~
+
+Dadurch, daß ich `octopussy` auch mit in die Liste `spaceships[]` aufgenommen habe, konnte ich vermeiden, die Variable `octopussy` als `global` deklarieren zu müssen.
+
+Die verwendeten Sprites sind nicht von mir (mir wurde leider kein Zeichenstift mit in die Wiege gelegt), sondern stammen aus der Sammlung »[Space Cute](https://lostgarden.com/2007/04/07/spacecute-first-round-of-prototypes-and-new-graphics/)« von *[Daniel Cook](https://lostgarden.home.blog/)*, die er unter einer *Creative Commons Licence* ([CC BY 3.0 US](https://creativecommons.org/licenses/by/3.0/us/)) freigegeben hat. [Diese Lizenz](https://lostgarden.com/2007/03/15/lost-garden-license/) (und der Anstand) verlangen die Namensnennung des Urhebers. Dem bin ich hiermit nachgekommen.
+
+Wie immer habe ich auch dieses Skript auf den [Seiten von microStudio veröffentlicht](https://microstudio.io/i/kantel/cuteplanet/), damit Ihr es klonen, erweitern oder einfach nur damit herumspielen könnt.
+
+Und unter [diesem](https://kantel.github.io/#category=microStudio) Link könnt Ihr Euch alle bisher im *Schockwellenreiter* erschienenen Beiträge zu microStudio anzeigen lassen.
+
+
+
+

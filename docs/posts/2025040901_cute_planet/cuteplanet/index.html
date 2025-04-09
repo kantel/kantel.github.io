@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><title>Cute Planet</title><meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui=1"><meta charset="UTF-8"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="description" content=""><link rel="manifest" href="manifest.json"><link rel="icon" type="image/png" href="icon64.png"><link rel="apple-touch-icon" sizes="180x180" href="icon180.png"><link rel="icon" type="image/png" sizes="32x32" href="icon32.png"><link rel="icon" type="image/png" sizes="16x16" href="icon16.png"><style>html,body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  overflow:hidden;
+  font-family: Verdana;
+}
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#canvaswrapper {
+  text-align: center ;
+}
+</style><style>@font-face { font-family: "BitCell" ; src: url("fonts/BitCell.ttf") format("truetype"); }</style><script>window.fonts = ["BitCell"]</script></head><body class="noselect custom-cursor" oncontextmenu="return false;"><div id="canvaswrapper"></div><script type="text/javascript">var resources = {"images":[{"file":"beetleship.png","version":1,"size":22852,"properties":{}},{"file":"icon.png","version":1,"size":20935,"properties":{"frames":1,"fps":5}},{"file":"octopussy.png","version":1,"size":22004,"properties":{}},{"file":"planet.png","version":1,"size":16744,"properties":{}},{"file":"planet2.png","version":1,"size":17211,"properties":{}},{"file":"poster.png","version":1,"size":34623,"properties":{"frames":1,"fps":5}},{"file":"rocketship.png","version":1,"size":14093,"properties":{}}],"assets":[],"maps":{},"sounds":[],"music":[]};
+var graphics = "M1";
+
+</script><script type="text/javascript">var orientation = 'landscape' ;
+var aspect = '16x9' ;
+var ms_libs = [] ;
+window.skip_service_worker = true;
+window.exported_project = true;
+window.ms_use_server = false ;
+</script><script src="runner.js"></script><script src="brython.js"></script><script src="brython_stdlib.js"></script><script src="microengine.js"></script></body><script type="text/python">from browser import window
+import traceback
+import sys
+
+def execute(str,filename):
+  try:
+    code = compile(str,filename,"exec")
+    return exec(code,globals())
+  except BaseException as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+  except Error as err:
+    exp = traceback.format_exception(err)
+    sys.stderr.write(exp)
+
+window.python = execute
+window.glob = globals()
+window.pythonLoaded()
+</script><script>window.pythonLoaded = function() {
+  window.player = new Player() ;
+  document.body.focus() ;
+}
+window.addEventListener("load",function() {
+  brython() ;
+}) ;
+
+</script><script id="code" type="text/x-microscript">
+
+NUM_STARS = 100
+NUM_ENEMIES = 4
+
+stars = []
+spaceships = []
+
+def init():
+  # print(screen.width//2, screen.height//2)
+  for _ in range(NUM_STARS):
+    stars.append(Star())
+  for _ in range(NUM_ENEMIES):
+    spaceships.append(Spaceship())
+  octopussy = Octopussy()
+  spaceships.append(octopussy)
+  
+
+def update():
+  for star in stars:
+    star.update()
+  for ship in spaceships:
+    ship.update()
+
+def draw():
+  screen.clear("rgb(0, 80, 125")
+  for star in stars:
+    star.draw()
+  for ship in spaceships:
+    ship.draw()
+
+
+class Octopussy:
+  
+  def __init__(self):
+    self.x = -140
+    self.y = 50
+    self.w, self.h = 40, 40 
+    self.im = "octopussy"
+    self.velocity = 0
+    self.gravity = -0.1
+    self.lift = 6
+
+  def update(self):
+    self.velocity += self.gravity
+    self.velocity *= 0.85
+    self.y += self.velocity
+    if check_input(keyboard.press, "SPACE"):
+      self.velocity += self.lift
+    # Check border
+    if self.y >= screen.height//2 - self.h//2:
+      self.y = screen.height//2 - self.h//2
+    if self.y <= -screen.height//2 + self.h//2:
+      self.y = -screen.height//2 + self.h//2
+
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+    
+def check_input(obj, val):
+  if hasattr(obj, val):
+    return obj[val] != 0
+  return 0
+
+from random import uniform, randint, choice
+
+ship_images = ["beetleship", "beetleship","rocketship", "planet"]
+
+class Spaceship():
+  
+  def __init__(self):
+    self.w, self.h = 30, 30
+    
+    self.reset()
+    
+  def reset(self):
+    self.x = randint(200, 500)
+    self.y = randint(-70, 80)
+    self.im = choice(ship_images)
+    self.speed = uniform(0.5, 1.5)
+    
+  def update(self):
+    self.x -= self.speed
+    # Check Border
+    if self.x <= -screen.width//2 - 2*self.w:
+      self.reset()
+      
+  def draw(self):
+    screen.drawSprite(self.im, self.x, self.y, self.w, self.h)
+
+from random import randint
+
+class Star:
+  
+  def __init__(self):
+    self.x = randint(int(-screen.width//2), int(screen.width//2))
+    self.y = randint(-int(screen.height//2), int(screen.height//2))
+    size = randint(1, 3)
+    self.w, self.h = size, size
+    self.dx = -0.05
+    
+  def reset(self):
+    self.x = screen.width//2 + 2*self.w
+    self.y = randint(-int(screen.height//2), int(screen.height//2))
+    
+  def update(self):
+    self.x += self.dx
+    if self.x <= - screen.width//2 - 2*self.w:
+      self.reset()
+  
+  def draw(self):
+    screen.fillRound(self.x, self.y, self.w, self.h, "rgb(255, 239, 0)")
+
+</script></html>
