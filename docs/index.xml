@@ -417,13 +417,22 @@ font-style: inherit;">self</span>.player.h,</span>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">pyxel</span> package APP_DIR STARTUP_SCRIPT_FILE</span></code></pre></div>
-<p>eine Pyxel-Standalone-App erzeugt und diese dann mit</p>
+<p>eine Pyxel-Standalone-App erzeugt, die mit</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
 background-color: null;
+font-style: inherit;">pyxel</span> play PYXEL_APP_FILE</span></code></pre></div>
+<p>aufgeruden werden kann und diese dann mit</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="ex" style="color: null;
+background-color: null;
 font-style: inherit;">pyxel</span> app2html your_app.pyxapp</span></code></pre></div>
-<p>in eine HTML-Datei gewandelt. Das Ergebnis ist zwar erstaunlich kompakt, ruft aber leider immer noch die Webversion von Pyxel über ein CDN auf.</p>
+<p>in eine HTML-Datei gewandelt. Das Ergebnis ist zwar erstaunlich kompakt (trotz BASE64-Codierung), ruft aber leider immer noch die Webversion von Pyxel über ein CDN auf.</p>
+<p>Mit</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pyxel</span> app2exe your_app.pyxapp</span></code></pre></div>
+<p>kann übrigens auch eine Standalone-Runtime Eures Betriebssystems aus der Pyxel-Python-Datei erteugt werden.</p>
 <p>Denn <a href="https://github.com/kantel/pyxel/tree/main/nightinpark">Quellcode und alle Assets</a> inklusive der <code>.pixapp</code> und der daraus erzeugten HTML-Datei findet Ihr in meinem GitHub-Repositorium, damit Ihr ebenfalls damit experimentieren könnt.</p>
-<p>Jetzt bin ich hin- und hergerissen: Soll ich mit Pyxel erst einmal weiter experimentieren oder soll ich zu microStudio zurückkehren? Das Spielen mit Pyxel macht mir Spaß und speziell mit dem Ressourceneditor möchte ich noch einiges anstellen (so gefällt mir die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pyxelpal.html">Default-Farbpalette</a> nicht, ich würde sie gerne entweder durch die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pico8.html">Pico-8 Farbpalette</a> oder die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/sweetie16.html">TIC-80 Farbpalette</a> ersetzen). Ich habe auch schon testweise den Player-Sprite eine Animation verpasst.</p>
+<p>Jetzt bin ich hin- und hergerissen: Soll ich mit Pyxel erst einmal weiter experimentieren oder soll ich zu microStudio zurückkehren? Das Spielen mit Pyxel macht mir Spaß und speziell mit dem Ressourceneditor möchte ich noch einiges anstellen (so gefällt mir die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pyxelpal.html">Default-Farbpalette</a> nicht, ich würde sie gerne entweder durch die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pico8.html">Pico-8 Farbpalette</a> oder die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/sweetie16.html">TIC-80 Farbpalette</a> ersetzen). Ich habe auch schon testweise dem Player-Sprite eine Animation verpasst.</p>
 <p>Außerdem gefällt mir, daß Pyxel einerseits so retromäßig eingeschränkt daherkommt (denn wie ich in diesem Zusammenhang <a href="http://blog.schockwellenreiter.de/2018/08/2018080802.html">schon 2018 schrieb</a>: In der Beschränkung liegt die Kraft!), aber auf der anderen Seite fast das vollständige Python&nbsp;3-Ökosystem genutzt werden kann. Ich muß daher noch ein wenig nachdenken und vermutlich auch experimentieren. <em>Still digging!</em></p>
 
 
