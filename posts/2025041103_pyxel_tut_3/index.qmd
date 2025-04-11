@@ -1,0 +1,120 @@
+---
+title: "Retrogaming mit Python: Pyxel-Tutorial Stage 3"
+author: "Jörg Kantel"
+date: "2025-04-11 17:45:00"
+categories: [Pyxel, Python, Retrogaming, Spieleprogrammierung]
+image: "images/pyxel3.jpg"
+---
+
+[![](images/pyxel3-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54441501429/)
+
+Nachdem ich in der letzten Zeit ausgiebig mit [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) (mit Python/[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) als Programmiersprache) [herumgespielt](https://kantel.github.io/#category=microStudio) hatte, kam mit in den Sinn, auch meine im [August letzten Jahres unterbrochenen Versuche](https://kantel.github.io/posts/2024081002_pyxel_tut_2/) mit der (Python3-) Retrogame-Engine [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html) wieder aufzunehmen.
+
+Denn Pyxel exportiert (unter anderem) ebenfalls nach HTML, basiert aber auf [Pyodide](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html) und kann daher fast den gesamten *Scientific Stack* (und mehr) von Python&nbsp;3 nutzen (also zumindest [Numpy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html) und [SciPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html)) und das ist schon etwas mehr als die Brython-Implementierung von microStudio kann. Dafür unterliegt allerdings Pyxel einigen (gewollten) Einschränkungen (es will halt eine Retro-Fantasy-Spielekonsole sein), die microStudio nicht besitzt.
+
+Ziel war es, eine Pyxel-Version [dieses Mini-Games](https://kantel.github.io/posts/2024080703_smallmaze1_tic80/) zu erstellen, das ich ebenfalls im August letzten Jahres mit der Retrokonsole [TIC-80](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html) in [Lua](http://cognitiones.kantel-chaos-team.de/programmierung/lua.html) programmiert hatte. Und dies ist das Ergebnis:
+
+<iframe src="pyxel/index.html" class="if16_9" name="Pyxel Maze Game Stage 3"></iframe>
+
+*Mit den Pfeiltasten könnt Ihr das Pixelmännchen durch das Spielfeld steuern.*
+
+Der Quellcode unterscheidet sich kaum von dem des [vorherigen Pyxel-Tutorials](https://kantel.github.io/posts/2024081002_pyxel_tut_2/), lediglich die Fensterbreite habe ich verdoppelt:
+
+~~~python
+import pyxel
+
+# Ein paar nützliche Konstanten
+TS = 8          # Tilesize
+COLKEY = 0      # Color Key
+WALLS = [(3, 0), (4, 0), (0, 1), (2, 1), (3, 1)]
+
+def get_tile(tile_x, tile_y):
+    # pyxel.tilemaps() gibt ein Tupel mit den x- und y-Koordinaten
+    # aus der Tilemap des mit pget() identifizierten Tiles zurück
+    return pyxel.tilemaps[0].pget(tile_x, tile_y)
+
+class Player:
+    
+    def __init__(self, _x, _y):
+        self.x = _x*TS
+        self.y = _y*TS
+        self.w = self.h = TS
+        self.u = 0      # Die x-Position des Sprites in der Imagebank
+        self.v = 0      # Die y-Position des Sprites in der Imagebank
+        self.imagebank = 0
+        
+    def move(self):
+        if (pyxel.btnp(pyxel.KEY_LEFT) 
+        and get_tile((self.x - TS)//TS, self.y//TS) not in WALLS):            
+            self.x -= TS
+        elif (pyxel.btnp(pyxel.KEY_RIGHT)
+        and get_tile((self.x + TS)//TS, self.y//TS) not in WALLS):
+            self.x += TS
+        elif (pyxel.btnp(pyxel.KEY_UP)
+        and get_tile(self.x//TS, (self.y - TS)//TS) not in WALLS):
+            self.y -= TS
+        elif (pyxel.btnp(pyxel.KEY_DOWN)
+        and get_tile(self.x//TS, (self.y + TS)//TS) not in WALLS):
+            self.y += TS
+
+class App:
+    
+    def __init__(self):
+        pyxel.init(32*TS, 16*TS, "Pyxel Tutorial Stage 3", display_scale = 4)
+        pyxel.load("assets/ressources.pyxres")
+        
+        # Initialisiere den Spieler
+        # Position in Map-Koordinaten
+        self.player = Player(1, 1)
+        
+    def run(self):
+        print(get_tile(0, 0))
+        pyxel.run(self.update, self.draw)
+        
+    def update(self):
+        self.player.move()
+    
+    def draw(self):
+        pyxel.cls(0)
+        
+        # Zeichen die Map
+        pyxel.bltm(0, 0, 0, 0, 0, 32*TS, 16*TS, 0)
+        
+        # Zeichne den Player
+        pyxel.blt(self.player.x, self.player.y, self.player.imagebank,
+                  self.player.u, self.player.v, self.player.w, self.player.h,
+                  COLKEY)
+        
+App().run()
+~~~
+
+Und da ich dieses Mal unterschiedliche Tiles für die Hindernisse genutzt habe, habe ich ihre Koordinaten aus der Ressourcendatei in der Liste `WALLS[]` abgelegt (bei mir sind daher auch Bäume »Mauern«). Die erste Position des Tupels ist die Spalte des entsprechenden Tiles und die zweite Position die Reihe:
+
+[![](images/pyxeleditor.jpg)](https://www.flickr.com/photos/schockwellenreiter/54445386720/)
+
+Wie Ihr dem Screenshot entnehmen könnt, hat daher die grüne Hintergrundkachel (**kein** Hindernis) die Position $(0, 0)$ (erste Kachel in der ersten Reihe) und das Wasser (Hindernis) die Position $(3, 0)$ (vierte Kachel in der ersten Reihe), der Baum (ebenfalls ein Hindernis) hingegen die Position $(3, 1)$ (vierte Kachel in der zweiten Reihe) -- die Zählung beginnt jeweils bei Null. Die gewünschte Position wird abgefragt und der Player darf sich nur dahin bewegen, wenn das Teil **kein** Hindernis (`not in WALLS`) ist. Die Pixelkoordinaten werden mit Hilfe der Division durch die Kachelgröße (`(pixel_x//TS), (pixel_y//TS)`) in die Map-Koordinaten umgerechnet.
+
+Da ich durch mühsame Experimente nun herausgefunden habe, wie bei Pyxel die Umrechnung von Map-Koordinaten in Pixel-Koordinaten funktioniert, hoffe ich, daß ich nun auch in microStudio herausfinde, wie die Map-Koordinaten in Pixel-Koordinaten umgerechnet werden (hier schwimme ich leider immer noch, aber es scheint auch um einiges komplizierter zu sein).
+
+Das Einbinden der HTML-Version in diese Seiten habe ich ebenfalls mit einer neuen Methode bewerkstelligt (die ich [hier gefunden](https://github.com/kitao/pyxel/blob/main/docs/pyxel-web-en.md) hatte): Zuerst habe ich im Terminal mit
+
+~~~bash
+pyxel package APP_DIR STARTUP_SCRIPT_FILE
+~~~
+
+eine Pyxel-Standalone-App erzeugt und diese dann mit
+
+~~~bash
+pyxel app2html your_app.pyxapp
+~~~
+
+in eine HTML-Datei gewandelt. Das Ergebnis ist zwar erstaunlich kompakt, ruft aber leider immer noch die Webversion von Pyxel über ein CDN auf.
+
+Denn [Quellcode und alle Assets](https://github.com/kantel/pyxel/tree/main/nightinpark) inklusive der `.pixapp` und der daraus erzeugten HTML-Datei findet Ihr in meinem GitHub-Repositorium, damit Ihr ebenfalls damit experimentieren könnt.
+
+Jetzt bin ich hin- und hergerissen: Soll ich mit Pyxel erst einmal weiter experimentieren oder soll ich zu microStudio zurückkehren? Das Spielen mit Pyxel macht mir Spaß und speziell mit dem Ressourceneditor möchte ich noch einiges anstellen (so gefällt mir die [Default-Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pyxelpal.html) nicht, ich würde sie gerne entweder durch die [Pico-8 Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pico8.html) oder die [TIC-80 Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/sweetie16.html) ersetzen). Ich habe auch schon testweise den Player-Sprite eine Animation verpasst.
+
+Außerdem gefällt mir, daß Pyxel einerseits so retromäßig eingeschränkt daherkommt (denn wie ich in diesem Zusammenhang [schon 2018 schrieb](http://blog.schockwellenreiter.de/2018/08/2018080802.html): In der Beschränkung liegt die Kraft!), aber auf der anderen Seite fast das vollständige Python&nbsp;3-Ökosystem genutzt werden kann. Ich muß daher noch ein wenig nachdenken und vermutlich auch experimentieren. *Still digging!*
+
+
+
