@@ -10,7 +10,537 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Fri, 18 Apr 2025 13:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 19 Apr 2025 12:05:00 GMT</lastBuildDate>
+<item>
+  <title>Pyxel-Tutorial Stage 5: Alles zappelt</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025041901_pyxel_tut_5/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54459564922/"><img src="https://kantel.github.io/posts/2025041901_pyxel_tut_5/images/pyxel5-b.jpg" class="img-fluid"></a></p>
+<p>Wieder bin ich bei meiner Entdeckungsreise durch <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a>, der kleinen (Python3-) Retrogame-Engine oder Fantasy-Konsole ein gutes Stück weitergekommen: Nach ein paar Versuchen habe ich es geschafft, die kleinen Sprites zu Zappen zu bewegen. Denn was taugt ein Spiel ohne animierte Sprites?</p>
+<iframe src="animtest.html" class="if16_9" name="Pyxel Tutorial Stage 5">
+</iframe>
+<p>Im Grunde muß man, um Animationen zu erzeugen, in Pyxel genau nach dem gleichen Schema vorgehen, wie zum Beispiel in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> oder der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html">Python Arcade Bibliothek</a>: Man erzeugt einen Timer (hier: <code>animation_counter</code>), der bei jedem Durchlauf (in jedem Frame) hochgezählt wird. Wird ein festgesetzter Schwellwert (hier: <code>animation_speed</code>), der die Animationsgeschwindigkeit regelt, überschritten, wird das nächste Bild der Animation gezeigt und der Timer wieder auf Null zurückgesetzt (<code>animation_counter = 0</code>).</p>
+<p>Ich habe die Koordinaten der einzelnen Bilder in einer Liste (<code>PLAYER_WALK_CYCLE = [(0, 0), (8, 0), (0, 0), (16, 0)]</code>) festgehalten und damit diese nicht wegen eines Index-Fehlers aussteigt, wird die Animation modulo der Länge dieser Liste erzeugt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(PLAYER_WALK_CYCLE)</span></code></pre></div>
+<p>Die einzige Schwierigkeit war, herauszubekommen, wie die Koordinaten der einzelnen Bilder bestimmt werden: Es sind tatsächlich die Pixel-Werte im Image-Editor (jeweils die linke, obere Ecke): Bei meinen <img src="https://latex.codecogs.com/png.latex?8x8"> Pixel großen Bildchen, die alle in der ersten Reihe lagen, waren das folglich die Koordinaten <code>(0, 0), (8, 0), (16, 0)</code> (x, y). Gäbe es Bildchen in der zweiten Reihe, hätten diese die Koordinaten <code>(0, 8), (8, 8), (16, 8)</code> und so weiter.</p>
+<p>Nachdem ich dieses herausgefunden hatte, war die Zuordung der einzelnen Bilder der Sprite-Animation recht einfach:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.u, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PLAYER_WALK_CYCLE[<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index]</span></code></pre></div>
+<p>Dabei sind <code>u</code> und <code>v</code> die Pixel-Koordinaten des gewünschten Bildes in der entsprechenden Image-Bank.</p>
+<p>Nun aber wieder das vollständige Skript meiner kleinen Beispiel-Applikation:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pyxel</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ein paar nützliche Konstanten</span></span>
+<span id="cb3-4">TS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>          <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Tilesize</span></span>
+<span id="cb3-5">COLKEY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Color Key</span></span>
+<span id="cb3-6">PLAYER_WALK_CYCLE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)]</span>
+<span id="cb3-7">WALLS <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)]</span>
+<span id="cb3-8"></span>
+<span id="cb3-9"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> get_tile(tile_x, tile_y):</span>
+<span id="cb3-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># pyxel.tilemaps() gibt ein Tupel mit den x- und y-Koordinaten</span></span>
+<span id="cb3-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># aus der Tilemap des mit pget() identifizierten Tiles zurück</span></span>
+<span id="cb3-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> pyxel.tilemaps[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].pget(tile_x, tile_y)</span>
+<span id="cb3-13"></span>
+<span id="cb3-14"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Player:</span>
+<span id="cb3-15"></span>
+<span id="cb3-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, _x, _y):</span>
+<span id="cb3-17">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS</span>
+<span id="cb3-18">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS</span>
+<span id="cb3-19">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> TS</span>
+<span id="cb3-20">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.u, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PLAYER_WALK_CYCLE[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb3-21">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.imagebank <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-22">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-23">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Current frame in the sprite sheet</span></span>
+<span id="cb3-24">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.animation_speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Lower = faster animation</span></span>
+<span id="cb3-25">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.animation_counter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Tracks frame updates</span></span>
+<span id="cb3-26"></span>
+<span id="cb3-27">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-28">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.animation_counter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb3-29">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.animation_counter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.animation_speed:</span>
+<span id="cb3-30">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(PLAYER_WALK_CYCLE)</span>
+<span id="cb3-31">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.u, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PLAYER_WALK_CYCLE[<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.frame_index]</span>
+<span id="cb3-32">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.animation_counter <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-33"></span>
+<span id="cb3-34">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> move(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-35">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (pyxel.btnp(pyxel.KEY_LEFT)</span>
+<span id="cb3-36">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> get_tile((<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> WALLS):</span>
+<span id="cb3-37">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-38">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> (pyxel.btnp(pyxel.KEY_RIGHT)</span>
+<span id="cb3-39">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> get_tile((<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> TS)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> WALLS):</span>
+<span id="cb3-40">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-41">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> (pyxel.btnp(pyxel.KEY_UP)</span>
+<span id="cb3-42">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> get_tile(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS, (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> WALLS):</span>
+<span id="cb3-43">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-44">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> (pyxel.btnp(pyxel.KEY_DOWN)</span>
+<span id="cb3-45">                <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">and</span> get_tile(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS, (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> TS)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span>TS) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">not</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> WALLS):</span>
+<span id="cb3-46">            <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-47"></span>
+<span id="cb3-48"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> App:</span>
+<span id="cb3-49"></span>
+<span id="cb3-50">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-51">        pyxel.init(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>TS, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Pyxel Tutorial Stage 5"</span>, display_scale <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb3-52">        pyxel.load(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data/res.pyxres"</span>)</span>
+<span id="cb3-53">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Initialisiere den Spieler</span></span>
+<span id="cb3-54">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Position in Map-Koordinaten</span></span>
+<span id="cb3-55">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Player(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>)</span>
+<span id="cb3-56"></span>
+<span id="cb3-57">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-58">        pyxel.run(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.update, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.draw)</span>
+<span id="cb3-59"></span>
+<span id="cb3-60">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-61">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.update()</span>
+<span id="cb3-62">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.move()</span>
+<span id="cb3-63"></span>
+<span id="cb3-64">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-65">        pyxel.cls(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb3-66">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Zeichen die Map</span></span>
+<span id="cb3-67">        pyxel.bltm(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> TS, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">16</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> TS, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-68">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Zeichne den Player</span></span>
+<span id="cb3-69">        pyxel.blt(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.imagebank,</span>
+<span id="cb3-70">                  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.u, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.v, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.player.h,</span>
+<span id="cb3-71">                  COLKEY)</span>
+<span id="cb3-72"></span>
+<span id="cb3-73">App().run()</span></code></pre></div>
+<p>Den <a href="https://github.com/kantel/pyxel/tree/main/animtest">vollständigen Quelltext inklusive der Ressourcen- und Palettendatei</a> (ich hatte dieses Mal die <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pico8.html">Pico-8 Farbpalette</a> genutzt) findet Ihr wieder in meinem GitHub-Repositorium, damit Ihr ebenfalls damit experimentieren könnt.</p>
+<p>Bei den Bildern für die Sprites und für die Map habe ich mich von Kenneys freiem (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) Tileset <a href="https://kenney.nl/assets/pico-8-city">Pico-8 City</a> inspirieren lassen. Ich habe sie aber nicht einfach importiert (obwohl das auch geht), sondern sie Pixel für Pixel in Pyxels Ressourcen-Editor nachgezeichnet. Die Arbeit mit dem Teil macht nämlich ebenfalls Spaß. Aus mir wird zwar mit Sicherheit kein großer Pixel-Artist mehr werden, aber die Arbeit mit 8x8 Pixel großen Bildchen kriege ich gerade noch hin.</p>
+
+
+
+ ]]></description>
+  <category>Pyxel</category>
+  <category>Python</category>
+  <category>Retrogaming</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2025041901_pyxel_tut_5/</guid>
+  <pubDate>Sat, 19 Apr 2025 12:05:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025041901_pyxel_tut_5/images/pyxel5.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Security Alert: Apple Updates</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1988,57 +2518,6 @@ font-style: inherit;">in</span> spaceships:</span>
   <guid>https://kantel.github.io/posts/2025040201_apple_update_nachschlag/</guid>
   <pubDate>Wed, 02 Apr 2025 18:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025040201_apple_update_nachschlag/images/applewatch.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Apples monatlicher Flickentag</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025040102_apple_updates/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54424038415/"><img src="https://kantel.github.io/posts/2025040102_apple_updates/images/appleupdates-b.jpg" class="img-fluid"></a></p>
-<p>Der monatliche Patchday des IT-Riesen aus Cupertino mit dem angebissenen Apfel im Logo kommt dieses Mal sehr früh, was auf eine gewisse Dringlichkeit schließen lässt. Und bis auf die Uhr sind auch diesen Monat wieder alle Betriebssystem-Versionen betroffen, so daß ich sie der Einfachheit halber <em>en bloc</em> abhandeln kann:</p>
-<section id="apple-veröffentlicht-macos-sequoia-15.4" class="level2">
-<h2 class="anchored" data-anchor-id="apple-veröffentlicht-macos-sequoia-15.4">Apple veröffentlicht macOS Sequoia 15.4</h2>
-<p>Apple hat das Update auf die neue <a href="https://support.apple.com/en-us/122373">Betriebssystemversion macOS Sequoia&nbsp;15.4</a> freigegeben bietet auch hierzulande nun »Apple Intelligence« (KI) für die neueren Gerätemodelle und korrigiert auch wieder Sicherheitsprobleme.</p>
-<p>Das Update steht – nachdem <a href="https://www.mactechnews.de/news/article/Apple-veroeffentlicht-macOS-15-4-186910.html">anfängliche Schwierigkeiten</a> behoben wurden – über die Systemeinstellungen zur Verfügung.</p>
-</section>
-<section id="apple-veröffentlicht-sicherheitsupdate-für-macos-ventura-und-sonoma" class="level2">
-<h2 class="anchored" data-anchor-id="apple-veröffentlicht-sicherheitsupdate-für-macos-ventura-und-sonoma">Apple veröffentlicht Sicherheitsupdate für macOS Ventura und Sonoma</h2>
-<p>Apple hat auch das Sicherheitsupdate auf <a href="https://support.apple.com/en-us/122375">macOS Ventura 13.7.5</a> und <a href="https://support.apple.com/en-us/122374">macOS Sonoma 14.7.5</a> freigegeben.</p>
-<p>Die Updates stehen wie üblich über die Softwareaktualisierung bereit.</p>
-</section>
-<section id="apple-veröffentlicht-ios-ipados-18.4" class="level2">
-<h2 class="anchored" data-anchor-id="apple-veröffentlicht-ios-ipados-18.4">Apple veröffentlicht iOS / iPadOS 18.4</h2>
-<p>Wie angekündigt hat Apple das <a href="https://support.apple.com/en-us/122371">Update auf iOS 18.4 und iPadOS 18.4</a> bereitgestellt. Die Updates bieten auch hierzulande nun »Apple Intelligence« (KI) für die neueren Gerätemodelle und darüber hinaus viele neue Funktionen und Fehlerbehebungen und korrigieren Sićherheitslücken.</p>
-<p>Das Update auf auf iOS 18.4 und iPadOS 18.4 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code> an ausreichende Akku-Kapazität und freien Speicherplatz sollte gedacht werden) erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-</section>
-<section id="apple-veröffentlicht-ipados-17.7.6-für-ältere-systeme" class="level2">
-<h2 class="anchored" data-anchor-id="apple-veröffentlicht-ipados-17.7.6-für-ältere-systeme">Apple veröffentlicht iPadOS 17.7.6 für ältere Systeme</h2>
-<p>Apple hat nun das Update auf iPadOS 17.7.6 für ältere iPads bereitgestellt. Das Update behebt <a href="https://support.apple.com/en-us/122372">kritische Sicherheitslücken</a> für die Anwender, die nicht auf iOS/iPadOS 18 updaten wollen.</p>
-<p>Das Update auf iPadOS 17.7.6 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code> an ausreichende Akku-Kapazität und freien Speicherplatz sollte gedacht werden) erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-</section>
-<section id="apple-veröffentlicht-updates-für-diverse-ältere-systeme-von-iosipados" class="level2">
-<h2 class="anchored" data-anchor-id="apple-veröffentlicht-updates-für-diverse-ältere-systeme-von-iosipados">Apple veröffentlicht Updates für diverse ältere Systeme von iOS/iPadOS</h2>
-<p>Apple hat auch Updates für diverse ältere Systeme von iOS/iPadOS bereitgestellt. Auch diese Updates auf <a href="https://support.apple.com/en-us/122346">iOS/iPadOS 16.7.11</a> und <a href="https://support.apple.com/en-us/122345">iOS/iPadOS 15.8.4</a> beheben kritische Sicherheitslücken für alle Anwender, die nicht auf iOS/iPadOS 18 updaten wollen.</p>
-<p>Auch diese Updates können über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code> an ausreichende Akku-Kapazität und freien Speicherplatz sollte gedacht werden) erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen.</p>
-<p><em>(Mein <a href="https://wwwuser.gwdguser.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54424038415/">Zauberapfel im Zauberwald</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored DC Comic style, a mad hatter gives a sexy naked woman, with big boops, and a nice butt an apple in the summer enchanted forest</em>«. Modell: Flux.1 (Dev), Style: PixelWave.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2025040102_apple_updates/</guid>
-  <pubDate>Tue, 01 Apr 2025 11:25:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025040102_apple_updates/images/appleupdates.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

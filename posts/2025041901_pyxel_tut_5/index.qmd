@@ -1,0 +1,113 @@
+---
+title: "Pyxel-Tutorial Stage 5: Alles zappelt"
+author: "Jörg Kantel"
+date: "2025-04-19 14:05:00"
+categories: [Pyxel, Python, Retrogaming, Spieleprogrammierung]
+image: "images/pyxel5.jpg"
+---
+
+[![](images/pyxel5-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54459564922/)
+
+Wieder bin ich bei meiner Entdeckungsreise durch [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html), der kleinen (Python3-) Retrogame-Engine oder Fantasy-Konsole ein gutes Stück weitergekommen: Nach ein paar Versuchen habe ich es geschafft, die kleinen Sprites zu Zappen zu bewegen. Denn was taugt ein Spiel ohne animierte Sprites?
+
+<iframe src="animtest.html" class="if16_9" name="Pyxel Tutorial Stage 5"></iframe>
+
+Im Grunde muß man, um Animationen zu erzeugen, in Pyxel genau nach dem gleichen Schema vorgehen, wie zum Beispiel in [Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) oder der [Python Arcade Bibliothek](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html): Man erzeugt einen Timer (hier: `animation_counter`), der bei jedem Durchlauf (in jedem Frame) hochgezählt wird. Wird ein festgesetzter Schwellwert (hier: `animation_speed`), der die Animationsgeschwindigkeit regelt, überschritten, wird das nächste Bild der Animation gezeigt und der Timer wieder auf Null zurückgesetzt (`animation_counter = 0`).
+
+Ich habe die Koordinaten der einzelnen Bilder in einer Liste (`PLAYER_WALK_CYCLE = [(0, 0), (8, 0), (0, 0), (16, 0)]`) festgehalten und damit diese nicht wegen eines Index-Fehlers aussteigt, wird die Animation modulo der Länge dieser Liste erzeugt:
+
+~~~python
+self.frame_index = (self.frame_index + 1) % len(PLAYER_WALK_CYCLE)
+~~~
+
+Die einzige Schwierigkeit war, herauszubekommen, wie die Koordinaten der einzelnen Bilder bestimmt werden: Es sind tatsächlich die Pixel-Werte im Image-Editor (jeweils die linke, obere Ecke): Bei meinen $8x8$ Pixel großen Bildchen, die alle in der ersten Reihe lagen, waren das folglich die Koordinaten `(0, 0), (8, 0), (16, 0)` (x, y). Gäbe es Bildchen in der zweiten Reihe, hätten diese die Koordinaten `(0, 8), (8, 8), (16, 8)` und so weiter.
+
+Nachdem ich dieses herausgefunden hatte, war die Zuordung der einzelnen Bilder der Sprite-Animation recht einfach:
+
+~~~python
+self.u, self.v = PLAYER_WALK_CYCLE[self.frame_index]
+~~~
+
+Dabei sind `u` und `v` die Pixel-Koordinaten des gewünschten Bildes in der entsprechenden Image-Bank.
+
+Nun aber wieder das vollständige Skript meiner kleinen Beispiel-Applikation:
+
+~~~python
+import pyxel
+
+# Ein paar nützliche Konstanten
+TS = 8          # Tilesize
+COLKEY = 0      # Color Key
+PLAYER_WALK_CYCLE = [(0, 0), (8, 0), (0, 0), (16, 0)]
+WALLS = [(0, 2), (2, 2)]
+
+def get_tile(tile_x, tile_y):
+    # pyxel.tilemaps() gibt ein Tupel mit den x- und y-Koordinaten
+    # aus der Tilemap des mit pget() identifizierten Tiles zurück
+    return pyxel.tilemaps[0].pget(tile_x, tile_y)
+
+class Player:
+
+    def __init__(self, _x, _y):
+        self.x = _x*TS
+        self.y = _y*TS
+        self.w = self.h = TS
+        self.u, self.v = PLAYER_WALK_CYCLE[0]
+        self.imagebank = 0
+        self.speed = 2
+        self.frame_index = 0        # Current frame in the sprite sheet
+        self.animation_speed = 5    # Lower = faster animation
+        self.animation_counter = 0  # Tracks frame updates
+
+    def update(self):
+        self.animation_counter += 1
+        if self.animation_counter >= self.animation_speed:
+            self.frame_index = (self.frame_index + 1) % len(PLAYER_WALK_CYCLE)
+            self.u, self.v = PLAYER_WALK_CYCLE[self.frame_index]
+            self.animation_counter = 0
+
+    def move(self):
+        if (pyxel.btnp(pyxel.KEY_LEFT)
+                and get_tile((self.x - self.speed)//TS, self.y//TS) not in WALLS):
+            self.x -= self.speed
+        elif (pyxel.btnp(pyxel.KEY_RIGHT)
+                and get_tile((self.x + TS)//TS, self.y//TS) not in WALLS):
+            self.x += self.speed
+        elif (pyxel.btnp(pyxel.KEY_UP)
+                and get_tile(self.x//TS, (self.y - self.speed)//TS) not in WALLS):
+            self.y -= self.speed
+        elif (pyxel.btnp(pyxel.KEY_DOWN)
+                and get_tile(self.x//TS, (self.y + TS)//TS) not in WALLS):
+            self.y += self.speed
+
+class App:
+
+    def __init__(self):
+        pyxel.init(16*TS, 16*TS, "Pyxel Tutorial Stage 5", display_scale = 4)
+        pyxel.load("data/res.pyxres")
+        # Initialisiere den Spieler
+        # Position in Map-Koordinaten
+        self.player = Player(8, 7)
+
+    def run(self):
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        self.player.update()
+        self.player.move()
+
+    def draw(self):
+        pyxel.cls(3)
+        # Zeichen die Map
+        pyxel.bltm(0, 0, 0, 0, 0, 16 * TS, 16 * TS, 0)
+        # Zeichne den Player
+        pyxel.blt(self.player.x, self.player.y, self.player.imagebank,
+                  self.player.u, self.player.v, self.player.w, self.player.h,
+                  COLKEY)
+
+App().run()
+~~~
+
+Den [vollständigen Quelltext inklusive der Ressourcen- und Palettendatei](https://github.com/kantel/pyxel/tree/main/animtest) (ich hatte dieses Mal die [Pico-8 Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/pico8.html) genutzt) findet Ihr wieder in meinem GitHub-Repositorium, damit Ihr ebenfalls damit experimentieren könnt.
+
+Bei den Bildern für die Sprites und für die Map habe ich mich von Kenneys freiem ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) Tileset [Pico-8 City](https://kenney.nl/assets/pico-8-city) inspirieren lassen. Ich habe sie aber nicht einfach importiert (obwohl das auch geht), sondern sie Pixel für Pixel in Pyxels Ressourcen-Editor nachgezeichnet. Die Arbeit mit dem Teil macht nämlich ebenfalls Spaß. Aus mir wird zwar mit Sicherheit kein großer Pixel-Artist mehr werden, aber die Arbeit mit 8x8 Pixel großen Bildchen kriege ich gerade noch hin.
