@@ -1,0 +1,111 @@
+---
+title: "Pyxel-Tutorial Stage 6: Zusammenfassung des bisher erreichten"
+author: "Jörg Kantel"
+date: "2025-05-14 20:45:00"
+categories: [Pyxel, Python, Retrogaming, Spieleprogrammierung]
+image: "images/pyxel6.jpg"
+---
+
+[![](images/pyxel6-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54516330557/)
+
+Ich dachte, daß es an der Zeit sei, alles, was ich bisher von und über [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html), der kleinen (Python3-) Retrogame-Engine oder Fantasy-Konsole gelernt habe -- und das ist nicht wenig -- in einer Beispielapplikation zusammenzufassen, bevor ich zu neuen Ufern aufbreche. Das Beispielprogramm bringt also nicht wirklich etwas neues, sondern fasst nur zusammen, was ich in den letzten drei Tutorials gezeigt habe:
+
+Ich möchte eine Version [dieses Mini-Games](https://kantel.github.io/posts/2024080703_smallmaze1_tic80/) erstellen, das ich im August letzten Jahres schon einmal mit der Retrokonsole [TIC-80](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html) in [Lua](http://cognitiones.kantel-chaos-team.de/programmierung/lua.html) programmiert hatte ([Pyxel-Tutorial Stage 3](https://kantel.github.io/posts/2025041103_pyxel_tut_3/)).
+
+Dafür möchte ich aber eine andere, als die Default-Farbpalette von Pyxel einsetzen, nämlich aus Retro-Gründen die Palette [Sweety 16](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/sweetie16.html), die die Default-Palette von TIC-80 ist ([Pyxel-Tutorial Stage 4](https://kantel.github.io/posts/2025041701_pyxel_und_paletten/)).
+
+Und dann -- das ist eine echte Erweiterung zum TIC-80-Vorbild -- soll die Figur des Spielers auch noch zappeln, also animiert werden ([Pyxel-Tutorial Stage 5](https://kantel.github.io/posts/2025041901_pyxel_tut_5/)). So sieht also das bisher erreichte aus und ich finde, es ist ganz nett geworden:
+
+<iframe src="nigthimpark2.html" class="if16_9" name="Pyxel Tutorial Stage 6"></iframe>
+
+Der Quellcode ist immer noch erstaunlich kompakt geraten. Vor allem, wenn man berücksichtigt, daß auch eine -- zwar einfache, aber immerhin -- Kollisionserkennung implementiert ist:
+
+~~~python
+import pyxel
+
+# Ein paar nützliche Konstanten
+TS = 8  # Tilesize
+COLKEY = 0  # Color Key
+PLAYER_WALK_CYCLE = [(0, 24), (8, 24), (0, 24), (16, 24)]
+WALLS = [(0, 1), (1, 1), (2, 1), (3, 1),
+         (0, 2), (1, 2), (2, 2), (0, 3), (1, 3)]
+
+def get_tile(tile_x, tile_y):
+    # pyxel.tilemaps() gibt ein Tupel mit den x- und y-Koordinaten
+    # aus der Tilemap des mit pget() identifizierten Tiles zurück
+    return pyxel.tilemaps[0].pget(tile_x, tile_y)
+
+class Player:
+
+    def __init__(self, _x, _y):
+        self.x = _x * TS
+        self.y = _y * TS
+        self.w = self.h = TS
+        self.u = 0   # Die x-Position des Sprites in der Imagebank (in Pixeln)
+        self.v = 24  # Die y-Position des Sprites in der Imagebank (in Pixeln)
+        self.imagebank = 0
+        self.speed = 2
+        self.frame_index = 0  # Current frame in the sprite sheet
+        self.animation_speed = 5  # Lower = faster animation
+        self.animation_counter = 0  # Tracks frame updates
+
+    def update(self):
+        self.animation_counter += 1
+        if self.animation_counter >= self.animation_speed:
+            self.frame_index = (self.frame_index + 1) % len(PLAYER_WALK_CYCLE)
+            self.u, self.v = PLAYER_WALK_CYCLE[self.frame_index]
+            self.animation_counter = 0
+
+    def move(self):
+        if (pyxel.btnp(pyxel.KEY_LEFT)
+                and get_tile((self.x - TS) // TS, self.y // TS) not in WALLS):
+            self.x -= TS
+        elif (pyxel.btnp(pyxel.KEY_RIGHT)
+              and get_tile((self.x + TS) // TS, self.y // TS) not in WALLS):
+            self.x += TS
+        elif (pyxel.btnp(pyxel.KEY_UP)
+              and get_tile(self.x // TS, (self.y - TS) // TS) not in WALLS):
+            self.y -= TS
+        elif (pyxel.btnp(pyxel.KEY_DOWN)
+              and get_tile(self.x // TS, (self.y + TS) // TS) not in WALLS):
+            self.y += TS
+
+class App:
+
+    def __init__(self):
+        pyxel.init(32 * TS, 16 * TS, "Pyxel Tutorial Stage 6", display_scale=4)
+        pyxel.load("assets/res.pyxres")
+
+        # Initialisiere den Spieler
+        # Position in Map-Koordinaten
+        self.player = Player(1, 1)
+
+    def run(self):
+        print(get_tile(0, 0))
+        pyxel.run(self.update, self.draw)
+
+    def update(self):
+        self.player.update()
+        self.player.move()
+
+    def draw(self):
+        pyxel.cls(0)
+
+        # Zeichen die Map
+        pyxel.bltm(0, 0, 0, 0, 0, 32 * TS, 16 * TS, 0)
+
+        # Zeichne den Player
+        pyxel.blt(self.player.x, self.player.y, self.player.imagebank,
+                  self.player.u, self.player.v, self.player.w, self.player.h,
+                  COLKEY)
+
+App().run()
+~~~
+
+Wenn ich mir vor Augen führe, daß die Zahl der Tutorials zu Pyxel, die man im Netz findet, doch recht überschaubar ist, bin ich auf das Erreichte ziemlich stolz. Als nächstes Ziel möchte ich Items, die der Spieler aufsammeln kann, und Gegner, die den Spieler verfolgen und angreifen, implementieren. Und dann stehen auch mehrere Räume (oder »Level«), die der Spieler erreichen kann, auf meiner Todo-Liste.
+
+Den [vollständigen Quelltext inklusive der Ressourcen- und Palettendatei](https://github.com/kantel/pyxel/tree/main/animtest) findet Ihr wieder in meinem GitHub-Repositorium, damit Ihr damit experimentieren könnt.
+
+Bei den Bildern für die Sprites und für die Map habe ich mich von Kenneys freien ([CC0](https://creativecommons.org/publicdomain/zero/1.0/)) Tilesets [Pico-8 City](https://kenney.nl/assets/pico-8-city) und [Micro Roguelike](https://kenney.nl/assets/micro-roguelike) inspirieren lassen. Ich habe sie aber nicht einfach importiert (obwohl das auch geht), sondern sie Pixel für Pixel in Pyxels Ressourcen-Editor nachgezeichnet und einige auch stark bearbeitet.
+
+Wer weiß, vielleicht ist dies der Startschuß zu einem mehr oder weniger kompletten Pyxel-Tutorial unter dem Titel »Retrogaming mit Pyxel«. Ich fühle mich momentan jedenfalls motiviert. *Still digging!*
