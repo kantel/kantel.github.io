@@ -1,0 +1,32 @@
+---
+title: "Neue Py5-Releases: Auf Version 0.10.5a0 folgte ganz schnell Version 0.10.6a0"
+author: "Jörg Kantel"
+date: "2025-05-22 19:55:00"
+categories: [Py5, Python, Creative Coding, JupyterLab Desktop, PyCharm, Thonny]
+image: "images/pythonteaching.jpg"
+---
+
+[![](images/pythonteaching-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54538070554/)
+
+Die letzte Aktualisierung für heute: Vor wenigen Tagen hatte *James Schmitz* stolz mit [Py5 Version 0.10.5a0](https://ixora.io/blog/new-release-0105a0/) das erste Update in diesem Jahr von [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Python3-Modul, das Processings Original-Bibliotheken (via JPype) nutzt, freigegeben. Neben vielen (meist kleineren) Bug-Fixes brachte es zwei wichtige Verbesserungen.
+
+Zum einen wurde die Abhängigkeit von JPype, die in der letzten Version JPype 1.5.0 festgenagelt war, da JPype 1.5.1 Fehler enthielt, wieder gelöst und auf JPype >= 1.5.2 freigegeben. Damit können alle Verbesserungen von JPype 1.5.2 genutzt werden.
+
+Und  zum zweiten nutzt Py5 nun wieder die `core.jar` des offiziellen Processing&nbsp;4.4.1 Release. Die letzten Versionen von Py5 nutzten eine eigene Fork von Processing, da einige für Py5 notwendige Code-Änderungen nicht so schnell in das offizielle Processing-Release aufgenommen wurden. Nun verspricht *James Schmitz* aber, daß alle zukünftigen Py5-Versionen wieder die »offizielle« Processing-Version nutzen werden.
+
+Doch schon wenige Tage nach Veröffentlichung von dieser Py5-Version wurde festgestellt, daß diese offline nicht funtionierte, sie brauchte eine bestehende und aktive Internet-Verbindung. Daher wurde vor wenigen Tagen [Py5 Version 0.10.6a0](https://ixora.io/blog/new-release-0106a0/) nachgeschoben, die diesen Fehler fixte. Dabei wurde dann auch noch die aktuellste Version Processing&nbsp;4.4.4 eingebunden.
+
+Da ich in der Regel für Py5 [JypterLab-Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html) oder [PyCharm CE](https://www.jetbrains.com/de-de/pycharm/) in einer [eigenen, virtuellen Py5-Umgebung](https://kantel.github.io/posts/2024062801_conda_env_python/) nutze, war das Update mit
+
+~~~bash
+conda activate py5
+pip install --upgrade py5 py5jupyter
+~~~
+
+recht einfach und verlief schnell und problemlos. Da ich aber weiß, daß einige meiner Leserinnen und Leser (speziell ein Freund aus Bremen, dem ich den [heutigen Hinweis auf das Decker-Update](https://kantel.github.io/posts/2025052202_decker_goes_vn/) verdanke), gerne mit [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) spielen, habe ich auch dieses über das Menü `Werkzeuge -> Verwalte Plugins` auf die neue Py5-Version aktualisiert. Sicherheitshalber habe ich über das gleiche Menü auch nachgeprüft, ob der [thonny-py5mode](https://github.com/tabreturn/thonny-py5mode) ebenfalls nach einem Update verlangt. Aber hier ist die im [November&nbsp;2024 von mir eingespielte Version 0.4.7a0](https://kantel.github.io/posts/2024111401_py5_updates/) immer noch aktuell.
+
+Auch dieses Update ließ sich anstandslos einspielen. Nun steht eigentlich neuen Experimenten mit Py5 nichts mehr im Wege. Aber vorher will ich noch testen, ob [Pygame-CE](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) mit [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) tatsächlich [wieder mit meinem macOS Sequoia 15 spielt](https://kantel.github.io/posts/2025051202_sequoia_fix/). *Still digging!*
+
+---
+
+**Bild**: *[Python Teaching](https://www.flickr.com/photos/schockwellenreiter/54538070554/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored DC Comics Style. A python wearing horn-rimmed glasses and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning*«. Modell: Flux.1 (schnell), Style: PixelWave.
