@@ -1,0 +1,153 @@
+---
+title: "Spaß mit Python, dem Tiger und der Schildkröte"
+author: "Jörg Kantel"
+date: "2025-06-02 16:10:00"
+categories: [TigerJython, Python, Creative Coding]
+image: "images/tigerpython.jpg"
+---
+
+[![](images/tigerpython-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54565258311/)
+
+Da nun doch ziemlich viel Zeit verstrichen war, seitdem ich das letzte Mal etwas mit [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) angestellt hatte, habe ich ein über fünf Jahre altes Projekt hervorgekramt, um wieder mit der Programmierung in dieser Python-Umgebung vertrauter zu werden. Es ist der Beitrag »[Fraktale überall](http://blog.schockwellenreiter.de/2021/02/2021020901.html)« vom 9. Februar 2021, in dem ich einen symmetrischen wie auch einen asymmetrtischen [Pythagoras-Baum](https://de.wikipedia.org/wiki/Pythagoras-Baum) mit TigerJythons Turtle realisiert hatte.
+
+Auch dieses Mal mußte ich nur minimale Änderungen vornehmen, die in der Hauptsache dem Umstand geschuldet waren, daß ich damals noch recht gedankenlos den auch von den Machern von TigerJython angewandeten Wildcard-Import eingesetzt hatte. Heute habe ich nun statt
+
+~~~python
+from gturtle import *
+~~~
+
+lieber die Konstruktion
+
+~~~python
+import gturtle as gt
+~~~
+
+genutzt, um Namensraumverschmutzungen zu vermeiden. Zwar sind sie im Falle des Turtle-Moduls recht unwarscheinlich, aber ich fühle mich einfach wohler damit.
+
+### Symmetrischer Pythagoras-Baum
+
+[![](images/sympythagoras.jpg)](https://www.flickr.com/photos/schockwellenreiter/54564211087/)
+
+~~~python
+import gturtle as gt
+import math
+
+palette = [makeColor(189, 183, 110), makeColor(0, 100, 0), makeColor(34, 139, 105),
+           makeColor(152, 251, 152), makeColor(85, 107, 47), makeColor(139, 69, 19),
+           makeColor(154, 205, 50), makeColor(107, 142, 35), makeColor(139, 134, 78),
+           makeColor(139, 115, 85)]
+WIDTH = 640
+HEIGHT = 480
+maxRec = 2
+
+def tree(s):
+    if s < maxRec:
+        return
+    square(s)
+    p.forward(s)
+    s1 = s/math.sqrt(2)
+    p.left(45)
+    tree(s1)
+    p.right(90)
+    p.forward(s1)
+    tree(s1)
+    p.back(s1)
+    p.left(45)
+    p.back(s)
+    
+def square(s):
+    col = palette[int(s - 2)%len(palette)]
+    p.setFillColor(col)
+    p.startPath()
+    for _ in range(4):
+        p.forward(s)
+        p.right(90)
+    p.fillPath()
+
+gt.Options.setPlaygroundSize(WIDTH, HEIGHT)      
+tf = gt.TurtleFrame()
+tf.setTitle("Symmetrischer Pythagoras-Baum")
+tf.clear(makeColor(234, 218, 184))   # Hintergrundfarbe
+p = gt.Turtle(tf)
+p.setPenColor("#923545")
+p.hideTurtle()
+p.setPos(-50, -HEIGHT/2 + 50)
+tree(100)
+
+print("I did it, Babe!")
+~~~
+
+### Asymmetrischer Pythagoras-Baum
+
+[![](images/asympythagoras.jpg)](https://www.flickr.com/photos/schockwellenreiter/54565205826/)
+
+~~~python
+import gturtle as gt
+import math
+
+palette = [makeColor(189, 183, 110), makeColor(0, 100, 0), makeColor(34, 139, 105),
+           makeColor(152, 251, 152), makeColor(85, 107, 47), makeColor(139, 69, 19),
+           makeColor(154, 205, 50), makeColor(107, 142, 35), makeColor(139, 134, 78),
+           makeColor(139, 115, 85)]
+WIDTH = 640
+HEIGHT = 480
+
+def tree(s, level):
+    if level < 1:
+        return
+    else:
+        quadrat(s)
+        # Linke Seite
+        ls = s*math.sqrt(3)/2
+        p.forward(s)
+        p.left(90)
+        p.forward(s)
+        p.right(150)
+        p.forward(ls)
+        p.left(90)
+        tree(ls, level - 1)
+        # Rechte Seite
+        rs = s/2
+        p.right(180)
+        p.forward(rs)
+        p.left(90)
+        tree(rs, level - 1)
+        p.left(60)
+        p.back(s)
+        
+def quadrat(s):
+    col = palette[int(s - 2)%len(palette)]
+    # p.setPenColor(col)
+    p.setFillColor(col)
+    p.startPath()
+    for _ in range(4):
+        p.forward(s)
+        p.left(90)
+    p.fillPath()
+
+gt.Options.setPlaygroundSize(WIDTH, HEIGHT)
+gt.Options.setFramePosition(800, 50)       
+tf = gt.TurtleFrame()
+tf.setTitle("Asymmetrischer Pythagoras-Baum")
+tf.clear(makeColor(234, 218, 184))   # Hintergrundfarbe
+p = gt.Turtle(tf)
+p.setPenColor("#923545")
+p.hideTurtle()
+p.setPos(120, -HEIGHT/2 + 60)
+tree(85, 14)
+
+print("I did it, Babe!")
+~~~
+
+Im Prinzip liegen die Unterschiede in den beiden Versionen nur in der Funktion `tree()`, allerdings muß sich die Schildkröte in der Funktion `square()` resepektive `quadrat()` beim symmetrischen Pythagoras-Baum vom Startpunkt aus nach **rechts** (`p.right(90)`) und bei der asymmetrischen Variante nach **links** (`p.left(90)`) bewegen.
+
+### Literatur
+
+- Jarka Arnold, Tobias Kohn, Aegidius Plüss: *[Programmierkonzepte mit Python und der Lernumgenbung TigerJython](https://programmierkonzepte.ch/index.php)*, Version 2.77, Letzte Aktualisierung: 1. Juni 2024
+- Jarka Arnold, Aegidius Plüss: *[Grafik, Robotik, Datenbanken und Spielprogrammierung mit TigerJython](https://www.jython.ch/index.php)* (TigerJython für Gymnasien), Version 2.5, Letzte Aktualisierung: 12. Juli 2024
+
+Ich habe mal wieder Blut geleckt und werde daher in Zukunft noch einiges mit TigerJython, aber auch mit [WebTigerPython](https://webtigerpython.ethz.ch/) (hier der Link zu der (Entwickler-) [Dokumentation](https://docs.webtigerpython.ethz.ch/index.html)) anstellen. *Still digging!*
+
+---
+
+**Bild**: *[Tiger und Python unter einem Pythagoras-Baum](https://www.flickr.com/photos/schockwellenreiter/54565258311/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored DC-Comics Style. A python wearing horn-rimmed glasses and a tiger in a red dressing gown sit under a giant Pythagoras tree in a beer garden and drink beer from large glasses*«. Modell: Flux Kontext, Style: None.
