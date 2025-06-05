@@ -10,7 +10,257 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Thu, 05 Jun 2025 15:10:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 05 Jun 2025 16:15:00 GMT</lastBuildDate>
+<item>
+  <title>Noch mehr Spaß mit TigerJython: Die Schmetterlingskurve</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025060503_butterfly_curve/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54567864481/"><img src="https://kantel.github.io/posts/2025060503_butterfly_curve/images/butterflykurve-b.jpg" class="img-fluid"></a></p>
+<p>Seit den Tagen meiner ersten Programmierversuche in den 1980er Jahren auf meinem damals hochmodernen, 8 MHZ schnellen <a href="https://de.wikipedia.org/wiki/Atari_ST">Atari Mega ST&nbsp;2</a> mit <a href="https://de.wikipedia.org/wiki/Modula-2">Modula-2</a> ist die <a href="https://en.wikipedia.org/wiki/Butterfly_curve_(transcendental)">Schmetterlingskurve</a> eines meiner bevorzugten computergraphischen Objekte. Auch im <em>Schockwellenreiter</em> tauchte sie schon mehrfach auf, einmal im <a href="http://blog.schockwellenreiter.de/essays/tkinter01.html">April 2014 realisiert mit Python und Tkinter</a> und eimal im <a href="http://blog.schockwellenreiter.de/2017/01/2017011804.html">Januar 2017 programmiert mit Processing.py</a>. Was liegt also näher, sie nun auch einmal in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> zu realisieren?</p>
+<p>Die Kurve wurde erstmals 1989 von <em>Temple H. Fay</em> entdeckt. Sie wird in Polarkoordinaten beschrieben und ihre Formel ist</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Crho=e%5E%7B%5Ccos(%5Ctheta)%7D-2%5Ccdot%20%5Ccos(4%5Ccdot%20%5Ctheta)+%5Csin(%5Ctfrac%7B%5Ctheta%7D%7B12%7D)%5E5%0A"></p>
+<p>oder in Python-Code:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> exp(cos(theta)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>cos(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>theta) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (sin(theta<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span></code></pre></div>
+<p>In TigerJython sieht das dann so aus:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gp</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math, colorsys</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">WIDTH  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span></span>
+<span id="cb2-5">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb2-6"></span>
+<span id="cb2-7">theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xOld <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> yOld <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb2-8">hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb2-9"></span>
+<span id="cb2-10">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
+<span id="cb2-11">gp.window(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb2-12">gp.windowPosition(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1200</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb2-13">gp.bgColor(gp.Color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">41</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>))    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># (42, 40, 45)</span></span>
+<span id="cb2-14">gp.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Schmetterlings-Kurve"</span>)</span>
+<span id="cb2-15"></span>
+<span id="cb2-16">gp.lineWidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-17"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75.39</span>:</span>
+<span id="cb2-18">    c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> colorsys.hsv_to_rgb(hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb2-19">    gp.setColor(c)</span>
+<span id="cb2-20">    r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.exp(math.cos(theta)) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>math.cos(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>theta) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (math.sin(theta<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb2-21">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># aus Polarkoordinaten konvertieren</span></span>
+<span id="cb2-22">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>math.cos(theta)</span>
+<span id="cb2-23">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>math.sin(theta)</span>
+<span id="cb2-24">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb2-25">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span></span>
+<span id="cb2-26">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-27">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>):</span>
+<span id="cb2-28">        gp.move(xx, yy)</span>
+<span id="cb2-29">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-30">        gp.draw(xx, yy)</span>
+<span id="cb2-31">    theta <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.02</span></span>
+<span id="cb2-32">    hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> theta<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span></span>
+<span id="cb2-33"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
+<p>Um die Kurve optisch aufzuhübschen, habe ich – wie <a href="http://blog.schockwellenreiter.de/2022/10/2022100901.html">hier schon einmal beschrieben</a> – das <a href="https://docs.python.org/3/library/colorsys.html">Colorsys-Modul</a> verwendet, das Teil der Python-Standard-Bibliothek ist, und mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> colorsys.hsv_to_rgb(hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span></code></pre></div>
+<p>den <a href="https://de.wikipedia.org/wiki/HSV-Farbraum">HSV-Farbraum</a> statt des normal in TigerJython genutzten RGB-Farbraums genutzt. Denn das HSV-Modell ist für die meisten Menschen viel anschaulicher als der RGB-Farbraum und bietet viele Möglichkeiten, sich zum Beispiel bunte Farbaletten für die Darstellung von Fraktalen zurechtzubasteln.</p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Stan Wagon: <em>Mathematica® in Aktion</em>, Heidelberg (Spektrum Akademischer Verlag) 1993</li>
+<li>Temple H. Fay: <em>The Butterfly Curve</em>, American Math. Monthly, 96(5); 442-443</li>
+<li>Clifford A. Pickover: <em>Mit den Augen des Computers. Phantastische Welten aus dem Geist der Maschine</em>, München (Markt&amp;Technik) 1992, S. 41ff.</li>
+</ul>
+<p>Die Kurve ist ein guter Einstieg, um von hier aus über die <a href="https://de.wikipedia.org/wiki/Lorenz-Attraktor">Lorenz-Kurve</a> zu den im letzten Beitrag erwähnten iterativen Fraktalen und seltsamen Attraktoren überzuleiten. <em>Still digging!</em></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>TigerJython</category>
+  <category>Mathematik</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025060503_butterfly_curve/</guid>
+  <pubDate>Thu, 05 Jun 2025 16:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025060503_butterfly_curve/images/butterflykurve.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neu in meiner Bibliothek: Kochrezepte für Fraktale</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1593,29 +1843,6 @@ font-style: inherit;">self</span>.player.h,</span>
   <guid>https://kantel.github.io/posts/2025051403_pyxel_tut_6/</guid>
   <pubDate>Wed, 14 May 2025 18:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025051403_pyxel_tut_6/images/pyxel6.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Der Donnervogel fliegt (schon wieder) solo</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025051402_thunderbird_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54426912509/"><img src="https://kantel.github.io/posts/2025051402_thunderbird_update/images/thunderbird-b.jpg" class="img-fluid"></a></p>
-<p><a href="https://kantel.github.io/posts/2025042901_thunderbird_update/">Zum zweiten Mal</a> ist ein Update des Donnervogels in meinen Feedreader gespült, ohne daß eine korrespondierende Aktualisierung des Feuerfuchses vorausgegangen wäre: Die Entwickler des <a href="http://www.mozillamessaging.com/">Mozilla Thunderbird</a> haben das Update auf die Version 138.0.1 freigegeben und damit auch <a href="https://www.thunderbird.net/en-US/thunderbird/138.0.1/releasenotes/">Sicherheitslücken behoben</a>.</p>
-<p>Thunderbird weist selbst auf dieses Update hin. Diese Prozedur kann aber auch wie immer über das Menü <code>Hilfe &gt; Über Thunderbird</code> angestoßen werden. <em>(Mein <a href="https://wwwuser.gwdguser.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54426912509/">Thunderbird</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored DC Comic style, illustration of a majestic thunderbird with colored feathers soaring above a mountain range during a bright sunset, hunting a red firefox</em>«. Modell: Flux.1 (Dev), Style: PixelWave.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2025051402_thunderbird_update/</guid>
-  <pubDate>Wed, 14 May 2025 12:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025051402_thunderbird_update/images/thunderbird.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

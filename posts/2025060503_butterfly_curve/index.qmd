@@ -1,0 +1,77 @@
+---
+title: "Noch mehr Spaß mit TigerJython: Die Schmetterlingskurve"
+author: "Jörg Kantel"
+date: "2025-06-05 18:15:00"
+categories: [Python, TigerJython, Mathematik, Creative Coding]
+image: "images/butterflykurve.jpg"
+---
+
+[![](images/butterflykurve-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54567864481/)
+
+Seit den Tagen meiner ersten Programmierversuche in den 1980er Jahren auf meinem damals hochmodernen, 8 MHZ schnellen [Atari Mega ST&nbsp;2](https://de.wikipedia.org/wiki/Atari_ST) mit [Modula-2](https://de.wikipedia.org/wiki/Modula-2) ist die [Schmetterlingskurve](https://en.wikipedia.org/wiki/Butterfly_curve_(transcendental)) eines meiner bevorzugten computergraphischen Objekte. Auch im *Schockwellenreiter* tauchte sie schon mehrfach auf, einmal im [April 2014 realisiert mit Python und Tkinter](http://blog.schockwellenreiter.de/essays/tkinter01.html) und eimal im [Januar 2017 programmiert mit Processing.py](http://blog.schockwellenreiter.de/2017/01/2017011804.html). Was liegt also näher, sie nun auch einmal in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) zu realisieren?
+
+Die Kurve wurde erstmals 1989 von *Temple H. Fay* entdeckt. Sie wird in Polarkoordinaten beschrieben und ihre Formel ist
+
+$$
+\rho=e^{\cos(\theta)}-2\cdot \cos(4\cdot \theta)+\sin(\tfrac{\theta}{12})^5
+$$
+
+oder in Python-Code:
+
+~~~python
+r = exp(cos(theta)) - 2*cos(4*theta) + (sin(theta/12))**5
+~~~
+
+In TigerJython sieht das dann so aus:
+
+~~~python
+import gpanel as gp
+import math, colorsys
+
+WIDTH  = 640
+HEIGHT = 480
+
+theta = xOld = yOld = 0.0
+hue = 0.0
+
+gp.makeGPanel(gp.Size(WIDTH, HEIGHT))
+gp.window(0, WIDTH, HEIGHT, 0)
+gp.windowPosition(1200, 50)
+gp.bgColor(gp.Color(33, 41, 70))    # (42, 40, 45)
+gp.title("Schmetterlings-Kurve")
+
+gp.lineWidth(2)
+while theta < 75.39:
+    c = colorsys.hsv_to_rgb(hue, 1.0 - hue, 1.0)
+    gp.setColor(c)
+    r = math.exp(math.cos(theta)) - 2*math.cos(4*theta) + (math.sin(theta/12))**5
+    # aus Polarkoordinaten konvertieren
+    x = r*math.cos(theta)
+    y = r*math.sin(theta)
+    # auf Fenstergröße skalieren
+    xx = (x*60) + WIDTH//2 - 50
+    yy = (y*60) + HEIGHT//2
+    if (theta == 0.0):
+        gp.move(xx, yy)
+    else:
+        gp.draw(xx, yy)
+    theta += 0.02
+    hue = theta/100
+print("I did it, Babe!")
+~~~
+
+Um die Kurve optisch aufzuhübschen, habe ich -- wie [hier schon einmal beschrieben](http://blog.schockwellenreiter.de/2022/10/2022100901.html) -- das [Colorsys-Modul](https://docs.python.org/3/library/colorsys.html) verwendet, das Teil der Python-Standard-Bibliothek ist, und mit
+
+~~~python
+c = colorsys.hsv_to_rgb(hue, 1.0 - hue, 1.0)
+~~~
+
+den [HSV-Farbraum](https://de.wikipedia.org/wiki/HSV-Farbraum) statt des normal in TigerJython genutzten RGB-Farbraums genutzt. Denn das HSV-Modell ist für die meisten Menschen viel anschaulicher als der RGB-Farbraum und bietet viele Möglichkeiten, sich zum Beispiel bunte Farbaletten für die Darstellung von Fraktalen zurechtzubasteln.
+
+### Literatur
+
+- Stan Wagon: *Mathematica® in Aktion*, Heidelberg (Spektrum Akademischer Verlag) 1993
+- Temple H. Fay: *The Butterfly Curve*, American Math. Monthly, 96(5); 442-443
+- Clifford A. Pickover: *Mit den Augen des Computers. Phantastische Welten aus dem Geist der Maschine*, München (Markt&Technik) 1992, S. 41ff.
+
+Die Kurve ist ein guter Einstieg, um von hier aus über die [Lorenz-Kurve](https://de.wikipedia.org/wiki/Lorenz-Attraktor) zu den im letzten Beitrag erwähnten iterativen Fraktalen und seltsamen Attraktoren überzuleiten. *Still digging!*
