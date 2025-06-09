@@ -10,7 +10,288 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Mon, 09 Jun 2025 14:30:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 09 Jun 2025 16:50:00 GMT</lastBuildDate>
+<item>
+  <title>Der Rössler-Attraktor, ein weiterer seltsamer Attraktor in TigerJython</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025060902_roessler_attraktor/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54577986723/"><img src="https://kantel.github.io/posts/2025060902_roessler_attraktor/images/roessler-b.jpg" class="img-fluid"></a></p>
+<p>Inspiriert durch die gestern vorgestellte <a href="https://kantel.github.io/posts/2025060801_lorenz_attraktor/">Lorenz-Gleichung</a> fand der deutsche Biochemiker <em><a href="http://de.wikipedia.org/wiki/Otto%20E.%20R%C3%B6ssler">Otto E. Rössler</a></em> das nach ihm benannte System. Der <a href="https://de.wikipedia.org/wiki/R%C3%B6ssler-Attraktor">Rössler-Attraktor</a> wurde 1976 zum ersten Mal publiziert<sup>1</sup> und ist durch das folgende Differentialgleichungssystem definiert:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%5Cdot%20x%20&amp;%20=%20-(y%20+%20z)%5C%5C%0A%5Cdot%20y%20&amp;%20=%20x%20+%20ay%5C%5C%0A%5Cdot%20z%20&amp;%20=%20b%20+%20xz%20-%20cz%0A%5Cend%7Balign%7D%0A"></p>
+<p>Laut <em>Otto E. Rössler</em> wurde dieses Modell durch die Betrachtung einer Bonbonknetmaschine <em>(taffy puller)</em> auf Coney Island inspiriert, die ihre Toffeemasse wiederholt dehnt und faltet.</p>
+<p>Der Attraktor weist eine einfachere Dynamik auf als der von Lorenz; <img src="https://latex.codecogs.com/png.latex?a">, <img src="https://latex.codecogs.com/png.latex?b"> und <img src="https://latex.codecogs.com/png.latex?c"> stellen die (frei wählbaren) Parameter des Systems dar, häufig wird <img src="https://latex.codecogs.com/png.latex?a=b=0.2"> und der Bifurkationspaparmeter <img src="https://latex.codecogs.com/png.latex?c=8.0"> gewählt. Ich habe in Anlehnung an <em>Herm1994</em><sup>2</sup> die Parameter auf <img src="https://latex.codecogs.com/png.latex?a=0.25">, <img src="https://latex.codecogs.com/png.latex?b=0.28"> und <img src="https://latex.codecogs.com/png.latex?c=5.8"> gesetzt. Das Ergebnis wirkt mit diesen Parametern etwas dramatischer. Jedoch seid Ihr aufgefordert, mit anderen Werten zu experimentieren, um festzustellen, wie sie das System beeinflussen.</p>
+<p>Über seinen Atttraktor sagte Rössler (zitiert nach <em>Glei1990</em><sup>3</sup>): Er sei</p>
+<blockquote class="blockquote">
+<p>wie ein offener Strumpf mit einem Loch am Ende und der Wind bläht ihn auf. Dann sitzt der Wind in der Falle. Gegen ihren Willen bewirkt die Energie nun etwas Produktives, so wie der Teufel in mittelalterlichen Geschichten. Das Prinzip ist, daß die Natur etwas gegen ihren eigenen Willen tut und durch Selbstverwirklichung Schönheit hervorruft.</p>
+</blockquote>
+<p>Wegen der beschriebenen Form heißt das System im Englischen auch <em>Roessler funnel</em>.</p>
+<section id="der-quellcode" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode">Der Quellcode</h3>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gp</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math, colorsys</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">WIDTH  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span></span>
+<span id="cb1-5">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7">a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.25</span></span>
+<span id="cb1-8">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.28</span></span>
+<span id="cb1-9">c <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5.8</span></span>
+<span id="cb1-10">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span></span>
+<span id="cb1-11">y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span></span>
+<span id="cb1-12">z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb1-13">t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb1-14">dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span></span>
+<span id="cb1-15"></span>
+<span id="cb1-16">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
+<span id="cb1-17">gp.window(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-18">gp.windowPosition(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1200</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-19">gp.bgColor(gp.Color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">41</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>))</span>
+<span id="cb1-20">gp.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rössler-Attraktor 3D"</span>)</span>
+<span id="cb1-21"></span>
+<span id="cb1-22">gp.lineWidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-23"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50000</span>):</span>
+<span id="cb1-24">    col <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> colorsys.hsv_to_rgb(hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb1-25">    gp.setColor(col)</span>
+<span id="cb1-26">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Euler-Integration</span></span>
+<span id="cb1-27">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-28">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> a<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-29">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> c)))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-30">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb1-31">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb1-32">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb1-33">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb1-34">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">330</span></span>
+<span id="cb1-35">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)</span>
+<span id="cb1-36">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>):</span>
+<span id="cb1-37">        gp.move(xx, yy)</span>
+<span id="cb1-38">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-39">        gp.draw(xx, yy)</span>
+<span id="cb1-40">    hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> ((<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.05</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>i)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100.0</span></span>
+<span id="cb1-41"></span>
+<span id="cb1-42"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
+<p>Den <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/roessler01.py">Quellcode</a> gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython.</p>
+</section>
+<section id="noch-mehr-zu-otto-e.-rössler" class="level3">
+<h3 class="anchored" data-anchor-id="noch-mehr-zu-otto-e.-rössler">Noch mehr zu Otto E. Rössler</h3>
+<p>Rössler bekam 1977 eine Professur am Institut für Physikalische und Theoretische Chemie in Tübingen. Seit Mitte der 1980er Jahre stritt er sich aber heftig mit der Universitätsleitung und deren Aufsichtsbehörde, dem Wissenschaftsministerium Baden-Württemberg. Es ging in der Hauptsache über Umfang und Inhalte der jeweiligen akademischen Lehrverpflichtungen. Rössler und seine Frau Reimara verloren durch diesen Streit viel Geld und auch ihr Haus. Nicht nur er sah sich als ein <a href="https://www.spiegel.de/lebenundlernen/uni/tuebinger-dauerfehde-der-chaosforscher-und-die-windmuehlenfluegel-a-151581.html">Opfer der Uni</a>, die sich Querdenker wie ihn im heutigen akademischen Massenbetrieb nicht mehr leisten wolle.</p>
+<p>Außerdem wurde <em>Otto E. Rössler</em> auch als Gegner des am <a href="http://de.wikipedia.org/wiki/CERN">CERN</a> gebauten Teilchenbeschleunigers <a href="http://de.wikipedia.org/wiki/Large%20Hadron%20Collider">Large Hadron Collider</a> (LHC) bekannt. Er vertrat die These, daß im Betrieb des LHC winzig kleine künstliche Schwarze Löcher erzeugt werden könnten und diese sich vergrößern und die gesamte Masse der Erde verschlingen würden. Ich verstehe zu wenig von Physik, um weder die <a href="https://www.golem.de/0802/57477.html">Argumentation Rösslers</a> noch die <a href="https://www.ketweb.de/stellungnahmen/20080730_Stellungnahme_zu_den_Behauptungen_von_Prof_Otto_Roessler.pdf">Erwiderung darauf vom Komitee für Elementarteilchenphysik</a> (KET) nachvollziehen zu können, doch finde ich die Forschung, die am LHC betrieben wird, faszinierend und mittlerweile wissen wir, daß Rössler Unrecht hatte. Doch eine freie und offene Forschung muß auch dies ertragen können, sonst unterscheidet sie sich nicht von der derzeitigen Kahlschlag- und Zensurpolitik der US-amerikanischen Regierung.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Otto E. Rössler: <em>An Equation for Continuous Chaos</em>, Physics Letters Vol. 57A no 5, pp 397-398, 1976↩︎</p></li>
+<li id="fn2"><p>Dieter Hermann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, S. 89ff.↩︎</p></li>
+<li id="fn3"><p>James Gleick: <em>CHAOS: die Ordnung des Universums. Vorstoß in Grenzbereiche der modernen Physik</em>, München (Knaur Taschenbuch) 1990, S. 208f.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>TigerJython</category>
+  <category>Mathematik</category>
+  <category>Dynamische Systeme</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025060902_roessler_attraktor/</guid>
+  <pubDate>Mon, 09 Jun 2025 16:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025060902_roessler_attraktor/images/roessler.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Um die digitale Souveränität zurückzugewinnen: LibreOffice 25.2.4</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1779,29 +2060,6 @@ font-style: inherit;">--upgrade</span> py5 py5jupyter</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025051802_greenfoot_oop/</guid>
   <pubDate>Sun, 18 May 2025 19:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025051802_greenfoot_oop/images/robots.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Mozilla veröffentlicht neue Firefox-Versionen</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025051801_firefox_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54528172543/"><img src="https://kantel.github.io/posts/2025051801_firefox_update/images/firefox2-b.jpg" class="img-fluid"></a></p>
-<p>Die Entwickler des Mozilla Firefox haben die neue <a href="https://www.mozilla.org/en-US/firefox/138.0.4/releasenotes/">Version 138.0.4</a> und die <a href="https://www.mozilla.org/en-US/firefox/128.10.1/releasenotes/">Version ESR 128.10.1</a> veröffentlicht und darin auch wieder Sicherheitslücken behoben. Wie immer sind in diese Updates auch viele Veränderungen eingeflossen.</p>
-<p>Firefox weist selbst auf diese Updates hin. Diese Prozedur kann aber auch über das Menü <code>Hilfe &gt; Über Firefox</code> angestoßen werden. <em>(Mein <a href="https://wwwuser.gwdguser.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54528172543/">Zwei Feuerfüchse</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>two young fiery red foxes playing by a stream in a forest in early summer</em>«. Modell: Flux (Pro), Style: None.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2025051801_firefox_update/</guid>
-  <pubDate>Sun, 18 May 2025 17:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025051801_firefox_update/images/firefox2.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

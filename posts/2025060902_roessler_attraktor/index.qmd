@@ -1,0 +1,90 @@
+---
+title: "Der Rössler-Attraktor, ein weiterer seltsamer Attraktor in TigerJython"
+author: "Jörg Kantel"
+date: "2025-06-09 18:50:00"
+categories: [Python, TigerJython, Mathematik, Dynamische Systeme, Creative Coding]
+image: "images/roessler.jpg"
+---
+
+[![](images/roessler-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54577986723/)
+
+Inspiriert durch die gestern vorgestellte [Lorenz-Gleichung](https://kantel.github.io/posts/2025060801_lorenz_attraktor/) fand der deutsche Biochemiker *[Otto E. Rössler](http://de.wikipedia.org/wiki/Otto%20E.%20R%C3%B6ssler)* das nach ihm benannte System. Der [Rössler-Attraktor](https://de.wikipedia.org/wiki/R%C3%B6ssler-Attraktor) wurde 1976 zum ersten Mal publiziert[^1] und ist durch das folgende Differentialgleichungssystem definiert:
+
+[^1]: Otto E. Rössler: *An Equation for Continuous Chaos*, Physics Letters Vol. 57A no 5, pp 397-398, 1976
+
+$$
+\begin{align}
+\dot x & = -(y + z)\\
+\dot y & = x + ay\\
+\dot z & = b + xz - cz
+\end{align}
+$$
+
+Laut *Otto E. Rössler* wurde dieses Modell durch die Betrachtung einer Bonbonknetmaschine *(taffy puller)* auf Coney Island inspiriert, die ihre Toffeemasse wiederholt dehnt und faltet.
+
+Der Attraktor weist eine einfachere Dynamik auf als der von Lorenz; $a$, $b$ und $c$ stellen die (frei wählbaren) Parameter des Systems dar, häufig wird $a=b=0.2$ und der Bifurkationspaparmeter $c=8.0$ gewählt. Ich habe in Anlehnung an *Herm1994*[^2] die Parameter auf $a=0.25$, $b=0.28$ und $c=5.8$ gesetzt. Das Ergebnis wirkt mit diesen Parametern etwas dramatischer. Jedoch seid Ihr aufgefordert, mit anderen Werten zu experimentieren, um festzustellen, wie sie das System beeinflussen.
+
+[^2]: Dieter Hermann: *Algorithmen für Chaos und Fraktale*, Bonn (Addison-Wesley) 1994, S. 89ff.
+
+Über seinen Atttraktor sagte Rössler (zitiert nach *Glei1990*[^3]): Er sei
+
+[^3]: James Gleick: *CHAOS: die Ordnung des Universums. Vorstoß in Grenzbereiche der modernen Physik*, München (Knaur Taschenbuch) 1990, S. 208f.
+
+>wie ein offener Strumpf mit einem Loch am Ende und der Wind bläht ihn auf. Dann sitzt der Wind in der Falle. Gegen ihren Willen bewirkt die Energie nun etwas Produktives, so wie der Teufel in mittelalterlichen Geschichten. Das Prinzip ist, daß die Natur etwas gegen ihren eigenen Willen tut und durch Selbstverwirklichung Schönheit hervorruft.
+
+Wegen der beschriebenen Form heißt das System im Englischen auch *Roessler funnel*.
+
+### Der Quellcode
+
+~~~python
+import gpanel as gp
+import math, colorsys
+
+WIDTH  = 640
+HEIGHT = 480
+
+a = 0.25
+b = 0.28
+c = 5.8
+x = -1.0
+y = 0.2
+z = 0.0
+t = hue = 0.0
+dt = 0.01
+
+gp.makeGPanel(gp.Size(WIDTH, HEIGHT))
+gp.window(0, WIDTH, HEIGHT, 0)
+gp.windowPosition(1200, 50)
+gp.bgColor(gp.Color(33, 41, 70))
+gp.title("Rössler-Attraktor 3D")
+
+gp.lineWidth(1)
+for i in range(50000):
+    col = colorsys.hsv_to_rgb(hue, 1.0 - hue, 1.0)
+    gp.setColor(col)
+    # Euler-Integration
+    dx = (-y-z)*dt
+    dy = (x + a*y)*dt
+    dz = (b + (z*(x - c)))*dt
+    x += dx
+    y += dy
+    z += dz
+    # auf Fenstergröße skalieren
+    xx = (12*x + 12*y) + 330
+    yy = 350 - (-5*x + 5*y + 9*z)
+    if (i == 0):
+        gp.move(xx, yy)
+    else:
+        gp.draw(xx, yy)
+    hue = ((0.05*i)%100)/100.0
+
+print("I did it, Babe!")
+~~~
+
+Den [Quellcode](https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/roessler01.py) gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython.
+
+### Noch mehr zu Otto E. Rössler
+
+Rössler bekam 1977 eine Professur am Institut für Physikalische und Theoretische Chemie in Tübingen. Seit Mitte der 1980er Jahre stritt er sich aber heftig mit der Universitätsleitung und deren Aufsichtsbehörde, dem Wissenschaftsministerium Baden-Württemberg. Es ging in der Hauptsache über Umfang und Inhalte der jeweiligen akademischen Lehrverpflichtungen. Rössler und seine Frau Reimara verloren durch diesen Streit viel Geld und auch ihr Haus. Nicht nur er sah sich als ein [Opfer der Uni](https://www.spiegel.de/lebenundlernen/uni/tuebinger-dauerfehde-der-chaosforscher-und-die-windmuehlenfluegel-a-151581.html), die sich Querdenker wie ihn im heutigen akademischen Massenbetrieb nicht mehr leisten wolle.
+
+Außerdem wurde *Otto E. Rössler* auch als Gegner des am [CERN](http://de.wikipedia.org/wiki/CERN) gebauten Teilchenbeschleunigers [Large Hadron Collider](http://de.wikipedia.org/wiki/Large%20Hadron%20Collider) (LHC) bekannt. Er vertrat die These, daß im Betrieb des LHC winzig kleine künstliche Schwarze Löcher erzeugt werden könnten und diese sich vergrößern und die gesamte Masse der Erde verschlingen würden. Ich verstehe zu wenig von Physik, um weder die [Argumentation Rösslers](https://www.golem.de/0802/57477.html) noch die [Erwiderung darauf vom Komitee für Elementarteilchenphysik](https://www.ketweb.de/stellungnahmen/20080730_Stellungnahme_zu_den_Behauptungen_von_Prof_Otto_Roessler.pdf) (KET) nachvollziehen zu können, doch finde ich die Forschung, die am LHC betrieben wird, faszinierend und mittlerweile wissen wir, daß Rössler Unrecht hatte. Doch eine freie und offene Forschung muß auch dies ertragen können, sonst unterscheidet sie sich nicht von der derzeitigen Kahlschlag- und Zensurpolitik der US-amerikanischen Regierung.
