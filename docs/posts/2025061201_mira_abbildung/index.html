@@ -240,15 +240,18 @@ y_{n+1} &amp;= x_{n} + F(x_{n+1})
 F(x) &amp;= ax - (1-a)\frac{2x^{2}}{1+x^{2}}
 \end{aligned}
 \]</span></p>
-<p>oder</p>
-<p><span class="math display">\[
+<!-- oder
+
+$$
 \begin{aligned}
-F(x) &amp;= ax + 2(1-a)x^{2}(1+x^{2})^{-2}
+F(x) &= ax + 2(1-a)x^{2}(1+x^{2})^{-2}
 \end{aligned}
-\]</span></p>
-<p>Ich werde in den folgenden beiden, mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> realisierten Beispielen nur die erste Gleichung verwenden<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, auch wenn die zweite Gleichung ebenfalls schöne Bilder verspricht. Vielleicht wage ich mich in zukünfigen Beiträgen auch daran<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+$$
+
+Ich werde in den folgenden beiden, mit [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) realisierten Beispielen nur die erste Gleichung verwenden[^3], auch wenn die zweite Gleichung ebenfalls schöne Bilder verspricht. Vielleicht wage ich mich in zukünfigen Beiträgen auch daran[^4]. -->
+<p>In einigen Quellen kommt auch noch ein Paramter <span class="math inline">\(c\)</span> hinzu, den ich vorerst unberücksichtig lasse. Vielleicht wage ich mich in zukünfigen Beiträgen auch daran<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
 <p>Die <em>Gumowski-Mira-Abbildung</em> ist ein »<a href="https://de.wikipedia.org/wiki/Seltsamer_Attraktor">seltsamer Attraktor</a>« <em>(Strange Attractor)</em>, ein <a href="http://www.spektrum.de/lexikon/physik/attraktor/926">Attraktor</a> eines dynamischen Systems, das sich zwar chaotisch verhält, aber dennoch eine kompakte Menge ist, die das System nie verläßt.</p>
-<p>Normalerweise werden die gefundenen Punkte der Abbildung als Pixel auf dem Monitor dargestellt. Auf heutigen Monitoren mit ihrer hohen Auflösung fallen diese Pixel aber so klein aus, daß sie mit dem bloßen Auge kaum wahrnehmbar sind. Daher habe ich in meinen Beispielen die gefundenen Punkte als Kreise mit dem Radius <span class="math inline">\(2\)</span> zeichnen lassen und diesen sogar noch einen kleinen, schwarzen Rand spendiert. Dadurch heben sie sich nun deutlich vom (hellen) Hintergrund ab. Das gibt zwar keinen neuen Erkenntnisgewinn, aber mir gefällt es so.</p>
+<p>Normalerweise werden die gefundenen Punkte der Abbildung als Pixel auf dem Monitor dargestellt. Auf heutigen Monitoren mit ihrer hohen Auflösung fallen diese Pixel aber so klein aus, daß sie mit dem bloßen Auge kaum wahrnehmbar sind. Daher habe ich in meinen mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> realisierten beiden Beispielen die gefundenen Punkte als Kreise mit dem Radius <span class="math inline">\(2\)</span> zeichnen lassen und diesen sogar noch einen kleinen, schwarzen Rand spendiert. Dadurch heben sie sich nun deutlich vom (hellen) Hintergrund ab. Das gibt zwar keinen neuen Erkenntnisgewinn, aber mir gefällt es so.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54585020798/"><img src="images/mira1.jpg" class="img-fluid figure-img" alt="Mira-Abbildung für a=0.4, b=0.1"></a></p>
@@ -264,7 +267,7 @@ F(x) &amp;= ax + 2(1-a)x^{2}(1+x^{2})^{-2}
 <figcaption>Mira-Abbildung für a=-0.48, b=0.93</figcaption>
 </figure>
 </div>
-<p>Die zweite Abbildung ist auch unter dem Namen <em>Fantastic Feather Fractal</em> bekannt<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> und besitzt die Parameter <span class="math inline">\(a=-0.48\)</span> und <span class="math inline">\(b=0.93\)</span>. Da sie nach einer gewissen Anzahl von Iterationen auf einen Fixpunkt in der Mitte zuläuft, reichen hier 10.000 Schleifendurchläufe. Zur Anpassung an die Fenstergröße waren auch nur geringe Änderungen im Code notwendig:</p>
+<p>Die zweite Abbildung ist auch unter dem Namen <em>Fantastic Feather Fractal</em> bekannt<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> und besitzt die Parameter <span class="math inline">\(a=-0.48\)</span> und <span class="math inline">\(b=0.93\)</span>. Da sie nach einer gewissen Anzahl von Iterationen auf einen Fixpunkt in der Mitte zuläuft, reichen hier 10.000 Schleifendurchläufe. Zur Anpassung an die Fenstergröße waren auch nur geringe Änderungen im Code notwendig:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>xx <span class="op">=</span> <span class="dv">350</span> <span class="op">+</span> x<span class="op">*</span><span class="dv">26</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>yy <span class="op">=</span> <span class="dv">280</span> <span class="op">-</span> y<span class="op">*</span><span class="dv">26</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Wie immer habe ich diese Parameter durch wildes Experimentieren herausbekommen. Nun aber den vollständigen Quellcode (für das Fantastische Feder-Fraktal):</p>
@@ -327,9 +330,8 @@ F(x) &amp;= ax + 2(1-a)x^{2}(1+x^{2})^{-2}
 <ol>
 <li id="fn1"><p>Dietmar Hermann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, S. 126ff.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Gumowski, I./Mira, C.: <em>Point sequences generated by two-dimensional recurrences</em>, IFIP 1975, North Holland<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>In einigen Quellen kommt auch noch ein Paramter <span class="math inline">\(c\)</span> hinzu, den ich vorerst ebenfalls unberücksichtig lasse.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Die Seite <a href="https://sequelaencollection.home.blog/2d-chaotic-attractors/">2D Chaotic Attractors</a> der <em>Sequelaen Collection</em> zeigt noch viele weitere, wunderbare chaotische Attraktoren, die meiner Entdeckung harren. (Das steht hier nur, damit ich den Link zu der Seite nicht vergesse&nbsp;🥸)<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p><em>Clifford A. Pickover</em> hat in »Mazes for the Mind – Computers and the Unexpected« dem <em>Fantastic Feather Fractal</em> sogar ein ganzes, wenn auch kleines Kapitel gewidmet (Seiten 33f). Und da dieses Fraktal eines seiner Lieblingsfraktale ist, kommt es in seinem Buch »Chaos in Wonderland – Visual Adventures in a Fractal World« noch einmal vor (Seite 261).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Die Seite <a href="https://sequelaencollection.home.blog/2d-chaotic-attractors/">2D Chaotic Attractors</a> der <em>Sequelaen Collection</em> zeigt noch viele weitere, wunderbare chaotische Attraktoren, die meiner Entdeckung harren. (Das steht hier nur, damit ich den Link zu der Seite nicht vergesse&nbsp;🥸)<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><em>Clifford A. Pickover</em> hat in »Mazes for the Mind – Computers and the Unexpected« dem <em>Fantastic Feather Fractal</em> sogar ein ganzes, wenn auch kleines Kapitel gewidmet (Seiten 33f). Und da dieses Fraktal eines seiner Lieblingsfraktale ist, kommt es in seinem Buch »Chaos in Wonderland – Visual Adventures in a Fractal World« noch einmal vor (Seite 261).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
