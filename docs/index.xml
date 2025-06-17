@@ -10,319 +10,7 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Thu, 12 Jun 2025 17:20:00 GMT</lastBuildDate>
-<item>
-  <title>Die Mira-Abbildung, noch ein seltsamer Attraktor</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025061201_mira_abbildung/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54585046143/"><img src="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2-b.jpg" class="img-fluid"></a></p>
-<p>Laut <em>Herm1994</em><sup>1</sup> war die Gumowski-Mira-Abbildung das Tagesgespräch der IFIP-Konferenz von 1974 in Stockholm. Sie ist auch im Konferenzband<sup>2</sup> publiziert und besitzt folgende Gleichung:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Ax_%7Bn+1%7D%20&amp;=%20by_%7Bn%7D%20+%20F(x_%7Bn%7D)%5C%5C%0Ay_%7Bn+1%7D%20&amp;=%20x_%7Bn%7D%20+%20F(x_%7Bn+1%7D)%0A%5Cend%7Baligned%7D%0A"></p>
-<p>Dabei ist <img src="https://latex.codecogs.com/png.latex?F"> die Funktion</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0AF(x)%20&amp;=%20ax%20-%20(1-a)%5Cfrac%7B2x%5E%7B2%7D%7D%7B1+x%5E%7B2%7D%7D%0A%5Cend%7Baligned%7D%0A"></p>
-<p>oder in anderer Schreibweise:</p>
-<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0AF(x)%20&amp;=%20ax%20+%202(1-a)x%5E%7B2%7D(1+x%5E%7B2%7D)%5E%7B-2%7D%0A%5Cend%7Baligned%7D%0A"></p>
-<p>In einigen Quellen kommt auch noch ein Paramter <img src="https://latex.codecogs.com/png.latex?c"> hinzu, den ich vorerst unberücksichtig lasse. Vielleicht wage ich mich in zukünfigen Beiträgen auch daran<sup>3</sup>.</p>
-<p>Die <em>Gumowski-Mira-Abbildung</em> ist ein »<a href="https://de.wikipedia.org/wiki/Seltsamer_Attraktor">seltsamer Attraktor</a>« <em>(Strange Attractor)</em>, ein <a href="http://www.spektrum.de/lexikon/physik/attraktor/926">Attraktor</a> eines dynamischen Systems, das sich zwar chaotisch verhält, aber dennoch eine kompakte Menge ist, die das System nie verläßt.</p>
-<p>Normalerweise werden die gefundenen Punkte der Abbildung als Pixel auf dem Monitor dargestellt. Auf heutigen Monitoren mit ihrer hohen Auflösung fallen diese Pixel aber so klein aus, daß sie mit dem bloßen Auge kaum wahrnehmbar sind. Daher habe ich in meinen mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> realisierten beiden Beispielen die gefundenen Punkte als Kreise mit dem Radius <img src="https://latex.codecogs.com/png.latex?2"> zeichnen lassen und diesen sogar noch einen kleinen, schwarzen Rand spendiert. Dadurch heben sie sich nun deutlich vom (hellen) Hintergrund ab. Das gibt zwar keinen neuen Erkenntnisgewinn, aber mir gefällt es so.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54585020798/"><img src="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira1.jpg" class="img-fluid figure-img" alt="Mira-Abbildung für a=0.4, b=0.1"></a></p>
-<figcaption>Mira-Abbildung für a=0.4, b=0.1</figcaption>
-</figure>
-</div>
-<p>Das erste Beispiel ist eine Abbildung mit den Parametern <img src="https://latex.codecogs.com/png.latex?a=0.4"> und <img src="https://latex.codecogs.com/png.latex?b=1.0">. Die Schleife wird 120.000 mal durchlaufen und als Skalierungsfaktoren zur Anpassung an die Fenstergröße habe ich diese Parameter gewählt:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">xx <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">22</span></span>
-<span id="cb1-2">yy <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">240</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">22</span></span></code></pre></div>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54583960732/"><img src="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2.jpg" class="img-fluid figure-img" alt="Mira-Abbildung für a=-0.48, b=0.93"></a></p>
-<figcaption>Mira-Abbildung für a=-0.48, b=0.93</figcaption>
-</figure>
-</div>
-<p>Die zweite Abbildung ist auch unter dem Namen <em>Fantastic Feather Fractal</em> bekannt<sup>4</sup> und besitzt die Parameter <img src="https://latex.codecogs.com/png.latex?a=-0.48"> und <img src="https://latex.codecogs.com/png.latex?b=0.93">. Da sie nach einer gewissen Anzahl von Iterationen auf einen Fixpunkt in der Mitte zuläuft, reichen hier 10.000 Schleifendurchläufe. Zur Anpassung an die Fenstergröße waren auch nur geringe Änderungen im Code notwendig:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">xx <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">26</span></span>
-<span id="cb2-2">yy <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">280</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">26</span></span></code></pre></div>
-<p>Wie immer habe ich diese Parameter durch wildes Experimentieren herausbekommen. Nun aber den vollständigen Quellcode (für das Fantastische Feder-Fraktal):</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Mira-Abbildung (2): Fantastic Feather Fractal</span></span>
-<span id="cb3-2"></span>
-<span id="cb3-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> gp</span>
-<span id="cb3-4"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> colorsys</span>
-<span id="cb3-5"></span>
-<span id="cb3-6">WIDTH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span></span>
-<span id="cb3-7">HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">480</span></span>
-<span id="cb3-8">radius <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span></span>
-<span id="cb3-9"></span>
-<span id="cb3-10"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Parameter</span></span>
-<span id="cb3-11">a <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.48</span></span>
-<span id="cb3-12">b <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.93</span></span>
-<span id="cb3-13">hue <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.0</span></span>
-<span id="cb3-14"></span>
-<span id="cb3-15">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
-<span id="cb3-16">gp.window(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb3-17">gp.title(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Mira-Abbildung (2): Fantastic Feather Fractal"</span>)</span>
-<span id="cb3-18">gp.bgColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">184</span>))</span>
-<span id="cb3-19"></span>
-<span id="cb3-20"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> f(x):</span>
-<span id="cb3-21">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">return</span> a<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> (<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> a)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>((<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>))<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span>(<span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>))</span>
-<span id="cb3-22"></span>
-<span id="cb3-23">x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4.0</span></span>
-<span id="cb3-24">y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.0</span> </span>
-<span id="cb3-25"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10000</span>):</span>
-<span id="cb3-26">    x1 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> b<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> f(x)</span>
-<span id="cb3-27">    y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span>x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> f(x1)</span>
-<span id="cb3-28">    x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> x1</span>
-<span id="cb3-29">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Skalierungsparameter für die Fenstergröße:</span></span>
-<span id="cb3-30">    xx <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">26</span></span>
-<span id="cb3-31">    yy <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">280</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">26</span></span>
-<span id="cb3-32">    gp.move(xx, yy)</span>
-<span id="cb3-33">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span>
-<span id="cb3-34">    gp.circle(radius)</span>
-<span id="cb3-35">    hue <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> (i<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100.0</span></span>
-<span id="cb3-36">    col <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> colorsys.hsv_to_rgb(hue, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1.0</span>)</span>
-<span id="cb3-37">    gp.setColor(col)</span>
-<span id="cb3-38">    gp.fillCircle(radius)</span>
-<span id="cb3-39">    </span>
-<span id="cb3-40"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"I did it, Babe!"</span>)    </span></code></pre></div>
-<section id="literatur" class="level3">
-<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
-<ul>
-<li>Florian Freistetter: <em><a href="http://scienceblogs.de/astrodicticum-simplex/2015/02/04/best-of-chaos-der-seltsame-attraktor/">Best of Chaos: Der seltsame Attraktor</a></em>, Science Blogs (Astrodicticum Simplex) vom 4. Februar 2015</li>
-<li>Dietmar Herrmann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994</li>
-<li>Clifford A. Pickover: <em>Mazes for the Mind. Computers and the Unexpected</em>, New York (St.&nbsp;Martin’s Press) 1992</li>
-<li>ders.: <em>Chaos in Wonderland – Visual Adventures in a Fractal World</em>, New York (St.&nbsp;Martin’s Press) 1994</li>
-</ul>
-<p>Den Quellcode gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython. Hier das <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/mira1.py">erste Beispiel</a> und hier das <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/mira2.py">Fantastische Feder-Fraktal</a>. <em>Habt Spaß damit!</em></p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Dietmar Herrmann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, S. 126ff.↩︎</p></li>
-<li id="fn2"><p>Gumowski, I./Mira, C.: <em>Point sequences generated by two-dimensional recurrences</em>, IFIP 1975, North Holland↩︎</p></li>
-<li id="fn3"><p>Die Seite <a href="https://sequelaencollection.home.blog/2d-chaotic-attractors/">2D Chaotic Attractors</a> der <em>Sequelaen Collection</em> zeigt noch viele weitere, wunderbare chaotische Attraktoren, die meiner Entdeckung harren. (Das steht hier nur, damit ich den Link zu der Seite nicht vergesse&nbsp;🥸)↩︎</p></li>
-<li id="fn4"><p><em>Clifford A. Pickover</em> hat in »Mazes for the Mind – Computers and the Unexpected« dem <em>Fantastic Feather Fractal</em> sogar ein ganzes, wenn auch kleines Kapitel gewidmet (Seiten 33f). Und da dieses Fraktal eines seiner Lieblingsfraktale ist, kommt es in seinem Buch »Chaos in Wonderland – Visual Adventures in a Fractal World« noch einmal vor (Seite 261).↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Python</category>
-  <category>TigerJython</category>
-  <category>Mathematik</category>
-  <category>Dynamische Systeme</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2025061201_mira_abbildung/</guid>
-  <pubDate>Thu, 12 Jun 2025 17:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2-c.jpg" medium="image" type="image/jpeg"/>
-</item>
+<lastBuildDate>Tue, 17 Jun 2025 12:20:00 GMT</lastBuildDate>
 <item>
   <title>Cantor-Käse-Konstruktionen</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -333,8 +21,8 @@ font-style: inherit;">"I did it, Babe!"</span>)    </span></code></pre></div>
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54593831598/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese-b.jpg" class="img-fluid"></a></p>
-<p>Die <a href="https://de.wikipedia.org/wiki/Cantor-Menge">Cantor-Menge</a> ist eine überabzählbare, aber dennoch kompakte, total unzusammenhängende und nirgends dichte Punktmenge, die laut <em>Ian Stewart</em><sup>1</sup> 1875 von <em>Henry Smith</em> entdeckt und von <em><a href="https://de.wikipedia.org/wiki/Georg_Cantor">Georg Cantor</a></em> 1883 veröffentlicht wurde. Sie gilt als das älteste Fraktal überhaupt.</p>
-<p>Da die Cantor-Menge schwer zu visualisieren ist, wird sie häufig durch eine Figur dargestellt, die aus Kreisen konstruiert wird und zur Cantor-Menge topoligisch äquivalent ist. <em>Clifford A. Pickover</em> beschreibt sie so<sup>2</sup>: Aus einem Kreis wird bis auf zwei kleinere Kreise alles entfernt. Aus diesen zwei kleineren Kreisen wird wiederum bis auf zwei kleinere Kreise alles entfernt. Nun hat man schon vier Kreise, aus denen man jeweils bis auf zwei kleinere Kreise alles entfernt. Und so weiter und so fort …</p>
+<p>Die <a href="https://de.wikipedia.org/wiki/Cantor-Menge">Cantor-Menge</a> ist eine überabzählbar mächtige, total unzusammenhängende und nirgends dichte, aber dennoch kompakte Punktmenge, die laut <em>Ian Stewart</em><sup>1</sup> 1875 von <em>Henry Smith</em> entdeckt und von <em><a href="https://de.wikipedia.org/wiki/Georg_Cantor">Georg Cantor</a></em> 1883 veröffentlicht wurde. Sie gilt als das älteste Fraktal überhaupt.</p>
+<p>Da die Cantor-Menge schwer zu visualisieren ist, wird sie häufig durch eine Figur dargestellt, die aus Kreisen konstruiert wird und zur Cantor-Menge topologisch äquivalent ist. <em>Clifford A. Pickover</em> beschreibt sie so<sup>2</sup>: Aus einem Kreis wird bis auf zwei kleinere Kreise alles entfernt. Aus diesen zwei kleineren Kreisen wird wiederum bis auf zwei kleinere Kreise alles entfernt. Nun hat man schon vier Kreise, aus denen man jeweils bis auf zwei kleinere Kreise alles entfernt. Und so weiter und so fort …</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54592726472/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese01.jpg" class="img-fluid figure-img" alt="Cantor-Käse"></a></p>
@@ -672,8 +360,320 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <category>Dynamische Systeme</category>
   <category>Creative Coding</category>
   <guid>https://kantel.github.io/posts/2025061701_cantor_kaese/</guid>
-  <pubDate>Thu, 12 Jun 2025 17:20:00 GMT</pubDate>
+  <pubDate>Tue, 17 Jun 2025 12:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Die Mira-Abbildung, noch ein seltsamer Attraktor</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025061201_mira_abbildung/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54585046143/"><img src="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2-b.jpg" class="img-fluid"></a></p>
+<p>Laut <em>Herm1994</em><sup>1</sup> war die Gumowski-Mira-Abbildung das Tagesgespräch der IFIP-Konferenz von 1974 in Stockholm. Sie ist auch im Konferenzband<sup>2</sup> publiziert und besitzt folgende Gleichung:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0Ax_%7Bn+1%7D%20&amp;=%20by_%7Bn%7D%20+%20F(x_%7Bn%7D)%5C%5C%0Ay_%7Bn+1%7D%20&amp;=%20x_%7Bn%7D%20+%20F(x_%7Bn+1%7D)%0A%5Cend%7Baligned%7D%0A"></p>
+<p>Dabei ist <img src="https://latex.codecogs.com/png.latex?F"> die Funktion</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0AF(x)%20&amp;=%20ax%20-%20(1-a)%5Cfrac%7B2x%5E%7B2%7D%7D%7B1+x%5E%7B2%7D%7D%0A%5Cend%7Baligned%7D%0A"></p>
+<p>oder in anderer Schreibweise:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Baligned%7D%0AF(x)%20&amp;=%20ax%20+%202(1-a)x%5E%7B2%7D(1+x%5E%7B2%7D)%5E%7B-2%7D%0A%5Cend%7Baligned%7D%0A"></p>
+<p>In einigen Quellen kommt auch noch ein Paramter <img src="https://latex.codecogs.com/png.latex?c"> hinzu, den ich vorerst unberücksichtig lasse. Vielleicht wage ich mich in zukünfigen Beiträgen auch daran<sup>3</sup>.</p>
+<p>Die <em>Gumowski-Mira-Abbildung</em> ist ein »<a href="https://de.wikipedia.org/wiki/Seltsamer_Attraktor">seltsamer Attraktor</a>« <em>(Strange Attractor)</em>, ein <a href="http://www.spektrum.de/lexikon/physik/attraktor/926">Attraktor</a> eines dynamischen Systems, das sich zwar chaotisch verhält, aber dennoch eine kompakte Menge ist, die das System nie verläßt.</p>
+<p>Normalerweise werden die gefundenen Punkte der Abbildung als Pixel auf dem Monitor dargestellt. Auf heutigen Monitoren mit ihrer hohen Auflösung fallen diese Pixel aber so klein aus, daß sie mit dem bloßen Auge kaum wahrnehmbar sind. Daher habe ich in meinen mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> realisierten beiden Beispielen die gefundenen Punkte als Kreise mit dem Radius <img src="https://latex.codecogs.com/png.latex?2"> zeichnen lassen und diesen sogar noch einen kleinen, schwarzen Rand spendiert. Dadurch heben sie sich nun deutlich vom (hellen) Hintergrund ab. Das gibt zwar keinen neuen Erkenntnisgewinn, aber mir gefällt es so.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54585020798/"><img src="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira1.jpg" class="img-fluid figure-img" alt="Mira-Abbildung für a=0.4, b=0.1"></a></p>
+<figcaption>Mira-Abbildung für a=0.4, b=0.1</figcaption>
+</figure>
+</div>
+<p>Das erste Beispiel ist eine Abbildung mit den Parametern <img src="https://latex.codecogs.com/png.latex?a=0.4"> und <img src="https://latex.codecogs.com/png.latex?b=1.0">. Die Schleife wird 120.000 mal durchlaufen und als Skalierungsfaktoren zur Anpassung an die Fenstergröße habe ich diese Parameter gewählt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">22</span></span>
+<span id="cb1-2">yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">240</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">22</span></span></code></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54583960732/"><img src="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2.jpg" class="img-fluid figure-img" alt="Mira-Abbildung für a=-0.48, b=0.93"></a></p>
+<figcaption>Mira-Abbildung für a=-0.48, b=0.93</figcaption>
+</figure>
+</div>
+<p>Die zweite Abbildung ist auch unter dem Namen <em>Fantastic Feather Fractal</em> bekannt<sup>4</sup> und besitzt die Parameter <img src="https://latex.codecogs.com/png.latex?a=-0.48"> und <img src="https://latex.codecogs.com/png.latex?b=0.93">. Da sie nach einer gewissen Anzahl von Iterationen auf einen Fixpunkt in der Mitte zuläuft, reichen hier 10.000 Schleifendurchläufe. Zur Anpassung an die Fenstergröße waren auch nur geringe Änderungen im Code notwendig:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span></span>
+<span id="cb2-2">yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">280</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span></span></code></pre></div>
+<p>Wie immer habe ich diese Parameter durch wildes Experimentieren herausbekommen. Nun aber den vollständigen Quellcode (für das Fantastische Feder-Fraktal):</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Mira-Abbildung (2): Fantastic Feather Fractal</span></span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gp</span>
+<span id="cb3-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> colorsys</span>
+<span id="cb3-5"></span>
+<span id="cb3-6">WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span></span>
+<span id="cb3-7">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb3-8">radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-9"></span>
+<span id="cb3-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Parameter</span></span>
+<span id="cb3-11">a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.48</span></span>
+<span id="cb3-12">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.93</span></span>
+<span id="cb3-13">hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb3-14"></span>
+<span id="cb3-15">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
+<span id="cb3-16">gp.window(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-17">gp.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Mira-Abbildung (2): Fantastic Feather Fractal"</span>)</span>
+<span id="cb3-18">gp.bgColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">184</span>))</span>
+<span id="cb3-19"></span>
+<span id="cb3-20"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> f(x):</span>
+<span id="cb3-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> a<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> a)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>((<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb3-22"></span>
+<span id="cb3-23">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4.0</span></span>
+<span id="cb3-24">y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span> </span>
+<span id="cb3-25"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10000</span>):</span>
+<span id="cb3-26">    x1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> f(x)</span>
+<span id="cb3-27">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> f(x1)</span>
+<span id="cb3-28">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x1</span>
+<span id="cb3-29">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Skalierungsparameter für die Fenstergröße:</span></span>
+<span id="cb3-30">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">350</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span></span>
+<span id="cb3-31">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">280</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">26</span></span>
+<span id="cb3-32">    gp.move(xx, yy)</span>
+<span id="cb3-33">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))</span>
+<span id="cb3-34">    gp.circle(radius)</span>
+<span id="cb3-35">    hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100.0</span></span>
+<span id="cb3-36">    col <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> colorsys.hsv_to_rgb(hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb3-37">    gp.setColor(col)</span>
+<span id="cb3-38">    gp.fillCircle(radius)</span>
+<span id="cb3-39">    </span>
+<span id="cb3-40"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)    </span></code></pre></div>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Florian Freistetter: <em><a href="http://scienceblogs.de/astrodicticum-simplex/2015/02/04/best-of-chaos-der-seltsame-attraktor/">Best of Chaos: Der seltsame Attraktor</a></em>, Science Blogs (Astrodicticum Simplex) vom 4. Februar 2015</li>
+<li>Dietmar Herrmann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994</li>
+<li>Clifford A. Pickover: <em>Mazes for the Mind. Computers and the Unexpected</em>, New York (St.&nbsp;Martin’s Press) 1992</li>
+<li>ders.: <em>Chaos in Wonderland – Visual Adventures in a Fractal World</em>, New York (St.&nbsp;Martin’s Press) 1994</li>
+</ul>
+<p>Den Quellcode gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython. Hier das <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/mira1.py">erste Beispiel</a> und hier das <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/mira2.py">Fantastische Feder-Fraktal</a>. <em>Habt Spaß damit!</em></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Dietmar Herrmann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, S. 126ff.↩︎</p></li>
+<li id="fn2"><p>Gumowski, I./Mira, C.: <em>Point sequences generated by two-dimensional recurrences</em>, IFIP 1975, North Holland↩︎</p></li>
+<li id="fn3"><p>Die Seite <a href="https://sequelaencollection.home.blog/2d-chaotic-attractors/">2D Chaotic Attractors</a> der <em>Sequelaen Collection</em> zeigt noch viele weitere, wunderbare chaotische Attraktoren, die meiner Entdeckung harren. (Das steht hier nur, damit ich den Link zu der Seite nicht vergesse&nbsp;🥸)↩︎</p></li>
+<li id="fn4"><p><em>Clifford A. Pickover</em> hat in »Mazes for the Mind – Computers and the Unexpected« dem <em>Fantastic Feather Fractal</em> sogar ein ganzes, wenn auch kleines Kapitel gewidmet (Seiten 33f). Und da dieses Fraktal eines seiner Lieblingsfraktale ist, kommt es in seinem Buch »Chaos in Wonderland – Visual Adventures in a Fractal World« noch einmal vor (Seite 261).↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>TigerJython</category>
+  <category>Mathematik</category>
+  <category>Dynamische Systeme</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025061201_mira_abbildung/</guid>
+  <pubDate>Thu, 12 Jun 2025 17:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2-c.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Der Rössler-Attraktor, ein weiterer seltsamer Attraktor in TigerJython</title>
