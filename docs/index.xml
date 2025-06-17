@@ -324,6 +324,358 @@ font-style: inherit;">"I did it, Babe!"</span>)    </span></code></pre></div>
   <media:content url="https://kantel.github.io/posts/2025061201_mira_abbildung/images/mira2-c.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
+  <title>Cantor-Käse-Konstruktionen</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025061701_cantor_kaese/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54593831598/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese-b.jpg" class="img-fluid"></a></p>
+<p>Die <a href="https://de.wikipedia.org/wiki/Cantor-Menge">Cantor-Menge</a> ist eine überabzählbare, aber dennoch kompakte, total unzusammenhängende und nirgends dichte Punktmenge, die laut <em>Ian Stewart</em><sup>1</sup> 1875 von <em>Henry Smith</em> entdeckt und von <em><a href="https://de.wikipedia.org/wiki/Georg_Cantor">Georg Cantor</a></em> 1883 veröffentlicht wurde. Sie gilt als das älteste Fraktal überhaupt.</p>
+<p>Da die Cantor-Menge schwer zu visualisieren ist, wird sie häufig durch eine Figur dargestellt, die aus Kreisen konstruiert wird und zur Cantor-Menge topoligisch äquivalent ist. <em>Clifford A. Pickover</em> beschreibt sie so<sup>2</sup>: Aus einem Kreis wird bis auf zwei kleinere Kreise alles entfernt. Aus diesen zwei kleineren Kreisen wird wiederum bis auf zwei kleinere Kreise alles entfernt. Nun hat man schon vier Kreise, aus denen man jeweils bis auf zwei kleinere Kreise alles entfernt. Und so weiter und so fort …</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54592726472/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese01.jpg" class="img-fluid figure-img" alt="Cantor-Käse"></a></p>
+<figcaption>Cantor-Käse</figcaption>
+</figure>
+</div>
+<p>Entlang des waagrechten Durchmessers ist die fraktale Dimension für die Punktmenge nahezu&nbsp;<img src="https://latex.codecogs.com/png.latex?1">. Kleinere Fraktale mit einer geringeren Dimension entstehen durch die Verwendung geschrumpfter und getrennter Kreise.</p>
+<p>Das schreit natürlich nach einer rekursiven Funktion und die ist in Python/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> recht schnell erstellt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gp</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span></span>
+<span id="cb1-4">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
+<span id="cb1-7">gp.window(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-8">gp.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cantor-Käse"</span>)</span>
+<span id="cb1-9">gp.bgColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">184</span>))</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> cheese(x, y, r, level):</span>
+<span id="cb1-12">    gp.move(x, y)</span>
+<span id="cb1-13">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>))</span>
+<span id="cb1-14">    gp.fillCircle(r)</span>
+<span id="cb1-15">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))</span>
+<span id="cb1-16">    gp.circle(r)</span>
+<span id="cb1-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb1-18">        cheese(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-19">        cheese(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21">cheese(WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>)</span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
+<p>Wandelt man das Skript ein wenig ab, indem man auf der x-Achse jeweils den Durchmesser (<img src="https://latex.codecogs.com/png.latex?r">) anstelle der Radii (<img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Br%7D%7B2%7D">) addiert, respektive subtrahiert,</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb2-2">    cheese(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r, y, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-3">    cheese(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> r, y, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span></code></pre></div>
+<p>erhält man das Gebilde im Bannerbild oben. Das ist zwar strenggenommen kein Cantor-Käse mehr, sieht aber – wie ich finde – auch recht hübsch aus.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54593651661/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese02.jpg" class="img-fluid figure-img" alt="Cantors-Doppelkäse"></a></p>
+<figcaption>Cantors-Doppelkäse</figcaption>
+</figure>
+</div>
+<p>Schon bei <a href="http://blog.schockwellenreiter.de/2016/09/2016091601.html">früheren Experimenten</a> hatte ich mich gefragt, was für eine Figur entstände, wenn man den Käse sich nicht nur in der Horizontalen, sondern auch in der Vertikalen ausbreiten ließe?</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gp</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span></span>
+<span id="cb3-4">HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb3-5">maxLevel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span></span>
+<span id="cb3-6"></span>
+<span id="cb3-7">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
+<span id="cb3-8">gp.window(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-9">gp.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Cantors-Doppelkäse"</span>)</span>
+<span id="cb3-10">gp.bgColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">184</span>))</span>
+<span id="cb3-11"></span>
+<span id="cb3-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> cheese(x, y, r, level):</span>
+<span id="cb3-13">    gp.move(x, y)</span>
+<span id="cb3-14">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># gp.setColor(gp.makeColor(255, 255, 255))</span></span>
+<span id="cb3-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># gp.fillCircle(r)</span></span>
+<span id="cb3-16">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>))</span>
+<span id="cb3-17">    gp.circle(r)</span>
+<span id="cb3-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb3-19">        cheese(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-20">        cheese(x, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-21">        cheese(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-22">        cheese(x, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-23"></span>
+<span id="cb3-24">cheese(WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, maxLevel)</span>
+<span id="cb3-25"></span>
+<span id="cb3-26"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
+<p>Auch dieses Ergebnis sieht recht nett aus, allerdings sollte man hier die Rekursionstiefe kleiner wählen, sonst verschwindent alles hinter einem wüsten <a href="https://de.wikipedia.org/wiki/Moir%C3%A9-Effekt">Moiré-Muster</a>.</p>
+<section id="weiterführende-literatur" class="level3">
+<h3 class="anchored" data-anchor-id="weiterführende-literatur">Weiterführende Literatur</h3>
+<ul>
+<li>Benoît B. Mandelbrot: <em>Die fraktale Geometrie der Natur</em>, Basel, Boston, Berlin (Birkhäuser) 1991. Die Cantor-Menge wird im Kapitel&nbsp;8 (Seiten 86-95) beschrieben.</li>
+<li>Jörg Kantel: <em><a href="http://blog.schockwellenreiter.de/2016/09/2016091601.html">Cantors Doppelkäse mit Shoes</a></em>, Der Schockwellenreiter vom 16. September 2016.</li>
+<li>Clifford A. Pickover: <em>Mit den Augen des Computers. Phantastische Welten aus dem Geist der Maschine</em>, München (Markt und Technik) 1992. Dem Cantor-Käse ist auf den Seiten 171-181 ein eigenes Kapitel gewidmet.</li>
+<li>Chris Robart (Ed.): <em><a href="https://mmhs.ca/compsci/ideas2.pdf">Programming Ideas: For Teaching High School Computer Programming</a></em>, (PDF 260 KB, 2nd Edition) 2001. Eine Fundgrube voller Ideen, deren Download sich in jedem Fall lohnt.</li>
+<li>Ian Stewart: <em>Spielt Gott Roulette? Uhrwerk oder Chaos</em>, Frankfurt/Main, Leipzig (Insel Taschenbuch) 1993, Seiten 130-134.</li>
+</ul>
+<p>Den Quellcode gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython. Hier der <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/cantorcheese.py">Cantor-Käse</a>, hier das <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/nocantorcheese.py">abgewandelte Beispielprogramm mit dem Bannerbild oben</a> und hier den <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/doublecantorcheese.py">doppelten Cantor-Käse</a>. <em>Habt wieder Spaß damit!</em></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ian Stewart: <em>Spielt Gott Roulette?</em> Frankfurt/Main und Leipzig (Insel Taschenbuch) 1993, S. 130ff.↩︎</p></li>
+<li id="fn2"><p>Clifford A. Pickover: <em>Mit den Augen des Computers. Phantastische Welten aus dem Geist der Maschine</em>, München (Markt und Technik) 1992, S. 171ff.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>TigerJython</category>
+  <category>Mathematik</category>
+  <category>Dynamische Systeme</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025061701_cantor_kaese/</guid>
+  <pubDate>Thu, 12 Jun 2025 17:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
   <title>Der Rössler-Attraktor, ein weiterer seltsamer Attraktor in TigerJython</title>
   <dc:creator>Jörg Kantel</dc:creator>
   <link>https://kantel.github.io/posts/2025060902_roessler_attraktor/</link>
@@ -2299,30 +2651,6 @@ font-style: inherit;">--upgrade</span> py5 py5jupyter</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025052201_chrome_update/</guid>
   <pubDate>Thu, 22 May 2025 13:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025052201_chrome_update/images/octopussy.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Endlich! Apple veröffentlicht iPadOS 17.7.8 für ältere Systeme</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025052001_ipados_update/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54531614407/"><img src="https://kantel.github.io/posts/2025052001_ipados_update/images/badapple-b.jpg" class="img-fluid"></a></p>
-<p>Der prüde, kalifornische IT-Riese mit dem angebissenen Apfel im Logo hat das <a href="https://kantel.github.io/posts/2025051401_apfel_vergiftet/">Drama um das iPadOS-Update für ältere Systeme</a> beendet. Wirklich? Apple hat nun das Update auf iPadOS 17.7.8 für ältere iPads bereitgestellt und damit die zuvor fehlerhafte Version 17.7.7 ersetzt. Das Update ist nach wie vor für die Anwender, die nicht auf iOS/iPadOS 18 updaten wollen.</p>
-<p>Das Update auf iPadOS 17.7.8 kann über OTA (<em>Over the Air</em> - in <code>Einstellungen &gt; Allgemein &gt; Softwareaktualisierung</code>, an ausreichender Akku-Kapazität und freien Speicherplatz sollte gedacht werden) erfolgen.</p>
-<p>Eine vorherige Sicherung des Geräts ist wie immer sehr zu empfehlen. <em>(Mein <a href="https://wwwuser.gwdguser.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54531614407/">Bad Apple</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>colored french comic style. the mad hatter with a blue hat gives a sexy naked woman with big boops and a nice butt a red apple in the summer magic forest full of giant mushrooms</em>«. Modell: Flux LoRA, Style: Animated Feature.</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2025052001_ipados_update/</guid>
-  <pubDate>Tue, 20 May 2025 11:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025052001_ipados_update/images/badapple.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
