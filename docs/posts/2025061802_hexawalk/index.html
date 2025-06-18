@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Gehirnamputierte E-Scooter-Fahrer(-innen) – Der Schockwellenreiter</title>
+<title>Hexagonaler Random Walk mit TigerJython – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -70,6 +104,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -127,11 +190,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Gehirnamputierte E-Scooter-Fahrer(-innen)</h1>
+<h1 class="title">Hexagonaler Random Walk mit TigerJython</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">E-Scooter</div>
-    <div class="quarto-category">Neukölln</div>
-    <div class="quarto-category">Verkehrswende</div>
+    <div class="quarto-category">TigerJython</div>
+    <div class="quarto-category">Turtle</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Nature of Code</div>
+    <div class="quarto-category">Simulation</div>
   </div>
   </div>
 
@@ -161,12 +226,125 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54598079613/"><img src="images/gehirnamputiert-b.jpg" class="img-fluid"></a></p>
-<p>Ich bin wirklich kein Freund von <em><a href="https://de.wikipedia.org/wiki/Boris_Palmer">Boris Palmer</a></em>, auch wenn er mit zunehmendem Alter <a href="https://de.wikipedia.org/wiki/Helmut_Palmer">seinem Vater</a> (der mit seiner unkonventionellen und direkten Art ein Held meiner Jugend war) immer ähnlicher wird. Aber in dieser Frage muß ich ihm Recht geben: <a href="https://www.stimme.de/baden-wuerttemberg/boris-palmer-e-scooter-aerger-instagram-facebook-gehirnamputierte-tuebingen-oberbuergermeister-soziale-medien-falsch-geparkt-kommentare-art-5063239">Wieso darf eigentlich jeder Gehirnamputierte E-Scooter benutzen</a>?</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54598377130/"><img src="images/hexawalk-b.jpg" class="img-fluid"></a></p>
+<p>Der bei Microsoft forschende Psychologe und Informatiker <em>Dan Goldstein</em> <a href="https://www.decisionsciencenews.com/?p=6464">berichtet in seinem Blog</a>, wie er mit seiner neunjährigen Tochter in einem Bagel-Shop warten mußte. Um sich die Langeweile zu verkürzen, kramte er ein hexagonal-kariertes Blatt Papier und einen Würfel hervor (Psychologen bei Microsoft haben immer ein hexagonal-karierten Notizblock und einen Würfel in der Tasche). Und dann entschied er, daß, wenn eine Eins gewürfelt wurde, die Tochter auf dem Papier einen Strich nach oben (nach Norden) malen durfte, bei einer Zwei ging es nach Nordost, bei einer Drei nach Südost und so weiter in alle sechs Richtungen, die ein Hexagon erlaubt. Heraus kam ein <a href="https://de.wikipedia.org/wiki/Random_Walk">Random Walk</a> in sechs Richtungen.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54596446850/"><img src="images/hexawalk-o.jpg" class="img-fluid"></a></p>
+<p>Als ich dies las, dachte ich, daß dies doch ein schönes Projekt für eine Realisierung mit der Turtle sei. Zuerst stellte ich mir die Frage, wie man denn der Schildkröte beibringt, ein Hexagon zu zeichnen. Ein <a href="https://de.wikipedia.org/wiki/Sechseck">Blick in die Wikipedia</a> half mir weiter, denn dort konnte ich entnehmen, daß die Schildkröte an jedem der sechs Endpunkt einen Winkel von <span class="math inline">\(60°\)</span> einschlagen mußte, entweder konsequent nach rechts oder konsequent nach links. Die sechs Winkel für die sechs möglichen Richtungen sind also <span class="math inline">\(0°\)</span>, <span class="math inline">\(60°\)</span>, <span class="math inline">\(120°\)</span>, <span class="math inline">\(180°\)</span>, <span class="math inline">\(240°\)</span> und <span class="math inline">\(300°\)</span>. <em>Brute Force</em> zeichnet sich ein Hexagon also so:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>hexi <span class="op">=</span> gt.Turtle(tf)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>hexi.setHeading(<span class="dv">0</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>hexi.forward(<span class="dv">100</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>hexi.setHeading(<span class="dv">60</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>hexi.forward(<span class="dv">100</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>hexi.setHeading(<span class="dv">120</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>hexi.forward(<span class="dv">100</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>hexi.setHeading(<span class="dv">0</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>hexi.forward(<span class="dv">180</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>hexi.setHeading(<span class="dv">0</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>hexi.forward(<span class="dv">240</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>hexi.setHeading(<span class="dv">0</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a>hexi.forward(<span class="dv">300</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Natürlich geht das in einer Schleife viel kompakter und einfacher:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>hexi <span class="op">=</span> gt.Turtle(tf)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="cf">for</span> <span class="kw">in</span> <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>):</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    angle <span class="op">=</span> i<span class="op">*</span><span class="dv">60</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    hexi.setHeading(angle)</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    hexi.forward(<span class="dv">100</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Für die eigentliche Realisierung in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> habe ich dann noch auf die bewährte <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/codingtrainfarben.html">Coding Train Farbpalette</a> zurückgegriffen, damit auch alles schön bunt wird. Außerdem habe ich mit Pythons <code>randint</code>-Modul einen Würfel simuiert, der dafür sorgt, daß der Random Walk auf wirklich (pseudo-) zufällig ist:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Roll Dice and set Angle</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>roll <span class="op">=</span> randint(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>angle <span class="op">=</span> roll<span class="op">*</span><span class="dv">60</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>hexi.setHeading(angle)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Und schießlich habe ich noch als Reminiszenz an <em>Christian Thompson</em> (aka <em>ToyioEdtech</em>, Ihr wisst schon, der Mann, der Unglaubliches mit Pythons Turtle anstellt) dem Turtle-Playground einen Rand spendiert. Das hat zwar den Quellcode fast verdoppelt, aber er ist immer noch recht kurz geraten:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Hexagonaler Random Walker</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="im">import</span> gturtle <span class="im">as</span> gt</span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="im">from</span> random <span class="im">import</span> randint</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a>WIDTH, HEIGHT <span class="op">=</span> <span class="dv">640</span>, <span class="dv">480</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>MIN_X <span class="op">=</span> <span class="op">-</span>WIDTH<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>MAX_X <span class="op">=</span> WIDTH<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">10</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>MIN_Y <span class="op">=</span> HEIGHT<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="dv">10</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>MAX_Y <span class="op">=</span> <span class="op">-</span>HEIGHT<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="dv">10</span> </span>
+<span id="cb4-11"><a href="#cb4-11"></a>BORDERSIZE <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>STEPSIZE <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>codingtrain <span class="op">=</span> [makeColor(<span class="dv">240</span>, <span class="dv">80</span>, <span class="dv">37</span>), makeColor(<span class="dv">248</span>, <span class="dv">158</span>, <span class="dv">80</span>),</span>
+<span id="cb4-15"><a href="#cb4-15"></a>               makeColor(<span class="dv">248</span>, <span class="dv">239</span>, <span class="dv">34</span>), makeColor(<span class="dv">49</span>, <span class="dv">197</span>, <span class="dv">244</span>),</span>
+<span id="cb4-16"><a href="#cb4-16"></a>               makeColor(<span class="dv">240</span>, <span class="dv">99</span>, <span class="dv">164</span>), makeColor(<span class="dv">146</span>, <span class="dv">82</span>, <span class="dv">161</span>),</span>
+<span id="cb4-17"><a href="#cb4-17"></a>               makeColor(<span class="dv">129</span>, <span class="dv">122</span>, <span class="dv">198</span>),  makeColor(<span class="dv">98</span>, <span class="dv">199</span>, <span class="dv">119</span>)]</span>
+<span id="cb4-18"><a href="#cb4-18"></a></span>
+<span id="cb4-19"><a href="#cb4-19"></a>gt.setPlaygroundSize(WIDTH, HEIGHT)</span>
+<span id="cb4-20"><a href="#cb4-20"></a>tf <span class="op">=</span> gt.TurtleFrame()</span>
+<span id="cb4-21"><a href="#cb4-21"></a>tf.title <span class="op">=</span> <span class="st">"Hexagonaler Random Walker"</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>tf.clean(makeColor(<span class="st">"#2a282d"</span>))</span>
+<span id="cb4-23"><a href="#cb4-23"></a></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co"># Draw Border</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>border <span class="op">=</span> gt.Turtle(tf)</span>
+<span id="cb4-26"><a href="#cb4-26"></a>border.penWidth(BORDERSIZE)</span>
+<span id="cb4-27"><a href="#cb4-27"></a>border.setPenColor(<span class="st">"#e6e2cc"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28"></a>border.penUp()</span>
+<span id="cb4-29"><a href="#cb4-29"></a>border.hideTurtle()</span>
+<span id="cb4-30"><a href="#cb4-30"></a>border.moveTo(MIN_X, MIN_Y)</span>
+<span id="cb4-31"><a href="#cb4-31"></a>border.penDown()</span>
+<span id="cb4-32"><a href="#cb4-32"></a>border.moveTo(MAX_X, MIN_Y)</span>
+<span id="cb4-33"><a href="#cb4-33"></a>border.moveTo(MAX_X, MAX_Y)</span>
+<span id="cb4-34"><a href="#cb4-34"></a>border.moveTo(MIN_X, MAX_Y)</span>
+<span id="cb4-35"><a href="#cb4-35"></a>border.moveTo(MIN_X, MIN_Y)</span>
+<span id="cb4-36"><a href="#cb4-36"></a>border.penUp()</span>
+<span id="cb4-37"><a href="#cb4-37"></a></span>
+<span id="cb4-38"><a href="#cb4-38"></a><span class="co"># Start Random Walk</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a>hexi <span class="op">=</span> gt.Turtle(tf)</span>
+<span id="cb4-40"><a href="#cb4-40"></a>hexi.hideTurtle()</span>
+<span id="cb4-41"><a href="#cb4-41"></a>hexi.penWidth(<span class="dv">2</span>)</span>
+<span id="cb4-42"><a href="#cb4-42"></a><span class="co"># hexi.speed(1000)</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a></span>
+<span id="cb4-44"><a href="#cb4-44"></a><span class="kw">def</span> goHome():</span>
+<span id="cb4-45"><a href="#cb4-45"></a>    hexi.penUp()</span>
+<span id="cb4-46"><a href="#cb4-46"></a>    hexi.home()</span>
+<span id="cb4-47"><a href="#cb4-47"></a>    hexi.penDown()</span>
+<span id="cb4-48"><a href="#cb4-48"></a></span>
+<span id="cb4-49"><a href="#cb4-49"></a><span class="cf">for</span> step <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>):</span>
+<span id="cb4-50"><a href="#cb4-50"></a>    </span>
+<span id="cb4-51"><a href="#cb4-51"></a>    <span class="co"># Set Pencolor</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a>    <span class="cf">if</span> step<span class="op">%</span><span class="dv">20</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-53"><a href="#cb4-53"></a>        c <span class="op">=</span> gt.makeColor(codingtrain[randint(<span class="dv">0</span>, <span class="bu">len</span>(codingtrain) <span class="op">-</span> <span class="dv">1</span>)])</span>
+<span id="cb4-54"><a href="#cb4-54"></a>        hexi.setPenColor(c)</span>
+<span id="cb4-55"><a href="#cb4-55"></a>        </span>
+<span id="cb4-56"><a href="#cb4-56"></a>    <span class="co"># Roll Dice and set Angle</span></span>
+<span id="cb4-57"><a href="#cb4-57"></a>    roll <span class="op">=</span> randint(<span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb4-58"><a href="#cb4-58"></a>    angle <span class="op">=</span> roll<span class="op">*</span><span class="dv">60</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>    hexi.setHeading(angle)</span>
+<span id="cb4-60"><a href="#cb4-60"></a>    </span>
+<span id="cb4-61"><a href="#cb4-61"></a>    <span class="co"># Check Border</span></span>
+<span id="cb4-62"><a href="#cb4-62"></a>    <span class="cf">if</span> hexi.getX() <span class="op">&gt;=</span> MAX_X:</span>
+<span id="cb4-63"><a href="#cb4-63"></a>        goHome()</span>
+<span id="cb4-64"><a href="#cb4-64"></a>    <span class="cf">elif</span> hexi.getX() <span class="op">&lt;=</span> MIN_X:</span>
+<span id="cb4-65"><a href="#cb4-65"></a>        goHome()</span>
+<span id="cb4-66"><a href="#cb4-66"></a>    <span class="cf">elif</span> hexi.getY() <span class="op">&lt;=</span> MAX_Y:</span>
+<span id="cb4-67"><a href="#cb4-67"></a>        goHome()</span>
+<span id="cb4-68"><a href="#cb4-68"></a>    <span class="cf">elif</span> hexi.getY() <span class="op">&gt;=</span> MIN_Y:</span>
+<span id="cb4-69"><a href="#cb4-69"></a>        goHome()</span>
+<span id="cb4-70"><a href="#cb4-70"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-71"><a href="#cb4-71"></a>        hexi.forward(STEPSIZE)</span>
+<span id="cb4-72"><a href="#cb4-72"></a></span>
+<span id="cb4-73"><a href="#cb4-73"></a><span class="bu">print</span>(<span class="st">"I did it, Babe!"</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Und dann habe ich, wenn die Turtle das Spielfeld verlässt, sie wieder nach Hause geschickt (ein wenig wie beim Monopoly-Spiel: »<em>gehe nicht über Los und ziehe keine 4.000 Euro ein</em>«), wo sie ihre Reise wieder neu beginnt. Dadurch wollte ich vermeiden, daß sie irgendwann im Nirwana verschwindet.</p>
+<section id="weiterführende-literatur" class="level2">
+<h2 class="anchored" data-anchor-id="weiterführende-literatur">Weiterführende Literatur</h2>
+<p>Random-Walk-Modelle finden einige interessanten Anwendungen von der Biologie bis zur Finanzwirtschaft. Wer sich da hineinlesen will, findet hier ein paar interessante Beiträge:</p>
+<ul>
+<li>Norbert Henze: <em>Irrfahrten und verwandte Zufälle. Ein elementarer Einstieg in die stochastischen Prozesse</em>, Wiesbaden (Springer Spektrum) 2013</li>
+<li>Jake Hofman: <em><a href="http://jakehofman.com/talks/dalton_hunter_20071031.pdf">Simple math for a complex world: Random walks in biology and finance</a></em> (Vortragsfolien, PDF), 31.&nbsp;Oktober&nbsp;2007</li>
+<li>Rubin H. Landau: <em><a href="https://sites.science.oregonstate.edu/~landaur/INSTANCES/WebModules/5_RandomWalk/RandomWalk.html">Random Walks</a></em>, <a href="https://sites.science.oregonstate.edu/~landaur/INSTANCES/index.html">INSTANCES</a> (Incorporating Computational Scientific Thinking Advances into Education &amp; Science Courses), Oregon State Univ, Corvallis (Depart of Physics), 2013</li>
+<li>William F. Sharpe, Daniel G. Goldstein und Philip W. Blythe: <em><a href="https://web.stanford.edu/~wfsharpe/art/qpaper/qpaper.pdf">The Distribution Builder: A Tool for Inferring Investor Preferences</a></em> (PDF), 10. Oktober 2000</li>
+</ul>
+<p>Und auch im oben verlinkten <a href="https://www.decisionsciencenews.com/?p=6464">Original-Blog-Post</a>, der mich zu diesem Beitrag inspirierte, hat <em>Dan Goldstein</em> ein paar überraschende Überlegungen zum (hexagonalen) Zufallsspaziergang der Schildkröte angestellt.</p>
 <hr>
-<p><strong>Photo</strong> (<a href="http://creativecommons.org/licenses/by-nc-nd/2.0/">cc</a>) 2025: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54598377130/">Hexawalk mit Tiger und Python</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored franco-belgian comic style. Illustration of a tiger in a red dressing gown and a python with glasses wandering through a surreal, hexagonal landscape</em>«. Modell: Flux (Pro), Style: None.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
