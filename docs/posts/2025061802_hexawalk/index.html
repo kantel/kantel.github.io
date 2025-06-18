@@ -227,7 +227,7 @@ window.Quarto = {
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54598377130/"><img src="images/hexawalk-b.jpg" class="img-fluid"></a></p>
-<p>Der bei Microsoft forschende Psychologe und Informatiker <em>Dan Goldstein</em> <a href="https://www.decisionsciencenews.com/?p=6464">berichtet in seinem Blog</a>, wie er mit seiner neunjährigen Tochter in einem Bagel-Shop warten mußte. Um sich die Langeweile zu verkürzen, kramte er ein hexagonal-kariertes Blatt Papier und einen Würfel hervor (Psychologen bei Microsoft haben immer ein hexagonal-karierten Notizblock und einen Würfel in der Tasche). Und dann entschied er, daß, wenn eine Eins gewürfelt wurde, die Tochter auf dem Papier einen Strich nach oben (nach Norden) malen durfte, bei einer Zwei ging es nach Nordost, bei einer Drei nach Südost und so weiter in alle sechs Richtungen, die ein Hexagon erlaubt. Heraus kam ein <a href="https://de.wikipedia.org/wiki/Random_Walk">Random Walk</a> in sechs Richtungen.</p>
+<p>Der bei Microsoft forschende Psychologe und Informatiker <em>Dan Goldstein</em> <a href="https://www.decisionsciencenews.com/?p=6464">berichtet in seinem Blog</a>, wie er mit seiner neunjährigen Tochter in einem Bagel-Shop warten mußte. Um sich die Langeweile zu verkürzen, kramte er ein hexagonal-kariertes Blatt Papier und einen Würfel hervor (Psychologen bei Microsoft haben immer einen hexagonal-karierten Notizblock und einen Würfel in der Tasche). Und dann entschied er, daß, wenn eine Eins gewürfelt wurde, die Tochter auf dem Papier einen Strich nach oben (nach Norden) malen durfte, bei einer Zwei ging es nach Nordost, bei einer Drei nach Südost und so weiter in alle sechs Richtungen, die ein Hexagon erlaubt. Heraus kam ein <a href="https://de.wikipedia.org/wiki/Random_Walk">Random Walk</a> in sechs Richtungen.</p>
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54596446850/"><img src="images/hexawalk-o.jpg" class="img-fluid"></a></p>
 <p>Als ich dies las, dachte ich, daß dies doch ein schönes Projekt für eine Realisierung mit der Turtle sei. Zuerst stellte ich mir die Frage, wie man denn der Schildkröte beibringt, ein Hexagon zu zeichnen. Ein <a href="https://de.wikipedia.org/wiki/Sechseck">Blick in die Wikipedia</a> half mir weiter, denn dort konnte ich entnehmen, daß die Schildkröte an jedem der sechs Endpunkt einen Winkel von <span class="math inline">\(60°\)</span> einschlagen mußte, entweder konsequent nach rechts oder konsequent nach links. Die sechs Winkel für die sechs möglichen Richtungen sind also <span class="math inline">\(0°\)</span>, <span class="math inline">\(60°\)</span>, <span class="math inline">\(120°\)</span>, <span class="math inline">\(180°\)</span>, <span class="math inline">\(240°\)</span> und <span class="math inline">\(300°\)</span>. <em>Brute Force</em> zeichnet sich ein Hexagon also so:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>hexi <span class="op">=</span> gt.Turtle(tf)</span>
@@ -237,12 +237,12 @@ window.Quarto = {
 <span id="cb1-5"><a href="#cb1-5"></a>hexi.forward(<span class="dv">100</span>)</span>
 <span id="cb1-6"><a href="#cb1-6"></a>hexi.setHeading(<span class="dv">120</span>)</span>
 <span id="cb1-7"><a href="#cb1-7"></a>hexi.forward(<span class="dv">100</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a>hexi.setHeading(<span class="dv">0</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>hexi.forward(<span class="dv">180</span>)</span>
-<span id="cb1-10"><a href="#cb1-10"></a>hexi.setHeading(<span class="dv">0</span>)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>hexi.forward(<span class="dv">240</span>)</span>
-<span id="cb1-12"><a href="#cb1-12"></a>hexi.setHeading(<span class="dv">0</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a>hexi.forward(<span class="dv">300</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8"></a>hexi.setHeading(<span class="dv">180</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>hexi.forward(<span class="dv">100</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>hexi.setHeading(<span class="dv">240</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>hexi.forward(<span class="dv">100</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a>hexi.setHeading(<span class="dv">300</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a>hexi.forward(<span class="dv">100</span>)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Natürlich geht das in einer Schleife viel kompakter und einfacher:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>hexi <span class="op">=</span> gt.Turtle(tf)</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>

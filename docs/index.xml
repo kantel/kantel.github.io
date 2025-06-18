@@ -21,7 +21,7 @@
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54598377130/"><img src="https://kantel.github.io/posts/2025061802_hexawalk/images/hexawalk-b.jpg" class="img-fluid"></a></p>
-<p>Der bei Microsoft forschende Psychologe und Informatiker <em>Dan Goldstein</em> <a href="https://www.decisionsciencenews.com/?p=6464">berichtet in seinem Blog</a>, wie er mit seiner neunjährigen Tochter in einem Bagel-Shop warten mußte. Um sich die Langeweile zu verkürzen, kramte er ein hexagonal-kariertes Blatt Papier und einen Würfel hervor (Psychologen bei Microsoft haben immer ein hexagonal-karierten Notizblock und einen Würfel in der Tasche). Und dann entschied er, daß, wenn eine Eins gewürfelt wurde, die Tochter auf dem Papier einen Strich nach oben (nach Norden) malen durfte, bei einer Zwei ging es nach Nordost, bei einer Drei nach Südost und so weiter in alle sechs Richtungen, die ein Hexagon erlaubt. Heraus kam ein <a href="https://de.wikipedia.org/wiki/Random_Walk">Random Walk</a> in sechs Richtungen.</p>
+<p>Der bei Microsoft forschende Psychologe und Informatiker <em>Dan Goldstein</em> <a href="https://www.decisionsciencenews.com/?p=6464">berichtet in seinem Blog</a>, wie er mit seiner neunjährigen Tochter in einem Bagel-Shop warten mußte. Um sich die Langeweile zu verkürzen, kramte er ein hexagonal-kariertes Blatt Papier und einen Würfel hervor (Psychologen bei Microsoft haben immer einen hexagonal-karierten Notizblock und einen Würfel in der Tasche). Und dann entschied er, daß, wenn eine Eins gewürfelt wurde, die Tochter auf dem Papier einen Strich nach oben (nach Norden) malen durfte, bei einer Zwei ging es nach Nordost, bei einer Drei nach Südost und so weiter in alle sechs Richtungen, die ein Hexagon erlaubt. Heraus kam ein <a href="https://de.wikipedia.org/wiki/Random_Walk">Random Walk</a> in sechs Richtungen.</p>
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54596446850/"><img src="https://kantel.github.io/posts/2025061802_hexawalk/images/hexawalk-o.jpg" class="img-fluid"></a></p>
 <p>Als ich dies las, dachte ich, daß dies doch ein schönes Projekt für eine Realisierung mit der Turtle sei. Zuerst stellte ich mir die Frage, wie man denn der Schildkröte beibringt, ein Hexagon zu zeichnen. Ein <a href="https://de.wikipedia.org/wiki/Sechseck">Blick in die Wikipedia</a> half mir weiter, denn dort konnte ich entnehmen, daß die Schildkröte an jedem der sechs Endpunkt einen Winkel von <img src="https://latex.codecogs.com/png.latex?60%C2%B0"> einschlagen mußte, entweder konsequent nach rechts oder konsequent nach links. Die sechs Winkel für die sechs möglichen Richtungen sind also <img src="https://latex.codecogs.com/png.latex?0%C2%B0">, <img src="https://latex.codecogs.com/png.latex?60%C2%B0">, <img src="https://latex.codecogs.com/png.latex?120%C2%B0">, <img src="https://latex.codecogs.com/png.latex?180%C2%B0">, <img src="https://latex.codecogs.com/png.latex?240%C2%B0"> und <img src="https://latex.codecogs.com/png.latex?300%C2%B0">. <em>Brute Force</em> zeichnet sich ein Hexagon also so:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">hexi <span class="op" style="color: #5E5E5E;
@@ -47,22 +47,22 @@ background-color: null;
 font-style: inherit;">100</span>)</span>
 <span id="cb1-8">hexi.setHeading(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>)</span>
+font-style: inherit;">180</span>)</span>
 <span id="cb1-9">hexi.forward(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">180</span>)</span>
+font-style: inherit;">100</span>)</span>
 <span id="cb1-10">hexi.setHeading(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>)</span>
+font-style: inherit;">240</span>)</span>
 <span id="cb1-11">hexi.forward(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">240</span>)</span>
+font-style: inherit;">100</span>)</span>
 <span id="cb1-12">hexi.setHeading(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>)</span>
+font-style: inherit;">300</span>)</span>
 <span id="cb1-13">hexi.forward(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">300</span>)</span></code></pre></div>
+font-style: inherit;">100</span>)</span></code></pre></div>
 <p>Natürlich geht das in einer Schleife viel kompakter und einfacher:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">hexi <span class="op" style="color: #5E5E5E;
 background-color: null;
