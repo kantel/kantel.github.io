@@ -10,7 +10,226 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Sun, 22 Jun 2025 17:20:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 22 Jun 2025 18:20:00 GMT</lastBuildDate>
+<item>
+  <title>Rotkäppchen und die drei Tanten</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025062202_rotkaeppchen/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54602929149/"><img src="https://kantel.github.io/posts/2025062202_rotkaeppchen/images/rotkaeppchen-b.jpg" class="img-fluid"></a></p>
+<p>Zu Feier der Sommersonnenwende ein Ausflug in die Welt der Märchen: Rotkäppchen hatte nicht nur eine Großmutter, sondern – was weniger bekannt ist – auch drei Tanten, Agathe, Beatrice und Cynthia. Diese wohnen in drei Häusern, die zusammen ein Dreieck bildeten. Wenn Rotkäppchen nicht ihre Großmutter besucht, dann besucht sie eine der drei Tanten. Letzten Sonntag jedoch war sie sehr unschlüssig, welche sie besuchen sollte. Sie startete, um Agathe einen Besuch abzustatten. Jedoch genau auf dem halben Weg zu Agathe wurde sie unsicher und überlegte es sich noch einmal. Sie beschloß, eine ihrer drei Tanten aufzusuchen, es könnte auch wieder Agathe, aber auch Beatrice oder Cynthia gewesen sein. Doch es war wie verhext: Jedesmal, wenn sie genau den halben Weg zurückgelegt hatte, wurde sie wieder unsicher und entschloß sich neu, einer ihrer drei Tanten aufzusuchen, möglicherweise die gleiche, möglicherweise eine andere. Und das wieder, und wieder, und wieder …</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54602847798/"><img src="https://kantel.github.io/posts/2025062202_rotkaeppchen/images/rotkaeppchen-o.jpg" class="img-fluid figure-img" alt="Das Tantenspiel"></a></p>
+<figcaption>Das Tantenspiel</figcaption>
+</figure>
+</div>
+<p><em>William P. Beuamont</em> nannte es das »Tantenspiel«. Ziel ist es nicht, herauszufinden, welche Tante gewinnt (es kann gar keine gewinnen), sondern welche Figur entsteht, wenn man Rotkäppchens Irrweg visualisiert. Ich habe das einmal mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> nachprogrammiert und herausgekommen ist obige Figur, in der Fachliteratur auch als <a href="https://de.wikipedia.org/wiki/Sierpinski-Dreieck">Sierpinski Dreieck</a> bekannt, benannt nach dem polnischen Mathematiker <em>Wacław Sierpiński</em>, der das Fraktal schon 1915 als erster beschrieb.</p>
+<section id="der-quellcode" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode">Der Quellcode</h3>
+<p>Normalerweise wird dieses Fraktal mit einem rekursiven Algorithmus erzeugt, aber es geht eben auch mithilfe dieses »Chaos-Spiels«, das <em>Dietmar Herrmann</em> 1994 beschrieb:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Rotkäppchen und die drei Tanten</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> gp</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> colorsys</span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">480</span></span>
+<span id="cb1-8">radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb1-9">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH)</span>
+<span id="cb1-10">y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, HEIGHT)</span>
+<span id="cb1-11"></span>
+<span id="cb1-12">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
+<span id="cb1-13">gp.window(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-14">gp.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Rotkäppchen und die drei Tanten"</span>)</span>
+<span id="cb1-15">gp.bgColor(gp.Color(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">33</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">41</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>))</span>
+<span id="cb1-16"></span>
+<span id="cb1-17"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50000</span>):</span>
+<span id="cb1-18">    p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>):</span>
+<span id="cb1-20">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-21">        y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> HEIGHT)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-22">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> (p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>):</span>
+<span id="cb1-23">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-24">        y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-26">        x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-27">        y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> HEIGHT)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-28">    gp.move(x, y)</span>
+<span id="cb1-29">    hue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100.0</span></span>
+<span id="cb1-30">    col <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> colorsys.hsv_to_rgb(hue, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb1-31">    gp.setColor(col)</span>
+<span id="cb1-32">    gp.fillCircle(radius)</span>
+<span id="cb1-33"></span>
+<span id="cb1-34"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
+<p>Man sieht sehr schön, wie sich das Dreieck zufällig, aber dennoch erkennbar, zusammensetzt. Je nach zufälligem Startwert liegen die ersten drei bis vier Punkte noch außerhalb des Fraktals, danach geht aber alles seinen geordneten, aber trotzdem chaotischen Gang. Und an den Farben erkennt Ihr, daß auch die Reihenfolge, in der die einzelnen Punkte des Fraktals von Rotkäppchen angelaufen werden, ebenfalls unvorhersehbar sind.</p>
+</section>
+<section id="verwendente-und-weiterführende-literatur" class="level3">
+<h3 class="anchored" data-anchor-id="verwendente-und-weiterführende-literatur">Verwendente und weiterführende Literatur</h3>
+<ul>
+<li>William P. Beaumont: <em>Conquering the Math Bogeyman</em>, in Clifford A. Pickover (Ed.): <em>Fractal Horizons – The Future Use of Fractals</em>, New York (St.&nbsp;Martin’s Press) 1996, Seiten 3-15</li>
+<li>Dietmar Herrmann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, Seiten 132ff.</li>
+</ul>
+<p>Auch <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/rotkaeppchen.py">diesen Quellcode</a> gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython. <em>Habt Spaß damit!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54602929149/">Rotkäppchen zwischen Tiger und Python</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored franco-belgian comic style. Illustration of Little Red Riding Hood, carrying a basket of cheese and wine, picks flowers in a forest clearing. She is accompanied by a (tiger in a red dressing gown)+ and a (python with glasses)+</em>«. Modell: Flux (Pro), Style: None.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>TigerJython</category>
+  <category>Mathematik</category>
+  <category>Dynamische Systeme</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025062202_rotkaeppchen/</guid>
+  <pubDate>Sun, 22 Jun 2025 18:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025062202_rotkaeppchen/images/rotkaeppchen.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus der Nachbarschaft: Jāņi auf dem Kulturbunkerdach</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -33,7 +252,7 @@
 
 
  ]]></description>
-  <category>Keizfest</category>
+  <category>Kiezfest</category>
   <category>Kulturbunker</category>
   <category>Neukölln</category>
   <category>Neuköllner Bilderbogen</category>
@@ -3016,34 +3235,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025052602_tuesday_56/</guid>
   <pubDate>Mon, 26 May 2025 19:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025052602_tuesday_56/images/tuesdayjs56.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Neues über Q5.js, die rasend schnelle »Alternative« zu P5.js</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025052601_q5js_updates/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54547351360/"><img src="https://kantel.github.io/posts/2025052601_q5js_updates/images/rasenderdachs-b.jpg" class="img-fluid"></a></p>
-<p><a href="https://kantel.github.io/posts/2024061902_q5js/">Vor ungefähr einem Jahr</a> hatte ich auf diesen Seiten <a href="https://q5js.org/home/">Q5.js</a> von <em><a href="https://q5js.substack.com/">Quinton Ashley</a></em> als ein mögliches neues Spielzeug vorgestellt, das sich als schneller Nachfolger von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> empfahl. Mittlerweile ist <a href="https://q5js.substack.com/p/q5js-v30-is-finally-here">Q5.js in der Version 3.0</a> erschienen, will auch nicht mehr der Nachfolger, <a href="https://q5js.substack.com/p/p5js-q5js">sondern eine <strong>Alternative</strong> zu P5.js sein</a> und unternimmt große Anstrengungen, auch mit dem <a href="https://kantel.github.io/posts/2025050602_p5js_2_0/">kommenden P5.js Version 2.0</a> kompatibel zu bleiben.</p>
-<p>Umgehauen hat mich aber der Beitrag »<a href="https://q5js.substack.com/p/is-q5js-the-fastest-2d-graphics-library">Is q5.js the Fastest 2D Graphics Library on the Web?</a>«. Hier vergleicht <em>Quinton Ashley</em> Q5.js mit seiem neuen WebGPU-Renderer nicht nur mit P5.js (etwa 30 bis 50 mal schneller), sondern auch mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>. Hier will Q5.js 16 mal schneller sein. Zu guter Letzt wird dann noch die bisher angeblich schnellste WebGL-JavaScript Engine <a href="https://pixijs.com/">Pixi.js</a> herangezogen. Hier will Q5.js bis zu <strong>vier mal so schnell</strong> sein.</p>
-<p>Nun gut, die Benchmarks hat der Schöpfer von Q5.js selber auf seinem MacBook Air durchgezogen, sie sind also mit Vorsicht zu genießen. Aber ohne Zweifel scheint Q5.js eine wirklich schnelle JavaScript-Graphic-Engine zu sein. Ich weiß ja nicht, ob ich diesen Geschwindigkeitszuwachs je benötigen werde. Aber auf jeden Fall werde ich Q5.js als (m)ein neues Spielzeug in Erwägung ziehen. Daher habe ich <a href="https://q5js.substack.com/archive?sort=new">Quinton’s Substack</a> erst einmal meinem Feedreader zum Futter vorgeworfen. Schaun wir mal, was da noch kommt. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54547351360/">Rasender Dachs</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored french comic style. A badger in a red dressing gown sits at the wheel of an open sports car and races at high speed through a dystopian city with crumbling skyscrapers, junk cars standing on the side of the road</em>«. Modell: Flux (pro), Style: None.</p>
-
-
-
- ]]></description>
-  <category>Q5.js</category>
-  <category>P5.js</category>
-  <category>Processing</category>
-  <category>JavaScript</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2025052601_q5js_updates/</guid>
-  <pubDate>Mon, 26 May 2025 18:10:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025052601_q5js_updates/images/rasenderdachs.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
