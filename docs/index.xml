@@ -10,7 +10,89 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 25 Jun 2025 15:30:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 28 Jun 2025 19:40:00 GMT</lastBuildDate>
+<item>
+  <title>Auf zu neuen Ufern? Python im Browser</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025062801_python_im_browser/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54620166000/"><img src="https://kantel.github.io/posts/2025062801_python_im_browser/images/pythonwglasses-b.jpg" class="img-fluid"></a></p>
+<p>Bei all meiner (<a href="https://kantel.github.io/posts/2025052801_tigerjython_reloaded/">wiedererwachten</a>) Begeisterung für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> habe ich nicht vergessen, daß der Software eine wichtige Eigenschaft fehlt: TigerJython läuft nicht im Browser. Das ist natürlich in der heutigen Zeit ein schwerwiegendes Handicap und so habe ich mich nach Alternativen umgeschaut.</p>
+<section id="webtigerjython-und-webtigerpython" class="level2">
+<h2 class="anchored" data-anchor-id="webtigerjython-und-webtigerpython">WebTigerJython und WebTigerPython</h2>
+<p>Das Java-basierte <a href="https://webtigerjython.ethz.ch/">WebTigerJython</a> und das neuere, auf Python&nbsp;3 aufsetzende <a href="https://webtigerpython.ethz.ch/">WebTigerPython</a> (noch <a href="https://www.tigerjython.ch/de/news/WebTigerPython">Beta</a>, hier der <a href="https://docs.webtigerpython.ethz.ch/index.html">Link zur Doku</a>) sind die ersten Alternativen, die mir einfallen. Allerdings scheint WebTigerJython keine Möglichkeit zu haben, die Ergebnisse in eigene Seiten einzubetten. <a href="https://docs.webtigerpython.ethz.ch/iframe.html">WebTigerPython kann dies</a> (als iFrames) und es kann auch Python&nbsp;3-Bibliotheken wie die <a href="https://docs.webtigerpython.ethz.ch/tjlibraries/turtle.html">Turtle</a>, aber auch den <em>Scientific Stack</em> (wie <code>numpy</code>, <code>scipy</code>, <code>sympy</code> oder die <code>matplotlib</code> etc.) nutzen. Doch bei meinen bisherigen Versuchen liefen die Scripte noch arg gemächlich. Hier erwarte ich noch dringend Verbesserungen, aber die Software ist ja auch noch Beta. Wenn sie das Beta-Stadium verlässt, werde ich sie erneut testen.</p>
+</section>
+<section id="trinket" class="level2">
+<h2 class="anchored" data-anchor-id="trinket">Trinket</h2>
+<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> habe ich hier auf diesen Seiten schon häufig eingesetzt und die Ergebnisse lassen sich auch leicht als iFrames in eigene Seiten einbinden. Zwar hatte hatte ich mir vor einiger Zeit den kostenpflichtigen Plan <a href="https://trinket.io/plans">Code+</a> geleistet, der angeblich Python&nbsp;3 (ebenfalls mit dem <em>Scientific Stack</em>, aber zum Beispiel auch mit <a href="https://github.com/kantel/trinket/blob/main/matplotlibtest/main.py">Pygame</a>) können soll. Aber obwohl der <a href="https://kantel.github.io/posts/2023073101_trinket_matplotlib/">hier monierte Fehler</a> mittlerweile behoben ist, bin ich damit nicht wirklich glücklich (Pygame zum Beispiel läuft immer noch nicht fehlerfrei). Daher kann ich (eingeschränkt!) nur den Umfang des kostenlosen Plans empfehlen.</p>
+<section id="turtle" class="level3">
+<h3 class="anchored" data-anchor-id="turtle">Turtle</h3>
+<p>Das große Plus von Trinket ist die Nutzung der Turtle im Browser, die (<a href="https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/">fast</a>!) alle Befehle von Pythons Standard-Turtle abdeckt und die für eine Browser-Implementierung sehr schnell ist. Leider bekommt man bei Trinket nie heraus, welche Engine da im Hintergrund werkelt.</p>
+</section>
+<section id="processing" class="level3">
+<h3 class="anchored" data-anchor-id="processing">Processing</h3>
+<p>Es gibt bei Trinket in der kostenlosen Version auch noch eine <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a>-Variante, die vermutlich auf <a href="https://github.com/processing-js/processing-js">ProcessingJS</a> aufsetzt. Auch wenn diese – wie auch Processing.py selber – nicht mehr aktualisiert wird, sind die Ergebnisse recht ansprechend. Aber als zukunftsfähig würde ich das nicht (mehr) bezeichnen.</p>
+</section>
+<section id="vpython" class="level3">
+<h3 class="anchored" data-anchor-id="vpython">VPython</h3>
+<p>Eine große Stärke (auch des kostenlosen Plans) von Trinket ist die Integration von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/vpython.html">VPython</a> als webbasiertes <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/glowwscript.html">GlowScript</a>. Der Physiker <em><a href="https://blog.trinket.io/rhett-allain-sloppy-code/">Rhett Allain</a></em> von der <em>Southeastern Louisiana University</em> stellt damit unglaubliche Dinge an, die er in seinem <a href="https://www.wired.com/author/rhett-allain/">Blog auf Wired</a> und auf <a href="https://www.youtube.com/@DotPhysics">seinem YouTube-Kanal</a> veröffentlicht. Aber VPython/GlowScript läut natürlich nicht nur auf Trinket, sondern es kann unter anderem auch auf <a href="https://glowscript.org/">Web VPython</a> oder auch lokal zum Beispiel mit JupyterLab <a href="https://vpython.org/presentation2018/install.html">genutzt werden</a>.</p>
+<p>Der große Nachteil von Trinket ist, daß das Teil auf einem US-amerikanischen Server liegt. Und das ist in den heutigen Tagen der Trump-Administration und dem verstärkten Druck, seine digitale Souveränität zurückerobern zu müssen, natürlich leider für mich ein Grund, Trinket erst einmal nicht mehr zu nutzen. Aber ich hoffe trotzdem auf bessere Zeiten, denn »vor Trump« hatte ich gerne mit Trinket gespielt.</p>
+</section>
+</section>
+<section id="pygame-via-pygbag" class="level2">
+<h2 class="anchored" data-anchor-id="pygame-via-pygbag">Pygame (via Pygbag)</h2>
+<p><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> (in Form der Fork <a href="https://pyga.me/">Pygame-CE</a> <em>(Pygame Community Edition)</em>) unterstützt mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> die Möglichkeit, Pygame-Programme <a href="https://kantel.github.io/posts/2024081502_pygame_ce/">webtauglich zu machen</a>. Auch wenn es damit zwischenzeitlich mal mit einem <a href="https://kantel.github.io/posts/2025022501_noc_python/">Bug in macOS Sequoia Probleme</a> gab, ist das eine hervorragende Option, Pygame-Programme ins Web zu bringen und in die eigenen Seiten einzubinden.</p>
+</section>
+<section id="pyxel" class="level2">
+<h2 class="anchored" data-anchor-id="pyxel">Pyxel</h2>
+<p>Die kleine (Python&nbsp;3-) Retrogame-Engine oder Fantasy-Konsole <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a> kann von Hause aus (<a href="https://kantel.github.io/posts/2025041103_pyxel_tut_3/">mit ein paar Kommandozeilen</a>) die Spiele als HTML-Dateien herausschreiben, die ebenfalls in die eigenen Seiten eingebunden werden können. Im Gegensatz zur Pygame-App mit Pygbag gibt diese beim Verlassen der Seite keine Warnung heraus. Auch wenn ich verstehe, warum Pygbag das macht, finde ich das Webverhalten von Pyxel angenehmer.</p>
+</section>
+<section id="brython" class="level2">
+<h2 class="anchored" data-anchor-id="brython">Brython</h2>
+<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a> (<strong>Br</strong>owser P<strong>ython</strong>) ist eine freie (BSD-3 Lizenz) Python-3-Implementierung, die im Browser läuft und als Ersatz für JavaScript gedacht ist. Neben der Standardbibliothek können einmal auch andere (Pure Python) Module geladen werden, allerdings keine Module, die zum Beispiel C- oder FORTRAN-basierte Teile enthalten. Das schließt Module wie <code>numpy</code>, <code>scipy</code>, <code>matplotlib</code> oder <code>pandas</code> aus. Dafür gibt es aber noch das »eingebautes« Modul <code>browser</code>, das den Python-Skripten Zugriffe auf das DOM-API erlaubt.</p>
+<p>Brython ist als kompletter JavaScript-Ersatz konzipiert, kann also auch JavaScript-Objekte nutzen. Die Geschwindigkeit soll an die von CPython heranreichen.</p>
+<section id="microstudio-mit-brython" class="level3">
+<h3 class="anchored" data-anchor-id="microstudio-mit-brython">microStudio (mit Brython)</h3>
+<p>Brython ist auch die Engine, die hinter der Python-Version von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a>, der Programmiersprache von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> werkelt. Die in meinen Augen leider völlig unterbewertete kleine Fantasy-Konsole kann man sowohl <a href="https://microstudio.dev/">online auf den Seiten von microStudio</a> (Vorsicht! US-amerikanischer Server!) wie auch lokal auf dem eigenen Rechner nutzen. Die Nachteile von Brython (keinen Zugriff auf den <em>Scientific Stack</em>) werden teilweise dadurch ausgeglichen, daß man auch mit microStudio und Brython Zugriff auf JavaScript-Bibliotheken wie zum Beispiel <a href="https://pixijs.com/">PIXI.js</a> oder <a href="https://brm.io/matter-js/">Matter.js</a> hat. Damit kann man dann schon eine ganze Menge anstellen. Vor meiner jüngsten Entdeckung von PyScript mit Proseco (siehe unten) war microStudio mit Brython <a href="https://kantel.github.io/posts/2024032801_microstudio_noc_1/">mein Favorit</a>, wenn es um meine Versuche, Python-Versionen der Programme aus <em>Daniel Shiffmans</em> genialem Buch »<a href="https://natureofcode.com/">The Nature of Code</a>« zu schreiben. Und für die Entwicklung kleiner, webtauglicher Spiele ist microStudio mit Brython immer noch eine gute Wahl.</p>
+</section>
+</section>
+<section id="pyscript" class="level2">
+<h2 class="anchored" data-anchor-id="pyscript">PyScript</h2>
+<p>Das freie (Apache-2.0-Lizenz) Framework <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> mit dem Benutzer umfangreiche Python-Anwendungen im Browser erstellen können, und das von einem Team bei <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html">Anaconda</a> entwickelt wird, hatte ich lange links liegen lassen, weil mir eine »Killer-Applikation« fehlte. Bis ich gestern bei der Vorbereitung für diesen Beitrag auf der Seite »<a href="https://abav.lugaralgum.com/Resources-for-teaching-programming/">Resources for teaching programming for artists, designers and architects</a>* von <em>Alexandre Villares</em> das Modul <a href="https://proceso.cc/">Proseco</a> entdeckte.</p>
+<section id="pyscript-und-processing-mit-proseco" class="level3">
+<h3 class="anchored" data-anchor-id="pyscript-und-processing-mit-proseco">PyScript und Processing (mit Proseco)</h3>
+<p>Proceso ist ein Python-Paket für kreatives Programmieren im Web. Der Fokus liegt darauf, programmieren für Künstler, Designer, Pädagogen, Anfänger und alle anderen zugänglich zu machen. Das Paket bietet eine Python-Schnittstelle zur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">p5.js</a>-Bibliothek und ist stark von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> inspiriert. Proceso ist für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html">Pyodide</a>-basierte Umgebungen mit Schwerpunkt auf PyScript konzipiert.</p>
+<p>Auch Proseco kann man sowohl in der Cloud (zum Beispiel bei <a href="https://pyscript.com/">Anaconda</a> – Vorsicht! Wieder ein amerikanischer Server!), aber auch in einer selbstgehosteten Wolke oder in einer <a href="https://proceso.cc/welcome/getting_started#local-anaconda-vs-code">lokalen Umgebung</a> zum Beispiel mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> betreiben. Es kann mit <code>pip install proseco</code> auf dem eigenen Rechner installiert werden.</p>
+<p>Proseco scheint so etwas zu sein, von dem ich die letzten Monate geträumt habe: <a href="https://kantel.github.io/posts/2024072701_py5_pyscript/">Py5 im Browser</a>. Ich kann es kaum erwarten, erste Tests zu fahren, um festzustellen, ob Proseco dieses Versprechen auch einlöst. Ich habe also wieder zu tun. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54620166000/">Python with Glasses</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Franco-Belgian Comic Style. Illustration of a green python with glasses and a pointer in front of a chart with diagrams in a crowded office. Large shelves with many books on the walls. It’s a sunny morning</em>«. Modell: Flux (Pro), Style: None.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>TigerJython</category>
+  <category>Trinket</category>
+  <category>Turtle</category>
+  <category>VPython</category>
+  <category>PyScript</category>
+  <category>Proseco</category>
+  <category>Pygame</category>
+  <category>Pygbag</category>
+  <category>Pyxel</category>
+  <category>microStudiio</category>
+  <category>Brython</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025062801_python_im_browser/</guid>
+  <pubDate>Sat, 28 Jun 2025 19:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025062801_python_im_browser/images/pythonwglasses.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Die Mathematik der Demokratie: Das Wahlspiel mit dem Tiger und der Schlange</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -639,7 +721,7 @@ font-style: inherit;">"Ende der Simulation!"</span>)</span></code></pre></div>
 <li>George G. Szpiro: <em>Die verflixte Mathematik der Demokratie</em>, Berlin und Heidelberg, Zürich (Springer, Verlag Neue Züricher Zeitung) 2011</li>
 </ul>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54613406114/">Wahlen mit dem Tiger und der Schlange</a></em>, erstellt mit OpenArt.ai. Prompt: »<em>Colored franco-belgian comic style. Illustration of a tiger in a red dressing gown and a python with glasses each sit in their own voting booth and fill out ballot papers</em>«. Modell: Flux (Pro), Style: None.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54613406114/">Wahlen mit dem Tiger und der Schlange</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored franco-belgian comic style. Illustration of a tiger in a red dressing gown and a python with glasses each sit in their own voting booth and fill out ballot papers</em>«. Modell: Flux (Pro), Style: None.</p>
 
 
 </section>
@@ -3831,33 +3913,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025060101_mediadaten_mai_2025/</guid>
   <pubDate>Sun, 01 Jun 2025 15:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025060101_mediadaten_mai_2025/images/biber.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Aus der Nachbarschaft: Kaffeetrinken auf dem Kulturbunkerdach</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025052901_kulturbunker_2025/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54548748006/"><img src="https://kantel.github.io/posts/2025052901_kulturbunker_2025/images/kulturbunker-b.jpg" class="img-fluid"></a></p>
-<p>Die Saison hatte schon Anfang Mai begonnen und ich hatte es verschlampt. Nicht, daß ich nicht bei der Saisoneröffnung dabeigewesen wäre, aber ich habe – obwohl es eigentlich meine Chronistenpflicht ist – nicht in diesem <del>Weblog</del> Kritzelheft darauf hingewiesen. Jedenfalls: Es gibt morgen, <strong>Freitag, den 30. Mai 2025 von 15:00 Uhr bis 18:00 Uhr</strong> wieder ein Nachbarschaftskaffee auf dem <a href="https://kantel.github.io/posts/2023100601_kulturbunker/">Kulturbunkerdach in der Neuköllner Rungiusstraße&nbsp;19</a>, veranstaltet vom <a href="https://www.trial-error.org/projekte-1/kulturbunkerdach/">Kulturlabor Trial &amp; Error</a>.</p>
-<p>Und es wird wieder einiges geboten: Es gibt Kinderspiele (Wasserspiel, Ezyroller und mathematische Puzzles) mit Matthias, die <a href="https://www.kiezakademie-neukoelln.de/">Kiezakademie Neukölln</a> bietet eine Berufsberatung an, und Ihr könnt Yoga mit Mira üben. Natürlich gibt es auch wieder Kaffee und Kuchen, Tee, Schorlen und frische Waffeln, sowie eine Tauschecke und Ihr könnt nette Menschen treffen (unter anderem auch mich).</p>
-<p>Das Nachbarschaftskaffee findet in dieser Saison (von Mai bis September) jeden Freitag auf dem Kulturbunkerdach statt (außer bei Regen). Kommt also vorbei, trinkt mit Eurem Lieblingsblogger einen Kaffee und lasst Euch von den Aktivistinnen und Aktivisten von Trial&nbsp;&amp; Error überraschen.</p>
-<p><strong>Das gewohnte Caveat</strong>: Ich bin vom <a href="https://qm-glasower-strasse.de/">Quartiersmanagement Glasower Straße</a> zum (ehrenamtlichen) Paten dieses Projektes »<a href="https://qm-glasower-strasse.de/nachbarschaftscafe-auf-dem-kulturbunker-wieder-geoeffnet/">Nachbarschaftliches Miteinander auf dem Kulturbunker</a>« bestellt worden und daher natürlich immer ein wenig Partei. Aber das bin ich in diesem Fall gerne&nbsp;🤓, und das bin ich auch <a href="https://kantel.github.io/posts/2024041901_rip_gabi/">Gabi</a> schuldig.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54548748006/">Nachbarschafts-Café</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>Illustration of an open-air neighborhood café. People sit at tables under a tent roof, chatting, and drinking coffee from steaming cups. Factory buildings can be seen in the background</em>«, nach einem <a href="https://www.flickr.com/photos/schockwellenreiter/47040431434/">Referenzphoto</a> von <em><a href="https://kantel.github.io/posts/2024041901_rip_gabi/">Gabriele Kantel</a></em>. Modell: Flux LoRA, Style: Animated Feature.</p>
-
-
-
- ]]></description>
-  <category>Kiezfest</category>
-  <category>Kulturbunker</category>
-  <category>Neukölln</category>
-  <guid>https://kantel.github.io/posts/2025052901_kulturbunker_2025/</guid>
-  <pubDate>Thu, 29 May 2025 15:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025052901_kulturbunker_2025/images/kulturbunker.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

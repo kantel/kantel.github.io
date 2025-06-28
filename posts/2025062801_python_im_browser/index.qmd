@@ -1,0 +1,68 @@
+---
+title: "Auf zu neuen Ufern? Python im Browser"
+author: "Jörg Kantel"
+date: "2025-06-28 21:40:00"
+categories: [Python, TigerJython, Trinket, Turtle, VPython, PyScript, Proseco, Pygame, Pygbag, Pyxel, microStudiio, Brython, Creative Coding]
+image: "images/pythonwglasses.jpg"
+---
+
+[![](images/pythonwglasses-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54620166000/)
+
+Bei all meiner ([wiedererwachten](https://kantel.github.io/posts/2025052801_tigerjython_reloaded/)) Begeisterung für [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) habe ich nicht vergessen, daß der Software eine wichtige Eigenschaft fehlt: TigerJython läuft nicht im Browser. Das ist natürlich in der heutigen Zeit ein schwerwiegendes Handicap und so habe ich mich nach Alternativen umgeschaut.
+
+## WebTigerJython und WebTigerPython
+
+Das Java-basierte [WebTigerJython](https://webtigerjython.ethz.ch/) und das neuere, auf Python&nbsp;3 aufsetzende [WebTigerPython](https://webtigerpython.ethz.ch/) (noch [Beta](https://www.tigerjython.ch/de/news/WebTigerPython), hier der [Link zur Doku](https://docs.webtigerpython.ethz.ch/index.html)) sind die ersten Alternativen, die mir einfallen. Allerdings scheint WebTigerJython keine Möglichkeit zu haben, die Ergebnisse in eigene Seiten einzubetten. [WebTigerPython kann dies](https://docs.webtigerpython.ethz.ch/iframe.html) (als iFrames) und es kann auch Python&nbsp;3-Bibliotheken wie die [Turtle](https://docs.webtigerpython.ethz.ch/tjlibraries/turtle.html), aber auch den *Scientific Stack* (wie `numpy`, `scipy`, `sympy` oder die `matplotlib` etc.) nutzen. Doch bei meinen bisherigen Versuchen liefen die Scripte noch arg gemächlich. Hier erwarte ich noch dringend Verbesserungen, aber die Software ist ja auch noch Beta. Wenn sie das Beta-Stadium verlässt, werde ich sie erneut testen.
+
+## Trinket
+
+[Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) habe ich hier auf diesen Seiten schon häufig eingesetzt und die Ergebnisse lassen sich auch leicht als iFrames in eigene Seiten einbinden. Zwar hatte hatte ich mir vor einiger Zeit den kostenpflichtigen Plan [Code+](https://trinket.io/plans) geleistet, der angeblich Python&nbsp;3 (ebenfalls mit dem *Scientific Stack*, aber zum Beispiel auch mit [Pygame](https://github.com/kantel/trinket/blob/main/matplotlibtest/main.py)) können soll. Aber obwohl der [hier monierte Fehler](https://kantel.github.io/posts/2023073101_trinket_matplotlib/) mittlerweile behoben ist, bin ich damit nicht wirklich glücklich (Pygame zum Beispiel läuft immer noch nicht fehlerfrei). Daher kann ich (eingeschränkt!) nur den Umfang des kostenlosen Plans empfehlen.
+
+### Turtle
+
+Das große Plus von Trinket ist die Nutzung der Turtle im Browser, die ([fast](https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/)!) alle Befehle von Pythons Standard-Turtle abdeckt und die für eine Browser-Implementierung sehr schnell ist. Leider bekommt man bei Trinket nie heraus, welche Engine da im Hintergrund werkelt.
+
+### Processing
+
+Es gibt bei Trinket in der kostenlosen Version auch noch eine [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html)-Variante, die vermutlich auf [ProcessingJS](https://github.com/processing-js/processing-js) aufsetzt. Auch wenn diese – wie auch Processing.py selber – nicht mehr aktualisiert wird, sind die Ergebnisse recht ansprechend. Aber als zukunftsfähig würde ich das nicht (mehr) bezeichnen.
+
+### VPython
+
+Eine große Stärke (auch des kostenlosen Plans) von Trinket ist die Integration von [VPython](http://cognitiones.kantel-chaos-team.de/programmierung/python/vpython.html) als webbasiertes [GlowScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/glowwscript.html). Der Physiker *[Rhett Allain](https://blog.trinket.io/rhett-allain-sloppy-code/)* von der *Southeastern Louisiana University* stellt damit unglaubliche Dinge an, die er in seinem [Blog auf Wired](https://www.wired.com/author/rhett-allain/) und auf [seinem YouTube-Kanal](https://www.youtube.com/@DotPhysics) veröffentlicht. Aber VPython/GlowScript läut natürlich nicht nur auf Trinket, sondern es kann unter anderem auch auf [Web VPython](https://glowscript.org/) oder auch lokal zum Beispiel mit JupyterLab [genutzt werden](https://vpython.org/presentation2018/install.html).
+
+Der große Nachteil von Trinket ist, daß das Teil auf einem US-amerikanischen Server liegt. Und das ist in den heutigen Tagen der Trump-Administration und dem verstärkten Druck, seine digitale Souveränität zurückerobern zu müssen, natürlich leider für mich ein Grund, Trinket erst einmal nicht mehr zu nutzen. Aber ich hoffe trotzdem auf bessere Zeiten, denn »vor Trump« hatte ich gerne mit Trinket gespielt.
+
+## Pygame (via Pygbag)
+
+[Pygame](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html) (in Form der Fork [Pygame-CE](https://pyga.me/) *(Pygame Community Edition)*) unterstützt mit [Pygbag](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html) die Möglichkeit, Pygame-Programme [webtauglich zu machen](https://kantel.github.io/posts/2024081502_pygame_ce/). Auch wenn es damit zwischenzeitlich mal mit einem [Bug in macOS Sequoia Probleme](https://kantel.github.io/posts/2025022501_noc_python/) gab, ist das eine hervorragende Option, Pygame-Programme ins Web zu bringen und in die eigenen Seiten einzubinden.
+
+## Pyxel
+
+Die kleine (Python&nbsp;3-) Retrogame-Engine oder Fantasy-Konsole [Pyxel](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html) kann von Hause aus ([mit ein paar Kommandozeilen](https://kantel.github.io/posts/2025041103_pyxel_tut_3/)) die Spiele als HTML-Dateien herausschreiben, die ebenfalls in die eigenen Seiten eingebunden werden können. Im Gegensatz zur Pygame-App mit Pygbag gibt diese beim Verlassen der Seite keine Warnung heraus. Auch wenn ich verstehe, warum Pygbag das macht, finde ich das Webverhalten von Pyxel angenehmer.
+
+## Brython
+
+[Brython](http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html) (**Br**owser P**ython**) ist eine freie (BSD-3 Lizenz) Python-3-Implementierung, die im Browser läuft und als Ersatz für JavaScript gedacht ist. Neben der Standardbibliothek können einmal auch andere (Pure Python) Module geladen werden, allerdings keine Module, die zum Beispiel C- oder FORTRAN-basierte Teile enthalten. Das schließt Module wie `numpy`, `scipy`, `matplotlib` oder `pandas` aus. Dafür gibt es aber noch das »eingebautes« Modul `browser`, das den Python-Skripten Zugriffe auf das DOM-API erlaubt.
+
+Brython ist als kompletter JavaScript-Ersatz konzipiert, kann also auch JavaScript-Objekte nutzen. Die Geschwindigkeit soll an die von CPython heranreichen.
+
+### microStudio (mit Brython)
+
+Brython ist auch die Engine, die hinter der Python-Version von [microScript](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html), der Programmiersprache von [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) werkelt. Die in meinen Augen leider völlig unterbewertete kleine Fantasy-Konsole kann man sowohl [online auf den Seiten von microStudio](https://microstudio.dev/) (Vorsicht! US-amerikanischer Server!) wie auch lokal auf dem eigenen Rechner nutzen. Die Nachteile von Brython (keinen Zugriff auf den *Scientific Stack*) werden teilweise dadurch ausgeglichen, daß man auch mit microStudio und Brython Zugriff auf JavaScript-Bibliotheken wie zum Beispiel [PIXI.js](https://pixijs.com/) oder [Matter.js](https://brm.io/matter-js/) hat. Damit kann man dann schon eine ganze Menge anstellen. Vor meiner jüngsten Entdeckung von PyScript mit Proseco (siehe unten) war microStudio mit Brython [mein Favorit](https://kantel.github.io/posts/2024032801_microstudio_noc_1/), wenn es um meine Versuche, Python-Versionen der Programme aus *Daniel Shiffmans* genialem Buch »[The Nature of Code](https://natureofcode.com/)« zu schreiben. Und für die Entwicklung kleiner, webtauglicher Spiele ist microStudio mit Brython immer noch eine gute Wahl.
+
+## PyScript
+
+Das freie (Apache-2.0-Lizenz) Framework [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) mit dem Benutzer umfangreiche Python-Anwendungen im Browser erstellen können, und das von einem Team bei [Anaconda](http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html) entwickelt wird, hatte ich lange links liegen lassen, weil mir eine »Killer-Applikation« fehlte. Bis ich gestern bei der Vorbereitung für diesen Beitrag auf der Seite »[Resources for teaching programming for artists, designers and architects](https://abav.lugaralgum.com/Resources-for-teaching-programming/)* von *Alexandre Villares* das Modul [Proseco](https://proceso.cc/) entdeckte.
+
+### PyScript und Processing (mit Proseco)
+
+Proceso ist ein Python-Paket für kreatives Programmieren im Web. Der Fokus liegt darauf, programmieren für Künstler, Designer, Pädagogen, Anfänger und alle anderen zugänglich zu machen. Das Paket bietet eine Python-Schnittstelle zur [p5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Bibliothek und ist stark von [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) inspiriert. Proceso ist für [Pyodide](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html)-basierte Umgebungen mit Schwerpunkt auf PyScript konzipiert.
+
+Auch Proseco kann man sowohl in der Cloud (zum Beispiel bei [Anaconda](https://pyscript.com/) – Vorsicht! Wieder ein amerikanischer Server!), aber auch in einer selbstgehosteten Wolke oder in einer [lokalen Umgebung](https://proceso.cc/welcome/getting_started#local-anaconda-vs-code) zum Beispiel mit [Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html) betreiben. Es kann mit `pip install proseco` auf dem eigenen Rechner installiert werden.
+
+Proseco scheint so etwas zu sein, von dem ich die letzten Monate geträumt habe: [Py5 im Browser](https://kantel.github.io/posts/2024072701_py5_pyscript/). Ich kann es kaum erwarten, erste Tests zu fahren, um festzustellen, ob Proseco dieses Versprechen auch einlöst. Ich habe also wieder zu tun. *Still digging!*
+
+---
+
+**Bild**: *[Python with Glasses](https://www.flickr.com/photos/schockwellenreiter/54620166000/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Franco-Belgian Comic Style. Illustration of a green python with glasses and a pointer in front of a chart with diagrams in a crowded office. Large shelves with many books on the walls. It’s a sunny morning*«. Modell: Flux (Pro), Style: None.
+
