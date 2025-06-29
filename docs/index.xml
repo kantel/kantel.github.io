@@ -10,7 +10,458 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Sat, 28 Jun 2025 19:40:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 29 Jun 2025 17:35:00 GMT</lastBuildDate>
+<item>
+  <title>Prost! Erste Schritte mit Prosec(c)o</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025062901_proseco_first_steps/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/"><img src="https://kantel.github.io/posts/2025062901_proseco_first_steps/images/proseco-b.jpg" class="img-fluid"></a></p>
+<p>Durch meinen <a href="https://kantel.github.io/posts/2025062801_python_im_browser/">gestrigen Beitrag</a> angefixt, wollte ich heute unbedingt etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> und <a href="https://proceso.cc/">Proseco</a> anstellen. Nachdem mich die <a href="https://proceso.cc/welcome/getting_started#local-anaconda-vs-code">Dokumentation</a> erst einmal in die Irre führte (<code>pip install proceso</code> funktionierte bei mir einfach nicht), fand ich durch wildes Herumexperimentieren heraus, daß ich Proseco auch lokal auf meinem Rechner ohne eine vorhergegangene Installationsorgie betreiben kann:</p>
+<p>Das Einzige, was vorhanden sein muß, ist ein installiertes, einigermaßen aktuelles Python und der Texteditor Eures Vertrauens (bei mir ist es <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> mit den üblichen <em>Python Extensios</em>). Danach habe ich mir von <a href="https://pyscript.com/@4b2d42a1-0e0c-430f-8b20-4b2c7ff0dc3e/58197361-1c5f-4d47-93a9-91570255fe85/latest?files=index.html">diesem Projekt-Template</a> einfach die Dateien <code>index.html</code>, <code>pyscript.json</code>, <code>style.css</code> und <code>sketch.py</code> heruntergeladen und zusammen in <strong>einem</strong> Projektverzeichnis abgelegt. Falls Ihr nichts seltsames vorhabt, könnt Ihr erst einmal die ersten drei Dateien unverändert lassen, lediglich in der Datei <code>sketch.py</code> müßt Ihr Euren eigenen Code hineinschreiben. In meinem Fall war das:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> proceso <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Sketch</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">p5 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Sketch()</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> setup():</span>
+<span id="cb1-7">    p5.create_canvas(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>)</span>
+<span id="cb1-8">    p5.background(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">49</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">197</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">244</span>)</span>
+<span id="cb1-9">    p5.fill(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">146</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">82</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">161</span>)</span>
+<span id="cb1-10">    p5.rect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, p5.width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, p5.height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb1-11">    p5.fill(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"></span>
+<span id="cb1-14"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb1-15">    p5.circle(p5.mouse_x, p5.mouse_y, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb1-16"></span>
+<span id="cb1-17"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> mouse_clicked():</span>
+<span id="cb1-18">    p5.fill(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">220</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>)</span>
+<span id="cb1-19"></span>
+<span id="cb1-20">p5.run_sketch(setup<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>setup, draw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>draw, mouse_clicked<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>mouse_clicked)</span></code></pre></div>
+<p>Wenn ich dann die <code>index.html</code> <strong>hinter</strong> einem (lokalen) Webserver (ich nutze dafür immer noch den betagten, aber bewährten <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a>) aufrufe, bekommt Ihr untenstehendes Ergebnis angezeigt:</p>
+<iframe src="proseco/index.html" width="100%" height="400">
+</iframe>
+<p>Das ist eine abgewandelt Version des bekannten <a href="https://py5coding.org/index.html">Py5-Beispielskripts</a> (ein Mausklick ändert die Farben der Bällchen), das ich noch ein wenig aufgepeppt habe.</p>
+<p>Wenn Ihr Euch die <code>index.html</code> anschaut,</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;!DOCTYPE</span> html<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">html</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> lang</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"de"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">head</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-4">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">title</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span>Python mit Balls<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">title</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-5">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> charset</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"UTF-8"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-6">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"viewport"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> content</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"width=device-width,initial-scale=1"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-7">    </span>
+<span id="cb2-8">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- Load PyScript --&gt;</span></span>
+<span id="cb2-9">     <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">link</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> rel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stylesheet"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://pyscript.net/releases/2024.1.3/core.css"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb2-10">     <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> type=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"module"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://pyscript.net/releases/2024.1.3/core.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span> </span>
+<span id="cb2-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- Load p5.js --&gt;</span></span>
+<span id="cb2-12">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-13">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- Load custom styles --&gt;</span></span>
+<span id="cb2-14">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">link</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> rel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stylesheet"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"style.css"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb2-15"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">head</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-16"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">body</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-17">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">main</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">main</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span>   </span>
+<span id="cb2-18">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- Load sketch --&gt;</span></span>
+<span id="cb2-19">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> type=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"py"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sketch.py"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> config</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pyscript.json"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-20"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">body</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-21"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">html</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>dann seht Ihr, daß die PyScript-Dateien (JavaScript und CSS) sowie die minimierte P5.js-Datei von extern geladen werden. Ich habe es versucht: Zwar kann ich die <code>p5.js</code>-Datei auch lokal auf meinem Rechner installieren und zur Mitarbeit bewegen, die PyScript <code>core.js</code>-Datei dagegen war ums Verrecken nicht zur lokalen Mitarbeit bereit, sie bestand darauf, auf dem Server von <code>pyscript.net</code> aufgerufen zu werden.</p>
+<p>Das steht natürlich ein wenig meinen Bemühungen um digitale Souveränität im Wege, ist aber leider bei vielen Diensten, die über CDNs geladen werden, gängige Praxis. Daher habe ich das erst einmal hingenommen. Doch wenn jemand von Euch da draußen eine Idee hat, wie man die <code>core.js</code> und die <code>core.css</code> auch lokal installiert bekommt, bitte ich um Mitteilung in meinen Kommentaren.</p>
+<p>Die installierte <code>style.css</code> birgt keine Geheimnisse,</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb3-1">html<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb3-2">body {</span>
+<span id="cb3-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">margin</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-5">}</span>
+<span id="cb3-6"></span>
+<span id="cb3-7">canvas {</span>
+<span id="cb3-8">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">display</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">block</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-9">}</span></code></pre></div>
+<p>aber CSS-Gurus wissen sicher, wie sie sich darin austoben können.</p>
+<p>Noch ein Geheimnis ist für mich die Konfigurationsdatei <code>pyscript.json</code>:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"packages"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"proceso"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"name"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"proceso starter Copy"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>Das ist der einzige Ort, an dem überhaupt <code>proseco</code> vorkommt und darüber weiß vermutlich PyScript, daß und wo es sich das Modul Proseco hereinziehen muß. Momentan nehme ich daß noch einfach so hin (ich freue mich, daß ich alles zum Laufen. bekommen habe), aber irgendwann will ich die Zusammenhänge kapieren. <em>Still digging!</em></p>
+<p>Meine erste Einschätzung ist, daß Proseco sehr vielversprechend ist. Es vermählt nicht nur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> mit dem Python-Ökosystem, sondern erlaubt auch die Erstellung von interaktiven Web-Anwendungen. Es ist daher für alle interessant, die – wie ich – Pickel von den geschweiften Klammern von JavaScript bekommen. Schaun wir mal, was ich damit noch alles anstellen kann. Ich habe also immer noch zu tun!</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/">Python with Balls</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored Franco-Belgian Comic Style. Illustration of a green python with glasses and a glass of Prosecco in hand is being pelted with colorful plastic balls by white rabbits. The rabbits wear colorful vests and top hats and carry a pocket watch with a large dial. The setting is a fairytale-like small town with colorful, crooked houses</em>«. Modell: Flux (Pro), Style: None.</p>
+
+
+
+ ]]></description>
+  <category>Python</category>
+  <category>PyScript</category>
+  <category>Proseco</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025062901_proseco_first_steps/</guid>
+  <pubDate>Sun, 29 Jun 2025 17:35:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025062901_proseco_first_steps/images/proseco.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Auf zu neuen Ufern? Python im Browser</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -86,7 +537,7 @@
   <category>Pygame</category>
   <category>Pygbag</category>
   <category>Pyxel</category>
-  <category>microStudiio</category>
+  <category>microStudio</category>
   <category>Brython</category>
   <category>Creative Coding</category>
   <guid>https://kantel.github.io/posts/2025062801_python_im_browser/</guid>
@@ -3880,39 +4331,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/</guid>
   <pubDate>Mon, 02 Jun 2025 14:10:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/images/tigerpython.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Die »Mediadaten« für den Mai 2025</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025060101_mediadaten_mai_2025/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54362957333/"><img src="https://kantel.github.io/posts/2025060101_mediadaten_mai_2025/images/biber-b.jpg" class="img-fluid"></a></p>
-<p>Mit dem heutigen neuen Monat geht hoffentlich der Frühling <em>peu à peu</em> in den Sommer über. Daher ist es nicht nur Zeit für ein (zugegeben leicht kitschiges) <a href="https://www.flickr.com/photos/schockwellenreiter/54362957333/">Bannerbild</a>, das einen Biber mit Laptop in einem frühlingshaften Garten zeigt, sondern auch Zeit für das, was hochtrabend manches Mal auch <em>Mediadaten</em> genannt wird: Im Mai 2025 hatte der <em>Schockwellenreiter</em> laut seinem nicht immer zuverlässigen, aber dafür (hoffentlich!) datenschutzkonformen <del>Geißenpeter</del> <a href="https://www.goatcounter.com/">Neugiertool</a> exakt <strong>6.598 Seitenaufrufe</strong>. Wie immer täuscht die Exaktheit der Ziffer eine Genauigkeit der Zahl nur vor, trotzdem freue ich mich über jede Besucherin und jeden Besucher und bedanke mich bei allen meinen Leserinnen und Lesern.</p>
-<p>😎 &nbsp; <em>Bleibt mir gewogen!</em></p>
-<p>Die <em>Top Five</em> für des Vormonat bergen auch keine Überraschungen:</p>
-<ol type="1">
-<li>Weit vorne liegt immer noch – wie schon seit Monaten – der Beitrag »<a href="https://kantel.github.io/posts/2024011002_ki_ohne_zensor/">Bildgeneratoren und Künstliche Intelligenz – ohne Zensoren</a>« vom 10. Januar 2024.</li>
-<li>Dann folgt – aber schon deutlich abgeschlagen – der Artikel über meine <em>neue digitale Rumpelkammer</em> »<a href="https://kantel.github.io/posts/2024081201_anytype/">All about Anytype</a>« vom 12. August 2024.</li>
-<li>Auf Platz 3 der Rant »<a href="https://kantel.github.io/posts/2023091002_typst_1st_steps/">Erste (und vermutlich letzte) Schritte mit Typst</a>« vom 10.&nbsp;September&nbsp;2023.</li>
-<li>Der einzige Newcomer aus dem Vormonat ist mein Beitrag »<a href="https://kantel.github.io/posts/2025051201_72_jahre/">Ich hatte gestern Geburtstag: 72&nbsp;Jahre</a>«, mit dem ich mich am 12. Mai 2025 selbst feierte.</li>
-<li>Und zum Schluß noch ein über ein Jahr alter Post aus meinem Backkatalog: »<a href="https://kantel.github.io/posts/2024031501_atom_wird_pulsar/">Der Atom-Editor lebt – und heißt jetzt Pulsar</a>« vom 15. März 2024, dessen Popularität ich selber nicht wirklich verstehe.</li>
-</ol>
-<p>Bis auf eine Ausnahme sind alle Beiträge dieses Rankings aus dem letzten Jahr. Mein Backkatalog scheint also von unser aller Datenkrake ernst genommen zu werden. Ich weiß allerdings nicht, ob mir das Angst machen oder ob ich das gut finden soll.&nbsp;🤨</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54362957333/">Ein Biber im Frühling</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored french comic style, a beaver in a red dressing gown sits on a bench in the garden with a laptop on his lap, next to him a small table with a steaming cup of coffee. It is spring, many flowering plants and many small birds can be seen, the warm spring sun is bathing the scenery</em>«. Modell: Flux (Pro), Style: None.</p>
-
-
-
- ]]></description>
-  <category>Mediadaten</category>
-  <category>Interna</category>
-  <guid>https://kantel.github.io/posts/2025060101_mediadaten_mai_2025/</guid>
-  <pubDate>Sun, 01 Jun 2025 15:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025060101_mediadaten_mai_2025/images/biber.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

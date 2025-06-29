@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Auf zu neuen Ufern? Python im Browser – Der Schockwellenreiter</title>
+<title>Prost! Erste Schritte mit Prosec(c)o – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -127,20 +161,11 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Auf zu neuen Ufern? Python im Browser</h1>
+<h1 class="title">Prost! Erste Schritte mit Prosec(c)o</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Python</div>
-    <div class="quarto-category">TigerJython</div>
-    <div class="quarto-category">Trinket</div>
-    <div class="quarto-category">Turtle</div>
-    <div class="quarto-category">VPython</div>
     <div class="quarto-category">PyScript</div>
     <div class="quarto-category">Proseco</div>
-    <div class="quarto-category">Pygame</div>
-    <div class="quarto-category">Pygbag</div>
-    <div class="quarto-category">Pyxel</div>
-    <div class="quarto-category">microStudio</div>
-    <div class="quarto-category">Brython</div>
     <div class="quarto-category">Creative Coding</div>
   </div>
   </div>
@@ -159,7 +184,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">28. Juni 2025</p>
+      <p class="date">29. Juni 2025</p>
     </div>
   </div>
   
@@ -171,60 +196,76 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54620166000/"><img src="images/pythonwglasses-b.jpg" class="img-fluid"></a></p>
-<p>Bei all meiner (<a href="https://kantel.github.io/posts/2025052801_tigerjython_reloaded/">wiedererwachten</a>) Begeisterung für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> habe ich nicht vergessen, daß der Software eine wichtige Eigenschaft fehlt: TigerJython läuft nicht im Browser. Das ist natürlich in der heutigen Zeit ein schwerwiegendes Handicap und so habe ich mich nach Alternativen umgeschaut.</p>
-<section id="webtigerjython-und-webtigerpython" class="level2">
-<h2 class="anchored" data-anchor-id="webtigerjython-und-webtigerpython">WebTigerJython und WebTigerPython</h2>
-<p>Das Java-basierte <a href="https://webtigerjython.ethz.ch/">WebTigerJython</a> und das neuere, auf Python&nbsp;3 aufsetzende <a href="https://webtigerpython.ethz.ch/">WebTigerPython</a> (noch <a href="https://www.tigerjython.ch/de/news/WebTigerPython">Beta</a>, hier der <a href="https://docs.webtigerpython.ethz.ch/index.html">Link zur Doku</a>) sind die ersten Alternativen, die mir einfallen. Allerdings scheint WebTigerJython keine Möglichkeit zu haben, die Ergebnisse in eigene Seiten einzubetten. <a href="https://docs.webtigerpython.ethz.ch/iframe.html">WebTigerPython kann dies</a> (als iFrames) und es kann auch Python&nbsp;3-Bibliotheken wie die <a href="https://docs.webtigerpython.ethz.ch/tjlibraries/turtle.html">Turtle</a>, aber auch den <em>Scientific Stack</em> (wie <code>numpy</code>, <code>scipy</code>, <code>sympy</code> oder die <code>matplotlib</code> etc.) nutzen. Doch bei meinen bisherigen Versuchen liefen die Scripte noch arg gemächlich. Hier erwarte ich noch dringend Verbesserungen, aber die Software ist ja auch noch Beta. Wenn sie das Beta-Stadium verlässt, werde ich sie erneut testen.</p>
-</section>
-<section id="trinket" class="level2">
-<h2 class="anchored" data-anchor-id="trinket">Trinket</h2>
-<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> habe ich hier auf diesen Seiten schon häufig eingesetzt und die Ergebnisse lassen sich auch leicht als iFrames in eigene Seiten einbinden. Zwar hatte hatte ich mir vor einiger Zeit den kostenpflichtigen Plan <a href="https://trinket.io/plans">Code+</a> geleistet, der angeblich Python&nbsp;3 (ebenfalls mit dem <em>Scientific Stack</em>, aber zum Beispiel auch mit <a href="https://github.com/kantel/trinket/blob/main/matplotlibtest/main.py">Pygame</a>) können soll. Aber obwohl der <a href="https://kantel.github.io/posts/2023073101_trinket_matplotlib/">hier monierte Fehler</a> mittlerweile behoben ist, bin ich damit nicht wirklich glücklich (Pygame zum Beispiel läuft immer noch nicht fehlerfrei). Daher kann ich (eingeschränkt!) nur den Umfang des kostenlosen Plans empfehlen.</p>
-<section id="turtle" class="level3">
-<h3 class="anchored" data-anchor-id="turtle">Turtle</h3>
-<p>Das große Plus von Trinket ist die Nutzung der Turtle im Browser, die (<a href="https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/">fast</a>!) alle Befehle von Pythons Standard-Turtle abdeckt und die für eine Browser-Implementierung sehr schnell ist. Leider bekommt man bei Trinket nie heraus, welche Engine da im Hintergrund werkelt.</p>
-</section>
-<section id="processing" class="level3">
-<h3 class="anchored" data-anchor-id="processing">Processing</h3>
-<p>Es gibt bei Trinket in der kostenlosen Version auch noch eine <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a>-Variante, die vermutlich auf <a href="https://github.com/processing-js/processing-js">ProcessingJS</a> aufsetzt. Auch wenn diese – wie auch Processing.py selber – nicht mehr aktualisiert wird, sind die Ergebnisse recht ansprechend. Aber als zukunftsfähig würde ich das nicht (mehr) bezeichnen.</p>
-</section>
-<section id="vpython" class="level3">
-<h3 class="anchored" data-anchor-id="vpython">VPython</h3>
-<p>Eine große Stärke (auch des kostenlosen Plans) von Trinket ist die Integration von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/vpython.html">VPython</a> als webbasiertes <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/glowwscript.html">GlowScript</a>. Der Physiker <em><a href="https://blog.trinket.io/rhett-allain-sloppy-code/">Rhett Allain</a></em> von der <em>Southeastern Louisiana University</em> stellt damit unglaubliche Dinge an, die er in seinem <a href="https://www.wired.com/author/rhett-allain/">Blog auf Wired</a> und auf <a href="https://www.youtube.com/@DotPhysics">seinem YouTube-Kanal</a> veröffentlicht. Aber VPython/GlowScript läut natürlich nicht nur auf Trinket, sondern es kann unter anderem auch auf <a href="https://glowscript.org/">Web VPython</a> oder auch lokal zum Beispiel mit JupyterLab <a href="https://vpython.org/presentation2018/install.html">genutzt werden</a>.</p>
-<p>Der große Nachteil von Trinket ist, daß das Teil auf einem US-amerikanischen Server liegt. Und das ist in den heutigen Tagen der Trump-Administration und dem verstärkten Druck, seine digitale Souveränität zurückerobern zu müssen, natürlich leider für mich ein Grund, Trinket erst einmal nicht mehr zu nutzen. Aber ich hoffe trotzdem auf bessere Zeiten, denn »vor Trump« hatte ich gerne mit Trinket gespielt.</p>
-</section>
-</section>
-<section id="pygame-via-pygbag" class="level2">
-<h2 class="anchored" data-anchor-id="pygame-via-pygbag">Pygame (via Pygbag)</h2>
-<p><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygame.html">Pygame</a> (in Form der Fork <a href="https://pyga.me/">Pygame-CE</a> <em>(Pygame Community Edition)</em>) unterstützt mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pygbag.html">Pygbag</a> die Möglichkeit, Pygame-Programme <a href="https://kantel.github.io/posts/2024081502_pygame_ce/">webtauglich zu machen</a>. Auch wenn es damit zwischenzeitlich mal mit einem <a href="https://kantel.github.io/posts/2025022501_noc_python/">Bug in macOS Sequoia Probleme</a> gab, ist das eine hervorragende Option, Pygame-Programme ins Web zu bringen und in die eigenen Seiten einzubinden.</p>
-</section>
-<section id="pyxel" class="level2">
-<h2 class="anchored" data-anchor-id="pyxel">Pyxel</h2>
-<p>Die kleine (Python&nbsp;3-) Retrogame-Engine oder Fantasy-Konsole <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a> kann von Hause aus (<a href="https://kantel.github.io/posts/2025041103_pyxel_tut_3/">mit ein paar Kommandozeilen</a>) die Spiele als HTML-Dateien herausschreiben, die ebenfalls in die eigenen Seiten eingebunden werden können. Im Gegensatz zur Pygame-App mit Pygbag gibt diese beim Verlassen der Seite keine Warnung heraus. Auch wenn ich verstehe, warum Pygbag das macht, finde ich das Webverhalten von Pyxel angenehmer.</p>
-</section>
-<section id="brython" class="level2">
-<h2 class="anchored" data-anchor-id="brython">Brython</h2>
-<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a> (<strong>Br</strong>owser P<strong>ython</strong>) ist eine freie (BSD-3 Lizenz) Python-3-Implementierung, die im Browser läuft und als Ersatz für JavaScript gedacht ist. Neben der Standardbibliothek können einmal auch andere (Pure Python) Module geladen werden, allerdings keine Module, die zum Beispiel C- oder FORTRAN-basierte Teile enthalten. Das schließt Module wie <code>numpy</code>, <code>scipy</code>, <code>matplotlib</code> oder <code>pandas</code> aus. Dafür gibt es aber noch das »eingebautes« Modul <code>browser</code>, das den Python-Skripten Zugriffe auf das DOM-API erlaubt.</p>
-<p>Brython ist als kompletter JavaScript-Ersatz konzipiert, kann also auch JavaScript-Objekte nutzen. Die Geschwindigkeit soll an die von CPython heranreichen.</p>
-<section id="microstudio-mit-brython" class="level3">
-<h3 class="anchored" data-anchor-id="microstudio-mit-brython">microStudio (mit Brython)</h3>
-<p>Brython ist auch die Engine, die hinter der Python-Version von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microscript.html">microScript</a>, der Programmiersprache von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> werkelt. Die in meinen Augen leider völlig unterbewertete kleine Fantasy-Konsole kann man sowohl <a href="https://microstudio.dev/">online auf den Seiten von microStudio</a> (Vorsicht! US-amerikanischer Server!) wie auch lokal auf dem eigenen Rechner nutzen. Die Nachteile von Brython (keinen Zugriff auf den <em>Scientific Stack</em>) werden teilweise dadurch ausgeglichen, daß man auch mit microStudio und Brython Zugriff auf JavaScript-Bibliotheken wie zum Beispiel <a href="https://pixijs.com/">PIXI.js</a> oder <a href="https://brm.io/matter-js/">Matter.js</a> hat. Damit kann man dann schon eine ganze Menge anstellen. Vor meiner jüngsten Entdeckung von PyScript mit Proseco (siehe unten) war microStudio mit Brython <a href="https://kantel.github.io/posts/2024032801_microstudio_noc_1/">mein Favorit</a>, wenn es um meine Versuche ging, Python-Versionen der Programme aus <em>Daniel Shiffmans</em> genialem Buch »<a href="https://natureofcode.com/">The Nature of Code</a>« zu schreiben. Und für die Entwicklung kleiner, webtauglicher Spiele ist microStudio mit Brython sowieso immer noch eine gute Wahl.</p>
-</section>
-</section>
-<section id="pyscript" class="level2">
-<h2 class="anchored" data-anchor-id="pyscript">PyScript</h2>
-<p>Das freie (Apache-2.0-Lizenz) Framework <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a>, mit dem Benutzer umfangreiche Python-Anwendungen im Browser erstellen können, und das von einem Team bei <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/anaconda.html">Anaconda</a> entwickelt wird, hatte ich lange links liegen lassen, weil mir eine »Killer-Applikation« fehlte. Bis ich gestern bei der Vorbereitung für diesen Beitrag auf der Seite »<a href="https://abav.lugaralgum.com/Resources-for-teaching-programming/">Resources for teaching programming for artists, designers and architects</a>« von <em>Alexandre Villares</em> das Modul <a href="https://proceso.cc/">Proseco</a> entdeckte.</p>
-<section id="pyscript-und-processing-mit-proseco" class="level3">
-<h3 class="anchored" data-anchor-id="pyscript-und-processing-mit-proseco">PyScript und Processing (mit Proseco)</h3>
-<p>Proceso ist ein Python-Paket für kreatives Programmieren im Web. Der Fokus liegt darauf, Programmieren für Künstler, Designer, Pädagogen, Anfänger und alle anderen zugänglich zu machen. Das Paket bietet eine Python-Schnittstelle zur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">p5.js</a>-Bibliothek und ist stark von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> inspiriert. Proceso ist für <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html">Pyodide</a>-basierte Umgebungen mit Schwerpunkt auf PyScript konzipiert.</p>
-<p>Auch Proseco kann man sowohl in der Cloud (zum Beispiel bei <a href="https://pyscript.com/">Anaconda</a> – Vorsicht! Wieder ein amerikanischer Server!), aber auch in einer selbstgehosteten Wolke oder in einer <a href="https://proceso.cc/welcome/getting_started#local-anaconda-vs-code">lokalen Umgebung</a> zum Beispiel mit <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> betreiben. Es kann mit <code>pip install proseco</code> auf dem eigenen Rechner installiert werden.</p>
-<p>Proseco scheint so etwas zu sein, von dem ich die letzten Monate geträumt habe: <strong><a href="https://kantel.github.io/posts/2024072701_py5_pyscript/">Py5 im Browser</a></strong>. Ich kann es kaum erwarten, erste Tests zu fahren, um festzustellen, ob Proseco dieses Versprechen auch wirklich einlöst. Ich habe also wieder zu tun. <em>Still digging!</em></p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/"><img src="images/proseco-b.jpg" class="img-fluid"></a></p>
+<p>Durch meinen <a href="https://kantel.github.io/posts/2025062801_python_im_browser/">gestrigen Beitrag</a> angefixt, wollte ich heute unbedingt etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> und <a href="https://proceso.cc/">Proseco</a> anstellen. Nachdem mich die <a href="https://proceso.cc/welcome/getting_started#local-anaconda-vs-code">Dokumentation</a> erst einmal in die Irre führte (<code>pip install proceso</code> funktionierte bei mir einfach nicht), fand ich durch wildes Herumexperimentieren heraus, daß ich Proseco auch lokal auf meinem Rechner ohne eine vorhergegangene Installationsorgie betreiben kann:</p>
+<p>Das Einzige, was vorhanden sein muß, ist ein installiertes, einigermaßen aktuelles Python und der Texteditor Eures Vertrauens (bei mir ist es <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> mit den üblichen <em>Python Extensios</em>). Danach habe ich mir von <a href="https://pyscript.com/@4b2d42a1-0e0c-430f-8b20-4b2c7ff0dc3e/58197361-1c5f-4d47-93a9-91570255fe85/latest?files=index.html">diesem Projekt-Template</a> einfach die Dateien <code>index.html</code>, <code>pyscript.json</code>, <code>style.css</code> und <code>sketch.py</code> heruntergeladen und zusammen in <strong>einem</strong> Projektverzeichnis abgelegt. Falls Ihr nichts seltsames vorhabt, könnt Ihr erst einmal die ersten drei Dateien unverändert lassen, lediglich in der Datei <code>sketch.py</code> müßt Ihr Euren eigenen Code hineinschreiben. In meinem Fall war das:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> proceso <span class="im">import</span> Sketch</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">from</span> random <span class="im">import</span> randint</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a>p5 <span class="op">=</span> Sketch()</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">def</span> setup():</span>
+<span id="cb1-7"><a href="#cb1-7"></a>    p5.create_canvas(<span class="dv">640</span>, <span class="dv">400</span>)</span>
+<span id="cb1-8"><a href="#cb1-8"></a>    p5.background(<span class="dv">49</span>, <span class="dv">197</span>, <span class="dv">244</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    p5.fill(<span class="dv">146</span>, <span class="dv">82</span>, <span class="dv">161</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>    p5.rect(<span class="dv">40</span>, <span class="dv">40</span>, p5.width <span class="op">-</span> <span class="dv">80</span>, p5.height <span class="op">-</span> <span class="dv">80</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>    p5.fill(randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), <span class="dv">100</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a></span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">def</span> draw():</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    p5.circle(p5.mouse_x, p5.mouse_y, <span class="dv">20</span>)</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="kw">def</span> mouse_clicked():</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    p5.fill(randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), <span class="dv">100</span>)</span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a>p5.run_sketch(setup<span class="op">=</span>setup, draw<span class="op">=</span>draw, mouse_clicked<span class="op">=</span>mouse_clicked)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wenn ich dann die <code>index.html</code> <strong>hinter</strong> einem (lokalen) Webserver (ich nutze dafür immer noch den betagten, aber bewährten <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a>) aufrufe, bekommt Ihr untenstehendes Ergebnis angezeigt:</p>
+<iframe src="proseco/index.html" width="100%" height="400">
+</iframe>
+<p>Das ist eine abgewandelt Version des bekannten <a href="https://py5coding.org/index.html">Py5-Beispielskripts</a> (ein Mausklick ändert die Farben der Bällchen), das ich noch ein wenig aufgepeppt habe.</p>
+<p>Wenn Ihr Euch die <code>index.html</code> anschaut,</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"de"</span><span class="dt">&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Python mit Balls<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">"UTF-8"</span><span class="dt">&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> name</span><span class="op">=</span><span class="st">"viewport"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"width=device-width,initial-scale=1"</span><span class="dt">&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    </span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="co">&lt;!-- Load PyScript --&gt;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>     <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://pyscript.net/releases/2024.1.3/core.css"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>     <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">"module"</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://pyscript.net/releases/2024.1.3/core.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="co">&lt;!-- Load p5.js --&gt;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="co">&lt;!-- Load custom styles --&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"style.css"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="dt">&lt;</span><span class="kw">main</span><span class="dt">&gt;&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span>   </span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="co">&lt;!-- Load sketch --&gt;</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">"py"</span><span class="ot"> src</span><span class="op">=</span><span class="st">"sketch.py"</span><span class="ot"> config</span><span class="op">=</span><span class="st">"pyscript.json"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>dann seht Ihr, daß die PyScript-Dateien (JavaScript und CSS) sowie die minimierte P5.js-Datei von extern geladen werden. Ich habe es versucht: Zwar kann ich die <code>p5.js</code>-Datei auch lokal auf meinem Rechner installieren und zur Mitarbeit bewegen, die PyScript <code>core.js</code>-Datei dagegen war ums Verrecken nicht zur lokalen Mitarbeit bereit, sie bestand darauf, auf dem Server von <code>pyscript.net</code> aufgerufen zu werden.</p>
+<p>Das steht natürlich ein wenig meinen Bemühungen um digitale Souveränität im Wege, ist aber leider bei vielen Diensten, die über CDNs geladen werden, gängige Praxis. Daher habe ich das erst einmal hingenommen. Doch wenn jemand von Euch da draußen eine Idee hat, wie man die <code>core.js</code> und die <code>core.css</code> auch lokal installiert bekommt, bitte ich um Mitteilung in meinen Kommentaren.</p>
+<p>Die installierte <code>style.css</code> birgt keine Geheimnisse,</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1"></a>html<span class="op">,</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>body {</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a>canvas {</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>aber CSS-Gurus wissen sicher, wie sie sich darin austoben können.</p>
+<p>Noch ein Geheimnis ist für mich die Konfigurationsdatei <code>pyscript.json</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">{</span><span class="dt">"packages"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"proceso"</span><span class="ot">]</span><span class="fu">,</span> <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"proceso starter Copy"</span><span class="fu">}</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Das ist der einzige Ort, an dem überhaupt <code>proseco</code> vorkommt und darüber weiß vermutlich PyScript, daß und wo es sich das Modul Proseco hereinziehen muß. Momentan nehme ich daß noch einfach so hin (ich freue mich, daß ich alles zum Laufen. bekommen habe), aber irgendwann will ich die Zusammenhänge kapieren. <em>Still digging!</em></p>
+<p>Meine erste Einschätzung ist, daß Proseco sehr vielversprechend ist. Es vermählt nicht nur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> mit dem Python-Ökosystem, sondern erlaubt auch die Erstellung von interaktiven Web-Anwendungen. Es ist daher für alle interessant, die – wie ich – Pickel von den geschweiften Klammern von JavaScript bekommen. Schaun wir mal, was ich damit noch alles anstellen kann. Ich habe also immer noch zu tun!</p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54620166000/">Python with Glasses</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Franco-Belgian Comic Style. Illustration of a green python with glasses and a pointer in front of a chart with diagrams in a crowded office. Large shelves with many books on the walls. It’s a sunny morning</em>«. Modell: Flux (Pro), Style: None.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/">Python with Balls</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored Franco-Belgian Comic Style. Illustration of a green python with glasses and a glass of Prosecco in hand is being pelted with colorful plastic balls by white rabbits. The rabbits wear colorful vests and top hats and carry a pocket watch with a large dial. The setting is a fairytale-like small town with colorful, crooked houses</em>«. Modell: Flux (Pro), Style: None.</p>
 
 
-</section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
