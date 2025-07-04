@@ -1,0 +1,18 @@
+---
+title: "Security Alert: Kritische Sudo-Lücke unter Linux"
+author: "Jörg Kantel"
+date: "2025-07-04 19:05:00"
+categories: [Security, Linux]
+image: "images/pingus.jpg"
+---
+
+[![](images/pingus-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54633163175/)
+
+Eine [kritische Sicherheitslücke](https://www.golem.de/news/root-zugriff-fuer-alle-kritische-sudo-luecke-gefaehrdet-unzaehlige-linux-systeme-2507-197635.html) in dem Programm `sudo` unter Linux führt dazu, daß unprivilegierte Nutzer zu `root`, das heißt zum Systemadministrator werden könnten. Ein Update steht bereits zur Verfügung und es sollte zügig eingefahren werden.
+
+[Die Lücke versteckt sich](https://www.heise.de/news/chwoot-Kritische-Linux-Luecke-macht-Nutzer-auf-den-meisten-Systemen-zu-Root-10466885.html) in verschiedenen `sudo`-Versionen – unklar ist, in welchen genau. Der Entdecker, [*Rich Mirch* von *Stratascale Cyber Research Unit*](https://www.stratascale.com/vulnerability-alert-CVE-2025-32463-sudo-chroot), konnte nicht alle Versionen testen. Er ist jedoch sicher, die Lücke sei in älteren Versionen vor sudo 1.8.32 nicht enthalten, da die chroot-Funktion erst in dieser Version auftauchte. Der schadhafte Code wurde offenbar in Version 1.9.14 eingebaut. In den von ihm getesteten stabilen Versionen 1.9.14 bis 1.9.17 findet sich der Bug. Er hat die CVE-ID CVE-2025-32463 und eine CVSS-Bewertung von 9,2 (Priorität: »kritisch«). Der Entdecker stellt einen Beispielexploit bereit. *(Mein [persönlicher CERT](https://wwwuser.gwdguser.de/~mreiman1/) per Email.)*
+
+---
+
+**Bild**: *[Pingus Fighting](https://www.flickr.com/photos/schockwellenreiter/54633163175/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored Franco-Belgian comic style. Illustration of a penguin wearing a red scarf on an ice floe fights pirates with computer keyboards who want to drive him off his ice floe. A banner reading "root" hangs above the ice floe*«. Modell: Flux Kontext, Style: None.
+

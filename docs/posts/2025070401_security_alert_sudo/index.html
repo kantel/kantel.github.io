@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Für umme lesen: Die Geschichte der Schönheit in der Mathematik – Der Schockwellenreiter</title>
+<title>Security Alert: Kritische Sudo-Lücke unter Linux – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,12 +127,10 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Für umme lesen: Die Geschichte der Schönheit in der Mathematik</h1>
+<h1 class="title">Security Alert: Kritische Sudo-Lücke unter Linux</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Bücher</div>
-    <div class="quarto-category">LaTeX</div>
-    <div class="quarto-category">Mathematik</div>
-    <div class="quarto-category">Wissenschaftsgeschichte</div>
+    <div class="quarto-category">Security</div>
+    <div class="quarto-category">Linux</div>
   </div>
   </div>
 
@@ -150,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">1. Juli 2025</p>
+      <p class="date">4. Juli 2025</p>
     </div>
   </div>
   
@@ -162,15 +160,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54626538224/"><img src="images/mathbeauty-b.jpg" class="img-fluid"></a></p>
-<p>Da hat mir der auf diesen Seiten schon oft erwähnte »Freund aus Bremen« eine große Freude gemacht. Er wies mich nämlich auf das Buch »Form &amp; Number: A History of Mathematical Beauty« von <em>Alan J. Cain</em> hin, das vom Autor unter einer Creative-Commons-Lizenz (Attribution-NonCommercial-NoDerivatives 4.0 International - <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>) veröffentlicht und auf den Seiten des <em>Internet Archive</em> zum kostenlosen Download hochgeladen wurde.</p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://tug.org/books/images/cain-formnumber.jpg"><img src="images/cain-formnumber.jpg" class="img-fluid"></a>
-</div>
-<p>Die 1.323 <a href="https://tug.org/interviews/cain.pdf">wunderschön</a> in LaT<sub>E</sub>X <a href="https://tug.org/books/reviews/tb143reviews-cain.html">gesetzten</a> Seiten sind eine wahre Fundgrube für jede und jeden an Mathematik und Mathematikgeschichte interessierte und interessierten. Sie können wahlweise als <a href="https://archive.org/details/cain_formandnumber_ebook_large/page/120/mode/2up">großformatiges PDF</a> (knapp 50 MB), als <a href="https://archive.org/details/cain_formandnumber_ebook_small/page/328/mode/2up">PDF in etwas kleinerem Format</a> oder als <a href="https://archive.org/details/cain_formandnumber_print/page/764/mode/2up">doppelseitiges, für den Ausdruck optimiertes PDF</a> heruntergeladen werden. Die Seiten sehen so schön aus, daß ich die Kosten für eine Totes-Holz-Ausgabe nicht gescheut hätte, doch leider war das Werk weder bei dem Giganten aus Amazonien noch im Verzeichnis lieferbarer Bücher zu finden.</p>
-<p>Also werde ich mir die Augen am Monitor verderben. Danke, <em>Alan J. Cain</em> für die freie Veröffentlichung dieses wunderschönen Werkes und danke Dir, <em>Kalle</em>, daß Du mich darauf hingewiesen hast.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54633163175/"><img src="images/pingus-b.jpg" class="img-fluid"></a></p>
+<p>Eine <a href="https://www.golem.de/news/root-zugriff-fuer-alle-kritische-sudo-luecke-gefaehrdet-unzaehlige-linux-systeme-2507-197635.html">kritische Sicherheitslücke</a> in dem Programm <code>sudo</code> unter Linux führt dazu, daß unprivilegierte Nutzer zu <code>root</code>, das heißt zum Systemadministrator werden könnten. Ein Update steht bereits zur Verfügung und es sollte zügig eingefahren werden.</p>
+<p><a href="https://www.heise.de/news/chwoot-Kritische-Linux-Luecke-macht-Nutzer-auf-den-meisten-Systemen-zu-Root-10466885.html">Die Lücke versteckt sich</a> in verschiedenen <code>sudo</code>-Versionen – unklar ist, in welchen genau. Der Entdecker, <a href="https://www.stratascale.com/vulnerability-alert-CVE-2025-32463-sudo-chroot"><em>Rich Mirch</em> von <em>Stratascale Cyber Research Unit</em></a>, konnte nicht alle Versionen testen. Er ist jedoch sicher, die Lücke sei in älteren Versionen vor sudo 1.8.32 nicht enthalten, da die chroot-Funktion erst in dieser Version auftauchte. Der schadhafte Code wurde offenbar in Version 1.9.14 eingebaut. In den von ihm getesteten stabilen Versionen 1.9.14 bis 1.9.17 findet sich der Bug. Er hat die CVE-ID CVE-2025-32463 und eine CVSS-Bewertung von 9,2 (Priorität: »kritisch«). Der Entdecker stellt einen Beispielexploit bereit. <em>(Mein <a href="https://wwwuser.gwdguser.de/~mreiman1/">persönlicher CERT</a> per Email.)</em></p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54626538224/">Die Schönheit der Mathematik</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colorerd Franco-Belgian Comic Style. Illustration of a group of philosophers in medieval and ancient robes stroll through a columned hall, discussing mathematics. On the walls are mathematical illustrations, devices, and formulas</em>«. Modell: Flux (Pro), Style: None.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54633163175/">Pingus Fighting</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored Franco-Belgian comic style. Illustration of a penguin wearing a red scarf on an ice floe fights pirates with computer keyboards who want to drive him off his ice floe. A banner reading “root” hangs above the ice floe</em>«. Modell: Flux Kontext, Style: None.</p>
 
 
 
