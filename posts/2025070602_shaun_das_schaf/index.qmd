@@ -1,0 +1,485 @@
+---
+title: "Shaun das Schaf und seine Spießgesellen: Eine Simulation in vier Schritten"
+author: "Jörg Kantel"
+date: "2025-07-06 17:30:00"
+categories: [Python, PyScript, Proseco, Simulation, Creative Coding]
+image: "images/shaun.jpg"
+---
+
+[![](images/shaun-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54637186835/)
+
+Nachdem die Installation (via `pypi`) von [pyp5js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/pyp5js.html) bei mir gewaltig schiefgelaufen war (`werkzeug` konnte irgendeine URL-Bibliothek nicht finden), habe ich beschlossen, mich für Python-Projekte (außer Spielen), [die im Browser laufen sollen](https://kantel.github.io/posts/2025062901_proseco_first_steps/), erst einmal auf [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) mit [Proseco](https://proceso.cc/) zu beschränken. Als ersten echten Testfall habe ich mir dann ein Projekt herausgesucht, das ich schon im März&nbsp;2019 einmal in [Processing.py](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html) programmiert hatte: [Shaun das Schaf und seine Spießgesellen](http://blog.schockwellenreiter.de/2019/03/2019031001.html).
+
+Es basiert auf dem »Crazy Sheep Programm«, das *Peter Farell* in seinem wunderbaren Buch »[Math Adventures with Python](https://nostarch.com/mathadventures)« ebenfalls in Processing.py implementiert hatte (Seiten 186ff.). Ich habe die Reimplementierung in Proseco in vier Schritte aufgeteilt. Aber erst einmal galt es, ein einfaches Proseco-Grundgerüst (ein *Boilerplate*) zu erstellen (Datei `sketch.py`):
+
+~~~python
+from proceso import Sketch
+
+p5 = Sketch()
+
+WIDTH, HEIGHT = (640, 400)
+FPS = 5
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    p5.frame_rate(FPS)
+
+def draw():
+    p5.background(GREEN)
+
+p5.run_sketch(setup=setup, draw=draw)
+~~~
+
+Da die Simulation nachvollziehbar bleiben sollte, habe ich die Simulation auf fünf Schritte in der Sekunde gedrosselt:
+
+~~~python
+FPS = 5
+p5.frame_rate(FPS)
+~~~
+
+Die übrigen Dateien (`index.html`, `pyscript.json` und `style.css`) können genauso [wie in meinem ersten Versuch](https://kantel.github.io/posts/2025062901_proseco_first_steps/) unverändert übernommen werden (eventuell den `title` in der `index.html` anpassen).
+
+## Schritt 1: Shaun das Schaf betritt die Bühne
+
+Im ersten Schritt wollte ich nur [Shaun das Schaf](https://de.wikipedia.org/wiki/Shaun_das_Schaf) auf eine grüne Wiese schicken. Daher habe ich den Schafen erst einmal eine eigene Klasse (`Sheep`) spendiert:
+
+~~~python
+class Sheep:
+
+    def __init__(self, _x, _y):
+        self.x = _x
+        self.y = _y
+        self.size = 10
+
+   def update(self):
+        move = 10
+        self.x += uniform(-move, move)
+        self.y += uniform(-move, move)
+        self.check_border()
+    
+    def check_border(self):
+        if self.x >= p5.width - 2*self.size:
+            self.x = p5.width - 2*self.size
+        if self.y >= p5.height - 2*self.size:
+            self.y = p5.height - 2*self.size
+        if self.x <= self.size:
+            self.x = self.size
+        if self.y <= self.size:
+            self.y = self.size
+    
+    def draw(self):
+        p5.stroke_weight(1)
+        p5.stroke(BLACK)
+        p5.circle(self.x, self.y, self.size)
+~~~
+
+Die `update()`-Methode ist sehr einfach gehalten: Das Schaf (eigentlich ein Kreis) bewegt sich bei jedem Zeitschritt zufällig zwischen -10 und 10 Pixeln in x- und y-Richtung weiter und wenn es auf den Rand des Bildschirms trifft, muss es dort verharren, bis der Zufallszahlengenerator ihm eine neue Bewegung in eine andere Richtung zuweist, die es auf ein anderes Feld innerhalb der Weide (des Fensters) führt (Methode `check_border()`).
+
+Dann bekommt das Programm noch ein paar (Farb-) Konstanten verpasst
+
+~~~python
+WHITE  = p5.color(255, 255, 255)
+BLACK  = p5.color(0, 0, 0)
+GREEN  = p5.color(98, 199, 119)
+~~~
+
+und in den `setup()`- und `draw()`-Methoden wird das Schaf erzeugt und auf die Reise geschickt:
+
+~~~python
+def setup():
+    global shaun
+    p5.create_canvas(WIDTH, HEIGHT)
+    # Create the sheeps
+    shaun = Sheep(320, 200)
+    p5.frame_rate(FPS)
+
+def draw():
+    p5.background(GREEN)
+    shaun.update()
+    shaun.draw()
+~~~
+
+Das häßliche `global` in `setup()` können wir im nächsten Schritt wieder eliminieren.
+
+Wenn Ihr das Script laufen laßt, werden Ihr sehen, daß wirklich noch nicht viel passiert: Ein weißer Kreis irrt ziellos über eine grüne Ebene. Das ist alles.
+
+## Scnritt 2: Vom Schaf zur Schafherde
+
+Das ändert sich jedoch massiv mit der zweiten Version des Programms. Doch zuerst einmal habe ich dem Hauptscript noch ein paar Importe von Zufallszahlengeneratoren und dann die Konstanten `PATCH_SIZE` (dazu später mehr) und `NO_SHEEPS`, sowie die Farbe `BROWN` spendiert:
+
+~~~python
+from proceso import Sketch
+from random import uniform, randint
+
+p5 = Sketch()
+
+WIDTH, HEIGHT = (640, 400)
+FPS = 5
+NO_SHEEPS = 20
+PATCH_SIZE = 10
+
+# Farben
+WHITE  = p5.color(255, 255, 255)
+BLACK  = p5.color(0, 0, 0)
+BROWN  = p5.color(248, 158, 80)
+GREEN  = p5.color(98, 199, 119)
+~~~
+
+Neu ist auch die Klasse `Grass`, denn die Schafe sollen es abweiden können und hinterlassen dann eine abgeweidete, also braune Schafweide. Jedes mal, wenn ein Schaf einen »Patch« Gras abfrißt, bekommt es fünf Energiepunkte spendiert. Daher sieht diese Klasse so aus:
+
+~~~python
+class Grass:
+
+    def __init__(self, _x, _y, _size):
+        self.x = _x
+        self.y = _y
+        self.energy = 5      # Energy from eating this patch
+        self.eaten = False   # Hasn't been eaten yet
+        self.size = _size
+    
+    def draw(self):
+        p5.no_stroke()
+        if self.eaten:
+            p5.fill(BROWN)
+        else:
+            p5.fill(GREEN)
+        p5.rect(self.x, self.y, self.size, self.size)
+~~~
+
+Die meisten Änderungen gibt es aber in der Klasse `Sheep`, die ja nun eine ganze Schafherde hervorbringen soll:
+
+~~~python
+class Sheep:
+
+    def __init__(self, _x, _y):
+        self.x = _x
+        self.y = _y
+        self.size = 10
+        self.energy = 20
+
+    def update(self):
+        move = 10
+        rows_of_grass = p5.height//PATCH_SIZE
+        self.x += uniform(-move, move)
+        self.y += uniform(-move, move)
+        self.check_border()
+        x_scale = int(self.x/PATCH_SIZE)
+        y_scale = int(self.y/PATCH_SIZE)
+        grass = lawn[x_scale*rows_of_grass + y_scale]
+        if not grass.eaten:
+            self.energy += grass.energy
+            grass.eaten = True
+~~~
+
+Die Methoden `check_border()` und `draw()` der Klasse `Sheep` bleiben unverändert.
+
+Was hat sich denn nun geändert? Zum einen bekommt jedes Schaf mit `self.energy = 20` eine Startenergie von 20 Punkten zugewiesen. Zum anderen bekommt jedes Schaf bei jedem Zeitschritt einen Energiepunkt abgezogen. Energie auftanken kann es nur, wenn es Gras frißt, denn Gras fressen soll sich schließlich wieder lohnen.
+
+Aber es gilt noch ein anderes Problem zu berücksichtigen: Der Zufallszahlengenerator führt die Schafe nicht eindeutig auf ein Patchfeld mit Gras, da mußte ich dann ein wenig runden: Erstens ist die Weide in einem eindimensionalen Array abgespeichert, daher habe ich in der `update()`-Methode mit
+
+~~~python
+        rows_of_grass = p5.height//PATCH_SIZE
+~~~
+
+erst einmal die Reihen des Feldes ermittelt. Damit auch immer eine Ganzzahl herauskommt, habe ich den Integer-Divisions-Operator `//` verwendet. Und dann habe ich mit
+
+~~~python
+        x_scale = int(self.x/PATCH_SIZE)
+        y_scale = int(self.y/PATCH_SIZE)
+        grass = lawn[x_scale*rows_of_grass + y_scale]
+~~~
+
+dafür gesorgt, daß jedem Schaf immer der am nächsten gelegene Graspatch zum Abweiden zugewiesen wird. (Erfahrenen Processing-Programmierern wird dies aus der Bildverarbeitung bekannt vorkommen, da Processing auch Bilder immer als eindimensionale Arrays abspeichert und man so mit der gleichen Methode die x- und y-Koordinaten eines Bildes berechnen muß.)
+
+Ja, was noch? Wenn der Rasenpatch abgeweidet ist, bekommt das Schaf fünf Energiepunkte spendiert und der Weidepatch eine braune Farbe zugewiesen.
+
+(Patches als eigene Objekte (und Agenten) hat meines Wissens als erster *Mitchel Resnick* 1994 in [StarLogo](http://cognitiones.kantel-chaos-team.de/programmierung/starlogo.html) implementiert und in seinem Buch »Turtles, Termites, and Traffic Jams« vorgestellt.)
+
+Die `setup()`- und die `draw()`-Methode des Hauptscripts haben auch ein paar einschneidende Veränderungen erfahren:
+
+~~~python
+sheeps = []
+lawn = []
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    # Create the sheeps
+    for _ in range(NO_SHEEPS):
+        sheeps.append(Sheep(randint(20, p5.width - 20),
+                            randint(20, p5.height - 20)))
+    # Create the grass
+    for x in range(0, p5.width, PATCH_SIZE):
+        for y in range(0, p5.height, PATCH_SIZE):
+            lawn.append(Grass(x, y, PATCH_SIZE))
+    p5.frame_rate(FPS)
+
+def draw():
+    p5.background(GREEN)
+    # Update the grass first
+    for grass in lawn:
+        grass.draw()
+    # then the sheeps    
+    for sheep in sheeps:
+        sheep.update()
+        sheep.draw()
+~~~
+
+Einmal ist durch die Deklaration der Listen für die Schafe (`sheeps[]`) und des Rasens (`lawn[]`) wie versprochen die ungeliebte `global`-Vereinbarung entfallen. Und dann werden die beiden Listen in der `setup()`-Methode gefüllt, wobei der Rasen zwar mit x- und y-Komponenten, aber dennoch in einer eindimensionalen Liste abgespeichert wird.
+
+Da die Schafe sich ungehindert vermehren können, wird irgendwann die Weide zwar abgefressen, aber dennoch überfüllt sein. Darum möchte ich in der nächsten Version dieses Programmes nicht nur das Nachwachsen des Grases simulieren, sondern energiegeladene Schafe sollen sich auch reproduzieren, also vermehren können, aber wenn sie zuwenig Nahrung bekommen, müssen die Schafe leider verhungern.
+
+## Schritt 3: Geburt und Tod
+
+Diesen Abschnitt kann ich erst einmal mit einer guten Nachricht einleiten: Im Hauptprogramm ändert sich nichts und die Klasse `Sheep` wird nur minimal verändert, und zwar bekommt die `update()`-Methode Routinen verpasst, die einmal das Verhungern kontrollieren und dann steuern, wie sich die Schafe vermehren:
+
+~~~python
+    def update(self):
+        move = 10
+        rows_of_grass = p5.height//PATCH_SIZE
+        self.energy -= 1
+        if self.energy <= 0:
+            sheeps.remove(self)
+        if self.energy >= 50:
+            self.energy -= 30   # Giving birth takes energy
+            # Add another sheep to the list
+            sheeps.append(Sheep(self.x, self.y, self.col))
+~~~
+
+Denn hier wird einmal festgelegt, daß Schafe verhungern (aus der Liste mit mit `sheeps.remove(self)` entfernt werden) und zum anderen, daß ein Schaf, das einen Energielevel von 50 Punkten oder mehr besitzt, sich vermehren soll. Dieser Vorgang kostet dem Tier zwar 30 Energiepunkte, aber dafür hat es sich quasi verdoppelt. Das neue Schaf wird auf der gleichen Position geboren, auf der sein Elternschaf sitzt, aber der Zufallszahlengenerator sorgt schnell dafür, daß beide Tiere bald getrennte Wege gehen.
+
+Die zweite Änderung betrifft die `draw()`-Methode der Klasse `Grass`:
+
+~~~python
+    def draw(self):
+        p5.no_stroke()
+        if self.eaten:
+            if uniform(0, 100) < .5:
+                self.eaten = False
+            else:
+                p5.fill(BROWN)
+        else:
+            p5.fill(GREEN)
+        p5.rect(self.x, self.y, self.size, self.size)
+~~~
+
+Hier wird mit einer Wahrscheinlichkeit von 5 Promille dem Gras die Chance gegeben, wieder zu wachsen, das heißt einen Patch wieder grün und abweidbar werden zu lassen.
+
+Diese geringe Wahrscheinlichkeit reicht aus. Wenn Ihr die Simulation über einen längeren Zeitraum laufen lasst, werdet Ihr feststellen, daß die Schafspopulation mit den gegebenen Parametern stabil bleibt (die Parameter habe ich durch wildes Experimentieren gefunden). Sie kann zwar mal – vornehmlich zu Beginn, wenn alles noch grün ist – sehr groß werden oder im weiteren Verlauf auch sehr klein (unter zehn Schafe), aber sie stirbt nicht mehr aus, sondern die Population pendelt immer um einen Mittelwert herum.
+
+Dieses Verhalten ist aus ähnlichen [Räuber- und Beute-Simulationen](https://de.wikipedia.org/wiki/R%C3%A4uber-Beute-Beziehung) bekannt (ich ernenne die Schafe jetzt einfach mal zu gefährlichen Raubtieren ehrenhalber und das Gras zu ihrer Beute) und wird nach ihren Entdeckern [Lotka-Volterra-Regeln](https://de.wikipedia.org/wiki/Lotka-Volterra-Regeln), beziehungsweise mathematisch präzise [Lotka-Volterra-Gleichungen](https://de.wikipedia.org/wiki/Lotka-Volterra-Gleichungen) genannt.
+
+## Schrtt 4: Es kann nur einen (eine Farbe) geben!
+
+Als abschließende Änderung habe ich die Schafe in vier unterschiedlich farbige Varianten aufgeteilt, während das sonstige Verhalten unverändert geblieben ist. Daher sind noch ein paar weitere Farbdefinitionen hinzugekommen
+
+~~~python
+# Farben
+WHITE  = p5.color(255, 255, 255)
+BLACK  = p5.color(0, 0, 0)
+BROWN  = p5.color(248, 158, 80)
+GREEN  = p5.color(98, 199, 119)
+YELLOW = p5.color(248, 239, 34)
+PURPLE = p5.color(148, 103, 189)
+RED = p5.color(250, 25, 25)
+color_list = [WHITE, RED, YELLOW, PURPLE]
+~~~
+
+und die Klasse `Sheep` bekommt im Konstruktor eine Farbe mit übergeben
+
+~~~python
+    def __init__(self, _x, _y, _col):
+        self.x = _x
+        self.y = _y
+        self.col = _col
+        self.size = 10
+        self.energy = 20
+~~~
+
+und in der Methode `draw()` als vorletzte Anweisung den Befehl
+
+~~~python
+        p5.fill(self.col)
+~~~
+
+bevor sie das Schaf als Kreis zeichnen soll.
+
+Nur das Hauptprogramm hat noch ein paar wesentlichere Änderungen erfahren. Erst einmal bei der Import-Anweisung:
+
+~~~python
+from random import uniform, randint, choice
+~~~
+
+Hier wird also zusätzlich von `random` noch die Methode `choice()` importiert, die dazu dient, aus der Liste `colors` zufällig, aber gleichverteilt die Farben herauszusuchen und an die einzelnen Schafe zu verteilen.
+
+Und im `setup()` werden dann diese Farben verteilt:
+
+~~~python
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    # Create the sheeps
+    for _ in range(NO_SHEEPS):
+        sheeps.append(Sheep(randint(20, p5.width - 20),
+                            randint(20, p5.height - 20),
+                            choice(color_list)))
+    # Create the grass
+    for x in range(0, p5.width, PATCH_SIZE):
+        for y in range(0, p5.height, PATCH_SIZE):
+            lawn.append(Grass(x, y, PATCH_SIZE))
+    p5.frame_rate(FPS)
+~~~
+
+Die `draw()`-Funktion habe ich nicht noch einmal abgeschrieben, da sich in ihr nichts geändert hat.
+
+<iframe src="proseco/index.html" width="100%" height="400"></iframe>
+
+Was glaubt Ihr, was nun passiert? Zu Beginn der Simulation tummeln sich fröhlich vier Gruppen verschieden farbiger Schafe auf der Weide. Im weiteren Verlauf stirbt jedoch eine Farbe nach der anderen aus, bis nur noch eine Farbe übrigbleibt. Welche Farbe jedoch übrigbleibt, ist nicht vorhersehbar und rein zufällig. (Um nicht so lange auf das Aussterben der Populationen warten zu müssen – das kann sich manchmal lange hinziehen –, könnt Ihr die `frame_rate` auf 60 FPS erhöhen.)
+
+Auch dieses Verhalten ist bekannt und wurde 1975 unter anderem von *Manfred Eigen* und *Ruthild Winkler* in ihrem Buch »Das Spiel – Naturgesetze steuern den Zufall« im Kapitel über Selektion beschrieben:
+
+>Es kann mit Sicherheit bei jedem Spiel die Tatsache der Selektion vorausgesagt werden, nicht dagegen das Detailergebnis, nämlich welche Kugelfarbe selektiert wird.
+
+Denn mit Ausnahme der Farbe verhalten sich alle Kreise identisch, das heißt, sie sind mit dem exakt gleichen genetischen Material ausgestattet. Man kann, um die Sache nicht zu kompliziert zu machen, auch einfach annehemen, daß die Farben Markierungen sind, die vom Beobachter auf die ansonsten genetisch identischen Schafe angebracht wurden.
+
+Zu einem ähnlichen Ergebnis, kam ja schon das [Demokratie-Spiel](https://kantel.github.io/posts/2025062502_waehler_tigerjython/), das *Alexander K. Dewdney* in der *Scientific American* beschrieben hat: Wenn man lange genug Demokratie spielt, dann gewinnt zum Schluß eine Partei alle Sitze. Nur weiß man im Voraus nicht, welche.
+
+Und in einem Ökosystem, in dem zwei oder mehr exakt gleiche Räuberpopulationen um die gleiche Beute konkurrieren, stirbt über kurz oder lang eine der beiden Populationen aus. Jede Population kann nur getrennt überleben, wenn sie sich ihre eigene, ökologische Nische sucht.
+
+Wenn man jedoch, und auch das haben Eigen und Winkler beschrieben, einer Population auch nur einen winzigen Vorteil verschafft, dann überlebt diese Population. Wenn Ihr nämlich in der Klasse `Sheep` in der `update()`-Methode statt der Zeile `move = 10` diese Anweisung einfügt,
+
+~~~python
+     def update(self):
+        if self.col = RED and uniform(0, 100) < .5:
+            move = 25
+        else:
+            move = 10
+~~~
+
+dann überlebt **immer** (und zwar ziemlich schnell) die rote Population.
+
+Der Vollständigkeit halber hier jetzt der komplette Quellcode in der endgültigen Fassung:
+
+~~~python
+from proceso import Sketch
+from random import uniform, randint, choice
+
+p5 = Sketch()
+
+WIDTH, HEIGHT = (640, 400)
+FPS = 5
+NO_SHEEPS = 20
+PATCH_SIZE = 10
+
+# Farben
+WHITE  = p5.color(255, 255, 255)
+BLACK  = p5.color(0, 0, 0)
+BROWN  = p5.color(248, 158, 80)
+GREEN  = p5.color(98, 199, 119)
+YELLOW = p5.color(248, 239, 34)
+PURPLE = p5.color(148, 103, 189)
+RED = p5.color(250, 25, 25)
+color_list = [WHITE, RED, YELLOW, PURPLE]
+
+class Sheep:
+
+    def __init__(self, _x, _y, _col):
+        self.x = _x
+        self.y = _y
+        self.col = _col
+        self.size = 10
+        self.energy = 20
+
+    def update(self):
+        move = 10
+        rows_of_grass = p5.height//PATCH_SIZE
+        self.energy -= 1
+        if self.energy <= 0:
+            sheeps.remove(self)
+        if self.energy >= 50:
+            self.energy -= 30   # Giving birth takes energy
+            # Add another sheep to the list
+            sheeps.append(Sheep(self.x, self.y, self.col))
+        self.x += uniform(-move, move)
+        self.y += uniform(-move, move)
+        self.check_border()
+        x_scale = int(self.x/PATCH_SIZE)
+        y_scale = int(self.y/PATCH_SIZE)
+        grass = lawn[x_scale*rows_of_grass + y_scale]
+        if not grass.eaten:
+            self.energy += grass.energy
+            grass.eaten = True
+
+    def check_border(self):
+        if self.x >= p5.width - 2*self.size:
+            self.x = p5.width - 2*self.size
+        if self.y >= p5.height - 2*self.size:
+            self.y = p5.height - 2*self.size
+        if self.x <= self.size:
+            self.x = self.size
+        if self.y <= self.size:
+            self.y = self.size
+    
+    def draw(self):
+        p5.stroke_weight(1)
+        p5.stroke(BLACK)
+        p5.fill(self.col)
+        p5.circle(self.x, self.y, self.size)
+
+class Grass:
+
+    def __init__(self, _x, _y, _size):
+        self.x = _x
+        self.y = _y
+        self.energy = 5      # Energy from eating this patch
+        self.eaten = False   # Hasn't been eaten yet
+        self.size = _size
+    
+    def draw(self):
+        p5.no_stroke()
+        if self.eaten:
+            if uniform(0, 100) < .5:
+                self.eaten = False
+            else:
+                p5.fill(BROWN)
+        else:
+            p5.fill(GREEN)
+        p5.rect(self.x, self.y, self.size, self.size)
+
+sheeps = []
+lawn = []
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    # Create the sheeps
+    for _ in range(NO_SHEEPS):
+        sheeps.append(Sheep(randint(20, p5.width - 20),
+                            randint(20, p5.height - 20),
+                            choice(color_list)))
+    # Create the grass
+    for x in range(0, p5.width, PATCH_SIZE):
+        for y in range(0, p5.height, PATCH_SIZE):
+            lawn.append(Grass(x, y, PATCH_SIZE))
+    p5.frame_rate(FPS)
+
+def draw():
+    p5.background(GREEN)
+    # Update the grass first
+    for grass in lawn:
+        grass.draw()
+    # then the sheeps    
+    for sheep in sheeps:
+        sheep.update()
+        sheep.draw()
+
+p5.run_sketch(setup=setup, draw=draw)
+~~~
+
+Ihr könnt natürlich noch weiter an den Parametern schrauben, um vielleicht noch weitere Einsichten aus dieser einfachen Simulation zu gewinnen. Eine Möglichkeit wäre, die Lebenszeit der Schafe zu begrenzen. Sie könnten mit 255 Lebenspunkten anfangen und bei jedem Durchlauf wird ihnen davon etwas abgezogen. Sie »sterben«, wenn Ihre Lebenspunkte auf Null oder unter Null gefallen sind.
+
+Interessant wäre dann, herauszufinden, ob und wie sich unterschiedliche Lebensspannen auf die Überlebenschancen der Populationen auswirken. Ihr seht, selbst so eine einfache und kleine Simulation kann einen lange beschäftigen.
+
+## Benutzte und weiterführende Literatur
+
+- A.K. Dewdney: *Wie man π erschießt. Fünf leichte Stücke für WHILE-Schleifen und Zufallsgenerator, oder: lebensechte Simulationen von Zombies, Wählern und Warteschlangen*, in: Immo Diener (Hg.): *Computer-Kurzweil*, Heidelberg (Spektrum der Wissenschaft, Reihe: Verständliche Forschung) 1988
+- Manfred Eigen, Ruthild Winkler: *Das Spiel. Naturgesetze steuern den Zufall*, München (Piper), 1975 (unveränderte Taschenbuchausgabe 1985)
+- Peter Farrell: *Math Adventures with Python. An Illustrated Guide to Exploring Math with Code*, San Francisco CA (No Starch Press) 2019
+- Mitchel Resnick: *Turtles, Termites, and Traffic Jams – Explorations in Massively Parallel Microworlds*, Cambridge MA (MIT Press) 1994 (unveränderte Paperback-Ausgabe 1997)
