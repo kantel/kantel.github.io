@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Prost! Erste Schritte mit Prosecco Proceso – Der Schockwellenreiter</title>
+<title>Neu in meiner Bibliorhek: Fraktale und Dynamische Systeme (2&nbsp;Bände) – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -161,11 +127,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Prost! Erste Schritte mit <del>Prosecco</del> Proceso</h1>
+<h1 class="title">Neu in meiner Bibliorhek: Fraktale und Dynamische Systeme (2&nbsp;Bände)</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Python</div>
-    <div class="quarto-category">PyScript</div>
-    <div class="quarto-category">Proceso</div>
+    <div class="quarto-category">Bücher</div>
+    <div class="quarto-category">Dynamische Systeme</div>
+    <div class="quarto-category">Mathematik</div>
+    <div class="quarto-category">Processing</div>
+    <div class="quarto-category">Processing.py</div>
+    <div class="quarto-category">P5.js</div>
     <div class="quarto-category">Creative Coding</div>
   </div>
   </div>
@@ -184,7 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">29. Juni 2025</p>
+      <p class="date">9. Juli 2025</p>
     </div>
   </div>
   
@@ -196,78 +165,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/"><img src="images/proseco-b.jpg" class="img-fluid"></a></p>
-<p>Durch meinen <a href="https://kantel.github.io/posts/2025062801_python_im_browser/">gestrigen Beitrag</a> angefixt, wollte ich heute unbedingt etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> und <a href="https://proceso.cc/">Proceso</a> anstellen. Nachdem mich die <a href="https://proceso.cc/welcome/getting_started#local-anaconda-vs-code">Dokumentation</a> erst einmal in die Irre führte (<code>pip install proceso</code> funktionierte bei mir einfach nicht), fand ich durch wildes Herumexperimentieren heraus, daß ich Proceso auch lokal auf meinem Rechner ohne eine vorhergegangene Installationsorgie betreiben kann:</p>
-<p>Das Einzige, was vorhanden sein muß, ist ein installiertes, einigermaßen aktuelles Python und der Texteditor Eures Vertrauens (bei mir ist es <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> mit den üblichen <em>Python Extensions</em>). Danach habe ich mir von <a href="https://pyscript.com/@4b2d42a1-0e0c-430f-8b20-4b2c7ff0dc3e/58197361-1c5f-4d47-93a9-91570255fe85/latest?files=index.html">diesem Projekt-Template</a> einfach die Dateien <code>index.html</code>, <code>pyscript.json</code>, <code>style.css</code> und <code>sketch.py</code> heruntergeladen und zusammen in <strong>einem</strong> Projektverzeichnis abgelegt. Falls Ihr nichts seltsames vorhabt, könnt Ihr erst einmal die ersten drei Dateien unverändert lassen, lediglich in der Datei <code>sketch.py</code> müßt Ihr Euren eigenen Code hineinschreiben. In meinem Fall war das:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> proceso <span class="im">import</span> Sketch</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="im">from</span> random <span class="im">import</span> randint</span>
-<span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>p5 <span class="op">=</span> Sketch()</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">def</span> setup():</span>
-<span id="cb1-7"><a href="#cb1-7"></a>    p5.create_canvas(<span class="dv">640</span>, <span class="dv">400</span>)</span>
-<span id="cb1-8"><a href="#cb1-8"></a>    p5.background(<span class="dv">49</span>, <span class="dv">197</span>, <span class="dv">244</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>    p5.fill(<span class="dv">146</span>, <span class="dv">82</span>, <span class="dv">161</span>)</span>
-<span id="cb1-10"><a href="#cb1-10"></a>    p5.rect(<span class="dv">40</span>, <span class="dv">40</span>, p5.width <span class="op">-</span> <span class="dv">80</span>, p5.height <span class="op">-</span> <span class="dv">80</span>)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>    p5.fill(randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), <span class="dv">100</span>)</span>
-<span id="cb1-12"><a href="#cb1-12"></a></span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="kw">def</span> draw():</span>
-<span id="cb1-15"><a href="#cb1-15"></a>    p5.circle(p5.mouse_x, p5.mouse_y, <span class="dv">20</span>)</span>
-<span id="cb1-16"><a href="#cb1-16"></a></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="kw">def</span> mouse_clicked():</span>
-<span id="cb1-18"><a href="#cb1-18"></a>    p5.fill(randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), randint(<span class="dv">30</span>, <span class="dv">220</span>), <span class="dv">100</span>)</span>
-<span id="cb1-19"><a href="#cb1-19"></a></span>
-<span id="cb1-20"><a href="#cb1-20"></a>p5.run_sketch(setup<span class="op">=</span>setup, draw<span class="op">=</span>draw, mouse_clicked<span class="op">=</span>mouse_clicked)</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Wenn ich dann die <code>index.html</code> <strong>hinter</strong> einem (lokalen) Webserver (ich nutze dafür immer noch den betagten, aber bewährten <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a>) aufrufe, bekommt Ihr untenstehendes Ergebnis angezeigt:</p>
-<iframe src="proseco/index.html" width="100%" height="400">
-</iframe>
-<p>Das ist eine abgewandelt Version des bekannten <a href="https://py5coding.org/index.html">Py5-Beispielscripts</a> (ein Mausklick ändert die Farben der Bällchen), das ich noch ein wenig aufgepeppt habe.</p>
-<p>Wenn Ihr Euch die <code>index.html</code> anschaut,</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">&lt;!DOCTYPE</span> html<span class="dt">&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="dt">&lt;</span><span class="kw">html</span><span class="ot"> lang</span><span class="op">=</span><span class="st">"de"</span><span class="dt">&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="dt">&lt;</span><span class="kw">head</span><span class="dt">&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">&lt;</span><span class="kw">title</span><span class="dt">&gt;</span>Python mit Balls<span class="dt">&lt;/</span><span class="kw">title</span><span class="dt">&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> charset</span><span class="op">=</span><span class="st">"UTF-8"</span><span class="dt">&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">&lt;</span><span class="kw">meta</span><span class="ot"> name</span><span class="op">=</span><span class="st">"viewport"</span><span class="ot"> content</span><span class="op">=</span><span class="st">"width=device-width,initial-scale=1"</span><span class="dt">&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>    </span>
-<span id="cb2-8"><a href="#cb2-8"></a>    <span class="co">&lt;!-- Load PyScript --&gt;</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a>     <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"https://pyscript.net/releases/2024.1.3/core.css"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>     <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">"module"</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://pyscript.net/releases/2024.1.3/core.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span> </span>
-<span id="cb2-11"><a href="#cb2-11"></a>    <span class="co">&lt;!-- Load p5.js --&gt;</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> src</span><span class="op">=</span><span class="st">"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a>    <span class="co">&lt;!-- Load custom styles --&gt;</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>    <span class="dt">&lt;</span><span class="kw">link</span><span class="ot"> rel</span><span class="op">=</span><span class="st">"stylesheet"</span><span class="ot"> href</span><span class="op">=</span><span class="st">"style.css"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="dt">&lt;/</span><span class="kw">head</span><span class="dt">&gt;</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="dt">&lt;</span><span class="kw">body</span><span class="dt">&gt;</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a>    <span class="dt">&lt;</span><span class="kw">main</span><span class="dt">&gt;&lt;/</span><span class="kw">main</span><span class="dt">&gt;</span>   </span>
-<span id="cb2-18"><a href="#cb2-18"></a>    <span class="co">&lt;!-- Load sketch --&gt;</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">"py"</span><span class="ot"> src</span><span class="op">=</span><span class="st">"sketch.py"</span><span class="ot"> config</span><span class="op">=</span><span class="st">"pyscript.json"</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="dt">&lt;/</span><span class="kw">body</span><span class="dt">&gt;</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="dt">&lt;/</span><span class="kw">html</span><span class="dt">&gt;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>dann seht Ihr, daß die PyScript-Dateien (JavaScript und CSS) sowie die minimierte P5.js-Datei von extern geladen werden. Ich habe es versucht: Zwar kann ich die <code>p5.js</code>-Datei auch lokal auf meinem Rechner installieren und zur Mitarbeit bewegen, die PyScript <code>core.js</code>-Datei dagegen war ums Verrecken nicht zur lokalen Mitarbeit bereit, sie bestand darauf, auf dem Server von <code>pyscript.net</code> aufgerufen zu werden.</p>
-<p>Das steht natürlich ein wenig meinen Bemühungen um digitale Souveränität im Wege, ist aber leider bei vielen Diensten, die über CDNs geladen werden, gängige Praxis. Daher habe ich das erst einmal hingenommen. Doch wenn jemand von Euch da draußen eine Idee hat, wie man die <code>core.js</code> und die <code>core.css</code> auch lokal installiert bekommt, bitte ich um Mitteilung in meinen Kommentaren.</p>
-<p>Die (lokal) installierte <code>style.css</code> birgt keine Geheimnisse,</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1"></a>html<span class="op">,</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>body {</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>}</span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a>canvas {</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>aber CSS-Gurus wissen sicher, wie sie sich darin austoben können.</p>
-<p>Noch ein Geheimnis ist für mich die Konfigurationsdatei <code>pyscript.json</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">{</span><span class="dt">"packages"</span><span class="fu">:</span> <span class="ot">[</span><span class="st">"proceso"</span><span class="ot">]</span><span class="fu">,</span> <span class="dt">"name"</span><span class="fu">:</span> <span class="st">"proceso starter Copy"</span><span class="fu">}</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Das ist der einzige Ort, an dem überhaupt <code>proceso</code> vorkommt und darüber weiß vermutlich PyScript, daß und wo es sich das Modul Proceso hereinziehen muß. Momentan nehme ich daß noch einfach so hin (ich freue mich, daß ich alles zum Laufen. bekommen habe), aber irgendwann will ich die Zusammenhänge kapieren. <em>Still digging!</em></p>
-<p>Meine erste Einschätzung ist, daß Proceso sehr vielversprechend ist. Es vermählt nicht nur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> mit dem Python-Ökosystem, sondern erlaubt auch die Erstellung von interaktiven Web-Anwendungen. Es ist daher für alle interessant, die – wie ich – Pickel von den geschweiften Klammern von JavaScript bekommen. Schaun wir mal, was ich damit noch alles anstellen kann. Ich habe also immer noch zu tun!</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54643923204/"><img src="images/bibliobadger-b.jpg" class="img-fluid"></a></p>
+<p>Soeben brachte mir der reitende Paketbote ein Päckchen, über das ich mich sehr gefreut habe. Denn es enthielt <a href="https://kantel.github.io/posts/2025060502_fraktales_kochbuch/">zwei weitere Bücher</a>, die mir der regelmäßige Gast hier im <del>Blog</del> Kritzelheft und Inspirationsquelle für viele meiner Beiträge, der »Freund aus Bremen«, <em>Karl-Heinz Becker</em>, geschickt hatte.</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://www.amazon.de/Fraktale-Dynamische-Systeme-Computergrafische-Experimente/dp/B0FDW2LWY6/"><img src="images/buch01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.amazon.de/Code-Archiv-Dynamische-Computergrafische-Experimente/dp/B0FDGB16TY/"><img src="images/buch02.jpg" class="img-fluid"></a>
+</div>
+<p>Nach dem Buch »<a href="https://www.amazon.de/Kochrezepte-f%C3%BCr-Fraktale-Computergrafische-Experimente/dp/B0DLTZ13JY">Kochrezepte für Fraktale: Computergrafische Experimente mit Python</a>« (Amazon-Link) hat die Ideenschmiede von <em>Karl-Heinz Becker</em> und <em>Michael Dörfler</em> zwei weitere Werke unters staunende Volk gebracht: Einmal als Hauptwerk »<a href="https://www.amazon.de/Fraktale-Dynamische-Systeme-Computergrafische-Experimente/dp/B0FDW2LWY6/">Fraktale und Dynamische Systeme: Computergrafische Experimente mit Processing</a>« (Amazon-Link) und dann als Supplement-Band das dazugehörende »<a href="https://www.amazon.de/Code-Archiv-Dynamische-Computergrafische-Experimente/dp/B0FDGB16TY/">Code Archiv - Fraktale und Dynamische Systeme: Computergrafische Experimente mit Processing</a>« (noch ein Amazon-Link). Der Hauptband ist eine komplett überarbeitete und erweiterte Neuausgabe von »Dynamische Systeme und Fraktale. Computergrafische Experimente mit Pascal«, das in der Erstausgabe 1986 bei Vieweg in Braunschweig erschienen ist<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. Die Autoren haben nicht nur einfach die Programme von Pascal nach Processing portiert, sondern auch die neuen, wissenschaftlichen Erkenntnisse der letzten 40 Jahre berücksichtigt.</p>
+<p>Während der Hauptband sich auf die Programmierung mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a> konzentriert (mit einigen Ausflügen nach <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>), finden die Processing-Dialekte Processing.py und P5.js im Zusatzband »Code Archiv« stärker Berücksichtigiung.</p>
+<p>Alles in allem sind diese beiden Bücher ebenfalls eine wertvolle Inspirationsquelle für meine eigenen Experimente mit Python. Ich werde dafür in Zukunft stärker auf <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> (für statische Bilder) und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> mit <a href="https://proceso.cc/">Proceso</a> (für Animationen) setzen. Danke <em>Kalle</em>, danke <em>Michael</em>, Ihr habt mir eine sehr große Freude gemacht.</p>
+<p><strong>Caveat</strong>: Ich bin mit <em>Karl-Heinz Becker</em> und <em>Michael Dörfler</em> schon seit vielen Jahren befreundet und daher voreingenommen. Trotzdem bin ich sicher, daß ich auch diese beiden Bücher mit gutem Gewissen empfehlen kann.</p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<p>Hier noch einmal die bibliographischen Angaben:</p>
+<ul>
+<li>Karl-Heinz Becker, Michael Dörfler: <em>Fraktale und Dynamische Systeme: Computergrafische Experimente mit Processing</em>, Bremen (Selbstverlag) 2025</li>
+<li>Karl-Heinz Becker, Michael Dörfler: <em>Code Archiv - Fraktale und Dynamische Systeme: Computergrafische Experimente mit Processing</em>, Bremen (Selbstverlag) 2025</li>
+</ul>
+<p>Ich finde es nämlich auch bemerkenswert, daß die beiden Autoren auf einen Verlag verzichtet haben. Auch das ist ein Vorbild für mich!</p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/">Python with Balls</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored Franco-Belgian Comic Style. Illustration of a green python with glasses and a glass of Prosecco in hand is being pelted with colorful plastic balls by white rabbits. The rabbits wear colorful vests and top hats and carry a pocket watch with a large dial. The setting is a fairytale-like small town with colorful, crooked houses</em>«. Modell: Flux (Pro), Style: None.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54643923204/">Der Dachs in seiner Bibliothek</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored Franco-Belgian comic style. Illustration of a badger in a red dressing gown sits in a wing chair in his cave in front of a huge library with many shelves and reads a fairy tale from a thick book</em>«. Modell: Flux (Pro), Style: None.</p>
 
 
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich besitze die dritte, ebenfalls schon überarbeitete und erweiterte Ausgabe von 1989, eine vierte Auflage war zuletzt 1991 erschienen.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
