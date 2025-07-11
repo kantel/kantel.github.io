@@ -1,0 +1,139 @@
+---
+title: "Der Pythagoras-Baum in Python (Py5)"
+author: "Jörg Kantel"
+date: "2025-07-11 17:20:00"
+categories: [Python, Dynamisch Systeme, Mathematik, Processing, Creative Coding]
+image: "images/rabbit.jpg"
+---
+
+[![](images/rabbit-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54648032963/)
+
+Heute möchte ich mein [vor zwei Tagen gegebenes Versprechen](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) einlösen und mal wieder etwas mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem Python&nbsp;3-Port von Processing, anzustellen. Ich habe dafür den [Pythagoras-Baum](https://de.wikipedia.org/wiki/Pythagoras-Baum) wieder [hervorgekramt](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) und in einem leicht anderen Algorithmus[^1], aber auch wieder rekursiv, implementiert.
+
+[^1]: Den rekursiven Algorithmus habe ich einem Pascal-Programm aus Jürgen Plate: *Computergrafik: Einführung – Algorithmen – Programmentwicklung*, München (Franzis) 2.&nbsp;Auflage 1988, Seiten 460-462 entnommen.
+
+Die Geschichte des Pythagoras-Baumes[^2] geht auf den niederländischen Ingenieur und späteren Mathematiklehrer *Albert E. Bosman* (1891–1961) zurück. Er entwarf 1942 während des 2.&nbsp;Weltkrieges in seiner Freizeit an einem Zeichenbrett, an dem er sonst U-Boot-Pläne zeichnete, geometrische Muster. Seine Graphiken wurden 1957 in dem Buch »*Het wondere onderzoekingsveld der vlakke meetkunde*« veröffentlicht. Der Pythagoras-Baum beruht auf einer rekursiven Abbildung des Pythagoras-Lehrsatzes: Die beiden Quadrate auf den Katheten des rechtwinkligen Dreiecks dienen als Verzweigung, auf dem jedes Kathetenquadrat sich wiederum verzweigt.
+
+[^2]: Nach Dietmar Herrmann, *Algorithmen für Chaos und Fraktale*, Bonn (Addison-Wesley) 1944, Seiten 170f.
+
+## Der asymmetrische Pythagoras-Baum
+
+[![](images/asympyth.jpg)](https://www.flickr.com/photos/schockwellenreiter/54642425458/)
+
+Der asymmetrische Pythagoras-Baum ist die allgemeine Form des Pythagoras-Baumes. Um die Funktion rekursiv aufrufen zu können, mußte ich sie aus der `draw()`-Funktion auslagern und sie in einen eigenen Aufruf packen:
+
+~~~python
+def draw_pythagoras(a1, a2, b1, b2, level):
+    if (level > 0):
+        # Eckpunkte berechnen
+        n1 = -b2 + a2
+        n2 = -a1 + b1
+        c1 = b1 + n1
+        c2 = b2 + n2
+        d1 = a1 + n1
+        d2 = a2 + n2
+        # Start-Rechteck zeichnen
+        py5.fill(palette[(level-1)%10])
+        with py5.begin_closed_shape():
+            py5.vertex(a1 + xmitte, ymax - a2)
+            py5.vertex(b1 + xmitte, ymax - b2)
+            py5.vertex(c1 + xmitte, ymax - c2)
+            py5.vertex(d1 + xmitte, ymax - d2)
+        e1 = d1 + w1*(c1 - d1) + w2*n1
+        e2 = d2 + w1*(c2 - d2) + w2*n2
+        # Schenkel-Quadrate zeichnen
+        draw_pythagoras(e1, e2, c1, c2, level-1)
+        draw_pythagoras(d1, d2, e1, e2, level-1)
+~~~
+
+Zum Zeichnen der einzelnen Quadrate habe ich nicht die `rect()`-Funktion genutzt, sondern Shapes, mit denen sich Punkte zu einem beliebigen Gebilde oder Polygon zusammefassen lassen. Hierzu müssen sie erst einmal mit `with begin_closed_shape()` geklammert werden. Darin werden dann mit `vertex(x, y)` nacheinander die einzelnen Punkt aufgerufen, die (im einfachten Fall) durch Linien miteinander verbunden werden sollen. Mit `begin_closed_shape` teile ich dem Sketch auch mit, daß das entstehende Polygon auf jeden Fall geschlossen werden soll, ein einfaches with `begin_shape()` würde es offen lassen.
+
+Der Aufruf ist rekursiv: Nachdem zuerst das Grundquadrat gezeichnet wurde, werden die rechten und die linken Schenkelquadrate gezeichnet, die dann wieder als Grundquadrate für den nächsten Rekursionslevel fungieren.
+
+Py5 ist gegenüber Rekursionstiefen relativ robust. Die benutzte Rekursionstiefe von 12 wird klaglos abgearbeitet, auch Rekursionstiefen bis 20 sind kein Problem. Auch eine Rekursionstiefe von 22 oder gar 25 wurde -- mit etwas Geduld -- absturzfrei berechnet. Der Erkenntnisgewinn ist dabei aber nur noch gering, da die einzelnen »Blätter« nur noch ein undurchschaubarer Pixelhaufen sind.
+
+## Die Farben
+
+Für die Farben habe ich eine Palette in einer Liste zusammengestellt, die der Reihe nach die Quadrate einfärbt. Da die Liste nur 10 Elemente enthält, habe ich mit `fill(palette[(level-1)%10]*) dafür gesorgt, daß nach 10 Leveln die Palette wieder von vorne durchlaufen wird.
+
+## Der Quellcode
+
+Da die eigentliche Aufgabe des Programms in die Funktion `drawPythagoras()` ausgelagert wurde, ist der restlich Quellcode von erfrischender Kürze:
+
+~~~python
+import py5
+
+WIDTH, HEIGHT = 640, 480
+
+palette = [py5.color(189,183,110), py5.color(0,100,0), py5.color(34,139,105),
+           py5.color(152,251,152), py5.color(85,107,47), py5.color(139,69,19),
+           py5.color(154,205,50), py5.color(107,142,35), py5.color(139,134,78),
+           py5.color(139, 115, 85)]
+
+xmax = 600
+xmitte = 300
+ymax = 440
+level = 12
+w1 = 0.36   # Winkel 1
+w2 = 0.48   # Winkel 2
+
+def setup():
+    py5.size(WIDTH, HEIGHT)
+    py5.window_title("Asymmetrischer Pythagorasbaum")
+    py5.background(234, 218, 184)
+    py5.stroke_weight(1)
+    py5.no_loop()
+
+def draw_pythagoras(a1, a2, b1, b2, level):
+    if (level > 0):
+        # Eckpunkte berechnen
+        n1 = -b2 + a2
+        n2 = -a1 + b1
+        c1 = b1 + n1
+        c2 = b2 + n2
+        d1 = a1 + n1
+        d2 = a2 + n2
+        # Start-Rechteck zeichnen
+        py5.fill(palette[(level-1)%10])
+        with py5.begin_closed_shape():
+            py5.vertex(a1 + xmitte, ymax - a2)
+            py5.vertex(b1 + xmitte, ymax - b2)
+            py5.vertex(c1 + xmitte, ymax - c2)
+            py5.vertex(d1 + xmitte, ymax - d2)
+        e1 = d1 + w1*(c1 - d1) + w2*n1
+        e2 = d2 + w1*(c2 - d2) + w2*n2
+        # Schenkel-Quadrate zeichnen
+        draw_pythagoras(e1, e2, c1, c2, level-1)
+        draw_pythagoras(d1, d2, e1, e2, level-1)
+
+def draw():
+    draw_pythagoras(-(xmax/10), 0, xmax/20, 0, level)
+    print("I did it, Babe!")
+
+py5.run_sketch()
+~~~
+
+Auch wenn es nicht nötig gewesen wäre, ich mag es einfach (und es dient der Übersichtlichkeit), wenn ich meine Py5-Sketche mit `def setup()` und `def draw()` gliedere. Mit `no_loop()` habe ich dann dafür gesorgt, daß die `draw()`-Schleife auch nur einmal abgearbeitet wird.
+
+## Der symmetrische Pythagoras-Baum
+
+[![](images/sympyth.jpg)](https://www.flickr.com/photos/schockwellenreiter/54642425448/)
+
+Der symmetrische Pythagoras-Baum ist einer der möglichen Spezialfälle. Man erhält ihn zum Beispiel, wenn man die beiden Winkelkonsten `w1` und `w2` jeweils beide auf $0.5$ setzt.
+
+~~~python
+xmax = 600
+xmitte = 330
+ymax = 420
+level = 12
+w1 = 0.5   # Winkel 1
+w2 = 0.5   # Winkel 2
+~~~
+
+Die Änderungen der drei Werte `xmax`, `xmitte` und `ymax` sind rein kosmetischer Natur. Sie dienen nur dazu, den Baum im Ausgabefenster hübsch zu zentrieren.
+
+Lediglich diese Parameter sind zu ändern, übrige Programm bleibt unverändert.
+
+---
+
+**Bild**: *[Das Kaninchen und die Python](https://www.flickr.com/photos/schockwellenreiter/54648032963/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored Franco-Belgian comic style. Illustration of a green python with glasses walks with a rabbit through a futuristic, cubic world. The rabbit wears a dark blue vest and holds a large pocket watch. The python points to a strange tree made of cubes*«. Modell: Flux (Pro), Style: None.
