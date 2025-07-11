@@ -2,19 +2,19 @@
 title: "Der Pythagoras-Baum in Python (Py5)"
 author: "Jörg Kantel"
 date: "2025-07-11 17:20:00"
-categories: [Python, Dynamisch Systeme, Mathematik, Processing, Creative Coding]
+categories: [Py5, Python, Dynamische Systeme, Mathematik, Processing, Creative Coding]
 image: "images/rabbit.jpg"
 ---
 
 [![](images/rabbit-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54648032963/)
 
-Heute möchte ich mein [vor zwei Tagen gegebenes Versprechen](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) einlösen und mal wieder etwas mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem Python&nbsp;3-Port von Processing, anzustellen. Ich habe dafür den [Pythagoras-Baum](https://de.wikipedia.org/wiki/Pythagoras-Baum) wieder [hervorgekramt](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) und in einem leicht anderen Algorithmus[^1], aber auch wieder rekursiv, implementiert.
+Heute möchte ich mein [vor zwei Tagen gegebenes Versprechen](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) einlösen und mal wieder etwas mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem Python&nbsp;3-Port von Processing, anstellen. Ich habe dafür den [Pythagoras-Baum](https://de.wikipedia.org/wiki/Pythagoras-Baum) wieder [hervorgekramt](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) und in einem leicht anderen Algorithmus[^1], aber auch wieder rekursiv, implementiert.
 
 [^1]: Den rekursiven Algorithmus habe ich einem Pascal-Programm aus Jürgen Plate: *Computergrafik: Einführung – Algorithmen – Programmentwicklung*, München (Franzis) 2.&nbsp;Auflage 1988, Seiten 460-462 entnommen.
 
 Die Geschichte des Pythagoras-Baumes[^2] geht auf den niederländischen Ingenieur und späteren Mathematiklehrer *Albert E. Bosman* (1891–1961) zurück. Er entwarf 1942 während des 2.&nbsp;Weltkrieges in seiner Freizeit an einem Zeichenbrett, an dem er sonst U-Boot-Pläne zeichnete, geometrische Muster. Seine Graphiken wurden 1957 in dem Buch »*Het wondere onderzoekingsveld der vlakke meetkunde*« veröffentlicht. Der Pythagoras-Baum beruht auf einer rekursiven Abbildung des Pythagoras-Lehrsatzes: Die beiden Quadrate auf den Katheten des rechtwinkligen Dreiecks dienen als Verzweigung, auf dem jedes Kathetenquadrat sich wiederum verzweigt.
 
-[^2]: Nach Dietmar Herrmann, *Algorithmen für Chaos und Fraktale*, Bonn (Addison-Wesley) 1944, Seiten 170f.
+[^2]: Nach Dietmar Herrmann, *Algorithmen für Chaos und Fraktale*, Bonn (Addison-Wesley) 1994, Seiten 170f.
 
 ## Der asymmetrische Pythagoras-Baum
 
@@ -50,15 +50,15 @@ Zum Zeichnen der einzelnen Quadrate habe ich nicht die `rect()`-Funktion genutzt
 
 Der Aufruf ist rekursiv: Nachdem zuerst das Grundquadrat gezeichnet wurde, werden die rechten und die linken Schenkelquadrate gezeichnet, die dann wieder als Grundquadrate für den nächsten Rekursionslevel fungieren.
 
-Py5 ist gegenüber Rekursionstiefen relativ robust. Die benutzte Rekursionstiefe von 12 wird klaglos abgearbeitet, auch Rekursionstiefen bis 20 sind kein Problem. Auch eine Rekursionstiefe von 22 oder gar 25 wurde -- mit etwas Geduld -- absturzfrei berechnet. Der Erkenntnisgewinn ist dabei aber nur noch gering, da die einzelnen »Blätter« nur noch ein undurchschaubarer Pixelhaufen sind.
+Py5 ist gegenüber Rekursionstiefen relativ robust. Die benutzte Rekursionstiefe von 12 wird klaglos abgearbeitet, auch Rekursionstiefen bis 20 sind kein Problem. Auch eine Rekursionstiefe von 22 oder gar 25 wurde -- mit etwas Geduld -- absturzfrei berechnet. Der Erkenntnisgewinn ist dabei aber vergleichsweise gering, da die einzelnen »Blätter« nur noch ein undurchschaubarer Pixelhaufen sind.
 
 ## Die Farben
 
-Für die Farben habe ich eine Palette in einer Liste zusammengestellt, die der Reihe nach die Quadrate einfärbt. Da die Liste nur 10 Elemente enthält, habe ich mit `fill(palette[(level-1)%10]*) dafür gesorgt, daß nach 10 Leveln die Palette wieder von vorne durchlaufen wird.
+Für die Farben habe ich eine Palette in einer Liste zusammengestellt, die der Reihe nach die Quadrate einfärbt. Da die Liste nur 10 Elemente enthält, habe ich mit `fill(palette[(level-1)%10])` dafür gesorgt, daß nach 10 Leveln die Paletten-Liste wieder von vorne durchlaufen wird.
 
 ## Der Quellcode
 
-Da die eigentliche Aufgabe des Programms in die Funktion `drawPythagoras()` ausgelagert wurde, ist der restlich Quellcode von erfrischender Kürze:
+Da die eigentliche Aufgabe des Programms in die Funktion `draw_pythagoras()` ausgelagert wurde, ist der restlich Quellcode von erfrischender Kürze:
 
 ~~~python
 import py5

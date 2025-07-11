@@ -21,7 +21,7 @@
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/54648032963/"><img src="https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/images/rabbit-b.jpg" class="img-fluid"></a></p>
-<p>Heute möchte ich mein <a href="https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/">vor zwei Tagen gegebenes Versprechen</a> einlösen und mal wieder etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem Python&nbsp;3-Port von Processing, anzustellen. Ich habe dafür den <a href="https://de.wikipedia.org/wiki/Pythagoras-Baum">Pythagoras-Baum</a> wieder <a href="https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/">hervorgekramt</a> und in einem leicht anderen Algorithmus<sup>1</sup>, aber auch wieder rekursiv, implementiert.</p>
+<p>Heute möchte ich mein <a href="https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/">vor zwei Tagen gegebenes Versprechen</a> einlösen und mal wieder etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem Python&nbsp;3-Port von Processing, anstellen. Ich habe dafür den <a href="https://de.wikipedia.org/wiki/Pythagoras-Baum">Pythagoras-Baum</a> wieder <a href="https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/">hervorgekramt</a> und in einem leicht anderen Algorithmus<sup>1</sup>, aber auch wieder rekursiv, implementiert.</p>
 <p>Die Geschichte des Pythagoras-Baumes<sup>2</sup> geht auf den niederländischen Ingenieur und späteren Mathematiklehrer <em>Albert E. Bosman</em> (1891–1961) zurück. Er entwarf 1942 während des 2.&nbsp;Weltkrieges in seiner Freizeit an einem Zeichenbrett, an dem er sonst U-Boot-Pläne zeichnete, geometrische Muster. Seine Graphiken wurden 1957 in dem Buch »<em>Het wondere onderzoekingsveld der vlakke meetkunde</em>« veröffentlicht. Der Pythagoras-Baum beruht auf einer rekursiven Abbildung des Pythagoras-Lehrsatzes: Die beiden Quadrate auf den Katheten des rechtwinkligen Dreiecks dienen als Verzweigung, auf dem jedes Kathetenquadrat sich wiederum verzweigt.</p>
 <section id="der-asymmetrische-pythagoras-baum" class="level2">
 <h2 class="anchored" data-anchor-id="der-asymmetrische-pythagoras-baum">Der asymmetrische Pythagoras-Baum</h2>
@@ -153,15 +153,15 @@ background-color: null;
 font-style: inherit;">1</span>)</span></code></pre></div>
 <p>Zum Zeichnen der einzelnen Quadrate habe ich nicht die <code>rect()</code>-Funktion genutzt, sondern Shapes, mit denen sich Punkte zu einem beliebigen Gebilde oder Polygon zusammefassen lassen. Hierzu müssen sie erst einmal mit <code>with begin_closed_shape()</code> geklammert werden. Darin werden dann mit <code>vertex(x, y)</code> nacheinander die einzelnen Punkt aufgerufen, die (im einfachten Fall) durch Linien miteinander verbunden werden sollen. Mit <code>begin_closed_shape</code> teile ich dem Sketch auch mit, daß das entstehende Polygon auf jeden Fall geschlossen werden soll, ein einfaches with <code>begin_shape()</code> würde es offen lassen.</p>
 <p>Der Aufruf ist rekursiv: Nachdem zuerst das Grundquadrat gezeichnet wurde, werden die rechten und die linken Schenkelquadrate gezeichnet, die dann wieder als Grundquadrate für den nächsten Rekursionslevel fungieren.</p>
-<p>Py5 ist gegenüber Rekursionstiefen relativ robust. Die benutzte Rekursionstiefe von 12 wird klaglos abgearbeitet, auch Rekursionstiefen bis 20 sind kein Problem. Auch eine Rekursionstiefe von 22 oder gar 25 wurde – mit etwas Geduld – absturzfrei berechnet. Der Erkenntnisgewinn ist dabei aber nur noch gering, da die einzelnen »Blätter« nur noch ein undurchschaubarer Pixelhaufen sind.</p>
+<p>Py5 ist gegenüber Rekursionstiefen relativ robust. Die benutzte Rekursionstiefe von 12 wird klaglos abgearbeitet, auch Rekursionstiefen bis 20 sind kein Problem. Auch eine Rekursionstiefe von 22 oder gar 25 wurde – mit etwas Geduld – absturzfrei berechnet. Der Erkenntnisgewinn ist dabei aber vergleichsweise gering, da die einzelnen »Blätter« nur noch ein undurchschaubarer Pixelhaufen sind.</p>
 </section>
 <section id="die-farben" class="level2">
 <h2 class="anchored" data-anchor-id="die-farben">Die Farben</h2>
-<p>Für die Farben habe ich eine Palette in einer Liste zusammengestellt, die der Reihe nach die Quadrate einfärbt. Da die Liste nur 10 Elemente enthält, habe ich mit `fill(palette[(level-1)%10]*) dafür gesorgt, daß nach 10 Leveln die Palette wieder von vorne durchlaufen wird.</p>
+<p>Für die Farben habe ich eine Palette in einer Liste zusammengestellt, die der Reihe nach die Quadrate einfärbt. Da die Liste nur 10 Elemente enthält, habe ich mit <code>fill(palette[(level-1)%10])</code> dafür gesorgt, daß nach 10 Leveln die Paletten-Liste wieder von vorne durchlaufen wird.</p>
 </section>
 <section id="der-quellcode" class="level2">
 <h2 class="anchored" data-anchor-id="der-quellcode">Der Quellcode</h2>
-<p>Da die eigentliche Aufgabe des Programms in die Funktion <code>drawPythagoras()</code> ausgelagert wurde, ist der restlich Quellcode von erfrischender Kürze:</p>
+<p>Da die eigentliche Aufgabe des Programms in die Funktion <code>draw_pythagoras()</code> ausgelagert wurde, ist der restlich Quellcode von erfrischender Kürze:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> py5</span>
@@ -500,11 +500,12 @@ font-style: inherit;"># Winkel 2</span></span></code></pre></div>
 
 <ol>
 <li id="fn1"><p>Den rekursiven Algorithmus habe ich einem Pascal-Programm aus Jürgen Plate: <em>Computergrafik: Einführung – Algorithmen – Programmentwicklung</em>, München (Franzis) 2.&nbsp;Auflage 1988, Seiten 460-462 entnommen.↩︎</p></li>
-<li id="fn2"><p>Nach Dietmar Herrmann, <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1944, Seiten 170f.↩︎</p></li>
+<li id="fn2"><p>Nach Dietmar Herrmann, <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, Seiten 170f.↩︎</p></li>
 </ol>
 </section></div> ]]></description>
+  <category>Py5</category>
   <category>Python</category>
-  <category>Dynamisch Systeme</category>
+  <category>Dynamische Systeme</category>
   <category>Mathematik</category>
   <category>Processing</category>
   <category>Creative Coding</category>
