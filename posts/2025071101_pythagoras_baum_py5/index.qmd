@@ -46,7 +46,7 @@ def draw_pythagoras(a1, a2, b1, b2, level):
         draw_pythagoras(d1, d2, e1, e2, level-1)
 ~~~
 
-Zum Zeichnen der einzelnen Quadrate habe ich nicht die `rect()`-Funktion genutzt, sondern Shapes, mit denen sich Punkte zu einem beliebigen Gebilde oder Polygon zusammefassen lassen. Hierzu müssen sie erst einmal mit `with begin_closed_shape()` geklammert werden. Darin werden dann mit `vertex(x, y)` nacheinander die einzelnen Punkt aufgerufen, die (im einfachsten Fall) durch Linien miteinander verbunden werden sollen. Mit `begin_closed_shape` teile ich dem Sketch auch mit, daß das entstehende Polygon auf jeden Fall geschlossen werden soll, ein einfaches with `begin_shape()` würde es offen lassen.
+Zum Zeichnen der einzelnen Quadrate habe ich nicht die `rect()`-Funktion genutzt, sondern Shapes, mit denen sich Punkte zu einem beliebigen Gebilde oder Polygon zusammenfassen lassen. Hierzu müssen sie erst einmal mit `with begin_closed_shape()` geklammert werden. Darin werden dann mit `vertex(x, y)` nacheinander die einzelnen Punkte aufgerufen, die (im einfachsten Fall) durch Linien miteinander verbunden werden sollen. Mit `begin_closed_shape` teile ich dem Sketch auch mit, daß das entstehende Polygon auf jeden Fall geschlossen werden soll, ein einfaches with `begin_shape()` würde es im Zweifelsfall offen lassen.
 
 Der Aufruf ist rekursiv: Nachdem zuerst das Grundquadrat gezeichnet wurde, werden die rechten und die linken Schenkelquadrate gezeichnet, die dann wieder als Grundquadrate für den nächsten Rekursionslevel fungieren.
 
