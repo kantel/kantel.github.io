@@ -1,0 +1,64 @@
+---
+title: "Spaß mit Proseco: For Your Eyes Only"
+author: "Jörg Kantel"
+date: "2025-07-12 18:10:00"
+categories: [Proceso, Python, Py5, PyScript, Processing, Creative Coding]
+image: "images/eyes.jpg"
+---
+
+[![](images/eyes-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54650041848/)
+
+Nach meinem [gestrigen Abenteuer](https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/) mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem Python3-Port von Processing, wollte ich heute etwas völlig Sinnbefreites mit [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) und [Proceso](https://proceso.cc/) anstellen, denn Proceso lehnt sich sehr stark an Py5 an (es ist in der Syntax nahezu identisch), nur daß es im Browser lauffähige Sketche erzeugt.
+
+Ältere Mac-Nutzer erinnern sich vielleicht noch an ein Gadget, das von System&nbsp;7 bis System&nbsp;9 bei vielen Nutzern den Desktop zierte: Augen, die mit ihren Pupillen dem Mauszeiger folgten. Genau dieses Gadget wollte ich mit Python und Proceso nachbauen:
+
+<iframe src="proceso/index.html" width="100%" height="360"></iframe>
+
+Herausgekommen ist eine Art Emoji mit einem grellgelben, lächelnden Gesicht und großen, runden Augen, deren Pupillen tatsächlich dem Mauszeiger folgen. Erreicht habe ich dies mit folgendem, kleinen Script:
+
+~~~python
+from proceso import Sketch
+
+WIDTH, HEIGHT = 640, 360
+
+p5 = Sketch()
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    p5.stroke_weight(3)
+
+
+def draw():
+    p5.background(139, 134, 130)
+    face()
+    eye(p5.width//2 - 45, p5.height//2)
+    eye(p5.width//2 + 45, p5.height//2)
+
+def face():
+    p5.fill(244, 244, 0)
+    p5.circle(p5.width//2, p5.height//2, 160)
+    # Den Mund zeichnen
+    p5.arc(p5.width//2, p5.height//2, 120, 120,
+           p5.QUARTER_PI, p5.PI - p5.QUARTER_PI)
+
+def eye(x, y):
+    p5.fill(255)
+    p5.circle(x, y, 60)
+    # Die Pupillen folgen der Maus
+    mx = p5.mouse_x - x
+    my = p5.mouse_y - y
+    p5.fill(50)
+    p5.circle(x + mx//25, y + my//25, 25)
+    
+p5.run_sketch(setup=setup, draw=draw)
+~~~
+
+Es wäre nicht wirklich notwendig gewesen, aber um der Modularität willen habe ich das Zeichnen des Gesichtes in die Funktion `face()` und das Zeichnen der Augen in die Funtion `eye()` ausgelagert. Mit den Parametern in dem `circle()`-Aufruf in `eye()` habe ich solange experimentiert, bis das Ergebnis meinen Vorstellungen entsprach.
+
+Die Idee zu den Augen habe ich einem [(Java-) Processing-Tutorial](https://lernprocessing.wordpress.com/2010/01/10/funktionen/) von *Thomas Koberger* entnommen, das ich variiert und nach Proceso übertragen habe. Auf [seinen Seiten](https://lernprocessing.wordpress.com/2010/01/18/processing-links/) findet Ihr übrigens noch viele weitere, interessante und lehrreiche Tutorials, so daß ich Euch einen Besuch dort empfehle -- auch wenn sie schon seit längerem kein Update mehr erfahren haben.
+
+Procesos Syntax ist wirklich sehr stark an Py5 angelehnt, vieles kann man Eins-zu-Eins übernehmen. Auch ich habe mich für dieses Skriptchen bei der [Py5-Dokumentation](https://py5coding.org/reference/sketch_arc.html) bedient. Wenn ich mir was wünschen dürfte, wäre es, daß sich *James Schmitz*, der Schöpfer von Py5, der auch schon über einen [Port nach PyScript spekuliert](https://kantel.github.io/posts/2024072701_py5_pyscript/) hat, und *Nick McIntyre*, der Kopf hinter Proceso, zusammenraufen und die bestehenden Lücken in der Syntax von Py5 und Proceso schließen. Man wird ja schließlich noch träumen dürfen.
+
+## Verwendete Literatur
+
+- Thomas Koberger: *[Funktionen](https://lernprocessing.wordpress.com/2010/01/10/funktionen/)*, Processing-Tutorial vom 10. Januar 2010

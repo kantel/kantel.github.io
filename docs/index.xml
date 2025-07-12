@@ -10,7 +10,201 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Fri, 11 Jul 2025 15:20:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 12 Jul 2025 16:10:00 GMT</lastBuildDate>
+<item>
+  <title>Spaß mit Proseco: For Your Eyes Only</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025071201_for_your_eyes_only/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54650041848/"><img src="https://kantel.github.io/posts/2025071201_for_your_eyes_only/images/eyes-b.jpg" class="img-fluid"></a></p>
+<p>Nach meinem <a href="https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/">gestrigen Abenteuer</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem Python3-Port von Processing, wollte ich heute etwas völlig Sinnbefreites mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> und <a href="https://proceso.cc/">Proceso</a> anstellen, denn Proceso lehnt sich sehr stark an Py5 an (es ist in der Syntax nahezu identisch), nur daß es im Browser lauffähige Sketche erzeugt.</p>
+<p>Ältere Mac-Nutzer erinnern sich vielleicht noch an ein Gadget, das von System&nbsp;7 bis System&nbsp;9 bei vielen Nutzern den Desktop zierte: Augen, die mit ihren Pupillen dem Mauszeiger folgten. Genau dieses Gadget wollte ich mit Python und Proceso nachbauen:</p>
+<iframe src="proceso/index.html" width="100%" height="360">
+</iframe>
+<p>Herausgekommen ist eine Art Emoji mit einem grellgelben, lächelnden Gesicht und großen, runden Augen, deren Pupillen tatsächlich dem Mauszeiger folgen. Erreicht habe ich dies mit folgendem, kleinen Script:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> proceso <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Sketch</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">360</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5">p5 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Sketch()</span>
+<span id="cb1-6"></span>
+<span id="cb1-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> setup():</span>
+<span id="cb1-8">    p5.create_canvas(WIDTH, HEIGHT)</span>
+<span id="cb1-9">    p5.stroke_weight(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb1-13">    p5.background(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">139</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">134</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">130</span>)</span>
+<span id="cb1-14">    face()</span>
+<span id="cb1-15">    eye(p5.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, p5.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-16">    eye(p5.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, p5.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-17"></span>
+<span id="cb1-18"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> face():</span>
+<span id="cb1-19">    p5.fill(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">244</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">244</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-20">    p5.circle(p5.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, p5.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span>)</span>
+<span id="cb1-21">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Den Mund zeichnen</span></span>
+<span id="cb1-22">    p5.arc(p5.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, p5.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>,</span>
+<span id="cb1-23">           p5.QUARTER_PI, p5.PI <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> p5.QUARTER_PI)</span>
+<span id="cb1-24"></span>
+<span id="cb1-25"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> eye(x, y):</span>
+<span id="cb1-26">    p5.fill(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb1-27">    p5.circle(x, y, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>)</span>
+<span id="cb1-28">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Die Pupillen folgen der Maus</span></span>
+<span id="cb1-29">    mx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p5.mouse_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> x</span>
+<span id="cb1-30">    my <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> p5.mouse_y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y</span>
+<span id="cb1-31">    p5.fill(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-32">    p5.circle(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> mx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> my<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>)</span>
+<span id="cb1-33">    </span>
+<span id="cb1-34">p5.run_sketch(setup<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>setup, draw<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>draw)</span></code></pre></div>
+<p>Es wäre nicht wirklich notwendig gewesen, aber um der Modularität willen habe ich das Zeichnen des Gesichtes in die Funktion <code>face()</code> und das Zeichnen der Augen in die Funtion <code>eye()</code> ausgelagert. Mit den Parametern in dem <code>circle()</code>-Aufruf in <code>eye()</code> habe ich solange experimentiert, bis das Ergebnis meinen Vorstellungen entsprach.</p>
+<p>Die Idee zu den Augen habe ich einem <a href="https://lernprocessing.wordpress.com/2010/01/10/funktionen/">(Java-) Processing-Tutorial</a> von <em>Thomas Koberger</em> entnommen, das ich variiert und nach Proceso übertragen habe. Auf <a href="https://lernprocessing.wordpress.com/2010/01/18/processing-links/">seinen Seiten</a> findet Ihr übrigens noch viele weitere, interessante und lehrreiche Tutorials, so daß ich Euch einen Besuch dort empfehle – auch wenn sie schon seit längerem kein Update mehr erfahren haben.</p>
+<p>Procesos Syntax ist wirklich sehr stark an Py5 angelehnt, vieles kann man Eins-zu-Eins übernehmen. Auch ich habe mich für dieses Skriptchen bei der <a href="https://py5coding.org/reference/sketch_arc.html">Py5-Dokumentation</a> bedient. Wenn ich mir was wünschen dürfte, wäre es, daß sich <em>James Schmitz</em>, der Schöpfer von Py5, der auch schon über einen <a href="https://kantel.github.io/posts/2024072701_py5_pyscript/">Port nach PyScript spekuliert</a> hat, und <em>Nick McIntyre</em>, der Kopf hinter Proceso, zusammenraufen und die bestehenden Lücken in der Syntax von Py5 und Proceso schließen. Man wird ja schließlich noch träumen dürfen.</p>
+<section id="verwendete-literatur" class="level2">
+<h2 class="anchored" data-anchor-id="verwendete-literatur">Verwendete Literatur</h2>
+<ul>
+<li>Thomas Koberger: <em><a href="https://lernprocessing.wordpress.com/2010/01/10/funktionen/">Funktionen</a></em>, Processing-Tutorial vom 10. Januar 2010</li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>Proceso</category>
+  <category>Python</category>
+  <category>Py5</category>
+  <category>PyScript</category>
+  <category>Processing</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025071201_for_your_eyes_only/</guid>
+  <pubDate>Sat, 12 Jul 2025 16:10:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025071201_for_your_eyes_only/images/eyes.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Der Pythagoras-Baum in Python (Py5)</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4394,358 +4588,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025061801_gehirnamputierte/</guid>
   <pubDate>Wed, 18 Jun 2025 14:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025061801_gehirnamputierte/images/gehirnamputiert.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Cantor-Käse-Konstruktionen</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025061701_cantor_kaese/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54593831598/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese-b.jpg" class="img-fluid"></a></p>
-<p>Die <a href="https://de.wikipedia.org/wiki/Cantor-Menge">Cantor-Menge</a> ist eine überabzählbar mächtige, total unzusammenhängende und nirgends dichte, aber dennoch kompakte Punktmenge, die laut <em>Ian Stewart</em><sup>1</sup> 1875 von <em>Henry Smith</em> entdeckt und von <em><a href="https://de.wikipedia.org/wiki/Georg_Cantor">Georg Cantor</a></em> 1883 veröffentlicht wurde. Sie gilt als das älteste Fraktal überhaupt.</p>
-<p>Da die Cantor-Menge schwer zu visualisieren ist, wird sie häufig durch eine Figur dargestellt, die aus Kreisen konstruiert wird und zur Cantor-Menge topologisch äquivalent ist. <em>Clifford A. Pickover</em> beschreibt sie so<sup>2</sup>: Aus einem Kreis wird bis auf zwei kleinere Kreise alles entfernt. Aus diesen zwei kleineren Kreisen wird wiederum bis auf zwei kleinere Kreise alles entfernt. Nun hat man schon vier Kreise, aus denen man jeweils bis auf zwei kleinere Kreise alles entfernt. Und so weiter und so fort …</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54592726472/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese01.jpg" class="img-fluid figure-img" alt="Cantor-Käse"></a></p>
-<figcaption>Cantor-Käse</figcaption>
-</figure>
-</div>
-<p>Entlang des waagrechten Durchmessers (der Horizontalen) ist die fraktale Dimension für die Punktmenge nahezu&nbsp;<img src="https://latex.codecogs.com/png.latex?1">. Kleinere Fraktale mit einer geringeren Dimension entstehen durch die Verwendung geschrumpfter und getrennter Kreise.</p>
-<p>Das schreit natürlich nach einer rekursiven Funktion und die ist in Python/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> recht schnell erstellt:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> gp</span>
-<span id="cb1-2"></span>
-<span id="cb1-3">WIDTH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span></span>
-<span id="cb1-4">HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">480</span></span>
-<span id="cb1-5"></span>
-<span id="cb1-6">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
-<span id="cb1-7">gp.window(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb1-8">gp.title(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Cantor-Käse"</span>)</span>
-<span id="cb1-9">gp.bgColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">184</span>))</span>
-<span id="cb1-10"></span>
-<span id="cb1-11"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> cheese(x, y, r, level):</span>
-<span id="cb1-12">    gp.move(x, y)</span>
-<span id="cb1-13">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">255</span>))</span>
-<span id="cb1-14">    gp.fillCircle(r)</span>
-<span id="cb1-15">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span>
-<span id="cb1-16">    gp.circle(r)</span>
-<span id="cb1-17">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> (level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>):</span>
-<span id="cb1-18">        cheese(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-19">        cheese(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-20"></span>
-<span id="cb1-21">cheese(WIDTH<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span>)</span>
-<span id="cb1-22"></span>
-<span id="cb1-23"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
-<p>Wandelt man das Skript ein wenig ab, indem man auf der x-Achse jeweils den Durchmesser (<img src="https://latex.codecogs.com/png.latex?r">) anstelle der Radii (<img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Br%7D%7B2%7D">) addiert, respektive subtrahiert,</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> (level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>):</span>
-<span id="cb2-2">    cheese(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> r, y, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb2-3">    cheese(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> r, y, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span></code></pre></div>
-<p>erhält man das Gebilde im Bannerbild oben. Das ist zwar strenggenommen kein Cantor-Käse mehr, sieht aber – wie ich finde – auch recht hübsch aus.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54593651661/"><img src="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese02.jpg" class="img-fluid figure-img" alt="Cantors-Doppelkäse"></a></p>
-<figcaption>Cantors-Doppelkäse</figcaption>
-</figure>
-</div>
-<p>Schon bei <a href="http://blog.schockwellenreiter.de/2016/09/2016091601.html">früheren Experimenten</a> hatte ich mich gefragt, was für eine Figur entstände, wenn man den Käse sich nicht nur in der Horizontalen, sondern auch in der Vertikalen ausbreiten ließe?</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> gp</span>
-<span id="cb3-2"></span>
-<span id="cb3-3">WIDTH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span></span>
-<span id="cb3-4">HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">480</span></span>
-<span id="cb3-5">maxLevel <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">6</span></span>
-<span id="cb3-6"></span>
-<span id="cb3-7">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
-<span id="cb3-8">gp.window(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, WIDTH, HEIGHT, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>)</span>
-<span id="cb3-9">gp.title(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Cantors-Doppelkäse"</span>)</span>
-<span id="cb3-10">gp.bgColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">184</span>))</span>
-<span id="cb3-11"></span>
-<span id="cb3-12"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> cheese(x, y, r, level):</span>
-<span id="cb3-13">    gp.move(x, y)</span>
-<span id="cb3-14">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># gp.setColor(gp.makeColor(255, 255, 255))</span></span>
-<span id="cb3-15">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># gp.fillCircle(r)</span></span>
-<span id="cb3-16">    gp.setColor(gp.makeColor(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>))</span>
-<span id="cb3-17">    gp.circle(r)</span>
-<span id="cb3-18">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> (level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>):</span>
-<span id="cb3-19">        cheese(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb3-20">        cheese(x, y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb3-21">        cheese(x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, y, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb3-22">        cheese(x, y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, r<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, level <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb3-23"></span>
-<span id="cb3-24">cheese(WIDTH<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, HEIGHT<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>, maxLevel)</span>
-<span id="cb3-25"></span>
-<span id="cb3-26"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div>
-<p>Auch dieses Ergebnis sieht recht nett aus, allerdings sollte man hier die Rekursionstiefe kleiner wählen, sonst verschwindent alles hinter einem wüsten <a href="https://de.wikipedia.org/wiki/Moir%C3%A9-Effekt">Moiré-Muster</a>.</p>
-<section id="weiterführende-literatur" class="level3">
-<h3 class="anchored" data-anchor-id="weiterführende-literatur">Weiterführende Literatur</h3>
-<ul>
-<li>Benoît B. Mandelbrot: <em>Die fraktale Geometrie der Natur</em>, Basel, Boston, Berlin (Birkhäuser) 1991. Die Cantor-Menge wird im Kapitel&nbsp;8 (Seiten 86-95) beschrieben.</li>
-<li>Jörg Kantel: <em><a href="http://blog.schockwellenreiter.de/2016/09/2016091601.html">Cantors Doppelkäse mit Shoes</a></em>, Der Schockwellenreiter vom 16. September 2016.</li>
-<li>Clifford A. Pickover: <em>Mit den Augen des Computers. Phantastische Welten aus dem Geist der Maschine</em>, München (Markt und Technik) 1992. Dem Cantor-Käse ist auf den Seiten 171-181 ein eigenes Kapitel gewidmet.</li>
-<li>Chris Robart (Ed.): <em><a href="https://mmhs.ca/compsci/ideas2.pdf">Programming Ideas: For Teaching High School Computer Programming</a></em>, (PDF 260 KB, 2nd Edition) 2001. Eine Fundgrube voller Ideen, deren Download sich in jedem Fall lohnt.</li>
-<li>Ian Stewart: <em>Spielt Gott Roulette? Uhrwerk oder Chaos</em>, Frankfurt/Main, Leipzig (Insel Taschenbuch) 1993, Seiten 130-134.</li>
-</ul>
-<p>Den Quellcode gibt es auch wieder in meinem GitLab-Repositorium zu TigerJython. Hier der <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/cantorcheese.py">Cantor-Käse</a>, hier das <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/nocantorcheese.py">abgewandelte Beispielprogramm mit dem Bannerbild oben</a> und hier den <a href="https://gitlab.com/kantel/tigerjython/-/blob/master/fraktale/doublecantorcheese.py">doppelten Cantor-Käse</a>. <em>Habt wieder Spaß damit!</em></p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Ian Stewart: <em>Spielt Gott Roulette?</em> Frankfurt/Main und Leipzig (Insel Taschenbuch) 1993, S. 130ff.↩︎</p></li>
-<li id="fn2"><p>Clifford A. Pickover: <em>Mit den Augen des Computers. Phantastische Welten aus dem Geist der Maschine</em>, München (Markt und Technik) 1992, S. 171ff.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Python</category>
-  <category>TigerJython</category>
-  <category>Mathematik</category>
-  <category>Dynamische Systeme</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2025061701_cantor_kaese/</guid>
-  <pubDate>Tue, 17 Jun 2025 12:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025061701_cantor_kaese/images/cantorkaese.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
