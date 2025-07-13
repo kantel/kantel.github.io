@@ -1,0 +1,292 @@
+---
+title: "Ein kleines Planetensystem mit Proceso"
+author: "Jörg Kantel"
+date: "2025-07-13 19:40:00"
+categories: [Proceso, Python, Py5, PyScript, Processing, Simulation, Creative Coding]
+image: "images/planetensystem.jpg"
+---
+
+[![](images/planetensystem-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54652354418/)
+
+Als eines meiner nächsten Projekte mit [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) und [Proceso](https://proceso.cc/) möchte ich in drei Stationen eine kleine Animation eines Planetensystems entwickeln. Dabei möchte ich zeigen, wie nützlich für solch eine Simulation die Transformationsoperatoren `translate()` und `rotate()` sein können.
+
+## Stage 1: Ein Planet umkreist seine Sonne
+
+Ich beginne mit einem einfachem System eines Planeten, der seinen Fixstern umkreist. Der Einfachheit halber habe ich die Akteure Sonne und Erde genannt:
+
+<iframe src="proceso/stage1/index.html" width="100%" height="360"></iframe>
+
+Zu Beginn des Sketches lege ich erst einmal ein paar Zahlen fest:
+
+~~~python
+WIDTH, HEIGHT = 640, 360   # Aspect Ratio: 16:9
+
+sun_diam = 80
+
+earth_diam = 30
+earth_orbit_radius = 130
+earth_angle = 0
+~~~
+
+Diese Zahlen sind durch keine physikalische Wirklichkeit gedeckt, sondern einfach so lange durch Experimente herausgesucht worden, bis sie eine ansprechende Animation ergaben.
+
+Die `setup()`-Funktion legt einfach nur die Größe des Ausgabefensters fest:
+
+~~~python
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+~~~
+
+In `draw()` setze ich den Hintergrund auf schwarz und dann zeichne ich die Sonne in die Mitte des Ausgabefensters:
+
+~~~python
+def draw():
+    global earth_angle
+    p5.background(0, 0, 0)
+
+    # Sonne im Zentrum
+    p5.translate(p5.width//2, p5.height//2)
+    p5.fill(255, 200, 64)
+    p5.circle(0, 0, sun_diam)
+~~~
+
+Die Zeile `p5.translate(p5.width//2, p5.height//2)` sorgt dafür, daß der Nullpunkt des Koordinatensystem vom linken oberen Rand in die Mitte des Ausgabefensters gelegt wird und so die Sonne mit `p5.circle(0, 0, sun_diam)` auch genau dort gezeichnet wird. Probiert es aus, der Sketch ist so lauffähig.
+
+Die Variable `earth_angle` ist -- wie man im Folgenden sieht -- eine Variable, die sich in der `draw()`-Funktion noch ändern wird, daher muß sie leider als `global` deklariert werden[^1].
+
+[^1]: Eigentlich versuche ich ja, `global`-Deklarationen zu vermeiden, aber in diesem Falle ist sie -- glaube ich -- vertretbar.
+
+Nun zur Erde, die die Sonne umkreist:
+
+~~~python
+    # Erde dreht sich um die Sonne
+    p5.rotate(earth_angle)
+    p5.translate(earth_orbit_radius, 0)
+    p5.fill(64, 64, 255)
+    p5.circle(0, 0, earth_diam)
+    earth_angle += 0.01
+~~~
+
+Wenn Ihr diese Zeilen Code in die `draw()`-Funktion unterhalb der Sonne einfügt, bekommt Ihr eine blaue Erde, die sich langsam um die Sonne bewegt. Denn mit `p5.translate(earth_orbit_radius, 0)` wurde das Koordinatensystem erneut verschoben, 130 Pixel von der Sonne entfernt aber auf der gleichen y-Achse wie das Koordinatensystem der Sonne. Da `p5.rotate(earth_angle)` vor der Koordinatentransformation aufgerufen wird, dreht sich die Erde noch um die Sonne und das Koordinatensystem der Sonne rotiert, ein `rotate()` hinter der Koordinatentransformation würde bewirken, daß sich die Erde um sich selbst dreht – das heißt, daß das Koordinatensystem der Erde rotieren würde.
+
+Der vollständige Sketch sieht dann so aus:
+
+~~~python
+from proceso import Sketch
+
+WIDTH, HEIGHT = 640, 360   # Aspect Ratio: 16:9
+
+sun_diam = 80
+
+earth_diam = 30
+earth_orbit_radius = 130
+earth_angle = 0
+
+p5 = Sketch()
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+
+def draw():
+    global earth_angle
+    p5.background(0, 0, 0)
+
+    # Sonne im Zentrum
+    p5.translate(p5.width//2, p5.height//2)
+    p5.fill(255, 200, 64)
+    p5.circle(0, 0, sun_diam)
+
+    # Erde dreht sich um die Sonne
+    p5.rotate(earth_angle)
+    p5.translate(earth_orbit_radius, 0)
+    p5.fill(64, 64, 255)
+    p5.circle(0, 0, earth_diam)
+    earth_angle += 0.01
+
+p5.run_sketch(setup=setup, draw=draw)
+~~~
+
+## Stage 2: Der Mond dreht sich um die Erde (und beide werden zu Kisten)
+
+<iframe src="proceso/stage2/index.html" width="100%" height="360"></iframe>
+
+Wenn ich der Erde nun noch einen Mond spendiere, brauche ich dafür natürlich auch erst einmal ein paar Parameter, die ich an den Anfang des Sketches (hinter den Parametern für die Erde) festlege:
+
+~~~python
+moon_diam = 10
+moon_orbit_radius = 40
+moon_angle = 0
+~~~
+
+Und die Funktion `draw()` bekommt hinter den Zeilen für die Erde noch die Zeilen für den Mond angehängt:
+
+~~~python
+    # Mond dreht sich um die Erde
+    p5.rotate(moon_angle)
+    p5.translate(moon_orbit_radius, 0)
+    p5.fill(192, 192, 80)
+    p5.circle(0, 0, moon_diam)
+    moon_angle += 0.01
+~~~
+
+Durch diese Koordinatentransformation steht der Mond im gleichen Verhältnis zur Erde wie die Erde zur Sonne, der Ursprung des Koordinatensystems liegt nun 40 Pixel vom Erdmittelpunkt entfernt. Natürlich rotiert in diesen Zeilen das Koordinatensystem der Erde, damit der Eindruck entsteht, daß der Mond um die Erde kreist.
+
+Das alles funktioniert aber nur, weil bei jedem erneuten Durchlauf der `draw()`-Funktion das Koordinatensystem zurückgesetzt wird, also alle Transformationen »vergessen« werden.
+
+Nun kann man bei Kreisen schwer erkennen, ob sie wirklich rotieren, daher habe ich in einer erweiterten Fassung die Kreise von Erde und Mond durch Quadrate ersetzt[^2] (ich habe – damit Ihr die Position der Codezeilen finden, die ersetzte Kreisfunktion jeweils auskommentiert stehen lassen, die Rechteckfunktion wird jeweils direkt unter der auskommentierten Zeile eingefügt):
+
+[^2]: Ich weiß, Planeten sind meist kugelförmig und keine Kisten, aber in der virtuellen Welt von Proceso ist alles möglich.
+
+~~~python
+def draw():
+    global earth_angle, moon_angle
+    p5.background(0, 0, 0)
+
+    # Sonne im Zentrum
+    p5.translate(p5.width//2, p5.height//2)
+    p5.fill(255, 200, 64)
+    p5.circle(0, 0, sun_diam)
+
+    # Erde dreht sich um die Sonne
+    p5.rotate(earth_angle)
+    p5.translate(earth_orbit_radius, 0)
+    p5.fill(64, 64, 255)
+    # p5.circle(0, 0, earth_diam)
+    p5.rect(-earth_diam//2, -earth_diam//2, earth_diam, earth_diam)
+    earth_angle += 0.01
+
+    # Mond dreht sich um die Erde
+    p5.rotate(moon_angle)
+    p5.translate(moon_orbit_radius, 0)
+    p5.fill(192, 192, 80)
+    # p5.circle(0, 0, moon_diam)
+    p5.rect(-moon_diam//2, -moon_diam//2, moon_diam, moon_diam)
+    moon_angle += 0.01
+~~~
+
+Da sich in `draw()` auch die Variable `moon_angle` verändert, muß auch sie als `global` deklariert werden. Der Rest des Programmes unterscheidet sich nicht von der vorherigen Fassung, daher habe ich auf einen erneuten Komplett-Abdruck verzichtet.
+
+Wenn Ihr das Skript jetzt startet, dreht sich eine große blaue Kiste um die Sonne mit einer kleinen grauen Kiste, die sich um die Erde dreht und Ihr können die Rotation der beiden Kisten genau beobachten.
+
+## Stage 3: Es erscheint die Nemesis
+
+<iframe src="proceso/stage3/index.html" width="100%" height="360"></iframe>
+
+Doch was ist, wenn ein zweiter Mond -- nennen wir ihn als Gegenspielerin des Erdmondes einfach *[Nemesis](https://de.wikipedia.org/wiki/Nemesis)* -- um die Erde kreisen soll? Das Koordinatensystem der Erde ist ja schon vom Koordinatensystem des Mondes ersetzt worden. Ich brauche also eine Funktion, die das Koordinatensystem nur temporär verschiebt, so daß man auf das alte Koordinatensystem wieder zrückgreifen kann, wenn es benötigt wird. Dafür stellt Proceso das Funktionenpaar `push()` und `pop()` zur Verfügung: Mit `push()` wird das bisherige Koordinatensystem auf einen Stack gelegt und mit `pop()` wird es wieder zurückgeholt[^3].
+
+[^3]: Leider kennt Proceso dafür nicht das pythonische `with push():`-Statement, das die Befehle für das neue Koordinatensystem durch Einrücken klammern und so das jeweilige `pop()` überflüssig machen würde.
+
+Erst einmal braucht natürlich *Nemesis* ihren eigenen Satz Variablen,
+
+~~~python
+nem_diam = 12
+nem_orbit_radius = 32
+nem_angle = 0
+~~~
+
+wobei `nem_angle` analog zu den anderen Winkeln zu Beginn der `draw()`-Schleife als `global` deklariert werden muß:
+
+~~~python
+    global earth_angle, moon_angle, nem_angle
+~~~
+
+Und dann habe ich der Nemesis und dem Mond jeweils eine eigene (Koordinaten-) Matrix spendiert:
+
+~~~python
+    # Mond dreht sich um die Erde
+    p5.push()
+    p5.rotate(moon_angle)
+    p5.translate(moon_orbit_radius, 0)
+    p5.fill(192, 192, 80)
+    p5.rect(-moon_diam//2, -moon_diam//2, moon_diam, moon_diam)
+    p5.pop()
+
+    # Nemesis dreht sich um die Erde
+    p5.push()
+    p5.rotate(nem_angle)
+    p5.translate(nem_orbit_radius, 0)
+    p5.fill(220, 75, 75)
+    p5.rect(-nem_diam//2, -nem_diam//2, nem_diam, nem_diam)
+    p5.pop()
+~~~
+
+Und zum Schluß `nem_angle` um $0.015$ inkrementiert. Das gesamte Programm in seiner vollen Schönheit sieht nun so aus:
+
+~~~python
+from proceso import Sketch
+
+WIDTH, HEIGHT = 640, 360   # Aspect Ratio: 16:9
+
+sun_diam = 80
+
+earth_diam = 30
+earth_orbit_radius = 130
+earth_angle = 0
+
+moon_diam = 10
+moon_orbit_radius = 42
+moon_angle = 0
+
+nem_diam = 12
+nem_orbit_radius = 32
+nem_angle = 0
+
+p5 = Sketch()
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+
+def draw():
+    global earth_angle, moon_angle, nem_angle
+    p5.background(0, 0, 0)
+
+    # Sonne im Zentrum
+    p5.translate(p5.width//2, p5.height//2)
+    p5.fill(255, 200, 64)
+    p5.circle(0, 0, sun_diam)
+
+    # Erde dreht sich um die Sonne
+    p5.rotate(earth_angle)
+    p5.translate(earth_orbit_radius, 0)
+    p5.fill(64, 64, 255)
+    # p5.circle(0, 0, earth_diam)
+    p5.rect(-earth_diam//2, -earth_diam//2, earth_diam, earth_diam)
+
+    # Mond dreht sich um die Erde
+    p5.push()
+    p5.rotate(moon_angle)
+    p5.translate(moon_orbit_radius, 0)
+    p5.fill(192, 192, 80)
+    p5.rect(-moon_diam//2, -moon_diam//2, moon_diam, moon_diam)
+    p5.pop()
+
+    # Nemesis dreht sich um die Erde
+    p5.push()
+    p5.rotate(nem_angle)
+    p5.translate(nem_orbit_radius, 0)
+    p5.fill(220, 75, 75)
+    p5.rect(-nem_diam//2, -nem_diam//2, nem_diam, nem_diam)
+    p5.pop()
+    
+    earth_angle += 0.01
+    moon_angle += 0.01
+    nem_angle += 0.015
+
+p5.run_sketch(setup=setup, draw=draw)
+~~~
+
+Natürlich hätte man sich bei der *Nemesis* das `push()`- und `pop()`-Paar sparen können, aber so ist es sauberer und Ihr könnt der Erde noch einen dritten und einen vierten Trabanten spendieren, ohne mit den Koordinatensystemen durcheinander zu geraten.
+
+Wenn Ihr Euch das Programm anschaut, werdet Ihr sehen, warum ich für die Erde und ihre Trabanten Rechtecke gewählt habe. So ist zu erkennen, daß die Erde mit genau einer Seite immer zur Sonne zeigt und die beiden Trabanten ebenfalls mit genau einer Seite zur Erde. Das ist, weil sie sich jeweils in ihrem eigenen Koordinatensystem bewegen, dessen eine Achse immer das Zentrum des darüberliegenden Koordinatensystems schneidet.
+
+Für die Monde ist das okay, wenn Ihr der Erde aber Tag und Nacht spendieren wollt, müsst Ihr ihr noch ein zweites `rotate()` **nach** der Koordinatentransformation spendieren.
+
+Wie immer ist das Progrämmchen ausbaubar. Ihr könnt zum Beispiel mehrere Planeten jeweils mit ihren eigenen Koordinatensystemen um den Fixstern kreisen lassen. Alle diese Planeten könnt Ihr mit beliebig vielen Monden umgeben, die alle wiederum ihr eigenes Koordinatensystem besitzen. Und wenn Ihr wirkliche Heroinnen oder Helden sein wollt: Schnappt Euch ein Buch mit den [Keplerschen Gesetzen zur Planetenbewegung](https://de.wikipedia.org/wiki/Keplersche_Gesetze) und simuliert damit ein realistischeres Planetensystem.
+
+## Literatur
+
+Die Idee zu diesem Sketch und einige der Parameter habe ich dem wunderbaren Buch »Processing for Visual Artists – How to Create Expressive Images and Interactive Art«, Natick, MA (A K Peters) 2010, von *Andrew Glassner*, Seiten 192-200 entnommen und von Java nach Python portiert.
+
+---
+
+**Bild**: *[Planetenbeobachter](https://www.flickr.com/photos/schockwellenreiter/54652354418/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored Franco-Belgian comic style: A green python with glasses and a rabbit stand on a distant planet, observing the night sky. The rabbit wears a dark blue vest and holds a large pocket watch. A few planets with their moons and gray clouds can be seen in the sky. A planetary base and two spaceships stand in the landscape*«. Modell: Flux (Pro), Style: None.
