@@ -1,0 +1,202 @@
+---
+title: "Ein Partikelsystem mit Proceso und PyScript"
+author: "Jörg Kantel"
+date: "2025-07-21 21:35:00"
+categories: [Proceso, Python, PyScript, Processing, Nature of Code, Creative Coding]
+image: "images/stage2.jpg"
+---
+
+[![](images/stage2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54670075413/)
+
+Das [kleine Planetensystem mit den rotierenden Kisten](https://kantel.github.io/posts/2025071301_planetensystem_proceso/), das ich vor etwa einer Woche mit [Proceso](https://proceso.cc/) und [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) realisiert hatte, erinnerte mich an ein Partikelsystem in [zwei Stufen](https://kantel.github.io/posts/2024042702_microstudio_partikel/), an dem vor mehr als einem Jahr in [microStudio](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html) mit [Brython](https://brython.info/) versucht hatte. Vor allem, da in der [zweiten Stufe](https://kantel.github.io/posts/2024042801_microstudio_particle2/) die Partikel teilweise ebenfalls rotierende Quadrate waren.
+
+<iframe src="proceso/stage1/index.html" width="100%" height="360"></iframe>
+
+Ähnliches müßte man doch auch in Proceso und PyScript programmieren können, dachte ich mir, vor allem da *Nick McIntyre*, der Kopf hinter Proceso, verspricht, daß die Vektor-Klasse von Proceso »lovingly borrowed« von [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem Python3-Port von Processing sei. Also habe ich als ersten Schritt erst einmal eine Version mit runden Partikeln erstellt, die noch nicht rotieren.
+
+~~~python
+from proceso import Sketch
+from random import uniform, choice
+
+WIDTH, HEIGHT = 640, 360
+START_X, START_Y = 450, 70
+
+p5 = Sketch()
+
+colors = [(8, 247, 254), (254, 83, 187), (245, 211, 0),
+          (0, 255, 65), (250, 25, 25), (148, 103, 89)]
+
+particles = []
+
+def preload():
+    global bg1
+    bg1 = p5.load_image("assets/bg1.jpg")  # Load the image
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+
+def draw():
+    p5.image(bg1, 0, 0)
+    update_particles()
+    for particle in particles:
+       particle.display()
+    
+
+def update_particles():
+    particle = Particle(START_X, START_Y)
+    particles.append(particle)
+    for particle in reversed(particles):
+       if particle.done:
+          particles.remove(particle)
+    for particle in particles:
+       particle.update()
+          
+
+class Particle():
+  
+  def __init__(self, _x, _y):
+    self.loc = p5.Vector(_x, _y)
+    self.acc = p5.Vector(0, 0.005)
+    self.vel = p5.Vector(uniform(-1.0, 1.0), uniform(2.0, -0.5))
+    self.col = choice(colors)
+    self.lifespan = 255.0
+    self.d = uniform(5, 15)
+    self.done = False
+    
+  def update(self):
+    self.vel += self.acc
+    self.loc += self.vel
+    self.lifespan -= uniform(0.5, 1.0)*2.0
+    self.alpha = self.lifespan
+    if self.lifespan <= 10:
+      self.done = True
+      
+  def display(self):
+    p5.fill(self.col[0], self.col[1], self.col[2], self.alpha)
+    p5.circle(self.loc.x, self.loc.y, self.d)
+
+p5.run_sketch(preload=preload, setup=setup, draw=draw)
+~~~
+
+Kern ist die Klasse `Particle()`, die neben dem Konstruktor die beiden Methoden `update()` und `display()` besitzt. Im Hauptprogramm wird innerhalb der `draw()`-Funktion dann mit `update_particles()` bei jedem Durchlaufes ein neues Partikel erzeugt und an die Liste `particles[]` angehängt. Jedes Partikel besitzt nur eine bestimmte Lebensdauer (`lifespan`). Geht diese zuende, wird das Partikel mit `particles.remove(particle)` aus der Liste enfernt. Damit es dabei nicht zu einem Schhluckauf beim Durcharbeiten der Liste kommt, wird diese mit
+
+~~~python
+    for particle in reversed(particles):
+       if particle.done:
+          particles.remove(particle)
+~~~
+
+rückwärts durchlaufen.
+
+Wie [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html), die JavaScript-Version von Processing, besitzt auch Proceso eine `preload()`-Funktion, in der in diesem Skript das Hintergrundbild geladen wird. Die `preload()`-Funktion sorgt dafür, daß das Skript erst dann `setup()` aufruft, wenn alle dort zu ladenden Assets tatsächlich geladen sind. Dadurch ist leider die Variable `bg1` lokal in `preload()` und muß explizit als `global` deklariert werden, damit sie in `draw()` auch verwendet werden kann.
+
+Ich mag globale Deklarationen ja bekanntlich nicht, aber ich glaube in diesem Fall ist das zu verschmerzen.
+
+Die verwendete, neonbunte Palette ist »[MPL Cyberpunk](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/mplcyberpunk.html)«, die ich hier erstmalig [vorgestellt hatte](https://kantel.github.io/posts/2024041201_neonbunt/). Sie steht unter der MIT-Lizenz und kann daher auch von Euch verwendet werden.
+
+<iframe src="proceso/stage2/index.html" width="100%" height="360"></iframe>
+
+Nun aber zum zweiten Sketch mit den rotierenden Quadraten. Die Python vom Hintergrundbild des ersten Sketches ist so stolz auf ihre Schöpfung, daß sie ihren Freund, das weiße Kaninchen mit der großen Uhr, mitgenommen hat, damit dieses gebührend das Schauspiel bewundert.
+
+Im Skript selber mußten nur wenige Änderungen vorgenommen werden:
+
+~~~python
+from proceso import Sketch
+from random import uniform, choice
+
+WIDTH, HEIGHT = 640, 360
+START_X, START_Y = 450, 70
+
+p5 = Sketch()
+
+colors = [(8, 247, 254), (254, 83, 187), (245, 211, 0),
+          (0, 255, 65), (250, 25, 25), (148, 103, 89)]
+
+particles = []
+
+def preload():
+    global bg2
+    bg2 = p5.load_image("assets/bg2.jpg")  # Load the image
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    p5.rect_mode(p5.CENTER)
+
+def draw():
+    p5.image(bg2, 0, 0)
+    update_particles()
+    for particle in particles:
+       particle.display()
+    
+
+def update_particles():
+    particle = Particle(START_X, START_Y)
+    particles.append(particle)
+    for particle in reversed(particles):
+       if particle.done:
+          particles.remove(particle)
+    for particle in particles:
+       particle.update()
+          
+
+class Particle():
+  
+  def __init__(self, _x, _y):
+    self.loc = p5.Vector(_x, _y)
+    self.acc = p5.Vector(0, 0.005)
+    self.vel = p5.Vector(uniform(-1.0, 1.0), uniform(2.0, -0.5))
+    self.col = choice(colors)
+    self.angle = 0.0
+    self.delta_angle = uniform(-.1, .1)
+    self.lifespan = 255.0
+    self.d = uniform(5, 15)
+    self.done = False
+    
+  def update(self):
+    self.vel += self.acc
+    self.loc += self.vel
+    self.angle += self.delta_angle
+    self.lifespan -= uniform(0.5, 1.0)*2.0
+    self.alpha = self.lifespan
+    if self.lifespan <= 10:
+      self.done = True
+      
+  def display(self):
+    p5.fill(self.col[0], self.col[1], self.col[2], self.alpha)
+    p5.push()
+    p5.translate(self.loc.x, self.loc.y)
+    p5.rotate(self.angle)
+    p5.rect(0, 0, self.d, self.d)
+    p5.pop()
+
+p5.run_sketch(preload=preload, setup=setup, draw=draw)
+~~~
+
+Damit die Boxen um ihren eigenen Mittelpunkt rotieren habe ich ihnen im `setup()` den `rect_mode(CENTER)` verpasst. Die Rotation selber wird in der Methode `display()` der Klasse `Particle()` durchgeführt,
+
+~~~python
+def display(self):
+    p5.fill(self.col[0], self.col[1], self.col[2], self.alpha)
+    p5.push()
+    p5.translate(self.loc.x, self.loc.y)
+    p5.rotate(self.angle)
+    p5.rect(0, 0, self.d, self.d)
+    p5.pop()
+~~~
+
+die erst einmal mit `translate()` den Ursprung des Koordinatensystems in den Mittelpunkt des Quadrats legt und dann die Rotation um die eigenen Achse vornimmt. Natürlich muß diese Koordinaten-Transformation mit `push()` und `pop()` geklammert werden, damit nach jeder Rotation das Koordinatensystem wieder auf seinen ursprünglichen Zustand zurückgesetzt wird.
+
+Jedes Partikel hat seinen eigenen Rotationswinkel, der mit `self.delta_angle = uniform(-.1, .1)` im Konstruktor festgelegt wird. Das sind eigentlich alle Änderungen gegenüber dem ersten Sketch.
+
+### Verwendete und weiterführende Quellen:
+
+- Mia Dwyer: *[How to Make Cyberpunk »Dark Mode« Data Visualizations in Python](https://towardsdatascience.com/how-to-make-cyberpunk-dark-mode-data-visualizations-in-python-b28f82386e75/)*, toward data science vom 8&nbsp;April&nbsp;2024 (Bezahlschranke)
+- Jörg Kantel: *MicroStudio und Python: Ein Partikelsystem, [Part 1](https://kantel.github.io/posts/2024042702_microstudio_partikel/) und [Part 2](https://kantel.github.io/posts/2024042801_microstudio_particle2/)*, Der Schockwellenreiter vom 27. und 28.&nbsp;April&nbsp;2024
+- Nick McIntyre: *[Load and Display Image](https://proceso.cc/examples/creative_coding/load_display_image)* und *[Flocking](https://proceso.cc/examples/creative_coding/flocking)*, Proceso-Tutorial 2023
+- Patt Vira: *[P5.js Coding Tutorial – Basics of Particle Systems](https://www.youtube.com/watch?v=QlpadcXok8U)*, YouTube 2024
+
+Die Programmierung mit Proceso und PyScript macht vor allem deshalb Spaß, weil man die Ergebnisse wie hier ziemlich schmerzfrei in die eigenen Seiten einbinden kann. Dies wird daher mit Sicherheit nicht das letzte Experiment sein, das ich mit Proceso durchführe. *Still digging!*
+
+---
+
+**Hintergrundbilder**: *Planetenbeobachter [Stage 1](https://www.flickr.com/photos/schockwellenreiter/54669818985/) und [Stage 2](https://www.flickr.com/photos/schockwellenreiter/54668659117/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored Franco-Belgian comic style: A green python with glasses and a rabbit  standing side by side on a distant planet, observing the night sky. The rabbit wears a dark blue vest and holds a large pocket watch. A few planets with their moons and gray clouds can be seen in the sky. A planetary base and two spaceships stand in the landscape*«. Modell: Flux (Pro), Style: None.
