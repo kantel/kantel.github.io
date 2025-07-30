@@ -1,0 +1,132 @@
+---
+title: "Ein fraktaler Baum mit Pythons Turtle"
+author: "Jörg Kantel"
+date: "2025-07-30 17:25:00"
+categories: [Python, Turtle, Trinket, Mathematik, Dynamische Systeme, Creative Coding]
+image: "images/fractaltree2.jpg"
+---
+
+[![](images/fractaltree2-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54680488356/)
+
+In diesem Beitrag möchte ich wieder Pythons Turtle bemühen, um damit fraktale, selbstähnliche Bäume zu erzeugen. Und auch wenn ich große Sympathien für die Turtle-Implementierung in [TigerJython](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) habe, ihr Nachteil sit, daß sie große Unterschiede zu der [Turtle-Implementierung in Standard-Python](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) besitzt. Daher habe ich mich bei diesem Beispiel entschieden, [Trinkets](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html)-Turtle wieder hervorzukramen, da ihre Implementierung sich -- bis auf [wenige Ausnahmen](https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/) -- streng an CPythons Turtle orientiert. In der Regel können die Programme Eins-zu-Eins übernommen werden.
+
+<iframe src="https://trinket.io/embed/python/95628cb89c3f?outputOnly=true&runOption=run&start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Also habe ich erst einmal einen perfekt selbstähnlichen Baum konstruiert. Es ist ein rekursiver Aufruf und bei der Implementierung habe ich mich an *Al Sweigarts* wunderbarem Buch[^1] orientiert, allerdings konnte ich mit Hilfe von Trinket auch ein im Browser lauffähiges Programm erzeugen.
+
+[^1]: Al Sweigart: *The Recursive Book of Recursion. Ace the Coding Interview with Python and JavaScript*, San Francisco (no starch press) 2022, S. 187ff.
+
+~~~python
+import turtle
+from random import randint
+
+WIDTH, HEIGHT = 640, 400
+LEFT_ANGLE = randint(10, 30)
+LEFT_DECREASE = randint(8, 15)
+RIGHT_ANGLE = randint(10, 30)
+RIGHT_DECREASE = randint(8, 15)
+
+wn = turtle.Screen()
+wn.setup(width = WIDTH, height = HEIGHT)
+wn.setworldcoordinates(0, 0, WIDTH, HEIGHT)
+# wn.title("Fractal Tree")
+# wn.colormode(255)
+wn.bgcolor(210, 219, 142)
+wn.tracer(0)
+
+alice = turtle.Turtle()
+alice.speed(0)
+alice.hideturtle()
+
+def draw_branch(start_position, direction, branch_length):
+    if branch_length < 2:
+        return
+    
+    # Startposition und initiale Richtung
+    alice.penup()
+    alice.goto(start_position)
+    alice.setheading(direction)
+    
+    # Zeichne einen Zweig
+    alice.pendown()
+    # Die Dicke des Zweiges beträgt 1/7 der Zweiglänge, aber mindestens 1
+    alice.pensize(max(branch_length/7.0, 1))
+    # Farben in Abängigkeit von der Dicke des Stammes
+    if branch_length >= 70:
+        alice.pencolor(139, 69, 19)
+    elif branch_length >= 65:
+        alice.pencolor(139, 115, 85)
+    elif branch_length >= 60:
+        alice.pencolor(139, 134, 78)
+    elif branch_length >= 55:
+        alice.pencolor(189, 183, 110)
+    elif branch_length >= 40:
+        alice.pencolor(85, 107, 47)
+    elif branch_length >= 25:
+        alice.pencolor(107, 142, 35)
+    else:
+        alice.pencolor(0, 100, 0)
+        
+    alice.forward(branch_length)
+    
+    # Speichere die Position am Ende des Zweiges
+    end_position = alice.position()
+    left_direction = direction + LEFT_ANGLE
+    left_branch_length = branch_length - LEFT_DECREASE
+    right_direction = direction - RIGHT_ANGLE
+    right_branch_length = branch_length - RIGHT_DECREASE
+    
+    # Rekursion
+    draw_branch(end_position, left_direction, left_branch_length)
+    draw_branch(end_position, right_direction, right_branch_length)
+    
+# (Pseudo-) Zufallswert für die Startlänge des Stamms
+start_length = randint(60, 90)
+
+# Zeichne den Baum
+draw_branch((WIDTH//2, 10), 90, start_length)
+wn.update()
+
+print("I did it, Babe!")
+wn.mainloop()
+~~~
+
+Das Programm ist fast ohne Änderung auch in CPython lauffähig (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/54680488356/) im Bannerbild oben), lediglich die beiden oben auskommentierten Zeilen
+
+~~~python
+wn.title("Fractal Tree")
+wn.colormode(255)
+~~~
+
+müssen in dem CPython-Skript aktiviert werden[^2].
+
+[^2]: Die Zeile `wn.title("Fractal Tree")` ist optional, ohne die Zeile `wn.colormode(255)` bricht die CPython-Version aber mit einer Fehlermeldung ab.
+
+Jeder Durchlauf erzeugt einen neuen Baum (einfach auf den »Run«-Button klicken). Die Paramenter zu Beginn des Programms (`LEFT_ANGLE`, `LEFT_DECREASE`, `RIGHT_ANGLE` und `RIGHT_DECREASE`) sind zwar zufällig, aber durch wildes Experimentieren so ausgewählt, daß die meisten Bäume in das Fenster passen.
+
+Die Bäume sehen ja schon sehr nett, aber nicht sehr natürlich aus, da jede Verzweigung eine exakte, wenn auch verkleinerte Kopie der ursprünglichen Verzweigung ist. Das macht den Baum zwar perfekt selbstähnlich, aber solche perfekte Selbstähnlichkeit kommt in der Natur selten vor.
+
+<iframe src="https://trinket.io/embed/python/bcef87d53b36?outputOnly=true&runOption=run&start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Um die erzeugten Bäume natürlicher aussehen zu lassen, habe ich in einer zweiten Version des Programms die Deklaration für `LEFT_ANGLE`, `LEFT_DECREASE`, `RIGHT_ANGLE` und `RIGHT_DECREASE` gelöscht und dafür den Abschnitt
+
+~~~python
+    # Speichere die Position am Ende des Zweiges
+    end_position = alice.position()
+    left_direction = direction + randint(10, 30)
+    left_branch_length = branch_length - randint(8, 15)
+    right_direction = direction - randint(10, 30)
+    right_branch_length = branch_length - randint(8, 15)
+~~~
+
+wie oben geändert. Dadurch wird jede Verzweigung zufällig erzeugt und der Baum sieht schon viel natürlicher aus.
+
+### Verwendete und weiterführende Literatur
+
+- Karl-Heinz Becker, Michael Dörfler: *Fraktale und Dynamische Systeme. Computergrafische Experimente mit Processing*, Bremen (Kindle Direct Publishing) 2025
+- David Peak, Michael Frame: *Komplexität -- das gezähmte Chaos*, Basel (Birkhäuser Verlag) 1995
+- Heinz-Otto Peitgen, Hartmut Jürgens und Dietmar Saupe: *Bausteine des Chaos -- Fraktale*, Berlin, Heidelberg (Springer) und Stuttgart (Klett-Cotta) 1992
+- Heinz-Otto Peitgen, Hartmut Jürgens und Dietmar Saupe: *Chaos -- Bausteine der Ordnung*, Berlin, Heidelberg (Springer) und Stuttgart (Klett-Cotta) 1994
+- Al Sweigart: *The Recursive Book of Recursion. Ace the Coding Interview with Python and JavaScript*, San Francisco CA (no starch press) 2022
+
+Den Quellcode für die Trinket-Versionen [Recursive Tree 1](https://trinket.io/python/95628cb89c3f) und [Recursive Tree 2](https://trinket.io/python/bcef87d53b36) könnt ihr in meinen Trinkets finden, die Quellcodes für CPython ([fractatree1.py](https://github.com/kantel/pythoncuriosa/blob/main/turtle/fractaltree1.py) und [fractaltree2.py](https://github.com/kantel/pythoncuriosa/blob/main/turtle/fractaltree2.py)) findet Ihr in meinem GitHub-Repositorium.

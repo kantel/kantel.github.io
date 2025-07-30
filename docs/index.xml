@@ -10,7 +10,403 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Fri, 25 Jul 2025 20:15:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 30 Jul 2025 15:25:00 GMT</lastBuildDate>
+<item>
+  <title>Ein fraktaler Baum mit Pythons Turtle</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025073001_fraktaler_baum/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54680488356/"><img src="https://kantel.github.io/posts/2025073001_fraktaler_baum/images/fractaltree2-b.jpg" class="img-fluid"></a></p>
+<p>In diesem Beitrag möchte ich wieder Pythons Turtle bemühen, um damit fraktale, selbstähnliche Bäume zu erzeugen. Und auch wenn ich große Sympathien für die Turtle-Implementierung in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> habe, ihr Nachteil sit, daß sie große Unterschiede zu der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Turtle-Implementierung in Standard-Python</a> besitzt. Daher habe ich mich bei diesem Beispiel entschieden, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinkets</a>-Turtle wieder hervorzukramen, da ihre Implementierung sich – bis auf <a href="https://kantel.github.io/posts/2023031101_trinket_turtle_ontimer/">wenige Ausnahmen</a> – streng an CPythons Turtle orientiert. In der Regel können die Programme Eins-zu-Eins übernommen werden.</p>
+<iframe src="https://trinket.io/embed/python/95628cb89c3f?outputOnly=true&amp;runOption=run&amp;start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Also habe ich erst einmal einen perfekt selbstähnlichen Baum konstruiert. Es ist ein rekursiver Aufruf und bei der Implementierung habe ich mich an <em>Al Sweigarts</em> wunderbarem Buch<sup>1</sup> orientiert, allerdings konnte ich mit Hilfe von Trinket auch ein im Browser lauffähiges Programm erzeugen.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> turtle</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb1-3"></span>
+<span id="cb1-4">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb1-5">LEFT_ANGLE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb1-6">LEFT_DECREASE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>)</span>
+<span id="cb1-7">RIGHT_ANGLE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb1-8">RIGHT_DECREASE <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>)</span>
+<span id="cb1-9"></span>
+<span id="cb1-10">wn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> turtle.Screen()</span>
+<span id="cb1-11">wn.setup(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH, height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT)</span>
+<span id="cb1-12">wn.setworldcoordinates(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, WIDTH, HEIGHT)</span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># wn.title("Fractal Tree")</span></span>
+<span id="cb1-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># wn.colormode(255)</span></span>
+<span id="cb1-15">wn.bgcolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">210</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">219</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">142</span>)</span>
+<span id="cb1-16">wn.tracer(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-17"></span>
+<span id="cb1-18">alice <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> turtle.Turtle()</span>
+<span id="cb1-19">alice.speed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-20">alice.hideturtle()</span>
+<span id="cb1-21"></span>
+<span id="cb1-22"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw_branch(start_position, direction, branch_length):</span>
+<span id="cb1-23">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb1-24">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span>
+<span id="cb1-25">    </span>
+<span id="cb1-26">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Startposition und initiale Richtung</span></span>
+<span id="cb1-27">    alice.penup()</span>
+<span id="cb1-28">    alice.goto(start_position)</span>
+<span id="cb1-29">    alice.setheading(direction)</span>
+<span id="cb1-30">    </span>
+<span id="cb1-31">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Zeichne einen Zweig</span></span>
+<span id="cb1-32">    alice.pendown()</span>
+<span id="cb1-33">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Die Dicke des Zweiges beträgt 1/7 der Zweiglänge, aber mindestens 1</span></span>
+<span id="cb1-34">    alice.pensize(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(branch_length<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))</span>
+<span id="cb1-35">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Farben in Abängigkeit von der Dicke des Stammes</span></span>
+<span id="cb1-36">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">70</span>:</span>
+<span id="cb1-37">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">139</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">69</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">19</span>)</span>
+<span id="cb1-38">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">65</span>:</span>
+<span id="cb1-39">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">139</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">115</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">85</span>)</span>
+<span id="cb1-40">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>:</span>
+<span id="cb1-41">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">139</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">134</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">78</span>)</span>
+<span id="cb1-42">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">55</span>:</span>
+<span id="cb1-43">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">189</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">183</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">110</span>)</span>
+<span id="cb1-44">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>:</span>
+<span id="cb1-45">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">85</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">107</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">47</span>)</span>
+<span id="cb1-46">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span>:</span>
+<span id="cb1-47">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">107</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">142</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">35</span>)</span>
+<span id="cb1-48">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-49">        alice.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-50">        </span>
+<span id="cb1-51">    alice.forward(branch_length)</span>
+<span id="cb1-52">    </span>
+<span id="cb1-53">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Speichere die Position am Ende des Zweiges</span></span>
+<span id="cb1-54">    end_position <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> alice.position()</span>
+<span id="cb1-55">    left_direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> LEFT_ANGLE</span>
+<span id="cb1-56">    left_branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> LEFT_DECREASE</span>
+<span id="cb1-57">    right_direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> RIGHT_ANGLE</span>
+<span id="cb1-58">    right_branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> RIGHT_DECREASE</span>
+<span id="cb1-59">    </span>
+<span id="cb1-60">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Rekursion</span></span>
+<span id="cb1-61">    draw_branch(end_position, left_direction, left_branch_length)</span>
+<span id="cb1-62">    draw_branch(end_position, right_direction, right_branch_length)</span>
+<span id="cb1-63">    </span>
+<span id="cb1-64"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># (Pseudo-) Zufallswert für die Startlänge des Stamms</span></span>
+<span id="cb1-65">start_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb1-66"></span>
+<span id="cb1-67"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Zeichne den Baum</span></span>
+<span id="cb1-68">draw_branch((WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>, start_length)</span>
+<span id="cb1-69">wn.update()</span>
+<span id="cb1-70"></span>
+<span id="cb1-71"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span>
+<span id="cb1-72">wn.mainloop()</span></code></pre></div>
+<p>Das Programm ist fast ohne Änderung auch in CPython lauffähig (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/54680488356/">Screenshot</a> im Bannerbild oben), lediglich die beiden oben auskommentierten Zeilen</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">wn.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fractal Tree"</span>)</span>
+<span id="cb2-2">wn.colormode(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span></code></pre></div>
+<p>müssen in dem CPython-Skript aktiviert werden<sup>2</sup>.</p>
+<p>Jeder Durchlauf erzeugt einen neuen Baum (einfach auf den »Run«-Button klicken). Die Paramenter zu Beginn des Programms (<code>LEFT_ANGLE</code>, <code>LEFT_DECREASE</code>, <code>RIGHT_ANGLE</code> und <code>RIGHT_DECREASE</code>) sind zwar zufällig, aber durch wildes Experimentieren so ausgewählt, daß die meisten Bäume in das Fenster passen.</p>
+<p>Die Bäume sehen ja schon sehr nett, aber nicht sehr natürlich aus, da jede Verzweigung eine exakte, wenn auch verkleinerte Kopie der ursprünglichen Verzweigung ist. Das macht den Baum zwar perfekt selbstähnlich, aber solche perfekte Selbstähnlichkeit kommt in der Natur selten vor.</p>
+<iframe src="https://trinket.io/embed/python/bcef87d53b36?outputOnly=true&amp;runOption=run&amp;start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Um die erzeugten Bäume natürlicher aussehen zu lassen, habe ich in einer zweiten Version des Programms die Deklaration für <code>LEFT_ANGLE</code>, <code>LEFT_DECREASE</code>, <code>RIGHT_ANGLE</code> und <code>RIGHT_DECREASE</code> gelöscht und dafür den Abschnitt</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Speichere die Position am Ende des Zweiges</span></span>
+<span id="cb3-2">    end_position <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> alice.position()</span>
+<span id="cb3-3">    left_direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb3-4">    left_branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>)</span>
+<span id="cb3-5">    right_direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> direction <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb3-6">    right_branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> branch_length <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">15</span>)</span></code></pre></div>
+<p>wie oben geändert. Dadurch wird jede Verzweigung zufällig erzeugt und der Baum sieht schon viel natürlicher aus.</p>
+<section id="verwendete-und-weiterführende-literatur" class="level3">
+<h3 class="anchored" data-anchor-id="verwendete-und-weiterführende-literatur">Verwendete und weiterführende Literatur</h3>
+<ul>
+<li>Karl-Heinz Becker, Michael Dörfler: <em>Fraktale und Dynamische Systeme. Computergrafische Experimente mit Processing</em>, Bremen (Kindle Direct Publishing) 2025</li>
+<li>David Peak, Michael Frame: <em>Komplexität – das gezähmte Chaos</em>, Basel (Birkhäuser Verlag) 1995</li>
+<li>Heinz-Otto Peitgen, Hartmut Jürgens und Dietmar Saupe: <em>Bausteine des Chaos – Fraktale</em>, Berlin, Heidelberg (Springer) und Stuttgart (Klett-Cotta) 1992</li>
+<li>Heinz-Otto Peitgen, Hartmut Jürgens und Dietmar Saupe: <em>Chaos – Bausteine der Ordnung</em>, Berlin, Heidelberg (Springer) und Stuttgart (Klett-Cotta) 1994</li>
+<li>Al Sweigart: <em>The Recursive Book of Recursion. Ace the Coding Interview with Python and JavaScript</em>, San Francisco CA (no starch press) 2022</li>
+</ul>
+<p>Den Quellcode für die Trinket-Versionen <a href="https://trinket.io/python/95628cb89c3f">Recursive Tree 1</a> und <a href="https://trinket.io/python/bcef87d53b36">Recursive Tree 2</a> könnt ihr in meinen Trinkets finden, die Quellcodes für CPython (<a href="https://github.com/kantel/pythoncuriosa/blob/main/turtle/fractaltree1.py">fractatree1.py</a> und <a href="https://github.com/kantel/pythoncuriosa/blob/main/turtle/fractaltree2.py">fractaltree2.py</a>) findet Ihr in meinem GitHub-Repositorium.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Al Sweigart: <em>The Recursive Book of Recursion. Ace the Coding Interview with Python and JavaScript</em>, San Francisco (no starch press) 2022, S. 187ff.↩︎</p></li>
+<li id="fn2"><p>Die Zeile <code>wn.title("Fractal Tree")</code> ist optional, ohne die Zeile <code>wn.colormode(255)</code> bricht die CPython-Version aber mit einer Fehlermeldung ab.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Python</category>
+  <category>Turtle</category>
+  <category>Trinket</category>
+  <category>Mathematik</category>
+  <category>Dynamische Systeme</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025073001_fraktaler_baum/</guid>
+  <pubDate>Wed, 30 Jul 2025 15:25:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025073001_fraktaler_baum/images/fractaltree2.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus der Nachbarschaft: Schon wieder Verkehrschaos</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4839,649 +5235,6 @@ font-style: inherit;">}</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025062801_python_im_browser/</guid>
   <pubDate>Sat, 28 Jun 2025 19:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025062801_python_im_browser/images/pythonwglasses.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Die Mathematik der Demokratie: Das Wahlspiel mit dem Tiger und der Schlange</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025062502_waehler_tigerjython/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54613406114/"><img src="https://kantel.github.io/posts/2025062502_waehler_tigerjython/images/waehler-b.jpg" class="img-fluid"></a></p>
-<p>Spätestens seit der Wiederwahl von <em>Donald Trump</em> zum Präsidenten der USA fragen sich ja etliche, wie es dort mit der Demokratie bestellt sei. Und womit? Mit Recht! Dazu passend ein Spiel, das <em>Peter Donelly</em> vom <em>University College of Swansea</em> in Wales und <em>Domenic Welsh</em> von der <em>Oxford University</em> schon in den 80er Jahren des letzten Jahrhunderts untersucht hatten. Populär wurde es dann durch eine Veröffentlichung von <em>Alexander K. Dewdney</em> in der <em>Scientific American</em> und in der deutschen Schwesterzeitschrift <em>Spektrum der Wissenschaft</em>. Er nannte das Spiel »WAEHLER«:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54609195500/"><img src="https://kantel.github.io/posts/2025062502_waehler_tigerjython/images/wahler-o.jpg" class="img-fluid figure-img" alt="Screenshot waehler.py"></a></p>
-<figcaption>Screenshot waehler.py</figcaption>
-</figure>
-</div>
-<p>In diesem Spiel werden die Felder eines rechteckigen Feldes (im obigen Screenshot 15 x 15 Felder) zuerst wahllos mit den Symbolen der Republikaner (Elephant) oder der Demokraten (Esel) besetzt. Das widerspiegelt die politische Einstellung der »Einwohner« dieses »Planeten«. Bei jedem Spielzug wird nun ein Einwohner in seiner politischen Meinung schwankend und nimmt die Einstellung eines seiner zufällig herausgegriffenen Nachbarn an (falls er nicht sowieso schon dessen Meinung war).</p>
-<p>Als Nachbarschaft gilt hier die <a href="http://cognitiones.kantel-chaos-team.de/programmierung/softcomputing/moorenb.html">Moore-Nachbarschaft</a>, also alle 8 Nachbarfelder. Die Randbedingungen sind periodisch, das heißt jeder Spieler auf einem Randfeld hat »Nachbarn« auf der gegenüberliegenden Seite, die Spieler in den Eckfeldern sogar auf beiden gegenüberliegenden Seiten. Unser Spielfeld nimmt daher die Form eines Reifens oder eines Torus an, wie zum Beispiel auch in der populären Simulation <a href="https://de.wikipedia.org/wiki/Wator">WATOR</a>.</p>
-<p>Nun passiert Folgendes: Aus der anfänglich wüsten Verteilung bilden sich im Laufe des Spiels feste Inseln einer Meinung heraus. Und im Endeffekt gewinnt eine Partei die alleinige Herrschaft. Das geschieht manchmal sehr schnell, manchmal dauert es länger, weil sich einige Inseln des Widerstands hartnäckig halten, aber das Endergebnis ist immer gleich: Der Planet wird entweder komplett von Eseln oder komplett von Dickhäutern regiert. Ob das der Sinn einer Demokratie ist?</p>
-<p>Das Spiel ist verwandt mit dem Selektions-Spiel, das <em>Ruthild Winkler</em> und <em>Manfred Eigen</em> schon 1975 in ihrem Buch »Das Spiel« vorgestellt hatten. Auch wenn die Regeln leicht abgewandelt sind, das Ergebnis ist stets das gleiche. Es überlebt immer nur eine Partei. Das ändert sich übrigens auch nicht, wenn man das Feld mit mehr als zwei Parteien beim Start füllt. Also ist nicht das amerikanische Wahlsystem die alleinige Ursache des Übels.</p>
-<section id="der-code" class="level3">
-<h3 class="anchored" data-anchor-id="der-code">Der Code</h3>
-<p>Der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a>-Code ist <em>straight forward</em>. Lediglich die Behandlung der Randbedingungen ist allgemeiner gehalten, als unbedingt nötig. Damit sind bei Abwandlungen auch andere Nachbarschaften als die Moore-Umgebung möglich. Er folgt einem <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing- (Java-)</a> Code, den ich <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/demokratiespiel.html">vor Jahren schon einmal programmiert</a> hatte.</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> gpanel <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">as</span> gp</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> os</span>
-<span id="cb1-3"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> randint</span>
-<span id="cb1-4"></span>
-<span id="cb1-5">DATAPATH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> os.path.join(os.path.dirname(os.path.abspath(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">__file__</span>)), <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"data"</span>)</span>
-<span id="cb1-6"></span>
-<span id="cb1-7"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Konstanten</span></span>
-<span id="cb1-8">REP <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb1-9">DEM <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-10">NCOLS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">15</span>   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 10 oder 20</span></span>
-<span id="cb1-11">NROWS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">15</span>   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 10 oder 20</span></span>
-<span id="cb1-12">W <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> H <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">34</span></span>
-<span id="cb1-13">WIDTH  <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> NCOLS<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>W</span>
-<span id="cb1-14">HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> NROWS<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>H</span>
-<span id="cb1-15">MAXRUNDEN <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">8000</span>   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># 2000 oder 20000</span></span>
-<span id="cb1-16"></span>
-<span id="cb1-17"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># (globale) Variablen</span></span>
-<span id="cb1-18">nReps <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nDems <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb1-19">repImg <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gp.getImage(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rep.png"</span>))</span>
-<span id="cb1-20">demImg <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> gp.getImage(os.path.join(DATAPATH, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"dem.png"</span>))</span>
-<span id="cb1-21">grid <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> []</span>
-<span id="cb1-22">keepGoing <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">True</span></span>
-<span id="cb1-23">runde <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb1-24"></span>
-<span id="cb1-25">gp.makeGPanel(gp.Size(WIDTH, HEIGHT))</span>
-<span id="cb1-26">gp.window(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, WIDTH, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, HEIGHT)</span>
-<span id="cb1-27">gp.windowPosition(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1200</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>)</span>
-<span id="cb1-28">gp.bgColor(gp.Color(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">234</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">218</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">184</span>))   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Packpapier</span></span>
-<span id="cb1-29">gp.title(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Wähler.py: Das Demokratie-Spiel"</span>)</span>
-<span id="cb1-30">gp.enableRepaint(<span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span>)</span>
-<span id="cb1-31"></span>
-<span id="cb1-32"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Initialize Spielfeld</span></span>
-<span id="cb1-33"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> x <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(NROWS):</span>
-<span id="cb1-34">    grid.append([])</span>
-<span id="cb1-35">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> y <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(NCOLS):</span>
-<span id="cb1-36">        grid[x].append(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))</span>
-<span id="cb1-37">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> grid[x][y] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> REP:</span>
-<span id="cb1-38">            nReps <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-39">            gp.image(repImg, x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>W, y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>H)</span>
-<span id="cb1-40">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>:</span>
-<span id="cb1-41">            nDems <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-42">            gp.image(demImg, x<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>W, y<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>H)</span>
-<span id="cb1-43"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Start: Demokraten = "</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>(nDems) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb1-44">      <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">", Republikaner = "</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>(nReps))</span>
-<span id="cb1-45"></span>
-<span id="cb1-46"><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Simulationsscheife</span></span>
-<span id="cb1-47"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">while</span> keepGoing:</span>
-<span id="cb1-48">    runde <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-49">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Zufällig einen Wähler heraussuchen</span></span>
-<span id="cb1-50">    waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, NROWS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-51">    waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, NCOLS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-52">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Zufällig einen Nachbarn heraussuchen </span></span>
-<span id="cb1-53">    auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>)   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># (Moore-Umgebung)</span></span>
-<span id="cb1-54">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>:</span>
-<span id="cb1-55">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX</span>
-<span id="cb1-56">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-57">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>:</span>
-<span id="cb1-58">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-59">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-60">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>:</span>
-<span id="cb1-61">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-62">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY</span>
-<span id="cb1-63">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">3</span>:</span>
-<span id="cb1-64">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-65">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-66">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">4</span>:</span>
-<span id="cb1-67">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX</span>
-<span id="cb1-68">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-69">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>:</span>
-<span id="cb1-70">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-71">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-72">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">6</span>:</span>
-<span id="cb1-73">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-74">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY</span>
-<span id="cb1-75">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">elif</span> auswahl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>:</span>
-<span id="cb1-76">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-77">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> waehlerY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-78">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>:</span>
-<span id="cb1-79">        <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Irgend etwas ist gewaltig schiefgelaufen!"</span>)   <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Notausgang</span></span>
-<span id="cb1-80">        </span>
-<span id="cb1-81">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Prüfung der Ränder</span></span>
-<span id="cb1-82">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>:</span>
-<span id="cb1-83">        nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> NROWS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> nachbarX</span>
-<span id="cb1-84">    nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nachbarX <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> NROWS</span>
-<span id="cb1-85">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>:</span>
-<span id="cb1-86">        nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> NCOLS <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> nachbarY</span>
-<span id="cb1-87">    nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> nachbarY <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">%</span> NCOLS</span>
-<span id="cb1-88">    </span>
-<span id="cb1-89">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Neuzeichnen des Spielfelds</span></span>
-<span id="cb1-90">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> grid[nachbarX][nachbarX] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">==</span> DEM:</span>
-<span id="cb1-91">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> grid[waehlerX][waehlerY] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!=</span> DEM:</span>
-<span id="cb1-92">            nDems <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-93">            nReps <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-94">        grid[waehlerX][waehlerY] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> DEM</span>
-<span id="cb1-95">        gp.image(demImg, waehlerX<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>W, waehlerY<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>H)</span>
-<span id="cb1-96">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">else</span>:</span>
-<span id="cb1-97">        <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> grid[waehlerX][waehlerY] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">!=</span> REP:</span>
-<span id="cb1-98">            nReps <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-99">            nDems <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span></span>
-<span id="cb1-100">        grid[waehlerX][waehlerY] <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> REP</span>
-<span id="cb1-101">        gp.image(repImg, waehlerX<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>W, waehlerY<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">*</span>H)</span>
-<span id="cb1-102">    gp.repaint()</span>
-<span id="cb1-103">    <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Runde: "</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>(runde) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">",Demokraten = "</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>(nDems) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span></span>
-<span id="cb1-104">          <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">", Republikaner = "</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">+</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">str</span>(nReps))</span>
-<span id="cb1-105">    gp.delay(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-106">    <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">if</span> (nReps <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>) <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">or</span> (nDems <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>) <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">or</span> (runde <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;=</span> MAXRUNDEN):        </span>
-<span id="cb1-107">        keepGoing <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">False</span></span>
-<span id="cb1-108"></span>
-<span id="cb1-109"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"Ende der Simulation!"</span>)</span></code></pre></div>
-<p>Wer das Spiel selber nachprogrammieren möchte, hier gibt es auch noch die beiden Icons für die Republikaner (Elephant) und Demokraten (Esel):</p>
-<p><img src="https://kantel.github.io/posts/2025062502_waehler_tigerjython/images/rep.png" class="img-fluid">&nbsp;<img src="https://kantel.github.io/posts/2025062502_waehler_tigerjython/images/dem.png" class="img-fluid"></p>
-</section>
-<section id="caveat" class="level3">
-<h3 class="anchored" data-anchor-id="caveat">Caveat</h3>
-<p>Ungeduldige sollten erst einmal mit einem 10x10-Gitter beginnen. Dann hat man in der Regel schnell ein Ergebnis. Ich hatte auf diesem kleinen Gitter auch schon nach unter 2.000 Runden die absolute Herrschaft einer Partei erreicht. Auf einem 20x20-Gitter hingegen ist die Demoratie oft sehr hartnäckig, hier kann es durchaus auch mal 200.000 Runden und mehr dauern, bis die Diktatur kommt. Aber auf so einem großen Spielfeld erkennt man natürlich die stabilen »Inseln gleicher Meinung« sehr viel besser.</p>
-<p>Es gibt sicher einen Schwellwert, der – wenn unterschritten – kein zurück zur Macht mehr erlaubt. Aber er ist sehr klein: Ich habe es schon erlebt, daß Parteien, die unter die 10-Prozent-Marke gerutscht waren, sich wieder berappelten und im Endeffekt doch noch die Macht ergriffen.</p>
-</section>
-<section id="weiterführende-literatur" class="level3">
-<h3 class="anchored" data-anchor-id="weiterführende-literatur">Weiterführende Literatur</h3>
-<ul>
-<li>A.K. Dewdney: <em>Wie man π erschießt. Fünf leichte Stücke für WHILE-Schleifen und Zufallsgenerator, oder: lebensechte Simulationen von Zombies, Wählern und Warteschlangen</em>, in: Immo Diener (Hg.): <em>Computer-Kurzweil</em>, Heidelberg (Spektrum der Wissenschaft, Reihe: Verständliche Forschung) 1988</li>
-<li>Manfred Eigen, Ruthild Winkler: <em>Das Spiel. Naturgesetze steuern den Zufall</em>, München (Piper), 1975 (unveränderte Taschenbuchausgabe 1985)</li>
-<li>George G. Szpiro: <em>Die verflixte Mathematik der Demokratie</em>, Berlin und Heidelberg, Zürich (Springer, Verlag Neue Züricher Zeitung) 2011</li>
-</ul>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54613406114/">Wahlen mit dem Tiger und der Schlange</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored franco-belgian comic style. Illustration of a tiger in a red dressing gown and a python with glasses each sit in their own voting booth and fill out ballot papers</em>«. Modell: Flux (Pro), Style: None.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Python</category>
-  <category>TigerJython</category>
-  <category>Mathematik</category>
-  <category>Simulation</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2025062502_waehler_tigerjython/</guid>
-  <pubDate>Wed, 25 Jun 2025 15:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025062502_waehler_tigerjython/images/waehler.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
