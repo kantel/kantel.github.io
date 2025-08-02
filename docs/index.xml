@@ -10,7 +10,566 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Fri, 01 Aug 2025 16:15:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 02 Aug 2025 17:00:00 GMT</lastBuildDate>
+<item>
+  <title>Arbor Pythagorae mit CPythons Schildkröte und mit Trinkets Turtle</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2025080201_arbor_pythagorae/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/54695317548/"><img src="https://kantel.github.io/posts/2025080201_arbor_pythagorae/images/arborpythagorae-b.jpg" class="img-fluid"></a></p>
+<p>Nachdem mein <a href="https://kantel.github.io/posts/2025073001_fraktaler_baum/">letztes Experiment</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">CPythons Turtle</a> und dem nahezu identischen Quellcode in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> so erfolgreich verlaufen war, hatte ich Blut geleckt nund wollte eines meiner Lieblingsobjekte, den <a href="https://de.wikipedia.org/wiki/Pythagoras-Baum">Pythagoras-Baum</a>, auch mit Pythons Turtle (und parallel dazu auch mit Trinkets Schildkröte) realisieren. Zwar hatte ich ihn <a href="https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/">vor etwa drei Wochen</a> mit einem Algorithmus, der ohne Turtle-Kommandos auskommt, in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a>, dem Python3-Port von Processing, implementiert, und <a href="https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/">davor auch schon einmal</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJythons</a> Turtle, aber die Implementierung der Schildkröte in TigerJython weicht doch stark von Pythons Turtle ab. Daher wollte ich den Pythagoras-Baum einfach auch mal mit den Kommandes realisieren, die Python in seiner Standard-Bibliothek zur Verfügung stellt, ohne daß man zusätzliche Module installieren muß.</p>
+<p>In den folgenden Abschnitte ist jeweils das Trinket-Skript in diese Seiten eingebettet, das Ihr mit »Run« neu starten könnt. Zwar habe ich noch keine weiteren Interaktionen eingeplant, aber »Weil es geht!« ist doch auch ein hinreichender Grund für dieses Experiment.&nbsp;🤓</p>
+<section id="der-symmetrische-pythagoras-baum" class="level2">
+<h2 class="anchored" data-anchor-id="der-symmetrische-pythagoras-baum">Der symmetrische Pythagoras-Baum</h2>
+<iframe src="https://trinket.io/embed/python/6de8871e3e4d?outputOnly=true&amp;runOption=run&amp;start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Der symmetrische Pythagoras-Baum ist die einfachste Form der Realisierung, weil hier die rechte wie die linke Seite gleichbehandelt werden, es also keine Unterscheidungen gibt. Daher ist der Quellcode auch entsprechend kurz geraten:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Symmetrischer Pythagorasbaum</span></span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> turtle <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> t</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7">palette <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">54</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">46</span>),</span>
+<span id="cb1-8">           (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">105</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">215</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">158</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>),</span>
+<span id="cb1-9">           (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">144</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">55</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">82</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48</span>)]</span>
+<span id="cb1-10"></span>
+<span id="cb1-11">wn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Screen()</span>
+<span id="cb1-12">wn.setup(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH, height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT, startx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span>, starty <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb1-13">wn.colormode(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># für Trinket auskommentieren</span></span>
+<span id="cb1-14">wn.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Arbor Pythagorae 1"</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># für Trinket auskommentieren</span></span>
+<span id="cb1-15">wn.bgcolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">230</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">226</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">204</span>)</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Turtle()</span>
+<span id="cb1-18">p.speed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-19">p.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dunkles Grün</span></span>
+<span id="cb1-20">p.setheading(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb1-21"></span>
+<span id="cb1-22"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> tree(s):</span>
+<span id="cb1-23">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> s <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb1-24">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span>
+<span id="cb1-25">    quadrat(s)</span>
+<span id="cb1-26">    p.forward(s)</span>
+<span id="cb1-27">    s1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>math.sqrt(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb1-28">    p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>)</span>
+<span id="cb1-29">    tree(s1)</span>
+<span id="cb1-30">    p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb1-31">    p.forward(s1)</span>
+<span id="cb1-32">    tree(s1)</span>
+<span id="cb1-33">    p.back(s1)</span>
+<span id="cb1-34">    p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>)</span>
+<span id="cb1-35">    p.back(s)</span>
+<span id="cb1-36"></span>
+<span id="cb1-37"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> quadrat(s):</span>
+<span id="cb1-38">    p.fillcolor(palette[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(palette) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)])</span>
+<span id="cb1-39">    p.begin_fill()</span>
+<span id="cb1-40">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>):</span>
+<span id="cb1-41">        p.forward(s)</span>
+<span id="cb1-42">        p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb1-43">    p.end_fill()</span>
+<span id="cb1-44"></span>
+<span id="cb1-45">p.penup()</span>
+<span id="cb1-46">p.setpos(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)</span>
+<span id="cb1-47"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bildschirm-Refresh ausschalten</span></span>
+<span id="cb1-48">wn.tracer(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb1-49">p.pendown()</span>
+<span id="cb1-50">tree(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb1-51">p.hideturtle()</span>
+<span id="cb1-52"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bildschirm-Refresh wieder einschalten</span></span>
+<span id="cb1-53">wn.update()</span>
+<span id="cb1-54"></span>
+<span id="cb1-55"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span>
+<span id="cb1-56"></span>
+<span id="cb1-57">wn.mainloop()</span></code></pre></div>
+<p>Die Implementierung in Trinket unterscheidet sich nur dadurch, daß die Zeilen <img src="https://latex.codecogs.com/png.latex?13"> und <img src="https://latex.codecogs.com/png.latex?14"> auskommentiert oder gelöscht werden müssen. Außerdem sind in Zeile <img src="https://latex.codecogs.com/png.latex?12"> die Parameter <code>startx</code> und <code>starty</code> sinnlos, denn sie sind nur dafür gedacht, die Position des Ausgabefenster festzulegen (in diesem Fall auf meinen zweiten Monitor). Aber Trinket ignoriert sie einfach, Ihr müsst sie also nicht löschen.</p>
+</section>
+<section id="der-asymmetrische-pythagoras-baum" class="level2">
+<h2 class="anchored" data-anchor-id="der-asymmetrische-pythagoras-baum">Der asymmetrische Pythagoras-Baum</h2>
+<iframe src="https://trinket.io/embed/python/73d448ee70e2?outputOnly=true&amp;runOption=run&amp;start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen="">
+</iframe>
+<p>Der Code für den asymmetrischen Pythagoras-Baum unterscheidet sich doch deutlich von dem des symmetrischen Baums (im Gegensatz zu der <a href="https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/">Implementierung ohne Turtle in Py5</a>, wo im Prinzip nur die Winkelkonstanten geändert werden mußten – alle anderen Änderungen waren nur kosmetischer Natur).</p>
+<p>Während der symmetrische Pythagorasbaum die Rekursion stoppte, wenn die Länge der einzelnen Schritte kleiner <img src="https://latex.codecogs.com/png.latex?2"> wurde (die Rekursionstiefe also von der Seitenlänge des Startqudrates abhing), wird beim asymmetrischen Baum die Rekursionstiefe explizit festgelegt und als Parameter der Funktion <code>tree()</code> mit übergeben. Das ist deshalb notwendig, weil die rechte und die linke Seite des Baumes unterschiedlich behandelt werden. Während der linken Seite bei jeder Rekursion eine Seitenlänge von <img src="https://latex.codecogs.com/png.latex?s%20%5Csqrt(%5Cfrac%7B3%7D%7B2%7D)"> zugewiesen wird, bekommt die rechte Seite jeweils eine neue Seitenlänge von <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Bs%7D%7B2%7D">.</p>
+<p>Da es für mich daher schwierig war, zu entscheiden, welche Seitenlänge (die rechte oder die linke?) für den Abbruch der Rekursion zuständig sein soll, habe ich mich entschieden, einen Rekursionslevel als Abbruchkriterium mitzugeben.</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Asymmetrischer Pythagorasbaum</span></span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> turtle <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> t</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb2-6">REC_LEVEL <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Rekursionstiefe</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8">palette <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">54</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">46</span>),</span>
+<span id="cb2-9">           (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">105</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">215</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">158</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>),</span>
+<span id="cb2-10">           (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">144</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">55</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">82</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48</span>)]</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">wn <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Screen()</span>
+<span id="cb2-13">wn.setup(width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> WIDTH, height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT, startx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span>, starty <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb2-14">wn.colormode(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># für Trinket auskommentieren</span></span>
+<span id="cb2-15">wn.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Arbor Pythagorae 2"</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># für Trinket auskommentieren</span></span>
+<span id="cb2-16">wn.bgcolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">230</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">226</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">204</span>)</span>
+<span id="cb2-17"></span>
+<span id="cb2-18">p <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> t.Turtle()</span>
+<span id="cb2-19">p.speed(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb2-20">p.pencolor(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Dunkles Grün</span></span>
+<span id="cb2-21">p.setheading(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb2-22"></span>
+<span id="cb2-23"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> tree(s, level):</span>
+<span id="cb2-24">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>:</span>
+<span id="cb2-25">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span></span>
+<span id="cb2-26">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-27">        quadrat(s)</span>
+<span id="cb2-28">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Linke Seite</span></span>
+<span id="cb2-29">        ls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>math.sqrt(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-30">        p.forward(s)</span>
+<span id="cb2-31">        p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb2-32">        p.forward(s)</span>
+<span id="cb2-33">        p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)</span>
+<span id="cb2-34">        p.forward(ls)</span>
+<span id="cb2-35">        p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb2-36">        tree(ls, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-37">        <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Rechte Seite</span></span>
+<span id="cb2-38">        rs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-39">        p.right(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span>)</span>
+<span id="cb2-40">        p.forward(rs)</span>
+<span id="cb2-41">        p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb2-42">        tree(rs, level <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-43">        p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>)</span>
+<span id="cb2-44">        p.back(s)</span>
+<span id="cb2-45"></span>
+<span id="cb2-46"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> quadrat(s):</span>
+<span id="cb2-47">    p.fillcolor(palette[<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">int</span>(s<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(palette) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)])</span>
+<span id="cb2-48">    p.begin_fill()</span>
+<span id="cb2-49">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>):</span>
+<span id="cb2-50">        p.forward(s)</span>
+<span id="cb2-51">        p.left(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">90</span>)</span>
+<span id="cb2-52">    p.end_fill()</span>
+<span id="cb2-53"></span>
+<span id="cb2-54">p.penup()</span>
+<span id="cb2-55">p.setpos(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">120</span>, <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb2-56"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bildschirm-Refresh ausschalten</span></span>
+<span id="cb2-57">wn.tracer(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb2-58">p.pendown()</span>
+<span id="cb2-59"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Für eine Rekursionstiefe &gt; 14 braucht man schon sehr viel Geduld</span></span>
+<span id="cb2-60">tree(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, REC_LEVEL)</span>
+<span id="cb2-61">p.hideturtle()</span>
+<span id="cb2-62"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bildschirm-Refresh wieder einschalten</span></span>
+<span id="cb2-63">wn.update()</span>
+<span id="cb2-64"></span>
+<span id="cb2-65"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span>
+<span id="cb2-66"></span>
+<span id="cb2-67">wn.mainloop()</span></code></pre></div>
+<p>Auch hier gilt für die Trinket-Version für die Zeilen <img src="https://latex.codecogs.com/png.latex?13">, <img src="https://latex.codecogs.com/png.latex?14"> und <img src="https://latex.codecogs.com/png.latex?15"> was ich oben schon für die Zeilen <img src="https://latex.codecogs.com/png.latex?12"> bis <img src="https://latex.codecogs.com/png.latex?14"> geschrieben hatte: Sie können auskommentiert werden, respektive bei der <code>wn.setup()</code>-Zeile werden die letzten beiden Parameter von Trinket einfach ignoriert.</p>
+<p>Wie schon beim symmetrischen Pythagoras-Baum sind die Werte in <code>p.setpos()</code> und die Seitenlänge des Startquadrats in <code>tree()</code> kosmetischer Natur. Ich habe durch wildes Experimentieren herausgefunden, mit welchen Werten der Baum am Besten ins Fenster passt.</p>
+</section>
+<section id="die-farben" class="level2">
+<h2 class="anchored" data-anchor-id="die-farben">Die Farben</h2>
+<p>Damit meine Pythagoras-Skripte nicht immer gleich aussehen, habe ich dieses Mal eine <a href="http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/malewitsch.html">andere Farbpalette</a> ausgewählt. Sie ist inspiriert von Werken des russisch-sowjetischen Malers <em><a href="https://de.wikipedia.org/wiki/Kasimir_Sewerinowitsch_Malewitsch">Kasimir Malewitsch</a></em> (1879-1935), eines Hauptvertreters der Russischen Avantgarde, Wegbereiter des Konstruktivismus und Begründer des Suprematismus. Ich finde die Farben passen sehr gut zum extrem künstlich konstruierten Pythagoras-Baum.</p>
+<p>Den Quellcode findet Ihr natürlich wieder in meinem GitHub-Repositorium (<a href="https://github.com/kantel/turtlepy/blob/master/sources/trees/arborpythagorae1.py">arborpythagorae1.py</a> und <a href="https://github.com/kantel/turtlepy/blob/master/sources/trees/arborpythagorae2.py">arborpythagorae2.py</a>) und die Trinkets für <a href="https://trinket.io/python/6de8871e3e4d">Arbor Pythagorae 1</a> und <a href="https://trinket.io/python/73d448ee70e2">Arbor Pythagorae 2</a> könnt Ihr von meinem Trinket-Account remixen. Stellt damit an, was Ihr wollt und habt Spaß damit.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>Turtle</category>
+  <category>Trinket</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2025080201_arbor_pythagorae/</guid>
+  <pubDate>Sat, 02 Aug 2025 17:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2025080201_arbor_pythagorae/images/arborpythagorae.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Die Zahlen für den verregneten Juli</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4735,457 +5294,6 @@ font-style: inherit;">=</span>draw)</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2025070101_mediadaten/</guid>
   <pubDate>Tue, 01 Jul 2025 13:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2025070101_mediadaten/images/badgerstrand.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Prost! Erste Schritte mit Prosecco Proceso</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2025062901_proseco_first_steps/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/"><img src="https://kantel.github.io/posts/2025062901_proseco_first_steps/images/proseco-b.jpg" class="img-fluid"></a></p>
-<p>Durch meinen <a href="https://kantel.github.io/posts/2025062801_python_im_browser/">gestrigen Beitrag</a> angefixt, wollte ich heute unbedingt etwas mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html">PyScript</a> und <a href="https://proceso.cc/">Proceso</a> anstellen. Nachdem mich die <a href="https://proceso.cc/welcome/getting_started#local-anaconda-vs-code">Dokumentation</a> erst einmal in die Irre führte (<code>pip install proceso</code> funktionierte bei mir einfach nicht), fand ich durch wildes Herumexperimentieren heraus, daß ich Proceso auch lokal auf meinem Rechner ohne eine vorhergegangene Installationsorgie betreiben kann:</p>
-<p>Das Einzige, was vorhanden sein muß, ist ein installiertes, einigermaßen aktuelles Python und der Texteditor Eures Vertrauens (bei mir ist es <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> mit den üblichen <em>Python Extensions</em>). Danach habe ich mir von <a href="https://pyscript.com/@4b2d42a1-0e0c-430f-8b20-4b2c7ff0dc3e/58197361-1c5f-4d47-93a9-91570255fe85/latest?files=index.html">diesem Projekt-Template</a> einfach die Dateien <code>index.html</code>, <code>pyscript.json</code>, <code>style.css</code> und <code>sketch.py</code> heruntergeladen und zusammen in <strong>einem</strong> Projektverzeichnis abgelegt. Falls Ihr nichts seltsames vorhabt, könnt Ihr erst einmal die ersten drei Dateien unverändert lassen, lediglich in der Datei <code>sketch.py</code> müßt Ihr Euren eigenen Code hineinschreiben. In meinem Fall war das:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> proceso <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> Sketch</span>
-<span id="cb1-2"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> randint</span>
-<span id="cb1-3"></span>
-<span id="cb1-4">p5 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> Sketch()</span>
-<span id="cb1-5"></span>
-<span id="cb1-6"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> setup():</span>
-<span id="cb1-7">    p5.create_canvas(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">400</span>)</span>
-<span id="cb1-8">    p5.background(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">49</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">197</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">244</span>)</span>
-<span id="cb1-9">    p5.fill(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">146</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">82</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">161</span>)</span>
-<span id="cb1-10">    p5.rect(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">40</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">40</span>, p5.width <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">80</span>, p5.height <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">80</span>)</span>
-<span id="cb1-11">    p5.fill(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">220</span>), <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)</span>
-<span id="cb1-12"></span>
-<span id="cb1-13"></span>
-<span id="cb1-14"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> draw():</span>
-<span id="cb1-15">    p5.circle(p5.mouse_x, p5.mouse_y, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">20</span>)</span>
-<span id="cb1-16"></span>
-<span id="cb1-17"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">def</span> mouse_clicked():</span>
-<span id="cb1-18">    p5.fill(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">220</span>), randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">30</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">220</span>), <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">100</span>)</span>
-<span id="cb1-19"></span>
-<span id="cb1-20">p5.run_sketch(setup<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>setup, draw<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>draw, mouse_clicked<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span>mouse_clicked)</span></code></pre></div>
-<p>Wenn ich dann die <code>index.html</code> <strong>hinter</strong> einem (lokalen) Webserver (ich nutze dafür immer noch den betagten, aber bewährten <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a>) aufrufe, bekommt Ihr untenstehendes Ergebnis angezeigt:</p>
-<iframe src="proseco/index.html" width="100%" height="400">
-</iframe>
-<p>Das ist eine abgewandelt Version des bekannten <a href="https://py5coding.org/index.html">Py5-Beispielscripts</a> (ein Mausklick ändert die Farben der Bällchen), das ich noch ein wenig aufgepeppt habe.</p>
-<p>Wenn Ihr Euch die <code>index.html</code> anschaut,</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;!DOCTYPE</span> html<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-2"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">html</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> lang</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"de"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-3"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">head</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-4">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">title</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span>Python mit Balls<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">title</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-5">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> charset</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"UTF-8"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-6">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"viewport"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> content</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"width=device-width,initial-scale=1"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-7">    </span>
-<span id="cb2-8">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;!-- Load PyScript --&gt;</span></span>
-<span id="cb2-9">     <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">link</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> rel</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"stylesheet"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://pyscript.net/releases/2024.1.3/core.css"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span></span>
-<span id="cb2-10">     <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> type=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"module"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://pyscript.net/releases/2024.1.3/core.js"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span> </span>
-<span id="cb2-11">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;!-- Load p5.js --&gt;</span></span>
-<span id="cb2-12">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-13">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;!-- Load custom styles --&gt;</span></span>
-<span id="cb2-14">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">link</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> rel</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"stylesheet"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"style.css"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span></span>
-<span id="cb2-15"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">head</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-16"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">body</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-17">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">main</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">main</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span>   </span>
-<span id="cb2-18">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;!-- Load sketch --&gt;</span></span>
-<span id="cb2-19">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> type=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"py"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"sketch.py"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> config</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"pyscript.json"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-20"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">body</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-21"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">html</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
-<p>dann seht Ihr, daß die PyScript-Dateien (JavaScript und CSS) sowie die minimierte P5.js-Datei von extern geladen werden. Ich habe es versucht: Zwar kann ich die <code>p5.js</code>-Datei auch lokal auf meinem Rechner installieren und zur Mitarbeit bewegen, die PyScript <code>core.js</code>-Datei dagegen war ums Verrecken nicht zur lokalen Mitarbeit bereit, sie bestand darauf, auf dem Server von <code>pyscript.net</code> aufgerufen zu werden.</p>
-<p>Das steht natürlich ein wenig meinen Bemühungen um digitale Souveränität im Wege, ist aber leider bei vielen Diensten, die über CDNs geladen werden, gängige Praxis. Daher habe ich das erst einmal hingenommen. Doch wenn jemand von Euch da draußen eine Idee hat, wie man die <code>core.js</code> und die <code>core.css</code> auch lokal installiert bekommt, bitte ich um Mitteilung in meinen Kommentaren.</p>
-<p>Die (lokal) installierte <code>style.css</code> birgt keine Geheimnisse,</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb3-1">html<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span></span>
-<span id="cb3-2">body {</span>
-<span id="cb3-3">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">margin</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb3-4">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">padding</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb3-5">}</span>
-<span id="cb3-6"></span>
-<span id="cb3-7">canvas {</span>
-<span id="cb3-8">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">display</span><span class="ch" style="color: #20794D;
-background-color: null;
-font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">block</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb3-9">}</span></code></pre></div>
-<p>aber CSS-Gurus wissen sicher, wie sie sich darin austoben können.</p>
-<p>Noch ein Geheimnis ist für mich die Konfigurationsdatei <code>pyscript.json</code>:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource json number-lines code-with-copy"><code class="sourceCode json"><span id="cb4-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"packages"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">[</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"proceso"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">,</span> <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">"name"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"proceso starter Copy"</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
-<p>Das ist der einzige Ort, an dem überhaupt <code>proceso</code> vorkommt und darüber weiß vermutlich PyScript, daß und wo es sich das Modul Proceso hereinziehen muß. Momentan nehme ich daß noch einfach so hin (ich freue mich, daß ich alles zum Laufen. bekommen habe), aber irgendwann will ich die Zusammenhänge kapieren. <em>Still digging!</em></p>
-<p>Meine erste Einschätzung ist, daß Proceso sehr vielversprechend ist. Es vermählt nicht nur <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> mit dem Python-Ökosystem, sondern erlaubt auch die Erstellung von interaktiven Web-Anwendungen. Es ist daher für alle interessant, die – wie ich – Pickel von den geschweiften Klammern von JavaScript bekommen. Schaun wir mal, was ich damit noch alles anstellen kann. Ich habe also immer noch zu tun!</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54621770541/">Python with Balls</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>Colored Franco-Belgian Comic Style. Illustration of a green python with glasses and a glass of Prosecco in hand is being pelted with colorful plastic balls by white rabbits. The rabbits wear colorful vests and top hats and carry a pocket watch with a large dial. The setting is a fairytale-like small town with colorful, crooked houses</em>«. Modell: Flux (Pro), Style: None.</p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <category>PyScript</category>
-  <category>Proceso</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2025062901_proseco_first_steps/</guid>
-  <pubDate>Sun, 29 Jun 2025 17:35:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2025062901_proseco_first_steps/images/proseco.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

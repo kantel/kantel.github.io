@@ -1,0 +1,171 @@
+---
+title: "Arbor Pythagorae mit CPythons Schildkröte und mit Trinkets Turtle"
+author: "Jörg Kantel"
+date: "2025-08-02 19:00:00"
+categories: [Python, Turtle, Trinket, Creative Coding]
+image: "images/arborpythagorae.jpg"
+---
+
+[![](images/arborpythagorae-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54695317548/)
+
+Nachdem mein [letztes Experiment](https://kantel.github.io/posts/2025073001_fraktaler_baum/) mit [CPythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) und dem nahezu identischen Quellcode in [Trinket](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) so erfolgreich verlaufen war, hatte ich Blut geleckt nund wollte eines meiner Lieblingsobjekte, den [Pythagoras-Baum](https://de.wikipedia.org/wiki/Pythagoras-Baum), auch mit Pythons Turtle (und parallel dazu auch mit Trinkets Schildkröte) realisieren. Zwar hatte ich ihn [vor etwa drei Wochen](https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/) mit einem Algorithmus, der ohne Turtle-Kommandos auskommt, in [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem Python3-Port von Processing, implementiert, und [davor auch schon einmal](https://kantel.github.io/posts/2025060201_spass_mit_tigerjython/) mit [TigerJythons](http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html) Turtle, aber die Implementierung der Schildkröte in TigerJython weicht doch stark von Pythons Turtle ab. Daher wollte ich den Pythagoras-Baum einfach auch mal mit den Kommandes realisieren, die Python in seiner Standard-Bibliothek zur Verfügung stellt, ohne daß man zusätzliche Module installieren muß.
+
+In den folgenden Abschnitte ist jeweils das Trinket-Skript in diese Seiten eingebettet, das Ihr mit »Run« neu starten könnt. Zwar habe ich noch keine weiteren Interaktionen eingeplant, aber »Weil es geht!« ist doch auch ein hinreichender Grund für dieses Experiment.&nbsp;🤓
+
+## Der symmetrische Pythagoras-Baum
+
+<iframe src="https://trinket.io/embed/python/6de8871e3e4d?outputOnly=true&runOption=run&start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Der symmetrische Pythagoras-Baum ist die einfachste Form der Realisierung, weil hier die rechte wie die linke Seite gleichbehandelt werden, es also keine Unterscheidungen gibt. Daher ist der Quellcode auch entsprechend kurz geraten:
+
+~~~python
+# Symmetrischer Pythagorasbaum
+import turtle as t
+import math
+
+WIDTH, HEIGHT = 640, 400
+
+palette = [(42, 40, 45), (54, 50, 80), (160, 51, 46),
+           (50, 80, 105), (215, 158, 40),
+           (180, 144, 55), (140, 82, 48)]
+
+wn = t.Screen()
+wn.setup(width = WIDTH, height = HEIGHT, startx = 2000, starty = 80)
+wn.colormode(255)               # für Trinket auskommentieren
+wn.title("Arbor Pythagorae 1")  # für Trinket auskommentieren
+wn.bgcolor(230, 226, 204)
+
+p = t.Turtle()
+p.speed(0)
+p.pencolor(0, 100, 0)   # Dunkles Grün
+p.setheading(90)
+
+def tree(s):
+    if s < 2:
+        return
+    quadrat(s)
+    p.forward(s)
+    s1 = s/math.sqrt(2)
+    p.left(45)
+    tree(s1)
+    p.right(90)
+    p.forward(s1)
+    tree(s1)
+    p.back(s1)
+    p.left(45)
+    p.back(s)
+
+def quadrat(s):
+    p.fillcolor(palette[int(s%len(palette) - 1)])
+    p.begin_fill()
+    for _ in range(4):
+        p.forward(s)
+        p.right(90)
+    p.end_fill()
+
+p.penup()
+p.setpos(-50, -HEIGHT/2 + 20)
+# Bildschirm-Refresh ausschalten
+wn.tracer(0)
+p.pendown()
+tree(90)
+p.hideturtle()
+# Bildschirm-Refresh wieder einschalten
+wn.update()
+
+print("I did it, Babe!")
+
+wn.mainloop()
+~~~
+
+Die Implementierung in Trinket unterscheidet sich nur dadurch, daß die Zeilen $13$ und $14$ auskommentiert oder gelöscht werden müssen. Außerdem sind in Zeile $12$ die Parameter `startx` und `starty` sinnlos, denn sie sind nur dafür gedacht, die Position des Ausgabefenster festzulegen (in diesem Fall auf meinen zweiten Monitor). Aber Trinket ignoriert sie einfach, Ihr müsst sie also nicht löschen.
+
+## Der asymmetrische Pythagoras-Baum
+
+<iframe src="https://trinket.io/embed/python/73d448ee70e2?outputOnly=true&runOption=run&start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Der Code für den asymmetrischen Pythagoras-Baum unterscheidet sich doch deutlich von dem des symmetrischen Baums (im Gegensatz zu der [Implementierung ohne Turtle in Py5](https://kantel.github.io/posts/2025071101_pythagoras_baum_py5/), wo im Prinzip nur die Winkelkonstanten geändert werden mußten -- alle anderen Änderungen waren nur kosmetischer Natur).
+
+Während der symmetrische Pythagorasbaum die Rekursion stoppte, wenn die Länge der einzelnen Schritte kleiner $2$ wurde (die Rekursionstiefe also von der Seitenlänge des Startqudrates abhing), wird beim asymmetrischen Baum die Rekursionstiefe explizit festgelegt und als Parameter der Funktion `tree()` mit übergeben. Das ist deshalb notwendig, weil die rechte und die linke Seite des Baumes unterschiedlich behandelt werden. Während der linken Seite bei jeder Rekursion eine Seitenlänge von $s \sqrt(\frac{3}{2})$ zugewiesen wird, bekommt die rechte Seite jeweils eine neue Seitenlänge von $\frac{s}{2}$.
+
+Da es für mich daher schwierig war, zu entscheiden, welche Seitenlänge (die rechte oder die linke?) für den Abbruch der Rekursion zuständig sein soll, habe ich mich entschieden, einen Rekursionslevel als Abbruchkriterium mitzugeben.
+
+~~~python
+# Asymmetrischer Pythagorasbaum
+import turtle as t
+import math
+
+WIDTH, HEIGHT = 640, 400
+REC_LEVEL = 12   # Rekursionstiefe
+
+palette = [(42, 40, 45), (54, 50, 80), (160, 51, 46),
+           (50, 80, 105), (215, 158, 40),
+           (180, 144, 55), (140, 82, 48)]
+
+wn = t.Screen()
+wn.setup(width = WIDTH, height = HEIGHT, startx = 2000, starty = 80)
+wn.colormode(255)               # für Trinket auskommentieren
+wn.title("Arbor Pythagorae 2")  # für Trinket auskommentieren
+wn.bgcolor(230, 226, 204)
+
+p = t.Turtle()
+p.speed(0)
+p.pencolor(0, 100, 0)   # Dunkles Grün
+p.setheading(90)
+
+def tree(s, level):
+    if level < 1:
+        return
+    else:
+        quadrat(s)
+        # Linke Seite
+        ls = s*math.sqrt(3)/2
+        p.forward(s)
+        p.left(90)
+        p.forward(s)
+        p.right(150)
+        p.forward(ls)
+        p.left(90)
+        tree(ls, level - 1)
+        # Rechte Seite
+        rs = s/2
+        p.right(180)
+        p.forward(rs)
+        p.left(90)
+        tree(rs, level - 1)
+        p.left(60)
+        p.back(s)
+
+def quadrat(s):
+    p.fillcolor(palette[int(s%len(palette) - 1)])
+    p.begin_fill()
+    for _ in range(4):
+        p.forward(s)
+        p.left(90)
+    p.end_fill()
+
+p.penup()
+p.setpos(120, -HEIGHT/2 + 30)
+# Bildschirm-Refresh ausschalten
+wn.tracer(0)
+p.pendown()
+# Für eine Rekursionstiefe > 14 braucht man schon sehr viel Geduld
+tree(80, REC_LEVEL)
+p.hideturtle()
+# Bildschirm-Refresh wieder einschalten
+wn.update()
+
+print("I did it, Babe!")
+
+wn.mainloop()
+~~~
+
+Auch hier gilt für die Trinket-Version für die Zeilen $13$, $14$ und $15$ was ich oben schon für die Zeilen $12$ bis $14$ geschrieben hatte: Sie können auskommentiert werden, respektive bei der `wn.setup()`-Zeile werden die letzten beiden Parameter von Trinket einfach ignoriert.
+
+Wie schon beim symmetrischen Pythagoras-Baum sind die Werte in `p.setpos()` und die Seitenlänge des Startquadrats in `tree()` kosmetischer Natur. Ich habe durch wildes Experimentieren herausgefunden, mit welchen Werten der Baum am Besten ins Fenster passt.
+
+## Die Farben
+
+Damit meine Pythagoras-Skripte nicht immer gleich aussehen, habe ich dieses Mal eine [andere Farbpalette](http://cognitiones.kantel-chaos-team.de/multimedia/farbpaletten/malewitsch.html) ausgewählt. Sie ist inspiriert von Werken des russisch-sowjetischen Malers *[Kasimir Malewitsch](https://de.wikipedia.org/wiki/Kasimir_Sewerinowitsch_Malewitsch)* (1879-1935), eines Hauptvertreters der Russischen Avantgarde, Wegbereiter des Konstruktivismus und Begründer des Suprematismus. Ich finde die Farben passen sehr gut zum extrem künstlich konstruierten Pythagoras-Baum.
+
+Den Quellcode findet Ihr natürlich wieder in meinem GitHub-Repositorium ([arborpythagorae1.py](https://github.com/kantel/turtlepy/blob/master/sources/trees/arborpythagorae1.py) und [arborpythagorae2.py](https://github.com/kantel/turtlepy/blob/master/sources/trees/arborpythagorae2.py)) und die Trinkets für [Arbor Pythagorae 1](https://trinket.io/python/6de8871e3e4d) und [Arbor Pythagorae 2](https://trinket.io/python/73d448ee70e2) könnt Ihr von meinem Trinket-Account remixen. Stellt damit an, was Ihr wollt und habt Spaß damit.
