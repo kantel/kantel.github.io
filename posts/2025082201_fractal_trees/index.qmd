@@ -1,0 +1,143 @@
+---
+title: "Noch mehr fraktale Bäume mit Python und der Schildkröte"
+author: "Jörg Kantel"
+date: "2025-08-22 19:25:00"
+categories: [Python, Turtle, Trinket, Creative Coding]
+image: "images/fraktalerbaum.jpg"
+---
+
+[![](images/fraktalerbaum-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54695679963/)
+
+Meine [bisherigen](https://kantel.github.io/posts/2025073001_fraktaler_baum/), recht gelungenen [Experimente](https://kantel.github.io/posts/2025080201_arbor_pythagorae/) mit [CPythons Turtle](http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html) und nahezu identischem Quellcode mit [Trinkets Schildkröte](http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html) haben mich zu weiteren Experimenten animiert. Dieses Mal habe ich wieder einen fraktalen Baum konstruiert und sowohl in Trinket wie auch in Standard-Python implementiert:
+
+<iframe src="https://trinket.io/embed/python/08915dce7bd0?outputOnly=true&runOption=run&start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Der rekursive Quellcode ist meinem [ersten Beispielen mit fraktalen Bäumen](https://kantel.github.io/posts/2025073001_fraktaler_baum/) sehr ähnlich, nur daß der »Baum« nun absolut symmetrisch ist:
+
+~~~python
+import turtle
+
+WIDTH, HEIGHT = 640, 400
+factor = 0.6
+
+wn = turtle.Screen()
+wn.setup(width = WIDTH, height = HEIGHT, startx = 2000, starty = 80)
+wn.title("Fractal Tree")   # Für Trinket auskommentieren
+wn.colormode(255)          # Für Trinket auskommentieren
+wn.bgcolor(222, 217, 177)
+wn.tracer(0)
+
+alice = turtle.Turtle()
+alice.speed(0) # Schnelle Geschwindigkeit
+alice.hideturtle()
+alice.penup()
+alice.goto(0, -160)
+alice.left(90) # Nach oben ausrichten
+alice.pendown()
+
+def fractal_tree(laenge, tiefe):
+    if tiefe == 0 or laenge < 1: # Basis der Rekursion
+        return
+    alice.pensize(max(laenge/42.0, 1))
+    # Farben in Abängigkeit von der Dicke des Stammes
+    if laenge >= 70:
+        alice.pencolor(139, 69, 19)
+    elif laenge >= 2:
+        alice.pencolor(85, 107, 47)
+    else:
+        alice.pencolor(139, 69, 19)
+
+    alice.forward(laenge * factor // 3)
+    alice.left(45) # Nach links drehen
+    fractal_tree(laenge * factor, tiefe - 1) # Rekursiver Aufruf
+    alice.right(90) # Nach rechts drehen
+    fractal_tree(laenge * factor, tiefe - 1) # Rekursiver Aufruf
+    alice.left(45) # Zurück zur Ausrichtung des Elternastes
+    # Auf dem Rückweg durch die Rekursion
+    alice.backward(laenge * factor // 3)
+
+fractal_tree(650, 12)
+wn.update()
+
+print("I did it, Babe!")
+wn.mainloop()
+~~~
+
+Wie bei meinen anderen Beipielen auch müssen, damit der Code in Trinket lauffähig ist, lediglich die Code-Zeilen $7$ und $8$ auskommentiert werden.
+
+Nur ist das Ergebnis ein wenig langweilig. Der Baum wirkt nicht sehr natürlich und Ihr könnt so oft den »Run«-Button drücken, wie Ihr wollt, es kommt immer der gleiche Baum dabei heraus.
+
+Daher habe ich bei einem zweiten Versuch das Skript ein wenig aufgehübscht und -- in Maßen -- den Zufall ein wenig über das Aussehen des Baumes entscheiden lassen:
+
+<iframe src="https://trinket.io/embed/python/f47c933d23ba?outputOnly=true&runOption=run&start=result" width="657" height="539" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+
+Nun wird der Verzweigungswinkel bei jedem rekusiven Durchlauf leicht abgewandelt und auch die Astlänge ändert sich für jeden Ast ein wenig:
+
+~~~python
+import turtle
+from random import randint, uniform
+
+WIDTH, HEIGHT = 640, 400
+DELTA_ANGLE = 25
+
+wn = turtle.Screen()
+wn.setup(width=WIDTH, height=HEIGHT, startx=2000, starty=80)
+wn.title("Fractal Tree")   # Für Trinket auskommentieren
+wn.colormode(255)          # Für Trinket auskommentieren
+wn.bgcolor(222, 217, 177)
+wn.tracer(0)
+
+alice = turtle.Turtle()
+alice.speed(0)  # Schnelle Geschwindigkeit
+alice.hideturtle()
+alice.penup()
+alice.goto(0, -160)
+alice.left(90)  # Nach oben ausrichten
+alice.pendown()
+
+
+def fractal_tree(laenge, tiefe):
+    if tiefe == 0 or laenge < 1:  # Basis der Rekursion
+        return
+    alice.pensize(max(laenge / 42.0, 1))
+    # Farben in Abängigkeit von der Dicke des Stammes
+    if laenge >= 70:
+        alice.pencolor(139, 69, 19)
+    elif laenge >= 1.5:
+        alice.pencolor(85, 107, 47)
+    else:
+        alice.pencolor(139, 69, 19)
+
+    delta_angle = randint(-DELTA_ANGLE, DELTA_ANGLE)
+    factor = uniform(0.55, 0.65)
+    alice.forward(laenge * factor // 3)
+    alice.left(45 + delta_angle)  # Nach links drehen
+    fractal_tree(laenge * factor, tiefe - 1)  # Rekursiver Aufruf
+    alice.right(90)  # Nach rechts drehen
+    fractal_tree(laenge * factor, tiefe - 1)  # Rekursiver Aufruf
+    alice.left(45 - delta_angle)  # Zurück zur Ausrichtung des Elternastes
+    # Auf dem Rückweg durch die Rekursion
+    alice.backward(laenge * factor // 3)
+
+
+fractal_tree(650, 12)
+wn.update()
+
+print("I did it, Babe!")
+wn.mainloop()
+~~~
+
+Wenn Ihr nun den »Run«-Button betätigt, erhaltet Ihr bei jedem Durchlauf einen anders aussehenden Baum.
+
+Mit der Konstante `DELTA_ANGLE` in Zeile&nbsp;$5$ könnt Ihr übrigens experimentieren: Je kleiner sie ist, desto mehr gleicht der Baum dem ersten Skript, je größer sie wird, desto bizarrer sieht der Baum aus. Wenn zum Beispiel `DELTA_ANGLE = 45` gesetzt wird, entstehen Bäume, die so aussehen, als hätte der Nordseewind sie arg zerrupft.
+
+### Verwendete und weiterführende Literatur
+
+- David Peak, Michael Frame: *Komplexität – das gezähmte Chaos*, Basel (Birkhäuser Verlag) 1995
+- Al Sweigart: *The Recursive Book of Recursion. Ace the Coding Interview with Python and JavaScript*, San Francisco CA (no starch press) 2022
+
+Den Quellcode für die Trinket-Versionen [Fraktaler Baum](https://trinket.io/python/08915dce7bd0) und [Fraktaler Baum (2)](https://trinket.io/python/f47c933d23ba) könnt ihr in meinen Trinkets finden, die Quellcodes für CPython ([fraktatree1.py](https://github.com/kantel/turtlepy/blob/master/sources/trees/fraktaltree1.py) und [fraktaltree2.py](https://github.com/kantel/turtlepy/blob/master/sources/trees/fraktaltree2.py)) findet Ihr auch in meinem GitHub-Repositorium.
+
+---
+
+**Bild**: *[Eine Python und eine Schildkröte unter Bäumen](https://www.flickr.com/photos/schockwellenreiter/54695679963/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored franco-belgian comic style. Illustration of a turte with motorcycle goggles and a python with glasses wandering through a surreal, hexagonal landscape*«. Modell: Flux Kontext.
