@@ -1,0 +1,30 @@
+---
+title: "Herbst-Update: Py5 Release 0.10.7a0 freigegeben"
+author: "Jörg Kantel"
+date: "2025-09-07 18:50:00"
+categories: [Py5, Python, Creative Coding, JupyterLab Desktop, PyCharm, Thonny, Proceso, PyScript]
+image: "images/rabbitpython.jpg"
+---
+
+[![](images/rabbitpython-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54770609862/)
+
+Das erste (für mich) wichtige Update in diesem Herbst: Letzte Woche verkündete *James Schmitz* stolz, daß er das [Release 0.10.7a0](https://ixora.io/blog/new-release-0107a0/) von [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Python3-Modul, das Processings Original-Bibliotheken (via JPype) nutzt, freigegeben habe, das auf dem jüngsten [Processing-Release 4.4.6](https://github.com/processing/processing4/releases/tag/processing-1306-4.4.6) beruhe.
+
+Neben einigen Bugfixes ist das einzige neue Feature, daß das Py5Image-Objekt nun ebenfalls eine `resize()`-Methode besitzt. Processings PImage-Objekt besaß schon jeher eine `PImage.resize()`-Methode, die es bisher aber nicht nach Py5 geschafft hatte. Standardmäßig verwendet diese Methode eine bilineare Interpolation für die Bildumrechnung, unterstützt aber auch die Methoden »Nearest Neighbor« und »Bicubic«. Weitere Informationen findet Ihr in der [Dokumentation zu `Py5Image.resize()`](https://py5coding.org/reference/py5image_resize.html).
+
+Zusätzlich wurde an der Geschwindigkeit des Übersetzters geschraubt.
+
+Da ich in der Regel Py5 mit [JypterLab-Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html) oder [PyCharm CE](https://www.jetbrains.com/de-de/pycharm/) in einer [eigenen, virtuellen Py5-Umgebung](https://kantel.github.io/posts/2024062801_conda_env_python/) nutze, war das Update mit
+
+~~~bash
+conda activate py5
+pip install --upgrade py5 py5jupyter
+~~~
+
+recht einfach und verlief schnell und problemlos. Dabei wurden gleichzeitig auch noch JPype&nbsp;1.6.0 mitinstalliert. Da ich aber weiß, daß der Freund aus Bremen, dem ich so [viele schöne Bücher zu Fraktalen](https://kantel.github.io/posts/2025071601_fraktale_xxl/) verdanke, gerne mit [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) spielt, habe ich auch dieses über das Menü `Werkzeuge -> Verwalte Plugins` auf die neue Py5-Version aktualisiert. Sicherheitshalber habe ich mir über das gleiche Menü auch noch bestätigen lassen, daß der von mir verwendete [thonny-py5mode](https://github.com/tabreturn/thonny-py5mode) in der [Version 0.4.7a0](https://kantel.github.io/posts/2024111401_py5_updates/) immer noch aktuell ist. Hier ist also für Thonny-Nutzer kein zusätzliches Update nötig. (Das wird *Kalle* freuen!)
+
+Nun stehen neue Experimente mit Py5 an. Insbesondere will ich testen, welche Code-Änderungen notwendig sind, wenn ich Py5-Skripte nach [Proceso](https://proceso.cc/), der [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html)-Version von Processing und Python, portiere (oder *vice versa*). Ich könnte ja erst einmal mit [diesem Partikelsystem](https://kantel.github.io/posts/2025072101_partikel_proceso/) anfangen. *Still digging!*
+
+---
+
+**Bild**: *[Kaninchen und Schlange](https://www.flickr.com/photos/schockwellenreiter/54770609862/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*Colored Franco-Belgian comic style. Illustration of a green python wearing glasses and a white rabbit in a blue vest and with a large pocket watch are standing in front of a whiteboard in an autumnal magical garden with giant mushrooms. The whiteboard is covered with strange drawings, which the python is pointing at with a stick.*«. Modell: Flux Kontext.
