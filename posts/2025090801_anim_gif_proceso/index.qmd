@@ -1,0 +1,95 @@
+---
+title: "Animierte GIFs in Proceso"
+author: "Jörg Kantel"
+date: "2025-09-08 21:50:00"
+categories: [Proceso, Python, PyScript, Processing, Creative Coding, Spieleprogrammierung]
+image: "images/animgif.jpg"
+---
+
+[![](images/animgif-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54774654379/)
+
+Gestern abend stolperte ich über [dieses Video](https://www.youtube.com/watch?v=YGBi4lR0swY), in dem der User *[Kenney Yip Coding](https://www.kennyyipcoding.com/)* ein Entenjagdspiel in *pure JavaScript* und dem HTML Canvas programmierte. Das ist an sich noch nichts Besonderes, aber die Bilder der Enten, die er verwendete, waren animierte GIFs, und da stellte sich mir die Frage, ob das nicht auch in Python ginge. Die kurze Antwort ist: [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) kann mit den animierten GIFs nichts anfangen, aber [Proceso](https://proceso.cc/), die [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html)-Version von [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html) und Python, kann es.
+
+Für meine Versuche habe ich mir die Entenbildchen und das Hintergrundbild aus dem [GitHub-Repositorium von *KennyYip*](https://github.com/ImKennyYip/duck-hunt) »ausgeborgt« und daraus ein kleines Skriptchen gebastelt, das zwei kleine Enten ziellos über den Monitor flattern lässt:
+
+<iframe src="giftest/index.html" width="100%" height="338"></iframe>
+
+Wenn Ihr mit der Maus in das Fenster klickt, wird das Skript zurückgesetzt, soviel Interaktivität muß sein.&nbsp;😎
+
+Proceso, wie auch [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html), behandelt animierte GIFs wie jedes andere Bild auch, so daß es in dem Skript eigentlich nichts neues zu entdecken gibt:
+
+~~~python
+from proceso import Sketch
+from random import randint
+
+WIDTH, HEIGHT = 640, 338
+DUCK_W, DUCK_H = 80, 78
+START_X, START_Y = 10, 50
+BOTTOM = 200
+
+p5 = Sketch()
+
+def preload():
+    global bg, duck_r, duck_l
+    bg = p5.load_image("data/duckhunt-bg.png")  # Load the images
+    duck_r = p5.load_image("data/duck-right.gif")
+    duck_l = p5.load_image("data/duck-left.gif")
+
+ducks = []
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    reset()
+
+def reset():
+    ducks.append(Duck(randint(10, p5.width/2), randint(10, BOTTOM), "right"))
+    ducks.append(Duck(randint(p5.width/2, p5.width - DUCK_W), randint(10, BOTTOM), "left"))
+    
+def draw():
+    p5.image(bg, 0, 0)
+    for duck in ducks:
+        duck.update()
+        duck.display()
+
+def mouse_clicked():
+    ducks.clear()
+    reset()
+    
+class Duck():
+
+    def __init__(self, _x, _y, _dir):
+        self.pos = p5.Vector(_x, _y)
+        self.vel = p5.Vector(randint(3, 5), randint(-2, 2))
+        if _dir == "left":
+            self.img = duck_l
+            self.vel.x *= -1
+        else:
+            self.img = duck_r
+
+    def update(self):
+        self.pos += self.vel
+        self.check_borders()
+
+    def check_borders(self):
+        if self.pos.x >= p5.width - DUCK_W:
+            self.vel.x *= -1
+            self.img = duck_l
+        if self.pos.x <= 0:
+            self.vel.x *= -1
+            self.img = duck_r
+        if self.pos.y <= 0 or self.pos.y >= BOTTOM:
+            self.vel.y *= -1
+
+    def display(self):
+        p5.image(self.img, self.pos.x, self.pos.y, DUCK_W, DUCK_H)
+        
+p5.run_sketch(preload=preload, setup=setup, draw=draw, mouse_clicked=mouse_clicked)
+~~~
+
+Die von P5.js bekannte `preload()`-Funktion lädt die Bilder vor, so daß sie geladen sind, bevor `setup()` das eigentliche Skript startet.
+
+Die Enten habe ich in die Klasse `Duck()` ausgelagert, wo ihre Position und ihr Geschwindigkeit *(Velocity)* durch Vektoren repräsentiert wird. Daher ruft die `draw()`-Funktion im Hauptprogramm eigentlich nur noch die Methoden `update()` und `display()` für die einzelnen Enten auf.
+
+Ich bin mir nicht sicher, ob die Nutzung animierter GIFs in Spielen wirklich ein Fortschritt ist, Spielefiguren lassen sich in einer Einzelanimation *(Frame bei Frame)* meiner Meinung nach viel lebendiger gestalten. Aber »weil es geht« mußte schon so oft als Begründung herhalten und hier habe ich eben gezeigt, daß es geht.
+
+Wie immer gibt es den [Quellcode und die Assets](https://github.com/kantel/pythoncuriosa/tree/main/pyscript/proseco/giftest) nicht nur in meinem GitHub-Repositorium, sondern ich habe das Projekt auch auf meine PyScript-Seiten [hochgeladen](https://kantel.pyscriptapps.com/proceso-gif-test/), wo Ihr es klonen und für eigene Experimente weiterentwickeln könnt.
