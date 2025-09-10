@@ -82,9 +82,9 @@ class Ball():
 p5.run_sketch(setup=setup, draw=draw, mouse_clicked=mouse_clicked)
 ~~~
 
-Die anschließende Portierung nach Py5 verlief schmerzfreier, als ich gedacht hatte. Natürlich mußte ich die Zeile `from proceso import Sketch` durch die Zeile `import py5` ersetzen, die Zeile `p5 = Sketch()` konnte komplett entfallen und die letzte Zeile `p5.run_sketch(setup=setup, draw=draw, mouse_clicked=mouse_clicked)` wurde durch das bedeutend kürzere `py5.run_sketch()` abgelöst. Jetzt noch mit einem globalen Ersetzen alle `p5.` in `py5.` umwandeln … und das sollte es gewesen sein, oder?
+Die anschließende Portierung nach Py5 verlief schmerzfreier, als ich gedacht hatte. Natürlich mußte ich die Zeile `from proceso import Sketch` durch die Zeile `import py5` ersetzen, die Zeile `p5 = Sketch()` konnte komplett entfallen und die letzte Zeile `p5.run_sketch(setup=setup, draw=draw, mouse_clicked=mouse_clicked)` wurde durch das bedeutend kürzere `py5.run_sketch()` abgelöst. Außerdem genügt Py5 statt `create_canvas()` einfach der Befehl `size()` und eine Titelzeile für das Fenster habe ich dem Sketch auch noch spendiert -- wenn schon, denn schon. Jetzt noch mit einem globalen Ersetzen alle `p5.` in `py5.` umwandeln … und das sollte es gewesen sein, oder?
 
-Doch der Teufel steckt im Detail: Einmal hieß die Klasse `p5.Vector()` in Py5 `py5.Py5Vector()`, doch das war leicht zu fixen. Mehr Überlegung brauchte der Umstand, daß Py5 für `fill()` nur Integer-Werte und keine Tupel zuließ. Daher mußte ich zum Schluß noch die Zeile `p5.fill(self.c)` durch die Zeile `py5.fill(py5.color(self.c[0], self.c[1], self.c[2], self.c[3]))` ersetzen.
+Doch der Teufel steckte im Detail: Einmal hieß die Klasse `p5.Vector()` in Py5 `py5.Py5Vector()`, doch das war leicht zu fixen. Mehr Überlegung brauchte der Umstand, daß Py5 für `fill()` nur Integer-Werte und keine Tupel zuließ. Daher mußte ich zum Schluß noch die Zeile `p5.fill(self.c)` durch die Zeile `py5.fill(py5.color(self.c[0], self.c[1], self.c[2], self.c[3]))` ersetzen.
 
 Aber das war es dann wirklich, nach diesen Änderungen lief das Skript auch in Py5 (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/54777942521/) im Bannerbild oben).
 
