@@ -1,0 +1,162 @@
+---
+title: "Zurück zum Code: Bouncing Balls mit Py5 und Proceso"
+author: "Jörg Kantel"
+date: "2025-09-10 15:30:00"
+categories: [Py5, Python, Proceso, PyScript, Processing, Creative Coding, Nature of Code]
+image: "images/bouncingballspy5.jpg"
+---
+
+[![](images/bouncingballspy5-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/54777942521/)
+
+Wie ich schon in meiner [jüngsten Update-Meldung](https://kantel.github.io/posts/2025090701_py5_0_10_7a0/) zu [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html), dem [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Python3-Modul, angedeutet hatte, interessiert mich, welche Code-Änderungen notwendig sind, wenn ich Py5-Skripte nach [Proceso](https://proceso.cc/), der [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html)-Version von Processing und Python, portiere (oder *vice versa*). Also habe ich als ersten Test das sattsam bekannte Bouncing-Balls-Beispiel einmal in Proceso implementiert:
+
+<iframe src="bouncingball/index.html" width="100%" height="360"></iframe>
+
+Auch hier habe ich wieder ein wenig Interaktivität eingebaut: Mit einem Mausklick in den Canvas könnt ihr neue Bälle erzeugen und das Skript neu starten.
+
+Der Quellcode ist *straight forward*, die eigentlichen Aktionen sind in die Klasse `Ball()` ausgelagert und für den Ort wie auch für die Geschwindigkeit *(Velocity)* der Bälle habe ich eine Implementierung mit Vektoren ausgewählt:
+
+~~~python
+from proceso import Sketch
+from random import randint, uniform, choice
+
+WIDTH, HEIGHT = 640, 360
+NUM_BALLS = 30
+
+colors = [(230, 96, 55, 200), (17, 42, 106, 200),
+          (183, 116, 64, 200), (212, 251, 69, 200),
+          (252, 75, 200, 200), (159, 53, 233, 200),
+          (57, 218, 56, 200), (67, 253, 133, 200),
+          (78, 148, 42, 200), (67, 254, 211, 200),
+          (74, 143, 186, 200), (52, 99, 234, 200)]
+balls = []
+
+p5 = Sketch()
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)
+    p5.stroke_weight(2)
+    reset()
+
+def draw():
+    p5.background(192)
+    for ball in balls:
+        ball.update()
+        ball.display()
+
+def reset():
+    for _ in range(NUM_BALLS):
+        ball = Ball()
+        balls.append(ball)
+
+def mouse_clicked():
+    balls.clear()
+    reset()
+
+class Ball():
+
+    def __init__(self):
+        self.radius = randint(8, 16)
+        self.diam   = self.radius*2
+        x = randint(self.diam, p5.width - self.diam)
+        y = randint(self.diam, p5.height - self.diam)
+        self.loc = p5.Vector(x, y)
+        vel_x = uniform(-1.5, 1.5)
+        vel_y = uniform(-1.5, 1.5)
+        self.vel = p5.Vector(vel_x, vel_y)
+        self.c = choice(colors)
+
+    def update(self):
+        self.loc += self.vel
+        # check borders
+        if self.loc.x <= self.radius or self.loc.x >= p5.width - self.radius:
+            self.vel.x *= -1
+        if self.loc.y <= self.radius or self.loc.y >= p5.height - self.radius:
+            self.vel.y *= -1
+        
+
+    def display(self):
+        p5.fill(self.c)
+        p5.circle(self.loc.x, self.loc.y, self.diam)
+        
+p5.run_sketch(setup=setup, draw=draw, mouse_clicked=mouse_clicked)
+~~~
+
+Die anschließende Portierung nach Py5 verlief schmerzfreier, als ich gedacht hatte. Natürlich mußte ich die Zeile `from proceso import Sketch` durch die Zeile `import py5` ersetzen, die Zeile `p5 = Sketch()` konnte komplett entfallen und die letzte Zeile `p5.run_sketch(setup=setup, draw=draw, mouse_clicked=mouse_clicked)` wurde durch das bedeutend kürzere `py5.run_sketch()` abgelöst. Jetzt noch mit einem globalen Ersetzen alle `p5.` in `py5.` umwandeln … und das sollte es gewesen sein, oder?
+
+Doch der Teufel steckt im Detail: Einmal hieß die Klasse `p5.Vector()` in Py5 `py5.Py5Vector()`, doch das war leicht zu fixen. Mehr Überlegung brauchte der Umstand, daß Py5 für `fill()` nur Integer-Werte und keine Tupel zuließ. Daher mußte ich zum Schluß noch die Zeile `p5.fill(self.c)` durch die Zeile `py5.fill(py5.color(self.c[0], self.c[1], self.c[2], self.c[3]))` ersetzen.
+
+Aber das war es dann wirklich, nach diesen Änderungen lief das Skript auch in Py5 (siehe [Screenshot](https://www.flickr.com/photos/schockwellenreiter/54777942521/) im Bannerbild oben).
+
+Hier der komplette Py5-Quellcode zum Vergleich:
+
+~~~python
+import py5
+from random import randint, uniform, choice
+
+WIDTH, HEIGHT = 640, 360
+NUM_BALLS = 30
+
+colors = [(230, 96, 55, 200), (17, 42, 106, 200),
+          (183, 116, 64, 200), (212, 251, 69, 200),
+          (252, 75, 200, 200), (159, 53, 233, 200),
+          (57, 218, 56, 200), (67, 253, 133, 200),
+          (78, 148, 42, 200), (67, 254, 211, 200),
+          (74, 143, 186, 200), (52, 99, 234, 200)]
+balls = []
+
+def setup():
+    py5.size(WIDTH, HEIGHT)
+    py5.window_title("Bouncing Balls 🐍")
+    py5.stroke_weight(2)
+    reset()
+
+def draw():
+    py5.background(192)
+    for ball in balls:
+        ball.update()
+        ball.display()
+
+def reset():
+    for _ in range(NUM_BALLS):
+        ball = Ball()
+        balls.append(ball)
+
+def mouse_clicked():
+    balls.clear()
+    reset()
+
+class Ball():
+
+    def __init__(self):
+        self.radius = randint(8, 16)
+        self.diam   = self.radius*2
+        x = randint(self.diam, py5.width - self.diam)
+        y = randint(self.diam, py5.height - self.diam)
+        self.loc = py5.Py5Vector(x, y)
+        vel_x = uniform(-1.5, 1.5)
+        vel_y = uniform(-1.5, 1.5)
+        self.vel = py5.Py5Vector(vel_x, vel_y)
+        self.c = choice(colors)
+
+    def update(self):
+        self.loc += self.vel
+        # check borders
+        if self.loc.x <= self.radius or self.loc.x >= py5.width - self.radius:
+            self.vel.x *= -1
+        if self.loc.y <= self.radius or self.loc.y >= py5.height - self.radius:
+            self.vel.y *= -1
+        
+
+    def display(self):
+        py5.fill(py5.color(self.c[0], self.c[1], self.c[2], self.c[3]))
+        py5.circle(self.loc.x, self.loc.y, self.diam)
+
+py5.run_sketch()
+~~~
+
+Er ist doch wirklich dem obigen Proceso-Quellcode extrem ähnlich. Eine Portierung hin und/oder her müsste also eigentlich ohne Schwierigkeiten möglich sein.
+
+Sowohl die [Proceso-Implementierung](https://github.com/kantel/pythoncuriosa/tree/main/pyscript/proseco/bouncingball) (mit den üblichen Hilfsdateien `index.html`, `pyscript.json` und `style.css`) wie auch den [Py5-Quellcode](https://github.com/kantel/py5/blob/main/bouncing_balls/bouncing_balls_2.py) findet Ihr in meinen GitHub-Repositorien.
+
+Und ich bin wirklich überrascht, wie einfach der Port war. Py5 und Proceso scheinen ein gutes Team zu sein, um Processing-Python-Skripte sowohl für das Web wie auch für den Desktop zu entwickeln. Ich habe Blut geleckt, ich will mehr davon. *Still digging!*
