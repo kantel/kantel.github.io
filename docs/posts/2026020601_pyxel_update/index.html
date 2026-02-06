@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Tiiny Host: Noch ein winziger Gastgeber – Der Schockwellenreiter</title>
+<title>Weiter mit Pyxel: Update und Tutorials – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -70,6 +104,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -127,11 +190,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tiiny Host: Noch ein winziger Gastgeber</h1>
+<h1 class="title">Weiter mit Pyxel: Update und Tutorials</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Tiiny Host</div>
-    <div class="quarto-category">Statische Seiten</div>
-    <div class="quarto-category">Webworking</div>
+    <div class="quarto-category">Pyxel</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Retrogaming</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
   </div>
   </div>
 
@@ -149,7 +213,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">5. Februar 2026</p>
+      <p class="date">6. Februar 2026</p>
     </div>
   </div>
   
@@ -161,13 +225,30 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55078822570/"><img src="images/momo2-b.jpg" class="img-fluid"></a></p>
-<p>Während meiner kurzen Recherche zu dem <a href="https://kantel.github.io/posts/2026020502_tinyhost/">letzten Beitrag</a> kam mir – wegen der Namensähnlichkeit – auch der Dienst <a href="https://tiiny.host/web-hosting-free-sites/">Tiiny Host</a> (Tiiny mit zwei »i«) unter. Dies ist nicht noch ein lokaler Webserver, sondern ein in der Grundversion kostenloser Hoster statischer Webseiten.</p>
-<p>Da ich – seit dem <a href="https://kantel.github.io/posts/2025052402_glitch_ende/">Ende von Glitch 🎏</a> im letzten Mai – keinen Spielplatz mehr besitze, wo ich mal schnell ein paar paar Experimente, sei es mit purem HTML und CSS (und meinetwegen auch ein wenig JavaScript), sei es mit <a href="https://proceso.cc/">Proceso</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> oder sei es mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/bitsy.html">Bitsy</a>, schnell online stellen kann. Oder auch mal einzelne <a href="https://anytype.io/">Anytype</a>-Seiten, denn <a href="https://kantel.github.io/posts/2025021401_anytype_web/">Anytype kann ja bekanntlich auch ein bisschen Web</a>. Alles getreu meiner Idee, wieder – wie zu den Anfangszeiten des Internets – (statische) <a href="http://blog.schockwellenreiter.de/2022/05/2022052401.html">Webseiten ohne Sinn und Verstand</a> zu basteln.</p>
-<p>Also habe ich mir kurzentschlossen dort einen Account zugelegt. Kostet ja nichts&nbsp;🤓. Und zwei kurze Video-Tutorials habe ich auch gefunden: Einmal »<a href="https://www.youtube.com/watch?v=DxKgTaQnWbI">How to Make a Free Website with Tiiny Host</a>« (10&nbsp;Minuten) und einmal eine »<a href="https://www.youtube.com/watch?v=KXPvZ6dUWlw">Tiiny Host Review</a>« (8&nbsp;Minuten), die den Dienst großspurig zur »besten freien Hosting Plattform für statische Seiten« ausruft (allerdings diesen Ausruf noch mit einem Fragezeichen versieht).</p>
-<p>Ich hatte mit Glitch 🎏 nie viel angestellt, aber es war schön, einen Dienst in der Hinterhand zu haben, auf den man mal schnell ein paar Experimente hochladen konnte. Ganz einfach und ganz ohne Sinn und Verstand!&nbsp;😎</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55051121860/"><img src="images/kaffeekreativ-b.jpg" class="img-fluid"></a></p>
+<p>Meine <a href="https://kantel.github.io/posts/2026011601_jo_hippo/">letztens aufgekeimte Idee</a>, die kleine (Python3-) Retrogame-Engine <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a> für ein paar nette Ideen und Tutorials wieder aus der Schublade hervorzukramen und damit vielleicht sogar meinem leider eingeschlafenen Projekt »<a href="http://blog.schockwellenreiter.de/2022/04/2022041401.html">Retrogaming und Künstliche Intelligenz</a>« neues Leben einzuhauchen, hat mir keine Ruhe gelassen.</p>
+<p>Und so habe ich als erstes festgestellt, daß die kleine von PICO-8 und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a> inspirierte Fantasiekonsole seit meiner <a href="https://kantel.github.io/posts/2025051403_pyxel_tut_6/">letzten Beschäftigung mit ihr im Mai letzten Jahres</a> etliche Updates erfahren hat, das letzte auf <a href="https://github.com/kitao/pyxel/releases/tag/v2.6.2">Pyxel Version 2.6.2</a> erst vor drei Tagen.</p>
+<p>Die Updates betrafen in der Hauptsache die mit Hilfe von Pyoide erzeugte HTML-Version von Pyxel, also für mein Vorhaben nicht unwichtig. Daher habe ich mit</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">pip</span> install <span class="at">--upgrade</span> pyxel</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>erst einmal die aktuelle Version eingefahren.</p>
+<p>Tutorials für Pyxel sind dünn gesät. Daher möchte ich zur Erinnerung erst einmal auf meine eigene Tutorial-Reihe verlinken, die nun hoffentlich bald fortgesetzt wird:</p>
+<ul>
+<li>Retrogaming mit Python: <a href="https://kantel.github.io/posts/2024032002_first_steps_pyxel/">Erste Schritte mit Pyxel</a></li>
+<li>Retrogaming mit Python: <a href="https://kantel.github.io/posts/2024080401_pyxel_tut_1/">Pyxel-Tutorial Stage 1</a></li>
+<li>Retrogaming mit Python: <a href="https://kantel.github.io/posts/2024081002_pyxel_tut_2/">Pyxel-Tutorial Stage 2</a></li>
+<li>Retrogaming mit Python: <a href="https://kantel.github.io/posts/2025041103_pyxel_tut_3/">Pyxel-Tutorial Stage 3</a></li>
+<li>Pyxel und Paletten: <a href="https://kantel.github.io/posts/2025041701_pyxel_und_paletten/">Pyxel-Tutorial Stage 4</a></li>
+<li>Pyxel-Tutorial Stage 5: <a href="https://kantel.github.io/posts/2025041901_pyxel_tut_5/">Alles zappelt</a></li>
+<li>Pyxel-Tutorial Stage 6: <a href="https://kantel.github.io/#category=Pyxel">Zusammenfassung des bisher Erreichten</a></li>
+</ul>
+<p>Dann ist mir noch aus dem Kanal <em>Testing Coder Games</em> die aus neun kurzen Videos bestehende <a href="https://www.youtube.com/playlist?list=PLp_k-oh2bNHairxWQK_SYL5Me_OBJYJs8">Playlist »Pyxel Tutorial«</a> untergekommen, die einen recht vielversprechenden Eindruck macht:</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/gXpe9HZ3Au8?si=r9ivcNilAfjLVYcn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Und schließlich gibt es dann noch ganz aktuell die 15-teilige Artikel-Reihe »<a href="https://dev.to/sdkfz181tiger/series/34902">Getting Started with 2D Games Using Pyxel Series’ Articles</a>« des Users <em>Kajiru</em>. Ein 16. Beitrag »<a href="https://dev.to/sdkfz181tiger/getting-started-with-2d-games-using-pyxel-part-16-vampire-shooting-game-sample-42h7">Getting Started with 2D Games Using Pyxel (Part 16): Vampire Shooting Game (Sample)</a>« ist wohl noch so frisch, daß er es noch nicht in obige Liste geschafft hat. Ob noch weitere Fortsetzungen geplant sind, entzieht sich meiner Kenntnis.</p>
+<p><a href="https://opengameart.org/content/mini-roguelike-8x8-tiles"><img src="images/miniroguelike-8x8.png" class="img-fluid"></a></p>
+<p><strong>War sonst noch was?</strong> Ach ja, Pyxel kommt am einfachsten mit <span class="math inline">\(8\)</span>x<span class="math inline">\(8\)</span> Pixel großen Sprites und Tiles zurecht (oder ein Vielfaches davon: <span class="math inline">\(16\)</span>x<span class="math inline">\(16\)</span>, <span class="math inline">\(32\)</span>x<span class="math inline">\(32\)</span>). Da <span class="math inline">\(8\)</span>x<span class="math inline">\(8\)</span> Pixel große Tilesets jedoch recht dünn gesät sind, hatte ich <a href="https://kantel.github.io/posts/2026012102_32rogue/">hier</a> schon einmal auf <a href="https://kenney.nl/">Kenneys</a> freie (<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) Set <a href="https://kenney.nl/assets/micro-roguelike">Micro Roguelike</a> verwiesen. Der User <em>morgan3d</em> hat dieses Set unter dem Namen <a href="https://opengameart.org/content/mini-roguelike-8x8-tiles">Mini Roguelike <span class="math inline">\(8\)</span>x<span class="math inline">\(8\)</span> Tiles</a> auf die doppelte Menge an Tiles und Sprites aufgebohrt und ebenfalls unter der CC0 auf OpenGameArt.org veröffentlicht.</p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55078822570/">Momo spielt im Park Gitarre</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em><span class="citation" data-cites="Momo">@Momo</span> plays guitar in a park at night in the moonlight. Colored Franco-Belgian comic style.</em>« Modell: Character 2.0 mit Nano Banana Pro&nbsp;🍌.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55051121860/">Kaffee macht kreativ</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em>An anthropogenic hippopotamus wearing glasses, a blue jacket, a white shirt, and a red tie sits at a desk in front of a computer with two monitors, typing with its right hand. In its left hand, it holds a steaming mug of hot coffee. On the desk lies a stack of papers and files labeled with terms such as “Ideas,” “Projects,” “Notes,” “Politics,” “Python,” “Programming,” “Games,” and “Miscellaneous.” Next to the keyboard is a mug containing writing utensils and an open notebook. Behind the desk, along the walls, are tall shelves filled with files, books, and knick-knacks. Everything appears chaotic. Sunlight streams into the room through a window on the side. Colored classic comic style. Language: German. No speech bubbles. No text boxes.</em>« Modell: Nano Banana Pro&nbsp;🍌.</p>
 
 
 
