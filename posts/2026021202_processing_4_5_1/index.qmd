@@ -1,0 +1,25 @@
+---
+title: "Processing 4.5.1: Processing kann jetzt (besser) P5.js"
+author: "Jörg Kantel"
+date: "2026-02-12 21:45:00"
+categories: [P5.js, Processing, JavaScript, Creative Coding, Spieleprogrammierung]
+image: "images/processing_pde_p5js.jpg"
+---
+
+[![](images/processing_pde_p5js-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/55092444156/)
+
+Vor einigen Tagen erreichte mich die Meldung, daß die Processing PDE *(Processing Development Environment)* in der [Version 4.5.1 offiziell erschienen](https://medium.com/@ProcessingOrg/processing-4-5-1-is-officially-out-1bf4e37ccc05) sei. Es sei der Beginn einer Neuausrichtung, die sich vor allem auf eine bessere Wartbarkeit des darunterliegenden Codes konzentriere.
+
+Pflichtschuldig habe ich die neue Version [heruntergeladen und installiert](https://processing.org/download) (mittlerweile war sogar schon die Version 4.5.2 freigegeben), mir aber nicht viel davon versprochen, da die [Release Notes](https://github.com/processing/processing4/releases/tag/processing-1312-4.5.1) auch nur wenige kleine Verbesserungen und Bugfixes zeigten. Bis mir dann [dieses schon zwei Monate alte Video](https://www.youtube.com/watch?v=HsV7tbOviEw) von der *Open Assembly 2025* in meinen Feedreader gespült wurde:
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/HsV7tbOviEw?si=66Uc3kkNOsvOrEhB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Dort zeigte nämlich *Stephan Max* einen neuen, noch exerimentellen Mode, um P5.js in der Processing-Entwicklungsumgebung zu editieren und zu starten. Da dieser Mode auf [Electron](http://cognitiones.kantel-chaos-team.de/webworking/frameworks/electron.html) zurückgreift, wird der P5.js-Sketch nicht mehr im Fenster des Standard-Browsers geöffnet, sondern Processing öffnet ein eigenes Browserfenster innerhalb der Entwicklungsumgebung.
+
+Das mußte ich natürlich sofort ausprobieren. Ich habe also den bisherigen, »einfachen« P5.js-Mode aus meiner PDE deinstalliert und dafür den neuen, experimentellen Mode installiert. Es gab dann zwei Mal eine etwas längere Installations- und Download-Orgie, einmal bei der Installation des Modes selber und dann noch einmal vor dem Start des ersten Sketches. Danach lief aber alles wie geschmiert, mein Testsketch startete als Electron-App in einem kleinen Fenster innerhalb der PDE.
+
+Doch wartet, es kommt noch besser: Mit diesem Mode kann die Processing-PDE nicht nur P5.js-Skripte in einem Fenster innerhalb der Entwicklungsumgebung anzeigen, sondern es kann die Sketche auch als Standalone-Anwendungen, also als eigenständige Programme, herausschreiben[^1] (unter `Datei -> Exportieren`). Das ist dann zwar Electron-üblich eine ziemlich fette Datei, weil der App ja eine komplette Laufzeitumgebung mitgegeben werden muß (mein Skriptchen aus dem Screenshot oben war als eigenständige App etwa 280 MB fett), aber nicht nur für Spieleentwickler (aber besonders für sie) ist es eine großartige Möglichkeit, in P5.js/JavaScript eigene Applikationen zu programmieren und sie dann als lauffähiges Programm unter die Leute zu bringen.
+
+Ich glaube, ich muß auch mal wieder mehr mit P5.js spielen, und das nicht nur, weil JavaScript das nächste, große Ding ist. *Still digging!*
+
+[^1]: Momentan können aber nur Anwendungen für das eigene Betriebssystem erstellt werden, ein Mac kann also keine Windows-Apps herausschreiben.
