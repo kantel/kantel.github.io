@@ -1,0 +1,100 @@
+---
+title: "Zum Valentinstag: Herzliche Grüße von Proceso"
+author: "Jörg Kantel"
+date: "2026-02-14 01:45:00"
+categories: [Proceso, Python, PyScript, Processing, Creative Coding]
+image: "images/blueberryhill.jpg"
+---
+
+[![](images/blueberryhill-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/55094603938/)
+
+Ich bin ja meistens zu spät dran, denn immer, wenn ich einen feiertagsbezogenen Beitrag veröffentlichen will, ist der Feiertag schon vorbei. Aber dieses Jahr pünktlich zu Valentin spülten zwei [P5.js](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html)-Tutorials von *Patt Vira* in meinen Feedreader, nämlich »[Falling Hearts 💕💕 (Valentine's Day Specials)](https://www.youtube.com/watch?v=zH3eH3hlGoo)« und »[💖 Exploding Hearts 💖 (Particle Systems)](https://www.youtube.com/watch?v=YgDY7l2W9eE)«. Und da dachte ich mir, bevor ich wieder die verdammten Herzchen vergesse, kann ich ja auch mal etwas mit ihnen programmieren.
+
+Als Plattform habe ich mir [Proceso](https://proceso.cc/) ausgesucht, die [PyScript](http://cognitiones.kantel-chaos-team.de/programmierung/python/pyscript.html) Bibliothek, die eine Art webtaugliches [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html) in Python&nbsp;3 verspricht, und mit der ich sowieso wieder mal [etwas anfangen](https://kantel.github.io/posts/2026011301_neue_tiles_16x16/) wollte.
+
+Ausgehend von meinen Skripten, die ein [Partikelsystem in Proceso](https://kantel.github.io/posts/2025072101_partikel_proceso/) implementierten, habe ich dieses Mal etwas Ähnliches versucht, nur daß die Partikel dieses Mal nicht aus Kreisen und Quadraten bestehen, sondern Emojis (also eigentlich Buchstaben) sind:
+
+<iframe src="blueberryhill/index.html" width="810" height="340"></iframe>
+
+Den Quellcode habe ich dieses Mal in zwei Dateien aufgeteilt, einmal in die `sketch.py`, die das Hauptprgramm enthält, und dann die Datei `heart.py` für die Implementierung der Herzchen-Klasse. Obwohl ich dabei auf das Python-übliche `import`-Brimborium verzichtet hatte (weil PyScript ähnlich wie JavaScript dies nicht benötigt), klappte das erstaunlich gut. Lediglich der gestrenge Linter meines Editors ([Visual Studio Code](http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html)) meckerte ein wenig, führte aber dann das Programm (wie obiger [Screenshot](https://www.flickr.com/photos/schockwellenreiter/55094603938/) beweist) anstandslos aus.
+
+Hier also erst einmal die Datei `heart.py`, in der die Klasse `Heart` implementiert wird, die, obwohl sie sehr kompakt geraten, die Hauptarbeit für das Skriptchen übernimmt:
+
+~~~python
+class Heart:
+    
+    def __init__(self, _x, _y):
+        self.loc = p5.Vector(_x, _y)
+        self.vel = p5.Vector(uniform(-3.5, 0.5), uniform(3, -0.75))
+        self.done = False
+        self.size = 32
+        self.t = choice(heartp)
+  
+    def update(self):
+        self.loc += self.vel
+        if self.size <= 1:
+            self.done = True
+        else:
+            self.size -= 0.3 
+  
+    def display(self):
+        p5.text_size(self.size)
+        p5.text(self.t, self.loc.x, self.loc.y)
+~~~
+
+Proceso besitzt eine eigene Vektor-Klasse, die der Vektor-Implementierung von [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) nachempfunden ist. Mit der werden als erstes die Position und die Beschleunigung der Herzchen festgelegt und eines der Herzen aus der Liste der Emojis `heartp[]` (implementiert im Hauptprogramm) ausgewählt. Die Beschleunigung wird zufällig für jedes Herzchen einzeln vergeben, die entsprechenden Parameter habe ich durch wildes Ausprobieren herausgefunden (einfach so lange an den Parametern geschraubt, bis es gut aussah).
+
+In der `update()`-Methode wird dann die Beschleunigung auf die Position aufaddiert und die Größe der Herzchen verkleinert. Wenn sie kleiner Eins ist, wird mit dem Flag `self.done = True` das Löschen aus der Liste (erfolgt ebenfalls im Hauptprogramm) vorbereitet.
+
+Und die `display()`-Methode sorgt einfach nur dafür, daß das Herzchen an der korrekten Stelle in der korrekten Größe angezeigt wird.
+
+Nun das Hauptprogramm (`sketch.py`):
+
+~~~python
+from proceso import Sketch
+from random import choice, uniform
+
+WIDTH, HEIGHT = 800, 320
+START_X, START_Y = 470, 75
+
+p5 = Sketch()
+
+def preload():
+    global bg
+    bg = p5.load_image("assets/hills.jpg")  # Load the image
+
+hearts = []
+heartp = ["🩷", "❤️", "🧡", "💛", "💚", "🩵", "💙",
+          "💜", "🖤", "🩶", "🤍", "🤎", "💔", "❤️‍🔥",
+          "❤️‍🩹", "❣️", "💕", "💞", "💓", "💗", "💖",
+          "💘", "💝"];
+
+def setup():
+    p5.create_canvas(WIDTH, HEIGHT)    
+   
+def draw():
+    p5.image(bg, 0, 0)
+    if (p5.frame_count % 2 == 0):
+        heart = Heart(START_X, START_Y)
+        hearts.append(heart)
+    for heart in reversed(hearts):
+        if heart.done:
+            hearts.remove(heart)
+    for heart in hearts:
+        heart.update()
+        heart.display()
+    
+p5.run_sketch(preload=preload, setup=setup, draw=draw)
+~~~
+
+Hier werden eigentlich nur die Daten für die Ausführung bereitgestellt. Lediglich in der Funktion `draw()` passiert etwas: Einmal wird nur bei jedem zweiten Frame (`p5.frame_count % 2 == 0`) ein neues Herzchen erzeugt, und zum anderen werden alle Herzchen, deren Flag auf `done` gesetzt wurde, aus der Liste `hearts[]` entfernt. Damit nicht eines dabei übersprungen wird, wird die Liste rückwärts durchlaufen.
+
+Erst wenn dies alles bereinigt ist, werden die Methoden `update()` und `display()` der Klasse `Heart` aufgerufen.
+
+Das war mein diesmal fristgerechter Beitrag zum Valentinstag. Den [Quellcode mit allen Assets und Hilfsdateien](https://github.com/kantel/pythoncuriosa/tree/main/pyscript/proseco/blueberryhill) findet Ihr in meinem GitHub-Repositorium.
+
+Ich wünsche Euch mit diesem Skript einen schönen Valentinstag.
+
+---
+
+**(Hintergrund-) Bild**: *[Blueberry Hill](https://www.flickr.com/photos/schockwellenreiter/55094426293/)*, erstellt mit [OpenArt.ai](https://openart.ai/home). Prompt: »*@Alice stands on a hill overlooking a wide landscape with a small river and an idyllic little town in the valley below. A path paved with golden cobblestones leads down into the valley before her, to a stone bridge spanning the river and leading into the town. Above her, the full moon shines, wearing a nightcap and pointing a magic wand at her. The clear night sky is a deep blue. Colored classic American comic style. Language German. No speech bubbles, no textboxes.*« Modell: Character 2.0 with Nano Banana Pro.
