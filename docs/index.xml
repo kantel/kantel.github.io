@@ -10,7 +10,56 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Thu, 26 Feb 2026 19:05:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 27 Feb 2026 17:35:00 GMT</lastBuildDate>
+<item>
+  <title>Charakterkonsistenz: Problem gelöst?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026022701_charakterkonsitenz/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55118060067/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/wondertown-b.jpg" class="img-fluid"></a></p>
+<p>Im Rahmen meiner Überlegungen über meine Fahrten zurück ins Wunderland gestern (<a href="https://kantel.github.io/posts/2026022601_wunderland_1/">Teil&nbsp;1</a>, <a href="https://kantel.github.io/posts/2026022602_wunderland_2/">Teil&nbsp;2</a> und <a href="https://kantel.github.io/posts/2026022603_wunderland_3/">Teil&nbsp;3</a>) habe ich mich mal wieder mit dem Problem der KI-generierten, konsistenen Spielefiguren für <em>Visual Novels</em> beschäftigt. Denn während kleine Abweichungen in den Zeichnungen in interaktiven Geschichten und Spielen zum Beispiel in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> noch tolerierbar sind, nehmen <em>Visual Novel Engines</em> wie <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> oder <a href="https://monogatari.io/">Monogatari</a> (mal <a href="https://kantel.github.io/posts/2024072301_monogatari/">wieder neu im Rennen</a>) selbst kleinste Abweichungen übel.</p>
+<p>Wie es der Zufall will, hatte ich dann heute ein wenig mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> gespielt (weil mein monatliches Budget auf <a href="https://openart.ai/home">OpenArt</a> verbraucht war und erst Anfang des Monats wieder aufgefrischt wird), und da bin ich darüber gestolpert, daß man bei etlichen KI-Bildgeneratoren (in diesem speziellen Fall bei Nano Banana&nbsp;2) auch Referenzbilder mitgeben kann. Also habe ich erst einmal mit einem sehr ausführlichen Prompt<sup>1</sup></p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://www.flickr.com/photos/schockwellenreiter/55118837976/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter01.jpg" class="img-fluid"></a>
+</div>
+<blockquote class="blockquote">
+<p>The Mad Hatter in his younger years with red, unruly hair and green eyes. He wears a black hat with a pink band, a dark blue coat, an olive green waistcoat, black breeches, dark blue and white striped stockings, black mid-calf boots, a white shirt with a stand-up collar, and a large orange bow tie with yellow poka-dots. Colored DC comic style. Language: German. No textboxes, no speech bubbles. No background.</p>
+</blockquote>
+<p>ein <a href="https://www.flickr.com/photos/schockwellenreiter/55118837976/">Referenzbild</a> erzeugt und dieses dann als Basis für weitere Experimente genommen. Einmal als Referenz vorhanden, habe ich in den weiteren Prompts immer nur <code>Mad Hatter angry</code>, <code>Mad Hatter neutral</code>, <code>Mad Hatter sad</code> und so weiter eingegeben. Herausgekommen ist eine Sammlung von Bildern, die im Bezug auf Konsistenz keine Wünsche mehr offen lassen <em>(wie immer führt ein Klick auf die daumengroßen Bildchen zu einer Seite mit Vergrößerungen)</em>:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55119102689/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55119041813/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter03.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55119041823/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter04.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/55119102654/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55117964332/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter06.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55118837491/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter07.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/55119229750/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter08.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55117964317/"><img src="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/madhatter09.jpg" class="img-fluid"></a></p>
+<p>Von den Ergebnissen bin ich mehr als begeistert. Ich mmß jetzt erst einmal noch ein wenig damit spielen und ein paar Figuren mehr aus meinem Wunderland-Kosmos erzeugen, und dann einen Test fahren, wie sich die Bilder tatsächlich in den von mir präferierten Engines bewähren. Aber ich bin sehr optimistisch.</p>
+<p>Wenn Ihr auch mit den Bildern spielen wollt: Die Links führen zu Flickr und wenn Ihr von dort das Original herunterladet (<code>Foto -&gt; Alle Größen -&gt; Dieses Foto im Original herunterladen</code>), bekommt Ihr ein freigestelltes PNG in der Größe von <img src="https://latex.codecogs.com/png.latex?4096">x<img src="https://latex.codecogs.com/png.latex?4096"> Pixeln. Das dürfte für so ziemlich jede Anwendung ausreichend sein<sup>2</sup>.</p>
+<p>Ich habe übrigens bei einem ersten Versuch sparen wollen und die Freistellung mit Bordmitteln (Apples Vorschau) vorgenommen. Die kam jedoch mit dem wirren Haarschopfs des Hutmachers nicht zurecht, daher habe ich die Freistellung dann doch wieder Scenario überlassen. Das Ergebnis war die drei Credits auf jeden Fall wert.</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55118060067/">The Mad Hatter in Wondertown</a></em>, Collage erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt (Backgound Image): »<em>A deserted alley in a small town at dusk, lined with picturesque houses. On the left is a small inn with a sign reading “Zum Wunderland” (To Wonderland). A wooden bench stands in front of the inn, next to an old-fashioned gas lamp. Several more of these gas lamps illuminate the alleyway, giving it a pleasantly bright appearance. Some of the house windows are lit. German. No textboxes, no speech bubbles. Image suitable as background for a visual Novel.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich habe mir sehr viel Mühe mit diesem Prompt gegeben, damit der Hutmacher nicht wie <em><a href="https://de.wikipedia.org/wiki/Johnny_Depp">Johnny Depp</a></em> aussieht.↩︎</p></li>
+<li id="fn2"><p>Die Bilder sind KI-generiert, also damit frei von Urheberrechten. Sicherheitshalber habe ich sie – wie alle meine Bilder – aber auch noch unter die <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">CC BY-SA 4.0</a> gestellt. Macht also damit, was Ihr wollt.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Künstliche Intelligenz</category>
+  <category>Scenario</category>
+  <category>Nano Banana</category>
+  <category>Bilder</category>
+  <category>RenPy</category>
+  <category>Tuesday JS</category>
+  <category>Monogatari</category>
+  <guid>https://kantel.github.io/posts/2026022701_charakterkonsitenz/</guid>
+  <pubDate>Fri, 27 Feb 2026 17:35:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026022701_charakterkonsitenz/images/wondertown.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Zurück ins Wunderland (3): Visual Novels mit Ren’Py</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1035,33 +1084,6 @@ font-style: inherit;">--upgrade</span> pyxel</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026020601_pyxel_update/</guid>
   <pubDate>Fri, 06 Feb 2026 12:10:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026020601_pyxel_update/images/kaffeekreativ.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Tiiny Host: Noch ein winziger Gastgeber</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026020503_tiiny_host/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55078822570/"><img src="https://kantel.github.io/posts/2026020503_tiiny_host/images/momo2-b.jpg" class="img-fluid"></a></p>
-<p>Während meiner kurzen Recherche zu dem <a href="https://kantel.github.io/posts/2026020502_tinyhost/">letzten Beitrag</a> kam mir – wegen der Namensähnlichkeit – auch der Dienst <a href="https://tiiny.host/web-hosting-free-sites/">Tiiny Host</a> (Tiiny mit zwei »i«) unter. Dies ist nicht noch ein lokaler Webserver, sondern ein in der Grundversion kostenloser Hoster statischer Webseiten.</p>
-<p>Da ich – seit dem <a href="https://kantel.github.io/posts/2025052402_glitch_ende/">Ende von Glitch 🎏</a> im letzten Mai – keinen Spielplatz mehr besitze, wo ich mal schnell ein paar paar Experimente, sei es mit purem HTML und CSS (und meinetwegen auch ein wenig JavaScript), sei es mit <a href="https://proceso.cc/">Proceso</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> oder sei es mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/bitsy.html">Bitsy</a>, schnell online stellen kann. Oder auch mal einzelne <a href="https://anytype.io/">Anytype</a>-Seiten, denn <a href="https://kantel.github.io/posts/2025021401_anytype_web/">Anytype kann ja bekanntlich auch ein bisschen Web</a>. Alles getreu meiner Idee, wieder – wie zu den Anfangszeiten des Internets – (statische) <a href="http://blog.schockwellenreiter.de/2022/05/2022052401.html">Webseiten ohne Sinn und Verstand</a> zu basteln.</p>
-<p>Also habe ich mir kurzentschlossen dort einen Account zugelegt. Kostet ja nichts&nbsp;🤓. Und zwei kurze Video-Tutorials habe ich auch gefunden: Einmal »<a href="https://www.youtube.com/watch?v=DxKgTaQnWbI">How to Make a Free Website with Tiiny Host</a>« (10&nbsp;Minuten) und einmal eine »<a href="https://www.youtube.com/watch?v=KXPvZ6dUWlw">Tiiny Host Review</a>« (8&nbsp;Minuten), die den Dienst großspurig zur »besten freien Hosting Plattform für statische Seiten« ausruft (allerdings diesen Ausruf noch mit einem Fragezeichen versieht).</p>
-<p>Ich hatte mit Glitch 🎏 nie viel angestellt, aber es war schön, einen Dienst in der Hinterhand zu haben, auf den man mal schnell ein paar Experimente hochladen konnte. Ganz einfach und ganz ohne Sinn und Verstand!&nbsp;😎</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55078822570/">Momo spielt im Park Gitarre</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em><span class="citation" data-cites="Momo">@Momo</span> plays guitar in a park at night in the moonlight. Colored Franco-Belgian comic style.</em>« Modell: Character 2.0 mit Nano Banana Pro&nbsp;🍌.</p>
-
-
-
- ]]></description>
-  <category>Tiiny Host</category>
-  <category>Statische Seiten</category>
-  <category>Webworking</category>
-  <guid>https://kantel.github.io/posts/2026020503_tiiny_host/</guid>
-  <pubDate>Thu, 05 Feb 2026 19:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026020503_tiiny_host/images/momo2.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
