@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Charakterkonsistenz: Problem gelöst? – Der Schockwellenreiter</title>
+<title>Trotz der beschissenen Weltlage gibt es Mediadaten – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,35 +70,6 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -156,17 +127,12 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Charakterkonsistenz: Problem gelöst?</h1>
+<h1 class="title">Trotz der beschissenen Weltlage gibt es Mediadaten</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Interactive Fiction</div>
-    <div class="quarto-category">Spieleprogrammierung</div>
-    <div class="quarto-category">Künstliche Intelligenz</div>
-    <div class="quarto-category">Scenario</div>
-    <div class="quarto-category">Nano Banana</div>
-    <div class="quarto-category">Bilder</div>
-    <div class="quarto-category">RenPy</div>
-    <div class="quarto-category">Tuesday JS</div>
-    <div class="quarto-category">Monogatari</div>
+    <div class="quarto-category">Mediadaten</div>
+    <div class="quarto-category">Interna</div>
+    <div class="quarto-category">Neuköllner Bilderbogen</div>
+    <div class="quarto-category">Photographie</div>
   </div>
   </div>
 
@@ -184,7 +150,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">27. Februar 2026</p>
+      <p class="date">1. März 2026</p>
     </div>
   </div>
   
@@ -196,33 +162,24 @@ window.Quarto = {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55118060067/"><img src="images/wondertown-b.jpg" class="img-fluid"></a></p>
-<p>Im Rahmen meiner Überlegungen über meine Fahrten zurück ins Wunderland gestern (<a href="https://kantel.github.io/posts/2026022601_wunderland_1/">Teil&nbsp;1</a>, <a href="https://kantel.github.io/posts/2026022602_wunderland_2/">Teil&nbsp;2</a> und <a href="https://kantel.github.io/posts/2026022603_wunderland_3/">Teil&nbsp;3</a>) habe ich mich mal wieder mit dem Problem der KI-generierten, konsistenen Spielefiguren für <em>Visual Novels</em> beschäftigt. Denn während kleine Abweichungen in den Zeichnungen in interaktiven Geschichten und Spielen zum Beispiel in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> noch tolerierbar sind, nehmen <em>Visual Novel Engines</em> wie <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> oder <a href="https://monogatari.io/">Monogatari</a> (mal <a href="https://kantel.github.io/posts/2024072301_monogatari/">wieder neu im Rennen</a>) selbst kleinste Abweichungen übel.</p>
-<p>Wie es der Zufall will, hatte ich dann heute ein wenig mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> gespielt (weil mein monatliches Budget auf <a href="https://openart.ai/home">OpenArt</a> verbraucht war und erst Anfang des Monats wieder aufgefrischt wird), und da bin ich darüber gestolpert, daß man bei etlichen KI-Bildgeneratoren (in diesem speziellen Fall bei Nano Banana&nbsp;2) auch Referenzbilder mitgeben kann. Also habe ich erst einmal mit einem sehr ausführlichen Prompt<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://www.flickr.com/photos/schockwellenreiter/55118837976/"><img src="images/madhatter01.jpg" class="img-fluid"></a>
-</div>
-<blockquote class="blockquote">
-<p>The Mad Hatter in his younger years with red, unruly hair and green eyes. He wears a black hat with a pink band, a dark blue coat, an olive green waistcoat, black breeches, dark blue and white striped stockings, black mid-calf boots, a white shirt with a stand-up collar, and a large orange bow tie with yellow poka-dots. Colored DC comic style. Language: German. No textboxes, no speech bubbles. No background.</p>
-</blockquote>
-<p>ein <a href="https://www.flickr.com/photos/schockwellenreiter/55118837976/">Referenzbild</a> erzeugt und dieses dann als Basis für weitere Experimente genommen. Einmal als Referenz vorhanden, habe ich in den weiteren Prompts immer nur <code>Mad Hatter angry</code>, <code>Mad Hatter neutral</code>, <code>Mad Hatter sad</code> und so weiter eingegeben. Herausgekommen ist eine Sammlung von Bildern, die im Bezug auf Konsistenz keine Wünsche mehr offen lassen <em>(wie immer führt ein Klick auf die daumengroßen Bildchen zu einer Seite mit Vergrößerungen)</em>:</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55119102689/"><img src="images/madhatter02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55119041813/"><img src="images/madhatter03.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55119041823/"><img src="images/madhatter04.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/55119102654/"><img src="images/madhatter05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55117964332/"><img src="images/madhatter06.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55118837491/"><img src="images/madhatter07.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/55119229750/"><img src="images/madhatter08.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55117964317/"><img src="images/madhatter09.jpg" class="img-fluid"></a></p>
-<p>Von den Ergebnissen bin ich mehr als begeistert. Ich muss jetzt erst einmal noch ein wenig damit spielen und ein paar Figuren mehr aus meinem Wunderland-Kosmos erzeugen, und dann einen Test fahren, wie sich die Bilder tatsächlich in den von mir präferierten Engines bewähren. Aber ich bin sehr optimistisch.</p>
-<p>Wenn Ihr auch mit den Bildern spielen wollt: Die Links führen zu Flickr und wenn Ihr von dort das Original herunterladet (<code>Foto -&gt; Alle Größen -&gt; Dieses Foto im Original herunterladen</code>), bekommt Ihr ein freigestelltes PNG in der Größe von <span class="math inline">\(4096\)</span>x<span class="math inline">\(4096\)</span> Pixeln. Das dürfte für so ziemlich jede Anwendung ausreichend sein<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
-<p>Ich habe übrigens bei einem ersten Versuch sparen wollen und die Freistellung mit Bordmitteln (Apples Vorschau) vorgenommen. Die kam jedoch mit dem wirren Haarschopfs des Hutmachers nicht zurecht, daher habe ich die Freistellung dann doch wieder Scenario überlassen. Das Ergebnis war die drei Credits auf jeden Fall wert.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55118060067/">The Mad Hatter in Wondertown</a></em>, Collage erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt (Backgound Image): »<em>A deserted alley in a small town at dusk, lined with picturesque houses. On the left is a small inn with a sign reading “Zum Wunderland” (To Wonderland). A wooden bench stands in front of the inn, next to an old-fashioned gas lamp. Several more of these gas lamps illuminate the alleyway, giving it a pleasantly bright appearance. Some of the house windows are lit. German. No textboxes, no speech bubbles. Image suitable as background for a visual Novel.</em>« Modell: Nano Banana&nbsp;2.</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Ich habe mir sehr viel Mühe mit diesem Prompt gegeben, damit der Hutmacher nicht wie <em><a href="https://de.wikipedia.org/wiki/Johnny_Depp">Johnny Depp</a></em> aussieht.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Die Bilder sind KI-generiert, also damit frei von Urheberrechten. Sicherheitshalber habe ich sie – wie alle meine Bilder – aber auch noch unter die <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">CC BY-SA 4.0</a> gestellt. Macht also damit, was Ihr wollt.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55123058433/"><img src="images/jim-b.jpg" class="img-fluid"></a></p>
+<p>Auch wenn ich angesichts der beschissenen Nachrichten aus der Welt des Wahnsinns dieser nur noch die Zunge herausstrecken möchte (wie auf <a href="https://www.flickr.com/photos/schockwellenreiter/55123058433/">obigem Graffiti</a> aus der Neuköllner Bürgerstraße), hat ein neuer Monat begonnen begonnen und daher ist es Zeit für die Zahlen des Vormonats, die manchmal hochtrabend auch <em>Mediadaten</em> genannt werden. Im Februar 2026 hatte der <em>Schockwellenreiter</em> laut seinem nicht immer zuverlässigen, aber dafür (hoffentlich!) DSGVO-konformen <del>Geißenpeter</del> <a href="https://www.goatcounter.com/">Neugiertool</a> exakt <strong>8.728&nbsp;Seitenaufrufe</strong>. Auch wenn wie immer die Exaktheit dieser Ziffer eine Genauigkeit der Zahl nur vortäuscht, ist dies für den kurzen Februar ein hervorragendes Ergebnis. Und so freue ich mich über jede Besucherin und jeden Besucher und bedanke mich bei allen meinen Leserinnen und Lesern.</p>
+<p>😎 &nbsp; <em>Bleibt mir gewogen!</em></p>
+<p>Auch zu den <del>Mediadaten</del> Zahlen des Februars&nbsp;2026 gehören natürlich die <em>Top Five</em>:</p>
+<ol type="1">
+<li>Auch wenn mittlerweile über zwei Jahre alt und daher schon etwas überholt, steht immer noch weit abgeschlagen an der Spitze der Beitrag »<a href="https://kantel.github.io/posts/2024011002_ki_ohne_zensor/">Bildgeneratoren und Künstliche Intelligenz – ohne Zensoren</a>« vom 10.&nbsp;Januar&nbsp;2024.</li>
+<li>An zweiter Stelle folgt der Klassiker »<a href="https://kantel.github.io/posts/2024081201_anytype/">All about Anytype – meine neue, digitale Rumpelkammer?</a>« vom 13.&nbsp;August&nbsp;2024. Dieser Artikel hat in der letzten Woche sogar massiv an Beliebtheit zugelegt.</li>
+<li>Darauf folgen die beiden Beiträge »<a href="https://kantel.github.io/posts/2026011201_wolfgang_lefevre/">Zur Erinnerung an Wolfgang Lefèvre (1941–2025)</a> vom 12.&nbsp;Januar&nbsp;2026 und »<a href="https://kantel.github.io/posts/2026021901_ein_archiv_vergisst_nie/">Ein Archiv vergisst nie: Über Wolfgang Lefèvre</a>« vom 19.&nbsp;Februar&nbsp;2026, die ich wegen der besseren Übersicht zusammen gewertet habe.</li>
+<li>Und so rückt an vierter Stelle noch ein Beitrag aus der Wissenschaftsgeschichte: »<a href="https://kantel.github.io/posts/2026020602_wissenschaftsgeschichte/">Eine kleine Geschichte der Wissenschaft</a>« vom 6.&nbsp;Februar&nbsp;2026.</li>
+<li>Das Schlusslicht bildet – passend zur Weltlage – der <a href="https://kantel.github.io/posts/2026021701_hurra_macht_das_sterben_spass/">»Hurra macht das Sterben Spaß«-Song</a> vom 17.&nbsp;Februar&nbsp;2026.</li>
 </ol>
-</section></div></main> <!-- /main -->
+<p>In diesem Sinne: Lasst Euch nicht verdrießen, auch wenn es schwer fällt.</p>
+<hr>
+<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
