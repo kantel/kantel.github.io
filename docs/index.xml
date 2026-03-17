@@ -10,7 +10,377 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Mon, 16 Mar 2026 15:35:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 17 Mar 2026 12:00:00 GMT</lastBuildDate>
+<item>
+  <title>The Making of »Reichspressekonferenz« mit Monogatari</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55152596921/"><img src="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/images/makingofrpk-b.jpg" class="img-fluid"></a></p>
+<p>Meine kleine Satire »<a href="https://kantel.github.io/posts/2026031201_reichspressekonferenz/">Reichspressekonferenz</a>« scheint ja gut bei meinen Leserinnen und Lesern angekommen zu sein. Daher denke ich mir, daß es nur gerecht ist, Euch zu zeigen, womit und wie ich diese kleine, (beinahe) interaktive Geschichte erstellt habe.</p>
+<section id="monogatari" class="level3">
+<h3 class="anchored" data-anchor-id="monogatari">Monogatari</h3>
+<p>Die freie (MIT-Lizenz) Engine, die hinter all dem werkelt, heißt <strong><a href="https://monogatari.io/">Monogatari</a></strong> (<a href="https://github.com/Monogatari/Monogatari/">Quellcode</a> auf GitHub). Diese kleine <em>Visual Novel Engine</em> wurde laut Eigenwerbung für das moderne Web entwickelt, um die Erstellung und Verbreitung interaktiver Geschichten, die prakatisch überall spielbar sind, einfacher zu machen. Die Ergebnisse sind <em>out of the box</em> responsiv. Per Default sind sie in jedem modernen Browser spielbar, jedoch können via <a href="http://cognitiones.kantel-chaos-team.de/webworking/frameworks/electron.html">Electron</a> auch Desktop Apps für Windows, Linux oder macOS und via <a href="https://cordova.apache.org/">Cordova</a> mobile Apps für Android une iOS erstellt werden.</p>
+<p>Monogatari ist eine HTML-, CSS- und JavaScript-Engine, daher kann mir ihr alles angestellt werden, was im Web möglich ist (wenn man sich in HTML, CSS und JavaScript auskennt). Um damit zu starten, lädt man sich erst einmal das <em>Boilerplate</em> (entweder die Version 2.0.2 Stable (empfohlen) oder für <em>Thrill Seekers only</em> die neueste Version 2.6.0) herunter. Man erhält folgende Struktur:</p>
+<p><img src="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/images/monogataristruktur.jpg" class="img-fluid"></p>
+<p>Für Eure Versuche kopiert Ihr das komplette Verzeichnis und benennt es passend zu Eurer interativen Geschichte um (ich habe es <code>markword1</code> genannt). Das Template lasst Ihr als Vorlage für weitere Spiele unangetastet und arbeitet nur noch in Eurer Kopie.</p>
+<p>Wichtig für den Anfang ist nur die Datei <code>script.js</code> im Verzeichnis <code>js</code> und die Datei <code>main.css</code> im Verzeichnis <code>style</code>. Erstere enthält das Skript für Eure interaktive Geschichte und letztere die CSS-Styles, die in Eurer Geschichte vom Default abweichen. Dann benötigt Ihr erst einmal nur noch das Verzeichnis <code>characters</code> und das Verzeichnis <code>scenes</code> im Verzeichnis <code>assets</code>. Hier kommen die Bilder Eurer Akteure und Eure Hintergrundbilder hinein.</p>
+<p>Und der Datei <code>index.html</code> könnt Ihr einen entsprechenden Titel verpassen und falls Ihr weitere JavaScript-Dateien für Eure <em>Visual Novel</em> benötigt, müsst Ihr sie hier natürlich auch aufführen. Das Verzeichnis <code>engine</code> lasst Ihr am besten unangetastet, denn das ist – wie der Name schon sagt – die eigentliche Engine und in ihr sollten nur Leute herumfuhrwerken, die sehr Seltsames vorhaben und/oder genau wissen, was sie tun.</p>
+<p>Um nun die Geschichte zu erstellen, habe ich mein Verzeichnis <code>markword1</code> in <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a> geöffnet, weil ich da die <code>Go Live</code>-Erweiterung, die einen lolalen Webserver startet, schon installiert habe. Ihr könnt aber auch jeden anderen Editor oder jede andere IDE nutzen, Ihr müsst dann zum Testen nur die <code>index.html</code> mit einem lokalen Webserver Eures Vertrauens aufrufen. (Getested habe ich dies mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a> und mit <a href="https://kantel.github.io/posts/2026020502_tinyhost/">TinyHost</a> und dem kleinen, schlanken Texteditor <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/geany.html">Geany</a>.)</p>
+<p>Doch nun zum eigentlichen Skript. In der Datei <code>script.js</code>, die viele leere Default-Belegungen enthält, habe ich erst einmal zwei Abschnitte mit Leben gefüllt:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Define the backgrounds for each scene.</span></span>
+<span id="cb1-2">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">assets</span> (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'scenes'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> {</span>
+<span id="cb1-3">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pressekonferenz"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"pressekonferenz.jpg"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-4">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Define the Characters</span></span>
+<span id="cb1-7">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">characters</span> ({</span>
+<span id="cb1-8">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'sprecher'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb1-9">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Mark Wort'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-10">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">color</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'#5bcaff'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-11">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">sprites</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb1-12">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">normal</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markword_neutral01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-13">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markword_talking01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-14">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markword_talking02.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-15">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markword_talking04.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-16">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">confused1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markword_confused01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-17">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">confused2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"markword_confused02.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-18">        }</span>
+<span id="cb1-19">    }</span>
+<span id="cb1-20">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Wie Ihr leicht erkennen könnt, sind das alles JSON-Deklarationen, die von der Engine mit Leben gefüllt werden. Die Bilder, auf die hier verwiesen wird, habe ich mit <a href="https://openart.ai/home">OpenArt</a> erstellt, doch darüber weiter unten mehr.</p>
+<p>Direkt darauf folgt der Abschnitt <code>monogatari.scrip</code>, der die eigentliche Spielelogik enthält. Das darin enthaltene Beispielskript habe ich komplett gelöscht und durch diese Zeilen ersetzt:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">script</span> ({</span>
+<span id="cb2-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// The game starts here.</span></span>
+<span id="cb2-3">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Start"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> [</span>
+<span id="cb2-4">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show scene pressekonferenz with fadeIn"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-5">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character sprecher normal at right with fadeIn duration 5s"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-6">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-7"></span>
+<span id="cb2-8">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character sprecher talking1 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-9">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sprecher  Kulturstaatsminister Weimer sagt hiermit die Leipziger Buchmesse ab."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-10"></span>
+<span id="cb2-11">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character sprecher talking2 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-12">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sprecher Stattdessen gibt es als Ersatzveranstaltung…"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-13">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character sprecher talking4 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-14">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sprecher die erste Bücherverbrennung seit 1933 auf deutschem Boden."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-15"></span>
+<span id="cb2-16">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character sprecher confused2 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-17">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-18">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character sprecher confused1 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-19">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-20"></span>
+<span id="cb2-21">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hide character sprecher with fadeOut duration 5s"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-22">        </span>
+<span id="cb2-23">    ]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-24">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Wichtig dabei ist eigentlich nur das Label <code>"Start":</code>, weil von hier per Default das Programm startet, alles andere ist mehr oder weniger selbsterklärend. Und wenn nicht hilft ein Blick in die <a href="https://developers.monogatari.io/documentation">Dokumentation</a>, die sehr ausführlich ist.</p>
+<p>Dann habe ich noch die Datei <code>options.js</code> angefasst, die einige Voreinstellungen vornimmt. Mir kam es nur darauf an, den Startscreen auszuschalten, bei solch einer kurzen Geschichte erschien er mir ein <em>overkill</em>. Das habe ich in der Datei in <code>monogatari.settings({})</code> mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Turn main menu on/off; Default: true *</span></span>
+<span id="cb3-2">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ShowMainScreen'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span></code></pre></div>
+<p>erledigt. Bei der Gelegenheit habe ich in der gleichen Datei ebenfalls in <code>monogatari.settings({})</code> mit</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// The name of your game, this will be used to store all the data so once</span></span>
+<span id="cb4-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// you've released a game using one name, it shouldn't change. Please use the</span></span>
+<span id="cb4-3">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Version Setting to indicate a new release of your game!</span></span>
+<span id="cb4-4">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Name'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Leipziger Buchmesse 2026'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span></code></pre></div>
+<p>der Geschichte auch noch einen Namen gegeben.</p>
+<p>Die letzte Änderung habe ich noch in der Datei <code>main.css</code> vorgenommen. Hier kommen alle CSS-Änderungen hinein, damit man nicht in der Engine-eigenen <code>monogatari.css</code> herumfummeln muss.</p>
+<p>Mir gefielen die Abstände in der Textbox nicht, sie klebten mir zu sehr an den Rändern. Daher habe ich ihnen mit</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* Text Box styling */</span></span>
+<span id="cb5-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">data-component</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text-box"</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">]</span> {</span>
+<span id="cb5-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-top</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-left</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-right</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-6">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-bottom</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-7">}</span></code></pre></div>
+<p>etwas Luft verschafft.</p>
+</section>
+<section id="openart-und-die-bilder" class="level3">
+<h3 class="anchored" data-anchor-id="openart-und-die-bilder">OpenArt und die Bilder</h3>
+<p>Eine <em>Visual Novel</em>, und sei sie noch so kurz wie mein Beispielprogramm, benötigt Bilder. Das sagt einem schon der Name.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55153021515/"><img src="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/images/makingofrpk2.jpg" class="img-fluid"></a></p>
+<p>Da mir leider kein Griffel in die Wiege gelegt wurde, habe ich diese mit OpenArt, eine der beiden gekünstellten Intelligenzien meines Vertrauens, generiert. Das <a href="https://www.flickr.com/photos/schockwellenreiter/55143780863/">Hintergrundbild</a> war sehr schnell mit diesem Prompt erstellt:</p>
+<blockquote class="blockquote">
+<p>An empty room of a press conference. On the light blue wall, the text “Bundespressekonferenz” is written. Someone has crossed out the “Bundes” and painted “Reichs” over it with a red brush. Colored Franco-Belgian comic style. Language: German. No speech bubbles, no textboxes, no headlines. Suitable as background for a Visual Novel.</p>
+</blockquote>
+<p>Als Modell habe ich das <a href="https://kantel.github.io/posts/2026030302_nano_banana_2/">brandneue Nano&nbsp;Banana&nbsp;2</a> verwendet.</p>
+<p>Schwieriger war die Erstellung der Figur des Sprechers. Denn da die brandneue GUI von OpenArt im Bildeditor keine Option zum Freistellen mehr besitzt (zumindest habe ich keine gefunden), bin ich zur alten Version gewechselt. Dort habe ich erst einmal wie <a href="https://kantel.github.io/posts/2026012701_jo_hippo_character_2_0/">hier beschrieben</a> in <em>Character&nbsp;2.0</em> und Nano&nbsp;Banana&nbsp;Pro mit dem Prompt</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://www.flickr.com/photos/schockwellenreiter/55143708199/"><img src="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/images/markword_referenz.jpg" class="img-fluid"></a>
+</div>
+<blockquote class="blockquote">
+<p>full body shot front view of ComicBook. A man in his prime with slightly graying, thinning, curly, originally black hair. He has gray eyes and full lips and is clean-shaven. He is obese, wears black horn-rimmed glasses, a white shirt with a dark blue tie (yet the collar is open), a gray jacket, and gray trousers with a brown belt. His shoes are dark brown. He nevertheless appears slightly unkempt. The background is white. Colored Franco-Belgian comic style. No speech-bubbles, no textboxes, no headlines. face to viewer, background is a suitable beautiful scene.</p>
+</blockquote>
+<p>ein <a href="https://www.flickr.com/photos/schockwellenreiter/55143708199/">Referenzbild</a> erzeugt, dessen Protagonisten ich »<span class="citation" data-cites="Mark">@Mark</span> Word« genannt habe, und davon dann zum Beispiel mit <code>@Mark Word talking, white background</code> oder <code>@Mark Word confused, white background</code> oder präziser mit <code>@Mark Word talking, full body shot front view, left hand at chest level, white background</code> Variationen mit Nano&nbsp;Banana&nbsp;2 erzeugt. Diese habe ich dann im alten Bildeditor von OpenArt freigestellt.</p>
+<p>Mit dem Ergebnis bin ich sehr zufrieden, die Figur ist nämlich wirklich konsistent und für eine <em>Visual Novel</em> ideal geeignet. Und auch Monogatari scheint für die Erstellung kleiner, visueller Satiren und interaktiver Karikaturen wegen der (obwohl sie per Default alle Assets vor dem eigentlichen Start vorlädt) kurzen Ladezeiten ein ideales Werkzeug. Ich werde die kleine Engine sicher noch tiefer erkunden. <em>Still digging!</em></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Monogatari</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>OpenArt.ai</category>
+  <guid>https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/</guid>
+  <pubDate>Tue, 17 Mar 2026 12:00:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/images/makingofrpk.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>P5.js 2.1 und 2.2 wurden freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -773,50 +1143,6 @@
   <guid>https://kantel.github.io/posts/2026022501_puzzlescript/</guid>
   <pubDate>Wed, 25 Feb 2026 14:35:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026022501_puzzlescript/images/puzzlescript.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Von TIC-80 lernen heißt Pyxel lernen: Noch mehr TIC-80-Tutorials 🤖</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026022402_more_tic_80_tuts/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55096233752/"><img src="https://kantel.github.io/posts/2026022402_more_tic_80_tuts/images/retrohippo-b.jpg" class="img-fluid"></a></p>
-<p>Mit meinem Beitrag vor zehn Tagen, indem ich als Ersatz für fehlende <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/pyxel.html">Pyxel</a>-Tutorials <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a>-Tutorials <a href="https://kantel.github.io/posts/2026021501_tic-80_tutorials/">vorschlug</a>, habe ich mir echt etwas eingebrockt. Denn unsere nie schlafende Datenkrake hat mein Interesse an der kleinen Fantasykonsole bemerkt und noch etliche weitere Tutorials in meinen Feedreader gespült, die ich Euch nicht vorenthalten möchte:</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/LU0NZ-gvvHQ?si=P0_L7uRbrJMlfZWn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Da ist erst einmal die Tutorial-Reihe »<a href="https://www.youtube.com/playlist?list=PLFSr5sRPYh67ol42zlm6mUL7YdFgMkD2g">How to TIC-80</a>« des YouTubers <em>Zach Attakk Codes</em>, die aus acht Filmen besteht und die gesamten TIV-80-Grundlagen abedeckt. Der Nutzer hat aber noch eines, beziehungsweise zwei draufgesetzt und mit</p>
-<ul>
-<li>Classic Games: »<a href="https://www.youtube.com/playlist?list=PLFSr5sRPYh65sNuTylwTiXm3Ma-EygIXz">Making Pong in TIC-80</a>« (14 Videos) und</li>
-<li>Classic Games: »<a href="https://www.youtube.com/playlist?list=PLFSr5sRPYh670SuRwETs5RgxxfgWKmYYo">Making Snake in TIC-80</a>« (16 Videos)</li>
-</ul>
-<p>weitere Tutorials veröffentlicht.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/KPRHiS0Pe58?si=budyxumARwUSeyw5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Dann gab es dann noch das fast einstündige Xenium-2025-Seminar mit dem Titel »<a href="https://www.youtube.com/watch?v=KPRHiS0Pe58">Tricks for TIC-80 – how to get the most out of the fantasy console</a>«, das auch recht vielversprechend klingt.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/NbNlYb6v0Po?si=KFnKTutrBt-A75Gi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>»Learn to Code By Writing Games« verspricht <em>Bytes N Bits</em> und bietet einen »<a href="https://www.youtube.com/playlist?list=PLvOT6zBnJyYF3FzmfXz2QXMA8xk7JHA_b">Beginners game programming course</a>« an, in dem Ihr in 28 Lektionen lernt, das klassische <em>Space Invaders</em> mit TIC-80 zu programmieren.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/FxQpRoZI3kM?si=KvuOA-lPccLi0R4i" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Den Abschluß bietet ein kurzes Video von <em>Rabidgremlin</em> mit dem Titel »<a href="https://www.youtube.com/watch?v=FxQpRoZI3kM">Create games on your mobile with TIC-80</a>«, damit auch die Besitzer von Mobiltelephonen zu ihrem Recht kommen.</p>
-<p>So langsam werde ich angefixt, auch mal wieder etwas mit dieser kleinen Fantasykonsole anzustellen, die man in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/lua.html">Lua</a> programmiert. Aber nein, Disziplin, ich wollte ja <a href="https://kantel.github.io/posts/2026020601_pyxel_update/">Tutorials zu Python und Pyxel</a> schreiben. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55096233752/">Retro-Hippo</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em><span class="citation" data-cites="Jo">@Jo</span> Hippo sit at a desk in front of a computer, in a wide gaming chair. A pixelated retro platformer game is displayed on the monitor. One hand is on the keyboard, the other holds an open bottle of beer. All the walls are lined with shelves crammed with computer books and knick-knacks. The full moon shines through a large window in the background. Colored classic American comic style. Language: German. No speech bubbles, no textboxes.</em>« Modell: Character 2.0 with Nano Banana Pro.</p>
-
-
-
- ]]></description>
-  <category>TIC-80</category>
-  <category>Pyxel</category>
-  <category>Python</category>
-  <category>Retrogaming</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2026022402_more_tic_80_tuts/</guid>
-  <pubDate>Tue, 24 Feb 2026 13:55:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026022402_more_tic_80_tuts/images/retrohippo.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
