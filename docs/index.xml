@@ -10,7 +10,68 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Tue, 24 Mar 2026 20:50:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 25 Mar 2026 16:50:00 GMT</lastBuildDate>
+<item>
+  <title>Interaktive Geschichten mit Ink und Inky entwickeln</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026032501_ink_und_inky/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55168249914/"><img src="https://kantel.github.io/posts/2026032501_ink_und_inky/images/inky-b.jpg" class="img-fluid"></a></p>
+<p>Neben den <a href="https://kantel.github.io/posts/2026032402_vis_nov_tutorials/">gestern vorgestellten Tutorials</a> zu interaktiven Geschichten und <em>Visual Novels</em> spülte mir unser aller Datenkrake auch Material zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html">Ink und Inky</a> in meinen Feedreader. Langjährige Leser des <em>Schockwellenreiters</em> erinnern sich: <strong><a href="https://www.inklestudios.com/ink/">Ink</a></strong> ist eine freie (MIT-Lizenz) Skriptsprache für interaktive Fiktion. Im Gegensatz zum verwandten <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> ist es nicht auf eine HTML-Ausgabe festgelegt, sondern sondern das <em>native</em> Datenformat ist <code>JSON</code> und damit können Ink-Skripte nicht nur nach HTML exportiert werden, sondern eigentlich nach allem, was mit <code>JSON</code> etwas anfangen kann. Von Hause aus bringt Ink ein Plug-in für <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html">Unity</a> mit. Denn Ink wurde von der Spieleschmiede <a href="https://www.inklestudios.com/">Inkle</a> entwickelt, die ihre eigenen Spiele, wie zum Beispiel »<a href="https://www.inklestudios.com/80days/">80 Days</a>« oder »<a href="https://www.inklestudios.com/sorcery/">Sorcery!</a>«, in Ink schreibt und in Unity veröffentlicht.</p>
+<p><a href="https://github.com/inkle/inky">Inky</a> wiederum steht ebenfalls unter der MIT-Lizenz und ist ein freier, plattformübergreifender (Windows, Linux, Mac) Editor für Ink. Es ist eine Electron-Anwendung und sieht ungefähr so aus wie viele Markdown-Editoren: Links der Quelltext und rechts das herausgeschriebene Spiel, das man in Inky sogar spielen kann. Über beide hatte ich zuerst im <a href="http://blog.schockwellenreiter.de/2018/08/2018082402.html">August&nbsp;2018 im <em>Schockwellenreiter</em> berichtet</a>, aber auch danach <a href="https://kantel.github.io/#category=Ink">standen sie immer mal wieder</a> auf meiner Agenda.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/1rDc8q3kunU?si=5k8YH3NdajULljBv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Als nun das Video »<a href="https://www.youtube.com/watch?v=1rDc8q3kunU">Ink - Programming Language for Game Narratives - Godot | Unity | Unreal | More</a>« in meinen Feedreader spülte, das unter anderem auch einen Export nach Godot propagierte, dachte ich mir: Moment nochmal, auch die <em>Visual Novel</em>-Engines <a href="https://monogatari.io/">Monogatari</a> und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> basieren auf <code>JSON</code>, es müßte also möglich sein, sie mit Ink zu verheiraten.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/OtTezJZTuy4?si=6IGaTxB_nppN7-SY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Zur Vorbereitung möchte ich mir erst einmal die Playlist »<a href="https://www.youtube.com/playlist?list=PLtepyzbiiwBrHoTloHJ2B-DWQxgrseuMB">Godot &amp; Ink</a>« mit ihren acht Videos anschauen, um ein Gefühl für die Möglichkeiten zu bekommen, die ein Export nach <code>JSON</code> bietet.</p>
+<section id="tutorials-zu-ink" class="level3">
+<h3 class="anchored" data-anchor-id="tutorials-zu-ink">Tutorials zu Ink</h3>
+<p>Und da es lange her ist, daß ich etwas mit Ink angestellt hatte – auch wenn mein <a href="http://blog.schockwellenreiter.de/gems/Home_Sweet_Home/">Ausflug mit Ink ins Wunderland</a> immer noch online ist –, bedürfen meine Kenntnisse der Skriptsprache von Ink dringend einer Auffrischung. Also habe ich mir ein paar Tutorials herausgesucht:</p>
+<div style="float: right; margin-left: 12px; margin-top: 6px;">
+<a href="https://inklestudios.myshopify.com/products/ink-official-users-guide"><img src="https://kantel.github.io/posts/2026032501_ink_und_inky/images/ink-book-cover.jpg" class="img-fluid"></a>
+</div>
+<ul>
+<li>Der ultimative Guide zu Ink ist nach wie vor der »<a href="https://inklestudios.myshopify.com/products/ink-official-users-guide">Offizielle User’s Guide</a>«, den Ihr als Totes Holz oder als Ebook (ePub) direkt bei Inkle erwerben könnt.</li>
+<li>Auf den Seiten von Ink gibt es das »<a href="https://www.inklestudios.com/ink/web-tutorial/">Ink Tutorial for Beginners</a>« und die Anleitung »<a href="https://github.com/inkle/ink/blob/master/Documentation/WritingWithInk.md">Writing with Ink</a>«.</li>
+<li>Auf Medium.com findet ihr die »<a href="https://medium.com/game-writing-guide/introduction-to-ink-3e6c224865f8">Introduction to Ink</a>« von <em>Jon Ingold</em>, einem der Mitbegründer von <a href="https://inklestudios.myshopify.com/">Inkle</a>.</li>
+<li>In »<a href="https://melissakoven.com/publishing-an-ink-story-to-the-web/">Publishing an Ink story to the web</a>« zeigt Euch <em>Melissa Kove</em> ausführlich, wie Ihr Eure Ink-Spiele online bekommt.</li>
+<li>»<a href="https://pressbooks.library.torontomu.ca/playablestoriesink/">Creating Playable Stories with Ink and Inky</a>« ist ein Buch von <em>Jeremy Andriano</em>, das Ihr komplett online und für umme lesen könnt.</li>
+<li>Ein Klassiker ist »<a href="https://www.edmcrae.com/article/learning-ink-script-tutorial-one">Learning Ink Script</a>« von <em>Edwin McRae</em>, von dem acht Tutorials online zu lesen sind (unten auf den Seiten findet Ihr jeweils den Link zur nächsten Folge).</li>
+</ul>
+<p>Dann gibt es natürlich noch einige Videos und Playlisten:</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/iY9PrNQik_I?si=rHp8OoermLH37OFT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>»<a href="https://www.youtube.com/playlist?list=PLuSvdAg-FtpxCQ0SN-Da0-55woO_TkB0g">Teach Me How To Ink</a>« – diese vierteilige Playlist des Users <em>hoverboard</em> ist trotz oder wegen ihres Alters von sechs bis acht Jahren ein Klassiker.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/KSRpcftVyKg?si=WmOALHUhLLW8bprZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Das Tutorial »<a href="https://www.youtube.com/watch?v=KSRpcftVyKg">Learn Ink in 15 Minutes</a>« ist ein Kurzeinstieg für diejenigen, die schnell ein Ergebnis sehen möchten.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/WEu7MaasdEo?si=O8lLDiEUZUawkMU_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>In dem Tutorial »<a href="https://www.youtube.com/watch?v=WEu7MaasdEo">Inky: Create Web Comics and Interactive Stories</a> des <em>Cutscene Artist</em> nervt zwar der KI-generierte Sprecher, aber da mich das Thema interessiert, habe ich darüber hinweggesehen.</p>
+<p><strong>War sonst noch was?</strong> Ach ja, für Visual Studio Code gibt es den <a href="https://marketplace.visualstudio.com/items?itemName=rageave.inkle-vscode">Ink Language Support</a> für diejenigen, die lieber mit ihrem gewohnten Editor statt mit Inky arbeiten.</p>
+<p>So, jetzt habe ich erst einmal wieder zu tun. Ich habe keine Ahnung, ob oder wann ich das alles schaffe. So viel zu spielen, so wenig Zeit. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55168249914/">Writing Interactive Stories with Ink</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em><span class="citation" data-cites="Qumbo">@Qumbo</span> sits behind an old-fashioned desk, an open notebook in front of him, which he writes in with an old-fashioned, monstrous fountain pen. Next to the notebook is a huge, open inkwell. Beside the desk stands <span class="citation" data-cites="Rudi">@Rudi</span> Rabbit, glancing impatiently and frantically at his pocket watch. On the desk, to the right, lies a thick book titled “Writing Interactive Stories with Ink,” and to the left, a steaming, large coffee mug. Shelves line the walls, crammed with books on game programming, game design, and writing interactive stories. A fair amount of knick-knacks are crammed in between. The afternoon sun streams into the room through a large window. The window reveals a steampunk city, with a zeppelin gliding high in the sky. Colored Franco-Belgian comic style. No textboxes, no speech-bubbles.</em>« Modell: Nano&nbsp;Banana&nbsp;2.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Ink</category>
+  <category>Godot</category>
+  <category>Monogatari</category>
+  <category>Tuesday JS</category>
+  <guid>https://kantel.github.io/posts/2026032501_ink_und_inky/</guid>
+  <pubDate>Wed, 25 Mar 2026 16:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026032501_ink_und_inky/images/inky.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Tutorials zu interaktiven Geschichten und Visual Novels</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1070,72 +1131,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026030302_nano_banana_2/</guid>
   <pubDate>Tue, 03 Mar 2026 18:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026030302_nano_banana_2/images/katerpillar.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Not Save For Work: Konsistente Charaktere in OpenArt.ai (ohne Zensur)</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026030301_not_save_for_work/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55126919735/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/nsfw-b.jpg" class="img-fluid"></a></p>
-<p>Meine bisherigen, mehr oder weniger erfolgreichen Versuche, eine Charakterkonsistenz von Bildern zu erzeugen, die mit Hilfe einer gekünstelten Intelligenzia generiert werden und für interaktive Geschichten und Spiele geeignet sind, kranken alle an einem gewichtigen Nachteil: Sowohl die <a href="https://kantel.github.io/posts/2026022701_charakterkonsitenz/">Methode via Referenzbildern</a> bei <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>, wie auch <a href="https://openart.ai/characters">Character 2.0</a>, das <a href="https://kantel.github.io/posts/2026012601_character_2_0/">neue</a> <a href="https://kantel.github.io/posts/2026012701_jo_hippo_character_2_0/">Spielzeug</a> von <a href="https://openart.ai/home">OpenArt</a>, funktionieren nur mit Generatoren, die alle kräftig zensieren.</p>
-<p>Dabei hatte ich mir seinerzeit den Account auf OpenArt extra zugelegt, weil er versprach, auch NSFW- <em>(not save for work)</em> Inhalte zu generieren, und ein Modell dort – nämlich <a href="https://openart.ai/gallery/openart-selections/WAI-ANI-NSFW-PONYXL">WAI-ANI-NSFW-PONYXL</a><sup>1</sup> – hatte dies auch explizit im Namen. Also habe ich OpenArt gebeten, mir ein paar Bilder mit diesem Modell zu generieren. Und die Ergebnisse zeigten, daß dieses Modell so ziemlich keine Wünsche offen lässt. Vielleicht schreibe ich auch einmal einen Beitrag darüber, aber die Bilder traue auch ich mich dann nur mit dem obligatorischen schwarzen Zensurbalken über die primären Geschlechtsmerkmale zu veröffentlichen.</p>
-<p>Doch das ist nicht das Thema heute, sondern die Frage ist: Wie hält es WAI-ANI-NSFW-PONYXL mit der Konsistenz? Dafür habe ich mal wieder einen Prompt gebastelt und damit ein Referenzbild erzeugt<sup>2</sup>:</p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://www.flickr.com/photos/schockwellenreiter/55124475162/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lilly_neutral.jpg" class="img-fluid"></a>
-</div>
-<blockquote class="blockquote">
-<p>naked nymph, reddish-brown hair, green eyes, big boobs, nice butt, red lips, front view, full body, kneeling on the floor, monochrome white background. Colored manga style.</p>
-</blockquote>
-<p>Wenn Ihr mit dem generierten Referenzbild zufrieden seid, dann klickt auf <code>Reuse Settings</code> und ladet bei <code>Image to Image</code>, <code>Style Reference</code>, <code>Pose Reference</code> und <code>Face Reference</code> jeweils Euer Bild hinein<sup>3</sup>. Ihr könnt es innerhalb der OpenArt-UI auch einfach per Drag&nbsp;&amp;&nbsp;Drop in das entsprechende Feld hineinschieben.</p>
-<p>Dann habe ich den Prompt zwischen <em>kneeling on the floor</em> und <em>monochrome white</em> nur noch um die entsprechende Action ergänzt, also zum Beispiel <em>talking</em>, <em>sad</em>, <em>happy</em>, <em>shy</em>, <em>embarrassed</em> und so weiter. Einige der Ergebnisse könnt Ihr hier bewundern <em>(wie immer führt ein Klick auf die daumengroßen Bildchen zu einer Seite mit Vergrößerungen)</em>:</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55125349296/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillytalking01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125602869/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillytalking02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125745965/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillytalking03.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/55125350206/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillytalking04.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125350171/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillytalking05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125539653/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillytalking06.jpg" class="img-fluid"></a></p>
-<p><em>Lilly talking</em></p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55125604349/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillycries01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55124476692/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillycries02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125350721/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillycries03.jpg" class="img-fluid"></a></p>
-<p><em>Lilly cries</em></p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55125747185/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyshy01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125540168/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyshy02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125350506/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyshy03.jpg" class="img-fluid"></a></p>
-<p><em>Lilly shy</em></p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55125539913/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyangry01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125746885/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyangry02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125603874/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyangry03.jpg" class="img-fluid"></a></p>
-<p><em>Lilly angry</em></p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55124475717/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillysad01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55124475672/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillysad02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125349866/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillysad03.jpg" class="img-fluid"></a></p>
-<p><em>Lilly sad</em></p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55125539303/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyembarrassed01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125603179/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyembarrassed02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55124475472/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillyembarrassed03.jpg" class="img-fluid"></a></p>
-<p><em>Lilly embarrassed</em></p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55125349676/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillysmiling01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125539148/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillysmiling02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55125349516/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/lillysmiling03.jpg" class="img-fluid"></a></p>
-<p><em>Lilly smiling</em></p>
-<p>Die Ergebnisse sind vielleicht nicht ganz so überragend, wie bei Scenarios Referenzbilder-Methode oder bei OpenArts neuer Wunderwaffe Character&nbsp;2.0, aber sie kommen schon ziemlich nahe heran. Und wenn man die Zensurmethoden von Google und Konsorten nicht mitmachen will oder kann, hat man sowieso keine andere Wahl.</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55126753336/"><img src="https://kantel.github.io/posts/2026030301_not_save_for_work/images/zauberwald24-b.jpg" class="img-fluid"></a></p>
-<p>Und selbst für solch kritische Anwendungen, die ziemlich anspruchsvolle konsistente Charaktere verlangen, wie zum Beispiel <em>Visual Novels</em> (egal ob mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>, <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> oder <a href="https://monogatari.io/">Monogatari</a>), dürften die erzeugten Bilder mehr als ausreichend sein – und für <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> reichen sie auf jeden Fall. Zum Beweis werde ich meiner <a href="https://kantel.itch.io/little-lilly">kleinen Lilly</a>, die ich mal naiv mit einfachen Bildern in Ren’Py realisiert hatte, mit den heute vorgestellten Bildern eine Neufassung spendieren, dieses Mal vermutlich mit Monogatari oder Tuesday&nbsp;JS. Zur Einstimmung habe ich schon einmal oben ein <a href="https://www.flickr.com/photos/schockwellenreiter/55126753336/">Mockup</a> realisiert.</p>
-<p>Und da es durchaus passieren kann, daß OpenArt das verwendete Modell WAI-ANI-NSFW-PONYXL aus seinem Programm nimmt: Es gibt noch viele weitere Dienstleister, die das Modell anbieten, zum Beispiel <a href="https://www.seaart.ai/de/models/detail/24231feb2db47b663ff5b3123f01fab6">SeaArt.ai</a> (auf deren Seiten es auch einen <a href="https://www.seaart.ai/de/articleDetail/cu2lprle878c73cjsq4g">User Guide</a><sup>4</sup> dafür gibt) oder <a href="https://tensor.art/de-DE/models/748846897155897012">TensorArt</a>. Und besonders hart Gesottene können sich das Modell auch von <a href="https://huggingface.co/John6666/wai-ani-nsfw-ponyxl-v7-sdxl/tree/main">Hugging Face</a> herunterladen und selber auf ihrem Desktop installieren.</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Bei diesem Modell werkelt vermutlich <em>Stable Diffusion XL</em> (SDXL) im Hintergrund. Gelegentliche Fehler lassen das vermuten. Aber das Modell ist ziemlich stark optimiert, die Fehler treten wesentlich seltener als bei anderen SDXL-LoRAs auf.↩︎</p></li>
-<li id="fn2"><p>Ihr müsst dafür die <code>Previous version</code> von OpenArt nutzen, die aktuelle Nutzeroberfläche spielt nicht mehr (oder noch nicht?) mit WAI-ANI-NSFW-PONYXL. Ich hoffe, daß das bald gefixt wird.↩︎</p></li>
-<li id="fn3"><p>Nur <code>Composition Reference</code> habe ich ausgeschaltet gelassen. Das aber nur, weil ich nicht weiß, was sich dahinter verbirgt. Es scheint den Ergebnissen aber nicht geschadet zu haben.↩︎</p></li>
-<li id="fn4"><p>Hätte ich diesen vorher gelesen, wäre mein Prompt vermutlich viel professioneller ausgefallen.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <category>Künstliche Intelligenz</category>
-  <category>OpenArt.ai</category>
-  <category>Bilder</category>
-  <category>Generative Art</category>
-  <category>Twine</category>
-  <category>RenPy</category>
-  <category>Tuesday JS</category>
-  <category>Monogatari</category>
-  <guid>https://kantel.github.io/posts/2026030301_not_save_for_work/</guid>
-  <pubDate>Tue, 03 Mar 2026 13:10:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026030301_not_save_for_work/images/nsfw.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
