@@ -10,7 +10,585 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 01 Apr 2026 14:30:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 01 Apr 2026 16:10:00 GMT</lastBuildDate>
+<item>
+  <title>Little Lilly: Weitere Experimente mit Monogatari</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026040102_little_lilly_monogatari/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55181990863/"><img src="https://kantel.github.io/posts/2026040102_little_lilly_monogatari/images/littlelilly-b.jpg" class="img-fluid"></a></p>
+<p>Da der momentane Schwerpunkt in diesem <del>Blog</del> Kritzelheft ja die Erstellung interaktiver Geschichten und Spiele ist, habe ich <a href="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/">meine Experimente</a> mit <a href="https://monogatari.io/">Monogatari</a> fortgesetzt, der gar nicht mal so kleinen, freien (MIT-Lizenz) Engine für <em>Visual Novels</em> und Artverwandtes, die laut Eigenwerbung für das moderne Web entwickelt wurde, um die Erstellung und Verbreitung interaktiver Geschichten, die prakatisch überall spielbar sind, einfacher zu machen. Im Gegensatz zu meinem ersten, naiven Versuch »<a href="https://kantel.github.io/posts/2026031201_reichspressekonferenz/">Reichspressekonferenz</a>«, der ja eher eine animierte Karikatur denn eine interaktive Geschichte war, habe ich dieses Mal auch eine »Choice« eingebaut, die die Geschichte zu zwei verschiedenen Enden führt.</p>
+<p>Dafür habe ich mein <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/renpy.html">Ren’Py</a>-Experiment mit der kleinen Waldnymphe Lilly, das ich <a href="https://kantel.github.io/posts/2024022501_little_lilly/">vor zwei Jahren verbrochen</a> und auch auf <a href="https://kantel.itch.io/little-lilly">Itch.io hochgeladen</a> hatte, wieder hervorgekramt und mit den hier mit OpenArt <a href="https://kantel.github.io/posts/2026030301_not_save_for_work/">generierten Bildchen</a> ein wenig aufgepeppt:</p>
+<iframe src="lilly2/index.html" width="840" height="360">
+</iframe>
+<p>Bei der Erstellung der Geschichte bin ich wieder genau so vorgegangen, wie bei der »Reichspressekonferenz«. Zuerst habe ich in der Datei <code>script.js</code> mit ihren vielen leeren Default-Belegungen Monogatari mit den Assets bekannt gemacht:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Define the images used in the game.</span></span>
+<span id="cb1-2">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">assets</span> (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'images'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> {</span>
+<span id="cb1-3">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"kiss"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"kiss.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-4">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Define the backgrounds for each scene.</span></span>
+<span id="cb1-7">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">assets</span> (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'scenes'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> {</span>
+<span id="cb1-8">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"forest"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"forest1.jpg"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-9">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Define the Characters</span></span>
+<span id="cb1-13">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">characters</span> ({</span>
+<span id="cb1-14">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb1-15">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Little Lilly"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-16">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">color</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f57e07"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-17">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">sprites</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb1-18">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">normal</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_neutral.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-19">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">smiling3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_smiling03.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-20">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_talking01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-21">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_talking02.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-22">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_talking03.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-23">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">talking8</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_talking08.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-24">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">embarrassed1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_embarrassed01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-25">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">cries1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_cries01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-26">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">angry1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_angry01.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-27">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">angry4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_angry04.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-28">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">happy4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_happy04.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-29">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">shy</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly_shy02.png"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-30">        }</span>
+<span id="cb1-31">    }</span>
+<span id="cb1-32">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Dabei ist darauf zu achten, daß die Assets in den korrekten Verzeichnissen untergebracht sind, das Bild <code>kiss.png</code> liegt im Verzeichnis <code>assets/images/</code>, das Hintergrundbild <code>forest1.jpg</code>, das ich mit <a href="https://www.flickr.com/photos/schockwellenreiter/55155749237/">Scenario generiert</a> habe, in dem Verzeichnis <code>assets/scenes</code> und die Bilder von Lilly liegen in dem Verzeichnis <code>assets/characters</code>. Aber das ist in der JSON-Datei ja auch angegeben, wo Monogatari die Assets erwartet.</p>
+<p>Der Abschnitt <code>monogatari.script</code>, der das eigentliche Spiel enthält, wurde um die Labels <code>"Yes"</code> und <code>"No"</code> erweitert, die als Sprungziele aus der <code>Choice</code> dienen und zu den beiden unterschiedlichen Enden des kleinen Experiments führen:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1">monogatari<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">script</span> ({</span>
+<span id="cb2-2">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// The game starts here.</span></span>
+<span id="cb2-3">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Start"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> [</span>
+<span id="cb2-4">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show scene forest with fadeIn"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-5">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly normal at right with fadeIn duration 3s"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-6">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-7">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly smiling3 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-8">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Hallo, schöner Fremder!"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-9">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly talking1 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-10">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Es ist nicht immer einfach, eine Figur in einem Spiel zu sein,"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-11">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly talking3 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-12">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Man ist oft sehr allein und niemand spricht mit einem."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-13">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly talking8 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-14">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Aber jetzt bist Du ja hier."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-15">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly talking2 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-16">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly shy at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-17">        {</span>
+<span id="cb2-18">            <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Choice"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb2-19">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Dialog"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Gib mir einen kleinen Kuß. 😘"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-20">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Yes"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb2-21">                    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Text"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Schmatz!"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-22">                    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Do"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"jump Yes"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-23">                }<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-24">                <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"No"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> {</span>
+<span id="cb2-25">                    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Text"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ich habe jetzt leider keine Zeit"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-26">                    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Do"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"jump No"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-27">                }</span>
+<span id="cb2-28">            }</span>
+<span id="cb2-29">        }</span>
+<span id="cb2-30">    ]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-31"></span>
+<span id="cb2-32">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Yes"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> [</span>
+<span id="cb2-33">    </span>
+<span id="cb2-34">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly embarrassed1 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-35">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show image kiss at center with fadeIn"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-36">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-37">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hide image kiss with fadeOut duration 5s"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-38">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-39">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Oooh!"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-40">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly happy4 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-41">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Das ist der Beginn einer wunderbaren Freundschaft."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-42">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hide character lilly with fadeOut duration 2s"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-43">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-44">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Fortsetzung folgt (vielleicht)."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-45">        ]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-46"></span>
+<span id="cb2-47">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"No"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> [</span>
+<span id="cb2-48">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly cries1 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-49">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Ich sagte es doch, niemand liebt eine Spielefigur"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-50">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly angry1 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-51">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Du bist auch nicht besser als die anderen Kerle!"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-52">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"show character lilly angry4 at right"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-53">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"lilly Scher Dich zum Teufel!"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-54">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hide character lilly with fadeOut duration 2s"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-55">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" "</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-56">        <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ein böses Ende hat keine Fortsetzung."</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-57">    ]</span>
+<span id="cb2-58">})<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>In der Datei <code>option.js</code> habe ich in <code>monogatari.settings({})</code> mit</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Turn main menu on/off; Default: true *</span></span>
+<span id="cb3-2">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ShowMainScreen'</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">false</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span></code></pre></div>
+<p>wieder den Startscreen ausgeschaltet, da ich ihn für dieses kleine Spielchen immer noch als <em>Overkill</em> betrachte.</p>
+<p>Und in der Datei <code>main.css</code> habe ich auch dieses Mal mit</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* Text Box styling */</span></span>
+<span id="cb4-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">[</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">data-component</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text-box"</span><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">]</span> {</span>
+<span id="cb4-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-top</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-left</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-right</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-6">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-bottom</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-7">}</span></code></pre></div>
+<p>den Rändern der Textbox etwas mehr Luft verschafft.</p>
+<p>Im Vergleich zu der Ren’Py-Version kann ich sagen, daß Monogatari tatsächlich etwas schneller lädt, aber ob die neuen, Bilder von Lilly gegenüber den mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> generierten Bildern der Ren’Py-Version wirklich ein Fortschritt in Bezug auf die Charakterkonsistenz sind, glaube ich nicht. Echte Charakterkonsistenz scheint momentan tatsächlich nur mit Scenarios <a href="https://kantel.github.io/posts/2026022701_charakterkonsitenz/">Methode via Referenzbildern</a> oder mit <a href="https://openart.ai/characters">Chracter&nbsp;2.0</a>, der <a href="https://kantel.github.io/posts/2026012701_jo_hippo_character_2_0/">neuen Wunderwaffe</a> von <a href="https://openart.ai/home">OpenArt</a>, möglich. Aber beide zensieren ganz gewaltig, so daß mit ihnen eine nackte Waldnymphe jenseits des Möglichen liegt. Das kann man jedoch nicht Monogatari anlasten. Die Engine macht in meinen bisherigen Versuchen einen guten Eindruck. Schauen wir mal, was weitere Experimente, die sicher folgen werden, noch bringen. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Monogatari</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>OpenArt.ai</category>
+  <guid>https://kantel.github.io/posts/2026040102_little_lilly_monogatari/</guid>
+  <pubDate>Wed, 01 Apr 2026 16:10:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026040102_little_lilly_monogatari/images/littlelilly.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Kein Aprilscherz! Die Zahlen</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1115,51 +1693,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026031101_greenwichpromenade/</guid>
   <pubDate>Wed, 11 Mar 2026 14:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026031101_greenwichpromenade/images/greenwichprom1.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Atlas Curiosa: Hermsdorfer See</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026031002_hermsdorfer_see/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55132921757/"><img src="https://kantel.github.io/posts/2026031002_hermsdorfer_see/images/hermsdorfersee-b.jpg" class="img-fluid"></a></p>
-<p>Der <a href="https://de.wikipedia.org/wiki/Hermsdorfer_See">Hermsdorfer See</a> liegt im Berliner Bezirk Reinickendorf im <a href="https://de.wikipedia.org/wiki/Berlin-Hermsdorf">namensgebenden Ortsteil</a> und ist Teil des <a href="https://de.wikipedia.org/wiki/Tegeler_Flie%C3%9F">Tegeler Fließtals</a>. Er grenzt im Süden an Waidmannslust und im Osten an Lübars. Er war ursprünglich viel größer, der nördliche größere Teil verlandete jedoch im Laufe der Jahrhunderte und ist heute ein Moor. Dieses Feuchtbiotop führte jedoch zu einer Entfaltung von Flora und Fauna und wurde damit schützenswert.</p>
-<p>Heute führt ein etwa fünf Kilometer langer Rundwanderweg um den Hermsdorfer See und das Moor (früher Großer Hermsdorfer See). Er tangiert die Wohnsiedlungen, ehemalige Tongruben, Torfstiche und das Naturschutzgebiet Albtalweg. Zwischen dem großen See und dem kleinen See befanden sich die (Halb-) Inseln Großer Werder und Kleiner Werder. Die Karte der Hersmdorfer Feldmark von 1699 veranschaulicht die damalige Ausdehnung (Quelle: Koischwitz 1984, Seite 97):</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55140402354/"><img src="https://kantel.github.io/posts/2026031002_hermsdorfer_see/images/hermsdorf1699.jpg" class="img-fluid"></a></p>
-<p>Auch auf <a href="https://www.horsthartwig.de/ziegeleigeschichte_hermsdorfer_ziegel_geologie.htm">dieser Seite</a> (nach unten scrollen) gibt es <a href="https://www.horsthartwig.de/hermsdorf_technologie_geologie/schmettau_plan_hermsdorf_1787.jpg">eine Karte</a> von 1787, die die damalige Ausdehnung zeigt.</p>
-<p>Die beiden Orte Hermsdorf und Lübars stritten sich bis in das beginnende 17.&nbsp;Jahrhundert aufgrund eines Lehens­briefes um den See. 1622 erfolgte ein Vergleich, der dem Hermsdorfer Gutsherrn <em>Sigismund von Goetze</em> das Besitztum zusprach. Die Lübarser Fischer holten sich aber weiterhin Fische aus dem Hermsdorfer See, so daß es ständig Beschwerden und Auseinandersetzungen gab. Erst Ende des 18.&nbsp;Jahrhunderts begann mit der Teilung des Sees ein friedlicheres Dasein.</p>
-<p>Nach cirka 1850 wurden nicht nur Ziegel sondern auch der unter der Torfschicht des verlandeten Hermsdorfer Sees liegende Wiesenkalk abgebaut und gebrannt. Die Hermsdorfer Ziegel erlebten kurzfristig eine Blütezeit, auch beim 1861-1869 erbauten Berliner Roten Rathaus wurden sie verwendet. Doch schon ab 1880 mussten die Unternehmen nach einem Wassereinbruchs in der Tongrube und auf Druck der zunehmenden Konkurrenz der Ziegeleien und Zementfabriken in Rathenow, Rüdersdorf und Zehdenick schließen oder Konkurs anmelden. Heute erinnert nur noch der neben dem Hermsdorfer See liegende <a href="https://de.wikipedia.org/wiki/Ziegeleisee_(Berlin)">Ziegeleisee</a> mit dem Freibad Lübars an die alte Herrlichkeit.</p>
-<section id="verwendete-quellen-und-literatur" class="level3">
-<h3 class="anchored" data-anchor-id="verwendete-quellen-und-literatur">Verwendete Quellen und Literatur</h3>
-<ul>
-<li>Berlin.de: Das offizielle Hauptstadtportal: <em><a href="https://www.berlin.de/tourismus/seen/4761209-4299185-hermsdorfer-see.html">Hermsdorfer See</a></em>, abgerufen am 10.&nbsp;März&nbsp;2026</li>
-<li>Horst Hartwig: <em><a href="https://www.horsthartwig.de/ziegeleigeschichte_hermsdorfer_ziegel_geologie.htm">HERMSDORFER Ziegelei - Ton &amp; Zement - geologische Voraussetzungen</a>. Tongruben von Hermsdorf - Geologie - Beschreibungen - Septarienton - Wiesenkalk - Torf</em>, Berlin 2018 (mit Karten)</li>
-<li>Humboldt-Universität zu Berlin, Fachgebiet Bodenkunde und Standortlehre: <em><a href="https://www.berliner-moorboeden.hu-berlin.de/content/moorgebiete/stbf-ehemaliger-grosser-hermsdorfer-see-tegeler-fliess.php">Ehemaliger Großer Hermsdorfer See am Tegeler Fließ</a></em> im Projekt <em><a href="https://www.berliner-moorboeden.hu-berlin.de/content/project.php">Berliner Moorböden im Klima­wandel</a></em>, Berlin 2011-2015</li>
-<li>Gerd Koischwitz: <em>Sechs Dörfer in Sumpf und Sand. Geschichte des Bezirkes Reinickendorf von Berlin</em>, Berlin (Verlag »Der Nord-Berliner«) 1984, Seiten 93ff.</li>
-<li>NABU Berlin: <em><a href="https://berlin.nabu.de/wir-ueber-uns/bezirksgruppen/reinickendorf/projekte/06666.html">Rundwanderweg im Tegeler Fließtal</a>. Das Projekt »Naturerleben am Hermsdorfer See«</em>, abgerufen am 10.&nbsp;März&nbsp;2026</li>
-<li>Wikipedia: <em><a href="https://de.wikipedia.org/wiki/Berlin-Hermsdorf">Berlin-Hermsdorf</a></em>, abgerufen am 10.&nbsp;März&nbsp;2026</li>
-<li>Wikipedia: <em><a href="https://de.wikipedia.org/wiki/Hermsdorfer_See">Hermsdorfer See</a></em>, abgerufen am 10.&nbsp;März&nbsp;2026</li>
-<li>Wikipedia: <em><a href="https://de.wikipedia.org/wiki/Tegeler_Flie%C3%9F">Tegeler Fließ</a></em>, abgerufen am 10.&nbsp;März&nbsp;2026</li>
-<li>Wikipedia: <em><a href="https://de.wikipedia.org/wiki/Ziegeleisee_(Berlin)">Ziegeleisee (Berlin)</a></em>, abgerufen am 10.&nbsp;März&nbsp;2026</li>
-<li>Michael Zaremba: <em>Reinickendorf im Wandel der Geschichte. »Laß’ hinter dir, was trüb und wild …«</em>, Berlin (be.bra-verlag) 1999, Seiten 57f.</li>
-</ul>
-<hr>
-<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-</section>
-
- ]]></description>
-  <category>Atlas Curiosa</category>
-  <category>Reinickendorf</category>
-  <category>Geschichte</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026031002_hermsdorfer_see/</guid>
-  <pubDate>Tue, 10 Mar 2026 16:55:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026031002_hermsdorfer_see/images/hermsdorfersee.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
