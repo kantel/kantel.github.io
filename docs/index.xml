@@ -10,7 +10,291 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Tue, 07 Apr 2026 16:05:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 08 Apr 2026 08:45:00 GMT</lastBuildDate>
+<item>
+  <title>Mit Twine und Chapbook ins Wunderland (reloaded)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55193891029/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe1-b.jpg" class="img-fluid"></a></p>
+<p>Ich möchte eine lang gehegte und lang angekündigte Idee realisieren und meine Reise ins Wunderland mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und dem Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a>, die ich im August&nbsp;2023 schon einmal (<a href="https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/">Teil 0.0</a>, <a href="https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/">Teil 0.1</a>, <a href="https://kantel.github.io/posts/2023083101_chapbook_mit_stil/">Teil 0.2</a>) unternommen hatte, wieder aufnehmen und daraus ein Tutorial basteln. Grund für dieses Reloading ist zum einen, daß ich mittlerweile mehr über das Storyformat Chapbook gelernt habe und es in der akutellen Version auch ein paar Neuerungen gibt, aber zum anderen auch, daß ich dieses Tutorial nun mit Bildern aufpeppen kann, die von einer gekünstelten Intelligenz meines Vertrauens (in diesem Fall Nano Banana&nbsp;2) generiert wurden. Denn seit Sommer&nbsp;2023 hat die bildgenerierende Künstliche Intelligenz – damals noch in den Kinderschuhen – gewaltige Fortschritte erzielt.</p>
+<p>Das Tutorial geht davon aus, daß Ihr entweder Twine auf Eurem Desktop-Rechner installiert habt oder wißt, wie die Online-Version von Twine zu bedienen ist (die Bedienung ist in beiden Fällen gleich). Da die Online-Version Eure Ergebnisse jedoch nur im Browser-Cache vorrätig hält, empfiehlt sich ein regelmäßiges Abspeichern entweder als HTML- (<code>Build &gt; Als Datei veröffentlichen</code>) oder als Twee-Datei (<code>Build &gt; Exportiere als Twee</code>), damit Eure Ergebnisse nicht versehentlich im Daten-Nirwana verschwinden.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55193723802/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe01.jpg" class="img-fluid"></a></p>
+<p>Als erstes legt Ihr auf dem Startbildschirm von Twine unter <code>Geschichte &gt; Neu</code> eine neue Geschichte an. Ich habe sie »Alice im Reich der Ringe« genannt, aber das könnt Ihr nach Belieben verändern (<code>Geschichte &gt; Umbenennen</code>).</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194757088/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe02.jpg" class="img-fluid"></a></p>
+<p>Mit einem Doppelklick öffnet Ihr die Geschichte und seht die erste Passage. Passagen sind die einzelnen Abschnitte Eurer Geschichte, auf die Ihr verlinken könnt und in denen Ihr Eure (nichtlineare) Geschichte erzählt. Ich habe die (bisher erste und einzige Start-) Passage »start« genannt und die kleine, grüne Rakete zeigt an, daß hier Eure Geschichte beginnt. Falls sie nicht vorhanden ist, unter <code>Abschnitt</code> auf <code>Beginne die Geschichte hier</code> klicken.</p>
+<p>Ein Doppelklick auf die Passage öffnet ein Editorfenster, indem Ihr den Text dieser Passage eintragen oder editieren könnt. Falls Ihr das Storyformat der Geschichte noch nicht auf Chapbook umgestellt habt, sieht das Editorfenster unter Umständen noch leicht anders aus.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194866144/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe03.jpg" class="img-fluid"></a></p>
+<p>Die Storyformate könnt Ihr unter <code>Twine &gt; Geschichtsformate</code> umstellen. Der Default zur Zeit ist <a href="https://twine2.neocities.org/">Harlowe 3.3.x</a>, für dieses Tutorial stellt aber bitte Chapbook 2.3.0 (oder größer) ein. Wenn das Storyformat einmal festgelegt ist, seit ihr für diese Geschichte daran gebunden, da die verschiendenen Storyformate bis auf wenige Befehle eine komplett unterschiedliche Syntax aufweisen. Bei einer nachträglichen Änderung des Storyformats müsst Ihr also sämtliche bisher erstellten Passagen ändern.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55195016870/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe04.jpg" class="img-fluid"></a></p>
+<p>Jetzt könnt Ihr aber endlich mit der Geschichte beginnen. Öffnet daher mit einem Doppelklick die Startpassage und gebt folgenden Text ein:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb1-2">hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb1-3">Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb1-8">davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum Haus der </span>
+<span id="cb1-9">Herzogin, links zur Teeparty des verrückten Hutmachers und rechts triffst Du die kiffende </span>
+<span id="cb1-10">Raupe auf ihrem Pilz.«</span></code></pre></div>
+<p>Wegen der besseren Lesbarkeit habe ich den Text umgebrochen. Chapbook folgt in Formatierungsfragen im Großen und Ganzen der Markdown-Syntax, daher werden einfache Zeilenumbrüche ignoriert, während doppelte Zeilenumbrüche einen neuen Absatz erzeugen.</p>
+<section id="wir-wollen-links" class="level3">
+<h3 class="anchored" data-anchor-id="wir-wollen-links">Wir wollen Links</h3>
+<p>Ihr könnt die Geschichte oben natürlich endlos weiterspinnen bis hin zu einem Roman. Aber dazu benötigt ihr Twine nicht, dafür reicht eine ordinäre Schreibmaschhine. Aber wenn Ihr den letzten Absatz in der obigen Passage nehmt und ihn wie folgt abändert,</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb2-2">davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der </span>
+<span id="cb2-3">Herzogin]], links zur [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Teeparty</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>] des verrückten Hutmachers und rechts triffst Du die</span>
+<span id="cb2-4">[<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">kiffende Raupe auf ihrem Pilz-&gt;Raupe</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>].«</span></code></pre></div>
+<p>und danach auch noch auf <code>Build &gt; Spiele</code> klickt, um das Spiel in einem Browserfenster zu öffnen, dann erhaltet Ihr dieses:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194681676/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe05.jpg" class="img-fluid"></a></p>
+<p>Im Browserfenster erscheint eine spielbare Version von Alice mit rot unterstrichenen, klickbaren Links (die momentan aber noch auf leere Passagen verweisen) und im Twine-Fesnter sind wie von Geisterhand drei neue Passagen entstanden, mit den Titeln »Haus der Herzogin«, »Teeparty« und »Raupe«.</p>
+<p>Dieser Absatz zeigt schon die wichtigste Funktionsweise von Twine: Wie werden Links (zu anderen Passagen) erstellt? Der einfachste Weg ist, das Linkziel zwischen zwei eckigen Klammerpaaren (<code>[[]]</code>) zu schreiben, so wie in <code>[[Haus der Herzogin]]</code> oder <code>[[Teeparty]]</code>. Hier sind Linktext und Linkziel identisch, das heißt, der Link <code>Haus der Herzogin</code> führt auch zur Passage <code>Haus der Herzogin</code> und der Link <code>Teeparty</code> führt zur Passage <code>Teeparty</code>.</p>
+<p>Doch in den meisten Fällen unterscheiden sich Linktext und Linkziel. Hierfür gibt es in Twine die Pfeilnotation: <code>Linktext-&gt;Linkziel</code>, wie zum Beispiel in <code>[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]]</code>. Hier verlinkt der komplette Text <code>kiffende Raupe auf ihrem Pilz</code> auf eine Passage mit Namen <code>Raupe</code>. Dabei ist zu beachten, daß Leerzeichen zählen. Daher sollte zumindest nach der Pfeilspitze kein Leerzeichen stehen, denn Twine sucht sonst das Linkziel <code>Raupe</code> mit vorangestelltem Leerzeichen und das bringt nicht nur Twine, sondern – wie man in vielen Online-Tutorien sehen kann – auch Euch durcheinander. Wenn Ihr aber rechts und links von den Pfeilen keine Leerzeichen zulaßt, seid Ihr immer auf der sicheren Seite.</p>
+<p>Es gibt noch eine zweite Schreibweise mit rückwärtsgerichtetem Pfeil, die Linkkziel und Linktext umkehrt: <code>[[Linkziel&lt;-Linktext]]</code>, also – um bei unserem Beispiel zu bleiben – <code>[[Raupe&lt;-kiffende Raupe auf ihrem Pilz]]</code>. Mir hat sich der Sinn dieser vermutlich aus historischen Quellen gespeisten Schreibweise nie erschlossen und ich habe sie auch noch nie nutzen müssen.</p>
+<p>Um die Verwirrung komplett zu machen, gibt es auch noch eine dritte Schreibweise mit einem vertikalen Trennstrich (<code>|</code>) in der Mitte: <code>[[Linktext|Linkziel]]</code>, also <code>[[kiffende Raupe auf ihrem Pilz|Raupe]]</code>. Hier weiß ich zumindest den Grund, die Schreibweise stammt aus Twine 1.x und ich habe sie aus reiner Gewohnheit auch lange noch verwendet. Hier gilt übrigens das gleiche wie bei den Pfeilen: Keine Leerzeichen rechts und/oder links vom vertikalen Strich. Und selbst ich als Gewohnheitstier habe mich von dieser Schreibweise verabschiedet. Wer daher neu in Twine ist, sollte keinen Grund haben, auf dieser veralteten Konvention zu beharren.</p>
+<p>Um eine einheitliche Schreibweise (ich bevorzuge die mit dem rechtsgerichteten Pfeil <code>-&gt;</code>) habe ich den Text des letzten Absatzes der Start-Passage noch einmal leicht verändert:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb3-2">davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der </span>
+<span id="cb3-3">Herzogin-&gt;herzogin]], links zur [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Teeparty des verrückten Hutmachers-&gt;teeparty</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>] und </span>
+<span id="cb3-4">rechts triffst Du die [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">kiffende Raupe auf ihrem Pilz-&gt;raupe</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>].«</span></code></pre></div>
+<p>Wenn Ihr – nachdem Ihr die Startpassage mit dem Text gefüttert habt – auf das Twine-Fenster schaut, werdet Ihr feststellen, daß Twine die Passagen <code>herzogin</code>, <code>teeparty</code> und <code>raupe</code> für Euch schon angelegt und mit Pfeilen versehen hat. Die Pfeile zeigen von der Startpassage jeweils auf die verlinkte Passage und – sollte es von da einen Rücklink geben – als Doppelpfeil auch wieder zurück.</p>
+<p>Ihr könnt die Passagen in dem Fenster beliebig mit der Maus hin- und herschieben und so ein wenig Struktur in Eure Geschichten bekommen.</p>
+<p>Natürlich wollen auch diese Passagen mit Text gefüttert werden. Ich fange mit der <code>herzogin</code> an:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1">Im Haus der Herzogin herrschte Chaos. Erst schlug die Köchin mit einer Pfanne nach Alice, </span>
+<span id="cb4-2">dann drückte die Herzogin ihr ein plärrendes [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Baby-&gt;baby</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>] in den Arm.</span></code></pre></div>
+<p>Auch die <code>teeparty</code></p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1">Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser deklamierte </span>
+<span id="cb5-2">gerade ein langes, dafür um so langweiligeres Gedicht.</span>
+<span id="cb5-3"></span>
+<span id="cb5-4">Alice hatte sehr schnell genug davon, also überlegte sie, ob sie doch die </span>
+<span id="cb5-5">[<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Raupe-&gt;raupe</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>] aufzusuchen oder gleich [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">nach Hause gehen-&gt;home</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>] sollte.</span></code></pre></div>
+<p>und die <code>raupe</code> bekommen einen Text:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1">Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte nur </span>
+<span id="cb6-2">immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen müsste. </span>
+<span id="cb6-3">Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.</span>
+<span id="cb6-4"></span>
+<span id="cb6-5">Alice beschloß, daß sie für heute genug habe und [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">ging nach Hause-&gt;bad_endig</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>].</span></code></pre></div>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194899008/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe06.jpg" class="img-fluid"></a></p>
+<p>Wenn Ihr jetzt wieder auf Euer Twine-Fenster schaut, werdet Ihr drei weitere, neue, aber noch leere Passagen finden, die Twine für Euch angelegt und mit Pfeilen versehen hat: <code>baby</code>, <code>home</code> und <code>bad_ending</code>. Ihr könnt sie zur besseren Übersicht erst einmal anordnen, wie im Screenshot oben und dann ebenfalls mit Text füllen.</p>
+<p>Die Passage <code>baby</code>:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1">Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem Grunzen </span>
+<span id="cb7-2">und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen im Arm hielt.</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt </span>
+<span id="cb7-5">zurück an den {restart link, label: "Start"}.</span></code></pre></div>
+<p>Die Passage <code>home</code>:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1">Zuhause traf Alice ihre Freunde, das weiße Kaninchen und den großen Elephanten, </span>
+<span id="cb8-2">mit mit denen sie noch gemütlich ein Kännchen Kaffee trank. So wurde es doch noch </span>
+<span id="cb8-3">ein gelungengener Nachmittag.</span></code></pre></div>
+<p>und <em>last but not least</em> die Passage <code>bad_ending</code>:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1">Auf dem Weg nach Hause materialisierte sich pötzlich die Grinsekatze wieder vor Alice. </span>
+<span id="cb9-2">Sie grinste breit – so breit können nur Grinsekatzen grinsen – und fragte: »Na, </span>
+<span id="cb9-3">war die Raupe wieder bekifft?«</span>
+<span id="cb9-4"></span>
+<span id="cb9-5">Alice hatte jetzt endgültig genug von ihrem heutigen Ausflug und verließ das Wunderland.</span></code></pre></div>
+<p>Diese Passagen enthalten nichts Neues bis auf den <code>{restart link, label: "Irgendein Text"}</code> in der Passage <code>baby</code>. Das ist ein Chapbook-eigenes Feature, zwischen den geschweiften Klammern steht ein sogenanntes <code>insert</code>, eine Art Makro. Inserts sind ein wichtiges Sprachfeature von Chapbook, ich werde in späteren Tutorials noch ausführlich darauf zurückkommen. Für den Moment müßt Ihr nur wissen, daß dies ein Link auf die Startpassage ist (wobei <code>label</code> den Linktext bezeichnet), der das Spiel auf seine Startwerte zurücksetzt. Sollte Euere Alice im Spiel also Erfahrungspunkte gesammelt haben, werden diese wieder auf den Startwert zurückgesetzt. Da es momentan aber noch keine Variablen wie zum Beispiel Erfahrungspunkte im Spiel gibt, wird einfach nur die Liste der besuchten Passagen geleert. Daher wäre es momentan auch kein Beinbruch, zum Beispiel den <code>restart link</code> durch den einfachen Link <code>[[Noch einmal spielen-&gt;Start]]</code> zu ersetzen. Twine würde dies dann auch mit einem Pfeil von Home auf Start honorieren.</p>
+<p>Dies ist eigentlich alles, was Ihr über Twine und Chapbook wissen müßt. Mit diesem einfachen Linkmechanismus (der übrigens in dieser Form in fast allen Storyformaten existiert) könnt Ihr Eure eigene interaktive und verzweigte Geschichte im Stil der »Choose Your Own Adventure Books« <em>(CYOA)</em> schreiben. Denn das ist der Kern von Twine, alles andere ist im Grunde genommen nur Kosmetik. Aber da Kosmetik vieles doch erst schön macht, werde ich Euch nun noch ein wenig Kosmetik zeigen.</p>
+</section>
+<section id="wir-wollen-bilder" class="level3">
+<h3 class="anchored" data-anchor-id="wir-wollen-bilder">Wir wollen Bilder</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194843871/"><img src="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe07.jpg" class="img-fluid"></a></p>
+<blockquote class="blockquote">
+<p>Alice fing an sich zu langweilen; sie saß schon lange bei ihrer Schwester am Ufer und hatte nichts zu tun. Das Buch, das ihre Schwester las, gefiel ihr nicht; denn es waren weder Bilder noch Gespräche darin. »Und was nützen Bücher,« dachte Alice, »ohne Bilder und Gespräche?«</p>
+</blockquote>
+<p>Die Geschichte ist bisher ja recht schön erzählt, aber sie besitzt ein großes Manko: Denn was sind Geschichten ohne Bilder?</p>
+<p>Doch das Verhältnis von Twine zu Bildern (und anderen Mulitmediadateien wie Musik, Sound oder Filmen) war von Anfang an ein schwieriges. Denn Twine war ursprünglich entworfen, um textbasierte, interaktive Abenteuer zu erzählen. Bilder waren da nicht vorgesehen. Doch das Publikum wollte – wie Alice – Bilder und so haben sich zwei mehr oder weniger inkompatible Lösungen gefunden:</p>
+<section id="lösung-1-bilder-online-einbinden" class="level4">
+<h4 class="anchored" data-anchor-id="lösung-1-bilder-online-einbinden">Lösung 1: Bilder online einbinden</h4>
+<p>Der erste Ansatz ist, die Multimediadateien online auf einem Server abzulegen, und sie dann per HTTP(S) einzubinden. Der Vorteil dieser Lösung ist, daß die Bilder – eine Online-Anbindung vorausgesetzt – immer von Twine gefunden werden, egal ob die Twine Story <strong>in</strong> Twine (im Test-Modus) aufgerufen wird, oder ob sie <em>standalone</em> läuft. Jedoch hat diese Methode auch zwei gewichtige Nachteile. Der erste Nachteil: Es ist <strong>Euer</strong> Server, auf dem die Daten liegen, Ihr zahlt für die Bandbreite. Und zweitens: Ihr müßt zwingend online sein, auch wenn Ihr Euer Spiel entwickelt. Ein Schreiben oder Spielen am Strand ist damit in der Regel nicht möglich.</p>
+<p>Außerdem hat sich hier noch eine böse Unsitte entwickelt, die man leider häufig auch Twine-Tutorials findet. Dort wird dann einfach mit einer Bildersuchmaschine ein passendes Bild gesucht. Ist dieses Bild gefunden, wird die URL kopiert und die Datei ohne Rücksicht auf Verluste vom <strong>fremden</strong> Server in die eigene Geschichte eingebunden.</p>
+<p>Dieses <em>Hotlinking</em> genannte Verfahren ist aus mehreren Gründen eine Sünde: Erstens, wenn man sich nicht um die Bildrechte kümmert, gerät man dabei leicht in die Fallstricke einer Urheberrechtsverletzung und das kann teuer werden. Zweitens zahlt der Serverbetreiber und nicht Ihr die Kosten für den Datentransfer. Das macht ihn sicher nicht glücklich. Und drittens habt Ihr keine Kontrolle über die Daten. Auch ich habe schon einmal eines meiner (eigentlich harmlosen und unter einer freien Lizenz stehenenden) Photos einer Berliner Touristen-Attraktion gegen das Bild einer leicht bekleideten Dame ausgetauscht, nachdem ich bemerkt hatte, daß irgendein Dödel dieses Bild ungefragt per Hotlinking in seine dusselige Kommerzseite eingebunden hatte.</p>
+</section>
+<section id="lösung-2-daten-lokal-einbinden" class="level4">
+<h4 class="anchored" data-anchor-id="lösung-2-daten-lokal-einbinden">Lösung 2: Daten lokal einbinden</h4>
+<p>Die zweite Lösung ist, die Daten lokal einzubinden. Dafür legt man sich am sinnvollsten unterhalb der eigentlichen Story-Datei (Beispiel: story.html) ein Verzeichnis (oder mehrere Vereichnisse) an, die die Asset-Dateien beinhalten. Das kann dann beispielsweise so aussehen:</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>story.html</span>
+<span id="cb10-2"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>images</span>
+<span id="cb10-3"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  - </span>image01.jpg</span>
+<span id="cb10-4"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  - </span>image02.jpg</span>
+<span id="cb10-5"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>audio</span>
+<span id="cb10-6"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  - </span>song01.mp3</span></code></pre></div>
+<p>Wenn dann ein Bild in eine Twine-Story per relativer URL eingebunden ist, in Chapbook zum Beispiel mit:</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb11-1">{embed image: 'images/image01.jpg', alt: 'Mein super-duper Bild'}</span></code></pre></div>
+<p>Dann findet Eure Twine-Story <strong>nach dem Publizieren</strong> das Bild auch, unabhängig davon, ob sie lokal oder über eine Webverbindung aufgerufen wurde.</p>
+<p>Der Zusatz »nach dem Publizieren« weist auch gleich auf den größten Nachteil dieser Methode hin: Wird die Geschichte <strong>innerhalb</strong> von Twine gestartet (sei es über den Test- oder über den Play-Button), dann findet Twine Eure Assets nicht. Das liegt daran, daß Twine die Story temporär auf eine völlig obskure und nicht nachvolltiehbare URL hinausschreibt, beispielsweise auf (gekürzt)</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4d8-6ee9f02e7df4.html</span></span></code></pre></div>
+<p>und wo soll das arme Twine da Eure Assets finden?</p>
+<p>Der größte Vorteil dieser Methode ist allerdings der: Ist Eure Story mal publiziert, dann läßt sich die Datei mitsamt den Asset-Verzeichnissen entweder als <code>.zip</code>-Datei oder auch unkomprimiert auf jeden Server oder Dienst Eurer Wahl hochladen (zum Beispiel auf Itch.io) oder als Email an Eure Freunde verschicken. Und sie können sie dann auch spielen, ohne auf eine Internetverbindung angewiesen zu sein.</p>
+</section>
+<section id="der-kompromiß-lokaler-webserver" class="level4">
+<h4 class="anchored" data-anchor-id="der-kompromiß-lokaler-webserver">Der Kompromiß: Lokaler Webserver</h4>
+<p>Nun möchte man aber gerne auch während der Entwicklung in Twine seine Bilder sehen, und sei es nur, um das Layout kontrollieren zu können. Bei mir hat sich folgende Vorgehensweise als sinnvoll herausgestellt: Auf meinem Rechnern läuft sowieso permanent ein lokaler Webserver (zur Zeit ist es <a href="https://kantel.github.io/posts/2026020502_tinyhost/">TinyHost</a>, aber auch <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a> oder <a href="http://cognitiones.kantel-chaos-team.de/webworking/xampp.html">XAMPP</a> wären eine Alternative). Dort lege ich für jede Twine-Story ein Verzeichnis mit den benötigten Bildern und anderen Assets an. Diese kann ich dann nach der <strong>Lösung 1</strong> via <code>localhost</code> so einbinden, als lägen sie auf einem externen Server. In Chapbook sieht das dann so aus:</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1">{embed image: "http://localhost:8000/alice/images/bild01.jpg", alt: "Grinsekatze"}</span></code></pre></div>
+<p>(Mein TinyHost lauscht auf Port <code>8000</code>, den Port müßt Ihr gegebenenfalls an Eure Umgebung anpassen.)</p>
+<p>Ist die Entwicklung dann abgeschlossen und die Story kann publiziert werden, dann tausche ich per globales Suchen und Ersetzen alle absoluten, aber dennoch lokalen URLs <code>http://localhost:8000/alice/images</code> durch ein schlichtes <code>images</code> aus. Das obige Beispiel wird dann zu</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb14-1">{embed image: "images/bild01.jpg", alt: "Grinsekatze"}</span></code></pre></div>
+<p>und damit zu einer relativen URL und zur <strong>Lösung 2</strong>. Ganz besonders schlaue Entwickler exportieren ihre Twine Story erst nach <code>Twee</code> bevor sie die globale Ersetzung vornehmen und schreiben die Story danach dann zum Beispiel mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> als HTML-Datei heraus. So bleibt die Story im Twine-Editor unverändert, sollte man doch noch einmal Änderungen vornehmen wollen oder müssen.</p>
+<p>Die Verwendung des <code>alt</code>-Textes sollte in Chapbook (aber nicht nur dort, sondern eigentlich überall) obligatorisch sein, damit sich sehbehinderte Menschen von ihrem Screenreader die Bildbeschreibung vorlesen lassen können. Sollte das Bild rein dekorativen Zwecken dienen, zum Beispiel eine schöne Seitenumrandung, dann kann der <code>alt</code>-Text auch einfach nur aus einem leeren String bestehen:</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb15-1">{embed image: "asterisk.png", alt: ""}</span></code></pre></div>
+<p>Moderne Screenreader werden dieses Bild dann freudig ignorieren.</p>
+<p>So, und jetzt nach der langen Vorrede die neuesten Abenteuer von Alice mit Twine und Chapbook. Sie sind nahezu identisch mit der ersten Version, nur daß sie nun mit Bildern illustriert sind. Hier der Twee-Code der ersten Passage:</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb16-1">{embed image: "http://localhost:8000/alice/images/start.jpg", alt: "Grinsekatze"}</span>
+<span id="cb16-2"></span>
+<span id="cb16-3">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb16-4">hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb16-5">Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb16-6"></span>
+<span id="cb16-7">Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb16-8"></span>
+<span id="cb16-9">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen </span>
+<span id="cb16-10">Teil davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum </span>
+<span id="cb16-11">[<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Haus der Herzogin-&gt;herzogin</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>], links zur [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Teeparty des verrückten Hutmachers-&gt;teeparty</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>] </span>
+<span id="cb16-12">und rechts triffst Du die [<span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">kiffende Raupe auf ihrem Pilz-&gt;raupe</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>].«</span></code></pre></div>
+<p>Der große Vorteil des <code>embed</code>-Inserts von Chapbook ist, daß die damit eingebundnenen Bilder responsiv sind.</p>
+<p>Die übrigen Passagen habe ich einfach in der gleichen Art mit Bildern aufgepeppt.</p>
+</section>
+</section>
+<section id="wir-wollen-stil" class="level3">
+<h3 class="anchored" data-anchor-id="wir-wollen-stil">Wir wollen Stil</h3>
+<p>Zum Abschluß dieses einführenden Tutorials in Twine und Chapbook möchte ich der Geschichte noch ein wenig Stil spendieren. Denn weder die rot unterstrichenen Links noch die <em>small caps</em> im Footer der Seite entsprechen meinem ästhetischen Empfinden.</p>
+<p>Chapbook besitzt einen von der restlichen Passage separierten Variablen-Abschnitt. Dieser steht immer als erstes zu Beginn einer Passage und wird von der restlichen Passage durch eine Zeile mit zwei Strichen (<code>--</code>) getrennt. Dieser Abschnitt kann nicht nur selbstdefinierte Variablen wie <code>has_key</code> oder <code>health_points</code> aufnehmen (dazu in späteren Tutorials mehr), sondern auch Variable, die das Layout der Geschichte beeinflussen. Diese sind in der Regel in den Objekten <code>config.style</code>, <code>config.header</code> und <code>config.footer</code> zusammengefaßt.</p>
+<p>Wenn man also das Aussehen eines Links beeinflussen will, kann man zum Beispiel mit der Zeile</p>
+<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb17-1">config.style.page.link.font: "18 bold none"</span></code></pre></div>
+<p>erreichen, daß der Link mit der Fontgröße 18 in fett und ohne Unterstreichung dargestellt wird. Für die Farbe des Links sind die Zeilen</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb18-1">config.style.page.link.color: "teal-4"</span>
+<span id="cb18-2">config.style.page.link.active.color: "teal-4"</span></code></pre></div>
+<p>zuständig, die – in diesem Fall – dafür sorgen, daß ein Link in einem leichten grün dargestellt und dieses Aussehen auch nicht verändert, wenn mit der Maus über den Link gefahren wird (<code>active</code> gleich <code>hover</code>).</p>
+<p>Ein Wort zu den Farben: Chapbook unterstützt per Default eine freie (MIT-Lizenz) Palette, die <a href="https://www.reasonable.work/colors/">Reasonable Colors</a> genannt wird (entwickelt von <em>Matthew Howell</em>). Diese besteht aus 25 benannten Farben mit je sechs Schattierungen, also zum Beispiel <code>teal-1</code> bis <code>teal-6</code>. Eine Übersicht bietet das <a href="https://klembot.github.io/chapbook/guide/customization/fonts-and-colors.html">Chapbook-Handbuch</a>. Wem dies nicht ausreicht, der kann natürlich auch jede andere Farbbezeichnung verwenden, die CSS versteht (von der gewohnten Hex-Notation wie zum Beispiel <code>#0b7285</code> bis hin zu sehr speziellen Notationen wie beispielsweise <code>hsla(0%, 65%, 48%, 0.75)</code>).</p>
+<p>Nun besitzt Chapbook aber neben dem normalen hellen <em>(Light)</em> Mode (schwarze Schrift auf weißem Grund) auch noch den populären dunklen <em>(Dark)</em> Mode (weiße Schrift auf schwarzem Grund) auf dem Ihr im Footer jeder Seite umschalten könnt. Die Einstellungen dafür werden im Objekt <code>config.style.dark.page</code>, also zum Beispiel:</p>
+<div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb19-1">config.style.dark.page.link.font: "18 bold none"</span>
+<span id="cb19-2">config.style.dark.page.link.color: "orange-3"</span>
+<span id="cb19-3">config.style.dark.page.link.active.color: "orange-3"</span></code></pre></div>
+<p>Die <code>config</code>-Objekte besitzen – wie alle Variablen in Chapbook – einen globalen Gültigkeitsbereich. Es ist daher in der Regel keine gute Idee, diese innerhalb einer Geschichte mehrmals zu definieren (man sollte dann wirklich genau wissen, was man tut).</p>
+<p>Ich habe für mein Alice-Beispiel folgende <code>config</code>-Objekte in der Start-Passage definiert:</p>
+<div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb20-1">config.style.page.verticalAlign: "top"</span>
+<span id="cb20-2">config.style.page.link.font: "18 bold none"</span>
+<span id="cb20-3">config.style.page.link.color: "teal-4"</span>
+<span id="cb20-4">config.style.page.link.active.color: "teal-4"</span>
+<span id="cb20-5">config.style.dark.page.link.font: "18 bold none"</span>
+<span id="cb20-6">config.style.dark.page.link.color: "orange-3"</span>
+<span id="cb20-7">config.style.dark.page.link.active.color: "orange-3"</span>
+<span id="cb20-8">config.style.page.footer.link.font: "16 italic none"</span>
+<span id="cb20-9">config.style.page.footer.link.active.font: "16 italic none"</span>
+<span id="cb20-10">config.style.page.footer.link.active.color: "teal-4"</span>
+<span id="cb20-11">config.style.dark.page.footer.link.active.color: "orange-3"</span>
+<span id="cb20-12">config.style.page.footer.font: "16 italic"</span>
+<span id="cb20-13">config.footer.left: "Alice im Reich der Ringe"</span>
+<span id="cb20-14">--</span></code></pre></div>
+<p>Die erste Zeile sorgt dafür, daß der Text der Geschichte immer am oberen Seitenrand beginnt, und nicht – wie es bei Chapbook der Default ist – in der Mitte der Seite. Dadurch werden unschöne Zeilensprünge vermieden, wenn dem Text live Zeilen oder Abschnitte hinzugefügt werden.</p>
+<p>Die Zeile <code>config.style.page.footer.link.active.font: "16 italic none"</code> eliminiert die <em>small caps</em> im Footer der Seite durch ein freundliches kursiv, die darauf folgenden Zeilen setzen die Link-Farben und den Link-Stil jeweils für den hellen und den dunklen Mode.</p>
+<p>Eine Besonderheit sind die beiden letzten Zeilen, in denen festgelegt wird, daß die Zeichenfolge <code>Alice im Reich der Ringe</code> links im Footer jeder Seite in 16 Punkt kursiv erscheint.</p>
+<p>Welche <code>config</code>-Objekte existieren und mit welchen Default-Werten sie vorbelegt sind, könnt Ihr nachschauen, wenn Ihr in der <em>Backstage View</em> der Testumgebung unter dem Reiter <code>Stage</code> den Button <code>Show Defaults</code> ankreuzt. Alle diese Werte können von Euch bei Bedarf überschrieben werden.</p>
+<p>Ich habe das kleine Tutorial sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloaded/alice1/alicereloaded1.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloaded/alice1/alicereloaded1.twee">Twee-Datei</a> mit <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloaded/alice1/images">allen Assets</a> auf meinem GitHub-Account hochgeladen. Falls Ihr damit spielen wollt, müsst Ihr den Pfad zu den Bildern gegebenenfalls noch anpassen.</p>
+<hr>
+<p>Und für die ganz ungeduldigen unter Euch, die einfach nur spielen wollen, habe ich die Geschichte auch in diese Seite eingebunden:</p>
+<iframe src="alice/index.html" width="90%" height="800px">
+</iframe>
+<hr>
+<p>Habt Spaß damit …</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Twee</category>
+  <category>Chapbook</category>
+  <category>Interactive Fiction</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/</guid>
+  <pubDate>Wed, 08 Apr 2026 08:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/images/reichringe1.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Atlas Curiosa: Volkspark Rehberge</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1308,49 +1592,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026031703_tuesday_js_release_59/</guid>
   <pubDate>Tue, 17 Mar 2026 21:25:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026031703_tuesday_js_release_59/images/tuesdayjs59.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>King »Monogatari« Kong: Links und Tutorials zu Monogatari</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026031702_king_monogatari_kong/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55120756935/"><img src="https://kantel.github.io/posts/2026031702_king_monogatari_kong/images/kingmonogatari-b.jpg" class="img-fluid"></a></p>
-<p>In Ergänzung zu meinem <a href="https://kantel.github.io/posts/2026031701_making_of_reichspressekonferenz/">Tutorial von heute Mittag</a> noch eine kleine Sammlung von Links und Tutorials zu <a href="https://monogatari.io/">Monogatari</a>, der kleinen, aber durchaus leistungsfähigen, auf HTML, CSS und JavaScript basierenden Engine für <em>Visual Novels</em> und andere, interaktive Geschichten. Die stehen hier eigentlich nur, damit ich sie nicht vergesse, aber vieleicht sind sie auch für die eine oder den anderen von Euch da draußen nützlich.</p>
-<section id="links" class="level3">
-<h3 class="anchored" data-anchor-id="links">Links</h3>
-<ul>
-<li><a href="https://monogatari.io/">Monogatari Home</a></li>
-<li><a href="https://github.com/Monogatari/Monogatari/">Monotatari @ GitHub</a></li>
-<li><a href="https://developers.monogatari.io/documentation">Monogatari Documentation</a></li>
-<li><a href="https://grokipedia.com/page/Monogatari_visual_novel_engine">Monogatari @ Grokipedia</a></li>
-</ul>
-</section>
-<section id="tutorials" class="level3">
-<h3 class="anchored" data-anchor-id="tutorials">Tutorials</h3>
-<iframe class="if16_9" src="https://www.youtube.com/embed/byObSXXFAnM?si=-x6vCl5OVWaz303g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Vom User <em>Noirnerd</em> stammt diese kurze, knapp zwanzigminütige <a href="https://www.youtube.com/watch?v=byObSXXFAnM">Übersicht und Einführung in Monogatari</a>.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/az6b9Qu7Qog?si=gLFVJTTR2ufpS9cK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Ebenfalls knapp zwanzig Minuten lang ist das Monogatari-Tutorial »<a href="https://www.youtube.com/watch?v=az6b9Qu7Qog">A BEGINNER’S guide to thinking about CSS</a>« von <em>remeranAuthor</em>.</p>
-<p>Die Liste der Tutorials zu Monogatari ist wirklich sehr übersichtlich. Vielleicht ist es daher sinnvoll, eine eigene Tutorial-Reihe zu dieser Enginge zu starten. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55120756935/">King »Monogatari« Kong</a></em>, generiert mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>An anthropomorphic gorilla, wearing a blue jacket, a dark red checkered vest, and round horn-rimmed glasses, holds a large, half-peeled banana and scratches his head in bewilderment. He stands in a busy square in a Chinese city with many pagodas and pagoda-like buildings. The passersby, men and women alike, wear Asian conical hats and greet each other politely, but ignore the gorilla. It is a sunny morning in spring. Colored asian manga style. No textboxes, no speech bubbles.</em>« Modell: Nano Banana Pro.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Monogatari</category>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2026031702_king_monogatari_kong/</guid>
-  <pubDate>Tue, 17 Mar 2026 20:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026031702_king_monogatari_kong/images/kingmonogatari.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

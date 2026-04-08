@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.47">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Mit Twine und Chapbook ins Wunderland (reloaded) – Der Schockwellenreiter</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Mit Twine und Chapbook ins Wunderland (reloaded)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Twine</div>
+    <div class="quarto-category">Twee</div>
+    <div class="quarto-category">Chapbook</div>
+    <div class="quarto-category">Interactive Fiction</div>
+    <div class="quarto-category">Alice</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">8. April 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55193891029/"><img src="images/reichringe1-b.jpg" class="img-fluid"></a></p>
+<p>Ich möchte eine lang gehegte und lang angekündigte Idee realisieren und meine Reise ins Wunderland mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und dem Storyformat <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a>, die ich im August&nbsp;2023 schon einmal (<a href="https://kantel.github.io/posts/2023082703_chapbook_wunderland_0/">Teil 0.0</a>, <a href="https://kantel.github.io/posts/2023082801_chapbook_wunderland_1/">Teil 0.1</a>, <a href="https://kantel.github.io/posts/2023083101_chapbook_mit_stil/">Teil 0.2</a>) unternommen hatte, wieder aufnehmen und daraus ein Tutorial basteln. Grund für dieses Reloading ist zum einen, daß ich mittlerweile mehr über das Storyformat Chapbook gelernt habe und es in der akutellen Version auch ein paar Neuerungen gibt, aber zum anderen auch, daß ich dieses Tutorial nun mit Bildern aufpeppen kann, die von einer gekünstelten Intelligenz meines Vertrauens (in diesem Fall Nano Banana&nbsp;2) generiert wurden. Denn seit Sommer&nbsp;2023 hat die bildgenerierende Künstliche Intelligenz – damals noch in den Kinderschuhen – gewaltige Fortschritte erzielt.</p>
+<p>Das Tutorial geht davon aus, daß Ihr entweder Twine auf Eurem Desktop-Rechner installiert habt oder wißt, wie die Online-Version von Twine zu bedienen ist (die Bedienung ist in beiden Fällen gleich). Da die Online-Version Eure Ergebnisse jedoch nur im Browser-Cache vorrätig hält, empfiehlt sich ein regelmäßiges Abspeichern entweder als HTML- (<code>Build &gt; Als Datei veröffentlichen</code>) oder als Twee-Datei (<code>Build &gt; Exportiere als Twee</code>), damit Eure Ergebnisse nicht versehentlich im Daten-Nirwana verschwinden.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55193723802/"><img src="images/reichringe01.jpg" class="img-fluid"></a></p>
+<p>Als erstes legt Ihr auf dem Startbildschirm von Twine unter <code>Geschichte &gt; Neu</code> eine neue Geschichte an. Ich habe sie »Alice im Reich der Ringe« genannt, aber das könnt Ihr nach Belieben verändern (<code>Geschichte &gt; Umbenennen</code>).</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194757088/"><img src="images/reichringe02.jpg" class="img-fluid"></a></p>
+<p>Mit einem Doppelklick öffnet Ihr die Geschichte und seht die erste Passage. Passagen sind die einzelnen Abschnitte Eurer Geschichte, auf die Ihr verlinken könnt und in denen Ihr Eure (nichtlineare) Geschichte erzählt. Ich habe die (bisher erste und einzige Start-) Passage »start« genannt und die kleine, grüne Rakete zeigt an, daß hier Eure Geschichte beginnt. Falls sie nicht vorhanden ist, unter <code>Abschnitt</code> auf <code>Beginne die Geschichte hier</code> klicken.</p>
+<p>Ein Doppelklick auf die Passage öffnet ein Editorfenster, indem Ihr den Text dieser Passage eintragen oder editieren könnt. Falls Ihr das Storyformat der Geschichte noch nicht auf Chapbook umgestellt habt, sieht das Editorfenster unter Umständen noch leicht anders aus.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194866144/"><img src="images/reichringe03.jpg" class="img-fluid"></a></p>
+<p>Die Storyformate könnt Ihr unter <code>Twine &gt; Geschichtsformate</code> umstellen. Der Default zur Zeit ist <a href="https://twine2.neocities.org/">Harlowe 3.3.x</a>, für dieses Tutorial stellt aber bitte Chapbook 2.3.0 (oder größer) ein. Wenn das Storyformat einmal festgelegt ist, seit ihr für diese Geschichte daran gebunden, da die verschiendenen Storyformate bis auf wenige Befehle eine komplett unterschiedliche Syntax aufweisen. Bei einer nachträglichen Änderung des Storyformats müsst Ihr also sämtliche bisher erstellten Passagen ändern.</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55195016870/"><img src="images/reichringe04.jpg" class="img-fluid"></a></p>
+<p>Jetzt könnt Ihr aber endlich mit der Geschichte beginnen. Öffnet daher mit einem Doppelklick die Startpassage und gebt folgenden Text ein:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1"></a>Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb1-2"><a href="#cb1-2"></a>hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb1-3"><a href="#cb1-3"></a>Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb1-8"><a href="#cb1-8"></a>davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum Haus der </span>
+<span id="cb1-9"><a href="#cb1-9"></a>Herzogin, links zur Teeparty des verrückten Hutmachers und rechts triffst Du die kiffende </span>
+<span id="cb1-10"><a href="#cb1-10"></a>Raupe auf ihrem Pilz.«</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wegen der besseren Lesbarkeit habe ich den Text umgebrochen. Chapbook folgt in Formatierungsfragen im Großen und Ganzen der Markdown-Syntax, daher werden einfache Zeilenumbrüche ignoriert, während doppelte Zeilenumbrüche einen neuen Absatz erzeugen.</p>
+<section id="wir-wollen-links" class="level3">
+<h3 class="anchored" data-anchor-id="wir-wollen-links">Wir wollen Links</h3>
+<p>Ihr könnt die Geschichte oben natürlich endlos weiterspinnen bis hin zu einem Roman. Aber dazu benötigt ihr Twine nicht, dafür reicht eine ordinäre Schreibmaschhine. Aber wenn Ihr den letzten Absatz in der obigen Passage nehmt und ihn wie folgt abändert,</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1"></a>Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb2-2"><a href="#cb2-2"></a>davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der </span>
+<span id="cb2-3"><a href="#cb2-3"></a>Herzogin]], links zur [<span class="co">[</span><span class="ot">Teeparty</span><span class="co">]</span>] des verrückten Hutmachers und rechts triffst Du die</span>
+<span id="cb2-4"><a href="#cb2-4"></a>[<span class="co">[</span><span class="ot">kiffende Raupe auf ihrem Pilz-&gt;Raupe</span><span class="co">]</span>].«</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und danach auch noch auf <code>Build &gt; Spiele</code> klickt, um das Spiel in einem Browserfenster zu öffnen, dann erhaltet Ihr dieses:</p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194681676/"><img src="images/reichringe05.jpg" class="img-fluid"></a></p>
+<p>Im Browserfenster erscheint eine spielbare Version von Alice mit rot unterstrichenen, klickbaren Links (die momentan aber noch auf leere Passagen verweisen) und im Twine-Fesnter sind wie von Geisterhand drei neue Passagen entstanden, mit den Titeln »Haus der Herzogin«, »Teeparty« und »Raupe«.</p>
+<p>Dieser Absatz zeigt schon die wichtigste Funktionsweise von Twine: Wie werden Links (zu anderen Passagen) erstellt? Der einfachste Weg ist, das Linkziel zwischen zwei eckigen Klammerpaaren (<code>[[]]</code>) zu schreiben, so wie in <code>[[Haus der Herzogin]]</code> oder <code>[[Teeparty]]</code>. Hier sind Linktext und Linkziel identisch, das heißt, der Link <code>Haus der Herzogin</code> führt auch zur Passage <code>Haus der Herzogin</code> und der Link <code>Teeparty</code> führt zur Passage <code>Teeparty</code>.</p>
+<p>Doch in den meisten Fällen unterscheiden sich Linktext und Linkziel. Hierfür gibt es in Twine die Pfeilnotation: <code>Linktext-&gt;Linkziel</code>, wie zum Beispiel in <code>[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]]</code>. Hier verlinkt der komplette Text <code>kiffende Raupe auf ihrem Pilz</code> auf eine Passage mit Namen <code>Raupe</code>. Dabei ist zu beachten, daß Leerzeichen zählen. Daher sollte zumindest nach der Pfeilspitze kein Leerzeichen stehen, denn Twine sucht sonst das Linkziel <code>Raupe</code> mit vorangestelltem Leerzeichen und das bringt nicht nur Twine, sondern – wie man in vielen Online-Tutorien sehen kann – auch Euch durcheinander. Wenn Ihr aber rechts und links von den Pfeilen keine Leerzeichen zulaßt, seid Ihr immer auf der sicheren Seite.</p>
+<p>Es gibt noch eine zweite Schreibweise mit rückwärtsgerichtetem Pfeil, die Linkkziel und Linktext umkehrt: <code>[[Linkziel&lt;-Linktext]]</code>, also – um bei unserem Beispiel zu bleiben – <code>[[Raupe&lt;-kiffende Raupe auf ihrem Pilz]]</code>. Mir hat sich der Sinn dieser vermutlich aus historischen Quellen gespeisten Schreibweise nie erschlossen und ich habe sie auch noch nie nutzen müssen.</p>
+<p>Um die Verwirrung komplett zu machen, gibt es auch noch eine dritte Schreibweise mit einem vertikalen Trennstrich (<code>|</code>) in der Mitte: <code>[[Linktext|Linkziel]]</code>, also <code>[[kiffende Raupe auf ihrem Pilz|Raupe]]</code>. Hier weiß ich zumindest den Grund, die Schreibweise stammt aus Twine 1.x und ich habe sie aus reiner Gewohnheit auch lange noch verwendet. Hier gilt übrigens das gleiche wie bei den Pfeilen: Keine Leerzeichen rechts und/oder links vom vertikalen Strich. Und selbst ich als Gewohnheitstier habe mich von dieser Schreibweise verabschiedet. Wer daher neu in Twine ist, sollte keinen Grund haben, auf dieser veralteten Konvention zu beharren.</p>
+<p>Um eine einheitliche Schreibweise (ich bevorzuge die mit dem rechtsgerichteten Pfeil <code>-&gt;</code>) habe ich den Text des letzten Absatzes der Start-Passage noch einmal leicht verändert:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1"></a>Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb3-2"><a href="#cb3-2"></a>davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum [[Haus der </span>
+<span id="cb3-3"><a href="#cb3-3"></a>Herzogin-&gt;herzogin]], links zur [<span class="co">[</span><span class="ot">Teeparty des verrückten Hutmachers-&gt;teeparty</span><span class="co">]</span>] und </span>
+<span id="cb3-4"><a href="#cb3-4"></a>rechts triffst Du die [<span class="co">[</span><span class="ot">kiffende Raupe auf ihrem Pilz-&gt;raupe</span><span class="co">]</span>].«</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wenn Ihr – nachdem Ihr die Startpassage mit dem Text gefüttert habt – auf das Twine-Fenster schaut, werdet Ihr feststellen, daß Twine die Passagen <code>herzogin</code>, <code>teeparty</code> und <code>raupe</code> für Euch schon angelegt und mit Pfeilen versehen hat. Die Pfeile zeigen von der Startpassage jeweils auf die verlinkte Passage und – sollte es von da einen Rücklink geben – als Doppelpfeil auch wieder zurück.</p>
+<p>Ihr könnt die Passagen in dem Fenster beliebig mit der Maus hin- und herschieben und so ein wenig Struktur in Eure Geschichten bekommen.</p>
+<p>Natürlich wollen auch diese Passagen mit Text gefüttert werden. Ich fange mit der <code>herzogin</code> an:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1"></a>Im Haus der Herzogin herrschte Chaos. Erst schlug die Köchin mit einer Pfanne nach Alice, </span>
+<span id="cb4-2"><a href="#cb4-2"></a>dann drückte die Herzogin ihr ein plärrendes [<span class="co">[</span><span class="ot">Baby-&gt;baby</span><span class="co">]</span>] in den Arm.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Auch die <code>teeparty</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1"></a>Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser deklamierte </span>
+<span id="cb5-2"><a href="#cb5-2"></a>gerade ein langes, dafür um so langweiligeres Gedicht.</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a>Alice hatte sehr schnell genug davon, also überlegte sie, ob sie doch die </span>
+<span id="cb5-5"><a href="#cb5-5"></a>[<span class="co">[</span><span class="ot">Raupe-&gt;raupe</span><span class="co">]</span>] aufzusuchen oder gleich [<span class="co">[</span><span class="ot">nach Hause gehen-&gt;home</span><span class="co">]</span>] sollte.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und die <code>raupe</code> bekommen einen Text:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1"></a>Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte nur </span>
+<span id="cb6-2"><a href="#cb6-2"></a>immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen müsste. </span>
+<span id="cb6-3"><a href="#cb6-3"></a>Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>Alice beschloß, daß sie für heute genug habe und [<span class="co">[</span><span class="ot">ging nach Hause-&gt;bad_endig</span><span class="co">]</span>].</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194899008/"><img src="images/reichringe06.jpg" class="img-fluid"></a></p>
+<p>Wenn Ihr jetzt wieder auf Euer Twine-Fenster schaut, werdet Ihr drei weitere, neue, aber noch leere Passagen finden, die Twine für Euch angelegt und mit Pfeilen versehen hat: <code>baby</code>, <code>home</code> und <code>bad_ending</code>. Ihr könnt sie zur besseren Übersicht erst einmal anordnen, wie im Screenshot oben und dann ebenfalls mit Text füllen.</p>
+<p>Die Passage <code>baby</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a>Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem Grunzen </span>
+<span id="cb7-2"><a href="#cb7-2"></a>und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen im Arm hielt.</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt </span>
+<span id="cb7-5"><a href="#cb7-5"></a>zurück an den {restart link, label: "Start"}.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die Passage <code>home</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1"></a>Zuhause traf Alice ihre Freunde, das weiße Kaninchen und den großen Elephanten, </span>
+<span id="cb8-2"><a href="#cb8-2"></a>mit mit denen sie noch gemütlich ein Kännchen Kaffee trank. So wurde es doch noch </span>
+<span id="cb8-3"><a href="#cb8-3"></a>ein gelungengener Nachmittag.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und <em>last but not least</em> die Passage <code>bad_ending</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1"></a>Auf dem Weg nach Hause materialisierte sich pötzlich die Grinsekatze wieder vor Alice. </span>
+<span id="cb9-2"><a href="#cb9-2"></a>Sie grinste breit – so breit können nur Grinsekatzen grinsen – und fragte: »Na, </span>
+<span id="cb9-3"><a href="#cb9-3"></a>war die Raupe wieder bekifft?«</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a>Alice hatte jetzt endgültig genug von ihrem heutigen Ausflug und verließ das Wunderland.</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Diese Passagen enthalten nichts Neues bis auf den <code>{restart link, label: "Irgendein Text"}</code> in der Passage <code>baby</code>. Das ist ein Chapbook-eigenes Feature, zwischen den geschweiften Klammern steht ein sogenanntes <code>insert</code>, eine Art Makro. Inserts sind ein wichtiges Sprachfeature von Chapbook, ich werde in späteren Tutorials noch ausführlich darauf zurückkommen. Für den Moment müßt Ihr nur wissen, daß dies ein Link auf die Startpassage ist (wobei <code>label</code> den Linktext bezeichnet), der das Spiel auf seine Startwerte zurücksetzt. Sollte Euere Alice im Spiel also Erfahrungspunkte gesammelt haben, werden diese wieder auf den Startwert zurückgesetzt. Da es momentan aber noch keine Variablen wie zum Beispiel Erfahrungspunkte im Spiel gibt, wird einfach nur die Liste der besuchten Passagen geleert. Daher wäre es momentan auch kein Beinbruch, zum Beispiel den <code>restart link</code> durch den einfachen Link <code>[[Noch einmal spielen-&gt;Start]]</code> zu ersetzen. Twine würde dies dann auch mit einem Pfeil von Home auf Start honorieren.</p>
+<p>Dies ist eigentlich alles, was Ihr über Twine und Chapbook wissen müßt. Mit diesem einfachen Linkmechanismus (der übrigens in dieser Form in fast allen Storyformaten existiert) könnt Ihr Eure eigene interaktive und verzweigte Geschichte im Stil der »Choose Your Own Adventure Books« <em>(CYOA)</em> schreiben. Denn das ist der Kern von Twine, alles andere ist im Grunde genommen nur Kosmetik. Aber da Kosmetik vieles doch erst schön macht, werde ich Euch nun noch ein wenig Kosmetik zeigen.</p>
+</section>
+<section id="wir-wollen-bilder" class="level3">
+<h3 class="anchored" data-anchor-id="wir-wollen-bilder">Wir wollen Bilder</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55194843871/"><img src="images/reichringe07.jpg" class="img-fluid"></a></p>
+<blockquote class="blockquote">
+<p>Alice fing an sich zu langweilen; sie saß schon lange bei ihrer Schwester am Ufer und hatte nichts zu tun. Das Buch, das ihre Schwester las, gefiel ihr nicht; denn es waren weder Bilder noch Gespräche darin. »Und was nützen Bücher,« dachte Alice, »ohne Bilder und Gespräche?«</p>
+</blockquote>
+<p>Die Geschichte ist bisher ja recht schön erzählt, aber sie besitzt ein großes Manko: Denn was sind Geschichten ohne Bilder?</p>
+<p>Doch das Verhältnis von Twine zu Bildern (und anderen Mulitmediadateien wie Musik, Sound oder Filmen) war von Anfang an ein schwieriges. Denn Twine war ursprünglich entworfen, um textbasierte, interaktive Abenteuer zu erzählen. Bilder waren da nicht vorgesehen. Doch das Publikum wollte – wie Alice – Bilder und so haben sich zwei mehr oder weniger inkompatible Lösungen gefunden:</p>
+<section id="lösung-1-bilder-online-einbinden" class="level4">
+<h4 class="anchored" data-anchor-id="lösung-1-bilder-online-einbinden">Lösung 1: Bilder online einbinden</h4>
+<p>Der erste Ansatz ist, die Multimediadateien online auf einem Server abzulegen, und sie dann per HTTP(S) einzubinden. Der Vorteil dieser Lösung ist, daß die Bilder – eine Online-Anbindung vorausgesetzt – immer von Twine gefunden werden, egal ob die Twine Story <strong>in</strong> Twine (im Test-Modus) aufgerufen wird, oder ob sie <em>standalone</em> läuft. Jedoch hat diese Methode auch zwei gewichtige Nachteile. Der erste Nachteil: Es ist <strong>Euer</strong> Server, auf dem die Daten liegen, Ihr zahlt für die Bandbreite. Und zweitens: Ihr müßt zwingend online sein, auch wenn Ihr Euer Spiel entwickelt. Ein Schreiben oder Spielen am Strand ist damit in der Regel nicht möglich.</p>
+<p>Außerdem hat sich hier noch eine böse Unsitte entwickelt, die man leider häufig auch Twine-Tutorials findet. Dort wird dann einfach mit einer Bildersuchmaschine ein passendes Bild gesucht. Ist dieses Bild gefunden, wird die URL kopiert und die Datei ohne Rücksicht auf Verluste vom <strong>fremden</strong> Server in die eigene Geschichte eingebunden.</p>
+<p>Dieses <em>Hotlinking</em> genannte Verfahren ist aus mehreren Gründen eine Sünde: Erstens, wenn man sich nicht um die Bildrechte kümmert, gerät man dabei leicht in die Fallstricke einer Urheberrechtsverletzung und das kann teuer werden. Zweitens zahlt der Serverbetreiber und nicht Ihr die Kosten für den Datentransfer. Das macht ihn sicher nicht glücklich. Und drittens habt Ihr keine Kontrolle über die Daten. Auch ich habe schon einmal eines meiner (eigentlich harmlosen und unter einer freien Lizenz stehenenden) Photos einer Berliner Touristen-Attraktion gegen das Bild einer leicht bekleideten Dame ausgetauscht, nachdem ich bemerkt hatte, daß irgendein Dödel dieses Bild ungefragt per Hotlinking in seine dusselige Kommerzseite eingebunden hatte.</p>
+</section>
+<section id="lösung-2-daten-lokal-einbinden" class="level4">
+<h4 class="anchored" data-anchor-id="lösung-2-daten-lokal-einbinden">Lösung 2: Daten lokal einbinden</h4>
+<p>Die zweite Lösung ist, die Daten lokal einzubinden. Dafür legt man sich am sinnvollsten unterhalb der eigentlichen Story-Datei (Beispiel: story.html) ein Verzeichnis (oder mehrere Vereichnisse) an, die die Asset-Dateien beinhalten. Das kann dann beispielsweise so aussehen:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1"></a><span class="ss">- </span>story.html</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="ss">- </span>images</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="ss">  - </span>image01.jpg</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="ss">  - </span>image02.jpg</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="ss">- </span>audio</span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="ss">  - </span>song01.mp3</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Wenn dann ein Bild in eine Twine-Story per relativer URL eingebunden ist, in Chapbook zum Beispiel mit:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1"></a>{embed image: 'images/image01.jpg', alt: 'Mein super-duper Bild'}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Dann findet Eure Twine-Story <strong>nach dem Publizieren</strong> das Bild auch, unabhängig davon, ob sie lokal oder über eine Webverbindung aufgerufen wurde.</p>
+<p>Der Zusatz »nach dem Publizieren« weist auch gleich auf den größten Nachteil dieser Methode hin: Wird die Geschichte <strong>innerhalb</strong> von Twine gestartet (sei es über den Test- oder über den Play-Button), dann findet Twine Eure Assets nicht. Das liegt daran, daß Twine die Story temporär auf eine völlig obskure und nicht nachvolltiehbare URL hinausschreibt, beispielsweise auf (gekürzt)</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="ex">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4d8-6ee9f02e7df4.html</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und wo soll das arme Twine da Eure Assets finden?</p>
+<p>Der größte Vorteil dieser Methode ist allerdings der: Ist Eure Story mal publiziert, dann läßt sich die Datei mitsamt den Asset-Verzeichnissen entweder als <code>.zip</code>-Datei oder auch unkomprimiert auf jeden Server oder Dienst Eurer Wahl hochladen (zum Beispiel auf Itch.io) oder als Email an Eure Freunde verschicken. Und sie können sie dann auch spielen, ohne auf eine Internetverbindung angewiesen zu sein.</p>
+</section>
+<section id="der-kompromiß-lokaler-webserver" class="level4">
+<h4 class="anchored" data-anchor-id="der-kompromiß-lokaler-webserver">Der Kompromiß: Lokaler Webserver</h4>
+<p>Nun möchte man aber gerne auch während der Entwicklung in Twine seine Bilder sehen, und sei es nur, um das Layout kontrollieren zu können. Bei mir hat sich folgende Vorgehensweise als sinnvoll herausgestellt: Auf meinem Rechnern läuft sowieso permanent ein lokaler Webserver (zur Zeit ist es <a href="https://kantel.github.io/posts/2026020502_tinyhost/">TinyHost</a>, aber auch <a href="http://cognitiones.kantel-chaos-team.de/webworking/mamp.html">MAMP</a> oder <a href="http://cognitiones.kantel-chaos-team.de/webworking/xampp.html">XAMPP</a> wären eine Alternative). Dort lege ich für jede Twine-Story ein Verzeichnis mit den benötigten Bildern und anderen Assets an. Diese kann ich dann nach der <strong>Lösung 1</strong> via <code>localhost</code> so einbinden, als lägen sie auf einem externen Server. In Chapbook sieht das dann so aus:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1"></a>{embed image: "http://localhost:8000/alice/images/bild01.jpg", alt: "Grinsekatze"}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>(Mein TinyHost lauscht auf Port <code>8000</code>, den Port müßt Ihr gegebenenfalls an Eure Umgebung anpassen.)</p>
+<p>Ist die Entwicklung dann abgeschlossen und die Story kann publiziert werden, dann tausche ich per globales Suchen und Ersetzen alle absoluten, aber dennoch lokalen URLs <code>http://localhost:8000/alice/images</code> durch ein schlichtes <code>images</code> aus. Das obige Beispiel wird dann zu</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1"></a>{embed image: "images/bild01.jpg", alt: "Grinsekatze"}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>und damit zu einer relativen URL und zur <strong>Lösung 2</strong>. Ganz besonders schlaue Entwickler exportieren ihre Twine Story erst nach <code>Twee</code> bevor sie die globale Ersetzung vornehmen und schreiben die Story danach dann zum Beispiel mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tweego.html">Tweego</a> als HTML-Datei heraus. So bleibt die Story im Twine-Editor unverändert, sollte man doch noch einmal Änderungen vornehmen wollen oder müssen.</p>
+<p>Die Verwendung des <code>alt</code>-Textes sollte in Chapbook (aber nicht nur dort, sondern eigentlich überall) obligatorisch sein, damit sich sehbehinderte Menschen von ihrem Screenreader die Bildbeschreibung vorlesen lassen können. Sollte das Bild rein dekorativen Zwecken dienen, zum Beispiel eine schöne Seitenumrandung, dann kann der <code>alt</code>-Text auch einfach nur aus einem leeren String bestehen:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1"></a>{embed image: "asterisk.png", alt: ""}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Moderne Screenreader werden dieses Bild dann freudig ignorieren.</p>
+<p>So, und jetzt nach der langen Vorrede die neuesten Abenteuer von Alice mit Twine und Chapbook. Sie sind nahezu identisch mit der ersten Version, nur daß sie nun mit Bildern illustriert sind. Hier der Twee-Code der ersten Passage:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1"></a>{embed image: "http://localhost:8000/alice/images/start.jpg", alt: "Grinsekatze"}</span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb16-4"><a href="#cb16-4"></a>hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb16-5"><a href="#cb16-5"></a>Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a>Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb16-8"><a href="#cb16-8"></a></span>
+<span id="cb16-9"><a href="#cb16-9"></a>Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen </span>
+<span id="cb16-10"><a href="#cb16-10"></a>Teil davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum </span>
+<span id="cb16-11"><a href="#cb16-11"></a>[<span class="co">[</span><span class="ot">Haus der Herzogin-&gt;herzogin</span><span class="co">]</span>], links zur [<span class="co">[</span><span class="ot">Teeparty des verrückten Hutmachers-&gt;teeparty</span><span class="co">]</span>] </span>
+<span id="cb16-12"><a href="#cb16-12"></a>und rechts triffst Du die [<span class="co">[</span><span class="ot">kiffende Raupe auf ihrem Pilz-&gt;raupe</span><span class="co">]</span>].«</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Der große Vorteil des <code>embed</code>-Inserts von Chapbook ist, daß die damit eingebundnenen Bilder responsiv sind.</p>
+<p>Die übrigen Passagen habe ich einfach in der gleichen Art mit Bildern aufgepeppt.</p>
+</section>
+</section>
+<section id="wir-wollen-stil" class="level3">
+<h3 class="anchored" data-anchor-id="wir-wollen-stil">Wir wollen Stil</h3>
+<p>Zum Abschluß dieses einführenden Tutorials in Twine und Chapbook möchte ich der Geschichte noch ein wenig Stil spendieren. Denn weder die rot unterstrichenen Links noch die <em>small caps</em> im Footer der Seite entsprechen meinem ästhetischen Empfinden.</p>
+<p>Chapbook besitzt einen von der restlichen Passage separierten Variablen-Abschnitt. Dieser steht immer als erstes zu Beginn einer Passage und wird von der restlichen Passage durch eine Zeile mit zwei Strichen (<code>--</code>) getrennt. Dieser Abschnitt kann nicht nur selbstdefinierte Variablen wie <code>has_key</code> oder <code>health_points</code> aufnehmen (dazu in späteren Tutorials mehr), sondern auch Variable, die das Layout der Geschichte beeinflussen. Diese sind in der Regel in den Objekten <code>config.style</code>, <code>config.header</code> und <code>config.footer</code> zusammengefaßt.</p>
+<p>Wenn man also das Aussehen eines Links beeinflussen will, kann man zum Beispiel mit der Zeile</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb17-1"><a href="#cb17-1"></a>config.style.page.link.font: "18 bold none"</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>erreichen, daß der Link mit der Fontgröße 18 in fett und ohne Unterstreichung dargestellt wird. Für die Farbe des Links sind die Zeilen</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb18-1"><a href="#cb18-1"></a>config.style.page.link.color: "teal-4"</span>
+<span id="cb18-2"><a href="#cb18-2"></a>config.style.page.link.active.color: "teal-4"</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>zuständig, die – in diesem Fall – dafür sorgen, daß ein Link in einem leichten grün dargestellt und dieses Aussehen auch nicht verändert, wenn mit der Maus über den Link gefahren wird (<code>active</code> gleich <code>hover</code>).</p>
+<p>Ein Wort zu den Farben: Chapbook unterstützt per Default eine freie (MIT-Lizenz) Palette, die <a href="https://www.reasonable.work/colors/">Reasonable Colors</a> genannt wird (entwickelt von <em>Matthew Howell</em>). Diese besteht aus 25 benannten Farben mit je sechs Schattierungen, also zum Beispiel <code>teal-1</code> bis <code>teal-6</code>. Eine Übersicht bietet das <a href="https://klembot.github.io/chapbook/guide/customization/fonts-and-colors.html">Chapbook-Handbuch</a>. Wem dies nicht ausreicht, der kann natürlich auch jede andere Farbbezeichnung verwenden, die CSS versteht (von der gewohnten Hex-Notation wie zum Beispiel <code>#0b7285</code> bis hin zu sehr speziellen Notationen wie beispielsweise <code>hsla(0%, 65%, 48%, 0.75)</code>).</p>
+<p>Nun besitzt Chapbook aber neben dem normalen hellen <em>(Light)</em> Mode (schwarze Schrift auf weißem Grund) auch noch den populären dunklen <em>(Dark)</em> Mode (weiße Schrift auf schwarzem Grund) auf dem Ihr im Footer jeder Seite umschalten könnt. Die Einstellungen dafür werden im Objekt <code>config.style.dark.page</code>, also zum Beispiel:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb19-1"><a href="#cb19-1"></a>config.style.dark.page.link.font: "18 bold none"</span>
+<span id="cb19-2"><a href="#cb19-2"></a>config.style.dark.page.link.color: "orange-3"</span>
+<span id="cb19-3"><a href="#cb19-3"></a>config.style.dark.page.link.active.color: "orange-3"</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die <code>config</code>-Objekte besitzen – wie alle Variablen in Chapbook – einen globalen Gültigkeitsbereich. Es ist daher in der Regel keine gute Idee, diese innerhalb einer Geschichte mehrmals zu definieren (man sollte dann wirklich genau wissen, was man tut).</p>
+<p>Ich habe für mein Alice-Beispiel folgende <code>config</code>-Objekte in der Start-Passage definiert:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb20-1"><a href="#cb20-1"></a>config.style.page.verticalAlign: "top"</span>
+<span id="cb20-2"><a href="#cb20-2"></a>config.style.page.link.font: "18 bold none"</span>
+<span id="cb20-3"><a href="#cb20-3"></a>config.style.page.link.color: "teal-4"</span>
+<span id="cb20-4"><a href="#cb20-4"></a>config.style.page.link.active.color: "teal-4"</span>
+<span id="cb20-5"><a href="#cb20-5"></a>config.style.dark.page.link.font: "18 bold none"</span>
+<span id="cb20-6"><a href="#cb20-6"></a>config.style.dark.page.link.color: "orange-3"</span>
+<span id="cb20-7"><a href="#cb20-7"></a>config.style.dark.page.link.active.color: "orange-3"</span>
+<span id="cb20-8"><a href="#cb20-8"></a>config.style.page.footer.link.font: "16 italic none"</span>
+<span id="cb20-9"><a href="#cb20-9"></a>config.style.page.footer.link.active.font: "16 italic none"</span>
+<span id="cb20-10"><a href="#cb20-10"></a>config.style.page.footer.link.active.color: "teal-4"</span>
+<span id="cb20-11"><a href="#cb20-11"></a>config.style.dark.page.footer.link.active.color: "orange-3"</span>
+<span id="cb20-12"><a href="#cb20-12"></a>config.style.page.footer.font: "16 italic"</span>
+<span id="cb20-13"><a href="#cb20-13"></a>config.footer.left: "Alice im Reich der Ringe"</span>
+<span id="cb20-14"><a href="#cb20-14"></a>--</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Die erste Zeile sorgt dafür, daß der Text der Geschichte immer am oberen Seitenrand beginnt, und nicht – wie es bei Chapbook der Default ist – in der Mitte der Seite. Dadurch werden unschöne Zeilensprünge vermieden, wenn dem Text live Zeilen oder Abschnitte hinzugefügt werden.</p>
+<p>Die Zeile <code>config.style.page.footer.link.active.font: "16 italic none"</code> eliminiert die <em>small caps</em> im Footer der Seite durch ein freundliches kursiv, die darauf folgenden Zeilen setzen die Link-Farben und den Link-Stil jeweils für den hellen und den dunklen Mode.</p>
+<p>Eine Besonderheit sind die beiden letzten Zeilen, in denen festgelegt wird, daß die Zeichenfolge <code>Alice im Reich der Ringe</code> links im Footer jeder Seite in 16 Punkt kursiv erscheint.</p>
+<p>Welche <code>config</code>-Objekte existieren und mit welchen Default-Werten sie vorbelegt sind, könnt Ihr nachschauen, wenn Ihr in der <em>Backstage View</em> der Testumgebung unter dem Reiter <code>Stage</code> den Button <code>Show Defaults</code> ankreuzt. Alle diese Werte können von Euch bei Bedarf überschrieben werden.</p>
+<p>Ich habe das kleine Tutorial sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloaded/alice1/alicereloaded1.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloaded/alice1/alicereloaded1.twee">Twee-Datei</a> mit <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloaded/alice1/images">allen Assets</a> auf meinem GitHub-Account hochgeladen. Falls Ihr damit spielen wollt, müsst Ihr den Pfad zu den Bildern gegebenenfalls noch anpassen.</p>
+<hr>
+<p>Und für die ganz ungeduldigen unter Euch, die einfach nur spielen wollen, habe ich die Geschichte auch in diese Seite eingebunden:</p>
+<iframe src="alice/index.html" width="90%" height="800px">
+</iframe>
+<hr>
+<p>Habt Spaß damit …</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopiert");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopiert");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://giscus.app/client.js" data-repo="kantel/kantel.github.io" data-repo-id="R_kgDOIjiXMQ" data-category="General" data-category-id="DIC_kwDOIjiXMc4CS_hh" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="en" crossorigin="anonymous" async="">
+</script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+</div> <!-- /content -->
+
+
+
+
+</body></html>
