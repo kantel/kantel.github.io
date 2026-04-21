@@ -10,7 +10,50 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Mon, 20 Apr 2026 17:55:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 21 Apr 2026 13:45:00 GMT</lastBuildDate>
+<item>
+  <title>Statische Seiten: Ist Zensical der legitime Nachfolger von MkDocs (Material)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026042101_zensical/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55050760046/"><img src="https://kantel.github.io/posts/2026042101_zensical/images/zensical-b.jpg" class="img-fluid"></a></p>
+<p>Als ich im Juni letzten Jahres <a href="https://kantel.github.io/posts/2024070602_mkdocs_reloaded/">MkDocs</a> (genauer: <a href="https://squidfunk.github.io/mkdocs-material/">Material für MkDocs</a>) <a href="https://kantel.github.io/posts/2025062101_mkdocs/">wiederentdeckte</a>, war ich fasziniert. Denn mit diesem freien (BSD-Lizenz), in Python geschriebenen, Markdown-basierten Generator für statische Seiten, hatte ich bereits sehr gute Erfahrungen gemacht.</p>
+<p>Doch damals galt schon, was auch heute noch gilt: <em>Tempus fuget</em>. Denn nach neun Jahren MkDocs-Entwicklung kehrte der ursprüngliche Entwickler zurück und begann mit der Arbeit an MkDocs&nbsp;2.0 – diesmal mit einem radikal anderen Ansatz: keine Plugin-API und Anpassung ausschließlich über Templates. Doch <em>Martin Donath</em> (online bekannt als <em><a href="https://github.com/squidfunk">Squidfunk</a></em>), der Schöpfer von Material for MkDocs erkannte, daß die geplangen Änderungen nicht nur Material for MkDocs, sondern auch weitere rund 300 Plugins des Ökosystems unbrauchbar machen und Zehntausende von Projekten beeinträchtigen würden. Da ihre Einwände jedoch ignoriert wurden, entschieden sich <em>Martin Donath</em> und andere Entwickler des MkDocs-Ökosystems, <strong><a href="https://talkpython.fm/episodes/show/542/zensical-a-modern-static-site-generator">Zensical</a></strong> (macOS, Linux, Windows – MIT-Lizenz) von Grund auf neu zu entwickeln und dabei die Erfahrungen aus zehn Jahren Entwicklung in die Architektur einfließen zu lassen.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/V1BvvIPUzes?si=83PV4my9pdhJlhhu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Aktuell konzentriert sich das Projekt primär auf die Dokumentation, das ambitionierte Ziel ist jedoch eine umfassende Wissensmanagement- und Dokumentationslösung, die als Alternative zu SaaS-Tools wie Confluence und Notion dienen kann. Mit einem auf Rust basierenden Kern, modularer Architektur und differenziellen Builds ist Zensical so konzipiert, daß es von einer einzelnen Seite bis zu 100.000 Seiten skalieren kann.</p>
+<p>Die Laufzeitumgebung von Zensical (ZRX) ist vollständig in <a href="https://www.rust-lang.org/">Rust</a> geschrieben und übernimmt Orchestrierung, Threading, Caching und Parallelisierung. Python-Modulentwickler müssen Rust nicht lernen, da <a href="https://pyo3.rs/">PyO3</a> Schnittstellen bereitstellt, mit denen sie Zensical-Module in Python schreiben und gleichzeitig von der Geschwindigkeit der Rust-Laufzeitumgebung profitieren können.</p>
+<p>Die häufigste Beschwerde von Nutzern von Material for MkDocs war die Langsamkeit und mangelnde Skalierbarkeit des Programms. Schon die Korrektur eines einzigen Tippfehlers führte zu einem kompletten Neuaufbau, der auf großen Websites Minuten dauern konnte. Zensical löst dieses Problem mit differenziellen Builds: Nur die tatsächlich geänderten Seiten und Elemente werden neu erstellt. Ändert man beispielsweise einen Seitentitel, werden nur diese Seite und alle darauf verweisenden Stellen neu aufgebaut.</p>
+<p><strong>Die Kompatibilität mit dem Material für MkDocs hat höchste technische Priorität</strong>: Zensical kann bereits <code>mkdocs.yml</code>-Konfigurationsdateien lesen, und das Ziel ist, Nutzern die Migration ihrer Projekte mit einem einzigen Befehl zu ermöglichen. Das Team verwendet derzeit bewusst <a href="https://python-markdown.github.io/">Python Markdown</a> (denselben Parser wie MkDocs), um eine identische Markdown-Darstellung zu gewährleisten, obwohl zukünftig ein Wechsel zu <a href="https://commonmark.org/">CommonMark</a> geplant ist. CommonMark ermöglicht die Unterstützung von <a href="https://mdxjs.com/">MDX</a>, einem Dialekt, der das Einbetten wiederverwendbarer Komponenten in Markdown erlaubt – eine Funktion, die Frontend-Entwickler bereits seit Jahren mit Tools wie Docusaurus nutzen.</p>
+<section id="links" class="level3">
+<h3 class="anchored" data-anchor-id="links">Links</h3>
+<ul>
+<li><a href="https://zensical.org/">Zensical Home</a></li>
+<li><a href="https://zensical.org/docs/get-started/">Zensical Documentation</a></li>
+<li><a href="https://github.com/zensical/zensical">Zensical @ GitHub</a></li>
+</ul>
+<p>Das alles klingt so interessant, daß ich auf jeden Fall Zensical einmal testen werde (<a href="https://github.com/zensical/zensical/releases/tag/v0.0.34">Download</a>), auch wenn sich die Software vermutlich noch in einer frühen Fassung (aktuell: v0.0.34) befindet. Vor allem, weil man mit Material for MkDocs und daher vermutlich auch mit Zensical ein <del>Blog</del> Kritzelheft füttern können soll. Ich werde dann berichten. <em>So viel zu spielen, so wenig Zeit!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55050760046/">Jo Hippo</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>An anthropogenic hippopotamus wearing glasses, a blue jacket, a white shirt, and a red tie sits at a desk in front of a computer with two monitors, typing with its right hand. In its left hand, it holds a steaming mug of hot coffee. On the desk lies a stack of papers and files labeled with terms such as “Ideen,” “Projekte,” “Notizen,” “Politik,” “Python,” “Programmierung,” “Games,” and “Verschiedenes.” Next to the keyboard is a mug containing writing utensils and an open notebook. Behind the desk, along the walls, are tall shelves filled with files, books, and knick-knacks. Everything appears chaotic. Sunlight streams into the room through a window on the side. Colored classic comic style. Language: German. No speech bubbles. No text boxes.</em>« Modell: Flux.2 Flex.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>MkDocs</category>
+  <category>Zensical</category>
+  <category>Markdown</category>
+  <category>Statische Seiten</category>
+  <category>Zettelkasten</category>
+  <category>Webworking</category>
+  <guid>https://kantel.github.io/posts/2026042101_zensical/</guid>
+  <pubDate>Tue, 21 Apr 2026 13:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026042101_zensical/images/zensical.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Einladung aus der Nachbarschaft: Frühlingsfest auf dem Kulturbunkerdach</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1596,67 +1639,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026032502_narrative_game_lab/</guid>
   <pubDate>Wed, 25 Mar 2026 20:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026032502_narrative_game_lab/images/steamlab.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Interaktive Geschichten mit Ink und Inky entwickeln</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026032501_ink_und_inky/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55168249914/"><img src="https://kantel.github.io/posts/2026032501_ink_und_inky/images/inky-b.jpg" class="img-fluid"></a></p>
-<p>Neben den <a href="https://kantel.github.io/posts/2026032402_vis_nov_tutorials/">gestern vorgestellten Tutorials</a> zu interaktiven Geschichten und <em>Visual Novels</em> spülte mir unser aller Datenkrake auch Material zu <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html">Ink und Inky</a> in meinen Feedreader. Langjährige Leser des <em>Schockwellenreiters</em> erinnern sich: <strong><a href="https://www.inklestudios.com/ink/">Ink</a></strong> ist eine freie (MIT-Lizenz) Skriptsprache für interaktive Fiktion. Im Gegensatz zum verwandten <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> ist es nicht auf eine HTML-Ausgabe festgelegt, sondern sondern das <em>native</em> Datenformat ist <code>JSON</code> und damit können Ink-Skripte nicht nur nach HTML exportiert werden, sondern eigentlich nach allem, was mit <code>JSON</code> etwas anfangen kann. Von Hause aus bringt Ink ein Plug-in für <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/unity.html">Unity</a> mit. Denn Ink wurde von der Spieleschmiede <a href="https://www.inklestudios.com/">Inkle</a> entwickelt, die ihre eigenen Spiele, wie zum Beispiel »<a href="https://www.inklestudios.com/80days/">80 Days</a>« oder »<a href="https://www.inklestudios.com/sorcery/">Sorcery!</a>«, in Ink schreibt und in Unity veröffentlicht.</p>
-<p><a href="https://github.com/inkle/inky">Inky</a> wiederum steht ebenfalls unter der MIT-Lizenz und ist ein freier, plattformübergreifender (Windows, Linux, Mac) Editor für Ink. Es ist eine Electron-Anwendung und sieht ungefähr so aus wie viele Markdown-Editoren: Links der Quelltext und rechts das herausgeschriebene Spiel, das man in Inky sogar spielen kann. Über beide hatte ich zuerst im <a href="http://blog.schockwellenreiter.de/2018/08/2018082402.html">August&nbsp;2018 im <em>Schockwellenreiter</em> berichtet</a>, aber auch danach <a href="https://kantel.github.io/#category=Ink">standen sie immer mal wieder</a> auf meiner Agenda.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/1rDc8q3kunU?si=5k8YH3NdajULljBv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Als nun das Video »<a href="https://www.youtube.com/watch?v=1rDc8q3kunU">Ink - Programming Language for Game Narratives - Godot | Unity | Unreal | More</a>« in meinen Feedreader spülte, das unter anderem auch einen Export nach Godot propagierte, dachte ich mir: Moment nochmal, auch die <em>Visual Novel</em>-Engines <a href="https://monogatari.io/">Monogatari</a> und <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> basieren auf <code>JSON</code>, es müßte also möglich sein, sie mit Ink zu verheiraten.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/OtTezJZTuy4?si=6IGaTxB_nppN7-SY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Zur Vorbereitung möchte ich mir erst einmal die Playlist »<a href="https://www.youtube.com/playlist?list=PLtepyzbiiwBrHoTloHJ2B-DWQxgrseuMB">Godot &amp; Ink</a>« mit ihren acht Videos anschauen, um ein Gefühl für die Möglichkeiten zu bekommen, die ein Export nach <code>JSON</code> bietet.</p>
-<section id="tutorials-zu-ink" class="level3">
-<h3 class="anchored" data-anchor-id="tutorials-zu-ink">Tutorials zu Ink</h3>
-<p>Und da es lange her ist, daß ich etwas mit Ink angestellt hatte – auch wenn mein <a href="http://blog.schockwellenreiter.de/gems/Home_Sweet_Home/">Ausflug mit Ink ins Wunderland</a> immer noch online ist –, bedürfen meine Kenntnisse der Skriptsprache von Ink dringend einer Auffrischung. Also habe ich mir ein paar Tutorials herausgesucht:</p>
-<div style="float: right; margin-left: 12px; margin-top: 6px;">
-<a href="https://inklestudios.myshopify.com/products/ink-official-users-guide"><img src="https://kantel.github.io/posts/2026032501_ink_und_inky/images/ink-book-cover.jpg" class="img-fluid"></a>
-</div>
-<ul>
-<li>Der ultimative Guide zu Ink ist nach wie vor der »<a href="https://inklestudios.myshopify.com/products/ink-official-users-guide">Offizielle User’s Guide</a>«, den Ihr als Totes Holz oder als Ebook (ePub) direkt bei Inkle erwerben könnt.</li>
-<li>Auf den Seiten von Ink gibt es das »<a href="https://www.inklestudios.com/ink/web-tutorial/">Ink Tutorial for Beginners</a>« und die Anleitung »<a href="https://github.com/inkle/ink/blob/master/Documentation/WritingWithInk.md">Writing with Ink</a>«.</li>
-<li>Auf Medium.com findet ihr die »<a href="https://medium.com/game-writing-guide/introduction-to-ink-3e6c224865f8">Introduction to Ink</a>« von <em>Jon Ingold</em>, einem der Mitbegründer von <a href="https://inklestudios.myshopify.com/">Inkle</a>.</li>
-<li>In »<a href="https://melissakoven.com/publishing-an-ink-story-to-the-web/">Publishing an Ink story to the web</a>« zeigt Euch <em>Melissa Kove</em> ausführlich, wie Ihr Eure Ink-Spiele online bekommt.</li>
-<li>»<a href="https://pressbooks.library.torontomu.ca/playablestoriesink/">Creating Playable Stories with Ink and Inky</a>« ist ein Buch von <em>Jeremy Andriano</em>, das Ihr komplett online und für umme lesen könnt.</li>
-<li>Ein Klassiker ist »<a href="https://www.edmcrae.com/article/learning-ink-script-tutorial-one">Learning Ink Script</a>« von <em>Edwin McRae</em>, von dem acht Tutorials online zu lesen sind (unten auf den Seiten findet Ihr jeweils den Link zur nächsten Folge).</li>
-</ul>
-<p>Dann gibt es natürlich noch einige Videos und Playlisten:</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/iY9PrNQik_I?si=rHp8OoermLH37OFT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>»<a href="https://www.youtube.com/playlist?list=PLuSvdAg-FtpxCQ0SN-Da0-55woO_TkB0g">Teach Me How To Ink</a>« – diese vierteilige Playlist des Users <em>hoverboard</em> ist trotz oder wegen ihres Alters von sechs bis acht Jahren ein Klassiker.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/KSRpcftVyKg?si=WmOALHUhLLW8bprZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Das Tutorial »<a href="https://www.youtube.com/watch?v=KSRpcftVyKg">Learn Ink in 15 Minutes</a>« ist ein Kurzeinstieg für diejenigen, die schnell ein Ergebnis sehen möchten.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/WEu7MaasdEo?si=O8lLDiEUZUawkMU_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>In dem Tutorial »<a href="https://www.youtube.com/watch?v=WEu7MaasdEo">Inky: Create Web Comics and Interactive Stories</a> des <em>Cutscene Artist</em> nervt zwar der KI-generierte Sprecher, aber da mich das Thema interessiert, habe ich darüber hinweggesehen.</p>
-<p><strong>War sonst noch was?</strong> Ach ja, für Visual Studio Code gibt es den <a href="https://marketplace.visualstudio.com/items?itemName=rageave.inkle-vscode">Ink Language Support</a> für diejenigen, die lieber mit ihrem gewohnten Editor statt mit Inky arbeiten.</p>
-<p>So, jetzt habe ich erst einmal wieder zu tun. Ich habe keine Ahnung, ob oder wann ich das alles schaffe. So viel zu spielen, so wenig Zeit. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55168249914/">Writing Interactive Stories with Ink</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt.ai</a>. Prompt: »<em><span class="citation" data-cites="Qumbo">@Qumbo</span> sits behind an old-fashioned desk, an open notebook in front of him, which he writes in with an old-fashioned, monstrous fountain pen. Next to the notebook is a huge, open inkwell. Beside the desk stands <span class="citation" data-cites="Rudi">@Rudi</span> Rabbit, glancing impatiently and frantically at his pocket watch. On the desk, to the right, lies a thick book titled “Writing Interactive Stories with Ink,” and to the left, a steaming, large coffee mug. Shelves line the walls, crammed with books on game programming, game design, and writing interactive stories. A fair amount of knick-knacks are crammed in between. The afternoon sun streams into the room through a large window. The window reveals a steampunk city, with a zeppelin gliding high in the sky. Colored Franco-Belgian comic style. No textboxes, no speech-bubbles.</em>« Modell: Nano&nbsp;Banana&nbsp;2.</p>
-
-
-</section>
-
- ]]></description>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <category>Ink</category>
-  <category>Godot</category>
-  <category>Monogatari</category>
-  <category>Tuesday JS</category>
-  <guid>https://kantel.github.io/posts/2026032501_ink_und_inky/</guid>
-  <pubDate>Wed, 25 Mar 2026 16:50:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026032501_ink_und_inky/images/inky.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

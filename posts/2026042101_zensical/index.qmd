@@ -1,0 +1,35 @@
+---
+title: "Statische Seiten: Ist Zensical der legitime Nachfolger von MkDocs (Material)"
+author: "Jörg Kantel"
+date: "2026-04-21 15:45:00"
+categories: [MkDocs, Zensical, Markdown, Statische Seiten, Zettelkasten, Webworking]
+image: "images/zensical.jpg"
+---
+
+[![](images/zensical-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/55050760046/)
+
+Als ich im Juni letzten Jahres [MkDocs](https://kantel.github.io/posts/2024070602_mkdocs_reloaded/) (genauer: [Material für MkDocs](https://squidfunk.github.io/mkdocs-material/)) [wiederentdeckte](https://kantel.github.io/posts/2025062101_mkdocs/), war ich fasziniert. Denn mit diesem freien (BSD-Lizenz), in Python geschriebenen, Markdown-basierten Generator für statische Seiten, hatte ich bereits sehr gute Erfahrungen gemacht.
+
+Doch damals galt schon, was auch heute noch gilt: *Tempus fuget*. Denn nach neun Jahren MkDocs-Entwicklung kehrte der ursprüngliche Entwickler zurück und begann mit der Arbeit an MkDocs&nbsp;2.0 – diesmal mit einem radikal anderen Ansatz: keine Plugin-API und Anpassung ausschließlich über Templates. Doch *Martin Donath* (online bekannt als *[Squidfunk](https://github.com/squidfunk)*), der Schöpfer von Material for MkDocs erkannte, daß die geplangen Änderungen nicht nur Material for MkDocs, sondern auch weitere rund 300 Plugins des Ökosystems unbrauchbar machen und Zehntausende von Projekten beeinträchtigen würden. Da ihre Einwände jedoch ignoriert wurden, entschieden sich *Martin Donath* und andere Entwickler des MkDocs-Ökosystems, **[Zensical](https://talkpython.fm/episodes/show/542/zensical-a-modern-static-site-generator)** (macOS, Linux, Windows -- MIT-Lizenz) von Grund auf neu zu entwickeln und dabei die Erfahrungen aus zehn Jahren Entwicklung in die Architektur einfließen zu lassen.
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/V1BvvIPUzes?si=83PV4my9pdhJlhhu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+Aktuell konzentriert sich das Projekt primär auf die Dokumentation, das ambitionierte Ziel ist jedoch eine umfassende Wissensmanagement- und Dokumentationslösung, die als Alternative zu SaaS-Tools wie Confluence und Notion dienen kann. Mit einem auf Rust basierenden Kern, modularer Architektur und differenziellen Builds ist Zensical so konzipiert, daß es von einer einzelnen Seite bis zu 100.000 Seiten skalieren kann.
+
+Die Laufzeitumgebung von Zensical (ZRX) ist vollständig in [Rust](https://www.rust-lang.org/) geschrieben und übernimmt Orchestrierung, Threading, Caching und Parallelisierung. Python-Modulentwickler müssen Rust nicht lernen, da [PyO3](https://pyo3.rs/) Schnittstellen bereitstellt, mit denen sie Zensical-Module in Python schreiben und gleichzeitig von der Geschwindigkeit der Rust-Laufzeitumgebung profitieren können.
+
+Die häufigste Beschwerde von Nutzern von Material for MkDocs war die Langsamkeit und mangelnde Skalierbarkeit des Programms. Schon die Korrektur eines einzigen Tippfehlers führte zu einem kompletten Neuaufbau, der auf großen Websites Minuten dauern konnte. Zensical löst dieses Problem mit differenziellen Builds: Nur die tatsächlich geänderten Seiten und Elemente werden neu erstellt. Ändert man beispielsweise einen Seitentitel, werden nur diese Seite und alle darauf verweisenden Stellen neu aufgebaut.
+
+**Die Kompatibilität mit dem Material für MkDocs hat höchste technische Priorität**: Zensical kann bereits `mkdocs.yml`-Konfigurationsdateien lesen, und das Ziel ist, Nutzern die Migration ihrer Projekte mit einem einzigen Befehl zu ermöglichen. Das Team verwendet derzeit bewusst [Python Markdown](https://python-markdown.github.io/) (denselben Parser wie MkDocs), um eine identische Markdown-Darstellung zu gewährleisten, obwohl zukünftig ein Wechsel zu [CommonMark](https://commonmark.org/) geplant ist. CommonMark ermöglicht die Unterstützung von [MDX](https://mdxjs.com/), einem Dialekt, der das Einbetten wiederverwendbarer Komponenten in Markdown erlaubt – eine Funktion, die Frontend-Entwickler bereits seit Jahren mit Tools wie Docusaurus nutzen. 
+
+### Links
+
+- [Zensical Home](https://zensical.org/)
+- [Zensical Documentation](https://zensical.org/docs/get-started/)
+- [Zensical @ GitHub](https://github.com/zensical/zensical)
+
+Das alles klingt so interessant, daß ich auf jeden Fall Zensical einmal testen werde ([Download](https://github.com/zensical/zensical/releases/tag/v0.0.34)), auch wenn sich die Software vermutlich noch in einer frühen Fassung (aktuell: v0.0.34) befindet. Vor allem, weil man mit Material for MkDocs und daher vermutlich auch mit Zensical ein ~~Blog~~ Kritzelheft füttern können soll. Ich werde dann berichten. *So viel zu spielen, so wenig Zeit!*
+
+---
+
+**Bild**: *[Jo Hippo](https://www.flickr.com/photos/schockwellenreiter/55050760046/)*, erstellt mit [OpenArt](https://openart.ai/home). Prompt: »*An anthropogenic hippopotamus wearing glasses, a blue jacket, a white shirt, and a red tie sits at a desk in front of a computer with two monitors, typing with its right hand. In its left hand, it holds a steaming mug of hot coffee. On the desk lies a stack of papers and files labeled with terms such as "Ideen," "Projekte," "Notizen," "Politik," "Python," "Programmierung," "Games," and "Verschiedenes." Next to the keyboard is a mug containing writing utensils and an open notebook. Behind the desk, along the walls, are tall shelves filled with files, books, and knick-knacks. Everything appears chaotic. Sunlight streams into the room through a window on the side. Colored classic comic style. Language: German. No speech bubbles. No text boxes.*« Modell: Flux.2 Flex.
