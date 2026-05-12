@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Neues von meiner digitalen Rumpelkammer: Anytype Desktop v0.55 veröffentlicht – Der Schockwellenreiter</title>
+<title>Es geht wieder zurück in die wilden 90er (mit dem IndieWeb) – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -70,6 +70,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -127,10 +156,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Neues von meiner digitalen Rumpelkammer: Anytype Desktop v0.55 veröffentlicht</h1>
+<h1 class="title">Es geht wieder zurück in die wilden 90er (mit dem IndieWeb)</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">Anytype</div>
-    <div class="quarto-category">Zettelkasten</div>
+    <div class="quarto-category">IndieWeb</div>
+    <div class="quarto-category">Medien</div>
+    <div class="quarto-category">Digitales Leben</div>
+    <div class="quarto-category">Statische Seiten</div>
+    <div class="quarto-category">Webworking</div>
   </div>
   </div>
 
@@ -148,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">7. Mai 2026</p>
+      <p class="date">12. Mai 2026</p>
     </div>
   </div>
   
@@ -160,17 +192,15 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55253912422/"><img src="images/maerzhase-b.jpg" class="img-fluid"></a></p>
-<p>Es gibt mal wieder Neues von <a href="https://anytype.io/">Anytype</a> zu berichten, der Software, die zusammen mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/joplin.html">Joplin</a> die <a href="https://kantel.github.io/posts/2025112701_anytype_051/">Basis für mein »zweites Gehirn«</a> bildet. Dabei ist Joplin so etwas wie mein täglicher Zettelkasten, während Anytype wegen der Möglichkeit, die Seiten aufzuhübschen und auch (einzelne) Seiten für das Web zu exportieren, ein Zwischending zwischen einem digitalen Garten und einer digitalen Rumpelkammer darstellt.</p>
-<p>Schon Ende April wurde von <a href="https://download.anytype.io/">Anytype Desktop</a> die Version 0.55 veröffentlicht. Diese Version führt Objektdiskussionen ein – kommentieren und verschachtelte Unterhaltungen direkt in jedem Objekt führen. Bereiche und Chats werden in Kanäle mit einem überarbeiteten Erstellungsprozess integriert, Dateien werden zu vollwertigen Objekten, die Ihr hochladen und organisieren könnt, Lesezeichen erhalten ein eigenes Layout, und die neue Anytype Agents’ Skill ermöglicht es KI-Programmieragenten, Ihre Daten zu lesen, zu erstellen und zu bearbeiten.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/ugbq3ZG2YX4?si=HhgwVLXssb9MjNuj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55237849572/"><img src="images/back90ies-b.jpg" class="img-fluid"></a></p>
+<p>Es geht weiter mit <a href="https://kantel.github.io/posts/2026042902_zurueck_90er/">meiner frisch erwachten Begeisterung</a>, genau <a href="https://kantel.github.io/posts/2026050602_indieweb/">wie damals in den 90er Jahren</a> einfach Webseiten <a href="http://blog.schockwellenreiter.de/2022/05/2022052401.html">ohne Sinn und Verstand</a> (und vor allem auch ohne Kommerzdruck) zusammenzubasteln. Denn auch den »Happy Coder« <em><a href="https://happycoding.io/">Kevin Workman</a></em> hat es erwischt: In seinem letztjährigen Seminar »<a href="https://www.youtube.com/playlist?list=PLty5Qt07EFvBEWemeNHQj25R1I-PQhvtj">Intro to Web Dev – Fall 2024</a>« setzte er – genau wie ich – noch auf <a href="https://www.youtube.com/watch?v=5g5laQST0Tg">Glitch&nbsp;🎏 als Spielplatz</a> für seine Webexperimente (und die Experimente seiner Studentinnen und Studenten).</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/Dq5MYv2BUwg?si=XoiB4RwiY4AUNVcN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
 </iframe>
-<p>Darüber hinaus: Ein neu gestalteter Papierkorb mit Löschberechtigungen, ein neuer Seitenleisten-Ansichtsmodus, angeheftete Nachrichten und eine lange Liste von Fehlerbehebungen und Verbesserungen der Benutzerfreundlichkeit in der gesamten App. Wie immer führt die <em>fokussierte Neugierde</em> in <a href="https://www.youtube.com/watch?v=ugbq3ZG2YX4">obigem Video</a> durch die wichtigsten Neuerungen dieses Updates. Eine komplette Liste aller Änderungen findet Ihr in den <a href="https://community.anytype.io/t/anytype-desktop-0-55-0-let-s-discuss/30672">Release Notes</a>.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/6wB7GXuOazU?si=-ONYhfauiUrhMBD3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Darüber hinaus gibt es von der <em>fokussierten Neugierde</em> auch noch ein Bonus-Video: Anläßlich des <a href="https://de.wikipedia.org/wiki/Star_Wars_Day">Star-Wars-Tages</a> am 4.&nbsp;Mai <em>(May the <del>fourth</del> force be with you)</em> hat sie als ein Beispiel der Graphansicht von Anytype die Familienbeziehungen der Star-Wars-Personen visualisiert. Auch wenn dies nur ein kleines – und dazu auch noch ein unvollständiges – Beispiel ist, zeigt es, welche Möglichkeiten in der Graphansicht stecken. Ganz Hartgesottene können sich ja mal an die Verwandschaftsbeziehungen des griechischen Götterolymps wagen. Das wäre dann eine echte Herkulesaufgabe.</p>
+<p>Doch nach dem überraschenden <a href="https://kantel.github.io/posts/2025052402_glitch_ende/">Ende von Glitch&nbsp;🎏</a> musste auch er umdisponieren und so verlegte er den Spielplatz für seinen aktuellen Kurs »<a href="https://www.youtube.com/playlist?list=PLty5Qt07EFvBrbNMCg04Q2vUleiasg54M">Intro to Web Dev - Fall 2025</a>« für sich und seine Studentinnen und Studenten nach Neocities. Diesen Umzug hat er in dem obigen, einleitenden Video für diesen Kurs »<a href="https://www.youtube.com/watch?v=Dq5MYv2BUwg">Coding HTML with Neocities</a>« dokumentiert und gleichzeitig in seinem Beitrag »<a href="https://happycoding.io/tutorials/html/online-code-editors">Online Code Editors</a>« begründet.</p>
+<p>Doch Vorsicht, <em>Kevin Workmans</em> aktuelle Playlisten sind wie Blogposts organisiert, der jüngste Beitrag steht immer oben. Wenn Ihr die Videos daher in chronologischer Reihenfolge schauen und mit dem zeitlich ältesten beginnen wollt, müsst Ihr mit dem Video mit der höchsten Nummer – in diesem Fall »<span class="math inline">\(18\)</span>« – beginnen und Euch dann rückwärts vorarbeiten. Aber Kevins Videos sind nicht nur lehrreich, sondern auch sehr kurzweilig. Die Mühe lohnt sich also auf jeden Fall.</p>
+<p>Und ob <a href="https://de.wikipedia.org/wiki/Neocities">Neocities</a>, <a href="https://nekoweb.org/">Nekoweb</a> oder <a href="https://www.netlify.com/">Netlify</a>, das <a href="https://en.wikipedia.org/wiki/IndieWeb">IndieWeb</a> hat auch mich gepackt: Ich kann es kaum erwarten, wieder wie früher in den wilden 90ern Webseiten ohne Sinn und Verstand zusammenzuschrauben. <em>Still digging!</em></p>
 <hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55253912422/">Die Zettelkästen des Märzhasen</a></em>, erstellt mit OpenArt. Prompt: »<em>The March Hare sits at a desk in front of an antiquated, steampunk-style computer, typing on a keyboard. He wears a pair of aviator goggles, which he has pushed up onto his forehead. On the desk stands an open card catalog, its contents a chaotic jumble of handwritten index cards and loose scraps of paper. Beside the keyboard sits a mug of steaming coffee. Shelves crammed with books and steampunk knick-knacks line the walls. Through a window, one looks out upon a steampunk version of Berlin. Colored classic American comic style. Language: German. No speech bubbles, no textboxes. No German flags.</em>« Modell: Nano Banana&nbsp;2.</p>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55237849572/">Steampunk Qumbo</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Qumbo">@Qumbo</span> sits at a massive desk in front of a steampunk-style computer, using an old-fashioned keyboard. Shelves line the wall, crammed with books and steampunk knick-knacks. Through a window, one can see an alternative steampunk Berlin. A poster on one wall, between the shelves, reads “Back to the 90s,” adorned with a few Neocities-style stickers. Colored classic American comic style. Language: German. No textboxes, no speech bubbles, no headlines.</em>« Modell: Nano Banana 2.</p>
 
 
 
