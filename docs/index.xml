@@ -10,7 +10,63 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Mon, 01 Jun 2026 18:55:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 02 Jun 2026 14:15:00 GMT</lastBuildDate>
+<item>
+  <title>Marimo: Das Python-Notebook, das endlich Sinn ergibt</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026060201_marimo_introduction/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55305487963/"><img src="https://kantel.github.io/posts/2026060201_marimo_introduction/images/marimo_tutorial-b.jpg" class="img-fluid"></a></p>
+<p>Schon mehrfach hatte ich in diesem <del>Blog</del> Kritzelheft über <a href="https://marimo.io/">Marimo</a>, den neuen Stern am Python-Notebook-Himmel <a href="https://kantel.github.io/index.html#category=Marimo">berichtet</a>. Und immer waren diese Berichte mit guten Vorsätzen pepflastert, die nie zur Ausführung kamen. Heute also in weiterer Anlauf. Schauen wir mal, was daraus wird.</p>
+<p><em>Sumit Panday</em> schreibt in <em><a href="https://www.towardsdeeplearning.com/marimo-the-python-notebook-that-finally-makes-sense-6243ff8c0374">The Python notebook that finally makes sense</a></em> (Medium.com, eventuell Bezahlschranke (€)): Marimo ist ein Open-Source-Python-Notebook. Reaktiv. Wird als einfache <code>.py</code>-Datei gespeichert. Es kann als Notebook, Skript oder Webanwendung aus demselben Quellcode ausgeführt werden. Das ist die gesamte Produktbeschreibung.</p>
+<p>Alles andere ist eine Folge. Der Clou ist der Abhängigkeitsgraph. Marimo analysiert Euren Code und ermittelt, welche Zellen von welchen Variablen abhängen. Ändert Ihr einen Wert in einer Zelle, werden alle nachfolgenden Zellen automatisch neu ausgeführt. Kein veralteter Zustand. Kein »Habe ich das in der richtigen Reihenfolge ausgeführt?«. Wenn eine Zelle auf eine nicht mehr existierende Variable verweist, erhaltet Ihr eine Fehlermeldung beim Bearbeiten, nicht erst drei Stunden nach Beginn einer Besprechung. Dies ist keine Jupyter-Schnittstelle. Es handelt sich um ein von Grund auf neues Design.</p>
+<p>Marimo wird innerhalb kurzer Zeit installiert. Ihr benötigt lediglich Python 3.9 oder neuer (idealerweise in einer eigenen Umgebung). Dann:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install marimo</span></code></pre></div>
+<p>Das war’s. Keine JupyterLab-Erweiterung, keine Kernel-Registrierung. <code>ipykernel install --user --name=...</code> Das Paket ist in sich abgeschlossen. Um es ohne Installation auszuprobieren, öffnet Ihr es einfach <a href="https://molab.marimo.io/notebooks/">molab.marimo.app</a> im Browser und klickt auf »New Notebook«. Es handelt sich um die vom Marimo-Team gehostete Version. WebAssembly, keine Einrichtung erforderlich, läuft im Tab.</p>
+<p>Sinnvoller ist aber eine lokale Installation. Programme, die man auf dem eigenen Rechner installiert, funktionieren in der Regel auch nach zwei Jahren noch.</p>
+<p>Marimo-Notebooks sind reine Python-Dateien: <code>.py</code> und kein <code>.ipynb</code>-Gepfriemel. Und mit</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">marimo</span> run notebook.py</span></code></pre></div>
+<p>fungiert das Notebook als Webanwendung. Die Zellen mit Code verschwinden. Widgets und Ausgaben bleiben erhalten. Euer Notebook ist nun ein Streamlit-Dashboard, nur daß Ihr keine separate Streamlit-Anwendung geschrieben habt.</p>
+<p>Ihr könnt es mit WebAssembly auch in eine einzelne <strong>statische</strong> (sic!) HTML-Datei exportieren:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">marimo</span> export html-wasm notebook.py <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> dist</span></code></pre></div>
+<p>Diese HTML-Datei führt Python im Browser aus. Kein Server erforderlich. Sie kann auf GitHub Pages oder hinter jedem beliebigen Webserver gehostet werden. Der Leser erhält über eine statische URL ein interaktives Notebook.</p>
+<p>Wenn ich jetzt noch herausbekomme, ob und wie Marimo mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> funktioniert, dem <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>-Python3-Modul, das Processings Original-Bibliotheken (via JPype) nutzt, dann habe ich ein neues Spielzeug gefunden. <em>Still digging!</em></p>
+<section id="anhang-marimo-tutorials" class="level3">
+<h3 class="anchored" data-anchor-id="anhang-marimo-tutorials">Anhang: Marimo-Tutorials</h3>
+<iframe class="if16_9" src="https://www.youtube.com/embed/XaKvqdOJlZo?si=Q1TppwvbG4p23P8j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p><a href="https://www.youtube.com/watch?v=XaKvqdOJlZo">Time to Revisit Python Notebooks</a> - with Hamel Husain.</p>
+<ul>
+<li>Dr.&nbsp;Shouke Wei: <em><a href="https://medium.com/@shouke.wei/marimo-tutorial-i-your-first-marimo-notebook-5bf2228b2e39">Marimo Tutorial (I): Your First Marimo Notebook</a></em>, Medium.com (€), 31.&nbsp;Dezember&nbsp;2025</li>
+<li>ders.: <em><a href="https://medium.com/@shouke.wei/marimo-tutorial-ii-interactive-controls-with-sliders-f0a8628dbfac">Marimo Tutorial (II): Interactive Controls with Sliders</a></em>, Medium.com (€), 2.&nbsp;Januar&nbsp;2026</li>
+<li>ders.: <em><a href="https://medium.com/@shouke.wei/marimo-tutorial-iii-data-analysis-that-never-breaks-e2ebe021a626">Marimo Tutorial (III): Data Analysis That Never Breaks</a></em>, Medium.com (€), 5.&nbsp;Januar&nbsp;2026</li>
+</ul>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55305487963/">Marimo Python</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning. Classic American comic book style. No speech bubbles, no text boxes.A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning. Classic American comic book style. No speech bubbles, no text boxes.</em>« Modell: Nano Banana 2</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Python</category>
+  <category>Marimo</category>
+  <category>Py5</category>
+  <guid>https://kantel.github.io/posts/2026060201_marimo_introduction/</guid>
+  <pubDate>Tue, 02 Jun 2026 14:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026060201_marimo_introduction/images/marimo_tutorial.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Q5play spielt jetzt auch mit P5.js v2</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -681,32 +737,6 @@ font-style: inherit;">"</span> bash</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026050602_indieweb/</guid>
   <pubDate>Wed, 06 May 2026 13:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026050602_indieweb/images/aethernetze.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Waschküche Bürgerstraße (Upside Down)</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026050601_waschkueche_buergerstrasse/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55251542979/"><img src="https://kantel.github.io/posts/2026050601_waschkueche_buergerstrasse/images/waschkueche-b.jpg" class="img-fluid"></a></p>
-<p>Kaum ist das Wetter etwas freundlicher geworden, kann auf den Straßen Neuköllns auch wieder im Freien gewaschen werden.</p>
-<p>Wieder ein schönes Fundstück für meine mittlerweile knapp 2.000 Bilder umfassende Sammlung »<a href="https://www.flickr.com/photos/schockwellenreiter/albums/1244272/">Wohnsitz Neukölln</a>«.</p>
-<hr>
-<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>Neukölln</category>
-  <category>Neuköllner Bilderbogen</category>
-  <category>Wohnsitz Neukölln</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026050601_waschkueche_buergerstrasse/</guid>
-  <pubDate>Wed, 06 May 2026 11:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026050601_waschkueche_buergerstrasse/images/waschkueche.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,58 @@
+---
+title: "Marimo: Das Python-Notebook, das endlich Sinn ergibt"
+author: "Jörg Kantel"
+date: "2026-06-02 16:15:00"
+categories: [Python, Marimo, Py5]
+image: "images/marimo_tutorial.jpg"
+---
+
+[![](images/marimo_tutorial-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/55305487963/)
+
+Schon mehrfach hatte ich in diesem ~~Blog~~ Kritzelheft über [Marimo](https://marimo.io/), den neuen Stern am Python-Notebook-Himmel [berichtet](https://kantel.github.io/index.html#category=Marimo). Und immer waren diese Berichte mit guten Vorsätzen pepflastert, die nie zur Ausführung kamen. Heute also in weiterer Anlauf. Schauen wir mal, was daraus wird.
+
+*Sumit Panday* schreibt in *[The Python notebook that finally makes sense](https://www.towardsdeeplearning.com/marimo-the-python-notebook-that-finally-makes-sense-6243ff8c0374)* (Medium.com, eventuell Bezahlschranke (€)): Marimo ist ein Open-Source-Python-Notebook. Reaktiv. Wird als einfache `.py`-Datei gespeichert. Es kann als Notebook, Skript oder Webanwendung aus demselben Quellcode ausgeführt werden. Das ist die gesamte Produktbeschreibung.
+
+Alles andere ist eine Folge. Der Clou ist der Abhängigkeitsgraph. Marimo analysiert Euren Code und ermittelt, welche Zellen von welchen Variablen abhängen. Ändert Ihr einen Wert in einer Zelle, werden alle nachfolgenden Zellen automatisch neu ausgeführt. Kein veralteter Zustand. Kein »Habe ich das in der richtigen Reihenfolge ausgeführt?«. Wenn eine Zelle auf eine nicht mehr existierende Variable verweist, erhaltet Ihr eine Fehlermeldung beim Bearbeiten, nicht erst drei Stunden nach Beginn einer Besprechung. Dies ist keine Jupyter-Schnittstelle. Es handelt sich um ein von Grund auf neues Design.
+
+Marimo wird innerhalb kurzer Zeit installiert. Ihr benötigt lediglich Python 3.9 oder neuer (idealerweise in einer eigenen Umgebung). Dann:
+
+~~~bash
+pip install marimo
+~~~
+
+Das war's. Keine JupyterLab-Erweiterung, keine Kernel-Registrierung. `ipykernel install --user --name=...` Das Paket ist in sich abgeschlossen. Um es ohne Installation auszuprobieren, öffnet Ihr es einfach [molab.marimo.app](https://molab.marimo.io/notebooks/) im Browser und klickt auf »New Notebook«. Es handelt sich um die vom Marimo-Team gehostete Version. WebAssembly, keine Einrichtung erforderlich, läuft im Tab.
+
+Sinnvoller ist aber eine lokale Installation. Programme, die man auf dem eigenen Rechner installiert, funktionieren in der Regel auch nach zwei Jahren noch.
+
+Marimo-Notebooks sind reine Python-Dateien: `.py` und kein `.ipynb`-Gepfriemel. Und mit 
+
+~~~bash
+marimo run notebook.py
+~~~
+
+fungiert das Notebook als Webanwendung. Die Zellen mit Code verschwinden. Widgets und Ausgaben bleiben erhalten. Euer Notebook ist nun ein Streamlit-Dashboard, nur daß Ihr keine separate Streamlit-Anwendung geschrieben habt.
+
+Ihr könnt es mit WebAssembly auch in eine einzelne **statische** (sic!) HTML-Datei exportieren:
+
+~~~bash
+marimo export html-wasm notebook.py -o dist
+~~~
+
+Diese HTML-Datei führt Python im Browser aus. Kein Server erforderlich. Sie kann auf GitHub Pages oder hinter jedem beliebigen Webserver gehostet werden. Der Leser erhält über eine statische URL ein interaktives Notebook.
+
+Wenn ich jetzt noch herausbekomme, ob und wie Marimo mit [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) funktioniert, dem [Processing](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html)-Python3-Modul, das Processings Original-Bibliotheken (via JPype) nutzt, dann habe ich ein neues Spielzeug gefunden. *Still digging!*
+
+### Anhang: Marimo-Tutorials
+
+<iframe class="if16_9" src="https://www.youtube.com/embed/XaKvqdOJlZo?si=Q1TppwvbG4p23P8j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+[Time to Revisit Python Notebooks](https://www.youtube.com/watch?v=XaKvqdOJlZo) - with Hamel Husain.
+
+- Dr. Shouke Wei: *[Marimo Tutorial (I): Your First Marimo Notebook](https://medium.com/@shouke.wei/marimo-tutorial-i-your-first-marimo-notebook-5bf2228b2e39)*, Medium.com (€), 31.&nbsp;Dezember&nbsp;2025
+- ders.: *[Marimo Tutorial (II): Interactive Controls with Sliders](https://medium.com/@shouke.wei/marimo-tutorial-ii-interactive-controls-with-sliders-f0a8628dbfac)*, Medium.com (€), 2.&nbsp;Januar&nbsp;2026
+- ders.: *[Marimo Tutorial (III): Data Analysis That Never Breaks](https://medium.com/@shouke.wei/marimo-tutorial-iii-data-analysis-that-never-breaks-e2ebe021a626)*, Medium.com (€), 5.&nbsp;Januar&nbsp;2026
+
+
+---
+
+**Bild**: *[Marimo Python](https://www.flickr.com/photos/schockwellenreiter/55305487963/)*, generiert mit [OpenArt](https://openart.ai/home). Prompt: »*A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning. Classic American comic book style. No speech bubbles, no text boxes.A python with glasses+ and a pointer in front of a chart with diagrams in an office. Shelves with books on the walls. It’s a sunny morning. Classic American comic book style. No speech bubbles, no text boxes.*« Modell: Nano Banana 2
