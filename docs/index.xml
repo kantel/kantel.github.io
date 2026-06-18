@@ -10,7 +10,44 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Thu, 18 Jun 2026 14:45:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 18 Jun 2026 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>SoloMD: Ein weiterer Kandidat für meine digitale Rumpelkammer?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026061802_solomd/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55254799951/"><img src="https://kantel.github.io/posts/2026061802_solomd/images/solomd-b.jpg" class="img-fluid"></a></p>
+<p>Momentan überschlagen sich die Meldungen über Programme, die die Nachfolge von <a href="https://kantel.github.io/posts/2025021401_anytype_web/">Anytype</a>, meiner derzeitigen, digitalen Rumpelkammer, antreten möchten. Ein vielversprechender Kandidat ist <strong><a href="https://solomd.app/de/">SoloMD</a></strong>, das sich als »kostenloses Markdown Komplettpaket« empfiehlt, mit eingebauter Live-Vorschau, Wiki-Links, diversen GUI-Themen, einen Pomodoro-Wecker für Menschen, die sich leicht verzetteln, ein plattformübergreifendes Sync (denn SoloMD gibt es für Windows, macOS, Linux, iOS und Android) und natürlich optionaler massiver, auch lokaler, KI-Untersstützung. (Ohne die macht es wohl heute kein <em>Second Brain</em> mehr, greift das auf die KI dann als <em>Third Brain</em> zurück?)</p>
+<p>SoloMD ist frei (MIT-Lizenz, <a href="https://github.com/zhitongblog/solomd">Quellcode auf GitHub</a>), arbeitet <em>Offline-first</em>, ihr braucht keinen Account bei irgendeinem Dienste-Provider, es ist werbefrei, Eure Daten bleiben bei Euch und es gibt optional eine Ende-zu-Ende-Verschlüsselung.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55343393404/"><img src="https://kantel.github.io/posts/2026061802_solomd/images/solomd_screenshot.jpg" class="img-fluid figure-img" alt="Testumgebung SoloMD"></a></p>
+<figcaption>Testumgebung SoloMD</figcaption>
+</figure>
+</div>
+<p>Ich habe für einen ersten Test mir einmal eine kleine Umgebung gebastelt: Als Markdown-Editor leistet SoloMD alles, was man von einem Markdown-Editor erwartet, inklusive Formeln (via KaTeX) und Fußnotenunterstützung. Hinzu kommt, daß <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/mermaid.html">Mermaid</a>-Diagramme in der Vorschau als Diagramme herausgerendert werden und natürlich die Unterstützung von Wiki-Links.</p>
+<p>Schwierigkeiten gab es beim Export nach HTML, da funzte weder das Mermaid-Diagramm noch wurde das Bild angezeigt. Ein Blick in den Quellcode zeigte, daß hier für das Bild eine seltsame URL generiert wurde: <code>src="asset://localhost/%2F…"</code>. Hier muss vermutlich noch an der Konfiguration geschraubt werden, genau wie auch bei den Mermaid-Diagrammen. Ein prinzipielles Problem dürfte es nicht sein, denn <a href="http://cognitiones.kantel-chaos-team.de/webworking/auszeichnungssprachen/pandoc.html">Pandoc</a>, der Konverter, der hinter den Exporten werkelt, kann Markdown nach HTML.</p>
+<p>Der Export nach PDF war nicht zu beanstanden und der Export nach <code>.docx</code> … na ja, es ist halt <code>.docx</code>, da kann man nicht viel erwarten. Am Besten sah aber der Export nach <code>.png</code> aus, das daraus resultierende Bild war wirklich schön.</p>
+<p>Leider scheint SoloMD trotz Pandoc-Unterstützung und Wiki-Links keine Möglichkeit zu besitzen, ganze Ordner nach HTML zu exportieren. Daher sind die Einsatzmöglichkeiten als Wiki oder gar als <em><a href="https://kantel.github.io/posts/2024050701_digital_garden/">Digital Garden</a></em> eher nicht gegeben. Aber insgesant gefällt mir SoloMD besser als das <a href="https://kantel.github.io/posts/2026052601_tolaria/">hier getestete</a> und mit ähnlichen Features ausgestattete <a href="https://tolaria.md/">Tolaria</a>. SoloMD scheint übersichtlicher, leichter zu nutzen und ausgereifter. Aber egal, da beide Anwendungen ihre Daten als reine Markdown-(Text-)Dateien (mit YAML-Frontmatter) ablegen, gehen bei einem Wechsel keine Daten verloren. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55254799951/">Die Zettelkästen des Märzhasen</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>The March Hare sits at a desk in front of an antiquated, steampunk-style computer, typing on a keyboard. He wears a pair of aviator goggles, which he has pushed up onto his forehead. On the desk stands an open card catalog, its contents a chaotic jumble of handwritten index cards and loose scraps of paper. Beside the keyboard sits a mug of steaming coffee. Shelves crammed with books and steampunk knick-knacks line the walls. Through a window, one looks out upon a steampunk version of Berlin. Colored classic American comic style. Language: German. No speech bubbles, no textboxes. No German flags.</em>« Modell: Nano Banana 2.</p>
+
+
+
+ ]]></description>
+  <category>SoloMD</category>
+  <category>Zettelkasten</category>
+  <category>Markdown</category>
+  <category>Digitale Souveränität</category>
+  <category>Digital Garden</category>
+  <guid>https://kantel.github.io/posts/2026061802_solomd/</guid>
+  <pubDate>Thu, 18 Jun 2026 18:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026061802_solomd/images/solomd.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Ex muss nicht immer Microsoft sein: Nextpad++ ist Notepad++ für den Mac</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -719,32 +756,6 @@ font-style: inherit;">"</span> bash</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026052601_tolaria/</guid>
   <pubDate>Tue, 26 May 2026 15:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026052601_tolaria/images/tolaria.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Aus der Nachbarschaft: Kaffeetrinken und Spielefest auf dem Kranoldplatz</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026052101_kaffeetrinken_kranoldplatz/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55284644395/"><img src="https://kantel.github.io/posts/2026052101_kaffeetrinken_kranoldplatz/images/kiezfest-b.jpg" class="img-fluid"></a></p>
-<p>Am <strong>Donnerstag, den 28. Mai 2026 von 14:30 Uhr bis 17:30 Uhr</strong> ist es mal wieder soweit: Es findet das schon <a href="https://qm-glasower-strasse.de/kaffeetafel-und-spielefest-auf-dem-kranoldplatz/">traditionelle Kaffeetrinken</a> der sozialen Einrichtungen aus dem Kranoldkiez auf dem <strong>Neuköllner Kranoldplatz</strong> statt. Und weil der 28. Mai auch wieder Weltspieltag ist, wird an diesem Tag nicht nur Kaffee getrunken und Kuchen gegessen, sondern auch fleißig gewürfelt, gemischt, und gewonnen!</p>
-<p>Die Veranstaltung wird von <a href="https://proneubritz.jimdofree.com/">proNeubritz e.V.</a> und vielen (nicht nur sozialen) Einrichtungen aus dem Kranoldkiez in Kooperation mit dem Projekt »<a href="https://qm-glasower-strasse.de/vorgestellt-projekt-kiez-gewinnt-gesellschaft-und-spiele/">KiezGewinnt: Gesellschaft und Spiele</a>« im <a href="https://qm-glasower-strasse.de/">Quartiersmanagement Glasower Straße</a> organisiert. Es wird vielseitige Brettspielangebote sowie einen Tauschmarkt für Brettspiele geben. Hier können eigene Spiele mitgebracht und gegen andere getauscht werden.</p>
-<p>Außerdem wird mit Musik, einer Fahrradwerkstatt und vielen weiteren Angeboten der beteiligten Einrichtungen für ein buntes Begleitprogramm gesorgt. Der Eintritt ist natürlich frei, kommt einfach vorbei und habt Spaß.</p>
-<p><strong>Caveat</strong>: Ihr könnt dort auch auf Euren <del>Lieblingsblogger</del> Lieblingskritzelheftvollschreiber treffen, denn er hat das Fest mitorganisiert.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55284644395/">Kaffeetrinken und Spielefest auf dem Kranoldplatz</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>A square in Neukölln featuring several colorful market stalls and red-and-white awnings. It is filled with cheerful people drinking coffee and eating cake at the stalls. At a large table in the center of the square, people are playing board games. Along the edge of the square, bicycles are being repaired. The background is the same as in <span class="citation" data-cites="image1">@image1</span>. Colored classic French comic style. Language: German. No speech bubbles, no textboxes. No German flags.</em>« Nodell: Nano Banana&nbsp;2, <a href="https://www.flickr.com/photos/schockwellenreiter/52983314573/">Vorlagenphoto</a> (<a href="https://creativecommons.org/licenses/by-nc-nd/2.0/deed.de">cc 2023</a>) von <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em>.</p>
-
-
-
- ]]></description>
-  <category>Kiezfest</category>
-  <category>Neukölln</category>
-  <guid>https://kantel.github.io/posts/2026052101_kaffeetrinken_kranoldplatz/</guid>
-  <pubDate>Thu, 21 May 2026 17:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026052101_kaffeetrinken_kranoldplatz/images/kiezfest.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
