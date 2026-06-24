@@ -10,7 +10,46 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Wed, 24 Jun 2026 14:45:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 24 Jun 2026 18:25:00 GMT</lastBuildDate>
+<item>
+  <title>Was ist neu in P5.js Version 2.3.0?</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026062402_p5js_2_3_0/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55355269379/"><img src="https://kantel.github.io/posts/2026062402_p5js_2_3_0/images/fraktale-b.jpg" class="img-fluid"></a></p>
+<p>Vor zwei Tagen gab die <em>Processing Foundation</em> das Update von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, dem JavaScript-Ableger von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>, auf die <a href="https://medium.com/@ProcessingOrg/whats-new-in-p5-js-2-3-0-2e85e5fc56f8">Version 2.3.0</a> frei. Seit den <a href="https://kantel.github.io/posts/2026031601_p5js_21_und_22/">letzten Updates</a> im März dieses Jahres haben sie sich auf die Stabilisierung von P5.js und die Optimierung der Arbeitsabläufe konzentriert.</p>
+<p>Dazu gehören Refactorings zu <code>p5.Vector</code> basierend auf der kürzlich hinzugefügten Decorators API sowie neue Funktionen für <code>p5.strands</code>, den neuen, einsteigerfreundlichen Ansatz zur Shader-Programmierung. Außerdem wurde die Entwicklung des experimentellen <a href="https://medium.com/@ProcessingOrg/p5-js-2-1-and-2-2-expanding-graphics-avenues-with-p5-strands-improvements-and-webgpu-9771d40c8b1d">WebGPU-Renderers</a> fortgesetzt.</p>
+<p>Bei der Verwendung von Vektoren zum Beispiel in Physiksimulationen muss nun beim Erstellen eines Vektors angegeben werden, ob er in 2D oder 3D vorliegt. <code>createVector()</code> verlangt nun <code>createVector(0, 0)</code> für 2D- oder <code>createVector(0, 0, 0)</code> für 3D-Vektoren. Hintergrund ist, daß in P5.js bisher alle Vektoren 3D-Vektoren waren. Version 2 unterstützt nun Vektoren beliebiger Dimension, so daß leere Vektoren ihre Größe explizit angeben müssen.</p>
+<p>Auch die Shader-Unterstützung wurde aktualisiert. Shader sind Programme, die auf der Graphikkarte ausgeführt werden, um visuelle Effekte zu erzeugen. Mit P5.js 2.0 wurde <code>p5.strands</code>, die Shader-Programmierschnittstelle (API), eingeführt, wodurch die Programmierung von visuellen Effekten mithilfe der GPU vereinfacht wurde. Version 2.3 überarbeitet und vereinfacht den <code>p5.strands</code>-Code, wodurch die Wartung und Mitarbeit erleichtert wird.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/TIbHjtfuMoI?si=mB1k78WZK-wprAUP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Die <em>Processing Foundation</em> hat ein <a href="https://www.youtube.com/watch?v=TIbHjtfuMoI">Video-Tutorial veröffentlicht</a>, in dem <em>Juan Rodríguez García</em> zeigt, wie Ihr <code>p5.strands</code> in P5.js einsetzen könnt.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/q1xzpZu1KTc?si=ga6X-UqE7ZTGh0WF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Aber auch von der wunderbaren <em>Patt Vira</em> gibt es gleich eine vierteilige Playlist »<a href="https://www.youtube.com/playlist?list=PL0beHPVMklwhYSt_ZNC2HzJKo7qO1-xQJ">Introduction to Shaders: A Beginner’s Guide</a>«in der sie die grundlegenden Unterschiede zwischen CPU- und GPU-Verarbeitung untersucht und erklärt, wie Shader paralleles Rechnen für die graphische Darstellung nutzen. Diese Einführung behandelt die Einrichtung einer WebGL-Umgebung in P5.js, die Definition von Vertex- und Fragment-Shadern mithilfe der GLSL-Syntax und den Datenaustausch zwischen CPU und GPU zur Erzeugung dynamischer visueller Effekte.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/uJX9bKAEqhM?si=yM_2y2XFymru-UJ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Und auf dem <a href="https://libregraphicsmeeting.org/2026/">19. Libre Graphics Meeting (LGM)</a>, dem internationale Treffen für freie und Open-Source-Graphiksoftware, das vom 22. bis 25. April 2026 im Innovationszentrum ZOLLHOF in Nürnberg stattfand, gaben <em>Dave Pagurek</em>, <em>Luke Plowden</em>, <em>Perminder Singh</em>, <em>Kenneth Lim</em> und <em>Kit Kuksenok</em> den Talk »<a href="https://www.youtube.com/watch?v=uJX9bKAEqhM">Beginner-Friendly Shader Programming in P5.js v2</a>«. Sie gehören zu den Mitautoren von <code>p5.strand</code> und erklären auch die Motivation, die hinter der Entwicklung dieser Bibliothek steht.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/nT0Kzp7caGg?si=3FYkXFiyMUw8--X5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p><strong>War sonst noch was?</strong> Ach ja, auch die typographischen Möglichkeiten wurden in der Version&nbsp;2 von P5.js enorm ausgebaut. In einem weiteren Tutorial der <em>Processing Foundation</em> mit dem Titel »<a href="https://www.youtube.com/watch?v=nT0Kzp7caGg">Typography and Asset Loading</a>« erläutert die Dozentin und Künstlerin <em>Qianqian&nbsp;Ye</em> neuen Typographie-Funktionen von P5.js v2 und zeigt, wie man statische Buchstaben in interaktive, animierte Schriften verwandelt.</p>
+<p>Und ich bekomme langsam Lust, auch mal etwas und gerne etwas mehr mit P5.js anzustellen. <em>So viel zu spielen, so wenig Zeit!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55355269379/">Kaffee und Kreativität</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Badger">@Badger</span> sits in front of a computer in a bright, cheerful room. He holds the mouse in his right hand and uses his left to operate the keyboard. Next to him on the desk sits a mug of steaming coffee and another mug filled with writing utensils. Otherwise, the desk is clear. In front of him, at a white board, <span class="citation" data-cites="Rabbit">@Rabbit</span> is drawing neon-colored fractal images with colorful markers. He holds a pointer in his free hand, aiming it at the board. Colorful fractal-style images are also visible on the computer monitor. Shelves filled with books line the walls. A small cat is curled up asleep on a cushion on one of the shelves. Morning sunlight streams through the window. Classic American comic book style. Language: German. No speech bubbles, no text boxes.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+
+ ]]></description>
+  <category>P5.js</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2026062402_p5js_2_3_0/</guid>
+  <pubDate>Wed, 24 Jun 2026 18:25:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026062402_p5js_2_3_0/images/fraktale.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Nachtrag zu meinem Laboratorium für interaktive Geschichten und Spiele: Decker</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -742,43 +781,6 @@ font-style: inherit;">-o</span> dist</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026060201_marimo_introduction/</guid>
   <pubDate>Tue, 02 Jun 2026 14:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026060201_marimo_introduction/images/marimo_tutorial.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Q5play spielt jetzt auch mit P5.js v2</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026060103_q5play_p5js/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55129302147/"><img src="https://kantel.github.io/posts/2026060103_q5play_p5js/images/q5playp5js-b.jpg" class="img-fluid"></a></p>
-<p>Darauf haben sicher einige von Euch gewartet: <a href="https://substack.com/home/post/p-200011153">Q5play ist jetzt mit P5.js v2 kompatibel</a>. Wie <em>Quinton Ashley</em> gestern verkündete: Auch wenn ihr dem traditionellen <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>-Ökosystem treu bleiben wollt, könnt Ihr nun die Power der <a href="https://q5play.org/home/">Q5play</a>-Spieleengine damit nutzen. Dafür hat er eine <a href="https://q5play.github.io/p5-compat/q5play-p5-compat.js">q5play-p5-compat.js</a> entwickelt, eine <a href="https://q5play.github.io/p5-compat/">Kompatibilitätsschicht</a>, die Q5play-Programme mit P5.js ausführt.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://q5js.substack.com/p/q5play-is-now-compatible-with-p5js?triedRedirect=true"><img src="https://kantel.github.io/posts/2026060103_q5play_p5js/images/q5playp5jswe.jpg" class="img-fluid figure-img" alt="Q5play im P5.js Webeditor"></a></p>
-<figcaption>Q5play im P5.js Webeditor</figcaption>
-</figure>
-</div>
-<p>Dabei gibt es jedoch – so <em>Quinton Ashley</em> – folgendes zu beachten:</p>
-<blockquote class="blockquote">
-<p>Um P5.js besser für die Spieleentwicklung geeignet zu machen, passt diese Kompatibilitätsschicht den standardmäßigen P2D-Renderer automatisch an die Standardeinstellungen von Q5play an. Sie verschiebt den Koordinatenursprung <img src="https://latex.codecogs.com/png.latex?(0,0)"> in die Mitte der Zeichenfläche, stellt den Winkelmodus auf Grad ein und konfiguriert den Farbmodus auf RGB mit Werten zwischen <img src="https://latex.codecogs.com/png.latex?0"> und <img src="https://latex.codecogs.com/png.latex?1">. Außerdem stellt sie Polyfills für einige Q5-Funktionen bereit.</p>
-</blockquote>
-<p>Außerdem benötigt Ihr noch dieses <a href="https://github.com/quinton-ashley/p5-global">p5-global-Add-on</a>, das Ihr in Eurer HTML-Datei zusätzlich zu P5.js v2 laden müsst und der Typ des <code>sketch.js</code>-Skripts muss auf <code>module</code> gesetzt werden. Die genaue HTML-Syntax könnt Ihr aus <a href="https://editor.p5js.org/quinton-ashley/sketches/EfJ_atCs5">diesem Beispiel im P5.js-Webeditor</a> entnehmen.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55129302147/">Qumbo und Rudi Rabbit auf dem Montmartre</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Qumbo">@Qumbo</span> stands at an easel on a busy street corner in Paris-Montmartre, painting. In one hand he holds a brush, in the other a colorful palette. Beside him stands <span class="citation" data-cites="Rudi">@Rudi</span> Rabbit, impatiently pointing at his watch. In the background, a large poster proclaims in bold, colorful letters, “Q5.play is coming soon.” Passersby hurry past, oblivious to their presence. The street is bustling with buses and cars. It is late afternoon, and the spring sun illuminates the scene. Colored Franco-Belgian comic style. No textboxes, no speech-bubbles.</em>« Modell: Nano Banana 2</p>
-
-
-
- ]]></description>
-  <category>P5.js</category>
-  <category>Q5.play</category>
-  <category>JavaScript</category>
-  <category>Spieleprogrammierung</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2026060103_q5play_p5js/</guid>
-  <pubDate>Mon, 01 Jun 2026 18:55:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026060103_q5play_p5js/images/q5playp5js.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
