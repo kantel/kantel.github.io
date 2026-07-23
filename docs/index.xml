@@ -10,7 +10,154 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Thu, 23 Jul 2026 14:40:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 23 Jul 2026 16:50:00 GMT</lastBuildDate>
+<item>
+  <title>Erste Schritte mit TiddlyWiki</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55411621759/"><img src="https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/images/tiddlywiki-b.jpg" class="img-fluid"></a></p>
+<p>I did it! Mit Hilfe von <em>Ruth Ake</em> und ihrem wunderbaren Tutorial »<a href="https://www.youtube.com/watch?v=jFCX5Nh2QIM">Digital Notes With TiddlyWiki</a>« ist es mir gelungen, die Einstiegshürden von TiddlyWiki zu überwinden und eine erste Website damit zu erstellen. Ich möchte Euch zeigen, wie ich vorgegangen bin und folge dabei weitgehend dem Tutorial<sup>1</sup> von <em>Ruth Ake</em><sup>2</sup>.</p>
+<p>Als erstes habe ich einen Ordner <code>tiddlywiki</code> angelegt, der meine Projekte enthalten soll. Darin habe ich ein Vereichnis <code>template</code> und das Verzeichnis <code>atlascuriosa</code> angelegt. Beide Verzeichnisse haben jeweils noch die Unterverzeichnisse <code>images</code> und <code>archiv</code> spendiert bekommen. Die Verzeichnisstruktur sieht also wie folgt aus:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource zsh number-lines code-with-copy"><code class="sourceCode zsh"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">tiddlywiki</span></span>
+<span id="cb1-2">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> atlascuriosa</span>
+<span id="cb1-3">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> images</span>
+<span id="cb1-4">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> archiv</span>
+<span id="cb1-5">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> template</span>
+<span id="cb1-6">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> images</span>
+<span id="cb1-7">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> archiv</span></code></pre></div>
+<p>Das Verzeichnis <code>template</code> soll ein leeres Wiki beinhalten, auf das ich immer wieder für neue Projekte zugreifen kann, auch wenn ich mal offline bin. Das Template habe ich von der <a href="https://tiddlywiki.com/#GettingStarted">Startseite von TiddlyWiki</a> (dort wo der große. grüme Download-Button ist) heruntergeladen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://tiddlywiki.com/#GettingStarted"><img src="https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/images/downloadtiddlywiki.jpg" class="img-fluid figure-img" alt="Download TiddlyWiki"></a></p>
+<figcaption>Download TiddlyWiki</figcaption>
+</figure>
+</div>
+<p>Die Datei heißt <code>empty.html</code>, ist etwa 2,4 MB fett und enthält alles, was Ihr für die Bearbeitung und Erstellung Eurer TiddlyWiki-Seiten benötigt. Dann habe ich noch die komplette TiddlyWiki-Website heruntergeladen (indem ich rechts in der Seitenleiste auf dem Kreis mit dem Haken geklickt habe). Diese Datei, <code>tiddlywiki.html</code>, ist ungefähr 6,8&nbsp;MB fett und enthält die komplette Dokumentation zu TiddlyWiki, auf die ich nun auch offline zugreifen kann. Wieder bin ich der Empfehlung gefolgt und habe sie in <code>help.html</code> umbenannt. Beide Dateien habe ich jeweils in die Projektverzeichnisse kopiert. Dabei habe ich die <code>empty.html</code> im Verzeichnis <code>altlascuriosa</code> in den Projektnamen umbenannt (<code>empty.html</code> -&gt; <code>atlascuriosa.html</code>). Mein TiddlyWiki-Verzeichnis sieht nun also so aus:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource zsh number-lines code-with-copy"><code class="sourceCode zsh"><span id="cb2-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">tiddlywiki</span></span>
+<span id="cb2-2">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> atlascuriosa</span>
+<span id="cb2-3">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> atlascuriosa.html</span>
+<span id="cb2-4">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> help.html</span>
+<span id="cb2-5">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> images</span>
+<span id="cb2-6">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> archiv</span>
+<span id="cb2-7">    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> template</span>
+<span id="cb2-8">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> empty.html</span>
+<span id="cb2-9">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> help.html</span>
+<span id="cb2-10">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> images</span>
+<span id="cb2-11">        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> archiv</span></code></pre></div>
+<p>Für die weitere Bearbeitung kann ich das Verzeichnis <code>template</code> vergessen. Ich benötige es erst wieder, wenn ich ein neues Projekt anlegen möchte. Ab sofort arbeite ich nur noch in dem Verzeichnis <code>atlascuriosa</code>.</p>
+<p>Bevor überhaupt mit dem Editieren begonnen werden kann, empfiehlt <em>Ruth Ake</em>, eine Kopie von <code>atlascuriosa.html</code> in das <code>archiv</code>-Verzeichnis zu verschieben und es dort mit einem Timestamp zu versehen (zum Beispiel <code>atlascuriosa.html</code> -&gt; <code>atlascuriosa20260723.html</code>). Der Vorgang sollte häufig wiederholt werden, am besten immer dann, wenn Ihr beginnt, mit dem Projekt zu arbeiten. Dieses Backup ist nützlich, falls Ihr irgendwann einmal Euer Projekt versehentlich zerschießt. Ihr könnt auch ältere Backups wieder löschen. Nur mindestens eines solltet Ihr zur Sicherheit aufbewahren.</p>
+<section id="einen-ersten-tiddler-erstellen" class="level2">
+<h2 class="anchored" data-anchor-id="einen-ersten-tiddler-erstellen">Einen ersten Tiddler erstellen</h2>
+<p>In TiddlyWiki werden die einzelnen Notizen oder Seiten »Tiddler« genannt. Wenn Ihr Euer Projekt das erste Mal startet, wird dieser »GettingStarted«-Tiddler gezeigt:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/images/creatingnotes.jpg" class="img-fluid figure-img"></p>
+<figcaption>TiddlyWiki: Getting Started</figcaption>
+</figure>
+</div>
+<p>Hier könnt Ihr den Titel und den Untertitel festlegen. Um weiterarbeiten zu können, solltet Ihr auf jeden Fall das <code>GettingStarted</code> aus den Default Tiddlern entfernen. Dadurch wird verhindert, daß <code>GettingStarted</code> bei jedem Aufruf erneut geöffnet wird.</p>
+<p>Um eine neue Notiz (einen neuen »Tiddler«) zu erstellen, klickt Ihr dann auf das <code>+</code>-Symbol rechts. Im neuen Tiddler gebt Ihr einen Titel ein. Falls gewünscht, könnt Ihr auch noch Schlagwörter (<code>tags</code>) zur besseren Organisation darunter hinzufügen<sup>3</sup>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/images/myfirsttiddler.jpg" class="img-fluid figure-img"></p>
+<figcaption>Mein erster Tiddler</figcaption>
+</figure>
+</div>
+<p>In der große Textbox in der Mitte könnt Ihr den Text Eures Tiddlers eingeben. Bei der Formatierung helfen Euch die Schaltflächen oberhalb der Textbox. Zum Schluß klickt Ihr auf das Dropdown-Menü <code>Type</code> und wählt <code>TiddlyWiki 5</code> (<code>text/vnd.tiddlywiki</code>) aus.</p>
+<p>Wenn Ihr auf den Haken oberhalb des Titels klickt, wird Euch Euer Tiddler angezeigt.</p>
+<p>Mittlerweile solltet Ihr auch in der Seitenleiste rechts den roten Kreis bemerkt haben. Wenn Ihr auf diesen klickt, fragt Euch TiddlyWiki, wo es Eure Seiten abspeichern soll. Im Regelfalle ist das im Projektfolder, denn Ihr oben angelegt habt. Macht Euch keinen Kopf darüber, daß TiddlyWikk Eure Dateien hochzählt (zum Beispiel <code>atlascuriosa (1).html</code>, <code>atlascuriosa (2).html</code> und so weiter). Die jüngste Datei ist immer die mit der höchsten Nummer und aufräumen könnt Ihr zum Schluß. Dann löscht Ihr alle Dateien mit den niedrigeren Nummern und nennt die höchste Datei wieder in <code>atlascuriosa.html</code> (oder wie immer Ihr Euer Projekt genannt habt) um. Nicht vergessen, davon dann eine Kopie mit einem Zeitstempel versehen als Backup in Eurem Archivverzeichnis abzulegen.</p>
+<p>Gratuliere, Ihr habt Euer erstes TiddlyWiki angelegt und einen ersten Tiddler erzeugt. Alle weiteren könnt Ihr im Prinzip genau so anlegen und Ihr seid daher erst einmal mit den Grundlagen von TiddlyWiki vertraut.</p>
+<p>In weiteren Tutorials möcht ich Euch unter anderem zeigen, wie Ihr Multimedia-Inhalte wie zum Beispiel Bilder oder Videos in Euren Tiddlern einbindet, wie Ihr mit Hilfe von Plugins die Sprache auf »Deutsch« oder die Auszeichungssprache auf Markdown umstellt.</p>
+</section>
+<section id="nützliche-tiddlywiki-tutorials" class="level2">
+<h2 class="anchored" data-anchor-id="nützliche-tiddlywiki-tutorials">Nützliche TiddlyWiki-Tutorials</h2>
+<iframe class="if16_9" src="https://www.youtube.com/embed/jFCX5Nh2QIM?si=ptVszafdTUOrZCOx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Wie oben schon erwähnt, war mir das etwa einstündige Tutorial »<a href="https://www.youtube.com/watch?v=jFCX5Nh2QIM">Digital Notes With TiddlyWiki (No Cost, Offline, Cross-Platform, Searchable Notes)</a>« eine große Hilfe, um erst einmal durch die anfangs verwirrenden Möglichkeiten, die TiddlyWiki bietet, durchzusteigen. Es ist daher ein Muß für jeden Einsteiger.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/hB6sT1MnpTs?si=I_FBysQqT2Y2rzjD" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>In dem ebenfalls einstündigen Workshop der <em>Babycastles Academy</em> »<a href="https://www.youtube.com/watch?v=hB6sT1MnpTs">Tiddlywiki: Getting started with digital gardens, and networked thinking</a>« zeigt der Komponist <em><a href="https://gavart.ist/">Gavin Gamboa</a></em> (seine Website ist natürlich auch ein TiddlyWiki), wie Ihr Euer eigenes persönliches Wiki als digitalen Garten einrichtet. Anhand von TiddlyWiki demonstriert Gavin Beispiele für digitale Gärten, deren Nutzung für nicht-lineare Recherchen und die einzelnen Schritte zur Einrichtung.</p>
+<blockquote class="blockquote">
+<p>TiddlyWiki ist ein einzigartiges, nicht-lineares Notizbuch zum Erfassen, Organisieren und Teilen komplexer Informationen. Nutzen Sie es für Ihre To-do-Liste, zur Planung eines Essays oder Romans oder zur Organisation Ihrer Hochzeit. Halten Sie jeden Gedanken fest, der Ihnen durch den Kopf geht, oder erstellen Sie eine flexible und responsive Website.</p>
+</blockquote>
+<p>Programmierkenntnisse sind nicht erforderlich, HTML-Kenntnisse seien jedoch hilfreich.</p>
+<iframe class="if16_9" src="https://www.youtube.com/embed/-kesTR1SVdc?si=U-KAE5g8cCdB93mA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
+</iframe>
+<p>Und <em>last but not least</em> kommt man an die bekannteste Playlist (acht Videos, jedes etwa fünfzehn Minuten Spieldauer) von <em><a href="https://odysseyalive.com/">Francis Meetze</a></em> nicht vorbei, auch wenn sie schon einige Jahre auf dem Buckel hat. Vor allem das letzte (und jüngste) Video »<a href="https://www.youtube.com/watch?v=-kesTR1SVdc">Using TiddlyDesktop</a>« hat mir geholfen, TiddlyDesktop zu verstehen und die Motivation dahinter zu begreifen.</p>
+<p><strong>War sonst noch was?</strong> Ach ja, für die, die lieber lesen, als Videos gucken, gibt es von <em>Ralf Hersel</em> den Beitrag »<a href="https://gnulinux.ch/serie-strukturierte-notizen-tiddlywiki">Strukturierte Notizen: TiddlyWiki</a>«. Er beginnt mit:</p>
+<blockquote class="blockquote">
+<p>Die Note-taking App TiddlyWiki ist alles, aber nicht normal. Ihr Konzept ist einzigartig und eröffnet viele Möglichkeiten.</p>
+</blockquote>
+<p>Der Beitrag ist recht jung (vom 20. Oktober 2022) und auf GNU/Linux.ch erschienen. Und vom Lesen wird man sicher nicht dümmer.</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55411621759/">Digital Garden with TiddlyWiki</a></em>, erstellt mit <a href="https://ideogram.ai/">Ideogram&nbsp;4.0</a>. Prompt: <em>The March Hare, with aviator goggles pushed up onto his forehead, is digging with a shovel in an allotment garden. Around him grow small, still rather bare fruit trees laden with slips of paper bearing writing instead of fruit. A green biplane circles overhead, trailing an advertising banner that reads “Your Digital Garden with TiddlyWiki.” It is a late summer afternoon; in the background, a few 1920s-style tenement buildings from Neukölln are visible. Classic American comic book style. No speech bubbles, no text boxes.</em></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Das ist nicht der einzige Weg in das TiddlyWiki-Universum. Mittlerweile habe ich weitere Tutorials durchgearbeitet, die teilweise andere Wege gehen. Und auch die scheinen alle zu funktionieren. Am Ende dieses Beitrags werde ich ein paar weitere Tutorials vorstellen, die mir hilfreich erschienen.↩︎</p></li>
+<li id="fn2"><p>Bis auf eine Ausnahme: Statt dem TiddlyWiki eigenen Markup habe ich mithilfe eines Plugins die Seiten mit Markdown erstellt. Denn da mein digitaler Zettelkasten <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/joplin.html">Joplin</a> ist und die Notizen daher in Markdown vorliegen, wollte ich sie einfacher ins TiddlyWiki übertragen können.↩︎</p></li>
+<li id="fn3"><p>Doch seid vorsichtig: Mit Tags könnt Ihr eine Menge anstellen. Verbaut Euch also nicht zukünftige Möglichkeiten mit unbedacht vergebenen Schlagwörtern.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>TiddlyWiki</category>
+  <category>Zettelkasten</category>
+  <category>Markdown</category>
+  <category>Digitale Souveränität</category>
+  <category>Digital Garden</category>
+  <category>Webworking</category>
+  <category>IndieWeb</category>
+  <category>Neovities</category>
+  <category>Statische Seiten</category>
+  <guid>https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/</guid>
+  <pubDate>Thu, 23 Jul 2026 16:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/images/tiddlywiki.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus meinem Laboratorium für interaktive Geschichten und Spiele: Decker-Updates</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -660,40 +807,6 @@
   <guid>https://kantel.github.io/posts/2026070101_mediadaten_juni_26/</guid>
   <pubDate>Wed, 01 Jul 2026 13:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026070101_mediadaten_juni_26/images/strand.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Aus der Nachbarschaft: Der Emmauswald bleibt (immer noch!)</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026063001_emmauswald/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55270361305/"><img src="https://kantel.github.io/posts/2026063001_emmauswald/images/emmauskirchhof-b.jpg" class="img-fluid"></a></p>
-<p>Das Photo im Banner oben ist zwar schon ein paar Tage alt, aber regelmäßige Leserinnen und Leser des <em>Schockwellenreiters</em> wissen: Immer, wenn ein Photo des <a href="https://kantel.github.io/posts/2026042301_fruehling_emmauskirchhof/">Emmauskirchhhofs</a> mit <a href="https://kantel.github.io/posts/2024041901_rip_gabi/">Gabis</a> Urnengrab hier in diesem <del>Blog</del> Kritzelheft auftaucht, möchte ich auch an den Kampf um den <a href="https://emmauswald-bleibt.de/">Emmauswald</a> erinnern.</p>
-<p>Denn der größte Neuköllner (und kleinste Berliner) Wald war früher ebenfalls Teil des <a href="https://evfbs.de/start/friedhoefe/region-sued/einzeldarstellung/emmaus/kurzportraet">Emmauskirchhofs</a>. Und so nutze ich das Photo, um mal wieder an Gabis Vermächtnis zu erinnern: Der Emmauswald darf nicht einer skrupellosen Immobilienmafia (und ihren Handlangern im Berliner Senat) <a href="https://www.nd-aktuell.de/artikel/1188194.stadtentwicklung-emmauswald-in-neukoelln-kahlschlag-gegen-zahlung.html">geopfert werden</a>, die dort in der Hauptsache <a href="https://taz.de/Debatte-um-den-Neukoellner-Emmauswald/!6013694/">teure Eigentumswohnungen hochziehen</a> wollen. Der Emmauswald gehört den Neuköllnern und der Emmauswald bleibt!</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55366611228/"><img src="https://kantel.github.io/posts/2026063001_emmauswald/images/flyer.jpg" class="img-fluid figure-img" alt="Flyer: Emmauswald bleibt!"></a></p>
-<figcaption>Flyer: Emmauswald bleibt!</figcaption>
-</figure>
-</div>
-<p>Daher hier der Hinweis auf die nächsten Treffen der Emmauswald-Initiative am 7.&nbsp;Juli&nbsp;2026, am 4.&nbsp;August&nbsp;2026 und am 1.&nbsp;September&nbsp;2026 jeweils um 18:00 Uhr im <a href="https://prinzessinnengarten-kollektiv.net/studio-nagelneu/">Studio <del>nagel</del>neu</a> in der Hermannstraße 103 in 12051&nbsp;Berlin-Neukölln. Für alle, die ebenfalls daran mitarbeiten wollen, daß der Emmauswald bleibt!</p>
-<hr>
-<p><strong>Photos</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>Neukölln</category>
-  <category>Neuköllner Bilderbogen</category>
-  <category>Parks und Gärten</category>
-  <category>Emmauswald</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026063001_emmauswald/</guid>
-  <pubDate>Tue, 30 Jun 2026 18:45:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026063001_emmauswald/images/emmauskirchhof.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
