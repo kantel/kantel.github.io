@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jörg Kantel">
 
-<title>Abenteuer IndieWeb: Mit P5.js und Phoenix nach Neocities – Der Schockwellenreiter</title>
+<title>Abenteuer IndieWeb: Mit P5.js und Phoenix Code nach Neocities – Der Schockwellenreiter</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -161,7 +161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Abenteuer IndieWeb: Mit P5.js und Phoenix nach Neocities</h1>
+<h1 class="title">Abenteuer IndieWeb: Mit P5.js und Phoenix Code nach Neocities</h1>
   <div class="quarto-categories">
     <div class="quarto-category">Phoenix Code</div>
     <div class="quarto-category">P5.js</div>
@@ -198,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/55438416720/"><img src="images/p5jsphoenix-b.jpg" class="img-fluid"></a></p>
-<p>Hute wollte ich gleich zwei Fliegen mit einer Klappe schlagen: Ich wollte einmal wissen, wie gut der von mir <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">neu entdeckte Editor Phoenix Code</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, dem JavaScript-Ableger von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>, zusammenarbeitet. Und zum anderen wollte ich wissen, ob und wie sich P5.js mit <a href="https://neocities.org/">Neocities</a>, dem freundlichen Hoster für meine Flucht ins <a href="https://en.wikipedia.org/wiki/IndieWeb">IndieWeb</a> verträgt. Spoiler: Ich war beide Male erfolgreich.</p>
+<p>Heute wollte ich gleich zwei Fliegen mit einer Klappe schlagen: Ich wollte einmal wissen, wie gut der von mir <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">neu entdeckte Editor Phoenix Code</a> mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, dem JavaScript-Ableger von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>, zusammenarbeitet. Und zum anderen wollte ich wissen, ob und wie sich P5.js mit <a href="https://neocities.org/">Neocities</a>, dem freundlichen Hoster für meine Flucht ins <a href="https://en.wikipedia.org/wiki/IndieWeb">IndieWeb</a> verträgt. Spoiler: Ich war beide Male erfolgreich.</p>
 <p>Was habe ich also getan? Ich habe erst einmal (Ordnung muss sein) an der Directory-Struktur meiner Neocities-Site geschraubt und einen Dateibaum für meine P5.js-Experimente angelegt:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode numberSource zsh number-lines code-with-copy"><code class="sourceCode zsh"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">p5projects/</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw">|</span><span class="ex">--</span><span class="op">&gt;</span> first_project/</span>
@@ -269,10 +269,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-21"><a href="#cb4-21"></a>    x <span class="op">=</span> <span class="op">-</span>dia<span class="op">;</span></span>
 <span id="cb4-22"><a href="#cb4-22"></a>   }</span>
 <span id="cb4-23"><a href="#cb4-23"></a> }</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Der einzige Unterschied zu einem im P5.js-Webeditor gescripteten Sketch ist der, daß ein in einer Webseite eingebundener Canvas einer Variable zugeweisen wird, in diesem Fall:</p>
+<p>Der einzige Unterschied zu einem im P5.js-Webeditor gescripteten Sketch ist der, daß ein in einer Webseite eingebundener Canvas einer Variable zugewiesen wird, in diesem Fall:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource javascript number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1"></a>canvas <span class="op">=</span> <span class="fu">createCanvas</span>(<span class="dv">640</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
 <span id="cb5-2"><a href="#cb5-2"></a>canvas<span class="op">.</span><span class="fu">parent</span>(<span class="st">"myCanvas"</span>)<span class="op">;</span></span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Und in der zweiten Zeile wird der Canvas einem <code>div</code> mit der ID “myCanvas” zugeordnet, das ich im obigen HTML-Code angelegt habe.</p>
+<p>Und in der zweiten Zeile wird der Canvas einem <code>div</code> mit der ID <code>myCanvas</code> zugeordnet, das ich im obigen HTML-Code angelegt habe.</p>
 <p>Hier ist der Sketch in seiner kompletten Einfachheit (um ihn hier einbetten zu können, habe ich dann doch den <a href="https://editor.p5js.org/kantel/sketches/vHdyzuPQZ">Umweg über den P5.js-Webeditor</a> genommen):</p>
 <iframe width="670" height="430" src="ghostwalking/">
 </iframe>
