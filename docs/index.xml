@@ -10,7 +10,1029 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Tue, 04 Aug 2026 13:50:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 05 Aug 2026 17:55:00 GMT</lastBuildDate>
+<item>
+  <title>Spaß mit P5.js: Running Orcs</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026080501_running_orcs/</link>
+  <description><![CDATA[ 
+<script src="./sketch.js"></script>
+<script src="./orc.js"></script>
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55444918079/"><img src="https://kantel.github.io/posts/2026080501_running_orcs/images/runningorcs-b.jpg" class="img-fluid"></a></p>
+<p>Heute wollte ich nicht nur Spaß mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, dem JavaScript-Ableger von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>, haben, sondern auch mit dem kürzlich von mir <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">neu entdeckten Editor Phoenix Code</a> und mit <a href="https://neocities.org/">Neocities</a>, dem freundlichen Hoster für meine Flucht ins <a href="https://neocities.org/">IndieWeb</a>. Also habe ich erst einmal eine Horde Orks über den Bildschirm wuseln lassen:</p>
+<div id="myCanvas" class="if16_9">
+
+</div>
+<p>Dafür habe ich eine Klasse <code>Orc</code> angelegt und ihr eine eigene Datei <code>orc.js</code> spendiert (Ordnung muss ein):</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Orc {</span>
+<span id="cb1-2">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>(_x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> _y) {</span>
+<span id="cb1-3">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-4">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> _y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-5">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dy</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-6">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// width</span></span>
+<span id="cb1-7">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// height</span></span>
+<span id="cb1-8">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-9">    }</span>
+<span id="cb1-10">    </span>
+<span id="cb1-11">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb1-12">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dy</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-13">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>) {</span>
+<span id="cb1-14">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>max_orc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-15">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-16">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dy</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-17">        }</span>
+<span id="cb1-18">        </span>
+<span id="cb1-19">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (frameCount <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) {</span>
+<span id="cb1-20">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-21">        } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (frameCount <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) {</span>
+<span id="cb1-22">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc3<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-23">        } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> {</span>
+<span id="cb1-24">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-25">        } </span>
+<span id="cb1-26">    }</span>
+<span id="cb1-27">    </span>
+<span id="cb1-28">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb1-29">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-30">    }    </span>
+<span id="cb1-31">}</span></code></pre></div>
+<p>Sie macht eigentlich nichts anderes, als daß sie die Orks von ihrer Startposition mit der Geschwindigkeit <code>dy</code> nach unten bewegt. Wenn sie den unteren Bildschirmrand erreicht haben, werden sie an eine zufällige Position oberhalb des Bildschirms befördert und auch die Geschwindigkeit wird per Zufallszahlengenerator neu gesetzt:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1">        <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>) {</span>
+<span id="cb2-2">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>max_orc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">h</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-3">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">w</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-4">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">dy</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Für jeden Ork existieren drei Bildchen: <code>orc1.png</code>, <code>orc2.png</code> und <code>orc3.png</code> (linkes Bein unten, beide Beine unten, rechts Bein unten):</p>
+<p><img src="https://kantel.github.io/posts/2026080501_running_orcs/assets/orc1.png" class="img-fluid">&nbsp;<img src="https://kantel.github.io/posts/2026080501_running_orcs/assets/orc2.png" class="img-fluid">&nbsp;<img src="https://kantel.github.io/posts/2026080501_running_orcs/assets/orc3.png" class="img-fluid"></p>
+<p>Sie werden in Abhängigkeit von der <code>frameRate()</code> abwechelnd aufgerufen, wobei das Bild <code>orc2.png</code> mit den beiden Beinen unten, immer zwischen den anderen beiden Bildern (also doppelt so häufig) aufgerufen wird:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1">       <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (frameCount <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) {</span>
+<span id="cb3-2">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-3">        } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (frameCount <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>) {</span>
+<span id="cb3-4">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc3<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-5">        } <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span> {</span>
+<span id="cb3-6">            <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">img</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> orc2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-7">        } </span></code></pre></div>
+<p>Dadurch entsteht der Eindruck einer wuseligen Bewegung. Für die Bestimmung der Geschwindigkeit habe ich es mir einfach gemacht, sie wird durch die <code>frameRate()</code> geregelt (wie man im Hauptsketch unten sehen kann). Das Beispiel oben in der Seite läuft mit <code>frameRate(18)</code> als Reminiszenz an die frühen Kinojahre (das ist noch ein relativ gemächliches Wuseln), mit einer <code>frameRate(30)</code> wuseln die Orks nicht mehr, sondern sie rennen und mit einer <code>frameRate(60)</code> fliegen die Beine förmlich.</p>
+<p>Hier ist also das Hauptprogramm <code>sketch.js</code> (es ist durch die Auslagerung der Klasse <code>Orc</code> recht kurz geraten):</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> orc1<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> orc2<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> orc3<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> my_orc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> max_orc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-5"></span>
+<span id="cb4-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">async</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb4-7">  canvas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">320</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-8">  canvas<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parent</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myCanvas"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-9">  bg <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/field.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-10">  orc1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/orc1.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-11">  orc2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/orc2.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-12">  orc3 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/orc3.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-13">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> max_orc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb4-14">   my_orc[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Orc</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-15">  }</span>
+<span id="cb4-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">frameRate</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-17"> }</span>
+<span id="cb4-18"> </span>
+<span id="cb4-19"> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw</span>() {</span>
+<span id="cb4-20">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">background</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"green"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-21">   <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">image</span>(bg<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-22">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> max_orc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb4-23">    my_orc[i]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-24">    my_orc[i]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-25">   }</span>
+<span id="cb4-26">  }</span></code></pre></div>
+<p>Es ist mein erster Versuch mit der neuen <code>async …… await</code>-Funktion von P5.js 2.x, die eine separate <code>preload()</code>-Funktion überflüssig macht. Und damit der Sketch sowohl auf diesen Seiten (dazu unten mehr) wie auch auf Neocities in eine HTML-Datei direkt eingebunden werden kann, wurde der Canvas an eine Variable gebunden und dieser Variablen ein <code>parent</code> im DOM zugewiesen:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb5-1">  canvas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">320</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-2">  canvas<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parent</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myCanvas"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<p>Ansonsten werden im <code>setup()</code> die einzelnen Bilder geladen und in einer Schleife in einem Array die gewünschten Instanzen der Klasse Orc erzeugt (auch sie bekommen eine zufällige Position oberhalb des Canvas zugewiesen):</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> max_orc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb6-2">   my_orc[i] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Orc</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb6-3">  }</span></code></pre></div>
+<p>In <code>draw()</code> wird dann nur noch mit dem Hintergrundbild der ganze Canvas gefüllt (es hat »zufällig« die gleiche Größe wie der Canvas 🤓) und dann wieder in einer Schleife für <code>update()</code> und <code>display()</code> die einzelnen Instanzen der Klasse <code>Orc</code> aufgerufen:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb7-1">   <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> max_orc<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> i<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb7-2">    my_orc[i]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb7-3">    my_orc[i]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb7-4">   }</span></code></pre></div>
+<p>Die Bilder der Orks wie auch das Hintergrundbild stammen aus der Werkstatt von <em>Silveira Neto</em>, der sie unter einer Creativ-Commons-Lizenz (<a href="https://github.com/silveira/openpixels/tree/master?tab=CC-BY-SA-4.0-1-ov-file">CC-BY-SA-4.0</a>) auf <a href="https://github.com/silveira/openpixels/tree/master/examples/python/running_orcs">GitHub veröffentlicht</a> hat.</p>
+<p>Und was das Einbinden des Sketches in diese Seiten angeht, ich habe mich daran erinnert, daß ich das vor etlichen Jahren (im Mai 2023) <a href="https://kantel.github.io/posts/2023050401_roboter_im_netz/">schon einmal gelöst</a> hatte: Ich habe erst einmal ein Verzeichnis <code>js</code> als Unterverzeichnis der aktuellen Datei an- und in diese die Datei <code>p5.min.js</code> abgelegt, während im gleichen Verzeichnis wie die aktuelle Datei auch die Datei <code>sketch.js</code> liegt. Dies spiegelt die vertraute Struktur wieder, wie sie auch im <a href="https://editor.p5js.org/">P5 Web Editor</a> oder bei <a href="https://github.com/antiboredom/p5.vscode#readme">p5.vscode</a> zu finden ist. Im YAML-Header meiner Seite habe ich dann</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">include-in-header</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb8-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">text</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> &lt;script src="./js/p5.min.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb8-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">include-before-body</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span></span>
+<span id="cb8-4"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">text</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> &lt;script src="./sketch.js"&gt;&lt;/script&gt;</span></span>
+<span id="cb8-5"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">-</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">text</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> &lt;script src="./orc.js"&gt;&lt;/script&gt;</span></span></code></pre></div>
+<p><a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/quarto.html">Quarto</a> (das ist der <em>Static Site Generator</em> (SSG), der hinter diesem ~<del>Blog</del>~ Kritzelheft werkelt) mit diesen beiden Dateien verheiratet.</p>
+<p>Damit ist hier der Umweg über den P5-Webeditor nicht mehr nötig.</p>
+<p>Der Rest ist wie gehabt: Damit die HTML-Seite auch weiß, wohin sie den Sketch verschieben soll, muß an der Stelle ein <code>div</code> angelegt werden, das zum Beispiel auf dieser Seite so aussieht:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb9-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">div</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> class</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"if16_9"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> id</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myCanvas"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">div</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>Die Klasse <code>if16_9</code> wurde von mir erstellt und sollte das <code>div</code> eigentlich responsiv machen. Ob das funktioniert, muß ich allerdings noch testen (bei den YouTube-iFrames funktioniert es jedenfalls – dafür habe ich die Klasse eigentlich entwickelt –, aber <code>iFrames</code> sind keine <code>div</code>).</p>
+<p>Was <a href="https://phcode.io/">Phoenix Code</a> angeht, erfüllt der Editor bisher <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">meine an ihn gestellten Erwartungen</a> bei der Erstellung von HTML-, CSS- und JavaScript-Dateien. Lediglich eine Syntax-Hervorhebung und eine Fehlererkennung für P5.js, wie sie <a href="https://github.com/antiboredom/p5.vscode#readme">p5.vscode</a>, die oben erwähnte Erweiterung für <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a>, bietet, vermisse ich ein wenig. Vielleicht fühlt sich jemand berufen, ein ähnliches Plugin für Phoenix Code zu schreiben. Ich wäre sehr dankbar dafür.</p>
+<p>Natürlich habe ich die rennenden Orks auch auf meiner <a href="https://kantel.neocities.org/p5projects/running_orcs_1/">Spielwiese bei Neocities veröffentlicht</a> (dafür hatte ich sie eigentlich programmiert). Und wie die Numerierung zeigt, soll es noch viel mehr P5.js-Projekte auf Neocities geben. Schaun wir mal, wie und ob ich diesen Vorsatz umsetzen kann.</p>
+<p>Eine Änderung habe ich auch bei meiner <a href="https://kantel.github.io/posts/2026080102_p5js_phoenix_neocities/">Neocities-Implementierung vorgenommen</a>: Das Directory <code>js</code> mit der Datei <code>p5.min.js</code> habe ich doch nach oben – unterhalb von <code>p5projects</code> – verschoben. Damit es nun von allen Projekten gefunden wird, muß die HTML-Datei folgende Zeilen enthalten</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"../js/p5.min.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb10-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"sketch.js"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">script</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>und eventuell noch weitere Sketche (wie in diesem Fall <code>orc.js</code>) aufrufen. Bei meiner wachsenden Begeisterung für P5.js fand ich es dann doch ineffizient, für jedes Projekt eine eigene <code>p5.min.js</code> abzulegen.</p>
+<p>Zu guter Letzt noch (der Beitrag ist viel länger geworden, als ursprünglich geplant): Den <a href="https://github.com/kantel/webworking/tree/main/neocities/p5procects/running_orcs_1">Quellcode und die Assets</a> für dieses Projekt findet Ihr natürlich auch wieder in meinem GitHub-Repositorium. Habt Spaß damit!</p>
+
+
+
+ ]]></description>
+  <category>P5.js</category>
+  <category>JavaScript</category>
+  <category>Spieleprogrammierung</category>
+  <category>Phoenix Code</category>
+  <category>Neocities</category>
+  <guid>https://kantel.github.io/posts/2026080501_running_orcs/</guid>
+  <pubDate>Wed, 05 Aug 2026 17:55:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026080501_running_orcs/images/runningorcs.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Update meiner digitalen Rumpelkammer: Anytype Desktop v0.56 veröffentlicht</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2152,34 +3174,6 @@ font-style: inherit;">&gt;</span> archiv</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026071301_schlossgut_schwante/</guid>
   <pubDate>Mon, 13 Jul 2026 14:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026071301_schlossgut_schwante/images/schwante01.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Schrödingers Katze und die gekünstelte Intelligenzia</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026070903_ki_und_schroedingers_katze/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55364798800/"><img src="https://kantel.github.io/posts/2026070903_ki_und_schroedingers_katze/images/marchhare-b.jpg" class="img-fluid"></a></p>
-<p>Der 45-minütige Vortrag »<a href="https://www.youtube.com/watch?v=CqoX9IY8gbQ">Wir müssen uns Schrödingers Katze als halbtot vorstellen</a> – Über KI, Urteilskraft und die Kunst, Widersprüche auszuhalten«, den <em>Ralf Stockmann</em> von der Zentral- und Landesbibliothek Berlin am 24.&nbsp;April&nbsp;2026 auf der 49.&nbsp;Jahrestagung der Informationsdienstleistenden und Bibliotheken der Max-Planck-Gesellschaft gehalten hatte, hat unter meinen ehemaligen EDV-Kollegen der MPG eine große, meist positive Resonanz gefunden.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/CqoX9IY8gbQ?si=qyRm0z-m6MaVPXWK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<blockquote class="blockquote">
-<p>Generative KI konfrontiert uns mit einem grundlegenden Widerspruch: Ihre Ergebnisse können gleichzeitig beeindruckend und fehlerhaft, nützlich und riskant, intelligent und erstaunlich begrenzt sein. Wer sinnvoll mit KI arbeiten will, muss diese Ambivalenz weder auflösen noch verdrängen, sondern professionell mit ihr umgehen.<br><br>Der Vortrag zeichnet den Weg von frühen Debatten über maschinelle Intelligenz bis zur heutigen KI-Praxis nach. Er betrachtet verlorene Wetten gegen Maschinen – von Schach über Go bis zum Turing-Test –, diskutiert KI als mögliche neue »Kränkung der Menschheit« und fragt, welche Urteilskraft Menschen in einer Welt leistungsfähiger Sprachmodelle benötigen.</p>
-</blockquote>
-<p>Im Zentrum steht dabei eine praktische KI-Literacy. Auch ich halte den Vortrag für eine wichtige Stimme bei der Diskussion über das Für und Wider im Umgang mit der gekünstelten Intelligenzia.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55364798800/">Der Märzhase in Dystopia (auf der Suche nach Schrödingers Katze)</a></em>, erstellt mit <a href="https://ideogram.ai/">Ideogram 4.0</a>. Prompt: »<em>The March Hare creeps fearfully through a dystopian, steampunk-style metropolis. He wears aviator goggles pushed up onto his forehead and a rust-red vest; he carries a baseball bat in his hand. The street appears deserted, yet at two different street corners, a sinister-looking anthropomorphic wolf in a floppy hat and a fox—also wearing aviator goggles—are watching the March Hare. It is a late summer evening, and the sun is already low in the sky. The image resembles a screenshot from an RPG; a status bar and several health points represented by small hearts are visible in the upper-left corner. Classic American comic book style. No speech bubbles or text boxes.</em>«</p>
-
-
-
- ]]></description>
-  <category>Künstliche Intelligenz</category>
-  <guid>https://kantel.github.io/posts/2026070903_ki_und_schroedingers_katze/</guid>
-  <pubDate>Thu, 09 Jul 2026 18:50:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026070903_ki_und_schroedingers_katze/images/marchhare.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
