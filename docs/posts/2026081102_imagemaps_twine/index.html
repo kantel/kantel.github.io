@@ -212,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figcaption>Wunderland-Debattierclub</figcaption>
 </figure>
 </div>
-<p>Nur hinter diesen Rechtecken verbirgt sich ein Link, die auf entsprechende Seiten verweisen.</p>
+<p>Nur hinter diesen Rechtecken verbirgt sich jeweils ein Link, der auf entsprechende Seiten/Passagen verweist.</p>
 <p>Natürlich geht das auch in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, nur eben je nach gewähltem Storyformat mit leicht abweichender Syntax. Ich habe das exemplarisch für <a href="https://twine2.neocities.org/">Harlowe</a> ausprobiert, jedoch der wunderbare Aufsatz »<a href="https://www.teuton.org/~stranger/clickableimagemapsintwine">Clickable imagemaps in Twine</a>« zeigt, wie Ihr das auch in <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a>, Snowman oder <a href="http://www.motoslave.net/sugarcube/2/">SugarCube</a> realisieren könnt.</p>
 <p>In Harlowe wird eine Imagemap so realisiert:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1"></a>{<span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"images/diskussion.jpg"</span><span class="ot"> usemap</span><span class="op">=</span><span class="st">"#diskussion"</span><span class="dt">&gt;</span></span>
@@ -230,10 +230,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-13"><a href="#cb2-13"></a>        (goto:"Dark")</span>
 <span id="cb2-14"><a href="#cb2-14"></a>]</span>
 <span id="cb2-15"><a href="#cb2-15"></a><span class="dt">&lt;/</span><span class="kw">map</span><span class="dt">&gt;</span>}</span></code><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Das <code>(link:)</code>-Makro ermöglcht es uns, obigen HTML-Code in Harlowe nachzubilden, indem es statt auf HTML-Seiten auf entsprechende Passagen verweist. Allerdings werden in diesem Falle die Passagen nicht automatisch generiert, sondern müssen manuell angelegt werden. Zur Veranschaulichung habe ich dieses kleine Beispiel zusammengestrickt.</p>
-<iframe width="800" height="480" src="imagemap_harlowe/">
+<p>Das <code>(link:)</code>-Makro ermöglcht es uns, obigen HTML-Code in Harlowe nachzubilden, indem es statt auf HTML-Seiten auf entsprechende Passagen verweist. Allerdings werden in diesem Falle die Passagen nicht automatisch generiert, sondern müssen manuell angelegt werden. Zur Veranschaulichung habe ich dieses kleine Beispiel zusammengestrickt:</p>
+<iframe width="800" height="500" src="imagemap_harlowe/">
 </iframe>
-<p>Die Twine-Story passt nicht wirklich auf die Seite (ich hätte das Bild kleiner wählen sollen) und responsiv ist es auch nicht, da die Positionen absolute Koordinaten sind, die eine variable Größe nicht zulassen. Aber um in Twine ein <em>Point and Click</em>-Abenteuer zu erstellen, ist die <code>&lt;map&gt;</code>-Funktion schon recht brauchbar.</p>
+<p>Die Twine-Story ist ein wenig zu breit und passt nicht wirklich auf die Seite (ich hätte das Bild kleiner wählen sollen) und responsiv ist sie auch nicht, da die Positionen absolute Koordinaten sind, die eine variable Größe nicht zulassen. Aber um in Twine ein <em>Point and Click</em>-Abenteuer zu erstellen, ist die <code>&lt;map&gt;</code>-Funktion schon recht brauchbar.</p>
 <p>Wenn der Mauszeiger über ein klickbares Rechteck bewegt wird, verändert er sein Aussehen zum <code>pointer</code> und signalisiert damit »hier kann geklickt werden«.</p>
 <p>Wer wirklich responsive Spiele zum Beispiel für Mobilgeräte in Twine entwickeln will, der kommt ohne JavaScript nicht aus. Der oben verlinkte Aufsatz hat auch ein Beispiel dafür. Alternativ kann man aber auch die klassischen HTML-Image-Maps komplett aufgeben und stattdessen SVG-Graphiken verwenden, um Bilder anzuzeigen und Bereiche anklickbar zu machen. Dies bietet einige wesentliche Vorteile: Die Graphiken lassen sich leicht skalieren, verfügen über integrierte anklickbare Bereiche und unterstützen auch die automatische Hervorhebung von Bereichen.</p>
 <p>Wenn das interessant klingt, schaue sich <a href="https://gist.github.com/cyrusfirheir/2a247eeae668b1ee321b89b45f37b2e1">diesen kurzen Artikel von Cyrus Firheir</a> an.</p>
@@ -243,6 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>David Donachie: <em><a href="https://www.teuton.org/~stranger/clickableimagemapsintwine">Clickable imagemaps in Twine</a></em>, David Donachie Blog vom 21.&nbsp;Juni&nbsp;2022</li>
 <li>Cyrus Firheir: <em><a href="https://gist.github.com/cyrusfirheir/2a247eeae668b1ee321b89b45f37b2e1">Easy, Interactive, and Scalable Image Maps using SVGs</a></em>, zuletzt aufgerufen am 11.&nbsp;August&nbsp;2026</li>
 </ul>
+<p>Natürlich werde ich die Geschichte auch noch auf meinen Neocities-Account hochladen, denn wenn das keine Webseite ohne Sinn und Verstand« ist, was ist dann eine »Webseite ohne Sinn und Verstand«?</p>
 
 
 </section>
