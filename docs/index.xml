@@ -10,7 +10,338 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.5.47</generator>
-<lastBuildDate>Tue, 11 Aug 2026 14:40:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 11 Aug 2026 20:40:00 GMT</lastBuildDate>
+<item>
+  <title>Der Wunderland-Debattierclub: Klickbare Imagemaps in Twine</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026081102_imagemaps_twine/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55457781801/"><img src="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/imagemaptwine-b.jpg" class="img-fluid"></a></p>
+<p><strong>Imagemaps</strong> sind ein HTM-Element, das es erlaubt, mit der Maus auf eine Stelle in einem Bild zu klicken und dort auf eine andere Seite verlinkt zu werden. Klickt man jedoch auf eine andere Stelle in diesem Bild, passiert entweder gar nichts oder man wird auf eine ganz andere Seite verlinkt, je nachdem, ob das <code>&lt;map&gt;</code>-Element einen klickbaren Bereich definiert hat. In HTML kann das etwa so aussehen:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb1-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PATH_TO_YOUR_IMAGE"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> usemap</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#NAME_OF_MAP"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">map</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NAME_OF_MAP"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-3">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"360,36,384,66"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PAGE_1"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-4">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"520,145,560,175"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PAGE_2"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-5">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"160,160,230,185"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PAGE_3"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-6">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2,80,36,140"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PAGE_4"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-7"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">map</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>Die Koordinaten sind in diesem Fall nicht völlig willkürlich gewählt, sondern sind untenstehendem Bild entnommen und definieren jeweils ein Rechteck um den roten Ballon, um die Katze im Regal, um das Buch auf den Tisch und die Lampe linksaußen:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55451807227/"><img src="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/diskussion.jpg" class="img-fluid figure-img" alt="Wunderland-Debattierclub"></a></p>
+<figcaption>Wunderland-Debattierclub</figcaption>
+</figure>
+</div>
+<p>Nur hinter diesen Rechtecken verbirgt sich ein Link, die auf entsprechende Seiten verweisen.</p>
+<p>Natürlich geht das auch in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, nur eben je nach gewähltem Storyformat mit leicht abweichender Syntax. Ich habe das exemplarisch für <a href="https://twine2.neocities.org/">Harlowe</a> ausprobiert, jedoch der wunderbare Aufsatz »<a href="https://www.teuton.org/~stranger/clickableimagemapsintwine">Clickable imagemaps in Twine</a>« zeigt, wie Ihr das auch in <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a>, Snowman oder <a href="http://www.motoslave.net/sugarcube/2/">SugarCube</a> realisieren könnt.</p>
+<p>In Harlowe wird eine Imagemap so realisiert:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1">{<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/diskussion.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> usemap</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#diskussion"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">map</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"diskussion"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb2-3">(link:'<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"360,36,384,66"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span>')[</span>
+<span id="cb2-4">        (goto:"Ballon")</span>
+<span id="cb2-5">]</span>
+<span id="cb2-6">(link:'<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"520,145,560,175"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span>')[</span>
+<span id="cb2-7">        (goto:"Grinsekatze")</span>
+<span id="cb2-8">]</span>
+<span id="cb2-9">(link:'<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"160,160,220,185"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span>')[</span>
+<span id="cb2-10">        (goto:"Buch")</span>
+<span id="cb2-11">]</span>
+<span id="cb2-12">(link:'<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2,80,36,140"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span>')[</span>
+<span id="cb2-13">        (goto:"Dark")</span>
+<span id="cb2-14">]</span>
+<span id="cb2-15"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">map</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span>}</span></code></pre></div>
+<p>Das <code>(link:)</code>-Makro ermöglcht es uns, obigen HTML-Code in Harlowe nachzubilden, indem es statt auf HTML-Seiten auf entsprechende Passagen verweist. Allerdings werden in diesem Falle die Passagen nicht automatisch generiert, sondern müssen manuell angelegt werden. Zur Veranschaulichung habe ich dieses kleine Beispiel zusammengestrickt.</p>
+<iframe width="800" height="480" src="imagemap_harlowe/">
+</iframe>
+<p>Die Twine-Story passt nicht wirklich auf die Seite (ich hätte das Bild kleiner wählen sollen) und responsiv ist es auch nicht, da die Positionen absolute Koordinaten sind, die eine variable Größe nicht zulassen. Aber um in Twine ein <em>Point and Click</em>-Abenteuer zu erstellen, ist die <code>&lt;map&gt;</code>-Funktion schon recht brauchbar.</p>
+<p>Wenn der Mauszeiger über ein klickbares Rechteck bewegt wird, verändert er sein Aussehen zum <code>pointer</code> und signalisiert damit »hier kann geklickt werden«.</p>
+<p>Wer wirklich responsive Spiele zum Beispiel für Mobilgeräte in Twine entwickeln will, der kommt ohne JavaScript nicht aus. Der oben verlinkte Aufsatz hat auch ein Beispiel dafür. Alternativ kann man aber auch die klassischen HTML-Image-Maps komplett aufgeben und stattdessen SVG-Graphiken verwenden, um Bilder anzuzeigen und Bereiche anklickbar zu machen. Dies bietet einige wesentliche Vorteile: Die Graphiken lassen sich leicht skalieren, verfügen über integrierte anklickbare Bereiche und unterstützen auch die automatische Hervorhebung von Bereichen.</p>
+<p>Wenn das interessant klingt, schaue sich <a href="https://gist.github.com/cyrusfirheir/2a247eeae668b1ee321b89b45f37b2e1">diesen kurzen Artikel von Cyrus Firheir</a> an.</p>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>David Donachie: <em><a href="https://www.teuton.org/~stranger/clickableimagemapsintwine">Clickable imagemaps in Twine</a></em>, David Donachie Blog vom 21.&nbsp;Juni&nbsp;2022</li>
+<li>Cyrus Firheir: <em><a href="https://gist.github.com/cyrusfirheir/2a247eeae668b1ee321b89b45f37b2e1">Easy, Interactive, and Scalable Image Maps using SVGs</a></em>, zuletzt aufgerufen am 11.&nbsp;August&nbsp;2026</li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2026081102_imagemaps_twine/</guid>
+  <pubDate>Tue, 11 Aug 2026 20:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/imagemaptwine.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Phoenix Code Editor v5.2 freigegeben</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3090,30 +3421,6 @@ font-style: inherit;">&gt;</span> archiv</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026071401_ink_workshop/</guid>
   <pubDate>Tue, 14 Jul 2026 14:35:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026071401_ink_workshop/images/lab.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>E-Scooter-Parkplatz: Das Trottoir den E-Scootern</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026071303_escooter_hoelle/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55383698500/"><img src="https://kantel.github.io/posts/2026071303_escooter_hoelle/images/escooter-b.jpg" class="img-fluid"></a></p>
-<p>Zwischen Radweg und Hauswand findet der durchschnittliche Berliner <del>gehirnamputierte</del> E-Scooter-Nutzer immer noch Platz, um seinen geliehenen Roller abzustellen. Was heißen hier »Fußweg« und »Fußgänger«? Fußgängerinnen und Fußgänger stören doch nur bei der Roller-Raserei. Schon die Einführung dieser Klein- und Leihfahrzeuge war eine beSCHEUERte Idee, und das Trottoir gehört seitdem den <del>Gehirnamputierten</del> E-Scootern.</p>
-<hr>
-<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>E-Scooter</category>
-  <category>Neukölln</category>
-  <category>Verkehrswende</category>
-  <guid>https://kantel.github.io/posts/2026071303_escooter_hoelle/</guid>
-  <pubDate>Mon, 13 Jul 2026 18:25:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026071303_escooter_hoelle/images/escooter.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
