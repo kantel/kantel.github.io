@@ -10,7 +10,432 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Fri, 21 Aug 2026 17:20:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 23 Aug 2026 12:30:00 GMT</lastBuildDate>
+<item>
+  <title>Alles auf Anfang: Mit Twine und Harlowe ins Wunderland</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55482387061/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/harlowetutorial-b.jpg" class="img-fluid"></a></p>
+<p>Ich habe der <a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Ankündigung vor drei Tagen</a> ein erstes Tutorial folgen lassen (eigentlich ist es ein zweites Tutorial, denn diese <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Anleitung über Imagemaps in Twine</a>, die ich vor etwa zwei Wochen erstellt hatte, gehört strenggenommen auch schon dazu). Dafür habe ich mein <a href="https://kantel.github.io/posts/2026040801_chapbook_wunderland_reloaded/">altes Tutorial</a> zu <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a> genommen, das ich im April dieses Jahres verfasst hatte, und es nach <a href="https://twine2.neocities.org/">Harlowe</a> portiert. Vieles klingt daher wie eine Wiederholung, aber es ist dennoch einiges neues dabei.</p>
+<p>Das Tutorial geht davon aus, daß Ihr entweder Twine auf Eurem Desktop-Rechner installiert habt oder wißt, wie die Online-Version von Twine zu bedienen ist (die Bedienung ist in beiden Fällen gleich). Da die Online-Version Eure Ergebnisse jedoch nur im Browser-Cache vorrätig hält, empfiehlt sich ein regelmäßiges Abspeichern entweder als HTML- (<code>Build &gt; Als Datei veröffentlichen</code>) oder als Twee-Datei (<code>Build &gt; Exportiere als Twee</code>), damit Eure Ergebnisse nicht versehentlich im Daten-Nirwana verschwinden. Deshalb, aber auch aus anderen Gründen – siehe den Abschnitt zu »Bilder« weiter unten –, empfehle ich eher die Desktop-Version von Twine.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55482821450/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot01.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Twine Startscreen</figcaption>
+</figure>
+</div>
+<p>Als erstes legt Ihr auf dem Startbildschirm von Twine unter <code>Geschichte &gt; Neu</code> eine neue Geschichte an. Ich habe sie »Alice Tutorial 1« genannt, aber das könnt Ihr nach Belieben verändern (<code>Geschichte &gt; Umbenennen</code>). Da Harlwowe das Default-Storyformat von Twine ist, braucht Ihr es normalerweise nicht extra einzustellen<sup>1</sup>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55482847315/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot02.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die Story beginnt</figcaption>
+</figure>
+</div>
+<p>Falls Ihr doch ein anderes Storyformat als Default eingestellt hattet, die Storyformate könnt Ihr unter <code>Twine &gt; Geschichtsformate</code> umstellen. Also achtet darauf, daß das Storyformat auf Harlowe 3.3.x (oder größer) eingestellt ist. Denn wenn das Storyformat einmal festgelegt ist, seid ihr für diese Geschichte daran gebunden, da die verschiedenen Storyformate bis auf wenige Befehle eine komplett unterschiedliche Syntax aufweisen. Bei einer nachträglichen Änderung des Storyformats müsst Ihr also sämtliche bisher erstellten Passagen ändern.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55481493607/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot03.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Der Harlowe-Editor</figcaption>
+</figure>
+</div>
+<p>Jetzt könnt Ihr aber endlich mit der Geschichte beginnen. Öffnet daher mit einem Doppelklick die Startpassage und gebt folgenden Text ein:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb1-2">hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb1-3">Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen Teil </span>
+<span id="cb1-8">davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum Haus der </span>
+<span id="cb1-9">Herzogin, links zur Teeparty des verrückten Hutmachers und rechts triffst Du die</span>
+<span id="cb1-10">kiffende Raupe auf ihrem Pilz.«</span></code></pre></div></div>
+<p>Wegen der besseren Lesbarkeit habe ich alle Texte in diesem Tutorial umgebrochen. Harlowe ist aber, was Zeilenumbrüche angeht, sehr pingelig. Jeder Zeilenumbruch wird als neue Zeile interpretiert. Ihr dürft daher Zeilenumbrüche nur an den Stellen einsetzen, wo auch in der Geschichte eine neue Zeile oder ein neuer Absatz beginnen sollen. Der Editor in Twine hilft Euch aber dabei, da er ein <em>Soft Wrap</em> unterstützt, das heißt, lange Textzeilen werden in der Ansicht automatisch an den Fensterrand angepasst, ohne echte Umbruchzeichen in die Datei einzufügen. Die Texte werden also nie den Fensterrand verlassen.</p>
+<p>Ähnlich einem »normalen« Editor- oder Schreibprogramm hat der Editor in Twine/Harlowe eine Menüzeile, die Euch beim Editieren unterstützen. Dazu in einem späteren Tutorial mehr.</p>
+<section id="wir-wollen-links" class="level2">
+<h2 class="anchored" data-anchor-id="wir-wollen-links">Wir wollen Links</h2>
+<p>Ihr könnt die Geschichte oben natürlich endlos weiterspinnen bis hin zu einem Roman. Aber dazu benötigt ihr Twine nicht, dafür reicht eine ordinäre Schreibmaschine. Aber wenn Ihr den letzten Absatz in der obigen Passage nehmt und ihn wie folgt abändert,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb2-2">hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb2-3">Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb2-6"></span>
+<span id="cb2-7">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen </span>
+<span id="cb2-8">Teil davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum </span>
+<span id="cb2-9">[[Haus der Herzogin-&gt;Herzogin]], links zur [[Teeparty-&gt;Teeparty]] des verrückten </span>
+<span id="cb2-10">Hutmachers und rechts triffst Du die [[kiffende Raupe auf ihrem Pilz-&gt;Raupe]].«</span></code></pre></div></div>
+<p>und danach auch noch auf <code>Build &gt; Spiele</code> klickt, um das Spiel in einem Browserfenster zu öffnen, dann erhaltet Ihr dieses:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55482700194/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot04.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Jetzt mit Links!</figcaption>
+</figure>
+</div>
+<p>Im Browserfenster erscheint eine spielbare Version von Alice mit klickbaren Links (die momentan aber noch auf leere Passagen verweisen) und im Twine-Fenster sind wie von Geisterhand drei neue Passagen entstanden, mit den Titeln »Herzogin«, »Teeparty« und »Raupe«.</p>
+<p>Dieser Absatz zeigt schon die wichtigste Funktionsweise von Twine: Wie werden Links (zu anderen Passagen) erstellt? Der einfachste Weg ist, das Linkziel zwischen zwei eckigen Klammerpaaren (<code>[[Link]]</code>) zu schreiben, so wie ich es bei <code>[[Teeparty]]</code> hätte machen können. Denn hier sind Linktext und Linkziel identisch, das heißt, der Link <code>[[Teeparty]]</code> führt zur Passage <code>Teeparty</code>.</p>
+<p>Doch in den meisten Fällen unterscheiden sich Linktext und Linkziel. Hierfür gibt es in Twine die Pfeilnotation: <code>[[Linktext-&gt;Linkziel]]</code>, wie zum Beispiel in <code>[[kiffende Raupe auf ihrem Pilz-&gt;Raupe]]</code>. Hier verlinkt der komplette Text <code>kiffende Raupe auf ihrem Pilz</code> auf eine Passage mit Namen <code>Raupe</code>. Dabei ist zu beachten, daß Leerzeichen zählen. Daher sollte zumindest nach der Pfeilspitze kein Leerzeichen stehen, denn Twine sucht sonst das Linkziel <code>_Raupe</code> mit vorangestelltem Leerzeichen und das bringt nicht nur Twine, sondern – wie man in vielen Online-Tutorien sehen kann – auch Euch durcheinander. Wenn Ihr aber rechts und links von den Pfeilen keine Leerzeichen zulasst, seid Ihr immer auf der sicheren Seite.</p>
+<p>Es gibt noch eine zweite Schreibweise mit rückwärtsgerichtetem Pfeil, die Linkkziel und Linktext umkehrt: <code>[[Linkziel&lt;-Linktext]]</code>, also – um bei unserem Beispiel zu bleiben – <code>[[Raupe&lt;-kiffende Raupe auf ihrem Pilz]]</code>. Mir hat sich der Sinn dieser vermutlich aus historischen Quellen gespeisten Schreibweise nie erschlossen und ich habe sie auch noch nie nutzen müssen.</p>
+<p>Um die Verwirrung komplett zu machen, gibt es auch noch eine dritte Schreibweise mit einem vertikalen Trennstrich (<code>|</code>) in der Mitte: <code>[[Linktext|Linkziel]]</code>, also <code>[[kiffende Raupe auf ihrem Pilz|Raupe]]</code>. Hier weiß ich zumindest den Grund, die Schreibweise stammt aus Twine 1.x und ich habe sie aus reiner Gewohnheit auch lange noch verwendet. Hier gilt übrigens das gleiche wie bei den Pfeilen: Keine Leerzeichen rechts und/oder links vom vertikalen Strich. Und selbst ich als Gewohnheitstier habe mich von dieser Schreibweise verabschiedet. Wer daher neu in Twine ist, sollte keinen Grund haben, auf dieser veralteten Konvention zu beharren.</p>
+<p>Um eine einheitliche Schreibweise zu realisieren, verwende ich <strong>immer</strong> den rechtsgerichteten Pfeil <code>-&gt;</code>, auch dann, wenn Linktext und Linkziel identisch sind, wie zum Beispiel bei <code>[[Teeparty-&gt;Teeparty]]</code>. Denn wer weiß, vielleicht ändert sich der Linktext ja noch (zum Beispiel bei einer Übersetzung in eine andere Sprache), während das Linkziel gleich bleiben soll.</p>
+<p>Wenn Ihr – nachdem Ihr die Startpassage mit dem Text gefüttert habt – auf das Twine-Fenster schaut, werdet Ihr feststellen, daß Twine die Passagen <code>Herzogin</code>, <code>Teeparty</code> und <code>Raupe</code> für Euch schon angelegt und mit Pfeilen versehen hat. Die Pfeile zeigen von der Startpassage jeweils auf die verlinkte Passage und – sollte es von da einen Rücklink geben – als Doppelpfeil auch wieder zurück.</p>
+<p>Ihr könnt die Passagen in dem Fenster beliebig mit der Maus hin- und herschieben und so ein wenig Struktur in Eure Geschichten bekommen.</p>
+<p>Natürlich wollen auch diese Passagen mit Text gefüttert werden. Ich fange mit der <code>Herzogin</code> an:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1">Im Haus der Herzogin herrschte Chaos. Erst schlug die Köchin mit einer Pfanne nach </span>
+<span id="cb3-2">Alice, dann drückte die Herzogin ihr ein plärrendes [[Baby-&gt;Baby]] in den Arm.</span></code></pre></div></div>
+<p>Auch die <code>Teeparty</code></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1">Alice erreichte die Teaparty vor dem Haus des verrückten Hutmachers. Dieser </span>
+<span id="cb4-2">deklamierte gerade ein langes, dafür um so langweiligeres Gedicht.</span>
+<span id="cb4-3"></span>
+<span id="cb4-4">Alice hatte sehr schnell genug davon, also überlegte sie, ob sie doch die </span>
+<span id="cb4-5">[[Raupe-&gt;Raupe]] aufzusuchen oder gleich [[nach Hause gehen-&gt;Home]] sollte.</span></code></pre></div></div>
+<p>und die <code>Raupe</code> bekommen einen Text:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb5-1">Die Raupe war zu bekifft, um ein vernünftiges Gespräch zu führen. Sie murmelte nur </span>
+<span id="cb5-2">immerzu etwas vom »Reich der Ringe« und daß Alice dieses dringend besuchen müsste. </span>
+<span id="cb5-3"></span>
+<span id="cb5-4">Sie sagte noch: »Komm morgen wieder, dann erzähle ich Dir mehr«.</span>
+<span id="cb5-5"></span>
+<span id="cb5-6">Alice beschloß, daß sie für heute genug habe und [[ging nach Hause-&gt;Bad Ending]].</span></code></pre></div></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55480656959/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot05.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die (vorläufig) vollständige Geschichte</figcaption>
+</figure>
+</div>
+<p>Wenn Ihr jetzt wieder auf Euer Twine-Fenster schaut, werdet Ihr drei weitere, neue, aber noch leere Passagen finden, die Twine für Euch angelegt und mit Pfeilen versehen hat: <code>Baby</code>, <code>Home</code> und <code>Bad Ending</code><sup>2</sup>. Ihr könnt sie zur besseren Übersicht erst einmal anordnen, wie im Screenshot oben und dann ebenfalls mit Text füllen<sup>3</sup>.</p>
+<p>Die Passage <code>Baby</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb6-1">Alice verließ das Haus. Das Plärren des Babys veränderte sich langsam zu einem Grunzen </span>
+<span id="cb6-2">und Quieken. Als Alice nachsah, merkte sie, daß sie ein kleines Ferkelchen im Arm </span>
+<span id="cb6-3">hielt.</span>
+<span id="cb6-4"></span>
+<span id="cb6-5">Erschreckt setzte Alice das Ferkelchen ab. Es lief davon. Und Alice ging verwirrt </span>
+<span id="cb6-6">zurück an den [[Anfang der Geschichte-&gt;Start]].</span></code></pre></div></div>
+<p>Die Passage <code>Home</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb7-1">Zuhause traf Alice ihre Freunde, das weiße Kaninchen und den großen Elephanten, </span>
+<span id="cb7-2">mit mit denen sie noch gemütlich ein Kännchen Kaffee trank. So wurde es doch noch </span>
+<span id="cb7-3">ein gelungengener Nachmittag.</span></code></pre></div></div>
+<p>und <em>last but not least</em> die Passage <code>Bad Ending</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb8-1">Auf dem Weg nach Hause materialisierte sich pötzlich die Grinsekatze wieder vor Alice. </span>
+<span id="cb8-2">Sie grinste breit – so breit können nur Grinsekatzen grinsen – und fragte: »Na, war </span>
+<span id="cb8-3">die Raupe wieder bekifft?«</span>
+<span id="cb8-4"></span>
+<span id="cb8-5">Alice hatte jetzt endgültig genug von ihrem heutigen Ausflug und verließ das </span>
+<span id="cb8-6">Wunderland.</span></code></pre></div></div>
+<p>Dies ist eigentlich alles, was Ihr über Twine und Harlowe wissen müsst. Mit diesem einfachen Linkmechanismus (der übrigens in dieser Form in fast allen Storyformaten existiert) könnt Ihr Eure eigene interaktive und verzweigte Geschichte im Stil der »Choose Your Own Adventure Books« <em>(CYOA)</em> schreiben. Denn das ist der Kern von Twine<sup>4</sup>, alles andere ist im Grunde genommen nur Kosmetik. Aber da Kosmetik vieles doch erst schön macht, werde ich Euch nun noch ein wenig Kosmetik zeigen.</p>
+</section>
+<section id="wir-wollen-aber-bilder" class="level2">
+<h2 class="anchored" data-anchor-id="wir-wollen-aber-bilder">Wir wollen aber Bilder</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55480557416/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot06.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die vollständige Geschichte, jetzt mit Bildern</figcaption>
+</figure>
+</div>
+<blockquote class="blockquote">
+<p>Alice fing an sich zu langweilen; sie saß schon lange bei ihrer Schwester am Ufer und hatte nichts zu tun. Das Buch, das ihre Schwester las, gefiel ihr nicht; denn es waren weder Bilder noch Gespräche darin. »Und was nützen Bücher,« dachte Alice, »ohne Bilder und Gespräche?«</p>
+</blockquote>
+<p>Die Geschichte ist bisher ja recht schön erzählt, aber sie besitzt ein großes Manko: Denn was sind Geschichten ohne Bilder?</p>
+<p>Doch das Verhältnis von Twine zu Bildern (und anderen Mulitmediadateien wie Musik, Sound oder Filmen) war von Anfang an ein schwieriges. Denn Twine war ursprünglich entworfen, um textbasierte, interaktive Abenteuer zu erzählen. Bilder waren da nicht vorgesehen. Doch das Publikum wollte – wie Alice – Bilder und so haben sich zwei mehr oder weniger inkompatible Lösungen gefunden:</p>
+<section id="lösung-1-bilder-online-einbinden" class="level3">
+<h3 class="anchored" data-anchor-id="lösung-1-bilder-online-einbinden">Lösung 1: Bilder online einbinden</h3>
+<p>Der erste Ansatz ist, die Multimediadateien online auf einem Server abzulegen, und sie dann per HTTP(S) einzubinden. Der Vorteil dieser Lösung ist, daß die Bilder – eine Online-Anbindung vorausgesetzt – immer von Twine gefunden werden, egal ob die Twine Story <strong>in</strong> Twine (im Test-Modus) aufgerufen wird, oder ob sie <em>standalone</em> läuft. Jedoch hat diese Methode auch zwei gewichtige Nachteile. Der erste Nachteil: Es ist <strong>Euer</strong> Server, auf dem die Daten liegen, Ihr zahlt, wenn Ihr die Geschichte veröffentlicht habt, für die Bandbreite, wenn andere die Geschichte aufrufen. Und zweitens: Ihr müßt zwingend online sein, auch wenn Ihr Euer Spiel entwickelt. Ein Schreiben oder Spielen am Strand ist damit in der Regel nicht möglich.</p>
+<p>Außerdem hat sich hier noch eine böse Unsitte entwickelt, die man leider häufig auch Twine-Tutorials findet. Dort wird dann einfach mit einer Bildersuchmaschine ein passendes Bild gesucht. Ist dieses Bild gefunden, wird die URL kopiert und die Datei ohne Rücksicht auf Verluste vom <strong>fremden</strong> Server in die eigene Geschichte eingebunden.</p>
+<p>Dieses <em>Hotlinking</em> genannte Verfahren ist aus mehreren Gründen eine Sünde: Erstens, wenn man sich nicht um die Bildrechte kümmert, gerät man dabei leicht in die Fallstricke einer Urheberrechtsverletzung und das kann teuer werden. Zweitens zahlt der Serverbetreiber und nicht Ihr die Kosten für den Datentransfer. Das macht ihn sicher nicht glücklich. Und drittens habt Ihr keine Kontrolle über die Daten. Auch ich habe schon einmal eines meiner (eigentlich harmlosen und unter einer freien Lizenz stehenenden) Photos einer Berliner Touristen-Attraktion gegen das Bild einer leicht bekleideten Dame ausgetauscht, nachdem ich bemerkt hatte, daß irgendein Dödel dieses Bild ungefragt per Hotlinking in seine dusselige Kommerzseite eingebunden hatte.</p>
+</section>
+<section id="lösung-2-daten-lokal-einbinden" class="level3">
+<h3 class="anchored" data-anchor-id="lösung-2-daten-lokal-einbinden">Lösung 2: Daten lokal einbinden</h3>
+<p>Die zweite Lösung ist, die Daten lokal einzubinden. Dafür legt man sich am sinnvollsten unterhalb der eigentlichen Story-Datei (Beispiel: <code>story.html</code>) ein Verzeichnis (oder mehrere Vereichnisse) an, die die Asset-Dateien beinhalten. Das kann dann beispielsweise so aussehen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb9-1">- story.html</span>
+<span id="cb9-2">- images/</span>
+<span id="cb9-3">  - image01.jpg</span>
+<span id="cb9-4">  - image02.jpg</span>
+<span id="cb9-5">- audio/</span>
+<span id="cb9-6">  - song01.mp3</span></code></pre></div></div>
+<p>Wenn dann ein Bild in eine Twine-Story per relativer URL eingebunden ist, in Harlowe zum Beispiel mit:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/grinsi1.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Grinsekatze"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span></code></pre></div></div>
+<p>Dann findet Eure Twine-Story <strong>nach dem Publizieren</strong> das Bild auch, unabhängig davon, ob sie lokal oder über eine Webverbindung aufgerufen wurde.</p>
+<p>Das Beispiel zeigt aber auch, daß Harlowe im Gegensatz zu SugarCube oder Chapbook keine eigenen Befehle zur Behandlung von Bildern kennt. Das Storyformat reicht sie einfach als HTML-Anweisungen an den Browser durch. Das hat Vor- und Nachteile. Der Vorteil ist: Man kann so zum Beispiel Bilder (oder Videos) via HTML und CSS beliebig auf den Seiten postionieren (was in Chapbook zum Beispiel nicht so einfach ist). Der Nachteil: Man <strong>muss</strong> HTML und CSS beherrschen, so passen sich zum Beispiel Bilder nicht automatisch der Fenstergröße an<sup>5</sup> (was sie in Chapbook wiederum können).</p>
+<p>Der Zusatz »nach dem Publizieren« weist auch gleich auf den größten Nachteil dieser Methode hin: Wird die Geschichte <strong>innerhalb</strong> von Twine gestartet (sei es über den Test- oder über den Play-Button), dann findet Twine Eure Assets nicht. Das liegt daran, daß Twine die Story temporär auf eine völlig obskure und nicht nachvolltiehbare URL hinausschreibt, beispielsweise auf (gekürzt)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb11-1">file:///private/var/folders/x3/…/T/52f32371-9e39-4952-a4d8-6ee9f02e7df4.html</span></code></pre></div></div>
+<p>und wo soll das arme Twine da Eure Assets finden?</p>
+<p>Der größte Vorteil dieser Methode ist allerdings der: Ist Eure Story mal publiziert, dann läßt sich die Datei mitsamt den Asset-Verzeichnissen entweder als <code>.zip</code>-Datei oder auch unkomprimiert auf jeden Server oder Dienst Eurer Wahl hochladen (zum Beispiel auf Itch.io) oder als Email an Eure Freunde verschicken. Und sie können sie dann auch spielen, ohne auf eine Internetverbindung angewiesen zu sein.</p>
+</section>
+<section id="der-kompromiss-twine-überlisten" class="level3">
+<h3 class="anchored" data-anchor-id="der-kompromiss-twine-überlisten">Der Kompromiss: Twine überlisten</h3>
+<p>Nun möchte man aber gerne auch während der Entwicklung in Twine seine Bilder sehen, und sei es nur, um das Layout kontrollieren zu können. Hierfür habe ich folgende Lösung gefunden: Ruft man über den <code>Play</code>- oder <code>Test</code>-Button die Geschichte innerhalb von Twine auf, dann zeigt der Browser in seiner Adresszeile an, von wo er die Datei aufruft. In meinem Fall (macOS) ist das:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb12-1">file:///Users/kantel/Documents/Twine/Scratch/voellig_obskurer_dateiname.html</span></code></pre></div></div>
+<p>Wenn ich nun in <code>Users/kantel/Documents/Twine/Scratch</code><sup>6</sup> eine Kopie meiner Assets-Verzeichnisse ablgege, dann habe ich zwar alle Assets zweimal auf meiner Festplatte<sup>7</sup>, aber dafür werden alle Assets auch innerhalb Twines angezeigt.</p>
+<p>Ich weiß allerdings nicht, ob und wie das auch bei anderen Betriebssystemen (Windows, Linux) funktioniert. Und es dürfte auf gar keinen Fall bei der Online-Version von Twine funktionieren.</p>
+<p>Die Verwendung des <code>alt</code>-Textes sollte eigentlich überall obligatorisch sein, damit sich sehbehinderte Menschen von ihrem Screenreader die Bildbeschreibung vorlesen lassen können. In diesem Tutorial habe ich aber bisher darauf verzichtet, um Platz zu sparen. Sollte ich die Story aber jemals veröffentlichen, werde ich das aber nachholen. Dient das Bild rein dekorativen Zwecken, zum Beispiel eine schöne Seitenumrandung, dann kann der alt-Text auch einfach nur aus einem leeren String bestehen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb13-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/asterisk.png"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span></code></pre></div></div>
+<p>Moderne Screenreader werden dieses Bild dann freudig ignorieren.</p>
+<p>So, und jetzt nach der langen Vorrede die neuesten Abenteuer von Alice mit Twine und Harlowe. Sie sind nahezu identisch mit der ersten Version, nur daß sie nun mit Bildern illustriert sind. Hier der Twee-Code der ersten Passage:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb14-1">&lt;img src="images/start.jpg" alt="" /&gt;</span>
+<span id="cb14-2"></span>
+<span id="cb14-3">Es war ein sonniger Tag. Alice schlenderte gedankenverloren durch das Wunderland. Sie </span>
+<span id="cb14-4">hatte sich ein wenig verirrt. Plötzlich materialisierte sich auf dem Dach der alten </span>
+<span id="cb14-5">Ruine am Eingang des Wunderlandes die Grinsekatze.</span>
+<span id="cb14-6"></span>
+<span id="cb14-7">Alice fragte sie: »Würdest Du mir bitte sagen, wie ich von hier aus weitergehen soll!«</span>
+<span id="cb14-8"></span>
+<span id="cb14-9">Die Grinsekatze grinste, wie das Grinsekatzen nun mal so tun: »Das hängt zum großen </span>
+<span id="cb14-10">Teil davon ab, wohin Du möchtest. Aber ich will Dir helfen: Geradeaus geht es zum </span>
+<span id="cb14-11">[[Haus der Herzogin-&gt;Herzogin]], links zur [[Teeparty-&gt;Teeparty]] des verrückten </span>
+<span id="cb14-12">Hutmachers und rechts triffst Du die [[kiffende Raupe auf ihrem Pilz-&gt;Raupe]].«</span></code></pre></div></div>
+<p>Die übrigen Passagen habe ich einfach in der gleichen Art mit Bildern aufgepeppt.</p>
+</section>
+</section>
+<section id="wir-wollen-stil" class="level2">
+<h2 class="anchored" data-anchor-id="wir-wollen-stil">Wir wollen Stil</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55480758503/"><img src="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/screenshot07.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die vollständige Geschichte, jetzt mit Stil</figcaption>
+</figure>
+</div>
+<p>Zum Abschluß dieses einführenden Tutorials in Twine und Harlowe möchte ich der Geschichte noch ein wenig Stil spendieren. Denn weder gefallen mir die Mogelknöpfe »Vor« und »Zurück« in der Seitenleiste, noch, daß besuchte Links in einer anderen Farbe angezeigt werden, als Links zu noch unbesuchten Passagen. Daneben habe ich einfach die Farben noch ein wenig aufgehübscht.</p>
+<p>Das Handbuch von Harlowe empfiehlt zwar, viele Stilanpassungen mit Makros und Hooks zu erledigen (zu Makros und Hooks in einem späteren Tutorial mehr), doch das betrifft Stilanpassungen <strong>innerhalb</strong> einer einzelnen Passage (zum Beispiel Hervorhebung eines einzlnen Wortes oder einzelnen Satzes). Hier geht es aber darum, den Stil der vollständigen Anwendung anzupassen, und das wird auch in Harlowe mit CSS erledigt.</p>
+<p>Dafür gibt es im Menü <code>Geschichte</code> das Untermenü <code># Stylesheet</code> und alles, was hier eingetragen wird, überschreibt das Default-Stylesheet von Harlowe. Dafür gibt es in Twine ein paar Sonderklassen, die alle mit <code>tw-</code> beginnen. Um zum Beispiel die Mogelpfeile respektive die gesamte Seitenleiste verschwinden zu lassen, schreibt man in das Stylesheet:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb15-1">tw-sidebar {</span>
+<span id="cb15-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">display</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">none</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb15-3">}</span></code></pre></div></div>
+<p>Mein komplettes Stylesheet sieht momentan so aus:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb16-1">tw-story {</span>
+<span id="cb16-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">background-color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#1a1a1a</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#f0f0f0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-4">}</span>
+<span id="cb16-5"></span>
+<span id="cb16-6">tw-link<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> tw-ancient-link {</span>
+<span id="cb16-7">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-8">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-weight</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bold</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-9">}</span>
+<span id="cb16-10"></span>
+<span id="cb16-11">tw-link<span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span> {</span>
+<span id="cb16-12">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-13">}</span>
+<span id="cb16-14"></span>
+<span id="cb16-15">tw-link<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.visited</span> {</span>
+<span id="cb16-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-17">}</span>
+<span id="cb16-18"></span>
+<span id="cb16-19">tw-link<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.visited</span><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span> {</span>
+<span id="cb16-20">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-21">}</span>
+<span id="cb16-22"></span>
+<span id="cb16-23"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.enchantment-link</span><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> tw-link<span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span> {</span>
+<span id="cb16-24">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-25">}</span>
+<span id="cb16-26"></span>
+<span id="cb16-27">tw-sidebar {</span>
+<span id="cb16-28">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">display</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">none</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-29">}</span></code></pre></div></div>
+<p>Dabei ist <code>tw-story</code> der gesamte (HTML-) Seite, vergleichbar mit dem <code>body</code> in anderen Webseiten.</p>
+<p>Hier ist sicher noch Luft nach oben, aber ich bin kein CSS-Experte. Aber mit wenigen Änderungen an diesen Zeilen kann man zum Beispiel mit</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb17-1">tw-story {</span>
+<span id="cb17-2">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">background-color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#eeeeee</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb17-3">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#010101</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb17-4">}</span></code></pre></div></div>
+<p>die Geschichte schwarz auf weiß erscheinen lassen.</p>
+<hr>
+<p>Das war es für heute. Ich habe das kleine Tutorial sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice1/alice_tutorial_1.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice1/alice_tutorial_1.twee">Twee-Datei</a> mit <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice1/images">allen Assets</a> auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Es sei denn, Ihr seid Profis und habt »aus Gründen« das Default-Storyformat in ein anderes geändert (Profis nehmen oft <a href="http://www.motoslave.net/sugarcube/2/">SugarCube</a>). Aber dann wisst Ihr sowieso, wie Ihr das Storyformat auf Harlowe zurückstellen könnt.↩︎</p></li>
+<li id="fn2"><p>Aufmerksame Leser werden feststellen, daß in dem Screenshot noch ein Tippfehler ist: »Bad Endig« statt »Bad Endi<strong>n</strong>g«. Diesen Fehler habe ich zwischenzeitlich korrigiert.↩︎</p></li>
+<li id="fn3"><p>Was im obigen Screenshot schon passiert ist.↩︎</p></li>
+<li id="fn4"><p>Viele Twine-Stories kommen auch mit diesem Mechanismus aus, sie benutzen die fortgeschrittenen Features von Harlowe (oder auch den anderen Storyformaten) gar nicht.↩︎</p></li>
+<li id="fn5"><p>Das Problem der responsiven Darstellung der Twine-Seiten in Harlowe ignoriere ich erst einmal. Ich komme in einem späteren Tutorial darauf zurück.↩︎</p></li>
+<li id="fn6"><p>Auf meinem Mac, der so überfürsorglich für den Benutzer alles übersetzt (was der Browser nicht tut), heisst das Verzeichnis dann <code>Benutzer:innen/kantel/Dokumente/Twine/Scratch/</code>.↩︎</p></li>
+<li id="fn7"><p>Aber das zweite, doppelte Verzeichnis kann ich ja löschen, wenn ich die Entwicklung abgeschlossen habe.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/</guid>
+  <pubDate>Sun, 23 Aug 2026 12:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/images/harlowetutorial.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus der Nachbarschaft: Die temporäre Spielstraße geht für dieses Jahr in die dritte Runde</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3247,42 +3672,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026072901_back_to_the_roots/</guid>
   <pubDate>Wed, 29 Jul 2026 15:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026072901_back_to_the_roots/images/marchhare.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Auf ins IndieWeb: Mit dem HappyCoder und Flickarty</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026072801_indieweb_happy_coding/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55328104977/"><img src="https://kantel.github.io/posts/2026072801_indieweb_happy_coding/images/indieweb-b.jpg" class="img-fluid"></a></p>
-<p>Hier hatte mich ja schon die Erkenntnis überwältigt, daß mir für <a href="https://kantel.github.io/posts/2026050602_indieweb/">meine Idee</a>, wieder <a href="http://blog.schockwellenreiter.de/2022/05/2022052401.html">Webseiten ohne Sinn und Verstand</a> zu basteln, über die Jahre <a href="https://kantel.github.io/posts/2026061101_neocities/">sehr viel von den Basics von HTML und CSS abhanden gekommen waren</a>, obwohl ich sie mal besessen hatte. Aber da ich nun meine »<a href="https://kantel.github.io/posts/2026072302_tiddlywiki_first_steps/">Ersten Schritte mit TiddlyWiki</a>« auf meinen Neocities-Account <a href="https://kantel.neocities.org/atlascuriosa/">hochgeladen</a> habe, ist es an der Zeit, diese verschütteten Kenntnisse wieder aufzufrischen:</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/Dq5MYv2BUwg?si=xvBIihvydoBcnbmS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Wie <a href="https://kantel.github.io/posts/2026051201_indieweb_cont/">hier schon einmal geschrieben</a>, war meine erste Anlaufstelle der »Happy Coder« <em><a href="https://happycoding.io/">Kevin Workman</a></em>, dem es nach dem überraschenden Ende von <a href="https://kantel.github.io/posts/2025052402_glitch_ende/">Glitch 🎏 als Spielplatz</a> mit seinem Kurs »<a href="https://www.youtube.com/playlist?list=PLty5Qt07EFvBrbNMCg04Q2vUleiasg54M">Intro to WebDev</a>« im Herbst letzten Jahres <a href="https://kantel.neocities.org/">ebenfalls</a> nach <a href="https://de.wikipedia.org/wiki/Neocities">Neocities</a> verschlagen hatte. Diesen Umzug hat er in dem obigen, einleitenden Video für diesen Kurs »<a href="https://www.youtube.com/watch?v=Dq5MYv2BUwg">Coding HTML with Neocities</a>« dokumentiert und gleichzeitig in seinem Beitrag »<a href="https://happycoding.io/tutorials/html/online-code-editors">Online Code Editors</a>« begründet.</p>
-<p>Der gesamte Kurs besteht aus einer <a href="https://www.youtube.com/playlist?list=PLty5Qt07EFvBrbNMCg04Q2vUleiasg54M">Playlist mit 18 Videos</a> und wurde vor sieben Monaten abgeschlossen. Doch Vorsicht: Wie so oft bei <em>Kevin Workman</em> sind die einzelnen Videos in umgekehrt-chronologischer Reihenfolge abgespeichert, so daß das jüngste Video ganz oben steht. Aber der Kurs ist sehr lehrreich und wird von <a href="https://happycoding.io/tutorials/html/">einer Website begleitet</a>.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/vlDAQXqOqKo?si=AfK_ByS48ASkyXvY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Wer es etwas kompakter mag, dem wie das 45-minütige Video »<a href="https://www.youtube.com/watch?v=vlDAQXqOqKo">Simple Website Layout From Scratch Using HTML/CSS :D</a>« der YouTuberin (?) <em>Flickarity</em> empfohlen. Sie weiß, wovon sie schreibt, denn sie hat das alles bei ihrer eigenen Neocities-Site <a href="https://scftst4rs.neocities.org/">scftst4rs.neocities.org</a> umgesetzt. Das Video ist Teil einer kleinen Playlist »<a href="https://www.youtube.com/playlist?list=PLCko29_rRuyrcrPbuZTTv1ZnyTQwfbMDw">Website Making!!</a>«, die außer dem obigen Video nur noch das Video »<a href="https://www.youtube.com/watch?v=hR4-oe9MIMY">Basic HTML/CSS Tutorial (Website Building for Beginners!)</a>« enthält (ebenfalls etwa 45 Minuten Lauflänge, auf drei Minuten vorspulen&nbsp;🤓).</p>
-<p>Ich weiß jedenfalls, womit ich mich in den nächsten Tagen beschäftigen werde. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55328104977/">Auf ins IndieWeb</a></em>. erstellt mit <a href="https://ideogram.ai/">Ideogram 4.0</a>. Prompt: »<em>A friendly, anthropomorphic elephant wearing a green coat, a red-and-white striped T-shirt, and a black beret sits at a massive desk in front of a steampunk-style computer, using an old-fashioned keyboard. Shelves line the wall, crammed with books and steampunk knick-knacks. Through a window, one can see an alternative steampunk Berlin. A poster on one wall, between the shelves, reads “Back to the 90s,” adorned with a few Neocities-style stickers. Colored classic Amiercan comic style. Language: German. No textboxes, no speech bubbles, no headlines.</em>«</p>
-
-
-
- ]]></description>
-  <category>IndieWeb</category>
-  <category>Neocities</category>
-  <category>Statische Seiten</category>
-  <category>Digitale Souveränität</category>
-  <category>Digital Garden</category>
-  <category>Webworking</category>
-  <category>TiddlyWiki</category>
-  <guid>https://kantel.github.io/posts/2026072801_indieweb_happy_coding/</guid>
-  <pubDate>Tue, 28 Jul 2026 15:10:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026072801_indieweb_happy_coding/images/indieweb.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
