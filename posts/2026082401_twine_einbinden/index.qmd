@@ -27,7 +27,19 @@ img {
 }
 ~~~
 
-Wie man die Texte in Twine skaliert, darum kümmere ich mich später, wenn ich die Bedeutung der Parameter in `clamp()` und `calc()` [begriffen](https://kulturbanause.de/blog/skalierende-texte-und-schriftgroessen/) habe.&nbsp;🤓
+~~Wie man die Texte in Twine skaliert, darum kümmere ich mich später, wenn ich die Bedeutung der Parameter in `clamp()` und `calc()` [begriffen](https://kulturbanause.de/blog/skalierende-texte-und-schriftgroessen/) habe.&nbsp;🤓~~
+
+<b style="color:red">[Update]</b>: Ich habe es gewagt, mit (nur die Zeile mit der `clamp()`-Funktion ist neu hinzugekommen)
+
+~~~css
+tw-story {
+  	background-color: #1a1a1a;
+  	color: #f0f0f0;
+  	font-size: clamp(1.0em, 2.0vw, 1.75em);
+}
+~~~
+
+habe ich auch so etwas wie Responsivität in die Textdarstellung bekommen. Bei besonders kleiner Darstellung scheint der verwendete (Default-) Font von Harlowe ein wenig überfordert, aber ansonsten sieht die Geschichte jetzt auch als `iframe` in diesem ~~Blog~~ Kritzelheft recht annehmbar aus. 
 
 Zusätzlich haben die beiden bisher toten Enden der Geschichte mit »Noch einmal spielen?« einen Rücklink auf die Startseite spendiert bekommen, damit Ihr nicht im Daten-Nirwana hängen bleibt.
 
