@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Alice und die Teeparty: Mit Twine und Harlowe ins Wunderland (Teil 2) – Der Schockwellenreiter</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-de370ee0869d3e2d1ce948f09ec559d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Alice und die Teeparty: Mit Twine und Harlowe ins Wunderland (Teil 2)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Twine</div>
+    <div class="quarto-category">Harlowe</div>
+    <div class="quarto-category">Interactive Fiction</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Alice</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">26. August 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55489875751/"><img src="images/teeparty-b.jpg" class="img-fluid"></a></p>
+<p>Nach meinem <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">letzten Ausflug</a> mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und <a href="https://twine2.neocities.org/">Harlowe</a> ins Wunderland, möchte ich die Reise heute fortsetzen und weitere Features des Storyformats erkunden. Dafür habe ich Alice wieder an die Teetafel des verrückten Hutmachers geschickt.</p>
+<p>Die Geschichte, die ich dieses Mal erzählen möchte, besteht aus acht Passagen und ich habe sie »Alice und die Teeparty« genannt. Die Startpassage bietet nicht viel Neues und sieht so aus:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a>### Die Geschichte beginnt …</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>&lt;img src="images/rabbit2.jpg" alt"Das weiße Kaninchen im Bau" /&gt;</span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>Wie jeden Donnerstag ging Alice auf die Teeparty zu ihren Freunden, dem </span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>verrückten Hutmacher, dem Märzhasen und der Haselmaus. Sie war etwas mißmutig </span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a>gestimmt, wußte aber nicht warum.</span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>[[Weiter|Tisch]] …</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Lediglich die erste Zeile bietet eine Überraschung: Die Auszeichungssprache von Harlowe besitzt viel Ähnlichkeit mit dem Markup von Markdown und daher bringen die drei Hashs (<code>###</code>) in Überschrift dritten Grades und werden nach <code>&lt;h3&gt;</code> übersetzt<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Die zweite Passage heißt »Tisch« und besteht aus diesem Inhalt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>&lt;img src="images/teeparty2.jpg" alt="Teeparty" /&gt;</span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>Im Garten vor dem Laden des Hutmachers saßen alle schon um einen Tisch herum. </span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>Der Hutmacher hob seine Teetasse, prostete allen zu und </span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>[[schwadronierte-&gt;Hutmacher]] …</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sie ist eine Übergangspassage nur zur nächsten Passage »Hutmacher« führen soll, in der zum ersten Mal etwas wirklich Neues passiert:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a>{</span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>(set: $rumble to (text-style: "rumble"))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>(set: $red to (color: "red"))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>(set: $big to (css: "font-size: 60px"))}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a>&lt;img src="images/hutmacher2.jpg" alt="Hutmacher" /&gt;</span>
+<span id="cb3-6"><a href="#cb3-6" aria-label="6"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-label="7"></a>==&gt;&lt;==</span>
+<span id="cb3-8"><a href="#cb3-8" aria-label="8"></a>»Macht Wunderland wieder $big[$red[$rumble[groß]]]!«</span>
+<span id="cb3-9"><a href="#cb3-9" aria-label="9"></a>&lt;==</span>
+<span id="cb3-10"><a href="#cb3-10" aria-label="10"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-label="11"></a>Die Haselmaus entgegnete [[leise und schüchtern-&gt;Haselmaus]] …</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Hier fallen zuerst drei neue Dinge auf: <em>Makros</em>, <em>Variablen</em> und <em>Hooks</em>: Makros sind Anweisungen, die in runden Klammern stehen und deren Name mit einem Doppelpunkt abgeschlossen wird. Das häufigste Makro ist <code>(set: irgendetwas)</code>, mit dem unter anderen die Inhalte von Variablen gesetzt werden, zum Beispiel wird mit</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>(set: $name to "Alice")</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>die Variable <code>$name</code> mit dem Wert (dem String) <code>"Alice"</code> belegt. Variable erkennt man in Harlowe daran, daß ihnen ein Dollarzeichen (<code>$</code>) vorangestellt wird, wie in meinem Beispiel bei <code>$name</code>.</p>
+<p>Hooks sind Textteile, die in irgendeiner Weise speziell behandelt werden sollen. In einfachster Form wird die Anweisung (ein Makro) in runden Klammern vorangestellt und der Text, für den der Hook bestimmt ist, folgt in eckigen Klammern<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, zum Beispiel so:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a>(font: "Courier New")[Dieser Text wird in Courier geschrieben]</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Sollen jedoch – wie in obigem Fall, mehrere Hooks auf einen Textabschnitt wirken, müssen sie geschachtelt werden und man verliert leicht die Übersicht. Daher kann man auch Hooks mithilfe des <code>set:</code>-Makros einer Variablen zuweisen und diese dann schachteln. Nach der entsprechenden Initialisierung wird dann das große, rote und rumpelnde Wort »groß« durch folgende Anweisung in Twine erstellt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-label="1"></a>(set: $rumble to (text-style: "rumble"))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-label="2"></a>(set: $red to (color: "red"))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-label="3"></a>(set: $big to (css: "font-size: 60px"))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-label="4"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-label="5"></a>$big[$red[$rumble[groß]]]</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Das sieht doch übersichtlicher aus als:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a>(css: "font-size: 60px")[(color: "red")[(text-style: "rumble")[groß]]]</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Diese Anweisung funktioniert natürlich auch und in beiden Fällen müßt Ihr darauf achten, daß die offenen wie auch geschlossenen eckigen Klammern paarweise und an den richtigen Stellen auftreten.</p>
+<p>Die geschweiften Klammern in obiger Passage sorgen dafür, daß die mehrzeiligen Makro-Anweisungen als eine einzige Zeile behandelt werden. Würdet Ihr sie nämlich weglassen, hättet Ihr eine große, leere, schwarze Fläche im Kopf Eurer Seite.</p>
+<p>Die Anweisung <code>=&gt;&lt;=</code> zentriert alle folgenden Textzeilen und die Anweisung <code>&lt;==</code> schreibt alles, was folgt wieder linksbündig (das ist der Default). Mit <code>==&gt;</code> könnt Ihr Euren Text rechtsbündig setzen und mit <code>&lt;==&gt;</code> erzwingt Ihr einen Blocksatz<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>Nach diesen Erläuterungen sollten Euch die Anweisungen in der nächsten Passage (»Haselmaus«) verständlich sein:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb8-1"><a href="#cb8-1" aria-label="1"></a>{</span>
+<span id="cb8-2"><a href="#cb8-2" aria-label="2"></a>(set: $green to (color: "#7fff00"))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-label="3"></a>(set: $small to (css: "font-size: 12px"))}</span>
+<span id="cb8-4"><a href="#cb8-4" aria-label="4"></a>&lt;img src="images/haselmaus.jpg" alt="Haselmaus" /&gt;</span>
+<span id="cb8-5"><a href="#cb8-5" aria-label="5"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-label="6"></a>==&gt;&lt;==</span>
+<span id="cb8-7"><a href="#cb8-7" aria-label="7"></a>»Ich fand es aber $small[$green[klein]] viel schöner.«</span>
+<span id="cb8-8"><a href="#cb8-8" aria-label="8"></a>&lt;==</span>
+<span id="cb8-9"><a href="#cb8-9" aria-label="9"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-label="10"></a>Plötzlich hoppelte aufgeregt das [[weiße Kaninchen-&gt;Kaninchen]] in die Szene …</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Farben können natürlich nicht nur mit CSS-Namen definiert werden, sondern zum Beispiel auch mit ihren Hex-Werten (hier zum Beispiel <code>#7fff00</code> für ein leuchtendes Grün).</p>
+<p>Die vier letzten Passagen (»Kaninchen«, »Flamingo«, »Raupe« und »Grinsekatze«) bringen nichts Neues und sind hier nur der Vollständigkeit halber aufgeführt. Erst die Passage »Kaninchen«,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb9-1"><a href="#cb9-1" aria-label="1"></a>&lt;img src="images/kaninchen.jpg" alt="Weißes Kaninchen" /&gt;</span>
+<span id="cb9-2"><a href="#cb9-2" aria-label="2"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-label="3"></a>==&gt;&lt;==</span>
+<span id="cb9-4"><a href="#cb9-4" aria-label="4"></a>»Ich komme viel zu spät!«</span>
+<span id="cb9-5"><a href="#cb9-5" aria-label="5"></a>&lt;==</span>
+<span id="cb9-6"><a href="#cb9-6" aria-label="6"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-label="7"></a>Sprach's und sprang ganz aufgeregt und dabei laut »zu spät, zu spät …« </span>
+<span id="cb9-8"><a href="#cb9-8" aria-label="8"></a>jammernd wieder davon.</span>
+<span id="cb9-9"><a href="#cb9-9" aria-label="9"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-label="10"></a>[[Weiter-&gt;Flamingo]] …</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>dann die Passage »Flamingo«, in der die einzige Verzweigung in dieser Geschichte vorkommt,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-label="1"></a>&lt;img src="images/flamingo.jpg" alt="Flamingo" /&gt;</span>
+<span id="cb10-2"><a href="#cb10-2" aria-label="2"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-label="3"></a>Alice dachte, daß ihr dies zu dumm sei. Außerdem wusste sie nicht, wieso sie auf </span>
+<span id="cb10-4"><a href="#cb10-4" aria-label="4"></a>einmal einen Flamingo im Arm hatte. Sie überlegte, ob sie ihren </span>
+<span id="cb10-5"><a href="#cb10-5" aria-label="5"></a>[[geheimnisvollen, blauen Freund-&gt;Raupe]] besuchen oder mit der </span>
+<span id="cb10-6"><a href="#cb10-6" aria-label="6"></a>[[Grinsekatze-&gt;Grinsekatze]] plaudern solle.</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>nämlich der Abstecher zur »Raupe«,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-label="1"></a>&lt;img src="images/raupe2.jpg" alt="Raupe" /&gt;</span>
+<span id="cb11-2"><a href="#cb11-2" aria-label="2"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-label="3"></a>Rauch … Rauch … Rauch …</span>
+<span id="cb11-4"><a href="#cb11-4" aria-label="4"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-label="5"></a>Doch die Raupe war zu bekifft für ein vernünftiges Gespräch. Alice verabschiedete </span>
+<span id="cb11-6"><a href="#cb11-6" aria-label="6"></a>sich und versuchte dann doch, die [[Grinsekatze-&gt;Grinsekatze]] zu finden.</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>um sich schließlich bei der »Grinsekatze« wieder zusammenzufinden:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb12-1"><a href="#cb12-1" aria-label="1"></a>&lt;img src="images/grinsi2.jpg" alt="Grinsekatze" /&gt;</span>
+<span id="cb12-2"><a href="#cb12-2" aria-label="2"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-label="3"></a>Die Grinsekatze materialisierte sich unverhofft in einer Astgabel, sagte »Schön, daß </span>
+<span id="cb12-4"><a href="#cb12-4" aria-label="4"></a>Du mich mal wieder besuchen willst« und verschwand ganz langsam wieder …</span>
+<span id="cb12-5"><a href="#cb12-5" aria-label="5"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-label="6"></a>Das ist das Ende.</span>
+<span id="cb12-7"><a href="#cb12-7" aria-label="7"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-label="8"></a>Alles auf [[Anfang-&gt;Start]]?</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Diese kleine Geschichte ist natürlich kein literarisches Meisterwerk, sondern soll nur zeigen, wie man mit wenigen Zeilen seine Twine-Geschichten aufpeppen kann. Ihr habt natürlich ein Recht darauf, dieses Geschichtchen in seiner vollen Schönheit auch auf diesen Seiten durchspielen zu können:</p>
+<iframe width="100%" height="540" src="alice2/">
+</iframe>
+<p>Die Bilder für diese Geschichte habe ich wieder von einer gekünstelten Intelligezia (<a href="https://openart.ai/home">OpenArt</a>) mit Hilfe von NanoBanana&nbsp;2 zusammenbasteln lassen.</p>
+<p>Ich habe das kleine Tutorial sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice2/alice_tutorial_2.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice2/alice_tutorial_2.twee">Twee-Datei</a> mit allen <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice2/images">Assets</a> auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+<p>Außerdem habe ich diese Twine-Seiten auch auf meinen Neocities-Account <a href="https://kantel.neocities.org/twine/alice2/">veröffentlicht</a>, denn sie gehören selbstverständlich auch zu den »Webseiten ohne Sinn und Verstand« und daher sollten sie auch dort zu finden sein.</p>
+<section id="was-bisher-geschah" class="level3">
+<h3 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h3>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen drei Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Alice und die Teeparty: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Harlowe besitzt auch noch einen eigenen, aus der Historie der Sprache entstandenen Markup-Code, zum Beispiel <code>//text//</code> für <em>italic</em> (<code>&lt;i&gt;</code>) und <code>''text''</code> für <strong>bold</strong> (<code>&lt;b&gt;</code>). Und so übersetzt folgerichtig auch <code>*text*</code> nach <em>emphasis</em> (<code>&lt;em&gt;</code>) und <code>**text**</code> nach <strong>strong emphasis</strong> (<code>&lt;strong&gt;</code>). Aber die Auswirkungen sind in der Regel identisch.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Es gibt in Harlowe aber auch <em>benannte</em> Hooks <em>(named hooks)</em>, bei denen Makros und Hooks an getrennten Stellen im Text auftauchen. Doch darüber mehr in einem späteren Tutorial.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Diese Pfeile sind noch mächtiger, mit ihnen kann man auch die Breite der Ränder festlegen. So erzwingt zum Beispiel ein <code>===&gt;&lt;=</code> daß der linke Rand <span class="math inline">\(3/4\)</span> der Randbreite einnimmt und der rechte Rand nur <span class="math inline">\(1/4\)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopiert");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopiert");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "kantel/kantel.github.io";
+    script.dataset.repoId = "R_kgDOIjiXMQ";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOIjiXMc4CS_hh";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

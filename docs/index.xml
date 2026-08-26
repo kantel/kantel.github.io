@@ -10,7 +10,146 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Tue, 25 Aug 2026 17:30:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 26 Aug 2026 19:15:00 GMT</lastBuildDate>
+<item>
+  <title>Alice und die Teeparty: Mit Twine und Harlowe ins Wunderland (Teil 2)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026082601_alice_teeparty/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55489875751/"><img src="https://kantel.github.io/posts/2026082601_alice_teeparty/images/teeparty-b.jpg" class="img-fluid"></a></p>
+<p>Nach meinem <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">letzten Ausflug</a> mit <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> und <a href="https://twine2.neocities.org/">Harlowe</a> ins Wunderland, möchte ich die Reise heute fortsetzen und weitere Features des Storyformats erkunden. Dafür habe ich Alice wieder an die Teetafel des verrückten Hutmachers geschickt.</p>
+<p>Die Geschichte, die ich dieses Mal erzählen möchte, besteht aus acht Passagen und ich habe sie »Alice und die Teeparty« genannt. Die Startpassage bietet nicht viel Neues und sieht so aus:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1">### Die Geschichte beginnt …</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">&lt;img src="images/rabbit2.jpg" alt"Das weiße Kaninchen im Bau" /&gt;</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">Wie jeden Donnerstag ging Alice auf die Teeparty zu ihren Freunden, dem </span>
+<span id="cb1-6">verrückten Hutmacher, dem Märzhasen und der Haselmaus. Sie war etwas mißmutig </span>
+<span id="cb1-7">gestimmt, wußte aber nicht warum.</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">[[Weiter|Tisch]] …</span></code></pre></div></div>
+<p>Lediglich die erste Zeile bietet eine Überraschung: Die Auszeichungssprache von Harlowe besitzt viel Ähnlichkeit mit dem Markup von Markdown und daher bringen die drei Hashs (<code>###</code>) in Überschrift dritten Grades und werden nach <code>&lt;h3&gt;</code> übersetzt<sup>1</sup>.</p>
+<p>Die zweite Passage heißt »Tisch« und besteht aus diesem Inhalt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1">&lt;img src="images/teeparty2.jpg" alt="Teeparty" /&gt;</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">Im Garten vor dem Laden des Hutmachers saßen alle schon um einen Tisch herum. </span>
+<span id="cb2-4">Der Hutmacher hob seine Teetasse, prostete allen zu und </span>
+<span id="cb2-5">[[schwadronierte-&gt;Hutmacher]] …</span></code></pre></div></div>
+<p>Sie ist eine Übergangspassage nur zur nächsten Passage »Hutmacher« führen soll, in der zum ersten Mal etwas wirklich Neues passiert:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1">{</span>
+<span id="cb3-2">(set: $rumble to (text-style: "rumble"))</span>
+<span id="cb3-3">(set: $red to (color: "red"))</span>
+<span id="cb3-4">(set: $big to (css: "font-size: 60px"))}</span>
+<span id="cb3-5">&lt;img src="images/hutmacher2.jpg" alt="Hutmacher" /&gt;</span>
+<span id="cb3-6"></span>
+<span id="cb3-7">==&gt;&lt;==</span>
+<span id="cb3-8">»Macht Wunderland wieder $big[$red[$rumble[groß]]]!«</span>
+<span id="cb3-9">&lt;==</span>
+<span id="cb3-10"></span>
+<span id="cb3-11">Die Haselmaus entgegnete [[leise und schüchtern-&gt;Haselmaus]] …</span></code></pre></div></div>
+<p>Hier fallen zuerst drei neue Dinge auf: <em>Makros</em>, <em>Variablen</em> und <em>Hooks</em>: Makros sind Anweisungen, die in runden Klammern stehen und deren Name mit einem Doppelpunkt abgeschlossen wird. Das häufigste Makro ist <code>(set: irgendetwas)</code>, mit dem unter anderen die Inhalte von Variablen gesetzt werden, zum Beispiel wird mit</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1">(set: $name to "Alice")</span></code></pre></div></div>
+<p>die Variable <code>$name</code> mit dem Wert (dem String) <code>"Alice"</code> belegt. Variable erkennt man in Harlowe daran, daß ihnen ein Dollarzeichen (<code>$</code>) vorangestellt wird, wie in meinem Beispiel bei <code>$name</code>.</p>
+<p>Hooks sind Textteile, die in irgendeiner Weise speziell behandelt werden sollen. In einfachster Form wird die Anweisung (ein Makro) in runden Klammern vorangestellt und der Text, für den der Hook bestimmt ist, folgt in eckigen Klammern<sup>2</sup>, zum Beispiel so:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb5-1">(font: "Courier New")[Dieser Text wird in Courier geschrieben]</span></code></pre></div></div>
+<p>Sollen jedoch – wie in obigem Fall, mehrere Hooks auf einen Textabschnitt wirken, müssen sie geschachtelt werden und man verliert leicht die Übersicht. Daher kann man auch Hooks mithilfe des <code>set:</code>-Makros einer Variablen zuweisen und diese dann schachteln. Nach der entsprechenden Initialisierung wird dann das große, rote und rumpelnde Wort »groß« durch folgende Anweisung in Twine erstellt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb6-1">(set: $rumble to (text-style: "rumble"))</span>
+<span id="cb6-2">(set: $red to (color: "red"))</span>
+<span id="cb6-3">(set: $big to (css: "font-size: 60px"))</span>
+<span id="cb6-4"></span>
+<span id="cb6-5">$big[$red[$rumble[groß]]]</span></code></pre></div></div>
+<p>Das sieht doch übersichtlicher aus als:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb7-1">(css: "font-size: 60px")[(color: "red")[(text-style: "rumble")[groß]]]</span></code></pre></div></div>
+<p>Diese Anweisung funktioniert natürlich auch und in beiden Fällen müßt Ihr darauf achten, daß die offenen wie auch geschlossenen eckigen Klammern paarweise und an den richtigen Stellen auftreten.</p>
+<p>Die geschweiften Klammern in obiger Passage sorgen dafür, daß die mehrzeiligen Makro-Anweisungen als eine einzige Zeile behandelt werden. Würdet Ihr sie nämlich weglassen, hättet Ihr eine große, leere, schwarze Fläche im Kopf Eurer Seite.</p>
+<p>Die Anweisung <code>=&gt;&lt;=</code> zentriert alle folgenden Textzeilen und die Anweisung <code>&lt;==</code> schreibt alles, was folgt wieder linksbündig (das ist der Default). Mit <code>==&gt;</code> könnt Ihr Euren Text rechtsbündig setzen und mit <code>&lt;==&gt;</code> erzwingt Ihr einen Blocksatz<sup>3</sup>.</p>
+<p>Nach diesen Erläuterungen sollten Euch die Anweisungen in der nächsten Passage (»Haselmaus«) verständlich sein:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb8-1">{</span>
+<span id="cb8-2">(set: $green to (color: "#7fff00"))</span>
+<span id="cb8-3">(set: $small to (css: "font-size: 12px"))}</span>
+<span id="cb8-4">&lt;img src="images/haselmaus.jpg" alt="Haselmaus" /&gt;</span>
+<span id="cb8-5"></span>
+<span id="cb8-6">==&gt;&lt;==</span>
+<span id="cb8-7">»Ich fand es aber $small[$green[klein]] viel schöner.«</span>
+<span id="cb8-8">&lt;==</span>
+<span id="cb8-9"></span>
+<span id="cb8-10">Plötzlich hoppelte aufgeregt das [[weiße Kaninchen-&gt;Kaninchen]] in die Szene …</span></code></pre></div></div>
+<p>Farben können natürlich nicht nur mit CSS-Namen definiert werden, sondern zum Beispiel auch mit ihren Hex-Werten (hier zum Beispiel <code>#7fff00</code> für ein leuchtendes Grün).</p>
+<p>Die vier letzten Passagen (»Kaninchen«, »Flamingo«, »Raupe« und »Grinsekatze«) bringen nichts Neues und sind hier nur der Vollständigkeit halber aufgeführt. Erst die Passage »Kaninchen«,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb9-1">&lt;img src="images/kaninchen.jpg" alt="Weißes Kaninchen" /&gt;</span>
+<span id="cb9-2"></span>
+<span id="cb9-3">==&gt;&lt;==</span>
+<span id="cb9-4">»Ich komme viel zu spät!«</span>
+<span id="cb9-5">&lt;==</span>
+<span id="cb9-6"></span>
+<span id="cb9-7">Sprach's und sprang ganz aufgeregt und dabei laut »zu spät, zu spät …« </span>
+<span id="cb9-8">jammernd wieder davon.</span>
+<span id="cb9-9"></span>
+<span id="cb9-10">[[Weiter-&gt;Flamingo]] …</span></code></pre></div></div>
+<p>dann die Passage »Flamingo«, in der die einzige Verzweigung in dieser Geschichte vorkommt,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb10-1">&lt;img src="images/flamingo.jpg" alt="Flamingo" /&gt;</span>
+<span id="cb10-2"></span>
+<span id="cb10-3">Alice dachte, daß ihr dies zu dumm sei. Außerdem wusste sie nicht, wieso sie auf </span>
+<span id="cb10-4">einmal einen Flamingo im Arm hatte. Sie überlegte, ob sie ihren </span>
+<span id="cb10-5">[[geheimnisvollen, blauen Freund-&gt;Raupe]] besuchen oder mit der </span>
+<span id="cb10-6">[[Grinsekatze-&gt;Grinsekatze]] plaudern solle.</span></code></pre></div></div>
+<p>nämlich der Abstecher zur »Raupe«,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb11-1">&lt;img src="images/raupe2.jpg" alt="Raupe" /&gt;</span>
+<span id="cb11-2"></span>
+<span id="cb11-3">Rauch … Rauch … Rauch …</span>
+<span id="cb11-4"></span>
+<span id="cb11-5">Doch die Raupe war zu bekifft für ein vernünftiges Gespräch. Alice verabschiedete </span>
+<span id="cb11-6">sich und versuchte dann doch, die [[Grinsekatze-&gt;Grinsekatze]] zu finden.</span></code></pre></div></div>
+<p>um sich schließlich bei der »Grinsekatze« wieder zusammenzufinden:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb12-1">&lt;img src="images/grinsi2.jpg" alt="Grinsekatze" /&gt;</span>
+<span id="cb12-2"></span>
+<span id="cb12-3">Die Grinsekatze materialisierte sich unverhofft in einer Astgabel, sagte »Schön, daß </span>
+<span id="cb12-4">Du mich mal wieder besuchen willst« und verschwand ganz langsam wieder …</span>
+<span id="cb12-5"></span>
+<span id="cb12-6">Das ist das Ende.</span>
+<span id="cb12-7"></span>
+<span id="cb12-8">Alles auf [[Anfang-&gt;Start]]?</span></code></pre></div></div>
+<p>Diese kleine Geschichte ist natürlich kein literarisches Meisterwerk, sondern soll nur zeigen, wie man mit wenigen Zeilen seine Twine-Geschichten aufpeppen kann. Ihr habt natürlich ein Recht darauf, dieses Geschichtchen in seiner vollen Schönheit auch auf diesen Seiten durchspielen zu können:</p>
+<iframe width="100%" height="540" src="alice2/">
+</iframe>
+<p>Die Bilder für diese Geschichte habe ich wieder von einer gekünstelten Intelligezia (<a href="https://openart.ai/home">OpenArt</a>) mit Hilfe von NanoBanana&nbsp;2 zusammenbasteln lassen.</p>
+<p>Ich habe das kleine Tutorial sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice2/alice_tutorial_2.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice2/alice_tutorial_2.twee">Twee-Datei</a> mit allen <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice2/images">Assets</a> auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+<p>Außerdem habe ich diese Twine-Seiten auch auf meinen Neocities-Account <a href="https://kantel.neocities.org/twine/alice2/">veröffentlicht</a>, denn sie gehören selbstverständlich auch zu den »Webseiten ohne Sinn und Verstand« und daher sollten sie auch dort zu finden sein.</p>
+<section id="was-bisher-geschah" class="level3">
+<h3 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h3>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen drei Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Alice und die Teeparty: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Harlowe besitzt auch noch einen eigenen, aus der Historie der Sprache entstandenen Markup-Code, zum Beispiel <code>//text//</code> für <em>italic</em> (<code>&lt;i&gt;</code>) und <code>''text''</code> für <strong>bold</strong> (<code>&lt;b&gt;</code>). Und so übersetzt folgerichtig auch <code>*text*</code> nach <em>emphasis</em> (<code>&lt;em&gt;</code>) und <code>**text**</code> nach <strong>strong emphasis</strong> (<code>&lt;strong&gt;</code>). Aber die Auswirkungen sind in der Regel identisch.↩︎</p></li>
+<li id="fn2"><p>Es gibt in Harlowe aber auch <em>benannte</em> Hooks <em>(named hooks)</em>, bei denen Makros und Hooks an getrennten Stellen im Text auftauchen. Doch darüber mehr in einem späteren Tutorial.↩︎</p></li>
+<li id="fn3"><p>Diese Pfeile sind noch mächtiger, mit ihnen kann man auch die Breite der Ränder festlegen. So erzwingt zum Beispiel ein <code>===&gt;&lt;=</code> daß der linke Rand <img src="https://latex.codecogs.com/png.latex?3/4"> der Randbreite einnimmt und der rechte Rand nur <img src="https://latex.codecogs.com/png.latex?1/4">.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026082601_alice_teeparty/</guid>
+  <pubDate>Wed, 26 Aug 2026 19:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026082601_alice_teeparty/images/teeparty.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Volt: Die Eigentumswohnungspartei</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3008,44 +3147,6 @@ font-style: inherit;">;</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026080101_mediadaten_juli_26/</guid>
   <pubDate>Sun, 02 Aug 2026 15:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026080101_mediadaten_juli_26/images/sommergewitter.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Trinket ist tot! Lang lebe Trinket!</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026073101_new_trinket/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55433192748/"><img src="https://kantel.github.io/posts/2026073101_new_trinket/images/trinketrulez-b.jpg" class="img-fluid"></a></p>
-<p>Im Februar dieses Jahres musste ich die <a href="https://kantel.github.io/posts/2026020501_trinket_ende/">betrübliche Nachricht verkünden</a>, daß die Online-Python-IDE <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/trinket.html">Trinket</a> zum 31. August dieses Jahres <a href="https://trinket.io/announcement">den Dienst einstellt</a>, die <a href="https://trinket.io/">Trinket-Website</a> wird definitiv geschlossen. Die Nachricht erreichte mich über ein <a href="https://www.youtube.com/watch?v=RzORjBydCdU">Video</a> des Physik- und Python-Enthusiasten <em><a href="https://rjallain.medium.com/">Rhett Allain</a></em>, nun gibt ein <a href="https://www.youtube.com/watch?v=e07TjUeeAdk">weiteres Video</a> von <em>Rhett Allain</em> Entwarnung: Es gibt ein <strong><a href="https://trinket.gopicup.org/">neues Trinket</a></strong>, und das sei sogar besser als das bald eingestellte.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/e07TjUeeAdk?si=bVMNUiTfGDsvikyb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Die Nachricht elektrisierte mich und so habe ich mir gleich auf <strong><a href="https://trinket.gopicup.org/">trinket.gopicup.org</a></strong> einen Account zugelegt. <a href="https://www.compadre.org/picup/">Gopicup.org</a> ist die offizielle Website von <a href="https://www.compadre.org/PICUP/webdocs/About.cfm">PICUP</a> <em>(Partnership for Integration of Computation into Undergraduate Physics)</em>, eine Community, die Übungssets und andere Aktivitäten für Dozenten und Workshops anbietet, um Lehrkräften dabei zu helfen, Programmier- und Mathematikwerkzeuge in den Physikunterricht an Hochschulen zu integrieren. Soweit wie ich das aus den <a href="https://github.com/trinketapp/trinket-oss">GitHub-Seiten des Projekts</a> entnehmen kann, haben sie das »alte« Trinket in JavaScript und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pyodide.html">Pyodide</a> nachgebaut und unter eine OpenSource-Lizenz (<a href="https://github.com/trinketapp/trinket-oss?tab=CC0-1.0-1-ov-file">CC0 1.0 Universal</a>) gestellt.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55433121683/"><img src="https://kantel.github.io/posts/2026073101_new_trinket/images/trinketnew.jpg" class="img-fluid figure-img" alt="Mein erstes Trinket in der neuen Umgebung"></a></p>
-<figcaption>Mein erstes Trinket in der neuen Umgebung</figcaption>
-</figure>
-</div>
-<p>Bisher konnte ich bei meinen ersten Tests mit Python einige Unterschiede zum alten, »klassischen« Trinket feststellen: Da das neue Trinket auf Pyodide aufbaut, beherrscht es Python3 mit allen Bibliotheken, die Pyodide mittlerweile unterstützt, zum Beispiel <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html">Pillow</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a> und <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">Numpy</a>. Eine Besonderheit ist die Unterstützung von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/vpython.html">VPython</a>/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/glowwscript.html">GlowScript</a> sowohl in Python3 wie auch in einer eigenen Umgebung. Leider wird <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/turtlepython.html">Pythons Turtle</a> systembedingt (noch?) nicht unterstützt (obwohl das doch einer der Stärken des »klassischen« Trinket war).</p>
-<p>Das Projekt ist noch jung, gerade einmal vier Monate alt, da ist noch einiges zu erwarten. Glaubt man den Machern auf ihrer GitHub-Seite, ist für die Zukunft die Unterstützung weiterer Sprachen (zum Beispiel HTML, Java und R) geplant.</p>
-<p>Ich muss gestehen, ich mag das Teil (alleine, weil ich das alte Trinket auch schon gemocht und gerne damit gearbeitet hatte). Jetzt bleibt nur noch das Problem der Digitalen Souveränität, denn vermutlich stehen die Server von <code>trinket.gopicup.org</code> irgendwo in den Vereinigten Staaten. Aber das Teil ist <em>Open Source</em> und auf den GitHub-Seiten gibt es Anleitungen, wie man sich (mit oder ohne Docker) einen eigenen Trinket-Server hochziehen kann. Also, welche europäische (mögichst Non-Profit-) Organisation fühlt sich angesprochen? Freiwillige vor, schafft zwei, drei, viele Trinkets!</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55433192748/">The New Trinket Rulez</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>Illustration <span class="citation" data-cites="Pedro">@Pedro</span> Python with glasses and a pointer in front of a chart with physic diagrams in a crowded office with anthropomorphic animals. Large shelves with many books on the walls. A poster hangs on the wall behind with the inscription “The new Trinket rulez!” It’s a sunny morning. Colored classic American comic style. No speech bubbles, no textboxes.</em>« Modell: Nano Banana&nbsp;2.</p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <category>Trinket</category>
-  <category>VPython</category>
-  <category>Physik</category>
-  <category>Turtle</category>
-  <guid>https://kantel.github.io/posts/2026073101_new_trinket/</guid>
-  <pubDate>Fri, 31 Jul 2026 15:35:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026073101_new_trinket/images/trinketrulez.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
