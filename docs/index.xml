@@ -10,7 +10,251 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Tue, 01 Sep 2026 15:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 01 Sep 2026 17:05:00 GMT</lastBuildDate>
+<item>
+  <title>Alice und Humpel Pumpel: Mit Twine und Harlowe ins Wunderland (Teil 3)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55199135675/"><img src="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/images/humpelpumpel-b.jpg" class="img-fluid"></a></p>
+<p>Heute möchte ich meine Reise mit Alice durch das Wunderland von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der netten, kleinen, freien Engine (nicht nur) für interaktive Geschichten und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> fortsetzen. Ich möchte erkunden, wie man innerhalb einer Passage Texte hinzufügen kann, ohne daß die Passage neu geladen werden muss.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55502363936/"><img src="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/images/humpelpumpelscreenshot.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Alice und Humpel Pumpel (Screenshot)</figcaption>
+</figure>
+</div>
+<p>Dafür habe ich eine kleine Geschichte entwickelt, die gerade einmal aus fünf Passagen besteht. In der ersten Passage (<code>Start</code>) passiert noch nichts neues:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb1-1">### Alice und Humpel Pumpel</span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/humpelpumpel01.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Humpel Pumpel"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb1-4"></span>
+<span id="cb1-5">Alice strolchte mal wieder durch das Wunderland und kam in ein Dorf mit einer großen, </span>
+<span id="cb1-6">steineren Mauer.</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">Auf dieser Mauer saß ein seltsames Wesen und [[grinste Alice breit an-&gt;Humpel Pumpel]].</span></code></pre></div></div>
+<p>Hier wird nur in die Geschichte eingeführt und auf die nächste Passage ( <code>Humpel Pumpel</code>) verlinkt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/humpelpumpel02.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Humpel Pumpel"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb2-2"></span>
+<span id="cb2-3">»Du mußt Humpel Pumpel sein« sagte Alice, nur um etwas freundliches zu sagen.</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">Humpel Pumpel: (link: "»Warum?«")[»Warum?«</span>
+<span id="cb2-6"></span>
+<span id="cb2-7">»Weil Du wie ein Humpel Pumpel aussiehst« antwortete Alice.</span>
+<span id="cb2-8"></span>
+<span id="cb2-9">Humpel Pumpel schwieg eine Weile beleidigt.</span>
+<span id="cb2-10"></span>
+<span id="cb2-11">(link: "»Und wie heißt Du?«")[»Und wie heißt Du?«</span>
+<span id="cb2-12"></span>
+<span id="cb2-13">»Alice«, antwortete Alice.</span>
+<span id="cb2-14"></span>
+<span id="cb2-15">»[[Du siehst aber gar nicht wie Alice aus-&gt;Humpel Pumpel 2]]« sagte Humpel Pumpel </span>
+<span id="cb2-16">schon wieder fröhlicher.]]</span></code></pre></div></div>
+<p>Hier seht Ihr das Geheimnis der neu auftauchenden Textzeilen: Es ist das <code>link:</code>-Makro. Es ersetzt den Linktext<sup>1</sup> durch den Text, der in dem <em>Hook</em> steht, der an dem Makro angehängt wurde:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1">(link: "Linktext")[Text, der den Linktext ersetzen soll]</span></code></pre></div></div>
+<p>Zu beachten dabei ist, daß der Linktext komplett verschwindet, nachdem der Link angeklickt wurde. Aus</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1">Du stehst in einem Raum (link: "mit einer geheimnisvollen Tür")[mit einem tiefen, </span>
+<span id="cb4-2">schwarzen Loch, aus dem ein gefährliches Grunzen klingt].</span></code></pre></div></div>
+<p>wird zuerst<sup>2</sup>:</p>
+<blockquote class="blockquote">
+<p>Du stehst in einem Raum <span style="color:orange">mit einer geheimnisvollen Tür</span>.</p>
+</blockquote>
+<p>Und wenn Ihr den Link angeklickt habt:</p>
+<blockquote class="blockquote">
+<p>Du stehst in einem Raum mit einem tiefen, schwarzen Loch, aus dem ein gefährliches Grunzen klingt.</p>
+</blockquote>
+<p>Beachtet, daß der Punkt am Ende der Passage weder zum Linkmakro noch zum Hook gehört. Er wird daher unabhängig davon angezeigt, ob der Link geklickt wurde, oder nicht (also immer).</p>
+<p>Der Linktext mitsant der zugehörigen Link-Formatierung verschwindet also und wird durch den Text im Hook ersetzt. Daraus folgt, wenn der Linktext bleiben soll, müsst ihr ihn im Hook noch einmal wiederholen. Ich habe davon reichlich Gebrauch gemacht, zum Beispiel hier:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb5-1">Humpel Pumpel: (link: "»Warum?«")[»Warum?«</span>
+<span id="cb5-2"></span>
+<span id="cb5-3">»Weil Du wie ein Humpel Pumpel aussiehst« antwortete Alice.</span>
+<span id="cb5-4"></span>
+<span id="cb5-5">Humpel Pumpel schwieg eine Weile beleidigt.]</span></code></pre></div></div>
+<p>Dadurch verschwindet das »Warum?« im Linktext nicht, aber es erscheint nicht mehr als Link.</p>
+<p>Der Text in den Hooks kann auch <em>Whitespaces</em> und Zeilenumbrüche enthalten. Sie werden eins zu eins von Twine übernommen und dargestellt, sobald der Hook aktiv ist (das <code>link:</code>-Makro angeklickt wurde).</p>
+<p>In Harlowe kann man Makros schachteln. Der Hook nach dem <code>link:</code>-Makro darf also auch wieder ein <code>link:</code>-Makro enthalten (und natürlich auch andere Makros und/oder Links). Dabei müsst ihr darauf achten, daß alle Hooks korrekt mit ihrer eckigen Klammer am Ende geschlossen werden müssen. Ich würde es daher mit der Verschachtelung nicht übertreiben, weil sonst die Angelegenheit sehr leicht und schnell unübersichtlich wird<sup>3</sup>.</p>
+<p>Weil es so schön war, habe ich das (geschachtelte) <code>link:</code>-Makro in der nächsten Passage <code>Humpel Pumpel 2</code> noch einmal genutzt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb6-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/humpelpumpel03.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Humpel Pumpel"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb6-2"></span>
+<span id="cb6-3">Darauf wußte Alice keine Antwort. »Wenn Du weiter so auf der Mauer zappelst, </span>
+<span id="cb6-4">wirst Du noch herunterfallen« sagte sie schließlich, nur um überhaupt </span>
+<span id="cb6-5">etwas zu sagen.</span>
+<span id="cb6-6"></span>
+<span id="cb6-7">Humpel Pumpel: (link: "»Nein!«")[»Nein!«</span>
+<span id="cb6-8"></span>
+<span id="cb6-9">Alice: (link: "»Doch!«")[»Doch!«</span>
+<span id="cb6-10"></span>
+<span id="cb6-11">Humpel Pumpel: »Oh!«</span>
+<span id="cb6-12"></span>
+<span id="cb6-13">Alice schlich sich an dem heruntergefallenen Humpel Pumpel vorbei und ging </span>
+<span id="cb6-14">weiter in das Dorf. In der Mitte des Dorfes unter einem großen Baum war ein </span>
+<span id="cb6-15">[[Biergarten-&gt;Biergarten]].]]</span></code></pre></div></div>
+<p>Sie ist etwas kompakter geraten und daher kann man hier besser erkennen, wie die Makros ineinander verschachtelt sind.</p>
+<p>Die letzten beiden Passagen bringen nichts neues, sondern dienen nur dazu, die Geschichte zu einem Ende zu bringen. Also erst einmal die Passage <code>Biergarten</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/hutmacher02.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Im Biergarten"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb7-2"></span>
+<span id="cb7-3">Hier saßen seltsamerweise wieder ihre alten Freunde, der Märzhase, der </span>
+<span id="cb7-4">verrückte Hutmacher und die Haselmaus an einem Tisch und begrüßten sie </span>
+<span id="cb7-5">lautstark. Alice war verwirrt, [[blieb aber noch eine Weile-&gt;Haselmaus]].</span></code></pre></div></div>
+<p>Und als letztes die Passage <code>Haselmaus</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb8-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/haselmaus02.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Haselmaus"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb8-2"></span>
+<span id="cb8-3">Als der Hutmacher und der Märzhase jedoch anfingen, die Haselmaus kopfüber </span>
+<span id="cb8-4">in den Teetopf zu stülpen, hatte sie genug. Sie beschloß, die Party zu verlassen.</span>
+<span id="cb8-5"></span>
+<span id="cb8-6">Hier ist die Geschichte zu Ende.</span>
+<span id="cb8-7"></span>
+<span id="cb8-8">[[Noch einmal spielen-&gt;Start]]?</span></code></pre></div></div>
+<p>Und hier ist dieses Twine-Spielchen in seiner schlichten Schönheit, <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">eingebettet</a> in diese Seiten:</p>
+<iframe width="100%" height="660" src="alice3/">
+</iframe>
+<p>Auch die Bilder für diese Geschichte habe ich wieder von einer gekünstelten Intelligenzia (<a href="https://openart.ai/home">OpenArt</a>) mit Hilfe von NanoBanana&nbsp;2 zusammenbasteln lassen. Und ich habe dieses kleine Tutorial wieder sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/humpelpumpel/Humpel%20Pumpel.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/humpelpumpel/Humpel%20Pumpel.twee">Twee-Datei</a> mit allen <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/humpelpumpel/images">Assets</a> auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+<p>Außerdem habe ich diese Twine-Seiten – wie die anderen auch – auf meinen Neocities-Account <a href="https://kantel.neocities.org/twine/alice3/">veröffentlicht</a>.</p>
+<section id="was-bisher-geschah" class="level3">
+<h3 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h3>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen sechs Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li><a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Zurück ins Wunderland (schon wieder)</a> und dieses Mal mit Harlowe</li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Aus meiner Webwerkstatt: <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Twine-Stories in die eigenen Seiten einbinden</a></li>
+<li><a href="https://kantel.github.io/posts/2026082601_alice_teeparty/">Alice und die Teeparty</a>: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+<li>Alice und Humpel Pumpel: Mit Twine und Harlowe ins Wunderland (Teil 3)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55199135675/">Alice und Humpel Pumpel</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Humpelpumpel">@Humpelpumpel</span> sits on a wall in a picturesque little village. <span class="citation" data-cites="Alice">@Alice</span> stands below, in front of the wall, looking at him friendly but questioningly. It is a beautiful, sunny day with few clouds in the sky. Colored Franco-Belgian comic style. Language German. No speech bubbles, no textboxes, no headlines. Close up.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Der Linktext im <code>link:</code>-Makro muss <strong>immer</strong> in Hochkommata stehen, also entweder <code>"linktext"</code> oder <code>'linktext'</code>.↩︎</p></li>
+<li id="fn2"><p>Die Linkfarbe ist natürlich nur orange, wenn Ihr die Stylesheets aus dem <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">ersten</a> Tutorial der Reihe (und seinem <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Anhang</a>) eingebunden habt, ansonsten ist sie blau.↩︎</p></li>
+<li id="fn3"><p>Ich habe in dieser und der folgenden Beispielpassage jeweils zwei <code>link:</code>-Makros ineinander verschachtelt und ich hatte dabei ganz schon mit etlichen (Flüchtigkeits-) Fehlern zu kämpfen.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/</guid>
+  <pubDate>Tue, 01 Sep 2026 17:05:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/images/humpelpumpel.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Die Zahlen für den Monat August</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2500,44 +2744,6 @@ font-style: inherit;">&gt;</span></span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026080501_running_orcs/</guid>
   <pubDate>Wed, 05 Aug 2026 17:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026080501_running_orcs/images/runningorcs.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Update meiner digitalen Rumpelkammer: Anytype Desktop v0.56 veröffentlicht</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026080401_anytype_v0_56/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55428491444/"><img src="https://kantel.github.io/posts/2026080401_anytype_v0_56/images/kaffeepause-b.jpg" class="img-fluid"></a></p>
-<p>Auch wenn ich in den letzten Wochen mit etlichen digitalen Zettelkästen experimentiert hatte, bleibt vorerst <a href="https://anytype.io/">Anytype</a> als meine digitale Rumpelkammer, die zusammen mit <a href="http://cognitiones.kantel-chaos-team.de/webworking/staticsites/joplin.html">Joplin</a> die <a href="https://kantel.github.io/posts/2025112701_anytype_051/">Basis für mein »zweites Gehirn«</a> bildet, mein Favorit. Dabei spielt einmal eine Rolle, daß man mit Anytype seine »Zettel« einfach aufhübschen kann (denn auch das Auge sammelt und katalogisiert mit), und zum anderen, daß Anytype einen <a href="https://kantel.github.io/posts/2025021401_anytype_web/">Export (einzelner) Seiten für das Web</a> ermöglicht, die Software also ein Zwischending zwischen einem <a href="https://kantel.github.io/posts/2024050701_digital_garden/">digitalen Garten</a> und einer digitalen Rumpelkammer darstellt.</p>
-<p>Der Hauptgrund aber ist, daß Anytype, weil deren Server in der Schweiz stehen, sowohl DSGVO-konform ist, und – durch den <em>local first</em>-Ansatz – auch ein Werkzeug für meine digitale Souveränität sein kann.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55442382253/"><img src="https://kantel.github.io/posts/2026080401_anytype_v0_56/images/anytypev056.jpg" class="img-fluid figure-img" alt="Anytype v0.56.1"></a></p>
-<figcaption>Anytype v0.56.1</figcaption>
-</figure>
-</div>
-<p>Von Anytype Desktop wurde nun kürzlich die <a href="https://community.anytype.io/t/anytype-desktop-0-56-0-its-fast/31082">Version 0.56.1</a> freigegeben. Dieses Update konzentriert sich auf Geschwindigkeit und Benutzerfreundlichkeit. Die gesamte App startet schneller und Objekte öffnen sich sofort genau dort, wo Ihr aufgehört habt. Auch im »<a href="https://community.anytype.io/t/anytype-heart-0-50-17/31083">Herzen von Anytype</a> wurden Verbesserungen implementiert. Und wie immer wurden auch wieder etliche Fehler beseitigt.</p>
-<iframe class="if16_9" src="https://www.youtube.com/embed/iFo2T3VMLEk?si=44JhFawlsnbaxmfI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="">
-</iframe>
-<p>Wie bei jedem Update erklärt Euch die personifizierte, fokussierte Neugier in <a href="https://www.youtube.com/watch?v=iFo2T3VMLEk">obigem Video</a> alle wichtigen Neuerungen.</p>
-<p>Das bedeutet übrigens nicht, daß meine Experimente mit anderen, möglichen Zettelkästen nutzlos wären. Als Ergänzungssoftware (nicht als Ersatz für Anytype) steht momentan <a href="https://kantel.github.io/#category=TiddlyWiki">TiddlyWiki</a> ganz oben auf meiner Favoritenliste. Zwar sind dort die Möglichkeiten des Aufhübschens begrenzt und auch für die Synchronisation benutze ich einen Umweg über Joplin, aber ein »Digitaler Garten«, der als <strong>eine</strong> statische HTML-Seite bei jedem Hoster meiner Wahl läuft (also zum Beispiel auch auf <a href="https://kantel.neocities.org/atlascuriosa/">Neocities</a>), aber im Original auf <strong>meiner</strong> Festplatte liegt, scheint sich damit recht einfach realisieren zu lassen. Und das macht TiddlyWiki interessant für mich. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55428491444/">Die Zettelkästen des Märzhasen</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>The <span class="citation" data-cites="March">@March</span> Hare sits at a desk in front of an antiquated, steampunk-style computer, typing on a keyboard. He wears a pair of aviator goggles, which he has pushed up onto his forehead. On the desk stands an open card catalog, its contents a chaotic jumble of handwritten index cards and loose scraps of paper. Beside the keyboard sits a mug of steaming coffee. Shelves crammed with books and steampunk knick-knacks line the walls. Through a window, one looks out upon a steampunk version of Berlin. Colored classic American comic style. Language: German. No speech bubbles, no textboxes. No German flags.</em>« Modell: Nano Banana&nbsp;2.</p>
-
-
-
- ]]></description>
-  <category>Anytype</category>
-  <category>Zettelkasten</category>
-  <category>Digitale Souveränität</category>
-  <category>Digital Garden</category>
-  <category>TiddlyWiki</category>
-  <guid>https://kantel.github.io/posts/2026080401_anytype_v0_56/</guid>
-  <pubDate>Tue, 04 Aug 2026 13:50:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026080401_anytype_v0_56/images/kaffeepause.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
