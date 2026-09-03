@@ -10,7 +10,639 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 03 Sep 2026 16:30:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 03 Sep 2026 18:30:00 GMT</lastBuildDate>
+<item>
+  <title>Redesign meiner Twine-Seiten auf Neocities</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026090302_twine_neocities/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55506340438/"><img src="https://kantel.github.io/posts/2026090302_twine_neocities/images/humpelpumpel-b.jpg" class="img-fluid"></a></p>
+<p>Alles neu macht der September. Und daher habe ich den Seiten mit meinen Twine-Tutorials auf Neocities ein Redesign spendiert. Ziel sollte es sein, daß sich das Layout ein wenig meinen bisherigen Neocities-Seiten anpasst und daß die Nutzerin oder der Nutzer, wenn sie auf den Badge links unten klicken, wieder zurück auf <a href="https://kantel.neocities.org/">meine Neocities-Startseite</a> kommen.</p>
+<p>Daher habe ich die <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">hier gemachten Erfahrungen</a> auf Neocities angewandt und die Twine-Stories als <code>iframe</code> in eine »normale«, kleine HTML-Seite eingebunden:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb1-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;!DOCTYPE</span> html<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-2"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">html</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">head</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-4">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> charset</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"UTF-8"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-5">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">meta</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"viewport"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> content</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"width=device-width, initial-scale=1.0"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-6">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">title</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span>Alice 3<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">title</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-7">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">link</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./../style.css"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> rel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stylesheet"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> type</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text/css"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> media</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"all"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-8">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">head</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-9">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">body</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-10">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">div</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> class</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"container"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-11">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">header</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-12">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">h1</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span>Auf der Mauer sitzt ein Humpel Pumpel<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">h1</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-13">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">header</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-14">    </span>
+<span id="cb1-15">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">section</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-16">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">iframe</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> width</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"100%"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> height</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"600"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./alice3.html"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">iframe</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-17">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">section</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-18">    </span>
+<span id="cb1-19">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">footer</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-20">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">p</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-21">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">a</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./../../"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./../../images/neocitiesbadge.svg"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">a</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-22">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">p</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-23">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">footer</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-24">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">div</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;!-- container --&gt;</span></span>
+<span id="cb1-25">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">body</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb1-26"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">html</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
+<p>Hier müssen nur der Titel, der Header und im <code>iframe</code> der Name der einzubindenden Datei und die Höhe <code>height</code> jeweils angepasst werden.</p>
+<p>Die Datei <code>style.css</code> liegt ein Verzeichnis höher, da jede Twine-Story von mir ein eigenes Verzeichnis spendiert bekommen hat, ich aber nicht für jede eine eigenes CSS schreiben wollte. Sie wird daher mit</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">link</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./../style.css"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> rel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stylesheet"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> type</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"text/css"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> media</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"all"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
+<p>aufgerufen.</p>
+<p>Das Bild des Badges und die Startseite liegen sogar zwei Verzeichnisse höher, daher sehr viele <code>./../../</code>. Das sieht dann so aus:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb3-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">a</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./../../"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"./../../images/neocitiesbadge.svg"</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;&lt;/</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">a</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
+<p>Die <code>style.css</code> ist eine Abwandlung der <code>style.css</code> meiner Neocities-Startseite, wie ich sie hier schon <a href="https://kantel.github.io/posts/2026072901_back_to_the_roots/">beschrieben (und erläutert)</a> hatte:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb4-1">body {</span>
+<span id="cb4-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">background</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ede4d4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#354145</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-4">}</span>
+<span id="cb4-5"></span>
+<span id="cb4-6">header<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> nav<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> section {</span>
+<span id="cb4-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">border</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">none</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-8">}</span>
+<span id="cb4-9"></span>
+<span id="cb4-10">header {</span>
+<span id="cb4-11">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-row</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> / <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-column</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> / <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-13">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-left</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-14">}</span>
+<span id="cb4-15"></span>
+<span id="cb4-16"></span>
+<span id="cb4-17">section {</span>
+<span id="cb4-18">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-row</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> / <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-19">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-column</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> / <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-20">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">height</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">max-content</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-21">}</span>
+<span id="cb4-22"></span>
+<span id="cb4-23">footer {</span>
+<span id="cb4-24">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-row</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span> / <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-25">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-column</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> / <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-26">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">padding-left</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-27">}</span>
+<span id="cb4-28"></span>
+<span id="cb4-29"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.container</span> {</span>
+<span id="cb4-30">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">max-width</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">840</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-31">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">margin</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">auto</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-32">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">display</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">grid</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-33">  grid-gap<span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-34">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">grid-template-columns</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">auto</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-35">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">background</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#fef8ec</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-36">}</span></code></pre></div></div>
+<p>Die URLs der einzelnen Stories sind gleich geblieben. Ihr könnt also die ersten drei Tutorials</p>
+<ul>
+<li>Mit Twine und Harlowe ins Wunderland (1): <a href="https://kantel.neocities.org/twine/alice1/">Der erste Ausflug ins Wunderland</a></li>
+<li>Mit Twine und Harlowe ins Wunderland (2): <a href="https://kantel.neocities.org/twine/alice2/">Alice und die Teeparty</a></li>
+<li>Mit Twine und Harlowe ins Wunderland (3): <a href="https://kantel.neocities.org/twine/alice3/">Alice und Humpel Pumpel</a></li>
+</ul>
+<p>immer noch unter den alten, obigen Links erreichen. Nur, daß die Seiten jetzt besser aussehen und der Badge links unten auf der Seite Euch einen Ausgang auf meine <a href="https://kantel.neocities.org/">Neocities-Startseite</a> liefert.</p>
+<p>Mir hat das Spielen mit HTML und CSS viel Spaß gemacht. Ich werde sicher noch mehr mit meinem Neocities-Account anstellen. Wartet nur ab&nbsp;… <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Statische Seiten</category>
+  <category>Webworking</category>
+  <category>IndieWeb</category>
+  <category>Neocities</category>
+  <guid>https://kantel.github.io/posts/2026090302_twine_neocities/</guid>
+  <pubDate>Thu, 03 Sep 2026 18:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026090302_twine_neocities/images/humpelpumpel.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Aus der Nachbarschaft: Wohnsitz Emmauskirchhof</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1773,39 +2405,6 @@ font-style: inherit;">&gt;</span>}</span></code></pre></div>
   <guid>https://kantel.github.io/posts/2026081102_imagemaps_twine/</guid>
   <pubDate>Tue, 11 Aug 2026 20:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/imagemaptwine.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Phoenix Code Editor v5.2 freigegeben</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026081101_phoenix_code_v5_2/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55457090063/"><img src="https://kantel.github.io/posts/2026081101_phoenix_code_v5_2/images/mhare-b.jpg" class="img-fluid"></a></p>
-<p>Soeben erreichte mich die Meldung, daß der <strong><a href="https://phcode.io/">Phoenix Code Editor</a></strong>, die <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">jüngst von mir entdeckte Alternative</a> (nicht nur) für HTML, CSS und JavaScript, die mich bei meinem Projekt, <a href="http://blog.schockwellenreiter.de/2022/05/2022052401.html">Webseiten ohne Sinn und Verstand</a> zu basteln und dabei gleichzeitig bei meiner Flucht weg von den Big-Tech-Konzernen und raus aus den asozialen Medien hinein ins IndieWeb, <a href="https://kantel.github.io/posts/2026080102_p5js_phoenix_neocities/">unterstützen</a> <a href="https://kantel.github.io/posts/2026080501_running_orcs/">soll</a>, in der <a href="https://docs.phcode.dev/blog/release-5.2">Version 5.2 freigegeben</a> wurde.</p>
-<p>Diese Version kommt mit einem ganzen Bündel an Neuerungen: Sie bietet <a href="https://docs.phcode.dev/blog/release-5.2#style-your-page-visually-with-the-styles-bar">Styles Bar</a> zum visuellen Gestalten der Seiten, <a href="https://docs.phcode.dev/blog/release-5.2#code-intelligence-for-javascript-typescript-json-python-and-php">Code Intelligence</a> für JavaScript, TypeScript, JSON, Python und PHP, eine <a href="https://docs.phcode.dev/blog/release-5.2#start-from-a-blank-page">Starter Bar</a> für leere Seiten, <a href="https://docs.phcode.dev/blog/release-5.2#generate-doc-comments">Doc Comment Generation</a>, eine <a href="https://docs.phcode.dev/blog/release-5.2#choose-your-ai-model">KI-Modellauswahl</a>, ein <a href="https://docs.phcode.dev/blog/release-5.2#git-improvements">verbessertes Git-Panel</a>, sowie eine <a href="https://docs.phcode.dev/blog/release-5.2#video-and-audio-preview">Video- und Audio-Vorschau</a> direkt im Editor.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55457300299/"><img src="https://kantel.github.io/posts/2026081101_phoenix_code_v5_2/images/phoenix52screenshot.jpg" class="img-fluid figure-img" alt="Screenshot Phoenix Code v5.2"></a></p>
-<figcaption>Screenshot Phoenix Code v5.2</figcaption>
-</figure>
-</div>
-<p>Die neue Version kann <a href="https://phcode.io/">hier heruntergeladen</a> werden (das Update direkt aus dem Programm heraus funktioniert (noch?) nicht). Wenn man danach den nervenden Hinweis, daß man auf das kostenpflichtige »Phoenix Code Pro« updaten soll, wegklickt, funzt der Editor wie versprochen und die Arbeit mit ihm macht wieder Spaß.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55457090063/">Der Märzhase schreibt</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>The <span class="citation" data-cites="March">@March</span> Hare sits at a desk in front of an antiquated, steampunk-style computer, typing on a keyboard. He wears a pair of aviator goggles, which he has pushed up onto his forehead. Lying on the desk in front of him is a gigantic notebook, in which he is jotting down notes with an old-fashioned fountain pen. Beside the keyboard sits a mug of steaming coffee. Shelves crammed with books and steampunk knick-knacks line the walls. A statue of the phoenix stands on one of the shelves. Through a window, one looks out upon a steampunk version of Berlin with an elevated old-fashioned railway in a steampunk style, but in the colors of the Berlin S-Bahn. Colored classic American comic style. Language: German. No speech bubbles, no textboxes. No German flags.</em>« Modell: Nano Banana&nbsp;2.</p>
-
-
-
- ]]></description>
-  <category>Phoenix Code</category>
-  <category>Texteditor</category>
-  <category>Statische Seiten</category>
-  <category>Webworking</category>
-  <guid>https://kantel.github.io/posts/2026081101_phoenix_code_v5_2/</guid>
-  <pubDate>Tue, 11 Aug 2026 14:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026081101_phoenix_code_v5_2/images/mhare.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
