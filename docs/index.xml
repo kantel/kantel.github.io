@@ -10,7 +10,37 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 03 Sep 2026 18:30:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 04 Sep 2026 17:50:00 GMT</lastBuildDate>
+<item>
+  <title>Ich komme – wie immer – zu spät: Tuesday JS Release 60 freigegeben</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026090401_tuesday_js_release_60/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://github.com/Kirilllive/tuesday-js/blob/master/screenshots/scene_editor.jpg"><img src="https://kantel.github.io/posts/2026090401_tuesday_js_release_60/images/scene_editor-b.jpg" class="img-fluid"></a></p>
+<p>Ich weiß nicht, woran es liegt, dass ich die Updates von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tuesdayjs.html">Tuesday&nbsp;JS</a> ständig <a href="https://kantel.github.io/posts/2026031703_tuesday_js_release_59/">verpasse</a>, der kleinen und freien (Apache-2.0-Lizenz) JavaScript-basierten Engine für interaktive Geschichten und <em>Visual Novels</em>, die mir allein schon deswegen so sympathisch ist, weil ihre Oberfläche mich immer ein wenig an <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a> erinnert.</p>
+<p>So auch dieses Mal: Nur die Beschäftigung der letzten Tage mit Twine hat mich darauf gestoßen, dass ich mal wieder nach Tuesday&nbsp;JS schauen sollte. Und wieder war ich zu spät. Nicht nur, dass die <a href="https://kirilllive.github.io/tuesday-js/#de">Homepage der Software</a> komplett überarbeitet wurde, sondern schon vor knapp einem viertel Jahr, am 13.&nbsp;Juli, wurde die <a href="https://github.com/Kirilllive/tuesday-js/releases/tag/60.0.0">Version&nbsp;60</a> veröffentlicht.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://github.com/Kirilllive/tuesday-js/blob/master/screenshots/preview.jpg"><img src="https://kantel.github.io/posts/2026090401_tuesday_js_release_60/images/preview.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Tuesday JS ist responsiv</figcaption>
+</figure>
+</div>
+<p>Zwar ist es nur ein kleineres Update mit ein paar Bugfixes, wenigen Änderungen und Geschwindigkeitsverbesserungen, aber schon die Tatsache, dass Tuesday&nbsp;JS schon seit dem <a href="https://kantel.github.io/posts/2026031703_tuesday_js_release_59/">letzen Update</a> die Responsivität der Seiten massiv verbessert hat, erinnert mich schmerzlich daran, dass – gerade weil ich mit der <a href="https://kantel.github.io/#category=IndieWeb">(Wieder-) Entdeckung des IndieWebs</a>, aber auch mit meinen jüngsten Twine-Tutorials, verschärft meine HTML- und CSS-Kenntnisse auffrischen will – dies doch die Gelegenheit wäre, mein ständig verschobenes Vorhaben, wieder etwas mit der Engine anzustellen, endlich wahr zu machen. Vielleicht schaffe ich es, mich parallel mit <a href="https://kantel.github.io/#category=Twine">Twine</a> und <a href="https://kantel.github.io/#category=Tuesday%20JS">Tuesday&nbsp;JS</a> zu beschäftigen. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>Tuesday JS</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <guid>https://kantel.github.io/posts/2026090401_tuesday_js_release_60/</guid>
+  <pubDate>Fri, 04 Sep 2026 17:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026090401_tuesday_js_release_60/images/scene_editor.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Redesign meiner Twine-Seiten auf Neocities</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2073,338 +2103,6 @@ font-style: inherit;">"bokeh=3.10"</span></span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026081201_sonnenfinsternis/</guid>
   <pubDate>Wed, 12 Aug 2026 19:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026081201_sonnenfinsternis/images/sonnenfinsternis1.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Der Wunderland-Debattierclub: Klickbare Imagemaps in Twine</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026081102_imagemaps_twine/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55457781801/"><img src="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/imagemaptwine-b.jpg" class="img-fluid"></a></p>
-<p><strong>Imagemaps</strong> sind ein HTML-Element, das es erlaubt, mit der Maus auf eine Stelle in einem Bild zu klicken und dort auf eine andere Seite verlinkt zu werden. Klickt man jedoch auf eine andere Stelle in diesem Bild, passiert entweder gar nichts oder man wird auf eine ganz andere Seite verlinkt, je nachdem, ob das <code>&lt;map&gt;</code>-Element einen klickbaren Bereich definiert hat. In HTML kann das etwa so aussehen:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb1-1"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PATH_TO_YOUR_IMAGE"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> usemap</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#NAME_OF_MAP"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb1-2"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">map</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"NAME_OF_MAP"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb1-3">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"360,36,384,66"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PAGE_1"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb1-4">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"520,145,560,175"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PAGE_2"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb1-5">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"160,160,230,185"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PAGE_3"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb1-6">    <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2,80,36,140"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> href</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"PAGE_4"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb1-7"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">map</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
-<p>Die Koordinaten sind in diesem Fall nicht völlig willkürlich gewählt, sondern sind untenstehendem Bild entnommen und definieren jeweils ein Rechteck um den roten Ballon, um die Katze im Regal, um das Buch auf den Tisch und die Lampe linksaußen:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55451807227/"><img src="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/diskussion.jpg" class="img-fluid figure-img" alt="Wunderland-Debattierclub"></a></p>
-<figcaption>Wunderland-Debattierclub</figcaption>
-</figure>
-</div>
-<p>Nur hinter diesen Rechtecken verbirgt sich jeweils ein Link, der auf entsprechende Seiten/Passagen verweist.</p>
-<p>Natürlich geht das auch in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, nur eben je nach gewähltem Storyformat mit leicht abweichender Syntax. Ich habe das exemplarisch für <a href="https://twine2.neocities.org/">Harlowe</a> ausprobiert, jedoch der wunderbare Aufsatz »<a href="https://www.teuton.org/~stranger/clickableimagemapsintwine">Clickable imagemaps in Twine</a>« zeigt, wie Ihr das auch in <a href="https://klembot.github.io/chapbook/guide/">Chapbook</a>, Snowman oder <a href="http://www.motoslave.net/sugarcube/2/">SugarCube</a> realisieren könnt.</p>
-<p>In Harlowe wird eine Imagemap so realisiert:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1">{<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"images/diskussion.jpg"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> usemap</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#diskussion"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-2"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">map</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> name</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"diskussion"</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span></span>
-<span id="cb2-3">(link:'<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"360,36,384,66"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span>')[</span>
-<span id="cb2-4">        (goto:"Ballon")</span>
-<span id="cb2-5">]</span>
-<span id="cb2-6">(link:'<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"520,145,560,175"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span>')[</span>
-<span id="cb2-7">        (goto:"Grinsekatze")</span>
-<span id="cb2-8">]</span>
-<span id="cb2-9">(link:'<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"160,160,220,185"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span>')[</span>
-<span id="cb2-10">        (goto:"Buch")</span>
-<span id="cb2-11">]</span>
-<span id="cb2-12">(link:'<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">area</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> shape</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"rect"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> coords</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"2,80,36,140"</span><span class="ot" style="color: #003B4F;
-background-color: null;
-font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">/&gt;</span>')[</span>
-<span id="cb2-13">        (goto:"Dark")</span>
-<span id="cb2-14">]</span>
-<span id="cb2-15"><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&lt;/</span><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">map</span><span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">&gt;</span>}</span></code></pre></div>
-<p>Das <code>(link:)</code>-Makro ermöglcht es uns, obigen HTML-Code in Harlowe nachzubilden, indem es statt auf HTML-Seiten auf entsprechende Passagen verweist. Allerdings werden in diesem Falle die Passagen nicht automatisch generiert, sondern müssen manuell angelegt werden. Zur Veranschaulichung habe ich dieses kleine Beispiel zusammengestrickt:</p>
-<iframe width="800" height="500" src="imagemap_harlowe/">
-</iframe>
-<p>Die Twine-Story ist ein wenig zu breit und passt nicht wirklich auf die Seite (ich hätte das Bild kleiner wählen sollen) und responsiv ist sie auch nicht, da die Positionen absolute Koordinaten sind, die eine variable Größe nicht zulassen. Aber um in Twine ein <em>Point and Click</em>-Abenteuer zu erstellen, ist die <code>&lt;map&gt;</code>-Funktion schon recht brauchbar.</p>
-<p>Wenn der Mauszeiger über ein klickbares Rechteck bewegt wird, verändert er sein Aussehen zum <code>pointer</code> und signalisiert damit »hier kann geklickt werden«.</p>
-<p>Wer wirklich responsive Spiele zum Beispiel für Mobilgeräte in Twine entwickeln will, der kommt ohne JavaScript nicht aus. Der oben verlinkte Aufsatz hat auch ein Beispiel dafür. Alternativ kann man aber auch die klassischen HTML-Image-Maps komplett aufgeben und stattdessen SVG-Graphiken verwenden, um Bilder anzuzeigen und Bereiche anklickbar zu machen. Dies bietet einige wesentliche Vorteile: Die Graphiken lassen sich leicht skalieren, verfügen über integrierte anklickbare Bereiche und unterstützen auch die automatische Hervorhebung von Bereichen.</p>
-<p>Wenn das interessant klingt, schaut Euch <a href="https://gist.github.com/cyrusfirheir/2a247eeae668b1ee321b89b45f37b2e1">diesen kurzen Artikel von Cyrus Firheir</a> an.</p>
-<section id="literatur" class="level3">
-<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
-<ul>
-<li>David Donachie: <em><a href="https://www.teuton.org/~stranger/clickableimagemapsintwine">Clickable imagemaps in Twine</a></em>, David Donachie Blog vom 21.&nbsp;Juni&nbsp;2022</li>
-<li>Cyrus Firheir: <em><a href="https://gist.github.com/cyrusfirheir/2a247eeae668b1ee321b89b45f37b2e1">Easy, Interactive, and Scalable Image Maps using SVGs</a></em>, zuletzt aufgerufen am 11.&nbsp;August&nbsp;2026</li>
-</ul>
-<p>Natürlich werde ich die Geschichte auch noch auf meinen Neocities-Account <a href="https://kantel.neocities.org/twine/imagemap_harlowe/">hochladen</a>, denn wenn das keine Webseite ohne Sinn und Verstand« ist, was ist dann eine »Webseite ohne Sinn und Verstand«?</p>
-
-
-</section>
-
- ]]></description>
-  <category>Twine</category>
-  <category>Harlowe</category>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <guid>https://kantel.github.io/posts/2026081102_imagemaps_twine/</guid>
-  <pubDate>Tue, 11 Aug 2026 20:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026081102_imagemaps_twine/images/imagemaptwine.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
