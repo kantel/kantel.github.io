@@ -10,7 +10,649 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Fri, 04 Sep 2026 19:35:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 07 Sep 2026 19:35:00 GMT</lastBuildDate>
+<item>
+  <title>Qumbo schreibt (schön): Custom Fonts in Twine (Harlowe)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55456981481/"><img src="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/images/schreiben-b.jpg" class="img-fluid"></a></p>
+<p>Meine Reisen durch das Wunderland von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> gehen weiter. In diesem Tutorial möchte ich erkunden, wie ich andere Schriftarten (Fonts), als die, die die Browser üblicherweise zur Verfügung stellen, in meinen Twine-Geschichten nutzen kann.</p>
+<p>Als Quelle für Fonts, die man frei verwenden kann, fällt einem als erstes meistens <a href="https://de.wikipedia.org/wiki/Google_Fonts">Google Fonts</a> ein. Denn dort findet die geneigte Nutzerin oder der geneigte Nutzer zur Zeit fast 2.000 Schriftarten, die unter einer freien Lizenz (meist <a href="https://openfontlicense.org/open-font-license-official-text/">SIL Open Font License Version 1.1</a>) zur kostenlosen Nutzung Verfügung gestellt werden. Besonders bequem ist es, dass man mit einem Klick auf <code>&lt;&gt; Get embed code</code> ein paar Zeilen HTML zur Verfügung gestellt bekommt, die man nur in die eigene Webseite hineinzukopieren braucht, und schon stehen die ausgewählten Fonts zur Verfgung – ohne dass man die Fonts herunterladen und auf seinem eigenen Server wieder hochladen und einbinden muss.</p>
+<p>Dieses »dynamische Einbindung« genannte Verfahren ist sehr bequem, hat allerdings einen gewaltigen Haken: Bei einer dynamischen Einbindung werden die Schriften von Google Fonts über einen Google-Server nachgeladen. Dadurch wird die IP-Adresse des Website-Besuchers an Google in die USA weitergeleitet, was nicht den Vorgaben der Datenschutz-Grundverordnung (DSGVO) entspricht. Das hatte um 2022 eine gewaltige Abmahnwelle ausgelöst, und auch wenn in vielen Fällen die Staatswanwaltschaft wegen betrügerischer Absichten ermittelt hat, sollte man sicherheitshalber auf die dynamische Einbindung verzichten (auch wenn Google das natürlich anders sieht.)</p>
+<p>Allerdings kann man sich die Schriften von Google auch herunterladen und dann über seinen eigenen Server mit einem entsprechenden CSS-Code in die eigenen Webseiten einbinden. Diese »lokale/statische Nutzung« gilt in der Literatur als DSGVO-konform<sup>1</sup>.</p>
+<p>Diese letzte. DSGVO-konforme Methode funktioniert natürlich nicht nur mit Google Fonts, sondern mit allen Schriften, für die ihr das Recht besitzt, sie zu nutzen, entweder weil sie im Netz unter einer freien Lizenz zur Verfügung gestellt werden, oder weil Ihr sie gekauft habt<sup>2</sup>. Allerdings habe hier die Götter vor dem Erfolg erst einmal den Schweiß gesetzt. Und da ich kein CSS-Guru bin, habe ich das erst einmal auf meiner <a href="https://kantel.neocities.org/">Spielwiese bei Neocities</a> ausprobiert.</p>
+<p>Hierfür habe ich mir zuerst bei Google zwei Fonts ausgesucht: Einmal <a href="https://fonts.google.com/specimen/Berkshire+Swash">Berkshire Swash</a>, eine verspielte Schrift für die Überschriften, und dann die <a href="https://fonts.google.com/specimen/EB+Garamond">EB Garamond</a>, eine seriöse und gut lesbare Schrift für den Fließtext. Und dann habe ich meinem <a href="https://kantel.github.io/posts/2026072901_back_to_the_roots/">Stylesheet dort</a> (<code>style.css</code>) noch diese zusätzlichen Zeilen spendiert:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb1-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Berkshire</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb1-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">twine/fonts/BerkshireSwash-Regular.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-4">}</span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb1-6">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb1-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Regular.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-8">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">normal</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-9">}</span>
+<span id="cb1-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb1-11">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb1-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Italic.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-13">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">italic</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-14">}</span>
+<span id="cb1-15"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb1-16">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb1-17">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Bold.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-18">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-weight</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bold</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-19">}</span>
+<span id="cb1-20">h1 {</span>
+<span id="cb1-21">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Berkshire</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-22">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">36</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-23">}</span>
+<span id="cb1-24">p {</span>
+<span id="cb1-25">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-26">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">18</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">px</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-27">}</span></code></pre></div></div>
+<p>Das Ergebnis sieht dann so aus:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55509946225/"><img src="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/images/customfonts_neo.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Meine Spielwiese auf Neocities, jetzt mit Custom Fonts</figcaption>
+</figure>
+</div>
+<p>Die ersten vier <code>@font-face</code>-Anweisungen legen den Namen und das Format der Schrift<sup>3</sup> der Schrift, den Speicherort<sup>4</sup> und – wenn abweichend vom Default-Wert den Font-Schnitt und das Gewicht der Schrift fest. Beachtet dabei, daß jeder Schnitt eine eigene <code>@face-font</code>-Anweisung benötigt, daher hat die EB&nbsp;Garamond drei, je eine für <em>normal</em>, <em>kursiv</em> und <em>fett</em><sup>5</sup>.</p>
+<p>Nachdem ich dieses Experiment erfolgreich abgeschlossen hatte, habe ich mich (endlich) wieder Twine und Harlowe zugewandt:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55512506592/"><img src="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/images/customfonts_twine.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Custom Fonts in Twine (Harlowe)</figcaption>
+</figure>
+</div>
+<p>Dafür habe ich erst einmal eine minimale Geschichte geschrieben, die nur aus einer Passage besteht:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"># Qumbo schreibt (schön)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/qumbo.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"qumbo"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb2-4"></span>
+<span id="cb2-5">Alice besuchte an einem schönen Herbstnachmittag mal wieder ihre alten Freunde, </span>
+<span id="cb2-6">*Rudi Rabbit*, das weiße Kaninchen, und *Qumbo*, den schlauen Elephanten.</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">Qumbo schrieb gerade langsam und mit großer Sorgfalt einen kalligraphischen Text </span>
+<span id="cb2-9">in ein großes Notizbuch, während das Kaninchen ungeduldig auf seine riesige Taschenuhr </span>
+<span id="cb2-10">schaute und jammerte: »Oje, oje, in einer halben Stunde ist **Redaktionsschluss**, </span>
+<span id="cb2-11">wir kommen zu spät.</span>
+<span id="cb2-12"></span>
+<span id="cb2-13">[[Zur Zeitschleife-&gt;Start]].</span></code></pre></div></div>
+<p>Und dann das bewärte <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Stylesheet aus dem ersten Tutorial</a> (samt <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Anhang</a>) mit diesen Zeilen weiter aufgebohrt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb3-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Berkshire</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb3-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/BerkshireSwash-Regular.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-4">}</span>
+<span id="cb3-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb3-6">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb3-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Regular.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-8">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">normal</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-9">}</span>
+<span id="cb3-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb3-11">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb3-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Italic.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-13">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">italic</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-14">}</span>
+<span id="cb3-15"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb3-16">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb3-17">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Bold.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-18">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-weight</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bold</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-19">}</span>
+<span id="cb3-20">tw-story {</span>
+<span id="cb3-21">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">background-color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#1a1a1a</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-22">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#f0f0f0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-23">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-24">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clamp(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">vw</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.75</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-25">}</span>
+<span id="cb3-26">h1 {</span>
+<span id="cb3-27">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Berkshire</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-28">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clamp(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.8</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">vw</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.75</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb3-29">}</span></code></pre></div></div>
+<p>Die Schwierigkeit bestand hierbei, dass Harlowe zwar für den Fließtext eine eigene Klasse besitzt (<code>tw-story</code>), nicht aber für Überschriften (es gibt keine <code>tw-heading</code> oder ähnliche Klasse<sup>6</sup>). Hier musste ich mich mit einem simplen <code>h1</code> zufriedengeben.</p>
+<p>Mit <code>clamp(untergrenze, bevorzugter_wert, obergrenze)</code> habe ich die Seiten wieder responsiv angelegt. Da ich – wie oben schon geschrieben – kein CSS-Guru bin, haben mir die <a href="https://www.mediaevent.de/css/clamp.html">wundervollen Seiten</a> von <em>Ulrike Häßler</em> bei der Erkundung der Funktion sehr geholfen.</p>
+<p>So, und jetzt noch das Geschichtchen, eingebunden im <em>Schockwellenreiter</em>, damit Ihr nachvollziehen könnt, was ich hier angestellt habe:</p>
+<iframe width="100%" height="680" src="alice4/">
+</iframe>
+<p>Auch dieses kleine Tutorial habe ich sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/qumboschreibt/Font-Test.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/qumboschreibt/Font-Test.twee">Twee-Datei</a> mit allen Assets (<a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/qumboschreibt/images">Bilder</a> und <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/qumboschreibt/fonts">Schriften</a>) auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+<p>Und natürlich habe ich dieses Spielchen – wie die anderen auch – auf meinem Neocities-Account <a href="https://kantel.neocities.org/twine/alice4/">veröffentlicht</a>. Schließlich ist Neocities meine ++Spielwiese**!</p>
+<section id="was-bisher-geschah" class="level3">
+<h3 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h3>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen sieben Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li><a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Zurück ins Wunderland (schon wieder)</a> und dieses Mal mit Harlowe</li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Aus meiner Webwerkstatt: <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Twine-Stories in die eigenen Seiten einbinden</a></li>
+<li><a href="https://kantel.github.io/posts/2026082601_alice_teeparty/">Alice und die Teeparty</a>: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+<li><a href="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/">Alice und Humpel Pumpel</a>: Mit Twine und Harlowe ins Wunderland (Teil 3)</li>
+<li>Qumbo schreibt (schön): Custom Fonts in Twine (Harlowe)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+</section>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Petra Bukovinski, Maša Majce: <em><a href="https://www.nutrient.io/blog/adding-custom-fonts-to-html-documents/">Adding custom fonts to HTML documents</a></em>, Nutrient vom 11.&nbsp;Juni&nbsp;2024</li>
+<li>Ulrike Häßler: <em><a href="https://www.mediaevent.de/css/clamp.html">CSS clamp, min und max – Wertebereich einschränken</a></em>. in <em><a href="https://www.mediaevent.de/">CSS, HTML und Javascript mit {stil}</a></em>, Juli&nbsp;2025</li>
+<li>Sebastian Lenz (fachlich geprüft von RA Sören Siebert): <em><a href="https://www.e-recht24.de/google-fonts-scanner?u=a2FudGVsLmdpdGh1Yi5pbw==&amp;autostart=1#scanner">Achtung Abmahnung: Prüfen Sie jetzt die Einbindung von Google Fonts</a></em> eRecht24 vom 24.&nbsp;August&nbsp;2022</li>
+<li>Mozilla Developer Network: <em><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Text_styling/Web_fonts">Web Fonts</a></em>, zuletzt besucht am 7.&nbsp;September&nbsp;2026</li>
+<li>Sascha Münch: <em><a href="https://www.datenschutz.org/google-fonts-dsgvo/">Sind Google Fonts DSGVO-konform? Worauf Sie achten müssen!</a></em> Datenschutz.org vom 5.&nbsp;September&nbsp;2026</li>
+<li>Philip Westfall: <em><a href="https://www.pagecloud.com/blog/how-to-add-custom-fonts-to-any-website">The Easy Way to Add Fonts to Your Website (Including Custom Fonts)</a></em>, Pagecloud vom 21.&nbsp;November&nbsp;2024</li>
+<li>W<sup>3</sup>-Schools: <em><a href="https://www.w3schools.com/css/css3_fonts.asp">CSSCustom Font</a></em>, zuletzt besucht am 7.&nbsp;September&nbsp;2026</li>
+<li>W<sup>3</sup>-Schools: <em><a href="https://www.w3schools.com/cssref/atrule_font-face.php">CSS <span class="citation" data-cites="font-face">@font-face</span> Rule</a></em>, zuletzt besucht am 7.&nbsp;September&nbsp;2026</li>
+</ul>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55456981481/">Der Märzhase schreibt</a>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »</em>The <span class="citation" data-cites="March">@March</span> Hare sits at a desk in front of an antiquated, steampunk-style computer, typing on a keyboard. He wears a pair of aviator goggles, which he has pushed up onto his forehead. Lying on the desk in front of him is a gigantic notebook, in which he is jotting down notes with an old-fashioned fountain pen. Beside the keyboard sits a mug of steaming coffee. Shelves crammed with books and steampunk knick-knacks line the walls. A statue of the phoenix stands on one of the shelves. Through a window, one looks out upon a steampunk version of Berlin with an elevated old-fashioned railway in a steampunk style, but in the colors of the Berlin S-Bahn. Colored classic American comic style. Language: German. No speech bubbles, no textboxes. No German flags.*« Modell: Nano Banana&nbsp;2.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich bin allerdings kein Jurist und mache daher auch keine Rechtsberatung. Im Zweifelsfall konsultiert lieber noch einen Rechtsanwalt.↩︎</p></li>
+<li id="fn2"><p>Wie fast alle juristischen Angelegenheiten scheint aber auch das Lizenzrecht ein Minenfeld zu sein. Daher auch hier noch einmal der Rat: Im Zweifelsfalle lieber <strong>vorher</strong> einen Rechtsanwalt konsultieren.↩︎</p></li>
+<li id="fn3"><p>Die seltsame Warnung <code>@font-face declaration doesn't follow the fontspring bulletproof syntax</code> könnt Ihr getrost ignorieren. Sie bedeutet nur, dass Uralt-Versionen des Internet Explorers das <em>True Type</em>-Format (<code>.ttf</code>) nicht unterstützen. Wenn Ihr jedoch die Notwendigkeit seht, alte Versionen des Internet-Explorers unterstützen zu müssen, zum Beispiel weil Eure Seiten auf Rechnern der Berliner Verwaltung in all ihrer Schönheit gelesen werden und glänzen sollen, dann könnt Ihr auf Seiten wie dern <a href="https://www.fontsquirrel.com/tools/webfont-generator">Webfont-Generator</a> Eure <code>.ttf</code> in <code>.woff</code> und <code>.woff2</code> umwandeln. Mir reicht es aber, störrischen Uralt-Browsern eine generische Alternative anzubieten (in diesem Fall <em>serif</em>).↩︎</p></li>
+<li id="fn4"><p>Das seltsame Unterverzeichnis <code>twine/fonts</code> rührt daher, da ich ursprünglich die Schriften <a href="https://kantel.github.io/posts/2026090302_twine_neocities/">nur auf meinen Twine-Seiten auf Neocities</a> ausprobieren wollte und später dann zu faul war, die Schriften noch einmal umzukopieren.↩︎</p></li>
+<li id="fn5"><p>Beim Download der EB Garamond bekommt man noch viel mehr Schnitte geliefert, aber diese drei reichten mir für meine Experimente aus.↩︎</p></li>
+<li id="fn6"><p>Zumindest habe ich in der Dokumentation zu Harlowe keine gefunden.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Neocities</category>
+  <category>IndieWeb</category>
+  <category>Webworking</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/</guid>
+  <pubDate>Mon, 07 Sep 2026 19:35:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/images/schreiben.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Caturday: Das Internet ist für Katzenbilder (Pussy Pics)</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2070,38 +2712,6 @@ font-style: inherit;">"bokeh=3.10"</span></span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026081501_escooter_aus_dem_weg/</guid>
   <pubDate>Sat, 15 Aug 2026 15:10:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026081501_escooter_aus_dem_weg/images/escooter.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Statische Seiten als Format (nicht nur) für Bildungsmaterialien</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026081401_statische_seiten_als_format/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55128922725/"><img src="https://kantel.github.io/posts/2026081401_statische_seiten_als_format/images/nelehirsch-b.jpg" class="img-fluid"></a></p>
-<p>Der <em>Cornerturn</em> von <em><a href="https://de.wikipedia.org/wiki/Cornelia_Hirsch">Nele Hirsch</a></em>, der Frau, die so wunderbar kompetent und unaufgeregt ihr <a href="https://ebildungslabor.de/">eBildungslabor</a> betreibt, weg von dynamischen, serverseitig generierten hin zu statischen Webseiten, geht weiter (ich hatte im März dieses Jahres zum ersten Mal <a href="https://kantel.github.io/posts/2026030402_publii/index.html">darüber berichtet</a>). Nun hat sie in dem Beitrag »<a href="https://ebildungslabor.de/now/html-als-format-fuer-bildungsmaterialien/">HTML als Format für Bildungsmaterialien</a>« das Thema noch einmal vertieft und erweitert.</p>
-<p>Sie berichtet darin, daß bei einem Seminar/Trainingscamp die Veranstalterinnen und Veranstalter aus den Materialien, die sie vorab verschickt hatte, (mit KI-Unterstützung) eine statische HTML-Site gestaltet und diese per Mail an die Teilnehmerinnen und Teilnehmer versandt hatten. Diese Datei ließ sich dann jeweils lokal im Browser öffnen.</p>
-<p><em>Nele Hirsch</em> sieht darin eine Entwicklung, die wahrscheinlich zukünftig noch zunehmen wird:</p>
-<blockquote class="blockquote">
-<p>Während ich »früher« wahrscheinlich selbst eine Mini-Website (z.B. über Github) gestaltet und die Inhalte dann darauf online gestellt hätte, läuft das Teilen nun lokal. Trotzdem bleibt es bei einem HTML-Format, was eine vielfältige Gestaltung ermöglicht. Zugleich können Teilnehmende und auch alle anderen Interessierten die Inhalte sehr niederschwellig weiternutzen und umgestalten.</p>
-</blockquote>
-<p>In meinen Augen ist diese Entwicklung aber auch gleichzeitig ein wichtiger Schritt in Richtung »Digitale Souveränität«. Während viele (vorwiegend US-amerikanische) Bildungseinrichtungen immer noch auf das Angebot von Google Drive (und dabei meist Chromebooks ein-) setzen und sich somit komplett in die Hände der Datenkraken begeben, ist dies eine Alternative, die – weil sie Server überflüssig macht – einen Ausweg aus einem häufigen Dilemma weist: Denn viele (deutsche) Bildungseinrichtungen, die sich nicht in die Fänge der Datenkraken begeben wollen, setzen auf lokale Server, die an der Einrichtung betrieben werden. Die sind allerdings weitestgehend abhängig von dem (freiwilligen und ehrenamtlichen) Engagement (meist) einer Person, die diesen Server betreibt und am Leben erhält. Fällt dieses Engagement weg (zum Beispiel wenn diese Person auf eine andere Schule wechselt), stirbt der Server.</p>
-<p>Da sind statische HTML-Seiten, die man ja mit JavaScript und CSS durchaus aufpeppen und ansprechend gestalten kann, eine empfehlenswerte Alternative. Und es ist auch nichts Verwerfliches, wenn man sich bei der <em>Gestaltung</em> dieser Seiten von einer gekünstelten Intelligenzia helfen lässt. Lediglich beim <em>Inhalt</em>, da würde ich lieber auf <strong>meine</strong> pädagogische Kompetenz und <strong>mein</strong> Wissen setzen.</p>
-<p>Vielleicht sollte ich – motiviert durch den Beitrag von <em>Nele Hirsch</em>, aber auch im Rahmen meiner <a href="https://kantel.github.io/#category=IndieWeb">(Wieder-) Entdeckung des IndieWebs</a> – mal eine Tutorialreihe zu den Grundlagen des Gestaltens statischer Seiten (HTML, CSS und JavaScript) schreiben und in diesem <del>Blog</del> Kritzelheft veröffentlichen. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55128922725/">Frau am Schreibtisch</a></em>, generiert mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>A middle-aged woman with long, reddish-brown hair and green eyes, wearing a dark green turtleneck sweater, sits at a desk in a study, using a computer keyboard and mouse. Many books are stacked on the desk, with sticky notes protruding from them. The shelves along the walls are also overflowing with books. Spring sunshine streams through a window in the background. Colored Franco-Belgian comic style. No speech bubbles, no textboxes. Language: German.</em>« Modell: Nano Banana 2</p>
-
-
-
- ]]></description>
-  <category>Statische Seiten</category>
-  <category>Webworking</category>
-  <category>Digitale Souveränität</category>
-  <guid>https://kantel.github.io/posts/2026081401_statische_seiten_als_format/</guid>
-  <pubDate>Fri, 14 Aug 2026 15:10:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026081401_statische_seiten_als_format/images/nelehirsch.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

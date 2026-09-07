@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Qumbo schreibt (schön): Custom Fonts in Twine (Harlowe) – Der Schockwellenreiter</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-de370ee0869d3e2d1ce948f09ec559d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Qumbo schreibt (schön): Custom Fonts in Twine (Harlowe)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Twine</div>
+    <div class="quarto-category">Harlowe</div>
+    <div class="quarto-category">Interactive Fiction</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Neocities</div>
+    <div class="quarto-category">IndieWeb</div>
+    <div class="quarto-category">Webworking</div>
+    <div class="quarto-category">Alice</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">7. September 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55456981481/"><img src="images/schreiben-b.jpg" class="img-fluid"></a></p>
+<p>Meine Reisen durch das Wunderland von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> gehen weiter. In diesem Tutorial möchte ich erkunden, wie ich andere Schriftarten (Fonts), als die, die die Browser üblicherweise zur Verfügung stellen, in meinen Twine-Geschichten nutzen kann.</p>
+<p>Als Quelle für Fonts, die man frei verwenden kann, fällt einem als erstes meistens <a href="https://de.wikipedia.org/wiki/Google_Fonts">Google Fonts</a> ein. Denn dort findet die geneigte Nutzerin oder der geneigte Nutzer zur Zeit fast 2.000 Schriftarten, die unter einer freien Lizenz (meist <a href="https://openfontlicense.org/open-font-license-official-text/">SIL Open Font License Version 1.1</a>) zur kostenlosen Nutzung Verfügung gestellt werden. Besonders bequem ist es, dass man mit einem Klick auf <code>&lt;&gt; Get embed code</code> ein paar Zeilen HTML zur Verfügung gestellt bekommt, die man nur in die eigene Webseite hineinzukopieren braucht, und schon stehen die ausgewählten Fonts zur Verfgung – ohne dass man die Fonts herunterladen und auf seinem eigenen Server wieder hochladen und einbinden muss.</p>
+<p>Dieses »dynamische Einbindung« genannte Verfahren ist sehr bequem, hat allerdings einen gewaltigen Haken: Bei einer dynamischen Einbindung werden die Schriften von Google Fonts über einen Google-Server nachgeladen. Dadurch wird die IP-Adresse des Website-Besuchers an Google in die USA weitergeleitet, was nicht den Vorgaben der Datenschutz-Grundverordnung (DSGVO) entspricht. Das hatte um 2022 eine gewaltige Abmahnwelle ausgelöst, und auch wenn in vielen Fällen die Staatswanwaltschaft wegen betrügerischer Absichten ermittelt hat, sollte man sicherheitshalber auf die dynamische Einbindung verzichten (auch wenn Google das natürlich anders sieht.)</p>
+<p>Allerdings kann man sich die Schriften von Google auch herunterladen und dann über seinen eigenen Server mit einem entsprechenden CSS-Code in die eigenen Webseiten einbinden. Diese »lokale/statische Nutzung« gilt in der Literatur als DSGVO-konform<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Diese letzte. DSGVO-konforme Methode funktioniert natürlich nicht nur mit Google Fonts, sondern mit allen Schriften, für die ihr das Recht besitzt, sie zu nutzen, entweder weil sie im Netz unter einer freien Lizenz zur Verfügung gestellt werden, oder weil Ihr sie gekauft habt<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Allerdings habe hier die Götter vor dem Erfolg erst einmal den Schweiß gesetzt. Und da ich kein CSS-Guru bin, habe ich das erst einmal auf meiner <a href="https://kantel.neocities.org/">Spielwiese bei Neocities</a> ausprobiert.</p>
+<p>Hierfür habe ich mir zuerst bei Google zwei Fonts ausgesucht: Einmal <a href="https://fonts.google.com/specimen/Berkshire+Swash">Berkshire Swash</a>, eine verspielte Schrift für die Überschriften, und dann die <a href="https://fonts.google.com/specimen/EB+Garamond">EB Garamond</a>, eine seriöse und gut lesbare Schrift für den Fließtext. Und dann habe ich meinem <a href="https://kantel.github.io/posts/2026072901_back_to_the_roots/">Stylesheet dort</a> (<code>style.css</code>) noch diese zusätzlichen Zeilen spendiert:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="im">@font-face</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">Berkshire</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">twine/fonts/BerkshireSwash-Regular.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a><span class="im">@font-face</span> {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/EBGaramond-Regular.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a>  <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">normal</span><span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a><span class="im">@font-face</span> {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/EBGaramond-Italic.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a>  <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">italic</span><span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a>}</span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a><span class="im">@font-face</span> {</span>
+<span id="cb1-16"><a href="#cb1-16" aria-label="16"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-label="17"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/EBGaramond-Bold.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-label="18"></a>  <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">bold</span><span class="op">;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-label="19"></a>}</span>
+<span id="cb1-20"><a href="#cb1-20" aria-label="20"></a>h1 {</span>
+<span id="cb1-21"><a href="#cb1-21" aria-label="21"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">Berkshire</span><span class="op">,</span> <span class="dv">serif</span><span class="op">;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-label="22"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">36</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-label="23"></a>}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-label="24"></a>p {</span>
+<span id="cb1-25"><a href="#cb1-25" aria-label="25"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">,</span> <span class="dv">serif</span><span class="op">;</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-label="26"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">18</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-label="27"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Das Ergebnis sieht dann so aus:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55509946225/"><img src="images/customfonts_neo.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Meine Spielwiese auf Neocities, jetzt mit Custom Fonts</figcaption>
+</figure>
+</div>
+<p>Die ersten vier <code>@font-face</code>-Anweisungen legen den Namen und das Format der Schrift<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> der Schrift, den Speicherort<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> und – wenn abweichend vom Default-Wert den Font-Schnitt und das Gewicht der Schrift fest. Beachtet dabei, daß jeder Schnitt eine eigene <code>@face-font</code>-Anweisung benötigt, daher hat die EB&nbsp;Garamond drei, je eine für <em>normal</em>, <em>kursiv</em> und <em>fett</em><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>Nachdem ich dieses Experiment erfolgreich abgeschlossen hatte, habe ich mich (endlich) wieder Twine und Harlowe zugewandt:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55512506592/"><img src="images/customfonts_twine.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Custom Fonts in Twine (Harlowe)</figcaption>
+</figure>
+</div>
+<p>Dafür habe ich erst einmal eine minimale Geschichte geschrieben, die nur aus einer Passage besteht:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a># Qumbo schreibt (schön)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a><span class="dt">&lt;</span><span class="kw">img</span><span class="ot"> src</span><span class="op">=</span><span class="st">"images/qumbo.jpg"</span><span class="ot"> alt</span><span class="op">=</span><span class="st">"qumbo"</span><span class="ot"> </span><span class="dt">/&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>Alice besuchte an einem schönen Herbstnachmittag mal wieder ihre alten Freunde, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a>*Rudi Rabbit*, das weiße Kaninchen, und *Qumbo*, den schlauen Elephanten.</span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a>Qumbo schrieb gerade langsam und mit großer Sorgfalt einen kalligraphischen Text </span>
+<span id="cb2-9"><a href="#cb2-9" aria-label="9"></a>in ein großes Notizbuch, während das Kaninchen ungeduldig auf seine riesige Taschenuhr </span>
+<span id="cb2-10"><a href="#cb2-10" aria-label="10"></a>schaute und jammerte: »Oje, oje, in einer halben Stunde ist **Redaktionsschluss**, </span>
+<span id="cb2-11"><a href="#cb2-11" aria-label="11"></a>wir kommen zu spät.</span>
+<span id="cb2-12"><a href="#cb2-12" aria-label="12"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-label="13"></a>[[Zur Zeitschleife-&gt;Start]].</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Und dann das bewärte <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Stylesheet aus dem ersten Tutorial</a> (samt <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Anhang</a>) mit diesen Zeilen weiter aufgebohrt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="im">@font-face</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">Berkshire</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/BerkshireSwash-Regular.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a><span class="im">@font-face</span> {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-label="6"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-label="7"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/EBGaramond-Regular.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-label="8"></a>  <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">normal</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-label="9"></a>}</span>
+<span id="cb3-10"><a href="#cb3-10" aria-label="10"></a><span class="im">@font-face</span> {</span>
+<span id="cb3-11"><a href="#cb3-11" aria-label="11"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-label="12"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/EBGaramond-Italic.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-label="13"></a>  <span class="kw">font-style</span><span class="ch">:</span> <span class="dv">italic</span><span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-label="14"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15" aria-label="15"></a><span class="im">@font-face</span> {</span>
+<span id="cb3-16"><a href="#cb3-16" aria-label="16"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">;</span> <span class="co">/* set name */</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-label="17"></a>  <span class="kw">src</span><span class="ch">:</span> <span class="fu">url(</span><span class="st">fonts/EBGaramond-Bold.ttf</span><span class="fu">)</span> <span class="fu">format(</span><span class="st">"truetype"</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-label="18"></a>  <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">bold</span><span class="op">;</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-label="19"></a>}</span>
+<span id="cb3-20"><a href="#cb3-20" aria-label="20"></a>tw-story {</span>
+<span id="cb3-21"><a href="#cb3-21" aria-label="21"></a>    <span class="kw">background-color</span><span class="ch">:</span> <span class="cn">#1a1a1a</span><span class="op">;</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-label="22"></a>    <span class="kw">color</span><span class="ch">:</span> <span class="cn">#f0f0f0</span><span class="op">;</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-label="23"></a>    <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">EBGaramond</span><span class="op">,</span> <span class="dv">serif</span><span class="op">;</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-label="24"></a>    <span class="kw">font-size</span><span class="ch">:</span> <span class="fu">clamp(</span><span class="dv">1.2</span><span class="dt">em</span><span class="op">,</span> <span class="dv">2.0</span><span class="dt">vw</span><span class="op">,</span> <span class="dv">1.75</span><span class="dt">em</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-label="25"></a>}</span>
+<span id="cb3-26"><a href="#cb3-26" aria-label="26"></a>h1 {</span>
+<span id="cb3-27"><a href="#cb3-27" aria-label="27"></a>  <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">Berkshire</span><span class="op">,</span> <span class="dv">serif</span><span class="op">;</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-label="28"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="fu">clamp(</span><span class="dv">1.8</span><span class="dt">em</span><span class="op">,</span> <span class="dv">2.0</span><span class="dt">vw</span><span class="op">,</span> <span class="dv">2.75</span><span class="dt">em</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-label="29"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Die Schwierigkeit bestand hierbei, dass Harlowe zwar für den Fließtext eine eigene Klasse besitzt (<code>tw-story</code>), nicht aber für Überschriften (es gibt keine <code>tw-heading</code> oder ähnliche Klasse<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>). Hier musste ich mich mit einem simplen <code>h1</code> zufriedengeben.</p>
+<p>Mit <code>clamp(untergrenze, bevorzugter_wert, obergrenze)</code> habe ich die Seiten wieder responsiv angelegt. Da ich – wie oben schon geschrieben – kein CSS-Guru bin, haben mir die <a href="https://www.mediaevent.de/css/clamp.html">wundervollen Seiten</a> von <em>Ulrike Häßler</em> bei der Erkundung der Funktion sehr geholfen.</p>
+<p>So, und jetzt noch das Geschichtchen, eingebunden im <em>Schockwellenreiter</em>, damit Ihr nachvollziehen könnt, was ich hier angestellt habe:</p>
+<iframe width="100%" height="680" src="alice4/">
+</iframe>
+<p>Auch dieses kleine Tutorial habe ich sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/qumboschreibt/Font-Test.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/qumboschreibt/Font-Test.twee">Twee-Datei</a> mit allen Assets (<a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/qumboschreibt/images">Bilder</a> und <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/qumboschreibt/fonts">Schriften</a>) auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+<p>Und natürlich habe ich dieses Spielchen – wie die anderen auch – auf meinem Neocities-Account <a href="https://kantel.neocities.org/twine/alice4/">veröffentlicht</a>. Schließlich ist Neocities meine ++Spielwiese**!</p>
+<section id="was-bisher-geschah" class="level3">
+<h3 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h3>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen sieben Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li><a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Zurück ins Wunderland (schon wieder)</a> und dieses Mal mit Harlowe</li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Aus meiner Webwerkstatt: <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Twine-Stories in die eigenen Seiten einbinden</a></li>
+<li><a href="https://kantel.github.io/posts/2026082601_alice_teeparty/">Alice und die Teeparty</a>: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+<li><a href="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/">Alice und Humpel Pumpel</a>: Mit Twine und Harlowe ins Wunderland (Teil 3)</li>
+<li>Qumbo schreibt (schön): Custom Fonts in Twine (Harlowe)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+</section>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li>Petra Bukovinski, Maša Majce: <em><a href="https://www.nutrient.io/blog/adding-custom-fonts-to-html-documents/">Adding custom fonts to HTML documents</a></em>, Nutrient vom 11.&nbsp;Juni&nbsp;2024</li>
+<li>Ulrike Häßler: <em><a href="https://www.mediaevent.de/css/clamp.html">CSS clamp, min und max – Wertebereich einschränken</a></em>. in <em><a href="https://www.mediaevent.de/">CSS, HTML und Javascript mit {stil}</a></em>, Juli&nbsp;2025</li>
+<li>Sebastian Lenz (fachlich geprüft von RA Sören Siebert): <em><a href="https://www.e-recht24.de/google-fonts-scanner?u=a2FudGVsLmdpdGh1Yi5pbw==&amp;autostart=1#scanner">Achtung Abmahnung: Prüfen Sie jetzt die Einbindung von Google Fonts</a></em> eRecht24 vom 24.&nbsp;August&nbsp;2022</li>
+<li>Mozilla Developer Network: <em><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Text_styling/Web_fonts">Web Fonts</a></em>, zuletzt besucht am 7.&nbsp;September&nbsp;2026</li>
+<li>Sascha Münch: <em><a href="https://www.datenschutz.org/google-fonts-dsgvo/">Sind Google Fonts DSGVO-konform? Worauf Sie achten müssen!</a></em> Datenschutz.org vom 5.&nbsp;September&nbsp;2026</li>
+<li>Philip Westfall: <em><a href="https://www.pagecloud.com/blog/how-to-add-custom-fonts-to-any-website">The Easy Way to Add Fonts to Your Website (Including Custom Fonts)</a></em>, Pagecloud vom 21.&nbsp;November&nbsp;2024</li>
+<li>W<sup>3</sup>-Schools: <em><a href="https://www.w3schools.com/css/css3_fonts.asp">CSSCustom Font</a></em>, zuletzt besucht am 7.&nbsp;September&nbsp;2026</li>
+<li>W<sup>3</sup>-Schools: <em><a href="https://www.w3schools.com/cssref/atrule_font-face.php">CSS <span class="citation" data-cites="font-face">@font-face</span> Rule</a></em>, zuletzt besucht am 7.&nbsp;September&nbsp;2026</li>
+</ul>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55456981481/">Der Märzhase schreibt</a>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »</em>The <span class="citation" data-cites="March">@March</span> Hare sits at a desk in front of an antiquated, steampunk-style computer, typing on a keyboard. He wears a pair of aviator goggles, which he has pushed up onto his forehead. Lying on the desk in front of him is a gigantic notebook, in which he is jotting down notes with an old-fashioned fountain pen. Beside the keyboard sits a mug of steaming coffee. Shelves crammed with books and steampunk knick-knacks line the walls. A statue of the phoenix stands on one of the shelves. Through a window, one looks out upon a steampunk version of Berlin with an elevated old-fashioned railway in a steampunk style, but in the colors of the Berlin S-Bahn. Colored classic American comic style. Language: German. No speech bubbles, no textboxes. No German flags.*« Modell: Nano Banana&nbsp;2.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Ich bin allerdings kein Jurist und mache daher auch keine Rechtsberatung. Im Zweifelsfall konsultiert lieber noch einen Rechtsanwalt.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Wie fast alle juristischen Angelegenheiten scheint aber auch das Lizenzrecht ein Minenfeld zu sein. Daher auch hier noch einmal der Rat: Im Zweifelsfalle lieber <strong>vorher</strong> einen Rechtsanwalt konsultieren.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Die seltsame Warnung <code>@font-face declaration doesn't follow the fontspring bulletproof syntax</code> könnt Ihr getrost ignorieren. Sie bedeutet nur, dass Uralt-Versionen des Internet Explorers das <em>True Type</em>-Format (<code>.ttf</code>) nicht unterstützen. Wenn Ihr jedoch die Notwendigkeit seht, alte Versionen des Internet-Explorers unterstützen zu müssen, zum Beispiel weil Eure Seiten auf Rechnern der Berliner Verwaltung in all ihrer Schönheit gelesen werden und glänzen sollen, dann könnt Ihr auf Seiten wie dern <a href="https://www.fontsquirrel.com/tools/webfont-generator">Webfont-Generator</a> Eure <code>.ttf</code> in <code>.woff</code> und <code>.woff2</code> umwandeln. Mir reicht es aber, störrischen Uralt-Browsern eine generische Alternative anzubieten (in diesem Fall <em>serif</em>).<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Das seltsame Unterverzeichnis <code>twine/fonts</code> rührt daher, da ich ursprünglich die Schriften <a href="https://kantel.github.io/posts/2026090302_twine_neocities/">nur auf meinen Twine-Seiten auf Neocities</a> ausprobieren wollte und später dann zu faul war, die Schriften noch einmal umzukopieren.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Beim Download der EB Garamond bekommt man noch viel mehr Schnitte geliefert, aber diese drei reichten mir für meine Experimente aus.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Zumindest habe ich in der Dokumentation zu Harlowe keine gefunden.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopiert");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopiert");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "kantel/kantel.github.io";
+    script.dataset.repoId = "R_kgDOIjiXMQ";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOIjiXMc4CS_hh";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
