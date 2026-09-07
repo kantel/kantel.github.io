@@ -18,7 +18,7 @@ Allerdings kann man sich die Schriften von Google auch herunterladen und dann ü
 
 [^1]: Ich bin allerdings kein Jurist und mache daher auch keine Rechtsberatung. Im Zweifelsfall konsultiert lieber noch einen Rechtsanwalt.
 
-Diese letzte. DSGVO-konforme Methode funktioniert natürlich nicht nur mit Google Fonts, sondern mit allen Schriften, für die ihr das Recht besitzt, sie zu nutzen, entweder weil sie im Netz unter einer freien Lizenz zur Verfügung gestellt werden, oder weil Ihr sie gekauft habt[^2]. Allerdings habe hier die Götter vor dem Erfolg erst einmal den Schweiß gesetzt. Und da ich kein CSS-Guru bin, habe ich das erst einmal auf meiner [Spielwiese bei Neocities](https://kantel.neocities.org/) ausprobiert.
+Diese letzte, DSGVO-konforme Methode funktioniert natürlich nicht nur mit Google Fonts, sondern mit allen Schriften, für die ihr das Recht besitzt, sie zu nutzen, entweder weil sie im Netz unter einer freien Lizenz zur Verfügung gestellt wurden, oder weil Ihr sie gekauft habt[^2]. Allerdings haben hier die Götter vor dem Erfolg den Schweiß gesetzt. Und da ich kein CSS-Guru bin, habe ich das zum Warmwerdem zuerst auf meiner [Spielwiese bei Neocities](https://kantel.neocities.org/) ausprobiert.
 
 [^2]: Wie fast alle juristischen Angelegenheiten scheint aber auch das Lizenzrecht ein Minenfeld zu sein. Daher auch hier noch einmal der Rat: Im Zweifelsfalle lieber **vorher** einen Rechtsanwalt konsultieren.
 
@@ -58,7 +58,7 @@ Das Ergebnis sieht dann so aus:
 
 [![Meine Spielwiese auf Neocities, jetzt mit Custom Fonts](images/customfonts_neo.jpg)](https://www.flickr.com/photos/schockwellenreiter/55509946225/)
 
-Die ersten vier `@font-face`-Anweisungen legen den Namen und das Format der Schrift[^3] der Schrift, den Speicherort[^4] und -- wenn abweichend vom Default-Wert den Font-Schnitt und das Gewicht der Schrift fest. Beachtet dabei, daß jeder Schnitt eine eigene `@face-font`-Anweisung benötigt, daher hat die EB&nbsp;Garamond drei, je eine für *normal*, *kursiv* und *fett*[^5].
+Die ersten vier `@font-face`-Anweisungen legen den Namen und das Format der Schrift[^3] der Schrift, den Speicherort[^4] und -- wenn abweichend vom Default-Wert -- den Font-Schnitt und das Gewicht der Schrift fest. Beachtet dabei, daß jeder Schnitt eine eigene `@face-font`-Anweisung benötigt, daher hat die EB&nbsp;Garamond drei, je eine für *normal*, *kursiv* und *fett*[^5].
 
 [^3]: Die seltsame Warnung `@font-face declaration doesn't follow the fontspring bulletproof syntax` könnt Ihr getrost ignorieren. Sie bedeutet nur, dass Uralt-Versionen des Internet Explorers das *True Type*-Format (`.ttf`) nicht unterstützen. Wenn Ihr jedoch die Notwendigkeit seht, alte Versionen des Internet-Explorers unterstützen zu müssen, zum Beispiel weil Eure Seiten auf Rechnern der Berliner Verwaltung in all ihrer Schönheit gelesen werden und glänzen sollen, dann könnt Ihr auf Seiten wie dern [Webfont-Generator](https://www.fontsquirrel.com/tools/webfont-generator) Eure `.ttf` in `.woff` und `.woff2` umwandeln. Mir reicht es aber, störrischen Uralt-Browsern eine generische Alternative anzubieten (in diesem Fall *serif*).
 
