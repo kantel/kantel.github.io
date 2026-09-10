@@ -21,14 +21,14 @@
 
 
 <p><a href="https://www.flickr.com/photos/schockwellenreiter/55518644968/"><img src="https://kantel.github.io/posts/2026091001_alice_tutorial_5/images/alice_bib-b.jpg" class="img-fluid"></a></p>
-<p>Ich möchte meine kleine Reihe über <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> fortsetzen. In dieser Ausgabe geht es speziell um Variablen, (einigen) Makros und Hooks. Dafür habe ich Alice in ein altes, verlassenes Haus mit einer Bibliothek geschickt. In einem späteren Tutorial soll sie und sollt Ihr bei der Erkundung dieses Hauses noch mehr Makros und ihre Anwendung kennenlernen. Aber fangen wir erst einmal an.</p>
+<p>Ich möchte meine kleine Reihe über <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> fortsetzen. In dieser Ausgabe geht es speziell um <strong>Variablen</strong>, (einigen) <strong>Makros</strong> und <strong>Hooks</strong>. Dafür habe ich Alice in ein altes, verlassenes Haus mit einer Bibliothek geschickt. In einem späteren Tutorial soll sie und sollt Ihr bei der Erkundung dieses Hauses noch mehr Makros und ihre Anwendung kennenlernen. Aber fangen wir erst einmal an.</p>
 <p>Die Startpassage heißt dieses Mal <code>Init</code> und besteht nur aus den Makros <code>set:</code>, <code>either:</code> und <code>go-to:</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1">{(set: $hasKey to false)</span>
 <span id="cb1-2">(set: $isKey to (either: "Fußmatte", "Blumentopf", "Krug"))</span>
 <span id="cb1-3">}</span>
 <span id="cb1-4"></span>
 <span id="cb1-5">(go-to: "Start")</span></code></pre></div></div>
-<p>Makros beginnen und Enden in Harlowe immer mit einem Klammerpaar <code>(…)</code>. Nach der Klammer steht der Name des Makros, der immer mit einem Doppelpunkt (<code>:</code>) abschließt, gefolgt von den Argumenten, zum Beispiel:</p>
+<p>Makros beginnen und enden in Harlowe immer mit einem Klammerpaar <code>(…)</code>. Nach der Klammer steht der Name des Makros, der immer mit einem Doppelpunkt (<code>:</code>) abschließt, gefolgt von den Argumenten, zum Beispiel:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1">(set: $hasKey to false)</span></code></pre></div></div>
 <p>Mit dem Makro <code>set:</code> werden Variablen initialisiert<sup>1</sup>. Variablen sind in der Regel <strong>global</strong> (das heißt, sie gelten während der gesamten Laufzeit der interaktiven Geschichte) und beginnen mit einem Dollarzeichen (<code>$</code>). Variablennamen dürfen nur aus Groß-, Kleinbuchstaben oder Ziffern bestehen, Sonderzeichen (mit Ausnahme des Unterstrichs (<code>_</code>)) sind nicht erlaubt. Bei der Verwendung des Unterstrichs ist zu beachten, daß Variablennamen, die mit einem Unterstrich statt des Dollarzeichens beginnen (zum Beispiel <code>_lokal</code>), von Harlowe als <strong>lokale</strong> Variablen behandelt werden, die nur innerhalb <strong>einer</strong> Passage ihr Gültigkeit besitzen.</p>
 <p>Harlowe kennt drei verschiedene Typen von (einfachen) Variablen:</p>
@@ -37,7 +37,7 @@
 <li><em>numerisch</em>: Enthält Zahlen (sowohl Ganzzahlen als auch Zahlen mit Nachkommastellen)</li>
 <li><em>Zeichenkette (string)</em>: Besteht aus jeder Art von Text und wird von einem Hochkomma-Paar eingeschlossen (entweder <code>"Das ist ein Text"</code> oder <code>'Das ist auch ein Text'</code>)</li>
 </ul>
-<p>Daneben können auch konkrete Makros Variablen zugeweisen werden, zum Beispiel</p>
+<p>Daneben können auch konkreten Makros Variablen zugeweisen werden, zum Beispiel</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1">(set: $c to (font: "Courier New"))</span></code></pre></div></div>
 <p>und dann im weiteren Verlauf der Geschichte verwendet werden:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1">$c[Dieser Text ist in Courier.] Und dieser in der Default-Schrift.</span></code></pre></div></div>
@@ -86,7 +86,7 @@ font-style: inherit;">/&gt;</span></span>
 <span id="cb7-7">Plötzlich materialisierte sich die Grinsekatze auf dem Dach des Hauses neben </span>
 <span id="cb7-8">dem schrägstehenden Kamin. Sie meinte: »Ein Tipp von mir: Manche Leute verstecken </span>
 <span id="cb7-9">ihre Schlüssel unter der [[Fußmatte-&gt;Fußmatte]] oder im [[Blumentopf-&gt;Blumentopf]], </span>
-<span id="cb7-10">manche aber auch im [[Krug neben der Tür-&gt;Krug]].</span></code></pre></div></div>
+<span id="cb7-10">manche aber auch im [[Krug neben der Tür-&gt;Krug]].«</span></code></pre></div></div>
 <p>In dieser Passage gibt es keine neuen Syntaxelemente, daher möchte ich Euch gerne sofort auf die drei neuverlinkten Passagen <code>Krug</code>, <code>Fußmatte</code> und <code>Blumentopf</code> eingehen. Sie sind alle drei nahezu identisch. Zuerst die Passage <code>Krug</code>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb8-1">(if: $isKey is "Krug")[(go-to: "Schlüssel gefunden")]</span>
 <span id="cb8-2">(else:)[<span class="dt" style="color: #AD0000;
@@ -172,7 +172,7 @@ font-style: inherit;">/&gt;</span></span>
 <span id="cb10-5"></span>
 <span id="cb10-6">Alice [[suchte weiter-&gt;Start]].]</span></code></pre></div></div>
 <p>Neu ist hier das Makropaar <code>if:</code> und <code>else:</code><sup>3</sup> und die Verwendung von <em>Hooks</em>. Hooks stehen in einfachen, eckigen Klammern <code>[…]</code> genau hinter einem Makro und das Makro gilt auch nur für diesen Hook. Sie sind also im wahrsten Sinne des Wortes Haken, an denen die Makros hängen.</p>
-<p>Das einfachste Beispiel eines Hooks folgt diesem Beispiel (vergleiche auch das Beispiel oben):</p>
+<p>Das einfachste Beispiel eines Hooks folgt diesem Schema (vergleiche auch das Beispiel oben):</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb11-1">(font: "Courier New")[Dies ist ein Hook und der Text darin ist in Courier New.]</span></code></pre></div></div>
 <p>Das Makro <code>font:</code> gilt nur für den Text <strong>innerhalb</strong> der eckigen Klammern, also innerhalb des »anonymen« Hooks<sup>4</sup>.</p>
 <p>Genau so geht es in den drei obigen Passagen zu: Wenn Alice den Schlüssel gefunden hat, zum Beispiel im Blumentopf,</p>

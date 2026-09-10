@@ -8,7 +8,7 @@ image: "images/alice_bib.jpg"
 
 [![](images/alice_bib-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/55518644968/)
 
-Ich möchte meine kleine Reihe über [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html), der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat [Harlowe](https://twine2.neocities.org/) fortsetzen. In dieser Ausgabe geht es speziell um Variablen, (einigen) Makros und Hooks. Dafür habe ich Alice in ein altes, verlassenes Haus mit einer Bibliothek geschickt. In einem späteren Tutorial soll sie und sollt Ihr bei der Erkundung dieses Hauses noch mehr Makros und ihre Anwendung kennenlernen. Aber fangen wir erst einmal an.
+Ich möchte meine kleine Reihe über [Twine](http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html), der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat [Harlowe](https://twine2.neocities.org/) fortsetzen. In dieser Ausgabe geht es speziell um **Variablen**, (einigen) **Makros** und **Hooks**. Dafür habe ich Alice in ein altes, verlassenes Haus mit einer Bibliothek geschickt. In einem späteren Tutorial soll sie und sollt Ihr bei der Erkundung dieses Hauses noch mehr Makros und ihre Anwendung kennenlernen. Aber fangen wir erst einmal an.
 
 Die Startpassage heißt dieses Mal `Init` und besteht nur aus den Makros `set:`, `either:` und `go-to:`:
 
@@ -20,7 +20,7 @@ Die Startpassage heißt dieses Mal `Init` und besteht nur aus den Makros `set:`,
 (go-to: "Start")
 ~~~
 
-Makros beginnen und Enden in Harlowe immer mit einem Klammerpaar `(…)`. Nach der Klammer steht der Name des Makros, der immer mit einem Doppelpunkt (`:`) abschließt, gefolgt von den Argumenten, zum Beispiel:
+Makros beginnen und enden in Harlowe immer mit einem Klammerpaar `(…)`. Nach der Klammer steht der Name des Makros, der immer mit einem Doppelpunkt (`:`) abschließt, gefolgt von den Argumenten, zum Beispiel:
 
 ~~~txt
 (set: $hasKey to false)
@@ -36,7 +36,7 @@ Harlowe kennt drei verschiedene Typen von (einfachen) Variablen:
 - *numerisch*: Enthält Zahlen (sowohl Ganzzahlen als auch Zahlen mit Nachkommastellen)
 - *Zeichenkette (string)*: Besteht aus jeder Art von Text und wird von einem Hochkomma-Paar eingeschlossen (entweder `"Das ist ein Text"` oder `'Das ist auch ein Text'`)
 
-Daneben können auch konkrete Makros Variablen zugeweisen werden, zum Beispiel
+Daneben können auch konkreten Makros Variablen zugeweisen werden, zum Beispiel
 
 ~~~txt
 (set: $c to (font: "Courier New"))
@@ -82,7 +82,7 @@ gerne erkunden, doch die Türe war verschlossen.
 Plötzlich materialisierte sich die Grinsekatze auf dem Dach des Hauses neben 
 dem schrägstehenden Kamin. Sie meinte: »Ein Tipp von mir: Manche Leute verstecken 
 ihre Schlüssel unter der [[Fußmatte->Fußmatte]] oder im [[Blumentopf->Blumentopf]], 
-manche aber auch im [[Krug neben der Tür->Krug]].
+manche aber auch im [[Krug neben der Tür->Krug]].«
 ~~~
 
 In dieser Passage gibt es keine neuen Syntaxelemente, daher möchte ich Euch gerne sofort auf die drei neuverlinkten Passagen `Krug`, `Fußmatte` und `Blumentopf` eingehen. Sie sind alle drei nahezu identisch. Zuerst die Passage `Krug`:
@@ -122,7 +122,7 @@ Neu ist hier das Makropaar `if:` und `else:`[^3] und die Verwendung von *Hooks*.
 
 [^3]: Für fortgeschrittene Coder: Es gibt auch noch das Makro `else-if:` als drittes im Bunde. Doch darüber eventuell in einem späteren Tutorial mehr.
 
-Das einfachste Beispiel eines Hooks folgt diesem Beispiel (vergleiche auch das Beispiel oben):
+Das einfachste Beispiel eines Hooks folgt diesem Schema (vergleiche auch das Beispiel oben):
 
 ~~~txt
 (font: "Courier New")[Dies ist ein Hook und der Text darin ist in Courier New.]
@@ -136,7 +136,6 @@ Genau so geht es in den drei obigen Passagen zu: Wenn Alice den Schlüssel gefun
 
 ~~~html
 (if: $isKey is "Blumentopf")[(go-to: "Schlüssel gefunden")]
-
 ~~~
 
 dann wird sie in dem anhängenden Hook mit dem Makro `go-to:` zu der Passage `Schlüssel gefunden` geschickt[^5]. Im anderen Falle `else:` wird das Bild mit der geschlossenen Tür weiter angezeigt, ein kurzer Text sagt, dass hier nichts gefunden wurde und Alice wird gefragt, ob sie es weiter versuchen will:
