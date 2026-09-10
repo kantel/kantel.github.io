@@ -10,7 +10,713 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Wed, 09 Sep 2026 17:50:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 10 Sep 2026 14:45:00 GMT</lastBuildDate>
+<item>
+  <title>Mit Alice in die Bibliothek: Variablen, Makros und Hooks in Twine (Harlowe)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026091001_alice_tutorial_5/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55518644968/"><img src="https://kantel.github.io/posts/2026091001_alice_tutorial_5/images/alice_bib-b.jpg" class="img-fluid"></a></p>
+<p>Ich möchte meine kleine Reihe über <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> fortsetzen. In dieser Ausgabe geht es speziell um Variablen, (einigen) Makros und Hooks. Dafür habe ich Alice in ein altes, verlassenes Haus mit einer Bibliothek geschickt. In einem späteren Tutorial soll sie und sollt Ihr bei der Erkundung dieses Hauses noch mehr Makros und ihre Anwendung kennenlernen. Aber fangen wir erst einmal an.</p>
+<p>Die Startpassage heißt dieses Mal <code>Init</code> und besteht nur aus den Makros <code>set:</code>, <code>either:</code> und <code>go-to:</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb1-1">{(set: $hasKey to false)</span>
+<span id="cb1-2">(set: $isKey to (either: "Fußmatte", "Blumentopf", "Krug"))</span>
+<span id="cb1-3">}</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">(go-to: "Start")</span></code></pre></div></div>
+<p>Makros beginnen und Enden in Harlowe immer mit einem Klammerpaar <code>(…)</code>. Nach der Klammer steht der Name des Makros, der immer mit einem Doppelpunkt (<code>:</code>) abschließt, gefolgt von den Argumenten, zum Beispiel:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb2-1">(set: $hasKey to false)</span></code></pre></div></div>
+<p>Mit dem Makro <code>set:</code> werden Variablen initialisiert<sup>1</sup>. Variablen sind in der Regel <strong>global</strong> (das heißt, sie gelten während der gesamten Laufzeit der interaktiven Geschichte) und beginnen mit einem Dollarzeichen (<code>$</code>). Variablennamen dürfen nur aus Groß-, Kleinbuchstaben oder Ziffern bestehen, Sonderzeichen (mit Ausnahme des Unterstrichs (<code>_</code>)) sind nicht erlaubt. Bei der Verwendung des Unterstrichs ist zu beachten, daß Variablennamen, die mit einem Unterstrich statt des Dollarzeichens beginnen (zum Beispiel <code>_lokal</code>), von Harlowe als <strong>lokale</strong> Variablen behandelt werden, die nur innerhalb <strong>einer</strong> Passage ihr Gültigkeit besitzen.</p>
+<p>Harlowe kennt drei verschiedene Typen von (einfachen) Variablen:</p>
+<ul>
+<li><em>boolean</em>: Kann nur <em>true</em> oder <em>false</em> sein</li>
+<li><em>numerisch</em>: Enthält Zahlen (sowohl Ganzzahlen als auch Zahlen mit Nachkommastellen)</li>
+<li><em>Zeichenkette (string)</em>: Besteht aus jeder Art von Text und wird von einem Hochkomma-Paar eingeschlossen (entweder <code>"Das ist ein Text"</code> oder <code>'Das ist auch ein Text'</code>)</li>
+</ul>
+<p>Daneben können auch konkrete Makros Variablen zugeweisen werden, zum Beispiel</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb3-1">(set: $c to (font: "Courier New"))</span></code></pre></div></div>
+<p>und dann im weiteren Verlauf der Geschichte verwendet werden:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb4-1">$c[Dieser Text ist in Courier.] Und dieser in der Default-Schrift.</span></code></pre></div></div>
+<p>Wie Ihr an dem obigen Beispiel seht, können Makros auch verschachtelt werden. Das geschieht in der zweiten Zeile der <code>Init</code>-Passage:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb5-1">(set: $isKey to (either: "Fußmatte", "Blumentopf", "Krug"))</span></code></pre></div></div>
+<p>Das Makro <code>either:</code> besitzt mehrere, durch Kommata getrennte Argumente. Im obigen Fall wird der Variablen <code>$isKey</code> genau <strong>einer</strong> der (String-) Werte <em>Fußmatte</em>, <em>Blumentopf</em> oder <em>Krug</em> zugewiesen.</p>
+<p>Das letzte Makro in dieser Passage ist das Makro <code>go-to</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb6-1">(go-to: "Start")</span></code></pre></div></div>
+<p>Es sorgt dafür, daß die Zielpassage (in diesem Fall <code>Start</code>) <strong>sofort</strong> aufgerufen wird. Das heißt, der Nutzer bekommt die <code>Init</code>-Passage gar nicht erst zu sehen<sup>2</sup>. Es gibt aber auch keinen Pfeil von der <code>Init</code>- zur <code>Start</code>-Passage und die <code>Start</code>-Passage wird von Twine auch nicht automatisch erzeugt. Der Nutzer muss sie im Menü <code>Abschnitt -&gt; + Neu</code> manuell anlegen.</p>
+<section id="der-beginn-der-geschichte" class="level3">
+<h3 class="anchored" data-anchor-id="der-beginn-der-geschichte">Der Beginn der Geschichte</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55518360150/"><img src="https://kantel.github.io/posts/2026091001_alice_tutorial_5/images/mansion_closed.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Alice vor dem verschlossenen Haus</figcaption>
+</figure>
+</div>
+<p>Mit der <code>Start</code>-Passage geht dann die Geschichte richtig los:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb7-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/mansion_closed.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Old Mansion"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb7-2"></span>
+<span id="cb7-3">Alice war wieder einmal auf einer Entdeckungstour im Wunderland. Sie fand ein </span>
+<span id="cb7-4">verlassenes und ziemlich heruntergekommenes Herrenhaus. Alice wollte es </span>
+<span id="cb7-5">gerne erkunden, doch die Türe war verschlossen.</span>
+<span id="cb7-6"></span>
+<span id="cb7-7">Plötzlich materialisierte sich die Grinsekatze auf dem Dach des Hauses neben </span>
+<span id="cb7-8">dem schrägstehenden Kamin. Sie meinte: »Ein Tipp von mir: Manche Leute verstecken </span>
+<span id="cb7-9">ihre Schlüssel unter der [[Fußmatte-&gt;Fußmatte]] oder im [[Blumentopf-&gt;Blumentopf]], </span>
+<span id="cb7-10">manche aber auch im [[Krug neben der Tür-&gt;Krug]].</span></code></pre></div></div>
+<p>In dieser Passage gibt es keine neuen Syntaxelemente, daher möchte ich Euch gerne sofort auf die drei neuverlinkten Passagen <code>Krug</code>, <code>Fußmatte</code> und <code>Blumentopf</code> eingehen. Sie sind alle drei nahezu identisch. Zuerst die Passage <code>Krug</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb8-1">(if: $isKey is "Krug")[(go-to: "Schlüssel gefunden")]</span>
+<span id="cb8-2">(else:)[<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/mansion_closed.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Old Mansion"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb8-3"></span>
+<span id="cb8-4">Im Krug lag nichts als nur ein paar abgestorbene Blätter.</span>
+<span id="cb8-5"></span>
+<span id="cb8-6">Alice [[suchte weiter-&gt;Start]].]</span></code></pre></div></div>
+<p>Dann die Passage <code>Fußmatte</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb9-1">(if: $isKey is "Fußmatte")[(go-to: "Schlüssel gefunden")]</span>
+<span id="cb9-2">(else:)[<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/mansion_closed.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Old Mansion"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb9-3"></span>
+<span id="cb9-4">Unter der Fußmatte lag nichts.</span>
+<span id="cb9-5"></span>
+<span id="cb9-6">Alice [[suchte weiter-&gt;Start]].]</span></code></pre></div></div>
+<p>und <em>last but not least</em> die Passage <code>Blumentopf</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb10-1">(if: $isKey is "Blumentopf")[(go-to: "Schlüssel gefunden")]</span>
+<span id="cb10-2">(else:)[<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/mansion_closed.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Old Mansion"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb10-3"></span>
+<span id="cb10-4">Unter dem Blumentopf krabbelten nur ein paar Insekten, ansonsten war nichts zu sehen.</span>
+<span id="cb10-5"></span>
+<span id="cb10-6">Alice [[suchte weiter-&gt;Start]].]</span></code></pre></div></div>
+<p>Neu ist hier das Makropaar <code>if:</code> und <code>else:</code><sup>3</sup> und die Verwendung von <em>Hooks</em>. Hooks stehen in einfachen, eckigen Klammern <code>[…]</code> genau hinter einem Makro und das Makro gilt auch nur für diesen Hook. Sie sind also im wahrsten Sinne des Wortes Haken, an denen die Makros hängen.</p>
+<p>Das einfachste Beispiel eines Hooks folgt diesem Beispiel (vergleiche auch das Beispiel oben):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb11-1">(font: "Courier New")[Dies ist ein Hook und der Text darin ist in Courier New.]</span></code></pre></div></div>
+<p>Das Makro <code>font:</code> gilt nur für den Text <strong>innerhalb</strong> der eckigen Klammern, also innerhalb des »anonymen« Hooks<sup>4</sup>.</p>
+<p>Genau so geht es in den drei obigen Passagen zu: Wenn Alice den Schlüssel gefunden hat, zum Beispiel im Blumentopf,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb12-1">(if: $isKey is "Blumentopf")[(go-to: "Schlüssel gefunden")]</span></code></pre></div></div>
+<p>dann wird sie in dem anhängenden Hook mit dem Makro <code>go-to:</code> zu der Passage <code>Schlüssel gefunden</code> geschickt<sup>5</sup>. Im anderen Falle <code>else:</code> wird das Bild mit der geschlossenen Tür weiter angezeigt, ein kurzer Text sagt, dass hier nichts gefunden wurde und Alice wird gefragt, ob sie es weiter versuchen will:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource txt number-lines code-with-copy"><code class="sourceCode default"><span id="cb13-1">Alice [[suchte weiter-&gt;Start]].</span></code></pre></div></div>
+<p>Hier liegt auch der tiefere Sinn der <code>Init</code>-Passage: Würde die Variabke <code>$isKey</code> in der Startpassage neu belegt, so bekäme sie bei jedem neuen Versuch von Alice, den Schlüssel zu finden, einen neuen Fundort zugewiesen. Das heißt, wenn Alice unter der Fußmatte den Schlüssel nicht gefunden hätte, dann könnte <code>Start</code> ihn nun unter der Fußmatte verstecken. Alice kann unter Umständen unmöglich den Schlüssel finden – zumindest wäre das Spiel sehr unfair.</p>
+</section>
+<section id="schlüssel-gefunden" class="level3">
+<h3 class="anchored" data-anchor-id="schlüssel-gefunden">Schlüssel gefunden</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55517122017/"><img src="https://kantel.github.io/posts/2026091001_alice_tutorial_5/images/mansion_open.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die Grinsekatze verflüchtigt sich</figcaption>
+</figure>
+</div>
+<p>Aber weiter zur Passage <code>Schlüssel gefunden</code>, die das erklärte Ziel der drei vorherigen Passagen ist:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb14-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/mansion_open.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Türe offen"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb14-2"></span>
+<span id="cb14-3">Der Schlüssel lag (if: $isKey is "Fußmatte")[unter der] (else:)[im] $isKey. </span>
+<span id="cb14-4">Alice öffnete die Türe und ging ins [[Haus-&gt;Bibiothek]], während die Grinsekatze </span>
+<span id="cb14-5">sich verflüchtigte.</span></code></pre></div></div>
+<p>Hier wird als erstes das Bild mit der geöffneten Tür geladen, damit die Spielerin oder der Spieler über den Fortgang der Geschichte informiert ist, während sich die Grinsekatze dematerialisiert.</p>
+<p>Ansonsten ist in der Passage nur noch ein weiteres Beispiel der <code>if:</code> und <code>else:</code> Konstruktion: Wenn der Schlüssel <strong>unter der</strong> Fußmatte lag, dann wird das auch im Text so angezeigt, andernfalls (<code>else:</code>) lag der Schlüssel <strong>im</strong> Blumentopf oder <strong>im</strong> Krug.</p>
+<p>Und die Passage zeigt, dass Variablenwerte im Text einfach mit dem Aufruf der Variablen (hier: <code>$isKey</code>) ersetzt werden können. Je nach Inhalt von <code>$isKey</code> steht im Text <em>Fußmatte</em>, <em>Blumentopf</em> oder <em>Krug</em>.</p>
+</section>
+<section id="in-der-bibliothek" class="level3">
+<h3 class="anchored" data-anchor-id="in-der-bibliothek">In der Bibliothek</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55518350514/"><img src="https://kantel.github.io/posts/2026091001_alice_tutorial_5/images/library.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>In der alten Bibliothek</figcaption>
+</figure>
+</div>
+<p>Jetzt kommen wir aber zum Schluß der Geschichte und in der alten Bibliothek an:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource html number-lines code-with-copy"><code class="sourceCode html"><span id="cb15-1"><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">&lt;</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">img</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> src</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"images/library.jpg"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> alt</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Bibliothek"</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"> </span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">/&gt;</span></span>
+<span id="cb15-2"></span>
+<span id="cb15-3">Hinter der Tür lag eine alte, verstaubte Bibliothek mit vielen seltsamen Büchern </span>
+<span id="cb15-4">voller geheimnisvoller Abbildungen und mythischer Erzählungen. Alice wäre gerne </span>
+<span id="cb15-5">geblieben und hätte ein wenig die alten Schwarten erkundet. Doch das ist eine andere </span>
+<span id="cb15-6">Geschichte, unsere ist hier zu Ende.</span>
+<span id="cb15-7"></span>
+<span id="cb15-8">[[Noch einmal spielen-&gt;Init]]?</span></code></pre></div></div>
+<p>Die Passage bringt nicht wirklich Neues. Sie soll lediglich Lust auf die weiteren, folgenden Tutorials zu Twine und Harlowe machen, die voraussichtlich in dieser Bibliothek beginnen werden. Aber sie sind noch in der Planung, da kann noch viel geschehen.</p>
+<p>Aber sie lädt die Spielerin oder den Spieler ein, es noch einmal zu versuchen. Hier linkt sie aber nicht auf <code>Start</code>, sondern auf <code>Init</code>, wo alle Variablen neu besetzt werden und die Geschichte wirklich von vorne beginnt.</p>
+</section>
+<section id="das-stylesheet" class="level3">
+<h3 class="anchored" data-anchor-id="das-stylesheet">Das Stylesheet</h3>
+<p>Ich habe das Stylesheet der bisherigen Tutorials sukkzessive erweitert, aber immer nur die Erweiterungen abgedruckt. Daher dachte ich, daß es eine gute Idee wäre, es hier noch einmal in seiner vollen Pracht anzuzeigen, um eventuellen Verwirrungen vorzubeugen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb16-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb16-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Berkshire</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb16-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/BerkshireSwash-Regular.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-4">}</span>
+<span id="cb16-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb16-6">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb16-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Regular.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-8">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">normal</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-9">}</span>
+<span id="cb16-10"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb16-11">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb16-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Italic.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-13">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-style</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">italic</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-14">}</span>
+<span id="cb16-15"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">@font-face</span> {</span>
+<span id="cb16-16">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/* set name */</span></span>
+<span id="cb16-17">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">src</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">url(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">fonts/EBGaramond-Bold.ttf</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">format(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"truetype"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-18">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-weight</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bold</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-19">}</span>
+<span id="cb16-20">tw-story {</span>
+<span id="cb16-21">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">background-color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#1a1a1a</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-22">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#f0f0f0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-23">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">EBGaramond</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-24">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clamp(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.2</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">vw</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.75</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-25">}</span>
+<span id="cb16-26">h1 {</span>
+<span id="cb16-27">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-family</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">Berkshire</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">serif</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-28">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-size</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clamp(</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.8</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.0</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">vw</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.75</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">em</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-29">}</span>
+<span id="cb16-30">tw-link<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> tw-ancient-link {</span>
+<span id="cb16-31">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-32">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">font-weight</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">bold</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-33">}</span>
+<span id="cb16-34">tw-link<span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span> {</span>
+<span id="cb16-35">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-36">}</span>
+<span id="cb16-37">tw-link<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.visited</span> {</span>
+<span id="cb16-38">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-39">}</span>
+<span id="cb16-40">tw-link<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.visited</span><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span> {</span>
+<span id="cb16-41">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-42">}</span>
+<span id="cb16-43"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.enchantment-link</span><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> tw-link<span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:hover</span> {</span>
+<span id="cb16-44">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">color</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">#ff9900</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-45">}</span>
+<span id="cb16-46">tw-sidebar {</span>
+<span id="cb16-47">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">display</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">none</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-48">}</span>
+<span id="cb16-49">img {</span>
+<span id="cb16-50">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">max-width</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">%</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-51">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">height</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">auto</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb16-52">}</span></code></pre></div></div>
+<p>Eigentlich habe ich nur die Fonts eingebunden und sie – wie auch die Bilder – responsiv gemacht und <strong>alle</strong> Linkfarben auf <b style="color: #ff9900;">orange</b> gesetzt. Doch das macht schon etliches aus, wie das eingebunden Spiel hier beweist:</p>
+</section>
+<section id="das-spiel-alice-und-die-bibliothek" class="level3">
+<h3 class="anchored" data-anchor-id="das-spiel-alice-und-die-bibliothek">Das Spiel: Alice und die Bibliothek</h3>
+<iframe width="100%" height="640" src="alice5/">
+</iframe>
+<p>Auch dieses Tutorial habe ich sowohl als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice5/index.html">HTML-Datei</a> wie auch als <a href="https://github.com/kantel/twine-entdecken/blob/master/Twine/alicereloadedharlowe/alice5/Alice%20Tutorial%204.twee">Twee-Datei</a> mit allen Assets (<a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice5/images">Bilder</a> und <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice5/fonts">Schriften</a>) auf meinem GitHub-Account hochgeladen. <em>Habt Spaß damit!</em></p>
+<p>Und natürlich habe ich dieses Spielchen – wie die anderen auch – auf meiner Neocities-Spielwiese <a href="https://kantel.neocities.org/twine/alice5/">veröffentlicht</a>, der ich übrigens letztes Wochenende ein komplettes Redesign gegönnt habe (doch darüber vielleicht ein anderes Mal mehr).</p>
+</section>
+<section id="was-bisher-geschah" class="level3">
+<h3 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h3>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen acht Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li><a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Zurück ins Wunderland (schon wieder)</a> und dieses Mal mit Harlowe</li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Aus meiner Webwerkstatt: <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Twine-Stories in die eigenen Seiten einbinden</a></li>
+<li><a href="https://kantel.github.io/posts/2026082601_alice_teeparty/">Alice und die Teeparty</a>: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+<li><a href="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/">Alice und Humpel Pumpel</a>: Mit Twine und Harlowe ins Wunderland (Teil 3)</li>
+<li><a href="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/">Qumbo schreibt (schön)</a>: Custom Fonts in Twine (Harlowe)</li>
+<li>Mit Alice in die Bibliothek: Variablen, Makros und Hooks in Twine (Harlowe)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Harlowe nutzt das Wörtchen <code>to</code> statt dem Gleichheitszeichen für die Zuweisung. Das erinnert mich an das seelige <a href="http://cognitiones.kantel-chaos-team.de/programmierung/hypercard.html">HyperCard</a> und deswegen ist mir Harlowe gleich doppelt sympathisch.&nbsp;🤓↩︎</p></li>
+<li id="fn2"><p>Es sei denn, er hat einen seeeeehr langsamen Rechner.↩︎</p></li>
+<li id="fn3"><p>Für fortgeschrittene Coder: Es gibt auch noch das Makro <code>else-if:</code> als drittes im Bunde. Doch darüber eventuell in einem späteren Tutorial mehr.↩︎</p></li>
+<li id="fn4"><p>Es gibt aber auch noch Hooks mit Namen <em>(named hook)</em>, aber die sind seltener und werden daher auch erst in einem späteren Tutorial behandelt.↩︎</p></li>
+<li id="fn5"><p>Noch einmal: Beachtet bitte, dass <code>go-to:</code> die Passage nicht anlegt. Ihr müsst sie über <code>Abschnitt -&gt; + Neu</code> selber manuell erzeugen.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026091001_alice_tutorial_5/</guid>
+  <pubDate>Thu, 10 Sep 2026 14:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026091001_alice_tutorial_5/images/alice_bib.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Neuköllner Müllbeseitigung: »Wird von Hermes abgeholt«</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2669,47 +3375,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/</guid>
   <pubDate>Thu, 20 Aug 2026 15:05:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/images/alice_frog.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Update: Bokeh in der Version 3.10 freigegeben</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026081902_bokeh_3_10/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/54890266914/"><img src="https://kantel.github.io/posts/2026081902_bokeh_3_10/images/dachsmaler-b.jpg" class="img-fluid"></a></p>
-<p>Die Entwickler der beliebten und freien (BSD-Lizenz) Python-Visualisierungs- und Chart-Bibliothek <a href="http://cognitiones.kantel-chaos-team.de/multimedia/computergraphik/visualisierung/bokeh.html">Bokeh</a> haben das <a href="https://blog.bokeh.org/introducing-bokeh-3-10-929483b928c5">Update auf die Version 3.10</a> freigegeben. Diese wichtige Version bringt Bokeh-Serveranwendungen auf ASGI, fügt WebGL-Rendering für gefüllte Polygone hinzu und senkt die anfänglichen Kosten großer Registerkartenlayouts. Außerdem verbessert sie die Funktionalität <code>DataTable</code>, ermöglicht den Export von PNG- und SVG-Dateien über Playwright und behebt clientseitige Speicherlecks, die sich in langlaufenden Anwendungen ansammeln konnten.</p>
-<p>Bokeh 3.10 benötigt Python 3.12 oder neuer. Es kann mit <code>pip</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">python</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-m</span> pip install <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">--upgrade</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"bokeh==3.10.*"</span></span></code></pre></div></div>
-<p>oder <code>conda</code></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
-background-color: null;
-font-style: inherit;">conda</span> install <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"bokeh=3.10"</span></span></code></pre></div></div>
-<p>installiert werden. Die vollständige Liste der Änderungen findet Ihr in den <a href="https://docs.bokeh.org/en/3.10.0/docs/releases.html#release-3-10-0">Bokeh 3.10-Versionshinweisen</a>.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/54890266914/">Der Dachs als Maler</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em>Illustration of a badger in a red dressing gown and a beret sits in an old-fashioned-looking studio at an easel and paints a picture. A rat in a flowing robe is posing as a model. Other colorful paintings hang on the walls. Light streams onto the easel through the skylight. Colored DC Comic style.</em>« Modell: Nano Banana.</p>
-
-
-
- ]]></description>
-  <category>Python</category>
-  <category>Bokeh</category>
-  <category>Visualisierung</category>
-  <guid>https://kantel.github.io/posts/2026081902_bokeh_3_10/</guid>
-  <pubDate>Wed, 19 Aug 2026 17:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026081902_bokeh_3_10/images/dachsmaler.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
