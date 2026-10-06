@@ -10,17 +10,291 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Mon, 05 Oct 2026 16:35:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 06 Oct 2026 14:20:00 GMT</lastBuildDate>
 <item>
-  <title>NBB Netzgesellschaft: Inkompetent, teuer und ihr Name ist Hase</title>
+  <title>Mit Alice in das Reich der Ringe: Noch mehr zu Variablen, Makros und Hooks in Twine (Harlowe)</title>
   <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026100501_nbb_netzgesellschaft_ii/</link>
+  <link>https://kantel.github.io/posts/2026100601_alice_tutorial_6/</link>
   <description><![CDATA[ 
 
 
 
 
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55561675787/"><img src="https://kantel.github.io/posts/2026100501_nbb_netzgesellschaft_ii/images/nbbbunny-b.jpg" class="img-fluid"></a></p>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55571348326/"><img src="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/reichringe-b.jpg" class="img-fluid"></a></p>
+<p>Nach einer kurzen Pause möchte ich meine kleine Reihe über <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>, der kleinen, freien Engine für interaktive Geschichten (und vielem mehr) und dem (Default-) Storyformat <a href="https://twine2.neocities.org/">Harlowe</a> fortsetzen. Wie schon im <a href="https://kantel.github.io/posts/2026091001_alice_tutorial_5/">letzten Tutorial</a> geht es hier speziell um den Einsatz von <strong>Variablen</strong>, um einige (neue) <strong>Makros</strong> und auch wieder um <strong>Hooks</strong>, die »Haken«, an denen Makros hängen.</p>
+<p>In diesem Beispiel holt Alice ihren lange verschobenen Besuch bei der kiffenden, blauen Raupe nach, die sie auf eine abenteuerliche Reise in das »Reich der Ringe« schickt. Doch der Reihe nach:</p>
+<p>Auch dieses Geschichte beginnt mit der Startpassage <code>Init</code>, die nur aus einer Menge von Variablendeklarationen mit <code>set:</code> und dem Makro <code>go-to:</code> besteht:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">(set: $ring to "")</span>
+<span id="cb1-2">(set: $hat_silberring to false) &lt;!-- Dorf(-Laden) --&gt;</span>
+<span id="cb1-3">(set: $hat_goldring to false)   &lt;!-- Baum -&gt; Frosch --&gt;</span>
+<span id="cb1-4">(set: $hat_blumenring to false) &lt;!-- Humpel Pumpel --&gt;</span>
+<span id="cb1-5">(set: $hat_gravurring to false) &lt;!-- Bibliothek --&gt;</span>
+<span id="cb1-6">(set: $hat_eisenring to false)  &lt;!-- Baum -&gt; Müder Ritter --&gt;</span>
+<span id="cb1-7">(set: $magical_item to "")</span>
+<span id="cb1-8">(set: $hat_brille to false)</span>
+<span id="cb1-9">(set: $hat_feder to false)</span>
+<span id="cb1-10">(set: $hat_zauberhut to false)</span>
+<span id="cb1-11">(set: $hat_schluessel to false)</span>
+<span id="cb1-12"></span>
+<span id="cb1-13">(go-to: "Start")</span></code></pre></div></div>
+<p>Die Kommentare (<code>&lt;!-- --&gt;</code>) in den Zeilen zwei bis sechs sind eine Erinnerung an mich, wie die Geschichte vielleicht später einmal weitergehen soll, und soll Euch zeigen, dass Harlowe HTML-Kommentare akzeptiert.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55150761172/"><img src="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/raupe2.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Alice und Kater Pillar</figcaption>
+</figure>
+</div>
+<p>Das Makro <code>go-to: "Start"</code> schickt die Spielerin oder den Spieler ohne Interaktion sofort zur Passage <code>Start</code>, wo die Geschichte dann wirklich losgeht<sup>1</sup>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"># Alice im Reich der Ringe</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">&lt;img src="images/raupe2.jpg" alt="Alice und die Raupe" /&gt;</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">Bei ihrem erneuten Besuch im Wunderland beschloss Alice, endlich den lange </span>
+<span id="cb2-6">verschobenen, aber versprochenen Besuch bei der Raupe nachzuholen.</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">Die Raupe erzählte Alice von einem geheimnisvollen Tal im Wunderland, das </span>
+<span id="cb2-9">»Reich der Ringe« genannt wurde. Nur fünf Zugänge gäbe es zu diesem Tal, jeder </span>
+<span id="cb2-10">sei durch einen besonderen Ring gesichert. Leider wüßte sie nicht, welcher Ring </span>
+<span id="cb2-11">zu welchem Zugang führe und welche Gefahren hinter den jeweiligen Zugängen </span>
+<span id="cb2-12">lauerten. Alice könne aber nur einen Ring mitnehmen. Die Raupe öffnete ein kleines </span>
+<span id="cb2-13">Schmuckkästchen und zeigte Ihr einen [[eisernen-&gt;Eisenring]], einen </span>
+<span id="cb2-14">[[silbernen-&gt;Silberring]], einen [[goldenen Ring-&gt;Goldring]], einen </span>
+<span id="cb2-15">[[Ring mit einer durchbrochenen Blume-&gt;Blumenring]] und schließlich einen </span>
+<span id="cb2-16">[[Ring mit einer seltsamen Gravur-&gt;Gravurring]].</span></code></pre></div></div>
+<p>Ich habe dieser Geschichte das <a href="https://kantel.github.io/posts/2026091001_alice_tutorial_5/#das-stylesheet">gleiche Stylesheet</a> wie im letzten Tutorial spendiert, daher werde die Überschriften mit dem Font <em>Berkshire</em> dargestellt, die Brotschrift ist <em>EB Garamond</em> und die Links sind <b style="color:#ff9900">orange</b>.</p>
+<p>Ansonsten passiert nicht viel Neues in dieser Passage, das wirklich Neue passiert erst in den folgenden Passagen, die alle aus fast dem gleichen Text bestehen. Zuerst die Passage <code>Eisenring</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">(set: $hat_eisenring to true)</span>
+<span id="cb3-2">(set: $ring to "Eisenring")</span>
+<span id="cb3-3">(display: "Magical Item")</span></code></pre></div></div>
+<p>Dann die Passage <code>Silberring</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">(set: $hat_silberring to true)</span>
+<span id="cb4-2">(set: $ring to "Silberring")</span>
+<span id="cb4-3">(display: "Magical Item")</span></code></pre></div></div>
+<p>Die Passage <code>Goldring</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">(set: $hat_goldring to true)</span>
+<span id="cb5-2">(set: $ring to "Goldring")</span>
+<span id="cb5-3">(display: "Magical Item")</span></code></pre></div></div>
+<p>Die Passage <code>Blumenring</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1">(set: $hat_blumenring to true)</span>
+<span id="cb6-2">(set: $ring to "Blumenring")</span>
+<span id="cb6-3">(display: "Magical Item")</span></code></pre></div></div>
+<p>Und <em>last but not least</em> die Passage <code>Gravurring</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1">(set: $hat_gravurring to true)</span>
+<span id="cb7-2">(set: $ring to "Gravurring")</span>
+<span id="cb7-3">(display: "Magical Item")</span></code></pre></div></div>
+<p>In diesen Passagen werden jeweils die entsprechenden Variablen gesetzt und dann wird als gemeinsamer Nenner mit dem Makro <code>display: "Magical Item"</code> die Passage <code>Magical Item</code> in jede dieser Passagen eingebunden. Das Makro <code>display:</code> ist dafür gedacht, wiederkehrende Textpassagen in die eigentliche Passage einzubinden, daher erstellt Twine im Storyformat Harlowe auch keine Pfeile zwischen der aufrufenden Passage und der mit <code>display:</code> aufgerufenen Passage. Die Passage muss daher durch den <code>+ Neu</code>-Button im Twine Menü <code>Abschnitt</code> händisch erzeugt werden.</p>
+<p>Aber in <code>Magical Item</code> geht die Geschichte weiter:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1">Alice steckte den $ring an ihren Ringfinger.</span>
+<span id="cb8-2"></span>
+<span id="cb8-3">&lt;img src="images/raupe3.jpg" alt="Alice und die Raupe" /&gt;</span>
+<span id="cb8-4"></span>
+<span id="cb8-5">Sie wollte schon den Pilz verlassen, aber die Raupe ergriff ihren Arm und sagte: </span>
+<span id="cb8-6">»Du kannst noch einen, aber nur einen weiteren magischen Gegenstand aus meinem  </span>
+<span id="cb8-7">Zauberkästchen für Deine gefahrvolle Reise mitnehmen. Jeder von ihnen kann Dir </span>
+<span id="cb8-8">auf seine Weise helfen, aber Du weißt nicht wie und ich weiß nicht wann.«</span>
+<span id="cb8-9"></span>
+<span id="cb8-10">Sie öffnete einen zweiten Kasten. Dort lagen eine [[Feder]], eine </span>
+<span id="cb8-11">[[Brille]] und ein [[Zauberhut]].</span></code></pre></div></div>
+<p>Die (globale) Variable <code>$ring</code> trägt den Namen, den ihr in der vorherigen Passage zugewiesen worden. Der Inhalt einer Variable wird in einer Passage einfach dadurch angezeigt, dass ihr Name (in diesem Falle <code>$ring</code>) aufgerufen wird. Das ist eine Kurzform für das Makro <code>print:</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1">Alice steckte den $ring an ihren Ringfinger.</span></code></pre></div></div>
+<p>Hat daher die gleiche Wirkung wie:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1">Alice steckte den (print: $ring) an ihren Ringfinger.</span></code></pre></div></div>
+<p>Diese Passage ruft drei weitere Passagen auf, die alle drei wieder mit einem <code>display:</code> enden. Zuerst die Passage <code>Feder</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1">(set: $hat_feder to true)</span>
+<span id="cb11-2">(set: $magical_item to "Feder")</span>
+<span id="cb11-3"></span>
+<span id="cb11-4">Alice ergriff die $magical_item und verstaute sie vorsichtig in ihrer Tasche.</span>
+<span id="cb11-5"></span>
+<span id="cb11-6">(display: "Aufbruch")</span></code></pre></div></div>
+<p>Dann die Passage <code>Brille</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1">(set: $hat_brille to true)</span>
+<span id="cb12-2">(set: $magical_item to "Brille")</span>
+<span id="cb12-3"></span>
+<span id="cb12-4">Alice ergriff die $magical_item und verstaute sie vorsichtig in ihrer Tasche.</span>
+<span id="cb12-5"></span>
+<span id="cb12-6">(display: "Aufbruch")</span></code></pre></div></div>
+<p>Und zu guter Letzt die Passage <code>Zauberhut</code><sup>2</sup>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb13-1">(set: $hat_zauberhut to true)</span>
+<span id="cb13-2">(set: $magical_item to "Zauberhut")</span>
+<span id="cb13-3"></span>
+<span id="cb13-4">Alice ergriff den $magical_item und setzte ihn sich vorsichtig auf den Kopf. </span>
+<span id="cb13-5">Der Hut sagte zu ihr »Guten Tag, Alice. Das war eine gute Wahl. Alice war etwas </span>
+<span id="cb13-6">überrascht, sie hatte noch nie einen Hut getroffen, der reden konnte. Aber im </span>
+<span id="cb13-7">Wunderland darf sie eigentlich schon lange nichts mehr überraschen. </span>
+<span id="cb13-8"></span>
+<span id="cb13-9">(display: "Aufbruch")</span></code></pre></div></div>
+<p>Diese Passagen unterscheiden sich von den Ring-Passagen dadurch, dass sie auch Text besitzen, der angezeigt wird, bevor die durch <code>display: "Aufbruch"</code> aufgerufene Passage jeweils eingebunden wird. Wichtig ist aber auch hier das jeweilige Setzen der Variablenwerte in Abhängigkeit von der aufgerufenen Passage<sup>3</sup>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55205794091/"><img src="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/redqueen.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Alice und die rote Königin</figcaption>
+</figure>
+</div>
+<p>Auch zur Passage <code>Aufbruch</code> führen im Twine-Diagramm keine Pfeile und sie wird nicht automatisch erzeugt, das heisst, auch sie muss wieder über <code>Abschnitt -&gt; + Neu</code> manuell geschaffen werden. Aber hier geht die Geschichte endlich weiter</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb14-1">&lt;img src="images/redqueen.jpg" alt: "Alice rennt mit der roten Königin" /&gt;</span>
+<span id="cb14-2"></span>
+<span id="cb14-3">»Es ist Zeit zu gehen« sagte die Raupe, »der $ring und die rote Königin </span>
+<span id="cb14-4">werden Dich führen.«</span>
+<span id="cb14-5"></span>
+<span id="cb14-6">Alice strich mit dem Zeigefinger über den $ring und eine rote Königin tauchte aus </span>
+<span id="cb14-7">dem Nichts auf, ergriff sie am Arm und rannte mit ihr zu einem </span>
+<span id="cb14-8">[[neuen Ort voller Wunder-&gt;Wunderland]].</span></code></pre></div></div>
+<p>ins <code>Wunderland</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb15-1">&lt;img src="images/chessboard.jpg" alt: "Blick auf das Wunderland" /&gt;</span>
+<span id="cb15-2"></span>
+<span id="cb15-3">Die rote Königin war wieder verschwunden. Alice staunte. Ist das der geheime Ort? </span>
+<span id="cb15-4">Sie stand auf einem Hügel, vor ihr ein weites Tal auf dem einige überdimensionierte </span>
+<span id="cb15-5">Schachfiguren standen. Auf einem weiteren Hügel überragte eine Burg ein kleines Dorf, </span>
+<span id="cb15-6">das sich im Halbkreis um den Burghügel schmiegte.</span>
+<span id="cb15-7"></span>
+<span id="cb15-8">Sie drehte sich um und sah einen riesigen Baum hinter sich. An den Ästen hingen </span>
+<span id="cb15-9">dutzende bronzener Schlüssel.</span>
+<span id="cb15-10"></span>
+<span id="cb15-11">{(if: $hat_feder)[Die Feder schien sich in ihrer Tasche zu bewegen, so als ob sie </span>
+<span id="cb15-12">Alice daran erinnern wollte, daß sie [[fliegen könne-&gt;Flug]]. Oder sollte sie </span>
+<span id="cb15-13">erst einmal das [[Dorf aufsuchen-&gt;Dorf]] und weitere Erkundundungen </span>
+<span id="cb15-14">einziehen?]</span>
+<span id="cb15-15">(else:)[Leider waren die Schlüssel unerreichbar für Alice. Sie beschloß daher, </span>
+<span id="cb15-16">[[den Hügel herunter ins Dorf-&gt;Dorf]] zu gehen.]}</span></code></pre></div></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55217007671/"><img src="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/chessboard2.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Alice im Schachbrettland</figcaption>
+</figure>
+</div>
+<p>Diese Passage zeigt, dass die Hooks zu den Makros (in diesem Fall <code>if:</code> und <code>else:</code>) weitere Makros oder Links enthalten können. Die Schreiberin oder der Schreiber muss nur darauf achten, dass sie oder dass er sich nicht im Klammerndickicht verheddert. In dieser Passage kann bei dem <code>if:</code>-Makro im zugehörigen Hook entweder die Passage <code>Flug</code> oder die Passage <code>Dorf</code> aufgerufen werden, während eine federlose Alice (<code>else:</code>) keine Alternative hat. Sie muss in Richtung <code>Dorf</code>. Doch zuerst die Passage <code>Flug</code>,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1">(set: $hat_schluessel to true)</span>
+<span id="cb16-2"></span>
+<span id="cb16-3">&lt;img src="images/chessboard2.jpg" alt: "Blick auf das Wunderland" /&gt;</span>
+<span id="cb16-4"></span>
+<span id="cb16-5">Alice nahm die Feder in ihre Hand und schwebte langsam nach oben. Die Feder brachte </span>
+<span id="cb16-6">auch ihren $ring zum Schimmern und der lenkte ihre Hand zu einem der Schlüssel. </span>
+<span id="cb16-7">Alice pflückte ihn vom Ast und verstaute ihn in ihrer Schürzentasche. Vorsichtig </span>
+<span id="cb16-8">schwebte sie wieder nach unten.</span>
+<span id="cb16-9"></span>
+<span id="cb16-10">Nun war sie bereit, das [[Dorf-&gt;Dorf]] zu erkunden.</span></code></pre></div></div>
+<p>die, nachdem Alice den Schlüssel an sich genommen hat, ebenfalls ins <code>Dorf</code> führt. Aber davor hat die Schreiberin oder der Schreiber noch einen müden Ritter als Wachposten gesetzt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb17-1">&lt;img src="images/weisserritter.jpg" alt: "Der weiße Ritter" /&gt;</span>
+<span id="cb17-2"></span>
+<span id="cb17-3">Der Weg zum Dorf war von einem großen, steineren Wall versperrt. Nur ein Durchgang </span>
+<span id="cb17-4">war offen, der von einem traurig aussehenden, weißen Ritter auf einem dürren Pferd </span>
+<span id="cb17-5">blockiert wurde, der träumend vor sich hindöste.</span>
+<span id="cb17-6"></span>
+<span id="cb17-7">{(if: $hat_zauberhut)[Der $magical_item vibrierte.]</span>
+<span id="cb17-8">(else:)[Die $magical_item vibrierte.]}</span>
+<span id="cb17-9"></span>
+<span id="cb17-10">{(if: $hat_feder)[Alice nahm die bewährte Feder und schwebte über den dösenden </span>
+<span id="cb17-11">Ritter, der sie nicht bemerkte.]</span>
+<span id="cb17-12">(else-if: $hat_brille)[Alice setzte sich die Brille auf und bemerkte, daß sie </span>
+<span id="cb17-13">unsichtbar wurde. Leise schlich sie an den Ritter vorbei auf die andere Seite.]</span>
+<span id="cb17-14">(else-if: $hat_zauberhut)[Er zog Alice förmlich direkt auf den Wall zu. Sie fühlte </span>
+<span id="cb17-15">sich elastisch wie eine Gummipuppe. Unbemerkt schob sie sich durch die Ritzen </span>
+<span id="cb17-16">der Mauer. Ihr Körper wurde dabei dünn wie ein Faden. Als sie die andere Seite </span>
+<span id="cb17-17">erreicht hatte, nahm sie wieder ihre normale Form an.]}</span>
+<span id="cb17-18"></span>
+<span id="cb17-19">Alice erreichte so das Dorf und betrat einen [[Biergarten]] am Ortseingang.</span></code></pre></div></div>
+<p>Das erste <code>if:</code>–<code>else:</code>-Paar in dieser Passage wird verwendet, um das im Deutschen manchmal störende »Der – Die – Das« abzuhandeln<sup>4</sup>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55217313930/"><img src="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/weisserritter.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Der müde Ritter</figcaption>
+</figure>
+</div>
+<p>Im zweiten <code>if:</code>-Makro lernen wir mit <code>else-if:</code> die Mehrfachauswahl kennen. Alice hat entweder eine Feder (<code>if:</code>) oder eine Brille (<code>else-if</code>) oder einen Zauberhut (noch ein <code>else-if:</code>). Die letzte Möglichkeit hätte auch mit einem <code>else:</code> beendet werden können, aber generell empfiehlt es sich, das abschließende <code>else:</code> für alle anderen – auch unvorhergesehenen – Möglichkeiten aufzuheben und klar definierte Alternativen mit <code>else-if:</code> aufzurufen.</p>
+<p>Aber wie dem auch sei, Alice landet, nachdem sie den weißen Ritter ausgetrickst hat, wieder im <code>Biergarten</code>, wo – wie in fast jedem der bisherigen Tutorials – die Teeparty des verrückten Hutmachers stattfindet:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb18-1">&lt;img src="images/teeparty.jpg" alt: "Teeparty" /&gt;</span>
+<span id="cb18-2"></span>
+<span id="cb18-3">Hier saßen seltsamerweise wieder ihre alten Freunde, der Märzhase, der verrückte </span>
+<span id="cb18-4">Hutmacher und die Haselmaus an einem Tisch und begrüßten sie lautstark. </span>
+<span id="cb18-5">Alice war verwirrt – aber [[blieb noch eine Weile-&gt;Haselmaus]].</span></code></pre></div></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55216208432/"><img src="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/haselmaus02.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die Teeparty läuft aus dem Ruder</figcaption>
+</figure>
+</div>
+<p>Es passiert in diesen Passagen technisch nichts, was bisher nicht schon behandelt worden wäre und als der Schabernack mit der <code>Haselmaus</code> beginnt,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb19-1">&lt;img src="images/haselmaus02.jpg" alt: "Schabernack mit der Haselmaus" /&gt;</span>
+<span id="cb19-2"></span>
+<span id="cb19-3">Als der Hutmacher und der Märzhase jedoch anfingen, die Haselmaus kopfüber </span>
+<span id="cb19-4">in eine Teetasse zu stülpen, hatte sie genug. Sie beschloß, die Party </span>
+<span id="cb19-5">zu [[verlassen-&gt;Ende]].</span></code></pre></div></div>
+<p>geht die Geschichte zu <code>Ende</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb20-1">&lt;img src="images/grinsi1.jpg" alt: "Grinsekatze" /&gt;</span>
+<span id="cb20-2"></span>
+<span id="cb20-3">Am Ausgang des Biergartens traf sie auf die Grinsekatze. Sie grinste nur und meinte: </span>
+<span id="cb20-4">»Hat die Raupe wieder zu viel gekifft?« Und verschwand …</span>
+<span id="cb20-5"></span>
+<span id="cb20-6">Hier ist die Geschichte vorläufig zu Ende.</span>
+<span id="cb20-7"></span>
+<span id="cb20-8">{(if: $hat_schluessel)[Glückwunschsch! Das war der längste Durchlauf, der bisher </span>
+<span id="cb20-9">spielbar ist.]</span>
+<span id="cb20-10">(else:)[Du bist schon weit gekommen, aber da geht noch mehr …]}</span>
+<span id="cb20-11"></span>
+<span id="cb20-12">[[Noch einmal spielen-&gt;Init]]? Oder lieber [[nach Hause gehen-&gt;Home]]?</span></code></pre></div></div>
+<p>Hier hat die Spielerin oder der Spieler die Möglichkeit, alles noch einmal durchzuspielen (<code>Init</code>) oder Alice nach Hause (<code>Home</code>) gehen zu lassen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode numberSource twine number-lines code-with-copy"><code class="sourceCode"><span id="cb21-1">&lt;img src="images/home.jpg" alt: "Alice ist wieder zu Hause" /&gt;</span>
+<span id="cb21-2"></span>
+<span id="cb21-3">Zuhause traf Alice ihre Freunde wieder, das weiße Kaninchen und den großen, </span>
+<span id="cb21-4">grünen Elephanten, mit mit denen sie noch gemütlich ein Kännchen Kaffee trank. </span>
+<span id="cb21-5">(Sie hatte genug von Teepartys.)</span>
+<span id="cb21-6"></span>
+<span id="cb21-7">So wurde es doch noch ein gelungener Nachmittag.</span></code></pre></div></div>
+<section id="das-spiel-alice-im-reich-der-ringe" class="level2">
+<h2 class="anchored" data-anchor-id="das-spiel-alice-im-reich-der-ringe">Das Spiel: Alice im Reich der Ringe</h2>
+<iframe width="100%" height="800" src="alice6/">
+</iframe>
+<p>Auch dieses Tutorial habe ich sowohl als HTML-Datei wie auch als Twee-Datei mit allen Assets (Bilder und Schriften) auf meinem <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice6">GitHub-Account hochgeladen</a>. Habt Spaß damit!</p>
+<p>Und natürlich habe ich dieses Spielchen – wie die anderen auch – auf meiner <a href="https://kantel.neocities.org/twine/alice6/">Neocities-Spielwiese veröffentlicht</a>. Dafür ist eine Spielwiese schließlich da.&nbsp;🤓</p>
+</section>
+<section id="was-bisher-geschah" class="level2">
+<h2 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h2>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen neun Beiträgen:</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li><a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Zurück ins Wunderland (schon wieder)</a> und dieses Mal mit Harlowe</li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Aus meiner Webwerkstatt: <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Twine-Stories in die eigenen Seiten einbinden</a></li>
+<li><a href="https://kantel.github.io/posts/2026082601_alice_teeparty/">Alice und die Teeparty</a>: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+<li><a href="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/">Alice und Humpel Pumpel</a>: Mit Twine und Harlowe ins Wunderland (Teil 3)</li>
+<li><a href="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/">Qumbo schreibt (schön)</a>: Custom Fonts in Twine (Harlowe)</li>
+<li><a href="https://kantel.github.io/posts/2026091001_alice_tutorial_5/">Mit Alice in die Bibliothek</a>: Variablen, Makros und Hooks in Twine (Harlowe)</li>
+<li>Mit Alice in das Reich der Ringe: Noch mehr zu Variablen, Makros und Hooks in Twine (Harlowe)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Die separate <code>Init</code>-Passage wäre von der Logik der Geschichte nicht notwendig gewesen, die Variablen-Deklarationen hätten auch in die <code>Start</code>-Passage gehören können, aber ich mag es einfach, wenn alle Deklarationen separat in einer eigenen Passage vorgenommen werden.↩︎</p></li>
+<li id="fn2"><p>Inspiriert durch Harry Potter. 🧙↩︎</p></li>
+<li id="fn3"><p>Jetzt wird hoffentlich klar, warum in der <code>Init</code>-Passage die Variablen mit leeren Strings oder mit <code>false</code> vorbesetzt werden mussten.↩︎</p></li>
+<li id="fn4"><p>Der englischsprechende Teil der Welt hat damit keine Probleme, er schreibt einfach <em>the</em> und gut ist.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026100601_alice_tutorial_6/</guid>
+  <pubDate>Tue, 06 Oct 2026 14:20:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026100601_alice_tutorial_6/images/reichringe.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>NBB Netzgesellschaft: Inkompetent, teuer und ihr Name ist Hase</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55561675787/"><img src="https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/images/nbbbunny-b.jpg" class="img-fluid"></a></p>
 <p>Es kam genau so wie ich es vorhergesagt hatte: Die <a href="https://de.wikipedia.org/wiki/NBB_Netzgesellschaft_Berlin-Brandenburg">NBB Netzgesellschaft Berlin-Brandenburg</a> ist nicht nur <a href="https://kantel.github.io/posts/2026100103_nbb_netzgesellschaft/">inkompetent und teuer</a>, sondern ihr Name ist auch Hase, sie wohnt <del>im Walde</del> in Schöneberg, sie weiß von nichts und will es auch nicht gewesen sein.</p>
 <p>Aber – wie sie mir mit wohlgesetzten, aber hohlen Worten mitteilten – tut es ihr unendlich leid, dass ich wegen des Versagens einer ihrer Mitarbeiter auf Kosten in Höhe von knapp <strong>1.000&nbsp;Euro</strong> sitzenbleibe. Aber die müsste ich wohl selber tragen. Denn wo kämen wir hin, wenn in Deutschland die großen, kommerziellen Gesellschaften für ihre Fehler haften müssten? Das wäre ja fast schon Kommunismus!</p>
 <hr>
@@ -31,9 +305,9 @@
  ]]></description>
   <category>Modernes Leben</category>
   <category>Failed State Berlin</category>
-  <guid>https://kantel.github.io/posts/2026100501_nbb_netzgesellschaft_ii/</guid>
+  <guid>https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/</guid>
   <pubDate>Mon, 05 Oct 2026 16:35:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026100501_nbb_netzgesellschaft_ii/images/nbbbunny.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/images/nbbbunny.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Atlas Curiosa: Der Franckepark in Berlin-Tempelhof</title>
@@ -623,38 +897,6 @@
   <guid>https://kantel.github.io/posts/2026091801_spielstrasse_4/</guid>
   <pubDate>Fri, 18 Sep 2026 17:15:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026091801_spielstrasse_4/images/spielstrasse.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Babsi – noch eine Figur für Visual Novels und andere interaktive Geschichten</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026091602_babsi/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55530702986/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsimockup-b.jpg" class="img-fluid"></a></p>
-<p>Angeregt durch die <a href="https://kantel.github.io/posts/2026091501_visual_novel_mit_ink/">gestrige Entdeckung</a> des <a href="https://joshgrams.itch.io/ink-vn-lite">Templates</a>, mit dem man interaktive Geschichten und <em>Visual Novels</em> in <a href="https://www.inklestudios.com/ink/">Ink</a>/<a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/inkle.html">Inky</a> erstellen kann, habe ich mich gestern noch einmal hingesetzt und in <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> eine weitere Figur für die Verwendung in <em>Visual Novels</em> erzeugt. Ich habe sie »Babsi« genannt und als hochaufgelöste <code>.png</code>-Dateien mit freigestelltem Hintergrund auf <a href="https://kantel.itch.io/babsi-visual-novel-projekt-3">Itch.io hochgeladen</a>.</p>
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55530721333/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsi01.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55529589607/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsi02.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55529587662/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsi03.jpg" class="img-fluid"></a><br><br> <a href="https://www.flickr.com/photos/schockwellenreiter/55530762114/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsi04.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55530611491/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsi05.jpg" class="img-fluid"></a>&nbsp;<a href="https://www.flickr.com/photos/schockwellenreiter/55530716753/"><img src="https://kantel.github.io/posts/2026091602_babsi/images/babsi06.jpg" class="img-fluid"></a></p>
-<p>Die obigen Bilder sind nur eine Auswahl, insgesamt besteht das Set aus 30 Posen.</p>
-<p>Die Konsistenz des Charakters ist dieses Mal ein wenig verbesserungswürdig, denn Googles Nano Banana war sich nicht sicher, wie viele Knöpfe an der Bluse offen bleiben sollten.&nbsp;🤓</p>
-<p>Da das verwendete Modell Googles Nano Banana 2 war, war die Auswahl des KI-Dienstleisters eigentlich nebensächlich, da diese den Prompt nur durchreichen. Ich habe aber die einzelnen Posen mit Scenario generieren lassen, da diese über ein in meinen Augen über besseres Tool zur Freistellung des Hintergrunds verfügen.</p>
-<p>Ihr könnt mit diesen Bildern anstellen, was Ihr wollt – sie sind schließlich KI generiert und damit frei von Urheberrechten –, doch würde ich mich freuen, wenn Ihr mir einen Link zu Eurem Ergebnissen schickt, damit ich diese dann auf diesen Seiten vorstellen kann.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55530702986/">Babsi Mockup</a></em>, Collage aus zwei mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a> generierten Bildern, Modell: Nano Banana&nbsp;2.</p>
-
-
-
- ]]></description>
-  <category>Interactive Fiction</category>
-  <category>Spieleprogrammierung</category>
-  <category>Bilder</category>
-  <category>Künstliche Intelligenz</category>
-  <category>Scenario</category>
-  <category>Nano Banana</category>
-  <guid>https://kantel.github.io/posts/2026091602_babsi/</guid>
-  <pubDate>Wed, 16 Sep 2026 15:25:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026091602_babsi/images/babsimockup.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
