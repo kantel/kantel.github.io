@@ -10,7 +10,250 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 08 Oct 2026 18:05:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 14 Oct 2026 11:50:00 GMT</lastBuildDate>
+<item>
+  <title>Alice und der kleine Drache: Noch mehr über Makros und Hooks in Twine (Harlowe)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026101401_alice_tutorial_7/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55588978683/"><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/drago-b.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Screenshot</figcaption>
+</figure>
+</div>
+<p>In der letzten Woche war es zwar ruhig hier auf diesen Seiten, aber ich habe nicht auf der faulen Haut gelegen. Sondern ich habe mich weiter durch die <a href="https://twine2.neocities.org/">aktuelle Dokumentation</a> des <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/twine2.html">Twine</a>-Storyformats Harlowe gewühlt, um ein weiteres Tutorial für die kleine, freie Engine für interaktive Geschichten (und vielem mehr) zu schreiben. Auch heute geht es in der Hauptsache um (neue) <strong>Makros</strong> und <strong>Hooks</strong>, den kleinen »Haken«, die an den Makros hängen.</p>
+<p>Dafür habe ich Alice <a href="https://kantel.github.io/posts/2026091001_alice_tutorial_5/">noch einmal</a> in die Bibliothek geschickt, um dort ein weiteres Abenteuer zu erleben. Doch der Reihe nach:</p>
+<p>Auch dieses Mal beginnt die Geschichte mit der Startpassage <code>Init</code>, die außer einer (zufallsgesteuerten) Variablendeklaration die Leserin oder den Leser sofort auf die Passage <code>Start</code> weiterleitet:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1">(set: $key to (either: "unter der Fußmatte", "im Krug", "im Blumentopf"))</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">(go-to: "Start")</span></code></pre></div></div>
+<p>Das Makro <code>either:</code> setzt die Variable <code>$key</code> zufällig auf einen der drei Werte <code>unter der Fußmatte</code>, <code>im Krug</code> oder <code>im Blumentopf</code>. Damit spiele ich auf das Vorgängertutorial an, in dem der Schlüssel ebenfalls zufällig an einem dieser drei Orte versteckt war.</p>
+<p>Die eigentlich Geschichte beginnt in der Passage <code>Start</code>, auf die <code>Init</code> mit dem Makro <code>go-to:</code> automatisch weiterleitet.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"># Alice und der kleine Drache</span>
+<span id="cb2-2"></span>
+<span id="cb2-3">&lt;img src="images/mansion2.jpg" alt="Das alte Haus" /&gt;</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">Alice war im Wunderland wieder zum alten Haus mit der Bibliothek unterwegs. Da sie </span>
+<span id="cb2-6">wusste, dass der Türschlüssel $key versteckt war, hatte sie keine Schwierigkeiten, in </span>
+<span id="cb2-7">das Haus zu kommen.</span>
+<span id="cb2-8"></span>
+<span id="cb2-9">Sie schloß die [[Tür zur Eingangshalle-&gt;Eingangshalle]] auf.</span></code></pre></div></div>
+<p>Hiermit ist die Reminiszens auf den vorherigen Bibliotheksbesuch aber auch schon abgehakt und Alice betritt die Eingangshalle<sup>1</sup>:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55586105617/"><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/entrancehall.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die Eingangshalle</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1">&lt;img src="images/entrancehall.jpg" alt="Eingangshalle" /&gt;</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">Die Eingangshalle war groß und leer. Im Hintergrund gab es eine große, </span>
+<span id="cb3-4">repräsentative, aber verfallene Treppe, die auf Alice keinen sicheren Eindruck </span>
+<span id="cb3-5">machte und die sie lieber nicht betreten wollte.</span>
+<span id="cb3-6"></span>
+<span id="cb3-7">Links durch eine offene Tür konnnte sie eine [[Küche-&gt;Küche]] erkennen </span>
+<span id="cb3-8">und rechts von ihr war der Eingang zur </span>
+<span id="cb3-9">[[alten Bibliothek-&gt;Bibliothek]].</span></code></pre></div></div>
+<p>Diese Passage besitzt keine neuen Elemente, also wenden wir uns der <code>Bibliothek</code> zu (die <code>Küche</code> wird später noch einmal besucht und dann in diesem Tutorial behandelt):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1">&lt;img src="images/library01.jpg" alt="Bibliothek" /&gt;</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">Alice hatte das Gefühl, dass die Bücherwände ein Geheimnis vor ihr verbargen. </span>
+<span id="cb4-4">Sie nahm eines der alten |regal&gt;[Bücher aus dem Regal]. {</span>
+<span id="cb4-5">(click:?regal, </span>
+<span id="cb4-6">(action: "mouseover"))[Hinter dem Buch war ein Schalter versteckt. Als Alice ihn </span>
+<span id="cb4-7">umlegte, schob sich das ganze Regal zur Seite und öffnete eine Tür zu einem </span>
+<span id="cb4-8">[[weiteren Raum-&gt;Drache]].]}</span>
+<span id="cb4-9"></span>
+<span id="cb4-10">Alice sah sich die Regalwände genauer an …</span></code></pre></div></div>
+<p>Hier passiert ganz viel Neues: Erst einmal wird, statt eines anonymen Hooks, der einfach an das Makro angehängt wird, ein <a href="https://twine2.neocities.org/#markup_named-hook"><strong>benannter</strong></a> <em>(named)</em> Hook verwendet. Der Name eines Hooks kann entweder mit <code>|name&gt;[zu markierende Textpassage]</code> <strong>vor</strong> dem betreffenden Text, oder mit <code>[zu markierende Textpassage]&lt;name|</code> <strong>nach</strong> dem betreffenden Textteil gesetzt werden. In diesem Fall ist der Name des Hooks <code>regal</code> und er wurde <strong>vor</strong> dem betreffenden Text <code>[Bücher aus dem Regal]</code><sup>2</sup> gesetzt.</p>
+<p>Benannte Hooks können dann mit ihrem Namen in der Passage (üblicherweies, aber nicht zwingend am Ende der Passage<sup>3</sup>) aufgelöst werden. Namen werden wie Variablen behandelt, nur dass statt des Dollarsymbols (<code>$</code>) ein Fragezeichen (<code>?</code>) vorangestellt wird. In diesem Fall wird das<a href="https://twine2.neocities.org/#macro_click">Makro <code>click:</code></a> in Kombination mit dem <a href="https://twine2.neocities.org/#macro_action"><code>action:</code>-Makro</a> aufgerufen<sup>4</sup>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1">(click:?regal, (action: "mouseover"))[Hinter dem Buch war ein Schalter </span>
+<span id="cb5-2">versteckt. Als Alice ihn umlegte, schob sich das ganze Regal zur Seite und </span>
+<span id="cb5-3">öffnete eine Tür zu einem [[weiteren Raum-&gt;Drache]].]</span></code></pre></div></div>
+<p><code>mouseover</code>-Links werden in Harlowe bei Default mit einem gestrichelten Unterstrich gekennzeichnet:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/mouseover.jpg" class="img-fluid figure-img"></p>
+<figcaption>Mouseover Default</figcaption>
+</figure>
+</div>
+<p>Das war aber nicht das, was ich wollte. Die Spielerin oder der Spieler sollten schon ein wenig suchen, bis sie einen Ausweg aus der Bibliothek finden. Daher habe ich per CSS die Markierung ausgeschaltet:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource css number-lines code-with-copy"><code class="sourceCode css"><span id="cb6-1">tw-link<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.enchantment-mouseover</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.link.enchantment-mouseover</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> </span>
+<span id="cb6-2">tw-expression<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.enchantment-mouseover</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> tw-link {</span>
+<span id="cb6-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">border-bottom</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">none</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb6-4">}</span></code></pre></div></div>
+<p>Dann sieht die Passage nach dem Aufruf so aus:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/mouseovercss.jpg" class="img-fluid figure-img"></p>
+<figcaption>Mouseover mit CSS</figcaption>
+</figure>
+</div>
+<p>In beiden Fällen bewirkt aber das Überfahren von »Bücher aus dem Regal«, das ein Stück Text wie von Zauberhand geschrieben, in die Passage hineingemogelt wird:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55586194627/"><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/bibmouseover.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Die Bibliothekspassage nach einem Mouseover</figcaption>
+</figure>
+</div>
+<p>Wenn Ihr Eure Leserinnen und Leser aber nicht vor den Kopf stoßen wollt, solltet Ihr den Trick mit den unsichtbaren Links nur mit Bedacht verwenden. In diesem Fall war es noch recht einfach, da es keinen offensichtlichen Ausgang aus der Passage gab, musste er irgendwo versteckt sein. Also streicht die Nutzerin oder der Nutzer mit der Maus über die Passage (Bild (<a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Imagemaps</a>!) <strong>und</strong> Text), in der Hoffnung, irgendwo einen versteckten Ausweg zu finden. Das macht ja geradezu den Reiz einer solchen interaktiven Geschichte aus.</p>
+<p>Wurde dann der Ausgang aus der Bibliothek gefunden, trifft Alice auf den kleinen Drachen <em>Drago</em> (Passage: <code>Drache</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1">{(if: (count: (history:), "Drache") is 0)[&lt;img src="images/drago01.jpg" </span>
+<span id="cb7-2">alt="Der hungrige, kleine Drache" /&gt;</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">In dem Raum saß ein kleiner Drache vor einem Tisch und jammerte laut </span>
+<span id="cb7-5">»Ich habe Hunger, bring mir bitte etwas zu essen.«</span>
+<span id="cb7-6"></span>
+<span id="cb7-7">Alice hatte Mitleid und beschloß, (if: (count: (history:), "Küche") &gt; 0)</span>
+<span id="cb7-8">[noch einmal] die [[Küche-&gt;Küche]] aufzusuchen.]</span>
+<span id="cb7-9">(else-if: (count: (history:), "Drache") is 1)</span>
+<span id="cb7-10">[</span>
+<span id="cb7-11">&lt;img src="images/drago02.jpg" alt="Der kleine Drache mit einem Braten" /&gt;</span>
+<span id="cb7-12"></span>
+<span id="cb7-13">Der kleine Drache bedankte sich artig und begann hungrig, den Truthahn </span>
+<span id="cb7-14">zu verspeisen.</span>
+<span id="cb7-15"></span>
+<span id="cb7-16">Währenddessen sah Alice sich neugierig um und bemerkte eine Tür zu einer </span>
+<span id="cb7-17">kleinen [[Abstellkammer-&gt;Kammer]].]</span>
+<span id="cb7-18">(else:)[&lt;img src="images/drago03.jpg" alt="Der kleine Drache ist satt" /&gt;</span>
+<span id="cb7-19"></span>
+<span id="cb7-20">Der kleine Drache saß satt an seinem Tisch und Alice begann ein [[Gespräch-&gt;Gespräch]] </span>
+<span id="cb7-21">mit ihm.]}</span></code></pre></div></div>
+<p>Alice kann die Passage mehrmals aufsuchen, und jedes Mal ändert sich der Zustand des Drachens (von »hungrig« zu »speisend« zu »satt«). Dies kann man mit einer ziemlich gewagt aussehenden Kombination aus <code>if:</code>, <code>else-if:</code> und <code>else:</code> in Verbindung mit <code>count:</code> und <code>history:</code> abbilden. Die Makros <a href="https://twine2.neocities.org/#macro_if"><code>if:</code></a>, <a href="https://twine2.neocities.org/#macro_else-if"><code>else-if:</code></a> und <a href="https://twine2.neocities.org/#macro_else"><code>else:</code></a> hatte ich <a href="https://kantel.github.io/posts/2026100601_alice_tutorial_6/">im letzten Tutorial</a> schon abgehandelt, neu sind die <code>count:</code>- und <code>history:</code>-Makros:</p>
+<p>Das <a href="https://twine2.neocities.org/#macro_count"><code>count:</code>-Makro</a> zählt die Anzahl der Elemente eines Strings oder eines Array<sup>5</sup>. In Verbindung mit dem <a href="https://twine2.neocities.org/#macro_history"><code>history:</code>-Makro</a>, das ein Array aller bisher besuchten Passagen (in diesem Fall mit dem Namen »Drache«) zurückgibt, erfährt Twine, wie oft diese Passage besucht wurde.</p>
+<p>Da der aktuelle Besuch (noch) nicht mitgezählt wird, bedeutet <img src="https://latex.codecogs.com/png.latex?0">, dass die Passage zum ersten Mal besucht wurde, <img src="https://latex.codecogs.com/png.latex?1"> gibt es beim zweiten Besuch der Passage und so weiter.</p>
+<p>Die Passage <code>Drache</code> zeigt übrigens auch sehr schön, dass jedes <code>if:</code>, <code>else-if:</code> oder <code>else:</code> auch eigene Bilder mitbringen kann.</p>
+<p>Da Alice beim zweiten Besuch (wieder?) in die <code>Küche</code> geschickt wird, möchte ich diese Passage als nächstes abhandeln:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1">{(if: (history:) contains "Drache")[Auch die Küche schien ein Geheimnis </span>
+<span id="cb8-2">zu verbergen. Vor Alice stand ein großer, leerer Tisch. An der Wand links neben </span>
+<span id="cb8-3">ihr hing ein weiterer, großer (link: "Schalter. ")[Schalter.</span>
+<span id="cb8-4"></span>
+<span id="cb8-5">&lt;img src="images/kitchen02.jpg" alt="Die Küche zaubert" /&gt;</span>
+<span id="cb8-6"></span>
+<span id="cb8-7">Als Alice ihn umlegte, lag auf dem Tisch wie von Zauberhand ein Teller mit </span>
+<span id="cb8-8">einem gebratenen Truthahn. Alice nahm den Teller mit dem Braten und brachte ihn </span>
+<span id="cb8-9">zu dem kleinen [[Drachen-&gt;Drache]].] ]</span>
+<span id="cb8-10">(else:)[&lt;img src="images/kitchen01.jpg" alt="Die leere Küche" /&gt;</span>
+<span id="cb8-11"></span>
+<span id="cb8-12">Die Küche machte auf Alice einen schmuddeligen, aber leeren Eindruck. Sie ging </span>
+<span id="cb8-13">daher lieber wieder [[zurück in die Eingangshalle-&gt;Eingangshalle]].]}</span></code></pre></div></div>
+<p>Auch hier kommt das Makro <code>history:</code> zum Einsatz, allerdings wird hier gefragt, ob das <code>history</code>-Array die Passage <code>Drache</code> enthält (<code>(if: (history:) contains "Drache")</code>). Wenn dies der Fall ist, kommt der erste Teil zum Einsatz, in dem Alice einen Schalter umlegt und so einen Braten auf den Tisch zaubert.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55587540348/"><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/kitchen02.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Alice zaubert einen Braten</figcaption>
+</figure>
+</div>
+<p>In allen anderen Fällen (es gibt in diesem Fall nur einen) kehrt Alice unverrichteter Ding ein die Eingangshalle zurück.</p>
+<p>Hat Alice dem Drachen den Truthahnbraten gebracht, entdeckt sie eine <code>Kammer</code>, die sie aufsucht:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1">&lt;img src="images/attic.jpg" alt="Die Abstellkammer auf dem Dachboden" /&gt;</span>
+<span id="cb9-2"></span>
+<span id="cb9-3">Die Abstellkammer war leer und so ging Alice, nachdem sie eine Weile das dort </span>
+<span id="cb9-4">liegende Spielzeug inspiziert hatte, wieder zurück in den </span>
+<span id="cb9-5">[[Raum mit dem kleinen Drachen-&gt;Drache]].</span></code></pre></div></div>
+<p>In dieser Passage passiert wieder nichts Neues, der Zweck ihres Daseins ist nur, dass Alice die Passage <code>Drache</code> zum dritten Mal aufsuchen kann.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55586486482/"><img src="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/drachenbraut.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Feuersalamander und Drachenbraut</figcaption>
+</figure>
+</div>
+<p>Nach dieser Passage kommt Alice mit dem Drachen in ein <code>Gespräch</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1">&lt;img src="images/drachenbraut.jpg" alt="Feuersalamander und Drachenbraut" /&gt;</span>
+<span id="cb10-2"></span>
+<span id="cb10-3">Der kleine Drache erzählte stolz, dass er Drago heiße und der Sohn eines </span>
+<span id="cb10-4">Feuersalamanders sei, der sich in eine Drachenfrau verliebt hätte. Sie habe </span>
+<span id="cb10-5">seine Liebe erwidert und dann ein Ei gelegt, aus dem der kleine Drago geschlüpft sei.</span>
+<span id="cb10-6"></span>
+<span id="cb10-7">Er sei etwas kleiner, als die anderen Drachen und er könne auch kein Feuer </span>
+<span id="cb10-8">spucken, aber ansonsten fühle er sich wie die großen Drachen.</span>
+<span id="cb10-9"></span>
+<span id="cb10-10">[[Weiter …-&gt;Ende]]</span></code></pre></div></div>
+<p>Hier erfährt Alice zwar einiges über <em>Dragos</em> Herkunft, aber technisch ist die Passage eigentlich langweilig – es gibt wieder nichts Neues. Aber irgendwann muss die Geschichte ja auch einmal zu einem <code>Ende</code> kommen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1">&lt;img src="images/abschieddrago.jpg" alt="Alice verabschiedet sich von Drago" /&gt;</span>
+<span id="cb11-2"></span>
+<span id="cb11-3">Alice hörte ihm geduldig zu und bedankte sich für seine Gesellschaft.</span>
+<span id="cb11-4"></span>
+<span id="cb11-5">Als sie wieder nach Hause ging, hatte sie das Gefühl, einen neuen Freund </span>
+<span id="cb11-6">gewonnen zu haben.</span>
+<span id="cb11-7"></span>
+<span id="cb11-8">Damit ist die heutige Geschichte zu Ende. </span>
+<span id="cb11-9">(link: "Noch einmal Spielen?")[(restart:)]</span></code></pre></div></div>
+<p>Hier habt Ihr die Möglichkeit, die ganze Geschichte noch einmal zu spielen. Das <code>restart:</code>-Makro setzt alles auf Null, das heißt auch das <code>history</code>-Array wird wieder geleert.</p>
+<section id="das-spiel" class="level3">
+<h3 class="anchored" data-anchor-id="das-spiel">Das Spiel</h3>
+<p>Wie (fast) immer habt Ihr hier die Möglichkeit, die Geschichte von Alice und dem kleine Drachen, eingebettet in diese Seiten, zu spielen:</p>
+<iframe width="100%" height="600" src="alice7/">
+</iframe>
+<p>Auch dieses Tutorial habe ich sowohl als HTML-Datei wie auch als Twee-Datei mit allen Assets (Bilder und Schriften) auf meinem <a href="https://github.com/kantel/twine-entdecken/tree/master/Twine/alicereloadedharlowe/alice7">GitHub-Account hochgeladen</a>. Habt Spaß damit!</p>
+<p>Und natürlich habe ich dieses Spielchen – wie die anderen auch – auf meiner <a href="https://kantel.neocities.org/twine/alice7/">Neocities-Spielwiese veröffentlicht</a>. Denn dafür ist meine Spielwiese schließlich da.&nbsp;🤓</p>
+</section>
+<section id="was-bisher-geschah" class="level2">
+<h2 class="anchored" data-anchor-id="was-bisher-geschah">Was bisher geschah</h2>
+<p>Meine Twine-Harlowe-Reihe besteht bisher aus diesen zehn Beiträgen (das ist schon ein kleines Jubiläum&nbsp;🎊🎉):</p>
+<ol type="1">
+<li>Der Wunderland-Debattierclub: <a href="https://kantel.github.io/posts/2026081102_imagemaps_twine/">Klickbare Imagemaps in Twine</a></li>
+<li><a href="https://kantel.github.io/posts/2026082001_zurueck_ins_wunderland/">Zurück ins Wunderland (schon wieder)</a> und dieses Mal mit Harlowe</li>
+<li>Alles auf Anfang: <a href="https://kantel.github.io/posts/2026082301_twine_harlowe_wunderland/">Mit Twine und Harlowe ins Wunderland</a></li>
+<li>Aus meiner Webwerkstatt: <a href="https://kantel.github.io/posts/2026082401_twine_einbinden/">Twine-Stories in die eigenen Seiten einbinden</a></li>
+<li><a href="https://kantel.github.io/posts/2026082601_alice_teeparty/">Alice und die Teeparty</a>: Mit Twine und Harlowe ins Wunderland (Teil 2)</li>
+<li><a href="https://kantel.github.io/posts/2026090102_alice_und_humpelpumpel/">Alice und Humpel Pumpel</a>: Mit Twine und Harlowe ins Wunderland (Teil 3)</li>
+<li><a href="https://kantel.github.io/posts/2026090701_custom_fonts_harlowe/">Qumbo schreibt (schön)</a>: Custom Fonts in Twine (Harlowe)</li>
+<li><a href="https://kantel.github.io/posts/2026091001_alice_tutorial_5/">Mit Alice in die Bibliothek</a>: Variablen, Makros und Hooks in Twine (Harlowe)</li>
+<li><a href="https://kantel.github.io/posts/2026100601_alice_tutorial_6/">Mit Alice in das Reich der Ringe</a>: Noch mehr zu Variablen, Makros und Hooks in Twine (Harlowe)</li>
+<li>Alice und der kleine Drache: Noch mehr über Makros und Hooks in Twine (Harlowe)</li>
+</ol>
+<p>Fortsetzung folgt …</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Auch die Bilder für dieses Tutorial habe ich von einer gekünstelten Intelligenzia meines Vertrauens (<a href="https://openart.ai/home">OpenArt</a>) generieren lassen. Mit einem Klick auf die Bilder kommt Ihr auf eine Seite, die Euch verrät, welchen Prompt und welches Modell (in diesm Fall Nano Banana&nbsp;2 für alle Bilder) ich gewählt habe.↩︎</p></li>
+<li id="fn2"><p>Beachtet, daß auch benannte Hooks mit einfachen, eckigen Klammern (<code>[Hook]</code>) markiert werden müssen.↩︎</p></li>
+<li id="fn3"><p>Den letzten, ziemich sinnfreien Satz in der obigen Passage habe ich nur angefügt, um zu zeigen, dass die Auflösung <strong>nicht</strong> am Ende der Passage stattfinden muss.↩︎</p></li>
+<li id="fn4"><p>Harlowe besitzt für solche Fälle eigentlich noch ein <a href="https://twine2.neocities.org/#macro_mouseover"><code>mouseover:</code>-Makro</a>, aber das gilt als veraltet und sollte nicht mehr verwendet werden, da es aller Voraussicht nach in Harlowe&nbsp;4.0 gestrichen wird.↩︎</p></li>
+<li id="fn5"><p>Über Arrays erzähle ich in einem späteren Tutorial mehr.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Twine</category>
+  <category>Harlowe</category>
+  <category>Interactive Fiction</category>
+  <category>Spieleprogrammierung</category>
+  <category>Alice</category>
+  <guid>https://kantel.github.io/posts/2026101401_alice_tutorial_7/</guid>
+  <pubDate>Wed, 14 Oct 2026 11:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/drago.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Das Blau des Grauens: »Tiere auf der Strecke«</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -870,34 +1113,6 @@
   <guid>https://kantel.github.io/posts/2026091803_caturday/</guid>
   <pubDate>Fri, 18 Sep 2026 19:35:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026091803_caturday/images/caturday2.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Aus meinem Laboratorium für interaktive Geschichten und Spiele: Decker 1.70 freigegeben</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026091802_decker_1_70/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55536035031/"><img src="https://kantel.github.io/posts/2026091802_decker_1_70/images/decker170-b.jpg" class="img-fluid"></a></p>
-<p>Hätte mich der regelmäßig auf diesen Seiten erwähnte »Freund aus Bremen« nicht darauf aufmerksam gemacht, wäre ein weiteres Update unbemerkt an mir vorbeigerauscht. Denn von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/decker.html">Decker</a>, der freien (MIT-Lizenz) und plattformübergreifenden (macOS, Linux, Windows, Web) Multimedia-Plattform zum Erstellen und Teilen interaktiver Dokumente mit Ton, Bildern, Hypertext und Skriptfunktionen, kurzum, dem Erbe von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/hypercard.html">HyperCard</a>, ist schon vor etwa einem Monat die <a href="https://internet-janitor.itch.io/decker/devlog/1636068/decker-170">Version 1.70</a> freigegeben worden.</p>
-<p>Decker 1.70 ist eine Wartungs-Release mit Schwerpunkt auf Fehlerbehebungen und kleineren Verbesserungen der Benutzerfreundlichkeit. Alle Neuerungen könnt Ihr in den oben verlinkten Release-Notes nachlesen.</p>
-<p>Und ich? Ich muss zugeben, auch wenn ich schon lange einmal mit Decker und seiner schwarz-weißen Retro-Ästhetik eine <a href="https://surma.dev/things/ditherpunk/">Ditherpunk</a>-Visual-Novel basteln wollte, mir fehlt momentan einfach die Zeit dazu. So wird auch die aktuelle Version von Decker ungenutzt auf meiner Festplatte schmoren und auf bessere Zeiten hoffen. Aber vielleicht fühlt sich ja irgendjemand von Euch da draußen angesprochen, etwas mit dem Erbe von HyperCard anzustellen. Wenn sie oder er mir dann auch noch den Link zum Ergebnis schickt, stelle ich das gerne in diesem <del>Blog</del> Kritzelheft vor.</p>
-
-
-
- ]]></description>
-  <category>Decker</category>
-  <category>Interactive Fiction</category>
-  <category>Retrogaming</category>
-  <category>Spieleprogrammierung</category>
-  <category>Retrocomputing</category>
-  <category>Hypermedia</category>
-  <category>Game Design</category>
-  <guid>https://kantel.github.io/posts/2026091802_decker_1_70/</guid>
-  <pubDate>Fri, 18 Sep 2026 18:10:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026091802_decker_1_70/images/decker170.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
