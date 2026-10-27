@@ -10,7 +10,779 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 22 Oct 2026 17:55:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 27 Oct 2026 12:40:00 GMT</lastBuildDate>
+<item>
+  <title>Der P5.js Webeditor mit neuem Backend (Open Processing)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026102701_p5js_webeditor_neu/</link>
+  <description><![CDATA[ 
+<script src="./sketch.js"></script>
+<script src="./ball.js"></script>
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55615374503/"><img src="https://kantel.github.io/posts/2026102701_p5js_webeditor_neu/images/openprocessing-b.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Bouncing Balls in OpenProcessing</figcaption>
+</figure>
+</div>
+<p>Vom hier auf diesen Seiten regelmäßig erwähnten »Freund aus Bremen« bekam ich den Hinweis, dass der <a href="https://editor.p5js.org/">P5.js Webeditor</a> auf ein <a href="https://discourse.processing.org/t/the-p5-js-editor-is-moving-to-a-new-backend-help-us-test-it/49748">neues Backend wechselt</a>. Anstatt eigene Server zu verwenden, nutze der Editor künftig die API und Server von <a href="https://openprocessing.org/">OpenProcessing</a>. Momentan laufe ein öffentlicher Test, indem Nutzer mit einem OpenProcessing-Account aufgerufen werden, unter <a href="https://editor-op.p5js.org/">editor-op.p5.js.org</a> das neue Backend zu testen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55614209747/"><img src="https://kantel.github.io/posts/2026102701_p5js_webeditor_neu/images/webeditor_neu.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Bouncing Balls im »neuen« Webeditor</figcaption>
+</figure>
+</div>
+<p>Da ich zum einen ein chronisches Spielkalb bin und zum anderen noch einen mehr oder weniger brachliegenden OpenProcessing-Account besaß, ließ ich mir dies nicht zweimal sagen, und habe dieses <a href="https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/">Bouncing-Balls-Programm</a>, das ich vor über zwei Jahren einmal in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> mit Python (genauer mit <a href="https://brython.info/">Brython</a>) implementiert hatte, nach <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> portiert. Dabei musste ich feststellen, dass <code>editor-op.p5.js.org</code> mit meinem Chromebook noch ein wenig fremdelt (keine Syntax-Hervorhebung und manchmal Probleme beim Speichern), während zwei Tage später, als ich wieder an meinem Schreibtisch vor meinem betagten Mac Mini saß, die Programmierung wie geschmiert lief (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/55614209747/">Screenshot</a> oben). Aber der Editor ist ja auch noch Alpha, das Teil wird sicher noch verbessert.</p>
+<p>Die dann an meinem Mac erstellt Version ließ sich auch problemlos in OpenProcessing öffnen (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/55615374503/">Bannerbild</a> ganz oben).</p>
+<p>Natürlich wollt und sollt Ihr wissen, was ich da eigentlich angestellt habe. Zuerst habe ich eine Klasse <code>Ball</code>angelegt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> colors <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e66037cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#112a6acc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-2">              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#b77440cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#d4fb45cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-3">              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#fc4bc8cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#9f35e9cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-4">              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#39da38cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ef2200cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-5">              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4e942acc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#43fed3cc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb1-6">              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#4a8fbacc"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#3463eacc"</span>]<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Ball {</span>
+<span id="cb1-9"></span>
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">constructor</span>() {</span>
+<span id="cb1-11">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-12">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">d</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-13">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">d</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">d</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-14">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">d</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">d</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-15">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createVector</span>(x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-16">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-17">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-18">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createVector</span>(dx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> dy)</span>
+<span id="cb1-19">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">random</span>(colors)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-20">  }</span>
+<span id="cb1-21"></span>
+<span id="cb1-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>() {</span>
+<span id="cb1-23">     <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-24">  }</span>
+<span id="cb1-25"></span>
+<span id="cb1-26">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">checkBoundaries</span>() {</span>
+<span id="cb1-27">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">||</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r</span>) {</span>
+<span id="cb1-28">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-29">    }</span>
+<span id="cb1-30">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> height <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">||</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">r</span>) {</span>
+<span id="cb1-31">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vel</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-32">    }</span>
+<span id="cb1-33">  }</span>
+<span id="cb1-34">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>() {</span>
+<span id="cb1-35">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fill</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">col</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-36">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">strokeWeight</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-37">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">circle</span>(<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">pos</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">this</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">d</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-38">  }</span>
+<span id="cb1-39">  </span>
+<span id="cb1-40">}</span></code></pre></div></div>
+<p>Die Klasse besitzt einen Positionsvektor (<code>pos</code>) und einen Geschwindigkeitsvektor (<code>vel</code> für <em>Velocity</em>). Das ist vielleicht ein wenig mit Kanonen auf Spatzen geschossen, aber ich liebe es nun einmal, mit Vektoren zu hantieren. Dadurch müssen in der <code>update()</code>-Methode nur die beiden Vektoren addiert werden.</p>
+<p>Die Methode <code>checkBoudaries()</code> prüft, ob die Ränder berührt werden (Überraschung!). Um das möglichst genau hinzubekommen, wird dabei der Radius der Bälle berücksichtigt. Werden die Ränder getroffen, wird die Geschwindigkeit einfach umgekehrt (<code>vel *= -1</code>).</p>
+<p>Wo ich die Farbpalette her hatte, weiß ich nicht mehr, aber mir gefallen die Farben mit ihrer leichten Transparenz für die Bälle.</p>
+<p>Dadurch, dass die Klasse Ball eine eigene <code>update()</code>-, <code>checkBoundaries()</code>- und eine eigene <code>display()</code>-Methode besitzt, ist der Hauptsketch ziemlich kurz geraten:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> numBalls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">25</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> balls <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-3"></span>
+<span id="cb2-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb2-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-6">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// canvas = createCanvas(640, 400);   // für das Einbinden</span></span>
+<span id="cb2-7">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// canvas.parent("myCanvas");         // in diese Webseite</span></span>
+<span id="cb2-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-9">}</span>
+<span id="cb2-10"></span>
+<span id="cb2-11"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">draw</span>() {</span>
+<span id="cb2-12">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">background</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">234</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">218</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">184</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-13">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> ball <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">of</span> balls) {</span>
+<span id="cb2-14">    ball<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">display</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-15">    ball<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">update</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-16">    ball<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">checkBoundaries</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-17">  }</span>
+<span id="cb2-18">}</span>
+<span id="cb2-19"></span>
+<span id="cb2-20"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>() {</span>
+<span id="cb2-21">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> (<span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> ball <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> ball <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> numBalls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span> ball<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">++</span>) {</span>
+<span id="cb2-22">    b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">new</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Ball</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-23">    balls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">push</span>(b)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-24">  }</span>
+<span id="cb2-25">}</span>
+<span id="cb2-26"></span>
+<span id="cb2-27"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mousePressed</span>() {</span>
+<span id="cb2-28">  balls<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">length</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// Array leeren</span></span>
+<span id="cb2-29">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb2-30">}</span></code></pre></div></div>
+<p>Bemerkenswert ist hier nur die Funktion <code>reset()</code>, die nicht nur die initiale Füllung des Arrays <code>balls[]</code> vornimmt, sondern nach einem Mausklick den Sketch auch neu startet. Hierbei ist interessant, dass man mit dem Setzen eines Arrays auf die Länge von Null (<code>balls.length = 0;</code>) dieses Array komplett leert.</p>
+<p>Nun sollt Ihr die hüpfenden Bälle auch auf dieser Seite bewundern können:</p>
+<div id="myCanvas">
+
+</div>
+<p>Wenn Ihr mit der Maus in den Sketch klickt, werden neue Bälle erzeugt und auf die hüpfende Reise geschickt. Probiert das ruhig aus.</p>
+<p>Den Sketch habe ich <a href="https://kantel.github.io/posts/2026080501_running_orcs/">wie hier beschrieben</a> mit <code>&lt;div id="myCanvas"&gt;&lt;/div&gt;</code> in diese Seite eingebunden. Lediglich die <code>class="if16_9"</code> habe ich weggelassen, da sie den eingebundenen Sketch doch nicht responsiv macht. (Wer hierfür eine Lösung weiß, die oder den bitte ich um Mitteilung in meinen Kommentaren.)</p>
+<p>Damit das Einbinden funktioniert, müssen in <code>sketch.js</code> die Zeile</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div></div>
+<p>durch die oben auskommentierten Zeilen</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1">canvas <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb4-2">canvas<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">parent</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"myCanvas"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div></div>
+<p>ersetzt werden.</p>
+<p>Natürlich gibt es diesen Sketch auch auf <a href="https://openprocessing.org/@jkantel/3043956">OpenProcessing</a> und im neuen, noch im Alpha-Stadium sich befindenden <a href="https://editor-op.p5js.org/jkantel/sketches/3043956">P5.js Webeditor</a>. Und auch auf meiner Neocities-P5.js-Spielwiese ist <a href="https://kantel.neocities.org/p5projects/Bouncing%20Balls/">der Sketch zu finden</a>.</p>
+<p>Wer es mehr traditionell mag: <a href="https://github.com/kantel/p5js/tree/master/bouncingballs01">Hier gibt es den Code</a> auch auf GitHub.</p>
+<section id="wie-geht-es-mit-dem-p5.js-webeditor-weiter" class="level2">
+<h2 class="anchored" data-anchor-id="wie-geht-es-mit-dem-p5.js-webeditor-weiter">Wie geht es mit dem P5.js Webeditor weiter?</h2>
+<p>Nach dem Ende der öffentlichen Testphase gibt es demnächst einen nicht öffentlichen Mitarbeiter- und Wartungstest.</p>
+<p>Danach soll die vollständige Umstellung auf das neue OpenProcessing-Backend erfolgen (frühestens am <strong>15.&nbsp;Dezember&nbsp;2026</strong>) und alle Konten werden migriert. Dabei bleiben OpenProcessing.org und der p5.js-Webeditor separate Tools. Diese Zusammenarbeit betrifft ausschließlich die Backend-Prozesse des p5.js-Editors. Die Umstellung erfolgt automatisch. Wer dies nicht will, sollte seine Sketche vorher herunterladen, woanders hosten und sie danach im Webeditor löschen.</p>
+<p>Es gibt folgende zukünftige Änderungen und Versprechen bezüglich der Datenschutzrichtlinien und der Nutzungsbedingungen:</p>
+<ul>
+<li>Eure Sketche und Kontoinformationen werden von OpenProcessing gespeichert.</li>
+<li>Die Processing Foundation wird zu <em>Fathom Analytics</em> wechseln, das <a href="https://usefathom.com/why-fathom-analytics/privacy-focused-web-analytics">keine Cookies</a> für Webanalysen verwendet.</li>
+<li>Die Processing Foundation wird Dienste entfernen, die sie nicht mehr nutzt.</li>
+<li>Die Processing Foundation wird die Datenschutzrichtlinie präzisieren, um genau festzulegen, welche Daten sie erheben und welche nicht.</li>
+</ul>
+<p>Die Seite mit der <a href="https://discourse.processing.org/t/the-p5-js-editor-is-moving-to-a-new-backend-help-us-test-it/49748">Ankündigung des Wechsels auf das neue Backend</a> wird regelmäßig aktualisiert werden, um auf neu aufkommende Fragen einzugehen.</p>
+</section>
+<section id="p5.js-und-vscodium" class="level2">
+<h2 class="anchored" data-anchor-id="p5.js-und-vscodium">P5.js und VSCodium</h2>
+<p>Doch wartet, da ist noch mehr:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55613119827/"><img src="https://kantel.github.io/posts/2026102701_p5js_webeditor_neu/images/vscodium.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Bouncing Balls in VSCodium</figcaption>
+</figure>
+</div>
+<p><a href="https://kantel.github.io/posts/2026080501_running_orcs/">Hier</a> hatte ich ja mit P5.js und dem Editor <a href="https://phcode.io/">Phoenix Code</a> experimentiert. Im Großen und Ganzen erfüllte er <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">meine an ihn gestellten Erwartungen</a>, Lediglich eine Syntax-Hervorhebung und eine Fehlererkennung für P5.js, wie sie <a href="https://github.com/antiboredom/p5.vscode#readme">p5.vscode</a>, eine Erweiterung für <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a>, bietet, hatte ich vermisst. Nicht, dass ich mit Visual Studio Code unzufrieden wäre, aber ich habe mehr und mehr die Befürchtung, dass sich die ganzen Erweiterungen irgendwann einmal in die Quere kommen. Daher habe ich es einmal mit <a href="https://vscodium.com/">VSCodium</a>, der freien (MIT-Lizenz), zu Visual Studio Code weitestgehend kompatiblen, aber weniger geschwätzigen Alternative probiert.</p>
+<p>Als Erweiterung habe ich den <a href="https://marketplace.visualstudio.com/items?itemName=Irti.p5js-project-generator">p5.js 2.x Project Generator</a> und den <a href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer">VS Code Live Server</a> installiert (beides hat mir VSCodium vorgeschlagen).</p>
+<p>Ich muss gestehen, ich bin begeistert: Keine Abhängigkeit von Microsoft mehr, kein Editor, der ungefragt nach Hause telephoniert, und die gewohnten Syntax-Hervorhebungen und Fehlererkennung auch für P5.js.</p>
+<p>So schön OpenProcessing und der P5.js Webeditor auch sind: Sie liegen auf US-amerikanischen Servern und das steht einer Digitalen Souveränität im Wege. Daher freue ich mich, mit VSCodium einen Schritt weiter in Richtung meiner digitaler Unabhängigkeit gekommen zu sein.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>P5.js</category>
+  <category>JavaScript</category>
+  <category>OpenProcessing</category>
+  <category>Nature of Code</category>
+  <category>Creative Coding</category>
+  <category>VSCodium</category>
+  <category>Digitale Souveränität</category>
+  <guid>https://kantel.github.io/posts/2026102701_p5js_webeditor_neu/</guid>
+  <pubDate>Tue, 27 Oct 2026 12:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026102701_p5js_webeditor_neu/images/openprocessing.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Geschichte(n) aus der Nachbarschaft: Sie wollten leben!</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -1070,42 +1842,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026092902_kein_asyl_in_sachsen/</guid>
   <pubDate>Tue, 29 Sep 2026 12:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026092902_kein_asyl_in_sachsen/images/festungsachsen.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Die Barbarei wirft ihre Schatten voraus: Keine neuen Stolpersteine in Heidenau</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026092901_keine_stolpersteine/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/8250853440/"><img src="https://kantel.github.io/posts/2026092901_keine_stolpersteine/images/stolperstein-b.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Stolperstein in Neukölln</figcaption>
-</figure>
-</div>
-<p>Mit Hilfe der CDU und einer obskuren »Bürgerinitiative Oberelbe für mehr Demokratie« (BOD) hat die AfD in der sächsischen Kleinstadt <a href="https://de.wikipedia.org/wiki/Heidenau_(Sachsen)">Heidenau</a> (nahe Dresden) ihren geschichtsrevisionistischen Antrag durchgeboxt, dass <a href="https://www.tagesschau.de/inland/regional/sachsen/afd-cdu-antrag-beschlossen,stolpersteine-heidenau-100.html">keine weiteren Stolpersteine auf öffentlichen Wegen</a> verlegt werden dürfen. Stattdessen solle auf dem Nordfriedhof eine »Gedenkfläche« entstehen, denn dort gäbe heute schon einen Gedenkstein für die Opfer des Nationalsozialismus.</p>
-<p>Neben der einbringenden BOD-Fraktion haben drei CDU-Stadträtinnen und Stadträte, darunter die Fraktionsvorsitzende <em>Cornelia Schmiedel</em>, und fünf AfD-Fraktionsmitglieder unterschrieben. <a href="https://taz.de/Stolpersteine-in-Sachsen/!6215252/">Auf Anfrage der taz</a> erklärte auch Bürgermeisterin <em>Conny Oertel</em> (parteilos), sie unterstütze den Antrag.</p>
-<p>Für das Internationale Auschwitz Komitee ist die Entscheidung »ein durchsichtiger und schäbiger Versuch, Heidenauer Opfer der Nazis erneut aus der Stadt hinauszuwerfen und sie dahin zu entsorgen, wohin das Gedenken nach Meinung der AfD schon längst gehört: auf den Friedhof«. Es sei skandalös, dass CDU-Abgeordnete der AfD »zu solchen Schäbigkeiten die Hand reichen«.</p>
-<p>Selbst der CDU-Bundesbildungsministerin <em>Karin Prien</em> kritisiert den Beschluss gegen weitere Stolpersteine im öffentlichen Raum der Stadt Heidenau und <a href="https://taz.de/Karin-Prien-zu-Stolperstein-Verbot/!6216417/">sprach von einem Skandal</a>. Besonders kritisch äußerte sich die Ministerin zu dem Vorschlag, <a href="https://taz.de/Gedenken-an-NS-Opfer-in-Sachsen/!6216336/">das Gedenken auf Friedhöfe</a> zu verlagern:</p>
-<blockquote class="blockquote">
-<p>Wer Stolpersteine und Gedenkorte jüdischen Lebens aus dem öffentlichen Raum auf den Friedhof verbannt, stellt das Sterben über das Leben und macht Jüdinnen und Juden noch einmal unsichtbar.</p>
-</blockquote>
-<p>Ach die Holocacaust-Überlebende <em>Charlotte Knobloch</em>, die dem Konzept der Stolpersteine durchaus kritisch gegenüber steht, ist <a href="https://www.zdfheute.de/politik/deutschland/stolpersteine-heidenau-cdu-afd-kritik-knobloch-100.html">entsetzt über das Stolperstein-Verbot in Heidenau</a> und dass sich eine demokratische Partei dafür hergibt, ein so durchsichtiges Manöver der Extremisten von der AfD zu unterstützen.</p>
-<p>Freiheit stirbt zentimeterweise. Die Ereignisse in Sachsen sind ein weiterer Schritt in Richtung Barbarei.</p>
-<hr>
-<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2012: <em><a href="http://www.gabi-kantel.de/Website/Willkommen.html">Gabriele Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>Politik</category>
-  <category>Geschichte</category>
-  <guid>https://kantel.github.io/posts/2026092901_keine_stolpersteine/</guid>
-  <pubDate>Tue, 29 Sep 2026 11:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026092901_keine_stolpersteine/images/stolperstein.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

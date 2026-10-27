@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>Der P5.js Webeditor mit neuem Backend (Open Processing) – Der Schockwellenreiter</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-de370ee0869d3e2d1ce948f09ec559d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+<script src="./js/p5.min.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+<script src="./sketch.js"></script>
+<script src="./ball.js"></script>
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Der P5.js Webeditor mit neuem Backend (Open Processing)</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">P5.js</div>
+    <div class="quarto-category">JavaScript</div>
+    <div class="quarto-category">OpenProcessing</div>
+    <div class="quarto-category">Nature of Code</div>
+    <div class="quarto-category">Creative Coding</div>
+    <div class="quarto-category">VSCodium</div>
+    <div class="quarto-category">Digitale Souveränität</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">27. Oktober 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55615374503/"><img src="images/openprocessing-b.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Bouncing Balls in OpenProcessing</figcaption>
+</figure>
+</div>
+<p>Vom hier auf diesen Seiten regelmäßig erwähnten »Freund aus Bremen« bekam ich den Hinweis, dass der <a href="https://editor.p5js.org/">P5.js Webeditor</a> auf ein <a href="https://discourse.processing.org/t/the-p5-js-editor-is-moving-to-a-new-backend-help-us-test-it/49748">neues Backend wechselt</a>. Anstatt eigene Server zu verwenden, nutze der Editor künftig die API und Server von <a href="https://openprocessing.org/">OpenProcessing</a>. Momentan laufe ein öffentlicher Test, indem Nutzer mit einem OpenProcessing-Account aufgerufen werden, unter <a href="https://editor-op.p5js.org/">editor-op.p5.js.org</a> das neue Backend zu testen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55614209747/"><img src="images/webeditor_neu.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Bouncing Balls im »neuen« Webeditor</figcaption>
+</figure>
+</div>
+<p>Da ich zum einen ein chronisches Spielkalb bin und zum anderen noch einen mehr oder weniger brachliegenden OpenProcessing-Account besaß, ließ ich mir dies nicht zweimal sagen, und habe dieses <a href="https://kantel.github.io/posts/2024033102_bouncing_balls_microstudio/">Bouncing-Balls-Programm</a>, das ich vor über zwei Jahren einmal in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> mit Python (genauer mit <a href="https://brython.info/">Brython</a>) implementiert hatte, nach <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> portiert. Dabei musste ich feststellen, dass <code>editor-op.p5.js.org</code> mit meinem Chromebook noch ein wenig fremdelt (keine Syntax-Hervorhebung und manchmal Probleme beim Speichern), während zwei Tage später, als ich wieder an meinem Schreibtisch vor meinem betagten Mac Mini saß, die Programmierung wie geschmiert lief (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/55614209747/">Screenshot</a> oben). Aber der Editor ist ja auch noch Alpha, das Teil wird sicher noch verbessert.</p>
+<p>Die dann an meinem Mac erstellt Version ließ sich auch problemlos in OpenProcessing öffnen (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/55615374503/">Bannerbild</a> ganz oben).</p>
+<p>Natürlich wollt und sollt Ihr wissen, was ich da eigentlich angestellt habe. Zuerst habe ich eine Klasse <code>Ball</code>angelegt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="kw">let</span> colors <span class="op">=</span> [<span class="st">"#e66037cc"</span><span class="op">,</span> <span class="st">"#112a6acc"</span><span class="op">,</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>              <span class="st">"#b77440cc"</span><span class="op">,</span> <span class="st">"#d4fb45cc"</span><span class="op">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>              <span class="st">"#fc4bc8cc"</span><span class="op">,</span> <span class="st">"#9f35e9cc"</span><span class="op">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>              <span class="st">"#39da38cc"</span><span class="op">,</span> <span class="st">"#ef2200cc"</span><span class="op">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>              <span class="st">"#4e942acc"</span><span class="op">,</span> <span class="st">"#43fed3cc"</span><span class="op">,</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>              <span class="st">"#4a8fbacc"</span><span class="op">,</span> <span class="st">"#3463eacc"</span>]<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a><span class="kw">class</span> Ball {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>  <span class="fu">constructor</span>() {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">r</span> <span class="op">=</span> <span class="fu">random</span>(<span class="dv">8</span><span class="op">,</span> <span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">d</span> <span class="op">=</span> <span class="dv">2</span><span class="op">*</span><span class="kw">this</span><span class="op">.</span><span class="at">r</span><span class="op">;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a>    <span class="kw">let</span> x <span class="op">=</span> <span class="fu">random</span>(<span class="kw">this</span><span class="op">.</span><span class="at">d</span><span class="op">,</span> width <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">d</span>)<span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a>    <span class="kw">let</span> y <span class="op">=</span> <span class="fu">random</span>(<span class="kw">this</span><span class="op">.</span><span class="at">d</span><span class="op">,</span> height <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">d</span>)<span class="op">;</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">pos</span> <span class="op">=</span> <span class="fu">createVector</span>(x<span class="op">,</span> y)<span class="op">;</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-label="16"></a>    <span class="kw">let</span> dx <span class="op">=</span> <span class="fu">random</span>(<span class="op">-</span><span class="dv">3</span><span class="op">,</span> <span class="dv">4</span>)<span class="op">;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-label="17"></a>    <span class="kw">let</span> dy <span class="op">=</span> <span class="fu">random</span>(<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-label="18"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">vel</span> <span class="op">=</span> <span class="fu">createVector</span>(dx<span class="op">,</span> dy)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-label="19"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">col</span> <span class="op">=</span> <span class="fu">random</span>(colors)<span class="op">;</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-label="20"></a>  }</span>
+<span id="cb1-21"><a href="#cb1-21" aria-label="21"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-label="22"></a>  <span class="fu">update</span>() {</span>
+<span id="cb1-23"><a href="#cb1-23" aria-label="23"></a>     <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="fu">add</span>(<span class="kw">this</span><span class="op">.</span><span class="at">vel</span>)<span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-label="24"></a>  }</span>
+<span id="cb1-25"><a href="#cb1-25" aria-label="25"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-label="26"></a>  <span class="fu">checkBoundaries</span>() {</span>
+<span id="cb1-27"><a href="#cb1-27" aria-label="27"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span> <span class="op">&gt;=</span> width <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">r</span><span class="op">||</span> <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span> <span class="op">&lt;</span> <span class="kw">this</span><span class="op">.</span><span class="at">r</span>) {</span>
+<span id="cb1-28"><a href="#cb1-28" aria-label="28"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="at">x</span> <span class="op">*=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-label="29"></a>    }</span>
+<span id="cb1-30"><a href="#cb1-30" aria-label="30"></a>    <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span> <span class="op">&gt;=</span> height <span class="op">-</span> <span class="kw">this</span><span class="op">.</span><span class="at">r</span> <span class="op">||</span> <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span> <span class="op">&lt;</span> <span class="kw">this</span><span class="op">.</span><span class="at">r</span>) {</span>
+<span id="cb1-31"><a href="#cb1-31" aria-label="31"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">vel</span><span class="op">.</span><span class="at">y</span> <span class="op">*=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-label="32"></a>    }</span>
+<span id="cb1-33"><a href="#cb1-33" aria-label="33"></a>  }</span>
+<span id="cb1-34"><a href="#cb1-34" aria-label="34"></a>  <span class="fu">display</span>() {</span>
+<span id="cb1-35"><a href="#cb1-35" aria-label="35"></a>    <span class="fu">fill</span>(<span class="kw">this</span><span class="op">.</span><span class="at">col</span>)<span class="op">;</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-label="36"></a>    <span class="fu">strokeWeight</span>(<span class="dv">2</span>)<span class="op">;</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-label="37"></a>    <span class="fu">circle</span>(<span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">x</span><span class="op">,</span> <span class="kw">this</span><span class="op">.</span><span class="at">pos</span><span class="op">.</span><span class="at">y</span><span class="op">,</span> <span class="kw">this</span><span class="op">.</span><span class="at">d</span>)<span class="op">;</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-label="38"></a>  }</span>
+<span id="cb1-39"><a href="#cb1-39" aria-label="39"></a>  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-label="40"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Die Klasse besitzt einen Positionsvektor (<code>pos</code>) und einen Geschwindigkeitsvektor (<code>vel</code> für <em>Velocity</em>). Das ist vielleicht ein wenig mit Kanonen auf Spatzen geschossen, aber ich liebe es nun einmal, mit Vektoren zu hantieren. Dadurch müssen in der <code>update()</code>-Methode nur die beiden Vektoren addiert werden.</p>
+<p>Die Methode <code>checkBoudaries()</code> prüft, ob die Ränder berührt werden (Überraschung!). Um das möglichst genau hinzubekommen, wird dabei der Radius der Bälle berücksichtigt. Werden die Ränder getroffen, wird die Geschwindigkeit einfach umgekehrt (<code>vel *= -1</code>).</p>
+<p>Wo ich die Farbpalette her hatte, weiß ich nicht mehr, aber mir gefallen die Farben mit ihrer leichten Transparenz für die Bälle.</p>
+<p>Dadurch, dass die Klasse Ball eine eigene <code>update()</code>-, <code>checkBoundaries()</code>- und eine eigene <code>display()</code>-Methode besitzt, ist der Hauptsketch ziemlich kurz geraten:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a><span class="kw">let</span> numBalls <span class="op">=</span> <span class="dv">25</span><span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a><span class="kw">let</span> balls <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a><span class="kw">function</span> <span class="fu">setup</span>() {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>  <span class="fu">createCanvas</span>(<span class="dv">640</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a>  <span class="co">// canvas = createCanvas(640, 400);   // für das Einbinden</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a>  <span class="co">// canvas.parent("myCanvas");         // in diese Webseite</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a>  <span class="fu">reset</span>()<span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-label="9"></a>}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-label="10"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-label="11"></a><span class="kw">function</span> <span class="fu">draw</span>() {</span>
+<span id="cb2-12"><a href="#cb2-12" aria-label="12"></a>  <span class="fu">background</span>(<span class="dv">234</span><span class="op">,</span> <span class="dv">218</span><span class="op">,</span> <span class="dv">184</span>)<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-label="13"></a>  <span class="cf">for</span> (<span class="kw">let</span> ball <span class="kw">of</span> balls) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-label="14"></a>    ball<span class="op">.</span><span class="fu">display</span>()<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-label="15"></a>    ball<span class="op">.</span><span class="fu">update</span>()<span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-label="16"></a>    ball<span class="op">.</span><span class="fu">checkBoundaries</span>()<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-label="17"></a>  }</span>
+<span id="cb2-18"><a href="#cb2-18" aria-label="18"></a>}</span>
+<span id="cb2-19"><a href="#cb2-19" aria-label="19"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-label="20"></a><span class="kw">function</span> <span class="fu">reset</span>() {</span>
+<span id="cb2-21"><a href="#cb2-21" aria-label="21"></a>  <span class="cf">for</span> (<span class="kw">let</span> ball <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> ball <span class="op">&lt;</span> numBalls<span class="op">;</span> ball<span class="op">++</span>) {</span>
+<span id="cb2-22"><a href="#cb2-22" aria-label="22"></a>    b <span class="op">=</span> <span class="kw">new</span> <span class="fu">Ball</span>()<span class="op">;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-label="23"></a>    balls<span class="op">.</span><span class="fu">push</span>(b)<span class="op">;</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-label="24"></a>  }</span>
+<span id="cb2-25"><a href="#cb2-25" aria-label="25"></a>}</span>
+<span id="cb2-26"><a href="#cb2-26" aria-label="26"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-label="27"></a><span class="kw">function</span> <span class="fu">mousePressed</span>() {</span>
+<span id="cb2-28"><a href="#cb2-28" aria-label="28"></a>  balls<span class="op">.</span><span class="at">length</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span>   <span class="co">// Array leeren</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-label="29"></a>  <span class="fu">reset</span>()<span class="op">;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-label="30"></a>}</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Bemerkenswert ist hier nur die Funktion <code>reset()</code>, die nicht nur die initiale Füllung des Arrays <code>balls[]</code> vornimmt, sondern nach einem Mausklick den Sketch auch neu startet. Hierbei ist interessant, dass man mit dem Setzen eines Arrays auf die Länge von Null (<code>balls.length = 0;</code>) dieses Array komplett leert.</p>
+<p>Nun sollt Ihr die hüpfenden Bälle auch auf dieser Seite bewundern können:</p>
+<div id="myCanvas">
+
+</div>
+<p>Wenn Ihr mit der Maus in den Sketch klickt, werden neue Bälle erzeugt und auf die hüpfende Reise geschickt. Probiert das ruhig aus.</p>
+<p>Den Sketch habe ich <a href="https://kantel.github.io/posts/2026080501_running_orcs/">wie hier beschrieben</a> mit <code>&lt;div id="myCanvas"&gt;&lt;/div&gt;</code> in diese Seite eingebunden. Lediglich die <code>class="if16_9"</code> habe ich weggelassen, da sie den eingebundenen Sketch doch nicht responsiv macht. (Wer hierfür eine Lösung weiß, die oder den bitte ich um Mitteilung in meinen Kommentaren.)</p>
+<p>Damit das Einbinden funktioniert, müssen in <code>sketch.js</code> die Zeile</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">createCanvas</span>(<span class="dv">640</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>durch die oben auskommentierten Zeilen</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>canvas <span class="op">=</span> <span class="fu">createCanvas</span>(<span class="dv">640</span><span class="op">,</span> <span class="dv">400</span>)<span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>canvas<span class="op">.</span><span class="fu">parent</span>(<span class="st">"myCanvas"</span>)<span class="op">;</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>ersetzt werden.</p>
+<p>Natürlich gibt es diesen Sketch auch auf <a href="https://openprocessing.org/@jkantel/3043956">OpenProcessing</a> und im neuen, noch im Alpha-Stadium sich befindenden <a href="https://editor-op.p5js.org/jkantel/sketches/3043956">P5.js Webeditor</a>. Und auch auf meiner Neocities-P5.js-Spielwiese ist <a href="https://kantel.neocities.org/p5projects/Bouncing%20Balls/">der Sketch zu finden</a>.</p>
+<p>Wer es mehr traditionell mag: <a href="https://github.com/kantel/p5js/tree/master/bouncingballs01">Hier gibt es den Code</a> auch auf GitHub.</p>
+<section id="wie-geht-es-mit-dem-p5.js-webeditor-weiter" class="level2">
+<h2 class="anchored" data-anchor-id="wie-geht-es-mit-dem-p5.js-webeditor-weiter">Wie geht es mit dem P5.js Webeditor weiter?</h2>
+<p>Nach dem Ende der öffentlichen Testphase gibt es demnächst einen nicht öffentlichen Mitarbeiter- und Wartungstest.</p>
+<p>Danach soll die vollständige Umstellung auf das neue OpenProcessing-Backend erfolgen (frühestens am <strong>15.&nbsp;Dezember&nbsp;2026</strong>) und alle Konten werden migriert. Dabei bleiben OpenProcessing.org und der p5.js-Webeditor separate Tools. Diese Zusammenarbeit betrifft ausschließlich die Backend-Prozesse des p5.js-Editors. Die Umstellung erfolgt automatisch. Wer dies nicht will, sollte seine Sketche vorher herunterladen, woanders hosten und sie danach im Webeditor löschen.</p>
+<p>Es gibt folgende zukünftige Änderungen und Versprechen bezüglich der Datenschutzrichtlinien und der Nutzungsbedingungen:</p>
+<ul>
+<li>Eure Sketche und Kontoinformationen werden von OpenProcessing gespeichert.</li>
+<li>Die Processing Foundation wird zu <em>Fathom Analytics</em> wechseln, das <a href="https://usefathom.com/why-fathom-analytics/privacy-focused-web-analytics">keine Cookies</a> für Webanalysen verwendet.</li>
+<li>Die Processing Foundation wird Dienste entfernen, die sie nicht mehr nutzt.</li>
+<li>Die Processing Foundation wird die Datenschutzrichtlinie präzisieren, um genau festzulegen, welche Daten sie erheben und welche nicht.</li>
+</ul>
+<p>Die Seite mit der <a href="https://discourse.processing.org/t/the-p5-js-editor-is-moving-to-a-new-backend-help-us-test-it/49748">Ankündigung des Wechsels auf das neue Backend</a> wird regelmäßig aktualisiert werden, um auf neu aufkommende Fragen einzugehen.</p>
+</section>
+<section id="p5.js-und-vscodium" class="level2">
+<h2 class="anchored" data-anchor-id="p5.js-und-vscodium">P5.js und VSCodium</h2>
+<p>Doch wartet, da ist noch mehr:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55613119827/"><img src="images/vscodium.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Bouncing Balls in VSCodium</figcaption>
+</figure>
+</div>
+<p><a href="https://kantel.github.io/posts/2026080501_running_orcs/">Hier</a> hatte ich ja mit P5.js und dem Editor <a href="https://phcode.io/">Phoenix Code</a> experimentiert. Im Großen und Ganzen erfüllte er <a href="https://kantel.github.io/posts/2026073001_phoenix_code/">meine an ihn gestellten Erwartungen</a>, Lediglich eine Syntax-Hervorhebung und eine Fehlererkennung für P5.js, wie sie <a href="https://github.com/antiboredom/p5.vscode#readme">p5.vscode</a>, eine Erweiterung für <a href="http://cognitiones.kantel-chaos-team.de/produktivitaet/visualstudiocode.html">Visual Studio Code</a>, bietet, hatte ich vermisst. Nicht, dass ich mit Visual Studio Code unzufrieden wäre, aber ich habe mehr und mehr die Befürchtung, dass sich die ganzen Erweiterungen irgendwann einmal in die Quere kommen. Daher habe ich es einmal mit <a href="https://vscodium.com/">VSCodium</a>, der freien (MIT-Lizenz), zu Visual Studio Code weitestgehend kompatiblen, aber weniger geschwätzigen Alternative probiert.</p>
+<p>Als Erweiterung habe ich den <a href="https://marketplace.visualstudio.com/items?itemName=Irti.p5js-project-generator">p5.js 2.x Project Generator</a> und den <a href="https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer">VS Code Live Server</a> installiert (beides hat mir VSCodium vorgeschlagen).</p>
+<p>Ich muss gestehen, ich bin begeistert: Keine Abhängigkeit von Microsoft mehr, kein Editor, der ungefragt nach Hause telephoniert, und die gewohnten Syntax-Hervorhebungen und Fehlererkennung auch für P5.js.</p>
+<p>So schön OpenProcessing und der P5.js Webeditor auch sind: Sie liegen auf US-amerikanischen Servern und das steht einer Digitalen Souveränität im Wege. Daher freue ich mich, mit VSCodium einen Schritt weiter in Richtung meiner digitaler Unabhängigkeit gekommen zu sein.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopiert");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopiert");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "kantel/kantel.github.io";
+    script.dataset.repoId = "R_kgDOIjiXMQ";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOIjiXMc4CS_hh";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
