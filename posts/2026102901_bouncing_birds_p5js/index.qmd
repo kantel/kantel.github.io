@@ -188,13 +188,13 @@ function mousePressed() {
 }
 ~~~
 
-Es hat zwei Besonderheiten: Erstens habe ich zum Laden der Bilder das Kommandopaar `async` … `await` genutzt, das in P5.js die seperate Funktion `preload()` überflüssig macht. Die Bilder werden im Array `birdsIm` gespeichert und dann im `constructor()` der Klasse `Bird` in der Zeile
+Es hat zwei Besonderheiten: Erstens habe ich zum Laden der Bilder das Kommandopaar `async` … `await` genutzt, das in P5.js die separate Funktion `preload()` überflüssig macht. Die Bilder werden im Array `birdsIm` gespeichert und dann im `constructor()` der Klasse `Bird` in der Zeile
 
 ~~~js
 this.img = random(birdsIm);
 ~~~
 
-zufällig einem Vogel zugeschrieben.
+zufällig einem Vogel zugeordnet.
 
 Auch musste ich auf das schöne Schleifenkonstrukt `for (let bird of birds) {}` in der Funktion `draw()` verzichten, da ich für die Kollisionserkennung das Array `birds[]` zweimal durchlaufen musste[^3]:
 

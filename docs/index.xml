@@ -1501,7 +1501,7 @@ font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span>
 <span id="cb5-53">}</span></code></pre></div></div>
-<p>Es hat zwei Besonderheiten: Erstens habe ich zum Laden der Bilder das Kommandopaar <code>async</code> … <code>await</code> genutzt, das in P5.js die seperate Funktion <code>preload()</code> überflüssig macht. Die Bilder werden im Array <code>birdsIm</code> gespeichert und dann im <code>constructor()</code> der Klasse <code>Bird</code> in der Zeile</p>
+<p>Es hat zwei Besonderheiten: Erstens habe ich zum Laden der Bilder das Kommandopaar <code>async</code> … <code>await</code> genutzt, das in P5.js die separate Funktion <code>preload()</code> überflüssig macht. Die Bilder werden im Array <code>birdsIm</code> gespeichert und dann im <code>constructor()</code> der Klasse <code>Bird</code> in der Zeile</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -1516,7 +1516,7 @@ background-color: null;
 font-style: inherit;">random</span>(birdsIm)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div></div>
-<p>zufällig einem Vogel zugeschrieben.</p>
+<p>zufällig einem Vogel zugeordnet.</p>
 <p>Auch musste ich auf das schöne Schleifenkonstrukt <code>for (let bird of birds) {}</code> in der Funktion <code>draw()</code> verzichten, da ich für die Kollisionserkennung das Array <code>birds[]</code> zweimal durchlaufen musste<sup>3</sup>:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb7-1">    <span class="cf" style="color: #003B4F;
 background-color: null;
