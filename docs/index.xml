@@ -10,7 +10,179 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Tue, 03 Nov 2026 17:55:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 04 Nov 2026 14:30:00 GMT</lastBuildDate>
+<item>
+  <title>Noch einmal Bouncing Birds in P5.js – jetzt optimiert</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55632087788/"><img src="https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/images/bouncingbirds2-b.jpg" class="img-fluid"></a></p>
+<p>Mir ist über das Wochenende noch eingefallen, wie ich den Code für das <a href="https://kantel.github.io/posts/2026102901_bouncing_birds_p5js/">Beispiel mit den aufeinanderprallenden Vogelköpfen</a> vom letzten Donnerstag noch verbessern kann. (Ich fremdel halt noch ein wenig mit JavaScript.) Und zwar betrifft dies die <code>setup()</code>-Funktion: Statt das Bild jeden Vogels einzeln in einer Variablen <code>img</code> zu laden und dann per <code>push(img)</code> in das Array <code>birdsIm[]</code> einzufügen, kann ich ja auch jeden Vogel einzeln in lokalen Variablen laden und dann alle Vogelbilder in <strong>einer</strong> Zuweisung in das Array einfügen:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">async</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">setup</span>() {</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// load the bird images</span></span>
+<span id="cb1-4">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> chick <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/chick.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-5">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> chicken <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/chicken.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-6">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> duck <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/duck.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-7">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> owl <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/owl.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-8">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> parrot <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/parrot.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-9">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">let</span> penguin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"assets/penguin.png"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-10">    birdsIm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [chick<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> chicken<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> duck<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> owl<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> parrot<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> penguin]</span>
+<span id="cb1-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// console.log("Alle Bilder geladen.");</span></span>
+<span id="cb1-12"></span>
+<span id="cb1-13">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-14">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// canvas = createCanvas(640, 400);   // für das Einbinden</span></span>
+<span id="cb1-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">// canvas.parent("myCanvas");         // in diese Webseite</span></span>
+<span id="cb1-16">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">imageMode</span>(CENTER)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-17">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb1-18">}</span></code></pre></div></div>
+<p>Dadurch habe ich immerhin sechs Zeilen Code gespart (da die globale Deklaration der Variablen <code>img</code> ebenfalls entfällt).</p>
+
+
+
+ ]]></description>
+  <category>P5.js</category>
+  <category>JavaScript</category>
+  <category>Creative Coding</category>
+  <category>Nature of Code</category>
+  <guid>https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/</guid>
+  <pubDate>Wed, 04 Nov 2026 14:30:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/images/bouncingbirds2.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Jetzt habe ich wieder die Haare schön</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3369,34 +3541,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026100501_franckepark_tempelhof/</guid>
   <pubDate>Mon, 05 Oct 2026 13:20:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026100501_franckepark_tempelhof/images/franckepark.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Die NBB-Netzgesellschaft ist inkompetent und teuer</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026100103_nbb_netzgesellschaft/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55562799323/"><img src="https://kantel.github.io/posts/2026100103_nbb_netzgesellschaft/images/nbbmonteur-b.jpg" class="img-fluid"></a></p>
-<p>Anfang August musste ich gezwungenermaßen durch die <a href="https://de.wikipedia.org/wiki/NBB_Netzgesellschaft_Berlin-Brandenburg">NBB Netzgesellschaft Berlin-Brandenburg</a> den Austausch meines funktionierenden Gaszählers vornehmen lassen. Unmittelbar danach – ich koche nicht jeden Tag – funktionierte der Gasherd bei mir nicht mehr korrekt (mal ging die Gasflamme normal an, mal brannte sie nur ganz klein, alles ohne dass ich an den Reglern drehte). Einen Zusammenhang mit dem Wechsel des Gaszählers hatte ich nicht angenommen, da ich irrigerweise davon ausging, dass die NBB nur qualifiziertes Fachpersonal mit solchen Aufgaben betraut.</p>
-<p>Da mein Gasherd nun schon einige Jahre auf dem Buckel hatte, habe ich auf Anraten des Hausinstallateurs einen neuen Gasherd bestellt. Der wurde heute geliefert und angeschlossen. Bei der Inbetriebnahme zeigte er allerdings die gleichen Macken wie mein altes Gerät.</p>
-<p>Stutzig geworden, überprüfte der Klempner den Gaszähler und stellte fest, dass <strong>die Gaszufuhr nach der Neuinstallation nur halb geöffnet</strong> worden war. Nach Behebung dieses Umstandes funktionierte der neue Gasherd wie gewünscht (wie vermutlich auch der alte Gasherd funktioniert hätte).</p>
-<p>Nun beschäftigt mich die Frage, wer mir die nicht unbeträchtlichen Kosten ersetzt, die die völlig unnötige Anschaffung und Installation eines neuen Gasherdes verursacht haben? Es geht schließlich um knapp 1.000 Euro, die mich der Fehler eines Mitarbeiters der NBB gekostet hat.</p>
-<p>Eine Beschwerde an die NBB ist raus. Viel Hoffnung mache ich mir allerdings nicht, denn in Deutschland haftet immer nur der kleine Mensch für seine Fehler, niemals aber die großen, kommerziellen Gesellschaften.</p>
-<p>Ich werde allerdings, bis zur Klärung dieser Angelegenheit, niemanden mehr von der NBB in meine Wohnung oder in meinen Keller lassen. Denn verarschen kann ich mich alleine.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55562799323/">Monteur der NBB-Netzgesellschaft bei der Arbeit</a></em>, erstellt mit OpenArt. Prompt: »<em>The March Hare stands in mechanic’s overalls—aviator goggles pushed up onto his forehead—holding a wrench in front of a gas meter and trying in vain to unscrew it. Gas is seeping out of the threaded connection. In the background, cellar shelves hold canned goods, alongside a few cardboard boxes filled with old clothes. The March Hare looks even more bewildered than usual. Franco-Belgian comic book style. Language: German; no speech bubbles, no text boxes, no headings.</em>« Modell: Nano Banana&nbsp;2.</p>
-
-
-
- ]]></description>
-  <category>Modernes Leben</category>
-  <category>Failed State Berlin</category>
-  <guid>https://kantel.github.io/posts/2026100103_nbb_netzgesellschaft/</guid>
-  <pubDate>Thu, 01 Oct 2026 14:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026100103_nbb_netzgesellschaft/images/nbbmonteur.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
