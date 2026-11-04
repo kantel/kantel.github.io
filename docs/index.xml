@@ -10,7 +10,43 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Wed, 04 Nov 2026 14:30:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 04 Nov 2026 17:45:00 GMT</lastBuildDate>
+<item>
+  <title>NodeBox 1: First final Release</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55632366053/"><img src="https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/images/nodebox1new-b.jpg" class="img-fluid"></a></p>
+<p>Da flatterte doch gestern Abend ein Nachricht in meine Mailbox, dass von der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodebox.html">Nodebox&nbsp;1</a> in der Fork von <em>Karsten Wolf</em> nach über zweijähriger Pause die <a href="https://github.com/karstenw/nodebox-pyobjc/releases/tag/v1.10.3">Version 1.10.3</a> erschienen sei. Es müssen schon sehr treue Leser dieses <del>Blogs</del> Kritzelhefts sein, die sich noch erinnern. Nodebox&nbsp;1 ist ein freies (MIT-Lizenz) macOS-Programm für die kreative Graphikprogrammierung (statische, animierte und interaktive Graphiken). Es nutzt Python als Skriptsprache und kann die Ergebnisse wahlweise als PDF (auch mehrseitige) oder als QuickTime-Movie exportieren, aber auch TIFF, PNG oder JPEG herausschreiben.</p>
+<p>Nachdem die »<a href="https://nodebox.net/code/Home">offizielle NodeBox 1</a>« keine Weiterentwicklung mehr erfahren hatte, hat <em>Karsten Wolf</em> <a href="https://github.com/karstenw/nodebox-pyobjc">eine Fork angelegt</a>, und wie man sieht, pflegt er sie – wenn auch mit langen Pausen – unermüdlich weiter. Ich hatte damals auch sehr viel mit dem Teil (von mir liebevoll »Tropfenschachel« genannt) angestellt und stand in häufigem Kontakt mit Karsten. So trägt auch ein Verzeichnis in den mitgelieferten Beispiel-Applikationen den Namen <code>schockwellenreiter.de</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55632431714/"><img src="https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/images/nodebox1pdf.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Ausschnitt aus dem Bannerbild oben, als PDF gespeichert und extrem hochskaliert</figcaption>
+</figure>
+</div>
+<p>NodeBox&nbsp;1 ist eine Weiterentwicklung von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/drawbot.html">DrawBot</a> und wie diese eine Mac-only-Anwendung (da mit PyObjC erstellt). Aber da beide Programme Vektrographiken erzeugen, die verlustfrei skalierbar sind, sind sie wie geeignet für mein Projekt »<a href="http://blog.schockwellenreiter.de/2022/03/2022031101.html">Generative Art auf Papier und zwischen zwei Pappedeckel gepreßt</a>«, mit dem ich dem glücklicherweise mittlerweile wieder abklingenden NFT-Hype den Stinkefinger zeigen wollte.</p>
+<p>Das Ganze kommt natürlich zur Unzeit: Ich schlage mich gerade mit der Frage herum, wie ich <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> dazu überreden kann, seine Ergebnisse als PDF oder SVG zu erzeugen, so dass auch diese verlustfrei hochskaliert werden können. In <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing</a>(.<a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">py</a>)/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> war mir dies ja schon einmal <a href="http://blog.schockwellenreiter.de/2022/07/2022072201.html">gelungen</a>, und auch in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> war ich da (mit Abstrichen) <a href="http://blog.schockwellenreiter.de/2022/07/2022072301.html">erfolgreich</a>.</p>
+<p>Aber auf der anderen Seite: Wenn das Ergebnis sowieso für den Print-Bereich gedacht ist, ist das Werkzeug, mit dem es erzeugt wird, eigentlich Nebensache. (Ich sehe mich schon wieder sehenden Auges in die Mac-only-Falle tappen.) Aber NodeBox&nbsp;1 wie auch DrawBot sind einfach zu nette Werkzeuge, die zuviel Spaß machen, als das ich sie einfach ignorieren könnte.</p>
+<p>Also habe ich mir NodeBox&nbsp;1 heruntergeladen. Ich weiß nicht, ob es an dem großen Andrang kurz nach der Veröffentlichung lag, der Download dauerte jedenfalls ziemlich lange (die Datei war aber auch fett). Die Applikation kommt mit zwei Binaries, <code>NodeBox_arm.app</code> und <code>NodeBox_intel.app</code>. Entgegen dem Namen soll die ARM-Applikationen auch mit einingen Intel-Maschinen laufen, Karsten weiß allerdings nicht, ab welcher OS-Version (er schätzt ab 10.15+, aber er hat die Maschinen nicht, um das zu testen). Ich kann ein wenig Klarheit bringen, mein (Intel-) Mac-Mini läuft mit macOS 15.7.9, und der schluckt die ARM-Version nicht.</p>
+<p>Also habe ich die App mit der Intel-Version gestartet (und die üblichen Apple-Sicherheitsspielchen durchgeführt) und dann – das ist wichtig – in den Settings den Library-Folder auf den Pfad der bei der Applikation mitgelieferten gesetzt. Bei mir war das <code>/Applications/NodeBox 1.10.3/Library</code>.</p>
+<p>Dann habe ich die Tropfenschachtel geschlossen und wieder neu gestartet, und aus der mitgelieferten Bibliothek das Programm <code>Library/linguistics/DOWNLOAD_DATABASES_AND_INSTALL_CONCEPTNET.py</code> angeworfen. Dieses Skript initialisiert wohl einige Datenbanken, die für den Betrieb der Bibliotheken erforderlich sind.</p>
+<p>Das war dann aber alles. Jetzt habe ich wieder eine funktionierende Tropfenschachtel, die neben den oben angesprochenen Ziel, generative Kunst für die Ausgabe zwischen zwei Pappedeckel zu erzeugen, sicher auch als einfach zu bedienender Ersatz für das leider sanft entschlafene Processing.py dienen kann (für diejenigen, denen Py5 zu komplex ist). Schaun wir mal, was ich damit noch alles anstellen werde. <em>Still digging!</em></p>
+
+
+
+ ]]></description>
+  <category>NodeBox</category>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/</guid>
+  <pubDate>Wed, 04 Nov 2026 17:45:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/images/nodebox1new.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Noch einmal Bouncing Birds in P5.js – jetzt optimiert</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3480,68 +3516,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/</guid>
   <pubDate>Mon, 05 Oct 2026 16:35:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/images/nbbbunny.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Atlas Curiosa: Der Franckepark in Berlin-Tempelhof</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026100501_franckepark_tempelhof/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55566924381/"><img src="https://kantel.github.io/posts/2026100501_franckepark_tempelhof/images/franckepark-b.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Der sanierte Rosengarten im Franckepark</figcaption>
-</figure>
-</div>
-<p>Der Franckepark in Tempelhof zählt mit etwa sechs Hektar Fläche zu den größten Parks im Ortsteil Tempelhof. Er ist einer der ältesten Grünanlagen des Bezirks. <em>Theodor Francke</em> (1830–1896) besaß in der Nähe eine Bleiche für Elfenbein. Da er Platz für das Material benötigte, wurde die Fläche zum Lager ausgebaut. Im Jahr 1875 gestaltete <em>Jonathan Kaehler</em> im Auftrag der Familie Francke das Gelände als Privatpark um, unter anderem entstand ein Rodelhügel. Franckes Erben verschenkten den Park 1924 an die Gemeinde Berlin, die eine Neugestaltung vornahm. Unter dem Tempelhofer Bezirksgartendirektor <em>Rudolf Fischer</em> wurden in den Jahren 1925–1928 Areale mit landschaftlichem Charakter, ein Rosengarten sowie ein Damwild­gehege angelegt.</p>
-<p>Fischer ließ darüber hinaus noch eine Tanzfläche, ein Parkcafé, eine Fasanerie und ein Vogelhaus errichten.</p>
-<p>Der Rosengarten als Eingangsbereich von der Siedlung »Am Franckepark« wurde 2026 nach historischem Vorbild saniert. Auch der Brunnen, der jahrzehntelang außer Betrieb war, nachdem eine zwischenzeitlich ergänzte Bronzefigur (Ziegenböckchen) und auch mehrere Ersatzvarianten eingeschmolzen oder gestohlen wurden, sprudelt wieder. Bei unserem Besuch am 3.&nbsp;Oktober standen außerdem noch zahlreiche Rosen und Stauden in Blüte.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55567033298/"><img src="https://kantel.github.io/posts/2026100501_franckepark_tempelhof/images/franckepark01.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Francketeich</figcaption>
-</figure>
-</div>
-<p>Markant ist die tiefe Senke, die den Park prägt. Dort befand sich bis 1906 als <em>Krummer Pfuhl</em> einer der Toteis-Teiche, die noch heute Tempelhof bereichern. 1861 wurde hier eine Badeanstalt mit zwei abgetrennten Bereichen für Damen und Herren eröffnet. Beim Bau des Teltowkanals sank der Grundwasserspiegel. Die Senke fiel weitgehend trocken, es blieb ein kleiner Tümpel, das flächenhafte Naturdenkmal <em>Francketeich</em>. Von 1954 bis 2019 war die Senke Teil des ehemaligen Wildgeheges. Die Auflösung des Damwildgeheges nach fast 90 Jahren wurde Ende September 2018 von der Bezirksverordnetenversammlung beschlossen. Im Oktober 2019 wurde die Umgestaltung des Parks abgeschlossen. Die Umzäunung des ehemaligen Tiergeheges wurde entfernt, die Senke und der Francketeich wurden renaturiert.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55567335370/"><img src="https://kantel.github.io/posts/2026100501_franckepark_tempelhof/images/franckepark02.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Rosengarten (Detail)</figcaption>
-</figure>
-</div>
-<p>Am 9. Mai 2026 feierte man die Wiedereröffnung des Rosengartens. Die Neugestaltung wurde mit Mitteln des Programms Nachhaltige Erneuerung umgesetzt. Nun glänzt er wieder als repräsentativer Eingang zum Park und als Schmuckgarten, der sich an den ursprünglichen Vorgaben orientiert.</p>
-<p>Der Franckepark ist Teil eines größeren Grünzugs im Ortsteil Tempelhof. Er ist mit dem Alten Park, dem Lehnepark und Bosepark durch grüne Wege verbunden. Dadurch ergibt sich ein kilometerlanges hügeliges Band von schönen Spazierwegen durch den Ortsteil Tempelhof.</p>
-<p><strong>Anschrift</strong>: Theodor-Francke-Park, Alt-Tempelhof 24, 12099 Berlin</p>
-<section id="literatur-und-quellen" class="level3">
-<h3 class="anchored" data-anchor-id="literatur-und-quellen">Literatur und Quellen</h3>
-<ul>
-<li>Bezirksamt Tempelhof-Schöneberg: <em><a href="https://mein.berlin.de/vorhaben/2025-01098/">Sanierung des Rosengartens im Franckepark</a></em> (<a href="https://mein.berlin.de/projekte/sanierung-des-rosengartens-im-franckepark/">Plan</a>), Mein Berlin, zuletzt bearbeitet am 2.&nbsp;September&nbsp;2026</li>
-<li>Delia Güssefeld: <em><a href="https://www.dieheimatdelias.de/franckeparkinh.html">Gartenhistorische Führung durch den Franckepark</a></em>, aufgerufen am 5.&nbsp;Oktober&nbsp;2026</li>
-<li>Amina Mendez: <em><a href="https://www.tempelhof-schoeneberg-zeitung.de/der-franckepark-ein-kuehler-ort-in-tempelhof/">Der Franckepark – ein kühler Ort in Tempelhof</a></em>, Tempelhof-Schöneberg Zeitung, 31.&nbsp;Mai&nbsp;2026</li>
-<li>Museen Tempelhof-Schöneberg: <em><a href="https://museen-tempelhof-schoeneberg.de/events/bezirkstour-elfenbein-im-franckepark-ein-rundgang-zu-kolonialer-ausbeutung-und-ihren-spuren-in-tempelhof/">BezirksTOUR: Elfenbein im Franckepark – Ein Rundgang zu kolonialer Ausbeutung und ihren Spuren in Tempelhof</a></em>, 13.&nbsp;Juni&nbsp;2026</li>
-<li>Olver Noffke: <em><a href="https://www.rbb24.de/kultur/beitrag/2026/06/berlin-tempelhof-franckepark-elfenbeinhaendler-theodor-francke-ausstellung-museum.html">Durchatmen, wo früher Elfenbein gebleicht wurde. Franckepark in Berlin-Tempelhof</a></em>, rbb|24, 15.&nbsp;Juni&nbsp;2026</li>
-<li>Dajana Rubert: <em><a href="https://www.entwicklungsstadt.de/franckepark-fertig-15-000-neue-pflanzen-und-ein-alter-brunnen/">Kaum wiederzuerkennen: So hat sich der Franckepark in Tempelhof verändert</a></em>, Entwicklungsstadt, 30.&nbsp;September&nbsp;2026</li>
-<li>Senatsverwaltung für Stadtentwicklung, Bauen und Wohnen: <em><a href="https://www.nachhaltige-erneuerung.berlin.de/neue-mitte-tempelhof/rosengarten-im-franckepark">Denkmalgerechte Sanierung des Rosengartens im Franckepark</a></em>, Nachhaltige Erneuerung, aufgerufen am 5.&nbsp;Oktober&nbsp;2026</li>
-<li>Wikipedia: <em><a href="https://de.wikipedia.org/wiki/Franckepark">Franckepark</a></em>, aufgerufen am 5.&nbsp;Oktober&nbsp;2026</li>
-</ul>
-<hr>
-<p><strong>Photos</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-</section>
-
- ]]></description>
-  <category>Atlas Curiosa</category>
-  <category>Parks und Gärten</category>
-  <category>Tempelhof</category>
-  <category>Denkmalschutz</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026100501_franckepark_tempelhof/</guid>
-  <pubDate>Mon, 05 Oct 2026 13:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026100501_franckepark_tempelhof/images/franckepark.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
