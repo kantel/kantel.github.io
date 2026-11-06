@@ -10,7 +10,321 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 05 Nov 2026 18:45:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 06 Nov 2026 18:40:00 GMT</lastBuildDate>
+<item>
+  <title>PlotDevice – noch ein Knotenschachtel-Klon</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026110601_plot_device/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55634813621/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlespd-b.jpg" class="img-fluid"></a></p>
+<p>Nach dem <a href="https://kantel.github.io/posts/2026110502_no_svg_pdf_mit_p5js/">vergeblichen Versuch gestern</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> zu überreden, Bilder als Vektorgraphiken abzuspeichern, rumorte es ständig in meinem Hinterkopf: Gab es da nicht noch einen Knotenschachtel-Klon? Richtig! Er heißt <strong><a href="https://plotdevice.io/">PlotDevice</a></strong>.</p>
+<p><strong><a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/plotdevice.html">PlotDevice</a></strong> (MIT-Lizenz) ist eine weitere Fork von NodeBox&nbsp;1, der interaktiven 2D-Graphik-Umgebung für macOS, die mit PyObjC alle Möglichkeiten des Macintosh-Betriebssystems voll ausnutzt. Sie ist mit dem Original-Nodebox rückwärtskompatibel, es laufen auch einige – nicht alle – alten Bibliotheken, die GUI ist aber stärker von Processing beeinflusst. Die Dokumentation zu PlotDevice ist hervorragend und vollständig.</p>
+<p>Ich hatte mit PlotDevice vor elf Jahren mal ein wenig <a href="http://blog.schockwellenreiter.de/essays/plotdevicenumpy.html">herumgespielt</a> und war trotz einiger guten Ideen, die das Teil realisiert hatte, enttäuscht. Denn die Integration der NodeBox&nbsp;1-Bibliotheken war zwar versprochen, aber <a href="http://blog.schockwellenreiter.de/2015/10/2015102803.html">schlampig realisiert</a> (und »schlampig« war noch gestrunzt). Das führte dazu, daß ich in den Folgejahren nur noch die <a href="https://plotdevice.io/manual">Dokumentation</a> von PlotDevice genutzt habe, denn die war – auch wenn vieles davon nicht in PlotDevice, sondern nur in <em>Karsten Wolfs</em> <a href="https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/">NodeBox-Fork</a> funktionierte – um Klassen besser als die Original NodeBox&nbsp;1-Dokumentation<sup>1</sup>.</p>
+<p>Aber <em>tempus fuget</em>: Im Sommer 2022 wurde PlotDevice mit der <a href="https://github.com/plotdevice/plotdevice/releases/tag/v1.0.0">Version 1.1.0</a> gründlich <a href="https://github.com/plotdevice/plotdevice">überholt</a> und auch die Dokumentation, welche NodeBox&nbsp;1-Bibliotheken nun mit PlotDevice laufen und was es unter Umständen zu beachten gilt, wurde auf einer <a href="https://github.com/plotdevice/plotdevice-libs">eigenen Seite aktualisiert</a><sup>2</sup> (dort kann man die Bibliotheken (auch einzeln) herunterladen).</p>
+<section id="random-circles-hochaufgelöst-in-plotdevice" class="level3">
+<h3 class="anchored" data-anchor-id="random-circles-hochaufgelöst-in-plotdevice">Random Circles (hochaufgelöst) in PlotDevice</h3>
+<p>Es scheint also, als ob PlotDevice spätestems seit 2022 eine nutzbare Alternative sein kann, die ich schändlicherweise übersehen habe. Aus Frust über die P5.js-Enttäuschung gestern und um PlotDevice zu testen, habe ich das Skript mal nach PlotDevice portiert (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/55634813621/">Screenshot</a> im Bannerbild oben):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb1-4">malewitsch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#334775"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6484ac"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f09108"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f2cf90"</span>,</span>
+<span id="cb1-5">              <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ea4e4a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e8434c"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#906120"</span>]</span>
+<span id="cb1-6"></span>
+<span id="cb1-7">size(WIDTH, HEIGHT)</span>
+<span id="cb1-8">background(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#62c777"</span>)</span>
+<span id="cb1-9">strokewidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span>):</span>
+<span id="cb1-11">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-12">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-13">    stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)</span>
+<span id="cb1-14">    fill(malewitsch[(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(malewitsch) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))], <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-15">    arc(x, y, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb1-16">    nostroke()</span>
+<span id="cb1-17">    fill(malewitsch[(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(malewitsch) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))], <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">.4</span>)</span>
+<span id="cb1-18">    radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>)</span>
+<span id="cb1-19">    arc(x, y, radius)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
+<p>Das Skript ist erstaunlich kurz, was aber auch daran liegt, dass ich auf die Unterteilung in <code>setup()</code> und <code>draw()</code> verzichten konnte. Der Sketch läuft liniar durch und wenn ich mit dem Ergebnis nicht zufrieden bin, starte ich ihn einfach neu.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55633828207/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlespd-l.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Das Ergebnis als hochaufgelöstes PDF (Ausschnitt)</figcaption>
+</figure>
+</div>
+<p>Wenn man das Resultat eines Durchlaufs als PDF abspeichert (entweder über das Menü <code>File -&gt; Export as Image …</code> oder über den kleinen Photoapparat rechts oben im Programmfenster), erhält man eine Datei, die sich beliebig hochskalieren lässt. Das war es eigentlich, was ich mir auch von P5.js erhofft hatte.</p>
+</section>
+<section id="random-circles-hochaufgelöst-in-nodebox-1" class="level3">
+<h3 class="anchored" data-anchor-id="random-circles-hochaufgelöst-in-nodebox-1">Random Circles (hochaufgelöst) in NodeBox 1</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55637059740/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlesnodebox-b.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Random Circles mit der NodeBox&nbsp;1</figcaption>
+</figure>
+</div>
+<p>Und NodeBox&nbsp;1? Natürlich musste ich das Experiment auch mit <em>Karsten Wolfs</em> Fork der Knotenschachtel durchführen. Ich hatte gehofft, den Quellcode Eins-zu-Eins übernehmen zu können, aber ein wenig unterschieden sich die beiden Programme doch. Hier ist also meine Version der zufälligen Kreise für die Knotenschachtel:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb2-2">colormode(RGB, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb2-3"></span>
+<span id="cb2-4">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb2-5">malewitsch0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#334775"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6484ac"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f09108"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f2cf90"</span>,</span>
+<span id="cb2-6">               <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ea4e4a"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e8434c"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#906120"</span>]</span>
+<span id="cb2-7">malewitsch1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#33477566"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#6484ac66"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f0910866"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#f2cf9066"</span>,</span>
+<span id="cb2-8">               <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#ea4e4a66"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#e8434c66"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#90612066"</span>]</span>
+<span id="cb2-9"></span>
+<span id="cb2-10">size(WIDTH, HEIGHT)</span>
+<span id="cb2-11">background(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#62c777"</span>)</span>
+<span id="cb2-12">strokewidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-13"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span>):</span>
+<span id="cb2-14">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb2-15">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb2-16">    stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)</span>
+<span id="cb2-17">    fill(color(malewitsch0[(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(malewitsch0) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))]))</span>
+<span id="cb2-18">    circle(x, y, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>)</span>
+<span id="cb2-19">    nostroke()</span>
+<span id="cb2-20">    fill(color(malewitsch1[(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(malewitsch1) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))]))</span>
+<span id="cb2-21">    radius <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span>)</span>
+<span id="cb2-22">    circle(x, y, radius)</span>
+<span id="cb2-23"></span>
+<span id="cb2-24"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
+<p>Der Hauptunterschied ist, dass ich – wie auch bei meinen Versuchen mit P5.js – zwei Listen für die Farben anlegen musste, da ich nicht herausbekommen habe, wie man den Alphawert an den Hexstring für die Farben anhängt. Alles andere sind Kleinigkeiten (der <code>colormode()</code> muss definiert werden und <code>arc()</code> verhält sich in der NodeBox anders als in PlotDevice und musste daher durch <code>circle()</code> ersetzt werden).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55636849909/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlesnodebox-l.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Das Ergebnis hochaufgelöst in NodeBox&nbsp;1</figcaption>
+</figure>
+</div>
+<p>Der Clou ist aber: Die Kontenschachtel besitzt in der GUI einen Slider, mit dem man das Ergebnis bis auf 1.000 Prozent vergrößern kann. Und wie man am obigen Screenshot sieht, gibt es auch hier nichts zu meckern.</p>
+</section>
+<section id="fazit" class="level3">
+<h3 class="anchored" data-anchor-id="fazit">Fazit</h3>
+<p>Die Knotenschachtel (in der Version von <em>Karsten Wolf</em>) wie auch PlotDevice scheinen ziemlich gleichwertige Macintosh-Applikationen für kreative Programmierer (und solche, die es werden wollen) zu sein. Für PlotDevice spricht die einfachere Installation (daher ist es vielleicht ein wenig besser für Anfänger geeignet), während mir NodeBox&nbsp;1 ein wenig aktueller und ausgereifter zu sein scheint. Aber da ich beide Programme ziemlich lange aus den Augen verloren hatte, werde ich mit beiden noch einiges anstellen. Und ob ich dann eines dem anderen vorziehen werde, weiß ich noch nicht. Momentan macht es mir erst einmal viel Spaß, mit beiden zu spielen. <em>Still digging!</em></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Das hat sich mittlerweile verbessert: Bevor NodeBox&nbsp;1 zugunsten von NodeBox&nbsp;3 in ein <a href="https://nodebox.net/code/Home">Archiv abgeschoben und eingefroren wurde</a>, hatte sich jemand der Dokumentation angenommen und sie auf den damaligen Stand gebracht und alle Fehler (das waren in der Hauptsache im Daten-Nirwana verschwunden Bilder) ausgemerzt.↩︎</p></li>
+<li id="fn2"><p>Das gilt übrigens auch für die NodeBox&nbsp;1-Fork von <em>Karsten Wolf</em>: Auch er hat eine <a href="https://github.com/karstenw/Library">NodeBox Library</a>-Seite, in der nicht nur die »klassischen« NodeBox&nbsp;1-Bibliotheken aufgeführ sind (und ob sie mit der Fork laufen), sondern auch alle Änderungen und Neuerungen. Natürlich kann man auch hier die Bibliotheken (auch einzeln) herunterladen.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>PlotDevice</category>
+  <category>NodeBox</category>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2026110601_plot_device/</guid>
+  <pubDate>Fri, 06 Nov 2026 18:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026110601_plot_device/images/circlespd.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Keine hochaufgelösten PDF oder SVG in P5.js?</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3625,32 +3939,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026101401_alice_tutorial_7/</guid>
   <pubDate>Wed, 14 Oct 2026 11:50:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026101401_alice_tutorial_7/images/drago.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Das Blau des Grauens: »Tiere auf der Strecke«</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026100801_tiere_auf_der_strecke/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55577277539/"><img src="https://kantel.github.io/posts/2026100801_tiere_auf_der_strecke/images/tierestrecke-b.jpg" class="img-fluid"></a></p>
-<p>Heute hatte mich die kaputtgesparte Berliner S-Bahn mit einer neuen Ausrede überrascht, mit der sie ihre Unzuverlässigkeit vertuschen will: »Tiere auf der Strecke« – das ist neu, das hatte ich in <a href="https://www.flickr.com/photos/schockwellenreiter/albums/72157654650474985/with/26249258470">all den Jahren</a> noch nicht.</p>
-<hr>
-<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>Failed State Berlin</category>
-  <category>Modernes Leben</category>
-  <category>Neuköllner Bilderbogen</category>
-  <category>Verkehr</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026100801_tiere_auf_der_strecke/</guid>
-  <pubDate>Thu, 08 Oct 2026 18:05:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026100801_tiere_auf_der_strecke/images/tierestrecke.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
