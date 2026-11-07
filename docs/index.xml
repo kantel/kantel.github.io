@@ -10,7 +10,379 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Sat, 07 Nov 2026 13:55:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 07 Nov 2026 15:55:00 GMT</lastBuildDate>
+<item>
+  <title>DrawBot – die Mutter aller Knotenschachteln</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026110702_drawbot/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55638710644/"><img src="https://kantel.github.io/posts/2026110702_drawbot/images/randcircdrawbot-b.jpg" class="img-fluid"></a></p>
+<p>Alle Knotenschachteln – egal ob <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodebox.html">NodeBox&nbsp;1</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/plotdevice.html">PlotDevice</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodeboxforopengl.html">NodeBox for OpenGL</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/shoebot.html">Shoebot</a> – gehen auf eine Macintosh-App zurück: Auf <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/drawbot.html">DrawBot</a>.</p>
+<p><strong><a href="https://www.drawbot.com/">DrawBot</a></strong> ist eine mächtige, freie (BSD-Lizenz), in Python geschriebene Anwendung für macOS für die Erstellung zweidimensionaler Graphiken. DrawBot kann, im Gegensatz zum Beispiel zu Processing, mehrere Seiten mit einem Skript erzeugen. DrawBots Exportformate sind PDF (auch via Menü), SVG, PNG, JPEG, TIFF, animated GIF, MP4-Video und noch einige mehr (via <a href="https://www.drawbot.com/content/canvas/saveImage.html"><code>saveImage</code></a>). Die Anwendung kommt als binäre, vollständige Applikation (erstellt mit py2app), sie kann aber auch als Modul in anderen Python-Anwendungen eingesetzt werden. Aber auch das Modul ist Mac-only, da mit PyObjC erstellt, und damit verwandt mit seinem Nachfolgerprojekt Nodebox&nbsp;1.</p>
+<p>Einer der Hauptentwickler von DrawBot ist der Typograph <em><a href="https://de.wikipedia.org/wiki/Just_van_Rossum">Just van Rossum</a></em>, ein Bruder des Python-»Erfinders« <em><a href="https://de.wikipedia.org/wiki/Guido_van_Rossum">Guido van Rossum</a></em><sup>1</sup>.</p>
+<p>Ich selber bin erst verhältnismäig spät (im August 2021) <a href="http://blog.schockwellenreiter.de/2021/08/2021083001.html">über DrawBot gestolpert</a> und habe dann auch ein <a href="http://blog.schockwellenreiter.de/2021/09/2021090501.html">paar Mal</a> damit <a href="http://blog.schockwellenreiter.de/2022/03/2022031402.html">herumgespielt</a> und dabei über ein <a href="https://kantel.github.io/posts/2023110601_drawbot_reboot/">Reboot nachgedacht</a>. Grund dafür war auch hier, dass DrawBot auflösungsunabhängige Dateien ausgibt, die sich beliebig verlustfrei aufblasen lassen.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55638922230/"><img src="https://kantel.github.io/posts/2026110702_drawbot/images/randcircdrawbot-l.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Random Circles mit DrawBot, auch hier wieder extrem vergrößert</figcaption>
+</figure>
+</div>
+<p>Das war natürlich ein Ansporn für mich, die zufälligen Kreise, die ich in den letzten Tagen mit <a href="https://kantel.github.io/posts/2026110601_plot_device/">NodeBox&nbsp;1 und mit PlotDevice auflösungsunabhängig realisiert</a> hatte, auch mal nach DrawBot zu portieren. Das Ergebnis ist dasselbe (auch wenn ich dieses Mal – um nicht immer gleich aussehende Screenshots zu haben – als Hintergrundfarbe Packpapierbraun gewählt hatte). Doch hier erst einmal der Quellcode:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> randint</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb1-4">malewitsch <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>),</span>
+<span id="cb1-5">              (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">160</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">46</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>),</span>
+<span id="cb1-6">              (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">54</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>),</span>
+<span id="cb1-7">              (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">105</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>),</span>
+<span id="cb1-8">              (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">180</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">144</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">55</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>),</span>
+<span id="cb1-9">              (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">215</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">158</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>),</span>
+<span id="cb1-10">              (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">140</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">82</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">48</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>)]</span>
+<span id="cb1-11">                        </span>
+<span id="cb1-12">a <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span>       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Alpha (Transparenz)</span></span>
+<span id="cb1-13">numCircles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">200</span></span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> makeFillColor(color, a):</span>
+<span id="cb1-16">    r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> color[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb1-17">    g <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> color[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]</span>
+<span id="cb1-18">    b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> color[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>]</span>
+<span id="cb1-19">    fill(r, g, b, a)</span>
+<span id="cb1-20"></span>
+<span id="cb1-21"></span>
+<span id="cb1-22">size(WIDTH, HEIGHT)</span>
+<span id="cb1-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hintergrundfarbe (Packpapier)</span></span>
+<span id="cb1-24">bgColor <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">230</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">226</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">204</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255.0</span>)</span>
+<span id="cb1-25">makeFillColor(bgColor, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-26">rect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, width(), height())</span>
+<span id="cb1-27"></span>
+<span id="cb1-28">strokeWidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-29"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(numCircles):</span>
+<span id="cb1-30">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, WIDTH <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-31">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span>)</span>
+<span id="cb1-32">    stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Schwarzer Rand</span></span>
+<span id="cb1-33">    makeFillColor(malewitsch[(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(malewitsch) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))], <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span>)</span>
+<span id="cb1-34">    d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6.</span>               <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Durchmesser</span></span>
+<span id="cb1-35">    r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Radius</span></span>
+<span id="cb1-36">    oval(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r, d, d)</span>
+<span id="cb1-37">    stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>)       <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># no stroke</span></span>
+<span id="cb1-38">    makeFillColor(malewitsch[(randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(malewitsch) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>))], a)</span>
+<span id="cb1-39">    d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">60</span>)  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Durchmesser</span></span>
+<span id="cb1-40">    r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2.</span>            <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Radius</span></span>
+<span id="cb1-41">    oval(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> r, d, d)</span>
+<span id="cb1-42"></span>
+<span id="cb1-43"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
+<p>Bis auf Nuancen ist er wieder nahezu identisch mit den PlotDevice- und NodeBox-1-Beispielen<sup>2</sup>. Ein Unterschied ist, dass DrawBox die RGB-Werte als Nachkommazahlen zwischen Null und Eins erwartet. Ein anderer, dass der Ursprung des Koordinatensystems bei DrawBot in der <strong>linken unteren</strong> Ecke liegt. Das musste aber in diesem Beispiel nur dabei beachtet werden, dass die Radii (da der Ursprung der <code>oval()</code>-Funktion in der <strong>linken oberen</strong> Ecke liegt und somit der dritte und vierte Parameter nicht die Radii, sondern der Durchmesser, genauer die Breite und die Höhe des Ovals, sind), von der x- <strong>und</strong> y-Koordinate abgezogen werden müssen, um die Kreise zentriert zu zeichnen.</p>
+<p>Ein weiterer »Trick« ist auch, dass ich mit <code>stroke(0, 0.0)</code> den zweiten, äußeren Kreis ohne Umrandung gezeichnet habe. Denn eine voll transparente Umrandung ist keine Umrandung.</p>
+<p>Auch das Spielen mit DrawBot hat mir viel Spaß gemacht. Jetzt weiß ich wirklich nicht, welche der drei Applikationen ich für mein mögliches Projekt »<a href="http://blog.schockwellenreiter.de/2022/03/2022031101.html">Generative Art auf Papier und zwischen zwei Pappedeckel gepresst</a>« einsetzen soll. Ich werde mit allen drei wohl noch ein wenig spielen müssen, um mich entscheiden zu können. Aber da ich ja bekanntlich ein großes Spielkalb bin … <em>Still digging!</em></p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Funfakt am Rande: Im Gegensatz zu seinem Bruder, der den <code>snake_case</code> zu einem Quasi-Standard für Python erhoben hat, bevorzugt <em>Just van Rossum</em> den <code>camelCase</code> und setzt das auch konsequent in DrawBot um.↩︎</p></li>
+<li id="fn2"><p>Die »neue« Funktion <code>makeFillColor()</code> (camelCase 🤓) ist vielleicht der Ausweg, wie ich RGB-Farbwerte auch in NodeBox&nbsp;1 und PlotDevice mit unterschiedlichen Alpha-Werten (für die Transparenz) kombinieren kann, ohne gleich ein zweites Array anlegen zu müssen.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>DrawBot</category>
+  <category>Python</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2026110702_drawbot/</guid>
+  <pubDate>Sat, 07 Nov 2026 15:55:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026110702_drawbot/images/randcircdrawbot.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>In the Jungle, the Mighty Jungle, Queen Jeanie Sleeps Tonight</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3677,49 +4049,6 @@ font-style: inherit;">;</span></span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/</guid>
   <pubDate>Fri, 16 Oct 2026 15:40:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/images/adblocker.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Q5 Webeditor v2 veröffentlicht!</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026101501_q5_webeditor_v2/</link>
-  <description><![CDATA[ 
-
-
-
-
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55240540789/"><img src="https://kantel.github.io/posts/2026101501_q5_webeditor_v2/images/q5playpython-b.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Screenshot</figcaption>
-</figure>
-</div>
-<p>Zu <a href="https://q5play.org/home/">Q5.play</a> und <a href="https://q5js.org/home/">Q5.js</a>, der »rasend schnellen Alternative« zu <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, gibt es auch einen eigenen <a href="https://codevre.com/q5-editor">Webeditor</a>. Und von dem wurde gestern die <a href="https://substack.com/home/post/p-220365525">Version&nbsp;2 freigegeben</a>. Es ist ein größeres Update mit folgenden Änderungen:</p>
-<ul>
-<li>Lädt 2x schneller,</li>
-<li>entwickelt mit <a href="https://github.com/esm-dev/modern-monaco">Modern Monaco</a> (genau wie Visual Studio Code),</li>
-<li>Inline-Dokumentation und automatische Vervollständigung für Q5.js und Q5.play,</li>
-<li>erstklassiger Support für modernes JavaScript und Python (via <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a>).</li>
-</ul>
-<p>Die Sketche werden jetzt ausgeführt, bevor der Editor geladen wird, so dass Ihr sofort mit dem Sketch interagieren könnt. Außerdem könnt Ihr nun Dateien per Drag-and-Drop in den Editor hochladen.</p>
-<p>Zu Q5.play und Q5.js habe ich jedoch ein <a href="https://kantel.github.io/posts/2026043001_q5play_python/">gespaltenes Verhältnis</a>. Eigentlich macht das Teil auf mich einen guten Eindruck und es scheint auch auf einer soliden Grudlage zu stehen. Und so reizt mich vor allem die Möglichkeit, die Q5.play-Bibliothek in Python/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a> zu nutzen, der Python-Version, die auch in <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a> werkelt. Aber auf der anderen Seite steht das Teil unter einer <a href="https://github.com/q5play/q5play?tab=License-1-ov-file#readme">seltsamen Lizenz</a>. Zwar darf man – außerhalb militärischer Einrichtungen (das ist der Teil der Lizenz, der mir gefällt) – das Teil eigentlich kostenlos nutzen, jedoch wird für die Nutzung in der Ausbildung Knete verlangt. Und da frage ich mich: Ist ein Q5.play-Tutorial, das ich hier auf diesen Seiten veröffentliche »Nutzung in der Ausbildung«? Und was wäre, wenn ich damit einen Volkshochschulkurs anbiete? Daher sind Q5.js und Q5.play für mich momentan keine ernstzumehmenden Alternativen zu (wirklich!) freien Programmen.</p>
-<p>Ich werde daher wohl doch – wenn es um JavaScript geht – weiter bei P5.js bleiben müssen, das in der <a href="https://p5js.org/">Version&nbsp;2</a> ja ebenfalls einen gewaltigen Schritt nach vorne gemacht hat. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55240540789/">Q5play kann Python</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A badger in a red dressing gown and a python wearing horn-rimmed glasses are sitting together in a classroom in front of a computer, programming games. On the blackboard behind them, written in chalk, are the words: “Spieleprogrammierung mit Q5play und Python”. Colored Franco-Belgian comic style. Language: German. No speech bubbles, no textboxes, no headlines.</em>« Modell: Nano Banana&nbsp;2.</p>
-
-
-
- ]]></description>
-  <category>Q5.js</category>
-  <category>Q5.play</category>
-  <category>P5.js</category>
-  <category>JavaScript</category>
-  <category>Python</category>
-  <category>Brython</category>
-  <category>Spieleprogrammierung</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2026101501_q5_webeditor_v2/</guid>
-  <pubDate>Thu, 15 Oct 2026 18:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026101501_q5_webeditor_v2/images/q5playpython.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
