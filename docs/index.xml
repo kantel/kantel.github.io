@@ -10,7 +10,530 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Sat, 07 Nov 2026 15:55:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 09 Nov 2026 13:50:00 GMT</lastBuildDate>
+<item>
+  <title>Spaß mit der Knotenschachtel (und mit DrawBot): Der Lorenz-Attraktor</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026110901_lorenz_attraktor/</link>
+  <description><![CDATA[ 
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55642514193/"><img src="https://kantel.github.io/posts/2026110901_lorenz_attraktor/images/lorenznodebox-b.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Der Lorenz-Attraktor mit der NodeBox visualisiert</figcaption>
+</figure>
+</div>
+<p>Als einer der ersten hatte <em><a href="https://de.wikipedia.org/wiki/Edward_N._Lorenz">Edward N. Lorenz</a></em>, ein Meteorologe am <a href="https://de.wikipedia.org/wiki/Massachusetts_Institute_of_Technology">Massachusetts Institute of Technology</a> (MIT), 1961 erkannt, dass Iteration Chaos erzeugen kann. Er benutzte dort einen Computer, um ein einfaches, nichtlineares Gleichungssystem zu lösen, das ein simples Modell der Luftströmungen in der Erdathmosphäre simulieren sollte. Dazu benutzte er ein System von sieben Differentialgleichungen, das <em><a href="https://www.encyclopedia.com/science/dictionaries-thesauruses-pictures-and-press-releases/saltzman-barry">Barry Saltzman</a></em> im gleichen Jahr aus den <a href="https://de.wikipedia.org/wiki/Navier-Stokes-Gleichungen">Navier-Stokes-Gleichungen</a> hergeleitet hatte. Für dieses System existierte keine analytische Lösung, also musste es numerisch (das hieß, wie damals und auch heute noch vielfach üblich, in FORTRAN) gelöst werden. Lorenz hatte entdeckt, dass bei nichtperiodischen Lösungen der Gleichungen vier der sieben Variablen gegen Null strebten. Daher konnte er das System auf drei Gleichungen reduzieren:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign%7D%0A%5Cfrac%7Bdx%7D%7Bdt%7D%20&amp;%20=%20%5Cgamma%20x%20+%20yz%20%5C%5C%0A%5Cfrac%7Bdy%7D%7Bdt%7D%20&amp;%20=%20%5Csigma%20(y%20-%20z)%20%5C%5C%0A%5Cfrac%7Bdz%7D%7Bdt%7D%20&amp;%20=%20-xy%20+%20%5Crho%20y%20-%20z%0A%5Cend%7Balign%7D%0A"></p>
+<p>Dabei sind <img src="https://latex.codecogs.com/png.latex?%5Csigma=%E2%88%9210">, <img src="https://latex.codecogs.com/png.latex?%5Crho=28"> und <img src="https://latex.codecogs.com/png.latex?%5Cgamma=%E2%88%92%5Cfrac%7B8%7D%7B3%7D">. Die Parameter der Gleichung habe ich <em>[Stew1993]</em> entnommen.</p>
+<p>Nach ersten Läufen gab Lorenz die Anfangswerte nicht mehr sechstellig (das war damals der FORTRAN-Standard), sondern nur noch dreistellig ein, da er der Meinung war, dass eine Abweichung von unter einem Promille keine Bedeutung habe.</p>
+<p>Dabei entdeckte er, dass diese Lösung nur noch in den Anfangsergebnissen mit der Lösung der sechsstelligen Eingabe übereinstimmte. Alle weiteren Werte liefen beträchtlich auseinander. Lorenz grundlegende Erkenntnis war, dass dieses Phänomen kein Computerfehler, sondern eine prinzipielle Eigenschaft nichtlinearer Gleichungssysteme sei. Schon die geringeste Änderung in den Anfangsbedingungen kann eine komplett andere Lösung hervorbringen. Diese Beobachtung ging später als »<a href="https://de.wikipedia.org/wiki/Schmetterlingseffekt">Schmetterlingseffekt</a>« (»<em>Der Schlag eines Schmetterlingsflügels in Brasilien kann einen Tornado über Texas hervorrufen.</em>«) in die Geschichte der <a href="https://de.wikipedia.org/wiki/Chaosforschung">Chaostheorie</a> ein.</p>
+<p>Das Gleichungssystem, ein seltsamer Attraktor eines Systems von drei gekoppelten, nichtlinearen gewöhnlichen Differentialgleichungen, nach seinem Entdecker »<a href="https://de.wikipedia.org/wiki/Lorenz-Attraktor"><strong>Lorenz-Attraktor</strong></a>« genannt, wollte ich auch einmal mit der Knotenschachtel (<a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodebox.html">NodeBox&nbsp;1</a>) visualisieren.</p>
+<p>Da ich den Aufwand über NumPy/SciPy und die Funktion <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.odeint.html"><code>odeint</code></a> scheute (obwohl das prinzpiell mit NodeBox&nbsp;1 möglich wäre), habe ich das einfache <a href="https://de.wikipedia.org/wiki/Explizites_Euler-Verfahren">Eulersche Poligonzugverfahren</a> zur numerischen Berechnung benutzt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1">dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-2">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-3">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-4">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb1-5">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb1-6">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span></code></pre></div></div>
+<p>Um der Kurve einen möglichst flüssigen Verlauf ohne Ecken und Kanten zu spendieren, habe ich <code>dt = 0.001</code> gesetzt. Das benötigt natürlich mehr Rechenkapazität, als sie Lorenz je zur Verfügung standen, aber trotz der größeren Genauigkeit ändert sich nichts am chaotischen Verhalten der Kurve. Für die Farbberechnung habe ich den <code>colormode(HSB)</code> gesetzt, aber nur den Farbwert <em>(Hue)</em> bei jeder Iteration geändert, Sättigung <em>(Saturation)</em> und Helligkeit <em>(Brightness)</em> bleiben konstant auf dem höchsten Wert. Das ergibt kräftige Farben, die von Rot über Orange nach Gelb und dann nach Grün, Blau und Violett wandern. So kann man schön erkennen, daß die beiden »Flügel« des Attraktors immer wieder, aber für uns unvorhersehbar, durchlaufen werden.</p>
+<section id="der-quellcode-nodebox" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode-nodebox">Der Quellcode (NodeBox)</h3>
+<p>Hier nun der vollständige Quellcode des Skripts. Er ist kurz und selbsterklärend und folgt weitestgehend einem Pascal-Programm aus <em>[Herm1994]</em>, Seiten 80ff.:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb2-2">colormode(RGB, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb2-3">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb2-4">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40.0</span></span>
+<span id="cb2-5">sigma <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.0</span></span>
+<span id="cb2-6">dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span></span>
+<span id="cb2-7">t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb2-8">maxi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75.0</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Max Iteration</span></span>
+<span id="cb2-9">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span></span>
+<span id="cb2-10">z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb2-11"></span>
+<span id="cb2-12">size(WIDTH, HEIGHT)</span>
+<span id="cb2-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hintergrundfarbe</span></span>
+<span id="cb2-14">background(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb2-15">colormode(HSB)</span>
+<span id="cb2-16">strokewidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb2-17"></span>
+<span id="cb2-18"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb2-19">    stroke(t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb2-20">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb2-21">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb2-22">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb2-23">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb2-24">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb2-25">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb2-26">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb2-27">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-28">    zz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb2-29">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb2-30">        line(xx, zz, xx, zz)</span>
+<span id="cb2-31">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-32">        line(oldX, oldZ, xx, zz)    </span>
+<span id="cb2-33">    oldX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xx</span>
+<span id="cb2-34">    oldZ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> zz</span>
+<span id="cb2-35">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span>
+<span id="cb2-36">    </span>
+<span id="cb2-37"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
+<p>Der Output des Sketches zeigt die dreidimensionale Kurve projiziert auf die X- und Z-Ebene. Mit wenigen Änderungen könnt Ihr aber auch eine Projektion auf die X- und Y-Ebene oder auf die Y- und Z-Ebene bekommen.</p>
+</section>
+<section id="der-quellcode-drawbot" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode-drawbot">Der Quellcode (DrawBot)</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55642582019/"><img src="https://kantel.github.io/posts/2026110901_lorenz_attraktor/images/lorenzdrawbot.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Der Lorenz-Attraktor mit DrawBot visualisiert</figcaption>
+</figure>
+</div>
+<p>Davon angefixt wollte ich dann noch wissen, wie einfach sich ein Port des Skript zum <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/drawbot.html">DrawBot</a>, der »<a href="https://kantel.github.io/posts/2026110702_drawbot/">Mutter aller Knotenschachteln</a>«, durchführen ließ. Spoiler: Es waren nur wenige Änderungen nötig:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">400</span></span>
+<span id="cb3-2"></span>
+<span id="cb3-3">b <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span></span>
+<span id="cb3-4">r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40.0</span></span>
+<span id="cb3-5">sigma <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10.0</span></span>
+<span id="cb3-6">dt <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.001</span></span>
+<span id="cb3-7">t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb3-8">maxi <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">75.0</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Max Iteration</span></span>
+<span id="cb3-9">x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span></span>
+<span id="cb3-10">z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span></span>
+<span id="cb3-11"></span>
+<span id="cb3-12">size(WIDTH, HEIGHT)</span>
+<span id="cb3-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Hintergrundfarbe</span></span>
+<span id="cb3-14">stroke(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-15">rect(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, width(), height())</span>
+<span id="cb3-16"></span>
+<span id="cb3-17">strokeWidth(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-18"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb3-19">    colorStep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>maxi</span>
+<span id="cb3-20">    stroke(t, t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>colorStep, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-21">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb3-22">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb3-23">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb3-24">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb3-25">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb3-26">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb3-27">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb3-28">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-29">    zz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb3-30">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb3-31">        line((xx, zz), (xx, zz))</span>
+<span id="cb3-32">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb3-33">        line((oldX, oldZ), (xx, zz))    </span>
+<span id="cb3-34">    oldX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xx</span>
+<span id="cb3-35">    oldZ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> zz</span>
+<span id="cb3-36">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span>
+<span id="cb3-37">    </span>
+<span id="cb3-38"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
+<p>Die einfachste Änderung war, dass DrawBot keine <code>background()</code>-Funktion besitzt, also musste ich stattdessen ein (schwarzes) Rechteck über den kompletten Canvas zeichnen.</p>
+<p>Ebenfalls einfach war zu realisieren, dass sich in DrawBot die y-Achse umkehrt. Daher musste, statt wie in der NodeBox</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1">yAchse <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> margin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> skalierungsfaktor</span></code></pre></div></div>
+<p>in DrawBot</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1">yAchse <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> margin <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> skalierungsfaktor</span></code></pre></div></div>
+<p>gesetzt werden. Der Unterschied von zehn Pixeln in <code>margin</code> wurde von mir willkürlich aus ästhetischen Gründen gewählt.</p>
+<p>Der größte Aufwand war, dass DrawBot keinen HSB/HSV-Farbraum kennt. Um mit RGB ebenfalls eine ansprechende Farbgebung zu erreichen, habe ich daher ebenfalls recht willkürlich eine Variable <code>colorStep</code> erzeugt, die in Abhängigkeit von <code>maxiter</code> und <code>t</code> ihren Wert ändert:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1">    colorStep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>maxi</span>
+<span id="cb6-2">    stroke(t, t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>colorStep, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div></div>
+<p>Und diese Variable ändert nun fortschreitend nur den Rot- und Grün-Anteil der RGB-Farbe, während der Blau-Anteil auf Null gesetzt bleibt, Das führt zu einer Rot-Orange-Gelb-Oszillaton der Farben, die doch auch recht nett aussieht.</p>
+</section>
+<section id="literatur" class="level3">
+<h3 class="anchored" data-anchor-id="literatur">Literatur</h3>
+<ul>
+<li><em>[BeDö2025a]</em> Karl-Heinz Becker, Michael Dörfler: <em>Fraktale und Dynamische Systeme. Computergrafische Experimente mit Processing</em>, Bremen 2025, Seiten 85ff.</li>
+<li><em>[BeDö2025b]</em> Karl-Heinz Becker, Michael Dörfler: <em>Fratale XXL - Bilderbuch der Fraktale. Computergrafische Experimente mit Processing</em>, Bremen 2025, Seiten 31ff.</li>
+<li><em>[Chan2012]</em> Sau Sheong Chang: <em>Exploring Everyday Things with R and Ruby</em>, Sebastopol (O’Reilly) 2012</li>
+<li><em>[Herm1994]</em> Dieter Hermann: <em>Algorithmen für Chaos und Fraktale</em>, Bonn (Addison-Wesley) 1994, Seiten 80ff.</li>
+<li><em>[Pief1991]</em> Frank Piefke: <em>Simulationen mit dem Personalcomputer</em>, Heidelberg (Hüthig) 1991</li>
+<li><em>[Soet2009]</em> Karline Soetaert, Peter M. J. Hermann: <em>A Practical Guide to Ecological Modelling: Using R as a Simulation Platform</em>, o.O. (Springer Netherlands) 2009</li>
+<li><em>[Stew1993]</em> Ian Stewart: <em>Spielt Gott Roulette?</em>, Frankfurt (Insel TB) 1993</li>
+</ul>
+
+
+</section>
+
+ ]]></description>
+  <category>Dynamische Systeme</category>
+  <category>Mathematik</category>
+  <category>NodeBox</category>
+  <category>DrawBot</category>
+  <category>Python</category>
+  <category>Computergraphik</category>
+  <guid>https://kantel.github.io/posts/2026110901_lorenz_attraktor/</guid>
+  <pubDate>Mon, 09 Nov 2026 13:50:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026110901_lorenz_attraktor/images/lorenznodebox.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>DrawBot – die Mutter aller Knotenschachteln</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4017,38 +4540,6 @@ font-style: inherit;">;</span></span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026101701_caturday/</guid>
   <pubDate>Sat, 17 Oct 2026 14:30:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026101701_caturday/images/queenjeanie.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Staatstrojaner via Online-Werbung: Adblocker sind Notwehr</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55593212316/"><img src="https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/images/adblocker-b.jpg" class="img-fluid"></a></p>
-<p>Ich hatte es – glaube ich – vor etwa zehn Jahren schon behauptet: »<a href="http://blog.schockwellenreiter.de/2016/12/2016120501.html">Adblocker sind Notwehr!</a>« Jetzt bestätigt auch Netzpolitik.org, dass »<a href="https://netzpolitik.org/2026/werbeblocker-obligatorisch-geraete-lassen-sich-ohne-klick-per-werbeanzeige-hacken/">Werbeblocker obligatorisch</a>« seien. Denn in einer großangelegten Recherche <a href="https://www.tagesschau.de/investigativ/br-recherche/spionage-software-werbung-100.html">zusammen mit dem Bayerischen Rundfunk</a> hatten sie herausgefunden, daß sich Geräte »ohne Klick per Werbeanzeige hacken« ließen:</p>
-<blockquote class="blockquote">
-<p>Erstmals konnten IT-Forscher*innen des Citizen Lab von der Universität Toronto technisch nachvollziehen, wie Angreifer Geräte per Online-Werbung hacken – ohne dass Opfer einen Klick machen müssen. Sobald eine bösartige Werbeanzeige auf dem Bildschirm eines Handys oder Rechners erscheint, soll es bereits zu spät sein, und das Gerät wird mit Spionage-Software infiziert. Die Forschenden nennen diese Art des Angriffs »AdFection«, ein Kofferwort aus »Ad« (Werbung) und Infektion.</p>
-</blockquote>
-<p>Im Fokus der <a href="https://citizenlab.ca/research/how-discover-tech-turned-targeted-ads-into-a-pipeline-for-spyware/">Untersuchung</a> stand die israelische Firma Discover-Tech Ltd., die sich jahrelang als harmlose Werbebude ausgegeben hatte. Die Forscherinnen und Forscher gehen mit »hoher Sicherheit« davon aus, dass Angreifer mit Hilfe von Discover-Tech Trojaner der Firma Candiru über bösartige Werbeanzeigen verteilt haben sollen.</p>
-<p>Ganz ohne Klick der überrumpelten Nutzerinnen und Nutzer scheint es aber immer noch nicht gegangen zu sein. Irgendwann im Vorfeld muss schon eine Interaktion mit dem Werbenetzwerk stattgefunden haben, nur eben nicht bei der manipulierten Anzeige. Und nachweisen konnte Citizen Lab die Infektion bisher nur via Windows, in wieweit auch Android- oder iOS-Geräte gehackt werden könnten, darauf ging Citizen Lab nicht ein.</p>
-<p>Ich bin nicht so optimistisch, wie der Wiener Forscher <em>Wolfie Christl</em>, Co-Autor der Untersuchung des Citizen Lab, der ein Ende der Online-Werbung voraussagte, aber ich stimme ihm in der Aussage zu:</p>
-<blockquote class="blockquote">
-<p>Die Art, wie Online-Werbung heute funktioniert, ist ein einziges Sicherheitsrisiko – für Staaten, den privaten Sektor, Zivilgesellschaft und für alle anderen. […] Es ist schwierig, wenn nicht fast unmöglich, sich zuverlässig vor bösartigen Werbeanzeigen zu schützen. Unsere Forschung bestätigt einmal mehr: Das Blockieren von Online-Werbung ist für die IT-Sicherheit obligatorisch.</p>
-</blockquote>
-<p>Das bedeutet: Wer keinen Adblocker einsetzt, handelt fahrlässig. Und der Versuch einiger Browserhersteller (Google!), Adblocker zu blockieren, kann nur als bösartig und gefährlich bezeichnet werden. Diese Firmen opfern die Sicherheit ihrer Nutzer auf dem Altar der Profitgier.</p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55593212316/">Adblocker sind Notwehr</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A badger wearing a red dressing gown and reading glasses sits at a desk in front of a computer. Advertising banners are visible on the monitor. A fist emerges from one of these banners and begins to strangle the badger. A white rabbit—dressed in a yellow-checked waistcoat, a blue jacket, and a red-checked bow tie—looks in alarm at a giant pocket watch, crying out, “Zu spät! zu sät!” Behind them stand towering shelves filled with legal literature, along with a statue of Lady Justice. In a gap between the shelves hangs a poster that reads: “Adblocker sind Notwehr!” Franco-Belgian comic book style. Language: German.</em>« Modell: Nano Banana&nbsp;2(.1?).</p>
-
-
-
- ]]></description>
-  <category>Security</category>
-  <guid>https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/</guid>
-  <pubDate>Fri, 16 Oct 2026 15:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/images/adblocker.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
