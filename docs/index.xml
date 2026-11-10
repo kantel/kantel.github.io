@@ -10,7 +10,727 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Mon, 09 Nov 2026 13:50:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 10 Nov 2026 15:10:00 GMT</lastBuildDate>
+<item>
+  <title>Projektion des Lorenz-Attraktors auf drei Ebenen (NodeBox und DrawBot)</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55644765551/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenznodebox-b.jpg" class="img-fluid"></a></p>
+<p>Im <a href="https://kantel.github.io/posts/2026110901_lorenz_attraktor/">letzten Beitrag</a> hatte ich behauptet, dass es ein Leichtes sei, den Lorenz-Attraktor auf alle Ebenen des dreidimensionalen Raums, also aug die X-Y-Ebene, die X-Z-Ebene und die Y-Z-Ebene, zu projizieren. Hier ist mein Versuch, dies zu implementieren (und zwar einmal für die NodeBox und einmal für den DrawBot). Die Änderungen betreffen jeweils nur die <code>while()</code>-Schleife:</p>
+<section id="x-y-ebene-nodebox" class="level3">
+<h3 class="anchored" data-anchor-id="x-y-ebene-nodebox">X-Y-Ebene (NodeBox)</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55642579947/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenzxynodebox.jpg" class="img-fluid"></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb1-2">    stroke(t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb1-3">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-4">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-5">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb1-6">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb1-7">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb1-8">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb1-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb1-10">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb1-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Y braucht eine Sonderbehandlung: XY</span></span>
+<span id="cb1-12">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb1-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb1-14">        line(xx, yy, xx, yy)</span>
+<span id="cb1-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-16">        line(oldX, oldY, xx, yy) </span>
+<span id="cb1-17">    oldX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xx</span>
+<span id="cb1-18">    oldY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> yy</span>
+<span id="cb1-19">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span></code></pre></div></div>
+</section>
+<section id="x-z-ebene-nodebox" class="level3">
+<h3 class="anchored" data-anchor-id="x-z-ebene-nodebox">X-Z-Ebene (NodeBox)</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55643766579/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenzxznodebox.jpg" class="img-fluid"></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb2-2">    stroke(t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb2-3">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb2-4">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb2-5">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb2-6">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb2-7">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb2-8">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb2-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb2-10">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-11">    zz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb2-12">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb2-13">        line(xx, zz, xx, zz)</span>
+<span id="cb2-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb2-15">        line(oldX, oldZ, xx, zz)</span>
+<span id="cb2-16">    oldX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xx</span>
+<span id="cb2-17">    oldZ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> zz</span>
+<span id="cb2-18">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span></code></pre></div></div>
+</section>
+<section id="y-z-ebene-nodebox" class="level3">
+<h3 class="anchored" data-anchor-id="y-z-ebene-nodebox">Y-Z-Ebene (NodeBox)</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55643766589/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenzyznodebox.jpg" class="img-fluid"></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb3-2">    stroke(t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">255</span>)</span>
+<span id="cb3-3">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb3-4">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb3-5">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb3-6">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb3-7">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb3-8">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb3-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb3-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Y braucht eine Sonderbehandlung: YZ</span></span>
+<span id="cb3-11">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) </span>
+<span id="cb3-12">    zz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb3-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb3-14">        line(yy, zz, yy, zz)</span>
+<span id="cb3-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb3-16">        line(oldY, oldZ, yy, zz)   </span>
+<span id="cb3-17">    oldY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> yy</span>
+<span id="cb3-18">    oldZ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> zz</span>
+<span id="cb3-19">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span></code></pre></div></div>
+</section>
+<section id="x-y-ebene-drawbot" class="level3">
+<h3 class="anchored" data-anchor-id="x-y-ebene-drawbot">X-Y-Ebene (DrawBot)</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55642532312/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenzxydrawbot.jpg" class="img-fluid"></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb4-2">    colorStep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>maxi</span>
+<span id="cb4-3">    stroke(t, t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>colorStep, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb4-4">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb4-5">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb4-6">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb4-7">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb4-8">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb4-9">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb4-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb4-11">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb4-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Y braucht eine Sonderbehandlung: XY</span></span>
+<span id="cb4-13">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb4-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb4-15">        line((xx, yy), (xx, yy))</span>
+<span id="cb4-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb4-17">        line((oldX, oldY), (xx, yy)) </span>
+<span id="cb4-18">    oldX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xx</span>
+<span id="cb4-19">    oldY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> yy</span>
+<span id="cb4-20">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span></code></pre></div></div>
+</section>
+<section id="x-z-ebene-drawbot" class="level3">
+<h3 class="anchored" data-anchor-id="x-z-ebene-drawbot">X-Z-Ebene (DrawBot)</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55643509806/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenzxzdrawbot.jpg" class="img-fluid"></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb5-2">    colorStep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>maxi</span>
+<span id="cb5-3">    stroke(t, t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>colorStep, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb5-4">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb5-5">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb5-6">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb5-7">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb5-8">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb5-9">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb5-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb5-11">    xx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> WIDTH<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb5-12">    zz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb5-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb5-14">        line((xx, zz), (xx, zz))</span>
+<span id="cb5-15">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb5-16">        line((oldX, oldZ), (xx, zz))</span>
+<span id="cb5-17">    oldX <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> xx</span>
+<span id="cb5-18">    oldZ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> zz</span>
+<span id="cb5-19">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span></code></pre></div></div>
+</section>
+<section id="y-z-ebene-drawbot" class="level3">
+<h3 class="anchored" data-anchor-id="y-z-ebene-drawbot">Y-Z-Ebene (DrawBot)</h3>
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55643652203/"><img src="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenzyzdrawbot.jpg" class="img-fluid"></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> (t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> maxi):</span>
+<span id="cb6-2">    colorStep <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>maxi</span>
+<span id="cb6-3">    stroke(t, t<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>colorStep, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb6-4">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>sigma<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb6-5">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>(r <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> z) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> y)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb6-6">    dz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> b<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>z)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dt</span>
+<span id="cb6-7">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dx</span>
+<span id="cb6-8">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dy</span>
+<span id="cb6-9">    z <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dz</span>
+<span id="cb6-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># auf Fenstergröße skalieren</span></span>
+<span id="cb6-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Y braucht eine Sonderbehandlung: YZ</span></span>
+<span id="cb6-12">    yy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> HEIGHT <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">50</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">8</span>) </span>
+<span id="cb6-13">    zz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">40</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (z<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>)</span>
+<span id="cb6-14">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>:</span>
+<span id="cb6-15">        line((yy, zz), (yy, zz))</span>
+<span id="cb6-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb6-17">        line((oldY, oldZ), (yy, zz))      </span>
+<span id="cb6-18">    oldY <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> yy</span>
+<span id="cb6-19">    oldZ <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> zz</span>
+<span id="cb6-20">    t <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> dt</span></code></pre></div></div>
+
+
+</section>
+
+ ]]></description>
+  <category>Dynamische Systeme</category>
+  <category>Mathematik</category>
+  <category>NodeBox</category>
+  <category>DrawBot</category>
+  <category>Python</category>
+  <category>Computergraphik</category>
+  <guid>https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/</guid>
+  <pubDate>Tue, 10 Nov 2026 15:10:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026111001_lorenz_attraktor_2/images/lorenznodebox.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Spaß mit der Knotenschachtel (und mit DrawBot): Der Lorenz-Attraktor</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4516,30 +5236,6 @@ font-style: inherit;">;</span></span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026101801_spritesheet_generator/</guid>
   <pubDate>Sun, 18 Oct 2026 15:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026101801_spritesheet_generator/images/example.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Caturday: Zeit für ein neues Pussy Pic</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026101701_caturday/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55593191008/"><img src="https://kantel.github.io/posts/2026101701_caturday/images/queenjeanie-b.jpg" class="img-fluid"></a></p>
-<p>Heute ist wieder <a href="https://knowyourmeme.com/memes/caturday">Caturday</a> und daher Zeit für ein neues Katzenbild. Das heutige <em>Pussy Pic</em> zeigt <em>Her Majesty Jeanie</em> kurz bevor sie ihren Hof betritt.</p>
-<p>Aus diesem Anlaß hat sie <del>ein Geschirr angelegt bekommen</del> sich in Schale geschmissen.</p>
-<hr>
-<p><strong>Photo</strong> (<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">cc</a>) 2026: <em><a href="http://cognitiones.kantel-chaos-team.de/cv.html">Jörg Kantel</a></em></p>
-
-
-
- ]]></description>
-  <category>Modernes Leben</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026101701_caturday/</guid>
-  <pubDate>Sat, 17 Oct 2026 14:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026101701_caturday/images/queenjeanie.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
