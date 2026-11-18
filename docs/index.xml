@@ -10,7 +10,686 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Tue, 17 Nov 2026 12:55:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 18 Nov 2026 17:15:00 GMT</lastBuildDate>
+<item>
+  <title>microStudio und Python reloaded</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026111801_microstudio_python/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55660500446/"><img src="https://kantel.github.io/posts/2026111801_microstudio_python/images/mstudio-b.jpg" class="img-fluid"></a></p>
+<p>Da ich meine bisherigen Tutorials zu <a href="https://kantel.github.io/#category=microStudio">microStudio und Python</a> auf eine solide Grundlage stellen möchte, habe ich einen kompletten Neustart der Reihe begonnen, die hoffentlich etwas ausführlicher und verständlicher werden wird.</p>
+<section id="was-ist-microstudio" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-microstudio">Was ist microStudio?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658875389/"><img src="https://kantel.github.io/posts/2026111801_microstudio_python/images/mstudiostartpage.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>microStudio Startpage</figcaption>
+</figure>
+</div>
+<p><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html"><strong>microStudio</strong></a> ist eine freie (MIT-Lizenz) 2D Game Engine, in der Spiele sowohl online im Browser als auch als Desktop-App für Windows, macOS, Linux und auf dem Raspberry Pi entwickelt werden können. Programmiert werden die Spiele per Default in microScript , einer einfachen von Lua inspirierten Sprache. Sie können aber auch in JavaScript, Python oder Lua programmiert werden.</p>
+<p>microStudio enthält auch einen integrierten Sprite-, Karten- und Sound-/Musik-Editor und wirkt daher wie eine auf modern getrimmte Fantasiekonsole wie Pico-8 oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a>, nur ohne deren konzeptionelle, nostalgische Beschränkungen.</p>
+<p>Mit microStudio erstellte Spiele können mit einem einzigen Klick aus der IDE heraus nach HTML5, Windows, Linux und macOS exportiert werden.</p>
+<p>Es gibt drei verschiedene Möglichkeiten, mit microStudio Spiele zu entwickeln:</p>
+<ol type="1">
+<li><p>Im Browser: Ihr könnt Euch auf den <a href="https://microstudio.dev/">Seiten von microStudio</a> ein Konto enrichten und dann sofort loslegen. Ich weiß nicht genau, wo der Server steht, aber da die Firma in Frankreich, genauer in Straßburg, sitzt, vermute ich, dass deren Server ebenfalls in Frankreich stehen. Die <a href="https://microstudio.dev/about/">Datenschutzseite</a> verspricht jedenfalls, dass weder Nutzerdaten gesammelt noch weitergereicht werden.</p></li>
+<li><p>Auf einen <a href="https://github.com/pmgl/microstudio#set-up-your-own-microstudio-server">eigenen Server</a>: Wer auf Nummer Sicher gehen will kann aber auch – da die Software Open Source ist – die Software auf einem eigenen Server betreiben (interessant vor allem für Schulen, Universitäten und anderen Bildungseinrichtungen). Dafür muss Node&nbsp;JS auf diesem Server installiert sein und dann microStudio und das microStudio-Wiki von der <a href="https://github.com/pmgl/microstudio">GitHub-Seite</a>. Wer die Programmierung mit Python/Brython plant, kann dies auch als Default-Projektsprache setzen und muss den Pfad zu der lokalen Brython-Bibliothek setzen. Die oben verlinkte GitHub-Seite besitzt eine ausführliche Anleitung.</p></li>
+<li><p>Lokal auf dem Desktop: Wer lokal auf seinem Desktop mit microStudio entwickeln will, kann sich entweder von den <a href="https://github.com/pmgl/microstudio/releases/tag/24.01.29">Release-Seiten</a> oder von den <a href="https://microstudio.itch.io/microstudio">microStudio-Seiten auf Itch.io</a> die aktuelle Version für sein Betriebssystem herunterladen.</p></li>
+</ol>
+<p>Da die Desktop-Version eine Elektron-App ist, ist sie zwar einerseits ziemich fett (auf meinem Mac belegt sie 365 MB), aber dafür ist auf der anderen Seite die Bedienung bei den Server-, wie auch bei den Desktop-Versionen identisch.</p>
+</section>
+<section id="was-ist-brython" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-brython">Was ist Brython?</h3>
+<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html"><strong>Brython</strong></a> (<strong>Br</strong>owser P<strong>ython</strong>) ist die Engine, die hinter der <a href="https://microstudio.dev/documentation/Python/">Python-Version von microScript</a> werkelt. Es ist eine freie (BSD-3 Lizenz) Python-3-Implementierung, die im Browser läuft und als Ersatz für JavaScript gedacht ist. Neben der Standardbibliothek können einmal auch andere (Pure Python) Module geladen werden, allerdings keine Module, die zum Beispiel C-basierte Teile enthalten. Das schließt Module wie Numpy, SciPy, Matplotlib oder Pandas aus. Dafür kann man in microStudio oft ähnliche, JavaScript-basierte Bibliotheken einsetzen<sup>1</sup>.</p>
+<p>Eine Folge ist, daß in Brython die Keyboard-Abfrage unter Umständen beim ersten Aufruf ein undefined zurückgibt. Um den Fehler zu umgehen, wird der Einsatz dieser Helper-Funktion</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> check_input(obj, val):</span>
+<span id="cb1-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hasattr</span>(obj, val):</span>
+<span id="cb1-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> obj[val] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb1-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span></code></pre></div></div>
+<p>Außerdem gibt es noch ein »eingebautes« Modul Browser, das den Python-Skripten Zugriffe auf das DOM-API erlaubt.</p>
+<p>Brython ist als kompletter JavaScript-Ersatz konzipiert, kann also auch JavaScript-Objekte nutzen. Die Geschwindigkeit soll an die von CPython heranreichen. Brython wird aktuell (Stand November 2026) von 114 Kontributoren weiterentwickelt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658819524/"><img src="https://kantel.github.io/posts/2026111801_microstudio_python/images/mstudiopython.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Python als Programmiersprache in microStudio einrichten</figcaption>
+</figure>
+</div>
+<p>Um Python in microStudio zu benutzen, muss man dies beim Erstellen eines Projekts (unter <code>Advanced -&gt; Language Support</code>) einrichten.</p>
+<p>Ob man microStudio mit Python/Brython nutzen soll, ist sicher eine Frage der persönlichen Vorlieben. Ich zum Beispiel programmiere lieber in Python als in Lua oder JavaScript, daher war mir die Entscheidung für Python nach einer kurzen Experimentierphase mit microScript (der Default-Sprache von microStudio) leichtgefallen.</p>
+</section>
+<section id="mein-erstes-microstudiopython-programm" class="level3">
+<h3 class="anchored" data-anchor-id="mein-erstes-microstudiopython-programm">Mein erstes microStudio/Python-Programm</h3>
+<p>Hier ist also mein erstes microStudio/Python-Programm, das zeigt, wie man einen kleinen, animierten Ingenieur in allen vier Himmelsrichtungen über den Bildschirm schickt (er wird entweder mit den Pfeiltasten oder mit den Tasten <code>w</code>, <code>a</code>, <code>s</code>, <code>d</code> gesteuert):</p>
+<iframe src="tutorial01python/" class="if16_9" name="Tiny Engineer v0.1">
+</iframe>
+<p>Damit die Tastatursteuerung gelingt, müsst Ihr einmal in das Spielfeld klicken, damit es den Fokus erhält.</p>
+<p>Für den kleinen, animierten Ingenieur habe ich je vier Idle-Sprites und je vier Streifen mit jeweils vier Animationen benötigt, die ich <a href="https://kantel.github.io/posts/2024030901_jumping_engineer/">wieder</a> dem freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) Tileset <a href="https://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181">DawnLike</a> von <em>DragonDePlatino</em> und <em>DawnBringer</em> entnommen habe. Damit sie in microStudio funktionieren, habe ich die Animationen mit einer darauf spezialisierten, freien (MIT-Lizenz) <a href="https://github.com/odrick/free-tex-packer">Bildverarbeitung meines Vertrauens</a> (<a href="https://github.com/odrick/free-tex-packer/releases/tag/v0.6.7">Download</a>) in vier einzelne Streifen für jede Richtung (<code>left</code>, <code>right</code>, <code>up</code> und <code>down</code>) und vier Einzelbilder für <code>idle</code> zerlegt und diese Streifen, respektive Bilder dann in microStudio importiert.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658832885/"><img src="https://kantel.github.io/posts/2026111801_microstudio_python/images/mstudioanim.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>microStudio: Strip zur Animation</figcaption>
+</figure>
+</div>
+<p>Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button <code>Strip zur Animation</code> die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658399661/"><img src="https://kantel.github.io/posts/2026111801_microstudio_python/images/mstudioanimspeed.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>microStudio: Animationsgeschwindigkeit einstellen</figcaption>
+</figure>
+</div>
+<p>Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekeit auf <code>8 FPS</code> eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion <code>draw()</code> zum Beispiel die Zeile</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1">screen.drawSprite(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_left"</span>, hero.x, hero.y, hero.w, hero.h)</span></code></pre></div></div>
+<p>eingibt, zeigt microStudio den komplette Animationszyklus an, ohne daß man ihn zusätzlich programmieren muß.</p>
+</section>
+<section id="der-quellcode" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode">Der Quellcode</h3>
+<p>[<img src="https://kantel.github.io/posts/2026111801_microstudio_python/images/microstudiocode.jpg" class="img-fluid" alt="microStudio: Quellcode">]</p>
+<p>Zuerst habe ich für den Helden (den Ingenieur, denn sind Ingenieure nicht alle Helden?) die Klasse <code>Hero</code> eingerichtet<sup>2</sup>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Hero:</span>
+<span id="cb3-2">  </span>
+<span id="cb3-3">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-4">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-5">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb3-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb3-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">32</span></span>
+<span id="cb3-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_down_idle"</span></span>
+<span id="cb3-9">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"down"</span></span>
+<span id="cb3-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb3-11">    </span>
+<span id="cb3-12">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-13">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RIGHT"</span>):</span>
+<span id="cb3-14">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-15">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span></span>
+<span id="cb3-16">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_right"</span></span>
+<span id="cb3-17">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check Border</span></span>
+<span id="cb3-18">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb3-19">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-20">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_right_idle"</span></span>
+<span id="cb3-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"LEFT"</span>):</span>
+<span id="cb3-22">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-23">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span></span>
+<span id="cb3-24">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_left"</span></span>
+<span id="cb3-25">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check Border</span></span>
+<span id="cb3-26">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb3-27">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-28">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_left_idle"</span></span>
+<span id="cb3-29">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"UP"</span>):</span>
+<span id="cb3-30">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-31">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"up"</span></span>
+<span id="cb3-32">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_up"</span></span>
+<span id="cb3-33">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check Border</span></span>
+<span id="cb3-34">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb3-35">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-36">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_up_idle"</span></span>
+<span id="cb3-37">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> check_input(keyboard, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"DOWN"</span>):</span>
+<span id="cb3-38">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.speed</span>
+<span id="cb3-39">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"down"</span></span>
+<span id="cb3-40">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_down"</span></span>
+<span id="cb3-41">      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check Border</span></span>
+<span id="cb3-42">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>:</span>
+<span id="cb3-43">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb3-44">        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_down_idle"</span></span>
+<span id="cb3-45">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># the hero stands still (no key pressed)</span></span>
+<span id="cb3-46">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"right"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_right_idle"</span></span>
+<span id="cb3-47">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_left_idle"</span></span>
+<span id="cb3-48">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"up"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_up_idle"</span></span>
+<span id="cb3-49">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dir</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"down"</span>: <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hero_down_idle"</span></span>
+<span id="cb3-50"></span>
+<span id="cb3-51">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb3-52">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h)</span></code></pre></div></div>
+<p>Den Löwenanteil des Codes nimmt die Ränderabfrage ein: Erreicht oder überschreitet unser Held den Bildschirmrand, wird er zuerst auf den Bildschirmrand zurückgesetzt (wichtig, wenn <code>self.speed &gt; 1</code> ist) und erst dann auf <code>idle</code> gesetzt.</p>
+<p>Wird jedoch die Taste einfach nur losgelassen, ohne dass der Held mit den Rändern kollidiert (also im <code>else</code>-Teil), dann wird der Held in Abängigkeit seiner aktuellen Richtung einfach nur auf <code>idle</code> gesetzt.</p>
+<p>Die <code>draw()</code>-Methode ist sehr kompakt geraten, da wie oben erwähnt, microStudio die Sprite-Animation selber intern behandelt.</p>
+<p>Das Hauptprogramm <code>main</code> ist ebenfalls sehr kompakt geraten, da die ganze Arbeit in der Klasse <code>Hero</code> erledigt wird:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># microStudio (Python): Tutorial 1</span></span>
+<span id="cb4-2"></span>
+<span id="cb4-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> init():</span>
+<span id="cb4-4">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">global</span> hero</span>
+<span id="cb4-5">  hero <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Hero()</span>
+<span id="cb4-6"></span>
+<span id="cb4-7"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update():</span>
+<span id="cb4-8">  hero.update()</span>
+<span id="cb4-9">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> check_input(keyboard.press, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ESCAPE"</span>):</span>
+<span id="cb4-10">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"RESTART"</span>)</span>
+<span id="cb4-11">    init()</span>
+<span id="cb4-12"></span>
+<span id="cb4-13"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb4-14">  screen.clear(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(89, 127, 30"</span>)</span>
+<span id="cb4-15">  hero.draw()</span></code></pre></div></div>
+<p>microStudio besitzt, ähnlich wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> drei Hauptfunktionen: <code>init()</code>, <code>update()</code> und <code>draw()</code>.</p>
+<p>Die <code>init()</code>-Funktion wird nur einmal beim Start des Programms aufgerufen. Sie ist vor allem nützlich, um den Anfangszustand von globalen Variablen zu definieren, die im restlichen Programm verwendet werden können.</p>
+<p>Die Funktion <code>update()</code> wird maximal 60 Mal pro Sekunde aufgerufen. Diese Funktion ist der beste Ort, um die Logik und Physik des Spiels zu programmieren.</p>
+<p>Die Funktion <code>draw()</code> wird so oft aufgerufen, wie der Bildschirm aufgefrischt werden kann.</p>
+<p>In den meisten Fällen wird auch <code>draw()</code> 60 mal pro Sekunde aufgerufen. Aber manche Computer oder Tablets können ihre Bildschirme mehr als 60 Mal pro Sekunde aktualisieren. Es kann auch vorkommen, dass das Gerät, auf dem das Programm läuft, überlastet ist und den Bildschirm nicht 60 Mal pro Sekunde auffrischen kann. In diesem Fall wird die Funktion <code>draw()</code> seltener aufgerufen. Das ist der Grund, warum <code>update()</code> und <code>draw()</code> zwei getrennte Funktionen sind: Egal was passiert, <code>update()</code> wird genau 60 Mal pro Sekunde aufgerufen; und wenn <code>draw()</code> aufgerufen wird, ist es Zeit, den Bildschirm neu zu zeichnen.</p>
+<p>Das einzig Auffällige bei diesem kleinen Skript steht in der <code>update()</code>-Funktion: Wenn der Nutzer die Escape-Taste drückt, startet das Programm neu.</p>
+<p>Dann habe ich auch noch die <code>util</code>-Datei. Hier stehen Hilfsroutinen, die nicht direkt in das eigentlich Skript gehören. Im Moment steht hier nur die ganz oben erwänte Hilfsroutine zur Tastaturabfrage:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> check_input(obj, val):</span>
+<span id="cb5-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hasattr</span>(obj, val):</span>
+<span id="cb5-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> obj[val] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb5-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span></code></pre></div></div>
+<p>Ich habe dieses Progrämmchen auf meinen microStudio-Account hochgeladen und unter dem Namen »<a href="https://microstudio.dev/i/kantel/tutorial01python/">Tutorial 01 (Python)</a>« auf »öffentlich« gesetzt. Ihr könnt es von dort Klonen, herunterladen und/oder damit herumspielen. Habt Spaß!</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55660500446/">microStudio und Python – ein starkes Team</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Pedro">@Pedro</span> Python sits at a desk in front of a computer with a massive monitor. He is typing away on the keyboard with his left hand while operating the mouse with his right. Next to the keyboard, there is a mug of steaming coffee, along with another mug filled with writing utensils. On the monitor, a retro-style game—reminiscent of 1990s *Zelda* titles—is visible. Beside him, <span class="citation" data-cites="Rudi">@Rudi</span> Rabbit stands, looking impatiently at a large pocket watch he holds in his hand. In the background, shelves are lined with computer science books—specifically on game programming and Python—with a few game figurines scattered among them. Between the shelves stands a whiteboard bearing the words: “microStudio und Python – ein starkes Team.” The room has a cluttered, untidy feel; an overflowing wastebasket sits next to the desk. Through a window on the left, the autumn sun shines in, revealing the rooftops of a large city. Colored Franco-Belgian comic style. Language: German. No speech bubbles, no text boxes, no headlines.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Allerdings scheint die Integration von JavaScript in microStudio-Python/Bryton-Projekte nicht immer ganz schmerzfrei zu verlaufen. Hier ist neben dem (immer empfohlenen) <a href="https://microstudio.dev/documentation/Advanced-microScript/">Blick in die Dokumentation</a> auch viel Experimentierfreude angesagt.↩︎</p></li>
+<li id="fn2"><p>Ich habe die Größe des Sprites verdoppelt (<code>self.w</code> und <code>self.h</code> auf 32 Pixel gesetzt, statt der 16 Pixel, die die Sprites eigentlich groß sind), damit der Held nicht so winzig über den Bildschirm wuselt. microStudio bewältigt Vergrößerungen von Sprites um einen ganzzahligen Faktor ziemlich gut.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>microStudio</category>
+  <category>Python</category>
+  <category>Brython</category>
+  <category>Spieleprogrammierung</category>
+  <category>Retrogaming</category>
+  <guid>https://kantel.github.io/posts/2026111801_microstudio_python/</guid>
+  <pubDate>Wed, 18 Nov 2026 17:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026111801_microstudio_python/images/mstudio.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Abenteuer IndieWeb: Responsives Layout mit W3.CSS</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -4453,31 +5132,6 @@ font-style: inherit;">;</span> </span>
   <guid>https://kantel.github.io/posts/2026102801_q5js_in_python/</guid>
   <pubDate>Wed, 28 Oct 2026 16:00:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026102801_q5js_in_python/images/diddydachs.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Atlas Curiosa: Heiligensee im Herbst</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026102702_herbst_in_heiligensee/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55605729871/"><img src="https://kantel.github.io/posts/2026102702_herbst_in_heiligensee/images/dorfangerheiligensee-b.jpg" class="img-fluid"></a></p>
-<p>Über den <a href="https://kantel.github.io/posts/2026010701_alt-heiligensee/">Dorfanger in Berlin-Heiligensee</a> hatte ich ja Anfang dieses Jahres schon einmal einen Beitrag. Nun neigt sich das Jahr mit einem (hoffentlich!) goldenen Oktober dem Ende zu, und die liebste aller Freundinnen hat in der letzten Woche ein Photo des herbstlich-bunten Dorfangers geschossen, das ich Euch nicht vorenthalten möchte.</p>
-<p>Heiligensee besitzt nicht nur den längsten Dorfanger Berlins, sondern um den namensgebenden See ranken sich auch <a href="https://kantel.github.io/posts/2026061001_heiligensee/">viele Sagen</a>. Und das <a href="https://www.berlin.de/tourismus/seen/4843649-4299185-heiligensee.html">Restaurant im Seebad Heiligensee</a>, Sandhauser Straße&nbsp;132, 13503&nbsp;Berlin, ist mit seiner rustikalen, gutbürgerlichen Küche und <a href="https://kantel.github.io/posts/2026092903_fuchs_in_heilgensee/">seinen Füchsen</a> auch im Herbst und Winter immer einen Besuch wert. Wir wissen das, denn wir waren am letzten Wochenende wieder einmal dort.</p>
-<hr>
-<p><strong>Photo</strong> © 2026: <em>Die liebste aller Freundinnen</em></p>
-
-
-
- ]]></description>
-  <category>Atlas Curiosa</category>
-  <category>Reinickendorf</category>
-  <category>Photographie</category>
-  <guid>https://kantel.github.io/posts/2026102702_herbst_in_heiligensee/</guid>
-  <pubDate>Tue, 27 Oct 2026 19:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026102702_herbst_in_heiligensee/images/dorfangerheiligensee.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

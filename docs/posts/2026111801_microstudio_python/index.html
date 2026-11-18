@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jörg Kantel">
+
+<title>microStudio und Python reloaded – Der Schockwellenreiter</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-de370ee0869d3e2d1ce948f09ec559d9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Keine Treffer",
+    "search-matching-documents-text": "Treffer",
+    "search-copy-link-title": "Link in die Suche kopieren",
+    "search-hide-matches-text": "Zusätzliche Treffer verbergen",
+    "search-more-match-text": "weitere Treffer in diesem Dokument",
+    "search-more-matches-text": "weitere Treffer in diesem Dokument",
+    "search-clear-button-title": "Zurücksetzen",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Abbrechen",
+    "search-submit-button-title": "Abschicken",
+    "search-label": "Suchen"
+  }
+}</script>
+<script data-goatcounter="https://kantel.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Der Schockwellenreiter</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Suchen"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navigation umschalten" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Über den Schockwellenreiter</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kantel/kantel.github.io"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://mastodon.social/@kantel"> <i class="bi bi-mastodon" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">microStudio und Python reloaded</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">microStudio</div>
+    <div class="quarto-category">Python</div>
+    <div class="quarto-category">Brython</div>
+    <div class="quarto-category">Spieleprogrammierung</div>
+    <div class="quarto-category">Retrogaming</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor:in</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jörg Kantel </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Veröffentlichungsdatum</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">18. November 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55660500446/"><img src="images/mstudio-b.jpg" class="img-fluid"></a></p>
+<p>Da ich meine bisherigen Tutorials zu <a href="https://kantel.github.io/#category=microStudio">microStudio und Python</a> auf eine solide Grundlage stellen möchte, habe ich einen kompletten Neustart der Reihe begonnen, die hoffentlich etwas ausführlicher und verständlicher werden wird.</p>
+<section id="was-ist-microstudio" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-microstudio">Was ist microStudio?</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658875389/"><img src="images/mstudiostartpage.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>microStudio Startpage</figcaption>
+</figure>
+</div>
+<p><a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html"><strong>microStudio</strong></a> ist eine freie (MIT-Lizenz) 2D Game Engine, in der Spiele sowohl online im Browser als auch als Desktop-App für Windows, macOS, Linux und auf dem Raspberry Pi entwickelt werden können. Programmiert werden die Spiele per Default in microScript , einer einfachen von Lua inspirierten Sprache. Sie können aber auch in JavaScript, Python oder Lua programmiert werden.</p>
+<p>microStudio enthält auch einen integrierten Sprite-, Karten- und Sound-/Musik-Editor und wirkt daher wie eine auf modern getrimmte Fantasiekonsole wie Pico-8 oder <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/tic80.html">TIC-80</a>, nur ohne deren konzeptionelle, nostalgische Beschränkungen.</p>
+<p>Mit microStudio erstellte Spiele können mit einem einzigen Klick aus der IDE heraus nach HTML5, Windows, Linux und macOS exportiert werden.</p>
+<p>Es gibt drei verschiedene Möglichkeiten, mit microStudio Spiele zu entwickeln:</p>
+<ol type="1">
+<li><p>Im Browser: Ihr könnt Euch auf den <a href="https://microstudio.dev/">Seiten von microStudio</a> ein Konto enrichten und dann sofort loslegen. Ich weiß nicht genau, wo der Server steht, aber da die Firma in Frankreich, genauer in Straßburg, sitzt, vermute ich, dass deren Server ebenfalls in Frankreich stehen. Die <a href="https://microstudio.dev/about/">Datenschutzseite</a> verspricht jedenfalls, dass weder Nutzerdaten gesammelt noch weitergereicht werden.</p></li>
+<li><p>Auf einen <a href="https://github.com/pmgl/microstudio#set-up-your-own-microstudio-server">eigenen Server</a>: Wer auf Nummer Sicher gehen will kann aber auch – da die Software Open Source ist – die Software auf einem eigenen Server betreiben (interessant vor allem für Schulen, Universitäten und anderen Bildungseinrichtungen). Dafür muss Node&nbsp;JS auf diesem Server installiert sein und dann microStudio und das microStudio-Wiki von der <a href="https://github.com/pmgl/microstudio">GitHub-Seite</a>. Wer die Programmierung mit Python/Brython plant, kann dies auch als Default-Projektsprache setzen und muss den Pfad zu der lokalen Brython-Bibliothek setzen. Die oben verlinkte GitHub-Seite besitzt eine ausführliche Anleitung.</p></li>
+<li><p>Lokal auf dem Desktop: Wer lokal auf seinem Desktop mit microStudio entwickeln will, kann sich entweder von den <a href="https://github.com/pmgl/microstudio/releases/tag/24.01.29">Release-Seiten</a> oder von den <a href="https://microstudio.itch.io/microstudio">microStudio-Seiten auf Itch.io</a> die aktuelle Version für sein Betriebssystem herunterladen.</p></li>
+</ol>
+<p>Da die Desktop-Version eine Elektron-App ist, ist sie zwar einerseits ziemich fett (auf meinem Mac belegt sie 365 MB), aber dafür ist auf der anderen Seite die Bedienung bei den Server-, wie auch bei den Desktop-Versionen identisch.</p>
+</section>
+<section id="was-ist-brython" class="level3">
+<h3 class="anchored" data-anchor-id="was-ist-brython">Was ist Brython?</h3>
+<p><a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html"><strong>Brython</strong></a> (<strong>Br</strong>owser P<strong>ython</strong>) ist die Engine, die hinter der <a href="https://microstudio.dev/documentation/Python/">Python-Version von microScript</a> werkelt. Es ist eine freie (BSD-3 Lizenz) Python-3-Implementierung, die im Browser läuft und als Ersatz für JavaScript gedacht ist. Neben der Standardbibliothek können einmal auch andere (Pure Python) Module geladen werden, allerdings keine Module, die zum Beispiel C-basierte Teile enthalten. Das schließt Module wie Numpy, SciPy, Matplotlib oder Pandas aus. Dafür kann man in microStudio oft ähnliche, JavaScript-basierte Bibliotheken einsetzen<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Eine Folge ist, daß in Brython die Keyboard-Abfrage unter Umständen beim ersten Aufruf ein undefined zurückgibt. Um den Fehler zu umgehen, wird der Einsatz dieser Helper-Funktion</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="kw">def</span> check_input(obj, val):</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>  <span class="cf">if</span> <span class="bu">hasattr</span>(obj, val):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>    <span class="cf">return</span> obj[val] <span class="op">!=</span> <span class="dv">0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>  <span class="cf">return</span> <span class="dv">0</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Außerdem gibt es noch ein »eingebautes« Modul Browser, das den Python-Skripten Zugriffe auf das DOM-API erlaubt.</p>
+<p>Brython ist als kompletter JavaScript-Ersatz konzipiert, kann also auch JavaScript-Objekte nutzen. Die Geschwindigkeit soll an die von CPython heranreichen. Brython wird aktuell (Stand November 2026) von 114 Kontributoren weiterentwickelt.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658819524/"><img src="images/mstudiopython.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>Python als Programmiersprache in microStudio einrichten</figcaption>
+</figure>
+</div>
+<p>Um Python in microStudio zu benutzen, muss man dies beim Erstellen eines Projekts (unter <code>Advanced -&gt; Language Support</code>) einrichten.</p>
+<p>Ob man microStudio mit Python/Brython nutzen soll, ist sicher eine Frage der persönlichen Vorlieben. Ich zum Beispiel programmiere lieber in Python als in Lua oder JavaScript, daher war mir die Entscheidung für Python nach einer kurzen Experimentierphase mit microScript (der Default-Sprache von microStudio) leichtgefallen.</p>
+</section>
+<section id="mein-erstes-microstudiopython-programm" class="level3">
+<h3 class="anchored" data-anchor-id="mein-erstes-microstudiopython-programm">Mein erstes microStudio/Python-Programm</h3>
+<p>Hier ist also mein erstes microStudio/Python-Programm, das zeigt, wie man einen kleinen, animierten Ingenieur in allen vier Himmelsrichtungen über den Bildschirm schickt (er wird entweder mit den Pfeiltasten oder mit den Tasten <code>w</code>, <code>a</code>, <code>s</code>, <code>d</code> gesteuert):</p>
+<iframe src="tutorial01python/" class="if16_9" name="Tiny Engineer v0.1">
+</iframe>
+<p>Damit die Tastatursteuerung gelingt, müsst Ihr einmal in das Spielfeld klicken, damit es den Fokus erhält.</p>
+<p>Für den kleinen, animierten Ingenieur habe ich je vier Idle-Sprites und je vier Streifen mit jeweils vier Animationen benötigt, die ich <a href="https://kantel.github.io/posts/2024030901_jumping_engineer/">wieder</a> dem freien (<a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>) Tileset <a href="https://opengameart.org/content/dawnlike-16x16-universal-rogue-like-tileset-v181">DawnLike</a> von <em>DragonDePlatino</em> und <em>DawnBringer</em> entnommen habe. Damit sie in microStudio funktionieren, habe ich die Animationen mit einer darauf spezialisierten, freien (MIT-Lizenz) <a href="https://github.com/odrick/free-tex-packer">Bildverarbeitung meines Vertrauens</a> (<a href="https://github.com/odrick/free-tex-packer/releases/tag/v0.6.7">Download</a>) in vier einzelne Streifen für jede Richtung (<code>left</code>, <code>right</code>, <code>up</code> und <code>down</code>) und vier Einzelbilder für <code>idle</code> zerlegt und diese Streifen, respektive Bilder dann in microStudio importiert.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658832885/"><img src="images/mstudioanim.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>microStudio: Strip zur Animation</figcaption>
+</figure>
+</div>
+<p>Dort habe ich dann im Sprite-Editor das erste Teilbild mit dem Auswahlwerkzeug markiert und dann mit dem darauf erscheinenden Button <code>Strip zur Animation</code> die Animation erstellt. Wichtig ist, daß die Größe des Streifens korrekt angegeben wird (in meinem Fall 4 mal 16 Pixel breit und 16 Pixel hoch, also 64 x 16 Pixel), sonst erscheinen die Bilder ziemlich gequetscht.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55658399661/"><img src="images/mstudioanimspeed.jpg" class="img-fluid figure-img"></a></p>
+<figcaption>microStudio: Animationsgeschwindigkeit einstellen</figcaption>
+</figure>
+</div>
+<p>Dann habe ich noch in dem darauf angezeigten Schieberegler rechts unten die Animationsgeschwindigekeit auf <code>8 FPS</code> eingestellt. Das war es dann schon. Denn wenn man nun im Code-Editor in der Funktion <code>draw()</code> zum Beispiel die Zeile</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>screen.drawSprite(<span class="st">"hero_left"</span>, hero.x, hero.y, hero.w, hero.h)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>eingibt, zeigt microStudio den komplette Animationszyklus an, ohne daß man ihn zusätzlich programmieren muß.</p>
+</section>
+<section id="der-quellcode" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode">Der Quellcode</h3>
+<p>[<img src="images/microstudiocode.jpg" class="img-fluid" alt="microStudio: Quellcode">]</p>
+<p>Zuerst habe ich für den Helden (den Ingenieur, denn sind Ingenieure nicht alle Helden?) die Klasse <code>Hero</code> eingerichtet<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="kw">class</span> Hero:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a>  </span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>    <span class="va">self</span>.x <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a>    <span class="va">self</span>.y <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-label="6"></a>    <span class="va">self</span>.w <span class="op">=</span> <span class="dv">32</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-label="7"></a>    <span class="va">self</span>.h <span class="op">=</span> <span class="dv">32</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-label="8"></a>    <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_down_idle"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-label="9"></a>    <span class="va">self</span>.<span class="bu">dir</span> <span class="op">=</span> <span class="st">"down"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-label="10"></a>    <span class="va">self</span>.speed <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-label="11"></a>    </span>
+<span id="cb3-12"><a href="#cb3-12" aria-label="12"></a>  <span class="kw">def</span> update(<span class="va">self</span>):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-label="13"></a>    <span class="cf">if</span> check_input(keyboard, <span class="st">"RIGHT"</span>):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-label="14"></a>      <span class="va">self</span>.x <span class="op">+=</span> <span class="va">self</span>.speed</span>
+<span id="cb3-15"><a href="#cb3-15" aria-label="15"></a>      <span class="va">self</span>.<span class="bu">dir</span> <span class="op">=</span> <span class="st">"right"</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-label="16"></a>      <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_right"</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-label="17"></a>      <span class="co"># Check Border</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-label="18"></a>      <span class="cf">if</span> <span class="va">self</span>.x <span class="op">&gt;=</span> screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.w<span class="op">//</span><span class="dv">2</span>:</span>
+<span id="cb3-19"><a href="#cb3-19" aria-label="19"></a>        <span class="va">self</span>.x <span class="op">=</span> screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.w<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-label="20"></a>        <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_right_idle"</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-label="21"></a>    <span class="cf">elif</span> check_input(keyboard, <span class="st">"LEFT"</span>):</span>
+<span id="cb3-22"><a href="#cb3-22" aria-label="22"></a>      <span class="va">self</span>.x <span class="op">-=</span> <span class="va">self</span>.speed</span>
+<span id="cb3-23"><a href="#cb3-23" aria-label="23"></a>      <span class="va">self</span>.<span class="bu">dir</span> <span class="op">=</span> <span class="st">"left"</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-label="24"></a>      <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_left"</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-label="25"></a>      <span class="co"># Check Border</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-label="26"></a>      <span class="cf">if</span> <span class="va">self</span>.x <span class="op">&lt;=</span> <span class="op">-</span>screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.w<span class="op">//</span><span class="dv">2</span>:</span>
+<span id="cb3-27"><a href="#cb3-27" aria-label="27"></a>        <span class="va">self</span>.x <span class="op">=</span> <span class="op">-</span>screen.width<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.w<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-label="28"></a>        <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_left_idle"</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-label="29"></a>    <span class="cf">elif</span> check_input(keyboard, <span class="st">"UP"</span>):</span>
+<span id="cb3-30"><a href="#cb3-30" aria-label="30"></a>      <span class="va">self</span>.y <span class="op">+=</span> <span class="va">self</span>.speed</span>
+<span id="cb3-31"><a href="#cb3-31" aria-label="31"></a>      <span class="va">self</span>.<span class="bu">dir</span> <span class="op">=</span> <span class="st">"up"</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-label="32"></a>      <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_up"</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-label="33"></a>      <span class="co"># Check Border</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-label="34"></a>      <span class="cf">if</span> <span class="va">self</span>.y <span class="op">&gt;=</span> screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span>:</span>
+<span id="cb3-35"><a href="#cb3-35" aria-label="35"></a>        <span class="va">self</span>.y <span class="op">=</span> screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">-</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-label="36"></a>        <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_up_idle"</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-label="37"></a>    <span class="cf">elif</span> check_input(keyboard, <span class="st">"DOWN"</span>):</span>
+<span id="cb3-38"><a href="#cb3-38" aria-label="38"></a>      <span class="va">self</span>.y <span class="op">-=</span> <span class="va">self</span>.speed</span>
+<span id="cb3-39"><a href="#cb3-39" aria-label="39"></a>      <span class="va">self</span>.<span class="bu">dir</span> <span class="op">=</span> <span class="st">"down"</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-label="40"></a>      <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_down"</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-label="41"></a>      <span class="co"># Check Border</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-label="42"></a>      <span class="cf">if</span> <span class="va">self</span>.y <span class="op">&lt;=</span> <span class="op">-</span>screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span>:</span>
+<span id="cb3-43"><a href="#cb3-43" aria-label="43"></a>        <span class="va">self</span>.y <span class="op">=</span> <span class="op">-</span>screen.height<span class="op">//</span><span class="dv">2</span> <span class="op">+</span> <span class="va">self</span>.h<span class="op">//</span><span class="dv">2</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-label="44"></a>        <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_down_idle"</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-label="45"></a>    <span class="cf">else</span>:    <span class="co"># the hero stands still (no key pressed)</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-label="46"></a>      <span class="cf">if</span> <span class="va">self</span>.<span class="bu">dir</span> <span class="op">==</span> <span class="st">"right"</span>: <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_right_idle"</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-label="47"></a>      <span class="cf">if</span> <span class="va">self</span>.<span class="bu">dir</span> <span class="op">==</span> <span class="st">"left"</span>: <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_left_idle"</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-label="48"></a>      <span class="cf">if</span> <span class="va">self</span>.<span class="bu">dir</span> <span class="op">==</span> <span class="st">"up"</span>: <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_up_idle"</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-label="49"></a>      <span class="cf">if</span> <span class="va">self</span>.<span class="bu">dir</span> <span class="op">==</span> <span class="st">"down"</span>: <span class="va">self</span>.im <span class="op">=</span> <span class="st">"hero_down_idle"</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-label="50"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-label="51"></a>  <span class="kw">def</span> draw(<span class="va">self</span>):</span>
+<span id="cb3-52"><a href="#cb3-52" aria-label="52"></a>    screen.drawSprite(<span class="va">self</span>.im, <span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.w, <span class="va">self</span>.h)</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Den Löwenanteil des Codes nimmt die Ränderabfrage ein: Erreicht oder überschreitet unser Held den Bildschirmrand, wird er zuerst auf den Bildschirmrand zurückgesetzt (wichtig, wenn <code>self.speed &gt; 1</code> ist) und erst dann auf <code>idle</code> gesetzt.</p>
+<p>Wird jedoch die Taste einfach nur losgelassen, ohne dass der Held mit den Rändern kollidiert (also im <code>else</code>-Teil), dann wird der Held in Abängigkeit seiner aktuellen Richtung einfach nur auf <code>idle</code> gesetzt.</p>
+<p>Die <code>draw()</code>-Methode ist sehr kompakt geraten, da wie oben erwähnt, microStudio die Sprite-Animation selber intern behandelt.</p>
+<p>Das Hauptprogramm <code>main</code> ist ebenfalls sehr kompakt geraten, da die ganze Arbeit in der Klasse <code>Hero</code> erledigt wird:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a><span class="co"># microStudio (Python): Tutorial 1</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a><span class="kw">def</span> init():</span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>  <span class="kw">global</span> hero</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>  hero <span class="op">=</span> Hero()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-label="7"></a><span class="kw">def</span> update():</span>
+<span id="cb4-8"><a href="#cb4-8" aria-label="8"></a>  hero.update()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-label="9"></a>  <span class="cf">if</span> check_input(keyboard.press, <span class="st">"ESCAPE"</span>):</span>
+<span id="cb4-10"><a href="#cb4-10" aria-label="10"></a>    <span class="bu">print</span>(<span class="st">"RESTART"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-label="11"></a>    init()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-label="12"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-label="13"></a><span class="kw">def</span> draw():</span>
+<span id="cb4-14"><a href="#cb4-14" aria-label="14"></a>  screen.clear(<span class="st">"rgb(89, 127, 30"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-label="15"></a>  hero.draw()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>microStudio besitzt, ähnlich wie <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a> oder <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> drei Hauptfunktionen: <code>init()</code>, <code>update()</code> und <code>draw()</code>.</p>
+<p>Die <code>init()</code>-Funktion wird nur einmal beim Start des Programms aufgerufen. Sie ist vor allem nützlich, um den Anfangszustand von globalen Variablen zu definieren, die im restlichen Programm verwendet werden können.</p>
+<p>Die Funktion <code>update()</code> wird maximal 60 Mal pro Sekunde aufgerufen. Diese Funktion ist der beste Ort, um die Logik und Physik des Spiels zu programmieren.</p>
+<p>Die Funktion <code>draw()</code> wird so oft aufgerufen, wie der Bildschirm aufgefrischt werden kann.</p>
+<p>In den meisten Fällen wird auch <code>draw()</code> 60 mal pro Sekunde aufgerufen. Aber manche Computer oder Tablets können ihre Bildschirme mehr als 60 Mal pro Sekunde aktualisieren. Es kann auch vorkommen, dass das Gerät, auf dem das Programm läuft, überlastet ist und den Bildschirm nicht 60 Mal pro Sekunde auffrischen kann. In diesem Fall wird die Funktion <code>draw()</code> seltener aufgerufen. Das ist der Grund, warum <code>update()</code> und <code>draw()</code> zwei getrennte Funktionen sind: Egal was passiert, <code>update()</code> wird genau 60 Mal pro Sekunde aufgerufen; und wenn <code>draw()</code> aufgerufen wird, ist es Zeit, den Bildschirm neu zu zeichnen.</p>
+<p>Das einzig Auffällige bei diesem kleinen Skript steht in der <code>update()</code>-Funktion: Wenn der Nutzer die Escape-Taste drückt, startet das Programm neu.</p>
+<p>Dann habe ich auch noch die <code>util</code>-Datei. Hier stehen Hilfsroutinen, die nicht direkt in das eigentlich Skript gehören. Im Moment steht hier nur die ganz oben erwänte Hilfsroutine zur Tastaturabfrage:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="kw">def</span> check_input(obj, val):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a>  <span class="cf">if</span> <span class="bu">hasattr</span>(obj, val):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a>    <span class="cf">return</span> obj[val] <span class="op">!=</span> <span class="dv">0</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a>  <span class="cf">return</span> <span class="dv">0</span></span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Ich habe dieses Progrämmchen auf meinen microStudio-Account hochgeladen und unter dem Namen »<a href="https://microstudio.dev/i/kantel/tutorial01python/">Tutorial 01 (Python)</a>« auf »öffentlich« gesetzt. Ihr könnt es von dort Klonen, herunterladen und/oder damit herumspielen. Habt Spaß!</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55660500446/">microStudio und Python – ein starkes Team</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Pedro">@Pedro</span> Python sits at a desk in front of a computer with a massive monitor. He is typing away on the keyboard with his left hand while operating the mouse with his right. Next to the keyboard, there is a mug of steaming coffee, along with another mug filled with writing utensils. On the monitor, a retro-style game—reminiscent of 1990s *Zelda* titles—is visible. Beside him, <span class="citation" data-cites="Rudi">@Rudi</span> Rabbit stands, looking impatiently at a large pocket watch he holds in his hand. In the background, shelves are lined with computer science books—specifically on game programming and Python—with a few game figurines scattered among them. Between the shelves stands a whiteboard bearing the words: “microStudio und Python – ein starkes Team.” The room has a cluttered, untidy feel; an overflowing wastebasket sits next to the desk. Through a window on the left, the autumn sun shines in, revealing the rooftops of a large city. Colored Franco-Belgian comic style. Language: German. No speech bubbles, no text boxes, no headlines.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Allerdings scheint die Integration von JavaScript in microStudio-Python/Bryton-Projekte nicht immer ganz schmerzfrei zu verlaufen. Hier ist neben dem (immer empfohlenen) <a href="https://microstudio.dev/documentation/Advanced-microScript/">Blick in die Dokumentation</a> auch viel Experimentierfreude angesagt.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Ich habe die Größe des Sprites verdoppelt (<code>self.w</code> und <code>self.h</code> auf 32 Pixel gesetzt, statt der 16 Pixel, die die Sprites eigentlich groß sind), damit der Held nicht so winzig über den Bildschirm wuselt. microStudio bewältigt Vergrößerungen von Sprites um einen ganzzahligen Faktor ziemlich gut.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kopiert");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kopiert");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/kantel\.github\.io\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "kantel/kantel.github.io";
+    script.dataset.repoId = "R_kgDOIjiXMQ";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOIjiXMc4CS_hh";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
