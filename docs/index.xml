@@ -10,7 +10,48 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Wed, 18 Nov 2026 17:15:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 19 Nov 2026 14:15:00 GMT</lastBuildDate>
+<item>
+  <title>Security Alert: PHP (schon wieder) und Ruby2Shell</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026111901_security_alert/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55662591750/"><img src="https://kantel.github.io/posts/2026111901_security_alert/images/securityalert-b.jpg" class="img-fluid"></a></p>
+<p>Das PHP-Team hat <a href="https://www.php.net/archive/2026.php#2026-11-18-1">angekündigt</a>, heute, am 19. November 2026 zwischen 15:00 Uhr und 15:30 Uhr mitteleuropäischer Zeit eine als kritisch eingestufte Sicherheitslücke in PHP mit einem neuen Security-Release zu schließen.</p>
+<p>Es scheinen einige Schwachstellen zusammengekommen zu sein, die betreffenden Advisories (aktuell 15) findet Ihr <a href="https://github.com/php/php-src/security/advisories?page=1">auf diesen Seiten</a>.</p>
+<p>Die neuen Releases sind <a href="https://www.php.net/archive/2026.php#2026-11-19-4">PHP 8.5.13</a>, <a href="https://www.php.net/archive/2026.php#2026-11-19-3">PHP 8.4.28</a>, <a href="https://www.php.net/archive/2026.php#2026-11-19-2">PHP 8.3.37</a> und <a href="https://www.php.net/archive/2026.php#2026-11-19-1">PHP 8.2.36</a>. Ältere PHP-Version erhalten keine Updates mehr.</p>
+<p>Wenn Ihr einen PHP-Server betreibt, schaut jetzt nach, ob Ihr betroffen seid und fahrt die Updates unverzüglich ein. Wenn Ihr Euer PHP über Distributionspakete oder Container-Images bezieht, rechnet mit einer Verzögerung, bis dort gepatchte Versionen verfügbar sind. Denn Container haben schon in den vergangenen Wochen verhältnismäßig lange für Updates benötigt.</p>
+<p>Und der <a href="https://www.ruby-lang.org/en/news/2026/11/18/multiple-vulnerabilities-in-regexp-and-string/">Wahnsinn</a> geht weiter: In Ruby wurde die <a href="https://github.com/ruby/ruby/security/advisories/GHSA-34m4-m9fh-gqp5">kritische Sicherheitslücke GHSA-34m4-m9fh-gqp5</a> (»<a href="https://verialabs.com/ruby2shell/">Ruby2Shell</a>«) veröffentlicht. Ein Speicherüberlauf bei der Groß-/Kleinschreibung speziell präparierter Zeichenketten kann die Ausführung von Schadcode ermöglichen.</p>
+<p>Laut Veria Labs ist die Lücke in Standardkonfigurationen von Rails und Sinatra im klassischen Betriebsmodus ohne vorherige Anmeldung erreichbar. Eine CVE-Nummer ist bislang noch nicht zugewiesen.</p>
+<p>Wenn Ihr Ruby auf einem Server betreibt, aktualisiert die betroffenen Ruby-Installationen umgehend auf folgende oder neuere Versionen des jeweiligen Zweigs:</p>
+<ul>
+<li>Ruby 3.3: 3.3.14</li>
+<li>Ruby 3.4: 3.4.13</li>
+<li>Ruby 4.0: 4.0.10</li>
+</ul>
+<p>Ruby 3.2 und ältere Zweige erhalten vom Ruby-Projekt keine Sicherheitsupdates mehr. Wechselt auf eine unterstützte Version oder klärt die Verfügbarkeit korrigierter Pakete mit Eurem Anbieter.</p>
+<p>Prüft auch Ruby-basierte Anwendungen wie GitLab und OpenProject sowie die in Puppet und Fluentd eingesetzten Ruby-Laufzeitumgebungen. Berücksichtigt auch mitgelieferte Laufzeitumgebungen und Container-Images und beachtet die Update-Hinweise der jeweiligen Hersteller.</p>
+<p>Dann startet die betroffene Dienste nach der Aktualisierung neu und stellt Container mit aktualisierten Images neu bereit. Kontrolliert anschließend die tatsächlich verwendete Ruby-Version.</p>
+<p>Die genannten Releases beheben außerdem weitere Sicherheitslücken in der Verarbeitung regulärer Ausdrücke und Zeichenketten. Für mehrere dieser Lücken bestätigt das Ruby-Team <em>Proofs of Concept</em> zur Codeausführung.</p>
+<p><em>Andreas Proschofsky</em> hat im Standard unter »<a href="https://www.derstandard.de/story/3000000349901/wieso-die-aktuellen-it-ausfaelle-nur-vorboten-viel-groesserer-probleme-sind">Wieso die aktuellen IT-Ausfälle nur Vorboten viel größerer Probleme sind</a>« die Vorfälle der letzten Zeit analysiert und kommt zum Schluss, dass jahrzehntelang zu wenig in die IT-Infrastruktur investiert wurde. Das ist sicher richtig, aber eine Ursache ist sicher auch, dass Millionen von Webseiten insbesondere von kleinen und mittleren Unternehmen völlig unnötig als dynamische Webseiten ungewartet auf ihren Servern auf Angriffe warten (ich sage dazu nur »WordPress«). Hier ist ein Umdenken erforderlich, denn viele dieser Webauftritte könnten problemlos als (sichere) statische Seiten betrieben werden.</p>
+<p>Ich werde in der nächsten Zeit mal ein paar der von mir (an-)getesteten Generatoren für statische Seiten (SSGs) vorstellen (unter anderem <a href="https://gohugo.io/">Hugo</a>, <a href="https://jekyllrb.com/">Jekyll</a>, <a href="https://zensical.org/">Zensical</a>, <a href="https://getpelican.com/">Pelican</a> und <a href="https://getpublii.com/de/">Publii</a>) und auf ihre möglichen Anwendungsfelder prüfen. Auf dass das Netz den Techkonzernen und den (a)sozialen Medien entrissen und wieder sicherer wird. <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55662591750/">Security Alert</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: <em>»<span class="citation" data-cites="Dieter">@Dieter</span> Dachs wearing a red dressing gown and rimless glasses sits at a desk in a data center, typing frantically on a keyboard in front of a large monitor. In the background stand massive, antiquated computers, their warning lights flashing desperately under the strain of the attacks. Throughout the room, small, robot-like goblins scurry about, attempting various minor repairs. The space is windowless, illuminated only by an old-fashioned floor lamp and a desk lamp. Through a doorway in the background, one can see more computers facing similar issues, with other small, robot-like goblins rushing to assist them. Colored Franco-Belgian comic style. Language: German. No speech bubbles, no text boxes, no headlines.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+
+ ]]></description>
+  <category>Security</category>
+  <category>Webworking</category>
+  <category>Statische Seiten</category>
+  <guid>https://kantel.github.io/posts/2026111901_security_alert/</guid>
+  <pubDate>Thu, 19 Nov 2026 14:15:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026111901_security_alert/images/securityalert.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>microStudio und Python reloaded</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -5101,42 +5142,6 @@ font-style: inherit;">;</span> </span>
   <guid>https://kantel.github.io/posts/2026102901_bouncing_birds_p5js/</guid>
   <pubDate>Thu, 29 Oct 2026 14:35:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026102901_bouncing_birds_p5js/images/bouncingbirds.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Q5.js v4.10 ist frei – und kann Python</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026102801_q5js_in_python/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55092418938/"><img src="https://kantel.github.io/posts/2026102801_q5js_in_python/images/diddydachs-b.jpg" class="img-fluid"></a></p>
-<p>Es gibt wieder Neues von <a href="https://q5js.org/home/">Q5.js</a>, der »rasend schnellen Alternative« zu <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a>, zu berichten. Denn gestern gab <em>Quinton Ashley</em>, der Schöpfer von Q5.js, <a href="https://substack.com/inbox/post/222213957">bekannt</a>, dass die interaktive Dokumentation auf q5js.org jetzt in den Editionen <a href="https://q5js.org/learn/#coreSection">Modern JavaScript</a> und <a href="https://q5js.org/learn/?python#coreSection">Python</a> verfügbar sei.</p>
-<p>Aber – und das ist für mich viel wichtiger – er erwähnte auch quasi nebenbei, dass die gestern veröffentlichte Version Q5.js&nbsp;v4.10 Open Source sei. Ich konnte es kaum glauben und habe auf <a href="https://github.com/q5js/q5.js">GitHub nachgeschaut</a>. Und tatsächlich, Q5.js steht nun unter der LPGL&nbsp;3.0-Lizenz. Damit sind meine bisher <a href="https://kantel.github.io/posts/2026101501_q5_webeditor_v2/">bestehenden Bedenken</a> bezüglich der proprietären Lizenz ausgeräumt<sup>1</sup>.</p>
-<p>Daher muß ich meine Einstellung zu Q5.js ganz neu überdenken: Einmal reizt mich die Schnelligkeit, die auch die Erstellung zeit- und rechenintensiver Anwendungen – wie zum Beispiel die Programmierung der Mandelbrotmenge – vereinfacht, zum anderen die Python/<a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a>-Unterstützung. Damit könnte Q5.js durchaus eine ernstzunehmende Alternative zum leider sanft entschlafenen <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processingpy.html">Processing.py</a> sein.</p>
-<p>Und wer – wie ich – aus Gründen der digitalen Souveränität lieber auf den <a href="https://codevre.com/q5-editor">Q5 Webeditor</a> verzichten möchte, der findet hier eine Anleitung, wie man <a href="https://github.com/q5js/q5.js/wiki/Get-Started#html">Q5.js lokal nutzen</a> kann. Ich habe also wieder zu tun. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55092418938/">Diddy Dachs und die Mandelbrotmenge</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Diddy">@Diddy</span> Dachs sits at his desk in his cave, typing away at a computer with a large monitor. The Mandelbrot set is displayed on the screen. On the desk, a mug of steaming coffee sits next to an open notepad, on which rests an old-fashioned fountain pen. Beside it lies a red book entitled “The Nature of Code.” A floor lamp illuminates the desk. Shelves lined the cave walls, crammed with books and knick-knacks. A sliver of daylight filters in through a glass opening in the cave wall. Colored classic American comic style. No speech bubbles, no text boxes.</em>« Modell: Charakter 2.0 with Nano Banana Pro.</p>
-
-
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Das gilt leider nicht für <a href="https://q5play.org/home/">Q5.play</a>. Hier gilt immer noch die <a href="https://github.com/q5play/q5play?tab=License-1-ov-file#readme">seltsame Lizenz</a>, die für die Nutzung in der Ausbildung Knete verlangt.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>Q5.js</category>
-  <category>P5.js</category>
-  <category>JavaScript</category>
-  <category>Python</category>
-  <category>Brython</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2026102801_q5js_in_python/</guid>
-  <pubDate>Wed, 28 Oct 2026 16:00:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026102801_q5js_in_python/images/diddydachs.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
