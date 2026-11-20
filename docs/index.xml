@@ -10,7 +10,65 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Thu, 19 Nov 2026 16:40:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 20 Nov 2026 20:40:00 GMT</lastBuildDate>
+<item>
+  <title>Große Py5-Update-Orgie: Aktualisierung auf Py5 Release: 0.10.12a0</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026112001_py5_updates/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55664439136/"><img src="https://kantel.github.io/posts/2026112001_py5_updates/images/attraktor-b.jpg" class="img-fluid"></a></p>
+<p>Durch meine Beschäftigung in den letzten Wochen mit den <a href="https://kantel.github.io/#category=PlotDevice">diversen</a> <a href="https://kantel.github.io/#category=NodeBox">Knotenschachteln</a> (und ihrer <a href="https://kantel.github.io/#category=DrawBot">Mutter</a>) hatte ich (mal <a href="https://kantel.github.io/posts/2024111401_py5_updates/">wieder</a>) und schändlicherweise <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html">Py5</a> und seine Updates aus den Augen verloren. Zu meiner Entschuldigung kann ich aber sagen, dass <em>James Schmitz</em>, der Schöpfer von Py5, seiner <a href="https://ixora.io/">Webseite</a> einen Neustart verpasst hat und diese seitdem keinen RSS-Feed mehr liefert.</p>
+<p>Regelmäßige Leser dieses <del>Blogs</del> Kritzelhefts erinnern sich (hoffentlich!) dennoch: <a href="https://py5coding.org/">Py5</a> ist die Python-3-Variante von <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html">Processing (Java)</a>, die mit allen CPython-Modulen zusammenspielt (darunter auch den Scientific Stack mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html">NumPy</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html">SciPy</a> und der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html">Matplotlib</a>, aber auch mit anderen, wichtigen Bibliotheken, wie zum Beispiel <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html">Pillow</a> oder <a href="http://cognitiones.kantel-chaos-team.de/mathematik/sympy.html">SymPy</a>). Die Kompatibilität zu Processing wird dadurch erreicht, dass Py5 Processings Originalbibliotheken via <a href="https://jpype.readthedocs.io/en/latest/">JPype</a> nutzt.</p>
+<p>Seitdem ich im Februar dieses Jahres das Update auf Py5 Release 0.10.9a1 <a href="https://kantel.github.io/posts/2026021001_py5_0_10_9a1/">gemeldet hatte</a>, sind diese Updates unbemerkt an mir vorbeigerauscht (ich verlinke hier auf die Release Notes, damit Ihr nachlesen könnt, was neu ist):</p>
+<ul>
+<li><ol start="7" type="1">
+<li>Mai 2026: <a href="https://ixora.io/posts/py5/new-release-01010a7.html">New py5 Release: 0.10.10a7</a>.</li>
+</ol></li>
+<li><ol type="1">
+<li>Juli 2026: <a href="https://ixora.io/posts/py5/new-release-01011a0.html">New py5 Release: 0.10.11a0</a>, behebt unter anderem das macOS »App Nap« Problem.</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li>Oktober 2026: <a href="https://ixora.io/posts/py5/new-release-01012a0.html">New py5 Release: 0.10.12a0</a>.</li>
+</ol></li>
+</ul>
+<p>Da ich in der Regel Py5 entweder mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html">JupyterLab Desktop</a> oder einen Texteditor/einer IDE in einer <a href="https://kantel.github.io/posts/2024062801_conda_env_python/">eigenen, virtuellen Umgebung</a> nutze, war das Update mit</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">conda</span> activate py5</span>
+<span id="cb1-2"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip</span> install <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--upgrade</span> py5 py5jupyter</span></code></pre></div></div>
+<p>recht einfach und verlief schnell und problemlos. Da ich aber weiß, daß der regelmäßig in diesem <del>Blog</del> Kritzelheft erwähnte Freund aus Bremen gerne mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html">Thonny</a> spielt, wollte ich auch dieses über das Menü <code>Werkzeuge -&gt; Verwalte Plugins</code> auf die neue Py5-Version aktualisieren. Allerdings musste ich hier erst Thonny auf die neue <a href="https://github.com/thonny/thonny/releases/tag/v5.0.1">Version 5.0.1</a> updaten, da dies mit einem Python 3.14.10 kommt, und das wollte ich haben. Die Aktualisierung auf das neue Py5 war danach schnell erfolgt.</p>
+<p>Es gab aber eine Überraschung: Als ich wie immer nachschaute, ob der <a href="https://github.com/tabreturn/thonny-py5mode">thonny-py5mode</a> in der bei mir schon seit zwei Jahren laufenden <a href="https://kantel.github.io/posts/2024111401_py5_updates/">Version 0.4.7a0</a> noch aktuell ist, sagte mir die Plugin-Verwaltung von Thonny, dass nun die Version 0.5.0 draussen sei. (<em>Kalle</em>, hier musst Du aktualisieren!)</p>
+<p>Und warum das Ganze? Ich habe auf Medium.com den Artikel »<a href="https://medium.com/@ratwolf/the-hopalong-attractor-that-isnt-one-9de8a989eb0a">The Hopalong »Attractor« That Isn’t One</a>« gelesen, und bin nun neugierig, ob Py5 auch mit <code>numba</code> spielt. Dafür habe ich auch wieder <em>Kalles</em> (und <em>Michaels</em>) Buch »Fraktale XXL«<sup>1</sup> hervorgekramt, das den Hopalong »Attraktor« ebenfalls behandelt. Ihr seht also, ich habe zu tun (und mir viel zu viel vorgenommen). <em>Still digging!</em></p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55664439136/">Strange Attractors and Python</a></em>, erstellt mit <a href="https://openart.ai/home">OpenArt</a>. Prompt: »<em><span class="citation" data-cites="Pedro">@Pedro</span> Python stands in an office, holding a pointer, in front of a large white board. The board displays strange attractors in vibrant colors, along with mathematical formulas. Shelves filled with books line the wall. It is a sunny day. Colored Franco-Belgian comic style. Language German. No speech bubbles, no text boxes, no headlines.</em>« Modell: Nano Banana&nbsp;2.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
+
+<ol>
+<li id="fn1"><p>Karl-Heinz Becker, Michael Dörfler: <em><a href="https://www.amazon.de/Fraktale-XXL-Bilderbuch-Computergrafische-Experimente/dp/B0FF4497KW/">Fraktale XXL - Bilderbuch der Fraktale: Computergrafische Experimente mit Processing</a></em>, Bremen 2025↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>Py5</category>
+  <category>Python</category>
+  <category>Processing</category>
+  <category>Creative Coding</category>
+  <category>Dynamische Systeme</category>
+  <category>Thonny</category>
+  <guid>https://kantel.github.io/posts/2026112001_py5_updates/</guid>
+  <pubDate>Fri, 20 Nov 2026 20:40:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026112001_py5_updates/images/attraktor.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Der Schockwellenreiter in (d)englisch auf Medium.com</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3547,39 +3605,6 @@ font-style: inherit;">;</span></span>
   <guid>https://kantel.github.io/posts/2026110302_haare_schoen/</guid>
   <pubDate>Tue, 03 Nov 2026 17:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026110302_haare_schoen/images/haareschoen.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Die Zahlen für den Goldenen Oktober 2026</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026110301_mediadaten_oktober_2026/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55629024567/"><img src="https://kantel.github.io/posts/2026110301_mediadaten_oktober_2026/images/indiansummer-b.jpg" class="img-fluid"></a></p>
-<p>Am Sonnabend hat sich ein Oktober von uns verabschiedet, der die an <a href="https://kantel.github.io/posts/2026100101_die_zahlen/">ihn geknüpften Erwartungen</a> eines »Goldenen Oktobers« durchaus erfüllt hat. Mit dem neuen Monat ist es daher auch wieder Zeit für die Zahlen, die machmal hochtrabend <em>Mediadaten</em> genannt werden: Im Oktober 2026 hatte der <em>Schockwellenreiter</em> laut seinem nicht immer zuverlässigen, aber dafür (hoffentlich!) DSGVO-konformen <del>Geißenpeter</del> <a href="https://www.goatcounter.com/">Neugiertool</a> exakt <strong>4.395&nbsp;Seitenaufrufe</strong>. Auch wenn die Exaktheit dieser Ziffer eine Genauigkeit der Zahl nur vortäuscht, ist dies wieder ein schönes Ergebnis. Daher freue ich mich über jede Besucherin und jeden Besucher und bedanke mich bei allen meinen Leserinnen und Lesern.</p>
-<p>😎 &nbsp; <em>Bleibt mir gewogen!</em></p>
-<p>Auch wenn die Spitze unverändert geblieben ist, bietet die <em>Top Five</em> des Vormonats doch wieder einige Überraschungen:</p>
-<ol type="1">
-<li>Wie gesagt, immer noch unangefochten an der Spitze steht der über zwei Jahre alte Klassiker »<a href="https://kantel.github.io/posts/2024011002_ki_ohne_zensor/">Bildgeneratoren und Künstliche Intelligenz – ohne Zensoren</a>«, obwohl er schon am 2.&nbsp;Januar&nbsp;2024 erschienen und damit recht überholt ist. Denn kaum etwas anderes veränderte sich in den letzten Jahren so häufig und schnell wie die Modelle der gekünstelten Intelligenzia und ihre Anbieter (und die Zensur hat leider auch zugenommen).</li>
-<li>Dann folgt als echter <em>Newcomer</em> die Schreckensmeldung »<a href="https://kantel.github.io/posts/2026101601_adblocker_sind_notwehr/">Staatstrojaner via Online-Werbung: Adblocker sind Notwehr</a>« vom 16.&nbsp;Oktober dieses Jahres, der es innerhalb von nur zwei Wochen auf Platz zwei der <em>Top Five</em> geschafft hat.</li>
-<li>Auch der dritte Platz ist gerade einmal anderthalb Monate alt und daher (leider) immer noch aktuell: »<a href="https://kantel.github.io/posts/2026091502_anytwo/">Bye, bye Anytype: Ist Anytwo der Abschied von meiner digitalen Rumpelkammer?</a>« vom 15.&nbsp;September&nbsp;2026, der erklärt, das und warum Anytwo mein Abschied von Anytype sei.</li>
-<li>Auf Platz vier findet Ihr einen aktuellen Rant: »<a href="https://kantel.github.io/posts/2026100103_nbb_netzgesellschaft/">Die NBB-Netzgesellschaft ist inkompetent und teuer</a>« vom 1.&nbsp;Oktober&nbsp;2026. Nur wenige Tage später musste ich feststellen, dass sie nicht nur inkompetent und teuer, sondern auch <a href="https://kantel.github.io/posts/2026100502_nbb_netzgesellschaft_ii/">ihr Name Hase</a> sei. Der Rant war also mehr als gerechtfertigt.</li>
-<li>Der fünfte Beitrag »<a href="https://kantel.github.io/posts/2026052601_tolaria/">Tolaria: Schon wieder ein Kandidat für meine digitale Rumpelkammer?</a>« vom 26.&nbsp;Mai&nbsp;2026 ploppte schon seit Monaten immer wieder in meinen <em>Top Ten</em> hoch. Diese Hartnäckigkeit ist nun der Grund, dass ich nun teste, ob die <a href="https://tolaria.md/">Toleria</a> die Nachfolge von Anytype antreten kann.</li>
-</ol>
-<p>Soviel zu testen, so wenig Zeit. <em>Still digging!</em></p>
-<hr>
-<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55629024567/">Der Dachs im Goldenen Oktober</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A badger, wearing a red dressing gown, a scarf around its neck, and rimless sunglasses on its nose, sits on a bench in an autumnal park. It has a laptop on its lap and is typing on the keyboard. All around, the autumn foliage on the trees glows in every shade of brown, red, gold, and yellow. The autumn sun illuminates the scene. Early American color comic book style, in the vein of Winsor McCay’s “Little Nemo.” No text boxes, no speech bubbles, and no headings.</em>« Modell: Nano Banana&nbsp;2.1.</p>
-
-
-
- ]]></description>
-  <category>Interna</category>
-  <category>Mediadaten</category>
-  <guid>https://kantel.github.io/posts/2026110301_mediadaten_oktober_2026/</guid>
-  <pubDate>Tue, 03 Nov 2026 16:20:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026110301_mediadaten_oktober_2026/images/indiansummer.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>

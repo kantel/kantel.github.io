@@ -1,0 +1,38 @@
+---
+title: "Große Py5-Update-Orgie: Aktualisierung auf Py5 Release: 0.10.12a0"
+author: "Jörg Kantel"
+date: "2026-11-20 21:40:00"
+categories: [Py5, Python, Processing, Creative Coding, Dynamische Systeme, Thonny]
+image: "images/attraktor.jpg"
+---
+
+[![](images/attraktor-b.jpg)](https://www.flickr.com/photos/schockwellenreiter/55664439136/)
+
+Durch meine Beschäftigung in den letzten Wochen mit den [diversen](https://kantel.github.io/#category=PlotDevice) [Knotenschachteln](https://kantel.github.io/#category=NodeBox) (und ihrer [Mutter](https://kantel.github.io/#category=DrawBot)) hatte ich (mal [wieder](https://kantel.github.io/posts/2024111401_py5_updates/)) und schändlicherweise [Py5](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/py5.html) und seine Updates aus den Augen verloren. Zu meiner Entschuldigung kann ich aber sagen, dass *James Schmitz*, der Schöpfer von Py5, seiner [Webseite](https://ixora.io/) einen Neustart verpasst hat und diese seitdem keinen RSS-Feed mehr liefert.
+
+Regelmäßige Leser dieses ~~Blogs~~ Kritzelhefts erinnern sich (hoffentlich!) dennoch: [Py5](https://py5coding.org/) ist die Python-3-Variante von [Processing (Java)](http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/processing.html), die mit allen CPython-Modulen zusammenspielt (darunter auch den Scientific Stack mit [NumPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/numpy.html), [SciPy](http://cognitiones.kantel-chaos-team.de/programmierung/python/scipy.html) und der [Matplotlib](http://cognitiones.kantel-chaos-team.de/programmierung/python/matplotlib.html), aber auch mit anderen, wichtigen Bibliotheken, wie zum Beispiel [Pillow](http://cognitiones.kantel-chaos-team.de/programmierung/python/pillow.html) oder [SymPy](http://cognitiones.kantel-chaos-team.de/mathematik/sympy.html)). Die Kompatibilität zu Processing wird dadurch erreicht, dass Py5 Processings Originalbibliotheken via [JPype](https://jpype.readthedocs.io/en/latest/) nutzt.
+
+Seitdem ich im Februar dieses Jahres das Update auf Py5 Release 0.10.9a1 [gemeldet hatte](https://kantel.github.io/posts/2026021001_py5_0_10_9a1/), sind diese Updates unbemerkt an mir vorbeigerauscht (ich verlinke hier auf die Release Notes, damit Ihr nachlesen könnt, was neu ist):
+
+- 7. Mai 2026: [New py5 Release: 0.10.10a7](https://ixora.io/posts/py5/new-release-01010a7.html).
+- 1. Juli 2026: [New py5 Release: 0.10.11a0](https://ixora.io/posts/py5/new-release-01011a0.html), behebt unter anderem das macOS »App Nap« Problem.
+- 12. Oktober 2026: [New py5 Release: 0.10.12a0](https://ixora.io/posts/py5/new-release-01012a0.html).
+
+Da ich in der Regel Py5 entweder mit [JupyterLab Desktop](http://cognitiones.kantel-chaos-team.de/programmierung/python/jupyterlabdesktop.html) oder einen Texteditor/einer IDE in einer [eigenen, virtuellen Umgebung](https://kantel.github.io/posts/2024062801_conda_env_python/) nutze, war das Update mit
+
+~~~bash
+conda activate py5
+pip install --upgrade py5 py5jupyter
+~~~
+
+recht einfach und verlief schnell und problemlos. Da ich aber weiß, daß der regelmäßig in diesem ~~Blog~~ Kritzelheft erwähnte Freund aus Bremen gerne mit [Thonny](http://cognitiones.kantel-chaos-team.de/programmierung/python/thonny.html) spielt, wollte ich auch dieses über das Menü `Werkzeuge -> Verwalte Plugins` auf die neue Py5-Version aktualisieren. Allerdings musste ich hier erst Thonny auf die neue [Version 5.0.1](https://github.com/thonny/thonny/releases/tag/v5.0.1) updaten, da dies mit einem Python 3.14.10 kommt, und das wollte ich haben. Die Aktualisierung auf das neue Py5 war danach schnell erfolgt.
+
+Es gab aber eine Überraschung: Als ich wie immer nachschaute, ob der [thonny-py5mode](https://github.com/tabreturn/thonny-py5mode) in der bei mir schon seit zwei Jahren laufenden [Version 0.4.7a0](https://kantel.github.io/posts/2024111401_py5_updates/) noch aktuell ist, sagte mir die Plugin-Verwaltung von Thonny, dass nun die Version 0.5.0 draussen sei. (*Kalle*, hier musst Du aktualisieren!)
+
+Und warum das Ganze? Ich habe auf Medium.com den Artikel »[The Hopalong »Attractor« That Isn’t One](https://medium.com/@ratwolf/the-hopalong-attractor-that-isnt-one-9de8a989eb0a)« gelesen, und bin nun neugierig, ob Py5 auch mit `numba` spielt. Dafür habe ich auch wieder *Kalles* (und *Michaels*) Buch »Fraktale XXL«[^1] hervorgekramt, das den Hopalong »Attraktor« ebenfalls behandelt. Ihr seht also, ich habe zu tun (und mir viel zu viel vorgenommen). *Still digging!*
+
+[^1]: Karl-Heinz Becker, Michael Dörfler: *[Fraktale XXL - Bilderbuch der Fraktale: Computergrafische Experimente mit Processing](https://www.amazon.de/Fraktale-XXL-Bilderbuch-Computergrafische-Experimente/dp/B0FF4497KW/)*, Bremen 2025
+
+---
+
+**Bild**: *[Strange Attractors and Python](https://www.flickr.com/photos/schockwellenreiter/55664439136/)*, erstellt mit [OpenArt](https://openart.ai/home). Prompt: »*@Pedro Python stands in an office, holding a pointer, in front of a large white board. The board displays strange attractors in vibrant colors, along with mathematical formulas. Shelves filled with books line the wall. It is a sunny day. Colored Franco-Belgian comic style. Language German. No speech bubbles, no text boxes, no headlines.*« Modell: Nano Banana&nbsp;2.
