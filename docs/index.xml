@@ -10,7 +10,32 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Sat, 21 Nov 2026 16:35:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 22 Nov 2026 13:05:00 GMT</lastBuildDate>
+<item>
+  <title>Kein BonBon für den Schockwellenreiter</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026112201_kein_bonbon/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55669200798/"><img src="https://kantel.github.io/posts/2026112201_kein_bonbon/images/bonbon-b.jpg" class="img-fluid"></a></p>
+<p>Ich hätte ja auch gerne einmal <a href="https://github.com/scripting/bonBon">BonBon</a>, <em>Dave Winers</em> neues <a href="http://scripting.com/2026/11/18/140257.html?title=gettingStartedWithBonbon">Spielzeug</a>, getestet. Doch leider spielt die Software nicht mit meinem Intel-Mac-Mini aus dem Jahre 2018, obwohl auf der Kiste mit macOS Sequoia ein noch offiziell von Apple unterstütztes Betriebssystem läuft.</p>
+<p>Das passiert halt, wenn man sich blind auf eine gekünstelte Intelligenzia verlässt. So wird das nichts mit der World-Markdown.</p>
+<hr>
+<p><strong>Bild</strong>: <em><a href="https://www.flickr.com/photos/schockwellenreiter/55669200798/">Kein Bonbon</a></em>, erstellt mit <a href="http://cognitiones.kantel-chaos-team.de/technikgeschichte/rechnerundnetze/scenario.html">Scenario</a>. Prompt: »<em>A black Labrador sits sadly in front of an empty food bowl. Above it hangs a sign featuring a black candy on a white background, set inside a red circle with a line through it. Franco-Belgian comic book style. No speech bubbles, no text boxes, and no headings.</em>« Modell: Nano Banana&nbsp;2.1.</p>
+
+
+
+ ]]></description>
+  <category>Markdown</category>
+  <category>Statische Seiten</category>
+  <category>Webworking</category>
+  <guid>https://kantel.github.io/posts/2026112201_kein_bonbon/</guid>
+  <pubDate>Sun, 22 Nov 2026 13:05:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026112201_kein_bonbon/images/bonbon.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Caturday is Queen Jeanie Day</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -3432,178 +3457,6 @@ font-style: inherit;">;</span></span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/</guid>
   <pubDate>Wed, 04 Nov 2026 17:45:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/images/nodebox1new.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>Noch einmal Bouncing Birds in P5.js – jetzt optimiert</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55632087788/"><img src="https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/images/bouncingbirds2-b.jpg" class="img-fluid"></a></p>
-<p>Mir ist über das Wochenende noch eingefallen, wie ich den Code für das <a href="https://kantel.github.io/posts/2026102901_bouncing_birds_p5js/">Beispiel mit den aufeinanderprallenden Vogelköpfen</a> vom letzten Donnerstag noch verbessern kann. (Ich fremdel halt noch ein wenig mit JavaScript.) Und zwar betrifft dies die <code>setup()</code>-Funktion: Statt das Bild jeden Vogels einzeln in einer Variablen <code>img</code> zu laden und dann per <code>push(img)</code> in das Array <code>birdsIm[]</code> einzufügen, kann ich ja auch jeden Vogel einzeln in lokalen Variablen laden und dann alle Vogelbilder in <strong>einer</strong> Zuweisung in das Array einfügen:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource js number-lines code-with-copy"><code class="sourceCode javascript"><span id="cb1-1"><span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">async</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">function</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">setup</span>() {</span>
-<span id="cb1-2"></span>
-<span id="cb1-3">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">// load the bird images</span></span>
-<span id="cb1-4">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">let</span> chick <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"assets/chick.png"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-5">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">let</span> chicken <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"assets/chicken.png"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-6">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">let</span> duck <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"assets/duck.png"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-7">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">let</span> owl <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"assets/owl.png"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-8">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">let</span> parrot <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"assets/parrot.png"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-9">    <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">let</span> penguin <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">await</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">loadImage</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"assets/penguin.png"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-10">    birdsIm <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [chick<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> chicken<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> duck<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> owl<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> parrot<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> penguin]</span>
-<span id="cb1-11">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">// console.log("Alle Bilder geladen.");</span></span>
-<span id="cb1-12"></span>
-<span id="cb1-13">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">createCanvas</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">400</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-14">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">// canvas = createCanvas(640, 400);   // für das Einbinden</span></span>
-<span id="cb1-15">    <span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">// canvas.parent("myCanvas");         // in diese Webseite</span></span>
-<span id="cb1-16">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">imageMode</span>(CENTER)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-17">    <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">reset</span>()<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">;</span></span>
-<span id="cb1-18">}</span></code></pre></div></div>
-<p>Dadurch habe ich immerhin sechs Zeilen Code gespart (da die globale Deklaration der Variablen <code>img</code> ebenfalls entfällt).</p>
-
-
-
- ]]></description>
-  <category>P5.js</category>
-  <category>JavaScript</category>
-  <category>Creative Coding</category>
-  <category>Nature of Code</category>
-  <guid>https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/</guid>
-  <pubDate>Wed, 04 Nov 2026 14:30:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026110401_bouncingbirds_optimiert/images/bouncingbirds2.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
