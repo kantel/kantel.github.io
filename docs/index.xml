@@ -10,7 +10,998 @@
 <atom:link href="https://kantel.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Schockwellenreiter</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Tue, 24 Nov 2026 13:05:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 25 Nov 2026 18:25:00 GMT</lastBuildDate>
+<item>
+  <title>Abenteuer microStudio mit Python: Flying Cow</title>
+  <dc:creator>Jörg Kantel</dc:creator>
+  <link>https://kantel.github.io/posts/2026112501_flying_cow/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p><a href="https://www.flickr.com/photos/schockwellenreiter/55671815570/"><img src="https://kantel.github.io/posts/2026112501_flying_cow/images/flyingcow-b.jpg" class="img-fluid"></a></p>
+<p>Es wird Zeit, dass ich meinen <a href="https://kantel.github.io/posts/2026111801_microstudio_python/">Neustart</a> der Reihe »microStudio und Python« fortsetze, Hierfür möchte ich heute nur ein kleines Progrämmchen vorstellen, in dem eine Kuh über den Bildschirm schwebt (denn in meiner Welt können auch Kühe fliegen). Das ist – außer der Tatsache der fliegenden Kuh – nichts besonderes, bis auf dass ich die Klasse <code>PVector2</code> vorstelle und verwende.</p>
+<p>Diese <a href="http://blog.schockwellenreiter.de/2018/11/2018112301.html">2D-Vector-Klasse</a> hatte ich – angelehnt an <a href="https://www.processing.org/reference/PVector.html">Processings PVector-Klasse</a> – vor Jahren einmal in Pure-Python <a href="http://blog.schockwellenreiter.de/2018/11/2018111902.html">implementiert</a> und bisher erfolgreich sowohl in der <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/nodebox.html">Nodebox</a> (dafür hatte ich sie ursprünglich geschrieben) wie auch in der <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/arcade.html">Arcade-Bibliothek</a>, (hier ein <a href="http://blog.schockwellenreiter.de/2020/06/2020062801.html">Beispiel</a>), in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/tigerjython.html">TigerJython</a> (noch ein <a href="http://blog.schockwellenreiter.de/2021/02/2021020801.html">Beispiel</a>) und zuletzt in <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5py.html">P5 (Python)</a> (ein <a href="http://blog.schockwellenreiter.de/2018/11/2018111902.html">letztes Beispiel</a>) eingesetzt.</p>
+<p>Sie besitzt keine Abängigkeiten außer der Python-Standardbibliothek (hier auch nur die Module <code>math</code> und <code>random</code>). Sie läuft daher auch immer noch mit Python 2.7 (und so auch mit Jython) <strong>und</strong> Python &gt;= 3.5. Also auch mit <a href="http://cognitiones.kantel-chaos-team.de/programmierung/python/brython.html">Brython</a>, der Python-Implementierung von <a href="http://cognitiones.kantel-chaos-team.de/multimedia/spieleprogrammierung/microstudio.html">microStudio</a>.</p>
+<p>Ich dachte mir, dass solch eine Klasse sicher auch für andere nützlich sein könnte, daher habe ich sie unter die MIT-Lizenz gestellt und <a href="https://github.com/kantel/pvector">auf GitHub veröffentlicht</a>. Doch Vorsicht: Für eine Fehlerfreiheit kann ich nicht garantieren. Sollte Euch daher etwas auffallen, wäre ich um eine Fehlermeldung dankbar. Auch Verbesserungswünsche sind jederzeit willkommen.</p>
+<p><strong>Caveat</strong>: Die Methoden sollten so aufgerufen werden können und funktionieren, wie sie in der <a href="https://www.processing.org/reference/PVector.html">Referenz zur PVector-Klasse</a> in der Processing-Dokumentation beschrieben sind. Es ist jedoch eine reine 2D-Klasse, mit 3D- oder noch höherwertigen Vektoren funktioniert sie nicht und eine 3D-Implementierung (oder noch mehr) habe ich auch nicht vorgesehen.</p>
+<section id="der-quellcode" class="level3">
+<h3 class="anchored" data-anchor-id="der-quellcode">Der Quellcode</h3>
+<p>Um die Klasse in microStudio zu nutzen, muss der Quellcode in das Projekt importiert werden:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> math</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> random</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> PVector2():</span>
+<span id="cb1-5">    </span>
+<span id="cb1-6">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, x, y):</span>
+<span id="cb1-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x</span>
+<span id="cb1-8">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> y</span>
+<span id="cb1-9"></span>
+<span id="cb1-10">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">set</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-11">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v.x</span>
+<span id="cb1-12">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v.y</span>
+<span id="cb1-13">    </span>
+<span id="cb1-14">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> get(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-15">    v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb1-16">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> v</span>
+<span id="cb1-17"></span>
+<span id="cb1-18">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-19">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> v.x</span>
+<span id="cb1-20">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+=</span> v.y</span>
+<span id="cb1-21">        </span>
+<span id="cb1-22">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> sub(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-23">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> v.x</span>
+<span id="cb1-24">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-=</span> v.y</span>
+<span id="cb1-25">    </span>
+<span id="cb1-26">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Multiplikation mit einem Skalar</span></span>
+<span id="cb1-27">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> mult(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, n):</span>
+<span id="cb1-28">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> n</span>
+<span id="cb1-29">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> n</span>
+<span id="cb1-30">    </span>
+<span id="cb1-31">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Division durch einen Skalar</span></span>
+<span id="cb1-32">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> div(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, n):</span>
+<span id="cb1-33">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> n</span>
+<span id="cb1-34">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> n</span>
+<span id="cb1-35"></span>
+<span id="cb1-36">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Elementweise Multiplikation eines Vektor mit einem anderen Vektor</span></span>
+<span id="cb1-37">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> mult2(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-38">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> v.x</span>
+<span id="cb1-39">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=</span> v.y</span>
+<span id="cb1-40"></span>
+<span id="cb1-41">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Elementweise Division eines Vektor mit einem anderen Vektor</span></span>
+<span id="cb1-42">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> div2(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-43">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> v.x</span>
+<span id="cb1-44">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/=</span> v.y</span>
+<span id="cb1-45"></span>
+<span id="cb1-46">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Magnitude</span></span>
+<span id="cb1-47">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> mag(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-48">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> math.sqrt(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y)</span>
+<span id="cb1-49">    </span>
+<span id="cb1-50">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Normalisierung</span></span>
+<span id="cb1-51">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> normalize(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-52">    m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.mag()</span>
+<span id="cb1-53">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (m <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>):</span>
+<span id="cb1-54">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.div(m)</span>
+<span id="cb1-55"></span>
+<span id="cb1-56"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Berechnung der euklidischen Distanz zwischen zwei Vektoren</span></span>
+<span id="cb1-57">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> dist(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-58">    dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> v.x</span>
+<span id="cb1-59">    dy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> v.y</span>
+<span id="cb1-60">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> math.sqrt(dx<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>dx <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> dy<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span>dy)</span>
+<span id="cb1-61">    </span>
+<span id="cb1-62">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Berechnung des Skalarprodukts (inneren Produkts) eines Vektors</span></span>
+<span id="cb1-63">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> dot(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, v):</span>
+<span id="cb1-64">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>v.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>v.y</span>
+<span id="cb1-65">    </span>
+<span id="cb1-66">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Begrenzt die Magnitude eines Vektors auf max</span></span>
+<span id="cb1-67">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> limit(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>):</span>
+<span id="cb1-68">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.mag() <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>:</span>
+<span id="cb1-69">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.normalize()</span>
+<span id="cb1-70">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.mult(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>)</span>
+<span id="cb1-71">    </span>
+<span id="cb1-72">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Berechnet den Winkel der Rotation eines Vektors</span></span>
+<span id="cb1-73">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> heading(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-74">    angle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> math.atan2(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x)</span>
+<span id="cb1-75">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>angle</span>
+<span id="cb1-76"></span>
+<span id="cb1-77">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__add__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, other):</span>
+<span id="cb1-78">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> other.x</span>
+<span id="cb1-79">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> other.y</span>
+<span id="cb1-80">    result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb1-81">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> result</span>
+<span id="cb1-82">    </span>
+<span id="cb1-83">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__sub__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>, other):</span>
+<span id="cb1-84">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> other.x</span>
+<span id="cb1-85">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> other.y</span>
+<span id="cb1-86">    result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb1-87">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> result</span>
+<span id="cb1-88">    </span>
+<span id="cb1-89">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__str__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb1-90">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"["</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.x) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">", "</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">str</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.y) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"]"</span></span>
+<span id="cb1-91">        </span>
+<span id="cb1-92">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">@classmethod</span></span>
+<span id="cb1-93">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> random2D(cls):</span>
+<span id="cb1-94">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random.uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-95">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> random.uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb1-96">    v <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> cls(x, y)</span>
+<span id="cb1-97">    v.normalize()</span>
+<span id="cb1-98">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> v</span>
+<span id="cb1-99"></span>
+<span id="cb1-100">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Klassenmethoden: Skalare Multiplikation und Division</span></span>
+<span id="cb1-101">    </span>
+<span id="cb1-102">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Multiplikation mit einem Skalar</span></span>
+<span id="cb1-103">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> smult(v, n):</span>
+<span id="cb1-104">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>n</span>
+<span id="cb1-105">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>n</span>
+<span id="cb1-106">    result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb1-107">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> result</span>
+<span id="cb1-108"></span>
+<span id="cb1-109">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Division mit einem Skalar</span></span>
+<span id="cb1-110">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> sdiv(v, n):</span>
+<span id="cb1-111">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> n <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>:</span>
+<span id="cb1-112">      x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v.x<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>n</span>
+<span id="cb1-113">      y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> v.y<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span>n</span>
+<span id="cb1-114">      result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb1-115">      <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> result</span>
+<span id="cb1-116">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb1-117">      <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Error. Divison durch Null!"</span>)</span></code></pre></div></div>
+<p>Ich habe den Reiter <code>pvector2</code> genannt, um zu vereutlichen, dass es sich um eine <strong>2D</strong>-Vektorklasse handelt (die Klasse selber heißt schließlich auch <code>PVector2</code>).</p>
+<p>Für meinen ersten Test der Implementierung habe ich dann die oben erwähnte Kuh über den Bildschirm schweben lassen. Dafür habe ich erst einmal die Klasse <code>Cow</code> erstellt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> uniform, randint</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">class</span> Cow:</span>
+<span id="cb2-4">  </span>
+<span id="cb2-5">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">__init__</span>(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-6">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span></span>
+<span id="cb2-7">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb2-8">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">150</span>)</span>
+<span id="cb2-9">    y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> randint(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">80</span>)</span>
+<span id="cb2-10">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb2-11">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>), uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>))</span>
+<span id="cb2-12">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cow"</span></span>
+<span id="cb2-13">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.stroke <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(0, 0, 0)"</span></span>
+<span id="cb2-14">    </span>
+<span id="cb2-15">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-16">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel)</span>
+<span id="cb2-17">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># check border</span></span>
+<span id="cb2-18">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d):</span>
+<span id="cb2-19">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d</span>
+<span id="cb2-20">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-21">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d):</span>
+<span id="cb2-22">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> screen.width<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d</span>
+<span id="cb2-23">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-24">      </span>
+<span id="cb2-25">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d):</span>
+<span id="cb2-26">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d</span>
+<span id="cb2-27">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-28">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">elif</span> (<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;=</span> screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d):</span>
+<span id="cb2-29">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>  screen.height<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.d</span>
+<span id="cb2-30">      <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel.y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*=-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb2-31">    </span>
+<span id="cb2-32">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>):</span>
+<span id="cb2-33">    screen.drawSprite(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.im, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h)</span>
+<span id="cb2-34">    screen.drawRound(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.x, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.y, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.w, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.h, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.stroke)</span></code></pre></div></div>
+<p>Im Konstruktor der Klasse werden zwei Vektoren erzeugt,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(x, y)</span>
+<span id="cb3-2">    <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> PVector2(uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1.5</span>), uniform(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.9</span>))</span></code></pre></div></div>
+<p>einmal der Positionsvektor <code>pos</code>, der die Position der Kuh auf dem Bildschirm angibt, und dann den Bewegungsvektor <code>vel</code> (für <em>Velocity</em>), der für die Geschwindigkeit der Kuh zuständig ist.</p>
+<p>In der <code>update()</code>-Methode wird eigentlich nur mit</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1">   <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.loc.add(<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">self</span>.vel)</span></code></pre></div></div>
+<p>die Geschwindigkeit auf die Position aufaddiert und somit die neue Position der Kuh bestimmt.</p>
+<p>Der Rest ist wieder nur die Abfrage der Ränder: Erreicht oder überschreitet die Kuh den Bildschirmrand, wird sie zuerst auf den Bildschirmrand zurückgesetzt und dann die Geschwindigkeit durch die Multiplikation mit -1 umgekehrt.</p>
+<p>Da die Klasse <code>Cow</code> in meinem Beispielskript nahezu die gesamte Arbeit übernimmt, ist das Hauptprogramm <code>main</code> wieder von erfrischender Kürze:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> init():</span>
+<span id="cb5-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">global</span> cow</span>
+<span id="cb5-3">  cow <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Cow()</span>
+<span id="cb5-4"></span>
+<span id="cb5-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> update():</span>
+<span id="cb5-6">  cow.update()</span>
+<span id="cb5-7">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Restart</span></span>
+<span id="cb5-8">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> check_input(keyboard.press, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ESCAPE"</span>):</span>
+<span id="cb5-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># print("RESTART")</span></span>
+<span id="cb5-10">    init()</span>
+<span id="cb5-11"></span>
+<span id="cb5-12"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> draw():</span>
+<span id="cb5-13">  screen.clear(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"rgb(40, 129, 46 "</span>)</span>
+<span id="cb5-14">  cow.draw()</span></code></pre></div></div>
+<p>Die einzige zusätzliche Aufgabe in der <code>update()</code>-Funktion ist die Abfrage der Tastatur: Wird die Escape-Taste gedrückt, wird die Kuh wieder auf eine zufällige Anfangsposition gesetzt und das Skript startet neu.</p>
+<p><em>Last but not least</em> wird im Reiter <code>util</code> wieder die Funktion <code>check_input()</code> bereitgestellt,</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> check_input(obj, val):</span>
+<span id="cb6-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">hasattr</span>(obj, val):</span>
+<span id="cb6-3">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> obj[val] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb6-4">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span></code></pre></div></div>
+<p>die verhindert, dass das Skript aussteigt, wenn die Tastaturabfrage beim ersten Aufruf ein <code>undefined</code> zurückgibt.</p>
+</section>
+<section id="das-programm" class="level3">
+<h3 class="anchored" data-anchor-id="das-programm">Das Programm</h3>
+<p>Und hier wieder das Progrämmchen in voller Schönheit, eingebettet in diese Seite:</p>
+<iframe src="flyingcow/" class="if16_9" name="Flying Cow">
+</iframe>
+<p><em>Damit die Tastaturabfrage funktioniert, müsst Ihr einmal in das Spielfeld klicken, damit es den Fokus erhält.</em></p>
+<p>Das Bild der Kuh habe ich dem freien (<a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>) »<a href="https://kenney.nl/assets/animal-pack-remastered">Animal Pack Remastered</a>« von Kenney.nl entnommen.</p>
+<p>Ich habe auch dieses Progrämmchen auf meinen microStudio-Account hochgeladen und unter dem Namen »<a href="https://microstudio.dev/i/kantel/flyingcow/">Flying Cow</a>« auf »öffentlich« gesetzt. Ihr könnt es von dort klonen, herunterladen und/oder damit herumspielen. Also macht damit, was ihr wollt und habt Spaß!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>microStudio</category>
+  <category>Python</category>
+  <category>Brython</category>
+  <category>Nature of Code</category>
+  <category>Spieleprogrammierung</category>
+  <category>Creative Coding</category>
+  <guid>https://kantel.github.io/posts/2026112501_flying_cow/</guid>
+  <pubDate>Wed, 25 Nov 2026 18:25:00 GMT</pubDate>
+  <media:content url="https://kantel.github.io/posts/2026112501_flying_cow/images/flyingcow.jpg" medium="image" type="image/jpeg"/>
+</item>
 <item>
   <title>Pygame-CE revisited: Tutorial und Pygame-CE im Browser (ohne Pigbag)</title>
   <dc:creator>Jörg Kantel</dc:creator>
@@ -2781,320 +3772,6 @@ font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
   <guid>https://kantel.github.io/posts/2026110701_jungle_cat/</guid>
   <pubDate>Sat, 07 Nov 2026 13:55:00 GMT</pubDate>
   <media:content url="https://kantel.github.io/posts/2026110701_jungle_cat/images/junglecat.jpg" medium="image" type="image/jpeg"/>
-</item>
-<item>
-  <title>PlotDevice – noch ein Knotenschachtel-Klon</title>
-  <dc:creator>Jörg Kantel</dc:creator>
-  <link>https://kantel.github.io/posts/2026110601_plot_device/</link>
-  <description><![CDATA[ 
-
-
-
-
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55634813621/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlespd-b.jpg" class="img-fluid"></a></p>
-<p>Nach dem <a href="https://kantel.github.io/posts/2026110502_no_svg_pdf_mit_p5js/">vergeblichen Versuch gestern</a>, <a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/processing/p5js.html">P5.js</a> zu überreden, Bilder als Vektorgraphiken abzuspeichern, rumorte es ständig in meinem Hinterkopf: Gab es da nicht noch einen Knotenschachtel-Klon? Richtig! Er heißt <strong><a href="https://plotdevice.io/">PlotDevice</a></strong>.</p>
-<p><strong><a href="http://cognitiones.kantel-chaos-team.de/programmierung/creativecoding/nodebox/plotdevice.html">PlotDevice</a></strong> (MIT-Lizenz) ist eine weitere Fork von NodeBox&nbsp;1, der interaktiven 2D-Graphik-Umgebung für macOS, die mit PyObjC alle Möglichkeiten des Macintosh-Betriebssystems voll ausnutzt. Sie ist mit dem Original-Nodebox rückwärtskompatibel, es laufen auch einige – nicht alle – alten Bibliotheken, die GUI ist aber stärker von Processing beeinflusst. Die Dokumentation zu PlotDevice ist hervorragend und vollständig.</p>
-<p>Ich hatte mit PlotDevice vor elf Jahren mal ein wenig <a href="http://blog.schockwellenreiter.de/essays/plotdevicenumpy.html">herumgespielt</a> und war trotz einiger guten Ideen, die das Teil realisiert hatte, enttäuscht. Denn die Integration der NodeBox&nbsp;1-Bibliotheken war zwar versprochen, aber <a href="http://blog.schockwellenreiter.de/2015/10/2015102803.html">schlampig realisiert</a> (und »schlampig« war noch gestrunzt). Das führte dazu, daß ich in den Folgejahren nur noch die <a href="https://plotdevice.io/manual">Dokumentation</a> von PlotDevice genutzt hatte, denn die war – auch wenn vieles davon nicht in PlotDevice, sondern nur in <em>Karsten Wolfs</em> <a href="https://kantel.github.io/posts/2026110402_nodebox_1_first_final_release/">NodeBox-Fork</a> funktionierte – um Klassen besser als die Original NodeBox&nbsp;1-Dokumentation<sup>1</sup>.</p>
-<p>Aber <em>tempus fuget</em>: Im Sommer 2022 wurde PlotDevice mit der <a href="https://github.com/plotdevice/plotdevice/releases/tag/v1.0.0">Version 1.1.0</a> gründlich <a href="https://github.com/plotdevice/plotdevice">überholt</a> und auch die Dokumentation, welche NodeBox&nbsp;1-Bibliotheken nun mit PlotDevice laufen und was es unter Umständen zu beachten gilt, wurde auf einer <a href="https://github.com/plotdevice/plotdevice-libs">eigenen Seite aktualisiert</a><sup>2</sup> (dort kann man die Bibliotheken (auch einzeln) herunterladen).</p>
-<section id="random-circles-hochaufgelöst-in-plotdevice" class="level3">
-<h3 class="anchored" data-anchor-id="random-circles-hochaufgelöst-in-plotdevice">Random Circles (hochaufgelöst) in PlotDevice</h3>
-<p>Es scheint also, als ob PlotDevice spätestems seit 2022 eine nutzbare Alternative sein kann, die ich schändlicherweise übersehen habe. Aus Frust über die P5.js-Enttäuschung gestern und um PlotDevice zu testen, habe ich das Skript mal nach PlotDevice portiert (siehe <a href="https://www.flickr.com/photos/schockwellenreiter/55634813621/">Screenshot</a> im Bannerbild oben):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> randint</span>
-<span id="cb1-2"></span>
-<span id="cb1-3">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">400</span></span>
-<span id="cb1-4">malewitsch <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#334775"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#6484ac"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#f09108"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#f2cf90"</span>,</span>
-<span id="cb1-5">              <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#ea4e4a"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#e8434c"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#906120"</span>]</span>
-<span id="cb1-6"></span>
-<span id="cb1-7">size(WIDTH, HEIGHT)</span>
-<span id="cb1-8">background(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#62c777"</span>)</span>
-<span id="cb1-9">strokewidth(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-10"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">200</span>):</span>
-<span id="cb1-11">    x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>, WIDTH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>)</span>
-<span id="cb1-12">    y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>, HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>)</span>
-<span id="cb1-13">    stroke(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">150</span>)</span>
-<span id="cb1-14">    fill(malewitsch[(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(malewitsch) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))], <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>)</span>
-<span id="cb1-15">    arc(x, y, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>)</span>
-<span id="cb1-16">    nostroke()</span>
-<span id="cb1-17">    fill(malewitsch[(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(malewitsch) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))], <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">.4</span>)</span>
-<span id="cb1-18">    radius <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">40</span>)</span>
-<span id="cb1-19">    arc(x, y, radius)</span>
-<span id="cb1-20"></span>
-<span id="cb1-21"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
-<p>Das Skript ist erstaunlich kurz, was aber auch daran liegt, dass ich auf die Unterteilung in <code>setup()</code> und <code>draw()</code> verzichten konnte. Der Sketch läuft linear durch und wenn ich mit dem Ergebnis nicht zufrieden bin, starte ich ihn einfach neu.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55633828207/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlespd-l.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Das Ergebnis als hochaufgelöstes PDF (Ausschnitt)</figcaption>
-</figure>
-</div>
-<p>Wenn man das Resultat eines Durchlaufs als PDF abspeichert (entweder über das Menü <code>File -&gt; Export as Image …</code> oder über den kleinen Photoapparat rechts oben im Programmfenster), erhält man eine Datei, die sich beliebig hochskalieren lässt. Das war es eigentlich, was ich mir auch von P5.js erhofft hatte.</p>
-</section>
-<section id="random-circles-hochaufgelöst-in-nodebox-1" class="level3">
-<h3 class="anchored" data-anchor-id="random-circles-hochaufgelöst-in-nodebox-1">Random Circles (hochaufgelöst) in NodeBox 1</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55637059740/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlesnodebox-b.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Random Circles mit der NodeBox&nbsp;1</figcaption>
-</figure>
-</div>
-<p>Und NodeBox&nbsp;1? Natürlich musste ich das Experiment auch mit <em>Karsten Wolfs</em> Fork der Knotenschachtel durchführen. Ich hatte gehofft, den Quellcode Eins-zu-Eins übernehmen zu können, aber ein wenig unterschieden sich die beiden Programme doch. Hier ist also meine Version der zufälligen Kreise für die Knotenschachtel:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">from</span> random <span class="im" style="color: #00769E;
-background-color: null;
-font-style: inherit;">import</span> randint</span>
-<span id="cb2-2">colormode(RGB, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">255</span>)</span>
-<span id="cb2-3"></span>
-<span id="cb2-4">WIDTH, HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">640</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">400</span></span>
-<span id="cb2-5">malewitsch0 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#334775"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#6484ac"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#f09108"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#f2cf90"</span>,</span>
-<span id="cb2-6">               <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#ea4e4a"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#e8434c"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#906120"</span>]</span>
-<span id="cb2-7">malewitsch1 <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#33477566"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#6484ac66"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#f0910866"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#f2cf9066"</span>,</span>
-<span id="cb2-8">               <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#ea4e4a66"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#e8434c66"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#90612066"</span>]</span>
-<span id="cb2-9"></span>
-<span id="cb2-10">size(WIDTH, HEIGHT)</span>
-<span id="cb2-11">background(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"#62c777"</span>)</span>
-<span id="cb2-12">strokewidth(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">2</span>)</span>
-<span id="cb2-13"><span class="cf" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">for</span> _ <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;">in</span> <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">200</span>):</span>
-<span id="cb2-14">    x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>, WIDTH <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>)</span>
-<span id="cb2-15">    y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>, HEIGHT <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span> <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">50</span>)</span>
-<span id="cb2-16">    stroke(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">150</span>)</span>
-<span id="cb2-17">    fill(color(malewitsch0[(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(malewitsch0) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))]))</span>
-<span id="cb2-18">    circle(x, y, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span>)</span>
-<span id="cb2-19">    nostroke()</span>
-<span id="cb2-20">    fill(color(malewitsch1[(randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, <span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">len</span>(malewitsch1) <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">1</span>))]))</span>
-<span id="cb2-21">    radius <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> randint(<span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">7</span>, <span class="dv" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">40</span>)</span>
-<span id="cb2-22">    circle(x, y, radius)</span>
-<span id="cb2-23"></span>
-<span id="cb2-24"><span class="bu" style="color: null;
-background-color: null;
-font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"I did it, Babe!"</span>)</span></code></pre></div></div>
-<p>Der Hauptunterschied ist, dass ich – wie auch bei meinen Versuchen mit P5.js – zwei Listen für die Farben anlegen musste, da ich nicht herausbekommen habe, wie man den Alphawert an den Hexstring für die Farben anhängt. Alles andere sind Kleinigkeiten (der <code>colormode()</code> muss definiert, und <code>arc()</code> verhält sich in der NodeBox anders als in PlotDevice und musste daher durch <code>circle()</code> ersetzt werden).</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://www.flickr.com/photos/schockwellenreiter/55636849909/"><img src="https://kantel.github.io/posts/2026110601_plot_device/images/circlesnodebox-l.jpg" class="img-fluid figure-img"></a></p>
-<figcaption>Das Ergebnis hochaufgelöst in NodeBox&nbsp;1</figcaption>
-</figure>
-</div>
-<p>Der Clou ist aber: Die Kontenschachtel besitzt in der GUI einen Slider, mit dem man das Ergebnis bis auf 1.000 Prozent vergrößern kann. Und wie man am obigen Screenshot sieht, gibt es auch hier nichts zu meckern.</p>
-</section>
-<section id="fazit" class="level3">
-<h3 class="anchored" data-anchor-id="fazit">Fazit</h3>
-<p>Die Knotenschachtel (in der Version von <em>Karsten Wolf</em>) wie auch PlotDevice scheinen ziemlich gleichwertige Macintosh-Applikationen für kreative Programmierer (und solche, die es werden wollen) zu sein. Für PlotDevice spricht die einfachere Installation (daher ist es vielleicht ein wenig besser für Anfänger geeignet), während mir NodeBox&nbsp;1 ein wenig aktueller und ausgereifter zu sein scheint. Aber da ich beide Programme ziemlich lange aus den Augen verloren hatte, werde ich mit beiden noch einiges anstellen. Und ob ich dann eines dem anderen vorziehen werde, weiß ich noch nicht. Momentan macht es mir erst einmal viel Spaß, mit beiden zu spielen. <em>Still digging!</em></p>
-
-
-</section>
-
-
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Fußnoten</h2>
-
-<ol>
-<li id="fn1"><p>Das hat sich mittlerweile verbessert: Bevor NodeBox&nbsp;1 zugunsten von NodeBox&nbsp;3 in ein <a href="https://nodebox.net/code/Home">Archiv abgeschoben und eingefroren wurde</a>, hatte sich jemand der Dokumentation angenommen und sie auf den damaligen Stand gebracht und alle Fehler (das waren in der Hauptsache im Daten-Nirwana verschwunde Bilder) ausgemerzt.↩︎</p></li>
-<li id="fn2"><p>Das gilt übrigens auch für die NodeBox&nbsp;1-Fork von <em>Karsten Wolf</em>: Auch er hat eine <a href="https://github.com/karstenw/Library">NodeBox Library</a>-Seite, in der nicht nur die »klassischen« NodeBox&nbsp;1-Bibliotheken aufgeführ sind (und ob sie mit der Fork laufen), sondern auch alle Änderungen und Neuerungen. Natürlich kann man auch hier die Bibliotheken (auch einzeln) herunterladen.↩︎</p></li>
-</ol>
-</section></div> ]]></description>
-  <category>PlotDevice</category>
-  <category>NodeBox</category>
-  <category>Python</category>
-  <category>Creative Coding</category>
-  <guid>https://kantel.github.io/posts/2026110601_plot_device/</guid>
-  <pubDate>Fri, 06 Nov 2026 18:40:00 GMT</pubDate>
-  <media:content url="https://kantel.github.io/posts/2026110601_plot_device/images/circlespd.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
